@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/LoginPage.dart';
+import 'package:instamfin/SignupPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,21 +13,22 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // Define the default brightness and colors.
         brightness: Brightness.light,
-        primaryColor: Colors.blue[800],
-        accentColor: Colors.blue[800],
-
+        primaryColor: Colors.white,
+        accentColor: Colors.white,
         // Define the default font family.
         fontFamily: 'Georgia',
-
+        iconTheme: new IconThemeData(color: Colors.blue[200], size: 50.0),
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
           headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
           title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          body1: TextStyle(
+              fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
         ),
       ),
-      home: MyHomePage(title: 'Signup Page'),
+      home: MyHomePage(title: ''),
+      color: Colors.blue[600],
     );
   }
 }
@@ -58,165 +61,25 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Colors.blue[800],
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomCenter,
+                  colors: <Color>[Colors.blue, Colors.grey[700]])),
+        ),
       ),
       body: const SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
-          child: RegisterForm(),
+          child: LoginController(),
         ),
       ),
     );
-  }
-}
-
-class RegisterForm extends StatefulWidget {
-  const RegisterForm({Key key}) : super(key: key);
-
-  @override
-  _RegisterFormState createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<RegisterForm> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String password = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          new Container(
-            height: 100.0,
-            width: 100.0,
-            padding: new EdgeInsets.only(top: 22.0),
-            child: FloatingActionButton(
-              onPressed: null,
-              backgroundColor: Colors.white,
-              child: new Icon(
-                Icons.file_upload,
-                size: 50,
-              ),
-              foregroundColor: Colors.blue[200],
-            ),
-          ),
-          Padding(padding: EdgeInsets.all(10.0)),
-          new ListTile(
-            title: TextFormField(
-              decoration: new InputDecoration(
-                  hintText: "Name",
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(
-                    Icons.sentiment_satisfied,
-                    color: Colors.blue[200],
-                    size: 50.0,
-                  )),
-              validator: (value) => value.isEmpty ? 'Name is required' : null,
-            ),
-          ),
-          new ListTile(
-            title: TextFormField(
-              decoration: new InputDecoration(
-                  hintText: "Mobile Number",
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.phone_android,
-                      color: Colors.blue[200], size: 50.0)),
-              keyboardType: TextInputType.phone,
-              validator: (value) =>
-                  value.isEmpty ? 'Mobile Number is required' : null,
-            ),
-          ),
-          new ListTile(
-            title: TextFormField(
-              decoration: new InputDecoration(
-                  hintText: "Email",
-                  border: OutlineInputBorder(),
-                  suffixIcon:
-                      Icon(Icons.email, color: Colors.blue[200], size: 50.0)),
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) => value.isEmpty ? 'Email is required' : null,
-            ),
-          ),
-          new ListTile(
-            title: TextFormField(
-              decoration: new InputDecoration(
-                  hintText: "Password",
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.visibility_off,
-                      color: Colors.blue[200], size: 50.0)),
-              validator: (value) =>
-                  value.isEmpty ? 'Password is required' : password = value,
-            ),
-          ),
-          new ListTile(
-            title: TextFormField(
-              decoration: new InputDecoration(
-                hintText: "Confirm Password",
-                border: OutlineInputBorder(),
-              ),
-              validator: (String value) {
-                if (value.trim().isEmpty) {
-                  return 'Confirm your Password';
-                } else if (password != value) {
-                  return 'Password should be matched';
-                }
-              },
-            ),
-          ),
-          Padding(padding: EdgeInsets.all(15.0)),
-          new InkWell(
-            onTap: _submit,
-            child: new Container(
-              width: 200.0,
-              height: 50.0,
-              decoration: new BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: new BorderRadius.circular(10.0),
-              ),
-              child: new Center(
-                child: new Text(
-                  'SIGN UP',
-                  style: new TextStyle(fontSize: 18.0, color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              new Container(
-                child: const Text(
-                  'Already have an account ?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-              FlatButton(
-                padding: const EdgeInsets.all(20.0),
-                onPressed: null,
-                child: const Text(
-                  'LOGIN',
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _submit() {
-    _formKey.currentState.validate();
-    print('Form submitted');
   }
 }
