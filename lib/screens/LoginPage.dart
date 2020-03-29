@@ -66,40 +66,49 @@ class _LoginControllerState extends State<LoginController> {
                       size: 35.0,
                     ),
                   ),
-                  validator: (value) => value.isEmpty
-                      ? 'Email ID is required'
-                      : {setState(() => email = value)}),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Email ID is required';
+                    }
+
+                    setState(() => email = value);
+                    return null;
+                  }),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextFormField(
-                obscureText: hidePassword,
-                controller: passwordController,
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  fillColor: Colors.white,
-                  filled: true,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      // Based on passwordVisible state choose the icon
-                      _passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Colors.teal[200], size: 35.0,
+                  obscureText: hidePassword,
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    fillColor: Colors.white,
+                    filled: true,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.teal[200], size: 35.0,
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible variable
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                          hidePassword = !hidePassword;
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      // Update the state i.e. toogle the state of passwordVisible variable
-                      setState(() {
-                        _passwordVisible = !_passwordVisible;
-                        hidePassword = !hidePassword;
-                      });
-                    },
                   ),
-                ),
-                validator: (value) => value.isEmpty
-                    ? 'Password is required'
-                    : {setState(() => password = value)},
-              ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Password is required';
+                    }
+
+                    setState(() => password = value);
+                    return null;
+                  }),
             ),
             Padding(padding: EdgeInsets.all(30.0)),
             new InkWell(
@@ -165,10 +174,14 @@ class _LoginControllerState extends State<LoginController> {
 
   void _submit() async {
     final FormState form = _formKey.currentState;
-    
+
     if (form.validate()) {
       print('Form submitted');
-      await _auth.signInWithEmailPassword(email, password);
+
+      dynamic result = await _auth.signInWithEmailPassword(email, password);
+      if (result == null) {
+        print("Unable to register USER");
+      }
       // Navigator.pushNamed(context, '/customer');
     } else {
       print('Form not valid');

@@ -73,37 +73,46 @@ class _RegisterFormState extends State<RegisterForm> {
                         size: 35.0,
                       ),
                     ),
-                    validator: (value) => value.isEmpty
-                        ? 'Email ID is required'
-                        : {setState(() => email = value)})),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Email ID is required';
+                      }
+
+                      setState(() => email = value);
+                      return null;
+                    })),
             new ListTile(
               title: TextFormField(
-                obscureText: showPassword,
-                decoration: new InputDecoration(
-                  hintText: "Password",
-                  fillColor: Colors.white,
-                  filled: true,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      // Based on passwordVisible state choose the icon
-                      _passwordVisible
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Colors.teal[200], size: 35.0,
+                  obscureText: showPassword,
+                  decoration: new InputDecoration(
+                    hintText: "Password",
+                    fillColor: Colors.white,
+                    filled: true,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        _passwordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.teal[200], size: 35.0,
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible variable
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                          showPassword = !showPassword;
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      // Update the state i.e. toogle the state of passwordVisible variable
-                      setState(() {
-                        _passwordVisible = !_passwordVisible;
-                        showPassword = !showPassword;
-                      });
-                    },
                   ),
-                ),
-                validator: (value) => value.isEmpty
-                    ? 'Password is required'
-                    : {setState(() => password = value)},
-              ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Password is required';
+                    }
+
+                    setState(() => password = value);
+                    return null;
+                  }),
             ),
             new ListTile(
               title: TextFormField(
@@ -112,8 +121,8 @@ class _RegisterFormState extends State<RegisterForm> {
                   fillColor: Colors.white,
                   filled: true,
                 ),
-                validator: (String value) {
-                  if (value.trim().isEmpty) {
+                validator: (value) {
+                  if (value.isEmpty) {
                     return 'Confirm your Password';
                   } else if (password != value) {
                     return 'Password should be matched';
@@ -176,14 +185,17 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  void _submit() async{
+  void _submit() async {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
       print(email);
-      print(password);
+      print("Going to Register new user: " + email);
 
-      await _auth.registerWithEmailPassword(email, password);
+      dynamic result = await _auth.registerWithEmailPassword(email, password);
+      if (result == null) {
+        print("Unable to register USER");
+      }
     } else {
       print("Invalid form values");
     }

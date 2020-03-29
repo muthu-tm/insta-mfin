@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:instamfin/screens/authenticate.dart';
+import './../customer/profile.dart';
 import './../models/user.dart';
 
 class Wrapper extends StatelessWidget {
@@ -12,7 +13,7 @@ class Wrapper extends StatelessWidget {
         return Authenticate();
       } else {
         print("SIGNED IN");
-        return Authenticate(); 
+        return CustomerTransactionScreen(); 
       }
       // return either the Home or Authenticate screen
   }
