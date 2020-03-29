@@ -10,6 +10,11 @@ class AuthService {
     return User.fromJson(userMap);
   }
 
+  Stream<User> get user {
+    return _auth.onAuthStateChanged
+    .map((FirebaseUser user) => _userFromFirebaseUser(user.toString()));
+  }
+
   Future signInWithEmailPassword(String emailID, String passkey) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(

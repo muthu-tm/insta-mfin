@@ -10,7 +10,7 @@
                 
                 suffixIcon: Icon(
                   icon,
-                  color: Colors.blue[200],
+                  color: Colors.teal[200],
                   size: 35.0,
                 ),
               ),

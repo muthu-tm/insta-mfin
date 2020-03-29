@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/Common/CustomTextFormField.dart';
+import './../services/authenticate/auth.dart';
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({Key key}) : super(key: key);
+  const RegisterForm({this.toggleView});
+
+  final Function toggleView;
 
   @override
   _RegisterFormState createState() => _RegisterFormState();
@@ -10,7 +13,10 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String password = "";
+  final AuthService _auth = AuthService();
+
+  String email;
+  String password;
 
   bool _passwordVisible = false;
   bool showPassword = false;
@@ -19,17 +25,12 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[800],
+      backgroundColor: Colors.cyan[900],
       appBar: AppBar(
+        title: Text('Registration'),
+        backgroundColor: Colors.teal[900],
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomCenter,
-                  colors: <Color>[Colors.white, Colors.grey[700]])),
-        ),
       ),
       body: Form(
         key: _formKey,
@@ -47,7 +48,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   Icons.file_upload,
                   size: 50,
                 ),
-                foregroundColor: Colors.blue[200],
+                foregroundColor: Colors.teal[200],
               ),
             ),
             Padding(padding: EdgeInsets.all(10.0)),
@@ -60,9 +61,21 @@ class _RegisterFormState extends State<RegisterForm> {
                   Icons.phone, TextInputType.phone),
             ),
             new ListTile(
-              title: customTextFormField('Email', Colors.white, Icons.email,
-                  TextInputType.emailAddress),
-            ),
+                title: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      fillColor: Colors.white,
+                      filled: true,
+                      suffixIcon: Icon(
+                        Icons.mail,
+                        color: Colors.teal[200],
+                        size: 35.0,
+                      ),
+                    ),
+                    validator: (value) => value.isEmpty
+                        ? 'Email ID is required'
+                        : {setState(() => email = value)})),
             new ListTile(
               title: TextFormField(
                 obscureText: showPassword,
@@ -76,7 +89,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       _passwordVisible
                           ? Icons.visibility_off
                           : Icons.visibility,
-                      color: Colors.blue[200], size: 35.0,
+                      color: Colors.teal[200], size: 35.0,
                     ),
                     onPressed: () {
                       // Update the state i.e. toogle the state of passwordVisible variable
@@ -87,8 +100,9 @@ class _RegisterFormState extends State<RegisterForm> {
                     },
                   ),
                 ),
-                validator: (value) =>
-                    value.isEmpty ? 'Password is required' : password = value,
+                validator: (value) => value.isEmpty
+                    ? 'Password is required'
+                    : {setState(() => password = value)},
               ),
             ),
             new ListTile(
@@ -122,7 +136,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     'SIGN UP',
                     style: new TextStyle(
                         fontSize: 22.0,
-                        color: Colors.blue,
+                        color: Colors.teal[900],
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -132,22 +146,24 @@ class _RegisterFormState extends State<RegisterForm> {
               children: <Widget>[
                 new Container(
                   child: const Text(
-                    'Already have an account ?',
+                    ' Already have an account? ',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
+                      fontSize: 20,
+                      color: Colors.black87,
                     ),
                   ),
                 ),
                 FlatButton(
                   padding: const EdgeInsets.all(20.0),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/home');
+                  onPressed: () => {
+                    // Navigator.pushNamed(context, '/home');
+                    widget.toggleView(),
                   },
                   child: const Text(
                     'LOGIN',
                     style: TextStyle(
                       fontSize: 22,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
@@ -160,8 +176,16 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  void _submit() {
-    _formKey.currentState.validate();
-    print('Form submitted');
+  void _submit() async{
+    final FormState form = _formKey.currentState;
+
+    if (form.validate()) {
+      print(email);
+      print(password);
+
+      await _auth.registerWithEmailPassword(email, password);
+    } else {
+      print("Invalid form values");
+    }
   }
 }
