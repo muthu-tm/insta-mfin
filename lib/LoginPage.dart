@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/SignupPage.dart';
-
-import 'TextFormField.dart';
+import 'package:instamfin/Common/CustomTextFormField.dart';
 
 class LoginController extends StatefulWidget {
   const LoginController({Key key}) : super(key: key);
@@ -43,7 +41,7 @@ class _LoginControllerState extends State<LoginController> {
           Padding(padding: EdgeInsets.all(10.0)),
           Container(
             padding: EdgeInsets.all(10),
-            child: CutomTextField('Email',Colors.white,Icons.mail,TextInputType.emailAddress),
+            child: customTextFormField('Email',Colors.white,Icons.mail,TextInputType.emailAddress),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -100,7 +98,7 @@ class _LoginControllerState extends State<LoginController> {
             children: <Widget>[
               FlatButton(
                 onPressed: () {
-                  RegisterForm();
+                              Navigator.pushNamed(context, '/register');
                 },
                 textColor: Colors.blue,
                 child: new RichText(
@@ -134,7 +132,12 @@ class _LoginControllerState extends State<LoginController> {
   }
 
   void _submit() {
-    _formKey.currentState.validate();
-    print('Form submitted');
+    if(_formKey.currentState.validate()){
+      print('Form submitted');
+                                    Navigator.pushNamed(context, '/customer');
+    }else{
+      print('Form not valit');
+
+    }
   }
 }

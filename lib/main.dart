@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/Customer/AddCustomerPage.dart';
 import 'package:instamfin/LoginPage.dart';
 import 'package:instamfin/SignupPage.dart';
 
@@ -13,11 +14,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // Define the default brightness and colors.
         brightness: Brightness.light,
-        primaryColor: Colors.white,
-        accentColor: Colors.white,
         // Define the default font family.
         fontFamily: 'Georgia',
-        iconTheme: new IconThemeData(color: Colors.blue[200], size: 50.0),
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
@@ -27,8 +25,13 @@ class MyApp extends StatelessWidget {
               fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
         ),
       ),
-      home: MyHomePage(title: ''),
-      color: Colors.blue[600],
+home: MyHomePage(title: ''),
+    routes: {
+      // When navigating to the "/" route, build the FirstScreen widget.
+      // When navigating to the "/second" route, build the SecondScreen widget.
+      '/home': (context) => MyHomePage(title: ''),
+      '/register': (context) => RegisterForm(),
+      '/customer': (context) => AddCustomerScreen(),    },
     );
   }
 }
@@ -66,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
-        flexibleSpace: Container(
+      flexibleSpace: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topLeft,

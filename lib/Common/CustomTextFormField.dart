@@ -1,6 +1,6 @@
     import 'package:flutter/material.dart';
 
-    Widget CutomTextField(hintText,bodyColor,icon,type) {
+    Widget customTextFormField(hintText,bodyColor,icon,type) {
       return TextFormField(
               keyboardType: type,
               decoration: InputDecoration(
