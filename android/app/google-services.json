@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "947788859831",
+    "firebase_url": "https://insta-mfin-test.firebaseio.com",
+    "project_id": "insta-mfin-test",
+    "storage_bucket": "insta-mfin-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947788859831:android:d2239fa77176be76af8032",
+        "android_client_info": {
+          "package_name": "com.mfin.insta_mfin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947788859831-ndn5hpan31872sc41fq8dl0v6rt151m5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqazLCnGzyq5unR6kb4mrcgvOMJOOzRCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947788859831-ndn5hpan31872sc41fq8dl0v6rt151m5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
