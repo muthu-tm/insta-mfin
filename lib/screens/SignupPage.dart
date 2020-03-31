@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/Common/CustomTextFormField.dart';
-import './../services/authenticate/auth.dart';
+import './../services/controllers/auth_controller.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({this.toggleView});
@@ -13,10 +13,12 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AuthService _auth = AuthService();
+  AuthController _authController = AuthController();
 
   String email;
   String password;
+  String name;
+  String mobileNumber;
 
   bool _passwordVisible = false;
   bool showPassword = false;
@@ -53,13 +55,47 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
             Padding(padding: EdgeInsets.all(10.0)),
             new ListTile(
-              title: customTextFormField('Name', Colors.white,
-                  Icons.sentiment_satisfied, TextInputType.text),
-            ),
+                title: TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: 'Name',
+                      fillColor: Colors.white,
+                      filled: true,
+                      suffixIcon: Icon(
+                        Icons.sentiment_satisfied,
+                        color: Colors.teal[200],
+                        size: 35.0,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Name is required';
+                      }
+
+                      setState(() => name = value);
+                      return null;
+                    })),
             new ListTile(
-              title: customTextFormField('Mobile Number', Colors.white,
-                  Icons.phone, TextInputType.phone),
-            ),
+                title: TextFormField(
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      hintText: 'Mobile Number',
+                      fillColor: Colors.white,
+                      filled: true,
+                      suffixIcon: Icon(
+                        Icons.phone,
+                        color: Colors.teal[200],
+                        size: 35.0,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Mobile Number is required';
+                      }
+
+                      setState(() => mobileNumber = value);
+                      return null;
+                    })),
             new ListTile(
                 title: TextFormField(
                     keyboardType: TextInputType.emailAddress,
@@ -192,9 +228,12 @@ class _RegisterFormState extends State<RegisterForm> {
       print(email);
       print("Going to Register new user: " + email);
 
-      dynamic result = await _auth.registerWithEmailPassword(email, password);
+      dynamic result =
+          await _authController.registerUserWithEmailPassword(email, password, name, mobileNumber);
       if (result == null) {
         print("Unable to register USER");
+      } else {
+        print("Successfully registered the user");
       }
     } else {
       print("Invalid form values");

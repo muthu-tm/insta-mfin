@@ -1,11 +1,17 @@
 import 'package:instamfin/models/address.dart';
+import 'package:instamfin/models/model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'gender_enum.dart';
 part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class User {
+class User extends Model {
+  
+  static CollectionReference _userCollRef = Model.db.collection("user");
+
+  String id;
   String email;
   String name;
   int mobileNumber;
@@ -14,15 +20,13 @@ class User {
   String dateOfBirth;
   Address address;
 
-  User(String email, String name, int mobileNumber, String password, Gender gender, String dateOfBirth, Address address) {
+  User(id, email) {
+    this.id = id;
     this.email = email;
-    this.name = name;
-    this.mobileNumber = mobileNumber;
-    this.password = password;
-    this.address = address;
+  }
 
-    setGender(gender);
-    formatDOB(dateOfBirth);
+  setPassword(String password) {
+    this.password = password;
   }
 
   setGender(Gender val) {
@@ -36,11 +40,41 @@ class User {
     }
   }
 
-  formatDOB(date) {
+  setName(String name) {
+    this.name = name;
+  }
+
+  setMobileNumber(int number) {
+    this.mobileNumber = number;
+  }
+
+  setDOB(date) {
     var formatter = new DateFormat('dd-MM-yyyy');
     this.dateOfBirth = formatter.format(date);
   }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  CollectionReference getCollectionRef() {
+    return _userCollRef;
+  }
+
+  create() async {
+    var data = {
+      'id': this.id,
+      'email': this.email,
+      'password': this.password,
+      'user_name': this.name,
+      'mobile_number': this.mobileNumber,
+      'gender': this.gender,
+      'date_of_birth': this.dateOfBirth,
+      'address': this.address
+    };
+
+    dynamic result = await super.add(data);
+    print(result);
+
+  }
+
 }
