@@ -14,7 +14,7 @@ class AuthService {
 
   Stream<User> get user {
     return _auth.onAuthStateChanged
-    .map((FirebaseUser user) => _userFromFirebaseUser(user.toString()));
+        .map((FirebaseUser user) => _userFromFirebaseUser(user.toString()));
   }
 
   // Future<FirebaseUser> googleSignIn() async {
@@ -36,10 +36,17 @@ class AuthService {
           email: emailID, password: passkey);
       FirebaseUser user = result.user;
 
-      return _userFromFirebaseUser(user.toString());
+      return {
+        "email": user.email,
+        "provider_id": user.providerId,
+        "id": user.uid,
+        "is_email_verified": user.isEmailVerified,
+        "created_at": user.metadata.creationTime,
+        "last_signed_in_at": user.metadata.lastSignInTime
+      };
     } catch (err) {
       print(err.toString());
-      return null;
+      throw err;
     }
   }
 
@@ -47,11 +54,11 @@ class AuthService {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: emailID, password: passkey);
-      
+
       FirebaseUser user = result.user;
       print("Newly registered USER id: " + user.uid);
 
-      var userData = {
+      return {
         "email": user.email,
         "provider_id": user.providerId,
         "id": user.uid,
@@ -60,8 +67,6 @@ class AuthService {
         "created_at": user.metadata.creationTime,
         "last_signed_in_at": user.metadata.lastSignInTime
       };
-
-      return userData;
     } catch (err) {
       print(err.toString());
       throw err;
@@ -73,7 +78,7 @@ class AuthService {
       return await _auth.signOut();
     } catch (err) {
       print(err.toString());
-      return null;
+      throw err;
     }
   }
 }
