@@ -32,7 +32,11 @@ class _LoginControllerState extends State<LoginController> {
         title: Text('Login'),
         backgroundColor: Colors.teal[900],
       ),
-      body: Form(
+      body: new Container(
+  child: new SingleChildScrollView(
+    child: new Column(
+      children: <Widget>[
+        Form(
         key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -97,7 +101,7 @@ class _LoginControllerState extends State<LoginController> {
                   ),
                   validator: (passkey) => FieldValidator.passwordValidator(passkey, setPassKey)),
             ),
-            Padding(padding: EdgeInsets.all(15.0)),
+            Padding(padding: EdgeInsets.all(20.0)),
             new InkWell(
                 onTap: _submit,
                 child: new Container(
@@ -153,6 +157,10 @@ class _LoginControllerState extends State<LoginController> {
             ))
           ],
         ),
+      ),
+      ],
+  ),
+      ),
       ),
     );
   }

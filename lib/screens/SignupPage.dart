@@ -35,7 +35,11 @@ class _RegisterFormState extends State<RegisterForm> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
       ),
-      body: Form(
+      body: new Container(
+  child: new SingleChildScrollView(
+    child: new Column(
+      children: <Widget>[
+        Form(
         key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -202,6 +206,10 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           ],
         ),
+      ),
+      ],
+    ),
+  ),
       ),
     );
   }
