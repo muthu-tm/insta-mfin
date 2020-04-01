@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './../services/authenticate/auth.dart';
+import 'package:instamfin/services/controllers/auth_controller.dart';
 
 class LoginController extends StatefulWidget {
   const LoginController({this.toggleView});
@@ -14,7 +14,7 @@ class _LoginControllerState extends State<LoginController> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final AuthService _auth = AuthService();
+  final AuthController _authController = AuthController();
 
   String email;
   String password;
@@ -178,11 +178,13 @@ class _LoginControllerState extends State<LoginController> {
     if (form.validate()) {
       print('Form submitted');
 
-      dynamic result = await _auth.signInWithEmailPassword(email, password);
-      if (result == null) {
-        print("Unable to register USER");
+      dynamic result = await _authController.signInWithEmailPassword(email, password);
+      if (!result['is_logged_in']) {
+        print("Unable to register USER: " + result['error_code']);
+      } else {
+        print("User logged in successfully");
+        // Navigator.pushNamed(context, '/customer');
       }
-      // Navigator.pushNamed(context, '/customer');
     } else {
       print('Form not valid');
     }

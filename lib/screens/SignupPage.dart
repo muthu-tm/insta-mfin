@@ -230,7 +230,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
       dynamic result =
           await _authController.registerUserWithEmailPassword(email, password, name, mobileNumber);
-      if (result['is_registered'] == false) {
+      if (!result['is_registered']) {
         print("Unable to register USER: " + result['error_code']);
       } else {
         print("Successfully registered the user");

@@ -18,6 +18,7 @@ class User extends Model {
   String password;
   String gender;
   String dateOfBirth;
+  DateTime lastSignInTime;
   Address address;
 
   User(id, email) {
@@ -53,6 +54,10 @@ class User extends Model {
     this.dateOfBirth = formatter.format(date);
   }
 
+  setLastSignInTime(dateTime) {
+    this.lastSignInTime = dateTime;
+  }
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
@@ -69,6 +74,7 @@ class User extends Model {
       'mobile_number': this.mobileNumber,
       'gender': this.gender,
       'date_of_birth': this.dateOfBirth,
+      'last_signed_in_at': this.lastSignInTime,
       'address': this.address
     };
 

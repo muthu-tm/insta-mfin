@@ -14,6 +14,7 @@ class AuthController {
       user.setPassword(passkey);
       user.setName(userName);
       user.setMobileNumber(int.parse(mobileNumber));
+      user.setLastSignInTime(userObj['last_signed_in_at']);
 
       //Create an user document in User collection
       await user.create();
@@ -37,12 +38,15 @@ class AuthController {
       var userObj =
           await _authService.signInWithEmailPassword(emailID, passkey);
 
+      User user = User(userObj['id'], userObj['email']);
+      user.update(
+          userObj['id'], {'last_signed_in_at': userObj['last_signed_in_at']});
+
       return {
         'is_logged_in': true,
         "error_code": 0,
         'message': {
           'id': userObj['id'],
-          'name': userObj['id'],
           'email': userObj['email'],
           "is_email_verified": userObj['is_email_verified'],
           "created_at": userObj['created_at']

@@ -31,7 +31,7 @@ class Model {
   }
 
   update(id, data) async {
-    data.updated_at = DateTime.now();
+    data['updated_at'] = DateTime.now();
     await this.getDocumentRef(id).updateData(data);
 
     return data;
