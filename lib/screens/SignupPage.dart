@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/Common/CustomTextFormField.dart';
+import 'package:instamfin/screens/common/validator.dart';
 import './../services/controllers/auth_controller.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -69,7 +70,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Name is required';
+                        return 'Please enter your Name';
                       }
 
                       setState(() => name = value);
@@ -88,14 +89,8 @@ class _RegisterFormState extends State<RegisterForm> {
                         size: 35.0,
                       ),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Mobile Number is required';
-                      }
-
-                      setState(() => mobileNumber = value);
-                      return null;
-                    })),
+                    validator: (mobileNumber) => FieldValidator.mobileValidator(
+                        mobileNumber, setMobileNumber))),
             new ListTile(
                 title: TextFormField(
                     keyboardType: TextInputType.emailAddress,
@@ -109,49 +104,37 @@ class _RegisterFormState extends State<RegisterForm> {
                         size: 35.0,
                       ),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Email ID is required';
-                      }
-
-                      setState(() => email = value);
-                      return null;
-                    })),
+                    validator: (emailID) => FieldValidator.emailValidator(
+                        emailID, this.setEmailID))),
             new ListTile(
-              title: TextFormField(
-                  obscureText: showPassword,
-                  decoration: new InputDecoration(
-                    hintText: "Password",
-                    fillColor: Colors.white,
-                    filled: true,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        _passwordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: Colors.teal[200], size: 35.0,
+                title: TextFormField(
+                    obscureText: showPassword,
+                    decoration: new InputDecoration(
+                      hintText: "Password",
+                      fillColor: Colors.white,
+                      filled: true,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _passwordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.teal[200], size: 35.0,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                            showPassword = !showPassword;
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        // Update the state i.e. toogle the state of passwordVisible variable
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                          showPassword = !showPassword;
-                        });
-                      },
                     ),
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Password is required';
-                    }
-
-                    setState(() => password = value);
-                    return null;
-                  }),
-            ),
+                    validator: (passkey) => FieldValidator.passwordValidator(
+                        passkey, setPassKey))),
             new ListTile(
               title: TextFormField(
+                obscureText: true,
                 decoration: new InputDecoration(
                   hintText: "Confirm Password",
                   fillColor: Colors.white,
@@ -187,11 +170,12 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
               ),
             ),
+            Padding(padding: EdgeInsets.all(10.0)),
             Row(
               children: <Widget>[
                 new Container(
                   child: const Text(
-                    ' Already have an account? ',
+                    ' Already have an account?',
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.black87,
@@ -214,11 +198,30 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
               ],
+              mainAxisAlignment: MainAxisAlignment.end,
             ),
           ],
         ),
       ),
     );
+  }
+
+  setMobileNumber(number) {
+    setState(() {
+      this.mobileNumber = number;
+    });
+  }
+
+  setEmailID(String emailID) {
+    setState(() {
+      this.email = emailID;
+    });
+  }
+
+  setPassKey(String passkey) {
+    setState(() {
+      this.password = passkey;
+    });
   }
 
   void _submit() async {
@@ -228,8 +231,8 @@ class _RegisterFormState extends State<RegisterForm> {
       print(email);
       print("Going to Register new user: " + email);
 
-      dynamic result =
-          await _authController.registerUserWithEmailPassword(email, password, name, mobileNumber);
+      dynamic result = await _authController.registerUserWithEmailPassword(
+          email, password, name, mobileNumber);
       if (!result['is_registered']) {
         print("Unable to register USER: " + result['error_code']);
       } else {

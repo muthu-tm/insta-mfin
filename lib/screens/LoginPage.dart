@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/common/validator.dart';
 import 'package:instamfin/services/controllers/auth_controller.dart';
 
 class LoginController extends StatefulWidget {
@@ -36,7 +37,6 @@ class _LoginControllerState extends State<LoginController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Padding(padding: EdgeInsets.all(20.0)),
             new Container(
               height: 100.0,
               width: 100.0,
@@ -53,7 +53,7 @@ class _LoginControllerState extends State<LoginController> {
             ),
             Padding(padding: EdgeInsets.all(10.0)),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -66,14 +66,8 @@ class _LoginControllerState extends State<LoginController> {
                       size: 35.0,
                     ),
                   ),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Email ID is required';
-                    }
-
-                    setState(() => email = value);
-                    return null;
-                  }),
+                  validator: (emailID) =>
+                      FieldValidator.emailValidator(emailID, setEmailID)),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -101,16 +95,9 @@ class _LoginControllerState extends State<LoginController> {
                       },
                     ),
                   ),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Password is required';
-                    }
-
-                    setState(() => password = value);
-                    return null;
-                  }),
+                  validator: (passkey) => FieldValidator.passwordValidator(passkey, setPassKey)),
             ),
-            Padding(padding: EdgeInsets.all(30.0)),
+            Padding(padding: EdgeInsets.all(15.0)),
             new InkWell(
                 onTap: _submit,
                 child: new Container(
@@ -137,17 +124,15 @@ class _LoginControllerState extends State<LoginController> {
               children: <Widget>[
                 FlatButton(
                   onPressed: () => {
-                    // Navigator.pushNamed(context, '/register');
                     widget.toggleView(),
                   },
-                  // textColor: Colors.blue,
                   child: new RichText(
                     text: new TextSpan(
                       // Note: Styles for TextSpans must be explicitly defined.
                       // Child text spans will inherit styles from parent
                       style: new TextStyle(
                         fontSize: 22.0,
-                        color: Colors.red[700],
+                        color: Colors.black87,
                       ),
                       children: <TextSpan>[
                         new TextSpan(text: "Don't have an account?  "),
@@ -164,12 +149,24 @@ class _LoginControllerState extends State<LoginController> {
                   ),
                 ),
               ],
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
             ))
           ],
         ),
       ),
     );
+  }
+
+  setEmailID(String emailID) {
+    setState(() {
+      this.email = emailID;
+    });
+  }
+
+  setPassKey(String passkey) {
+    setState(() {
+      this.password = passkey;
+    });
   }
 
   void _submit() async {
@@ -178,7 +175,8 @@ class _LoginControllerState extends State<LoginController> {
     if (form.validate()) {
       print('Form submitted');
 
-      dynamic result = await _authController.signInWithEmailPassword(email, password);
+      dynamic result =
+          await _authController.signInWithEmailPassword(email, password);
       if (!result['is_logged_in']) {
         print("Unable to register USER: " + result['error_code']);
       } else {
