@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/AppMain/appBar.dart';
 import 'package:instamfin/AppMain/bottomBar.dart';
 import 'package:instamfin/Common/IconButton.dart';
+import 'package:instamfin/screens/common/colors.dart';
 
 class SettingMain extends StatefulWidget {
   const SettingMain({this.toggleView});
@@ -27,9 +28,10 @@ class _SettingMainState extends State<SettingMain> {
       body: new Container(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new Card(
-              color: Colors.grey[300],
+              color: CustomColors.mfinGrey,
               child: Row(
                 mainAxisAlignment:
                     MainAxisAlignment.start, //change here don't //worked
@@ -45,12 +47,12 @@ class _SettingMainState extends State<SettingMain> {
                     ],
                   ),
                   new Spacer(),
-                  customIconButton(Icons.navigate_next, 35.0),
+                  customIconButton(Icons.navigate_next, 35.0, CustomColors.mfinBlue),
                 ],
               ),
             ),
             new Card(
-              color: Colors.grey[300],
+              color: CustomColors.mfinGrey,
               child: Row(
                 mainAxisAlignment:
                     MainAxisAlignment.start, //change here don't //worked
@@ -65,12 +67,12 @@ class _SettingMainState extends State<SettingMain> {
                     ],
                   ),
                   new Spacer(),
-                  customIconButton(Icons.navigate_next, 35.0),
+                  customIconButton(Icons.navigate_next, 35.0, CustomColors.mfinBlue),
                 ],
               ),
             ),
             new Card(
-              color: Colors.grey[300],
+              color: CustomColors.mfinGrey,
               child: Row(
                 mainAxisAlignment:
                     MainAxisAlignment.start, //change here don't //worked
@@ -85,12 +87,12 @@ class _SettingMainState extends State<SettingMain> {
                     ],
                   ),
                   new Spacer(),
-                  customIconButton(Icons.navigate_next, 35.0),
+                  customIconButton(Icons.navigate_next, 35.0, CustomColors.mfinBlue),
                 ],
               ),
             ),
             new Card(
-              color: Colors.grey[300],
+              color: CustomColors.mfinGrey,
               child: Row(
                 mainAxisAlignment:
                     MainAxisAlignment.start, //change here don't //worked
@@ -110,7 +112,7 @@ class _SettingMainState extends State<SettingMain> {
               ),
             ),
             new Card(
-              color: Colors.grey[300],
+              color: CustomColors.mfinGrey,
               child: Row(
                 mainAxisAlignment:
                     MainAxisAlignment.start, //change here don't //worked

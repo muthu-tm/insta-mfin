@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/Common/CustomTextFormField.dart';
+import 'package:instamfin/screens/common/colors.dart';
 import 'package:instamfin/screens/common/validator.dart';
 import './../services/controllers/auth_controller.dart';
 
@@ -28,10 +28,10 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan[900],
+      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Registration'),
-        backgroundColor: Colors.teal[900],
+        backgroundColor: CustomColors.mfinBlue,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
       ),
@@ -50,12 +50,12 @@ class _RegisterFormState extends State<RegisterForm> {
               padding: new EdgeInsets.only(top: 5.0),
               child: FloatingActionButton(
                 onPressed: null,
-                backgroundColor: Colors.white,
+                backgroundColor: CustomColors.mfinWhite,
                 child: new Icon(
                   Icons.file_upload,
                   size: 50,
                 ),
-                foregroundColor: Colors.teal[200],
+                foregroundColor: CustomColors.mfinFadedButtonGreen,
               ),
             ),
             Padding(padding: EdgeInsets.all(10.0)),
@@ -64,11 +64,11 @@ class _RegisterFormState extends State<RegisterForm> {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       hintText: 'Name',
-                      fillColor: Colors.white,
+                      fillColor: CustomColors.mfinWhite,
                       filled: true,
                       suffixIcon: Icon(
                         Icons.sentiment_satisfied,
-                        color: Colors.teal[200],
+                        color: CustomColors.mfinFadedButtonGreen,
                         size: 35.0,
                       ),
                     ),
@@ -85,11 +85,11 @@ class _RegisterFormState extends State<RegisterForm> {
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       hintText: 'Mobile Number',
-                      fillColor: Colors.white,
+                      fillColor: CustomColors.mfinWhite,
                       filled: true,
                       suffixIcon: Icon(
                         Icons.phone,
-                        color: Colors.teal[200],
+                        color: CustomColors.mfinFadedButtonGreen,
                         size: 35.0,
                       ),
                     ),
@@ -100,11 +100,11 @@ class _RegisterFormState extends State<RegisterForm> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       hintText: 'Email',
-                      fillColor: Colors.white,
+                      fillColor: CustomColors.mfinWhite,
                       filled: true,
                       suffixIcon: Icon(
                         Icons.mail,
-                        color: Colors.teal[200],
+                        color: CustomColors.mfinFadedButtonGreen,
                         size: 35.0,
                       ),
                     ),
@@ -115,7 +115,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     obscureText: showPassword,
                     decoration: new InputDecoration(
                       hintText: "Password",
-                      fillColor: Colors.white,
+                      fillColor: CustomColors.mfinWhite,
                       filled: true,
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -123,7 +123,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           _passwordVisible
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: Colors.teal[200], size: 35.0,
+                          color: CustomColors.mfinFadedButtonGreen, size: 35.0,
                         ),
                         onPressed: () {
                           // Update the state i.e. toogle the state of passwordVisible variable
@@ -141,7 +141,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 obscureText: true,
                 decoration: new InputDecoration(
                   hintText: "Confirm Password",
-                  fillColor: Colors.white,
+                  fillColor: CustomColors.mfinWhite,
                   filled: true,
                 ),
                 validator: (value) {
@@ -160,7 +160,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 width: 200.0,
                 height: 50.0,
                 decoration: new BoxDecoration(
-                  color: Colors.white,
+                  color: CustomColors.mfinBlue,
                   borderRadius: new BorderRadius.circular(10.0),
                 ),
                 child: new Center(
@@ -168,7 +168,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     'SIGN UP',
                     style: new TextStyle(
                         fontSize: 22.0,
-                        color: Colors.teal[900],
+                        color: CustomColors.mfinButtonGreen,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -182,7 +182,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     ' Already have an account?',
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.black87,
+                      color: CustomColors.mfinWhite,
                     ),
                   ),
                 ),
@@ -197,7 +197,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: CustomColors.mfinBlue,
                     ),
                   ),
                 ),
