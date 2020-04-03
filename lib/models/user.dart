@@ -10,15 +10,24 @@ part 'user.g.dart';
 class User extends Model {
   
   static CollectionReference _userCollRef = Model.db.collection("user");
-
+  
+  @JsonKey(name: 'id', nullable: false)
   String id;
+  @JsonKey(name: 'email', nullable: true)
   String email;
+  @JsonKey(name: 'user_name', nullable: true)
   String name;
+  @JsonKey(name: 'mobile_number', nullable: true)
   int mobileNumber;
+  @JsonKey(name: 'password', nullable: true)
   String password;
+  @JsonKey(name: 'gender', nullable: true)
   String gender;
+  @JsonKey(name: 'date_of_birth', nullable: true)
   String dateOfBirth;
+  @JsonKey(name: 'last_signed_in_at', nullable: true)
   DateTime lastSignInTime;
+  @JsonKey(name: 'address', nullable: true)
   Address address;
 
   User(id, email) {
@@ -54,7 +63,7 @@ class User extends Model {
     this.dateOfBirth = formatter.format(date);
   }
 
-  setLastSignInTime(dateTime) {
+  setLastSignInTime(DateTime dateTime) {
     this.lastSignInTime = dateTime;
   }
 
@@ -66,21 +75,8 @@ class User extends Model {
   }
 
   create() async {
-    var data = {
-      'id': this.id,
-      'email': this.email,
-      'password': this.password,
-      'user_name': this.name,
-      'mobile_number': this.mobileNumber,
-      'gender': this.gender,
-      'date_of_birth': this.dateOfBirth,
-      'last_signed_in_at': this.lastSignInTime,
-      'address': this.address
-    };
-
-    dynamic result = await super.add(data);
+    dynamic result = await super.add(this.toJson());
     print(result);
-
   }
 
 }
