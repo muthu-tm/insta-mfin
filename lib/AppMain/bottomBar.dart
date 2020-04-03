@@ -9,8 +9,9 @@ import 'package:instamfin/screens/common/colors.dart';
         color: CustomColors.mfinGrey,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-                customIconButton(Icons.supervisor_account,55.0, CustomColors.mfinBlue),Spacer(),
+                customIconButton(Icons.supervisor_account,50.0, CustomColors.mfinBlue),Spacer(),
                 customIconButton(Icons.date_range,50.0, CustomColors.mfinBlue),Spacer(),
                 customIconButton(Icons.assessment,50.0, CustomColors.mfinBlue),Spacer(),
                 customIconButton(Icons.content_copy,50.0, CustomColors.mfinBlue),Spacer(),
