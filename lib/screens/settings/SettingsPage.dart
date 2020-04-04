@@ -14,127 +14,134 @@ class SettingMain extends StatefulWidget {
 }
 
 class _SettingMainState extends State<SettingMain> {
-  bool _value1 = false;
-  bool _value2 = false;
-
-  void _onChanged1(bool value) => setState(() => _value1 = value);
-  void _onChanged2(bool value) => setState(() => _value2 = value);
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: topAppBar(),
       //hit Ctrl+space in intellij to know what are the options you can use in flutter widgets
       body: new Container(
+        height: MediaQuery.of(context).size.height * 0.80,
+        color: CustomColors.mfinWhite,
         child: new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            new Card(
-              color: CustomColors.mfinGrey,
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.start, //change here don't //worked
-                crossAxisAlignment: CrossAxisAlignment.center,
-
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            new Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceEvenly, //change here don't //worked
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                InkWell(
+                  splashColor: CustomColors.mfinButtonGreen, // splash color
+                  onTap: () {}, // button pressed
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
+                      customIconButton(
+                          Icons.domain, 35.0, CustomColors.mfinBlue),
                       Text(
                         "Company Settings",
-                      ),
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: CustomColors.mfinGrey,
+                        ),
+                      ), // text
                     ],
                   ),
-                  new Spacer(),
-                  customIconButton(Icons.navigate_next, 35.0, CustomColors.mfinBlue),
-                ],
-              ),
-            ),
-            new Card(
-              color: CustomColors.mfinGrey,
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.start, //change here don't //worked
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                InkWell(
+                  splashColor: CustomColors.mfinButtonGreen, // splash color
+                  onTap: () {}, // button pressed
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
+                      customIconButton(
+                          Icons.account_circle, 35.0, CustomColors.mfinBlue),
                       Text(
                         "User Profile Settings",
-                      ),
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: CustomColors.mfinGrey,
+                        ),
+                      ), // text
                     ],
                   ),
-                  new Spacer(),
-                  customIconButton(Icons.navigate_next, 35.0, CustomColors.mfinBlue),
-                ],
-              ),
+                ),
+              ],
             ),
-            new Card(
-              color: CustomColors.mfinGrey,
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.start, //change here don't //worked
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceEvenly, //change here don't //worked
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: <Widget>[
+                InkWell(
+                  splashColor: CustomColors.mfinButtonGreen, // splash color
+                  onTap: () {}, // button pressed
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
+                      customIconButton(Icons.notifications_active, 35.0,
+                          CustomColors.mfinBlue),
                       Text(
                         "Notification Settings",
-                      ),
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: CustomColors.mfinGrey,
+                        ),
+                      ), // text
                     ],
                   ),
-                  new Spacer(),
-                  customIconButton(Icons.navigate_next, 35.0, CustomColors.mfinBlue),
-                ],
-              ),
-            ),
-            new Card(
-              color: CustomColors.mfinGrey,
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.start, //change here don't //worked
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                InkWell(
+                  splashColor: CustomColors.mfinButtonGreen, // splash color
+                  onTap: () {}, // button pressed
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
+                      customIconButton(
+                          Icons.fingerprint, 35.0, CustomColors.mfinBlue),
+                      Text(
+                        "Finger Print Login",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: CustomColors.mfinGrey,
+                        ),
+                      ), // text
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceEvenly, //change here don't //worked
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: <Widget>[
+                InkWell(
+                  onTap: () {}, // button pressed
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      customIconButton(
+                          Icons.style, 35.0, CustomColors.mfinBlue),
                       Text(
                         "Dark Theme",
-                      ),
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: CustomColors.mfinGrey,
+                        ),
+                      ), // text
                     ],
                   ),
-                  new Spacer(),
-                  new Switch(value: _value1, onChanged: _onChanged1),
-                ],
-              ),
-            ),
-            new Card(
-              color: CustomColors.mfinGrey,
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.start, //change here don't //worked
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Fingerprint Login",
-                      ),
-                    ],
-                  ),
-                  new Spacer(),
-                  new Switch(value: _value2, onChanged: _onChanged2),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
       ),
-      bottomSheet: bottomBar(),
+      bottomSheet: bottomBar(context),
     );
   }
 }

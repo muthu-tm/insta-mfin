@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/Common/IconButton.dart';
 import 'package:instamfin/screens/common/colors.dart';
 
-Widget bottomBar() {
+Widget bottomBar(BuildContext context) {
   return Container(
-    width: double.infinity,
-    height: 90.0,
+    height: MediaQuery.of(context).size.height * 0.10,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         SizedBox.fromSize(
-          size: Size(82, 100), // button width and height
+          size: Size(screenWidth(context, dividedBy: 4), 100),
           child: Material(
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
@@ -21,41 +20,21 @@ Widget bottomBar() {
                 children: <Widget>[
                   customIconButton(Icons.supervisor_account, 40.0,
                       CustomColors.mfinButtonGreen),
-                  Text("Account",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: CustomColors.mfinFadedButtonGreen,
+                  Text(
+                    "Account",
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: CustomColors.mfinGrey,
                     ),
-                   ), // text
+                  ), // text
                 ],
               ),
             ),
           ),
         ),
         SizedBox.fromSize(
-          size: Size(82.5, 100), // button width and height
-          child: Material(
-            color: CustomColors.mfinBlue, // button color
-            child: InkWell(
-              splashColor: CustomColors.mfinButtonGreen, // splash color
-              onTap: () {}, // button pressed
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  customIconButton(
-                      Icons.date_range, 35.0, CustomColors.mfinButtonGreen),
-                  Text("Report", 
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: CustomColors.mfinFadedButtonGreen,
-                    ),), // text
-                ],
-              ),
-            ),
-          ),
-        ),
-        SizedBox.fromSize(
-          size: Size(82, 100), // button width and height
+          size: Size(screenWidth(context, dividedBy: 4),
+              100), // button width and height
           child: Material(
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
@@ -66,18 +45,20 @@ Widget bottomBar() {
                 children: <Widget>[
                   customIconButton(
                       Icons.assessment, 35.0, CustomColors.mfinButtonGreen),
-                  Text("Notification", 
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: CustomColors.mfinFadedButtonGreen,
-                    ),), // text
+                  Text(
+                    "Statistics",
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: CustomColors.mfinGrey,
+                    ),
+                  ), // text
                 ],
               ),
             ),
           ),
         ),
         SizedBox.fromSize(
-          size: Size(82, 100), // button width and height
+          size: Size(screenWidth(context, dividedBy: 4), 100),
           child: Material(
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
@@ -88,18 +69,20 @@ Widget bottomBar() {
                 children: <Widget>[
                   customIconButton(
                       Icons.content_copy, 35.0, CustomColors.mfinButtonGreen),
-                  Text("Content", 
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: CustomColors.mfinFadedButtonGreen,
-                    ),), // text
+                  Text(
+                    "Transactions",
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: CustomColors.mfinGrey,
+                    ),
+                  ), // text
                 ],
               ),
             ),
           ),
         ),
         SizedBox.fromSize(
-          size: Size(82.9, 100), // button width and height
+          size: Size(screenWidth(context, dividedBy: 4), 100),
           child: Material(
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
@@ -110,11 +93,13 @@ Widget bottomBar() {
                 children: <Widget>[
                   customIconButton(
                       Icons.settings, 35.0, CustomColors.mfinButtonGreen),
-                  Text("Settings",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: CustomColors.mfinFadedButtonGreen,
-                    ),), // text
+                  Text(
+                    "Settings",
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: CustomColors.mfinGrey,
+                    ),
+                  ), // text
                 ],
               ),
             ),
@@ -123,4 +108,16 @@ Widget bottomBar() {
       ],
     ),
   );
+}
+
+double screenWidth(BuildContext context, {double dividedBy = 1}) {
+  return screenSize(context).width / dividedBy;
+}
+
+Size screenSize(BuildContext context) {
+  return MediaQuery.of(context).size;
+}
+
+double screenHeight(BuildContext context, {double dividedBy = 1}) {
+  return screenSize(context).height / dividedBy;
 }
