@@ -21,7 +21,6 @@ class _SettingMainState extends State<SettingMain> {
       //hit Ctrl+space in intellij to know what are the options you can use in flutter widgets
       body: new Container(
         height: MediaQuery.of(context).size.height * 0.80,
-        color: CustomColors.mfinWhite,
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,11 +37,12 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.domain, 45.0, CustomColors.mfinBlue),
+                          Icons.account_balance, 50.0, CustomColors.mfinBlue),
+                      Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Company Settings",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 17,
                           color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -57,11 +57,12 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.person, 45.0, CustomColors.mfinBlue),
+                          Icons.account_box, 50.0, CustomColors.mfinBlue),
+                      Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Profile Settings",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 17,
                           color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -83,12 +84,13 @@ class _SettingMainState extends State<SettingMain> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      customIconButton(Icons.notifications_active, 45.0,
+                      customIconButton(Icons.notifications_active, 50.0,
                           CustomColors.mfinBlue),
+                      Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Notification Settings",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 17,
                           color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -103,11 +105,12 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.fingerprint, 45.0, CustomColors.mfinBlue),
+                          Icons.fingerprint, 50.0, CustomColors.mfinBlue),
+                      Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "FingerPrint Login",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 17,
                           color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -129,11 +132,12 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       customIconButton(
-                          Icons.style, 45.0, CustomColors.mfinBlue),
+                          Icons.brightness_4, 50.0, CustomColors.mfinBlue),
+                      Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Dark Theme",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 17,
                           color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),

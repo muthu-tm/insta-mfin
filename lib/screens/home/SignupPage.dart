@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instamfin/screens/utils/colors.dart';
 import 'package:instamfin/screens/utils/validator.dart';
-import './../services/controllers/auth/auth_controller.dart';
+import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/screens/settings/SettingsPage.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -21,6 +24,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String password;
   String name;
   String mobileNumber;
+  File _imageFile;
 
   bool _passwordVisible = false;
   bool showPassword = false;
@@ -50,7 +54,7 @@ class _RegisterFormState extends State<RegisterForm> {
               width: 100.0,
               padding: new EdgeInsets.only(top: 5.0),
               child: FloatingActionButton(
-                onPressed: null,
+                onPressed: () => _pickImage(ImageSource.gallery),
                 backgroundColor: CustomColors.mfinWhite,
                 child: new Icon(
                   Icons.file_upload,
@@ -228,6 +232,20 @@ class _RegisterFormState extends State<RegisterForm> {
     setState(() {
       this.password = passkey;
     });
+  }
+
+  /// Select an image via gallery or camera
+  Future<void> _pickImage(ImageSource source) async {
+    File selected = await ImagePicker.pickImage(source: source);
+
+    setState(() {
+      _imageFile = selected;
+    });
+  }
+
+  /// Remove image
+  void _clear() {
+    setState(() => _imageFile = null);
   }
 
   void _submit() async {

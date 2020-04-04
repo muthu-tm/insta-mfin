@@ -31,7 +31,7 @@ Widget bottomBar(BuildContext context) {
                   Text(
                     "Customers",
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       color: CustomColors.mfinGrey,
                     ),
                   ), // text
@@ -56,7 +56,7 @@ Widget bottomBar(BuildContext context) {
                   Text(
                     "Statistics",
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       color: CustomColors.mfinGrey,
                     ),
                   ), // text
@@ -80,7 +80,7 @@ Widget bottomBar(BuildContext context) {
                   Text(
                     "Transactions",
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       color: CustomColors.mfinGrey,
                     ),
                   ), // text
@@ -109,7 +109,7 @@ Widget bottomBar(BuildContext context) {
                   Text(
                     "Settings",
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       color: CustomColors.mfinGrey,
                     ),
                   ), // text
