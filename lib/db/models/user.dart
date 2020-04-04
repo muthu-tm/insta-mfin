@@ -13,13 +13,13 @@ class User extends Model {
   
   @JsonKey(name: 'id', nullable: false)
   String id;
-  @JsonKey(name: 'email', nullable: true)
+  @JsonKey(name: 'email', nullable: false)
   String email;
   @JsonKey(name: 'user_name', nullable: true)
   String name;
   @JsonKey(name: 'mobile_number', nullable: true)
   int mobileNumber;
-  @JsonKey(name: 'password', nullable: true)
+  @JsonKey(name: 'password', nullable: false)
   String password;
   @JsonKey(name: 'gender', nullable: true)
   String gender;
