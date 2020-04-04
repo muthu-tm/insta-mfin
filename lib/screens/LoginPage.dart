@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/Customer/profile.dart';
 import 'package:instamfin/screens/common/colors.dart';
 import 'package:instamfin/screens/common/validator.dart';
-import 'package:instamfin/screens/settings/SettingsPage.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class LoginController extends StatefulWidget {
@@ -184,8 +183,6 @@ class _LoginControllerState extends State<LoginController> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      print('Form submitted');
-
       var result =
           await _authController.signInWithEmailPassword(email, password);
 

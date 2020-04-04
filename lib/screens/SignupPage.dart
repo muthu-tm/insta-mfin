@@ -234,9 +234,6 @@ class _RegisterFormState extends State<RegisterForm> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      print(email);
-      print("Going to Register new user: " + email);
-
       dynamic result = await _authController.registerUserWithEmailPassword(
           email, password, name, mobileNumber);
       if (!result['is_registered']) {
