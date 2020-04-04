@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/Customer/profile.dart';
 import 'package:instamfin/screens/common/colors.dart';
 import 'package:instamfin/screens/common/validator.dart';
 import 'package:instamfin/screens/settings/SettingsPage.dart';
@@ -189,12 +190,12 @@ class _LoginControllerState extends State<LoginController> {
           await _authController.signInWithEmailPassword(email, password);
 
       if (!result['is_logged_in']) {
-        print("Unable to register USER: " + result['message']);
+        print("Unable to Login: " + result['message']);
       } else {
         print("User logged in successfully");
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SettingMain()),
+          MaterialPageRoute(builder: (context) => CustomerTransactionScreen()),
         );
       }
     } else {
