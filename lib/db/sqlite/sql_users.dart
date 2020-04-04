@@ -6,7 +6,6 @@ part 'sql_users.g.dart';
 
 @json.JsonSerializable()
 class UserAddress {
-  
   @json.JsonKey(name: 'street', nullable: false)
   String street;
   @json.JsonKey(name: 'city', nullable: true)
@@ -20,7 +19,8 @@ class UserAddress {
 
   UserAddress(this.street, this.city, this.state, this.pincode);
 
-  factory UserAddress.fromJson(Map<String, dynamic> json) => _$UserAddressFromJson(json);
+  factory UserAddress.fromJson(Map<String, dynamic> json) =>
+      _$UserAddressFromJson(json);
   Map<String, dynamic> toJson() => _$UserAddressToJson(this);
 }
 
@@ -36,8 +36,7 @@ class UserModel extends Table {
       dateTime().named('date_of_birth').nullable()();
   TextColumn get lastSignInTime =>
       text().named('last_signed_in_at').nullable()();
-  TextColumn get address =>
-      text().map(const AddressConverter()).nullable()();
+  TextColumn get address => text().map(const AddressConverter()).nullable()();
 }
 
 @UseMoor(tables: [UserModel], daos: [UserDao])
@@ -56,9 +55,15 @@ class UserDao extends DatabaseAccessor<UserDatabase> with _$UserDaoMixin {
 
   UserDao(this.userDB) : super(userDB);
 
+  Future<int> deleteUserData() async {
+    return await delete(userModel).go();
+  }
+
   dynamic getUserByEmail(String emailID) async {
     try {
-      List<User> users = await (select(userModel)..where((t) => t.email.equals(emailID))).get();
+      List<User> users = await (select(userModel)
+            ..where((t) => t.email.equals(emailID)))
+          .get();
 
       if (users.isEmpty) {
         return null;
@@ -73,7 +78,8 @@ class UserDao extends DatabaseAccessor<UserDatabase> with _$UserDaoMixin {
 
   Future<int> updateSignIn(Insertable<User> user, String emailID) async {
     try {
-      return await (update(userModel)..where((t) => t.email.equals(emailID))).write(user);
+      return await (update(userModel)..where((t) => t.email.equals(emailID)))
+          .write(user);
     } catch (err) {
       print("Error while updating user lastSignIn for emailID: " + emailID);
       return null;

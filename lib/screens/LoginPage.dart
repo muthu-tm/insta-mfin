@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/Customer/profile.dart';
-import 'package:instamfin/screens/common/colors.dart';
-import 'package:instamfin/screens/common/validator.dart';
+import 'package:instamfin/screens/utils/colors.dart';
+import 'package:instamfin/screens/utils/validator.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class LoginController extends StatefulWidget {

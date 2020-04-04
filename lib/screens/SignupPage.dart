@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/common/colors.dart';
-import 'package:instamfin/screens/common/validator.dart';
+import 'package:instamfin/screens/utils/colors.dart';
+import 'package:instamfin/screens/utils/validator.dart';
 import './../services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/screens/settings/SettingsPage.dart';
 

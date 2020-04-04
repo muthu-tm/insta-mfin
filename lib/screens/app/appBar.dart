@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/Common/IconButton.dart';
-import 'package:instamfin/screens/common/colors.dart';
+import 'package:instamfin/screens/utils/colors.dart';
 
     Widget topAppBar() {
       return AppBar(

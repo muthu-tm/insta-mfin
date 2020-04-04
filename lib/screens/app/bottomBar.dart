@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/Common/IconButton.dart';
-import 'package:instamfin/screens/common/colors.dart';
+import 'package:instamfin/Customer/profile.dart';
+import 'package:instamfin/screens/settings/SettingsPage.dart';
+import 'package:instamfin/screens/utils/colors.dart';
 
 Widget bottomBar(BuildContext context) {
   return Container(
@@ -14,14 +16,20 @@ Widget bottomBar(BuildContext context) {
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
               splashColor: CustomColors.mfinFadedButtonGreen, // splash color
-              onTap: () {}, // button pressed
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CustomerTransactionScreen()),
+                );
+              }, // button pressed
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   customIconButton(Icons.supervisor_account, 40.0,
                       CustomColors.mfinButtonGreen),
                   Text(
-                    "Account",
+                    "Customers",
                     style: TextStyle(
                       fontSize: 10,
                       color: CustomColors.mfinGrey,
@@ -87,7 +95,12 @@ Widget bottomBar(BuildContext context) {
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
               splashColor: CustomColors.mfinButtonGreen, // splash color
-              onTap: () {}, // button pressed
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingMain()),
+                );
+              }, // button pressed
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

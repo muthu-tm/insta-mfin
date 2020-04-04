@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/AppMain/appBar.dart';
-import 'package:instamfin/AppMain/bottomBar.dart';
+import 'package:instamfin/screens/app/appBar.dart';
+import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/Common/CustomTextFormField.dart';
 
 class CompanyProfileSetting extends StatefulWidget {

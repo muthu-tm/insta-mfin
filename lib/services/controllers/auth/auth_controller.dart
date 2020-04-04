@@ -46,14 +46,15 @@ class AuthController {
       if (userObj == null) {
         userObj = await _authService.signInWithEmailPassword(emailID, passkey);
       }
-      
+
       fb.User user = fb.User(userObj['id'], userObj['email']);
 
       // update cloud firestore "users" collection
-      user.update(
-          userObj['id'], {'last_signed_in_at': DateTime.now()});
+      user.update(userObj['id'], {'last_signed_in_at': DateTime.now()});
       // update sqlite usign Moor ORM
-      _userDao.updateSignIn(UserModelCompanion(lastSignInTime: Value(DateTime.now().toString())), userObj['email']);
+      _userDao.updateSignIn(
+          UserModelCompanion(lastSignInTime: Value(DateTime.now().toString())),
+          userObj['email']);
 
       return {
         'is_logged_in': true,
@@ -89,6 +90,15 @@ class AuthController {
         // "error_code": err.code,
         "message": err.message
       };
+    }
+  }
+
+  Future<int> deleteAllUsers() async {
+    try {
+      return await _userDao.deleteUserData();
+    } catch (err) {
+      print("Error occurred while reoving all users: " + err.toString());
+      return 0;
     }
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/AppMain/appBar.dart';
-import 'package:instamfin/AppMain/bottomBar.dart';
+import 'package:instamfin/screens/app/appBar.dart';
+import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/Common/IconButton.dart';
-import 'package:instamfin/screens/common/colors.dart';
+import 'package:instamfin/screens/utils/colors.dart';
 
 class SettingMain extends StatefulWidget {
   const SettingMain({this.toggleView});
@@ -38,12 +38,13 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.domain, 35.0, CustomColors.mfinBlue),
+                          Icons.domain, 45.0, CustomColors.mfinBlue),
                       Text(
                         "Company Settings",
                         style: TextStyle(
                           fontSize: 15,
                           color: CustomColors.mfinGrey,
+                          fontWeight: FontWeight.bold,
                         ),
                       ), // text
                     ],
@@ -56,12 +57,13 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.account_circle, 35.0, CustomColors.mfinBlue),
+                          Icons.person, 45.0, CustomColors.mfinBlue),
                       Text(
-                        "User Profile Settings",
+                        "Profile Settings",
                         style: TextStyle(
                           fontSize: 15,
                           color: CustomColors.mfinGrey,
+                          fontWeight: FontWeight.bold,
                         ),
                       ), // text
                     ],
@@ -81,13 +83,14 @@ class _SettingMainState extends State<SettingMain> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      customIconButton(Icons.notifications_active, 35.0,
+                      customIconButton(Icons.notifications_active, 45.0,
                           CustomColors.mfinBlue),
                       Text(
                         "Notification Settings",
                         style: TextStyle(
                           fontSize: 15,
                           color: CustomColors.mfinGrey,
+                          fontWeight: FontWeight.bold,
                         ),
                       ), // text
                     ],
@@ -100,12 +103,13 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.fingerprint, 35.0, CustomColors.mfinBlue),
+                          Icons.fingerprint, 45.0, CustomColors.mfinBlue),
                       Text(
-                        "Finger Print Login",
+                        "FingerPrint Login",
                         style: TextStyle(
                           fontSize: 15,
                           color: CustomColors.mfinGrey,
+                          fontWeight: FontWeight.bold,
                         ),
                       ), // text
                     ],
@@ -125,12 +129,13 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       customIconButton(
-                          Icons.style, 35.0, CustomColors.mfinBlue),
+                          Icons.style, 45.0, CustomColors.mfinBlue),
                       Text(
                         "Dark Theme",
                         style: TextStyle(
                           fontSize: 15,
                           color: CustomColors.mfinGrey,
+                          fontWeight: FontWeight.bold,
                         ),
                       ), // text
                     ],
