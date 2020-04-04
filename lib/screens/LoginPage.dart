@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/common/colors.dart';
 import 'package:instamfin/screens/common/validator.dart';
 import 'package:instamfin/screens/settings/SettingsPage.dart';
-import 'package:instamfin/services/controllers/auth_controller.dart';
+import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class LoginController extends StatefulWidget {
   const LoginController({this.toggleView});
@@ -131,9 +131,7 @@ class _LoginControllerState extends State<LoginController> {
                         child: Row(
                       children: <Widget>[
                         FlatButton(
-                          onPressed: () => {
-                            widget.toggleView(),
-                          },
+                          onPressed: () => widget.toggleView(),
                           child: new RichText(
                             text: new TextSpan(
                               // Note: Styles for TextSpans must be explicitly defined.
@@ -143,7 +141,7 @@ class _LoginControllerState extends State<LoginController> {
                                 color: CustomColors.mfinAlertRed,
                               ),
                               children: <TextSpan>[
-                                new TextSpan(text: "Don't have an account?  "),
+                                new TextSpan(text: "Don't have an account? "),
                                 new TextSpan(
                                   text: ' SIGN UP',
                                   style: new TextStyle(
@@ -187,10 +185,11 @@ class _LoginControllerState extends State<LoginController> {
     if (form.validate()) {
       print('Form submitted');
 
-      dynamic result =
+      var result =
           await _authController.signInWithEmailPassword(email, password);
+
       if (!result['is_logged_in']) {
-        print("Unable to register USER: " + result['error_code']);
+        print("Unable to register USER: " + result['message']);
       } else {
         print("User logged in successfully");
         Navigator.push(

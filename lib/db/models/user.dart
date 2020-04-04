@@ -1,5 +1,5 @@
-import 'package:instamfin/models/address.dart';
-import 'package:instamfin/models/model.dart';
+import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';

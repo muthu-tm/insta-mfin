@@ -26,6 +26,9 @@ dependencies:
   firebase_auth: ^0.15.5+3
   # google_sign_in: ^4.3.0
   cloud_firestore: ^0.13.4+2
+  sqflite: ^1.2.2+1
+  moor_flutter: ^2.1.1
+  path_provider: ^1.6.5
   json_annotation: ^3.0.1
   intl: ^0.16.1
   provider: ^4.0.4
@@ -34,10 +37,10 @@ dependencies:
 dev_dependencies:
   build_runner: ^1.8.0
   json_serializable: ^3.3.0
+  moor_generator: ^2.4.0
 
   flutter_test:
     sdk: flutter
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -55,6 +58,8 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
+  assets:
+    - data/test.db
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

@@ -1,8 +1,10 @@
-import './../authenticate/auth.dart';
-import 'package:instamfin/models/user.dart';
+import './../../authenticate/auth.dart';
+import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/sqlite/sql_users.dart';
 
 class AuthController {
   AuthService _authService = AuthService();
+  UserAuth _userAuth = UserAuth();
 
   dynamic registerUserWithEmailPassword(
       emailID, passkey, userName, mobileNumber) async {
@@ -18,6 +20,7 @@ class AuthController {
 
       //Create an user document in User collection
       await user.create();
+      await _userAuth.saveUser(user);
 
       return {
         'is_registered': true,
@@ -27,7 +30,7 @@ class AuthController {
     } catch (err) {
       return {
         'is_registered': false,
-        "error_code": err.code,
+        // "error_code": err.code,
         "message": err.message
       };
     }
@@ -35,8 +38,10 @@ class AuthController {
 
   dynamic signInWithEmailPassword(String emailID, String passkey) async {
     try {
-      var userObj =
-          await _authService.signInWithEmailPassword(emailID, passkey);
+      var userObj = await _userAuth.getLogin(emailID, passkey);
+      if (userObj == null) {
+        userObj = await _authService.signInWithEmailPassword(emailID, passkey);
+      }
 
       User user = User(userObj['id'], userObj['email']);
       user.update(
@@ -55,7 +60,7 @@ class AuthController {
     } catch (err) {
       return {
         'is_logged_in': false,
-        "error_code": err.code,
+        // "error_code": err.code,
         "message": err.message
       };
     }
@@ -73,7 +78,7 @@ class AuthController {
     } catch (err) {
       return {
         'is_signed_out': false,
-        "error_code": err.code,
+        // "error_code": err.code,
         "message": err.message
       };
     }

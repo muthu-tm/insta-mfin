@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/common/colors.dart';
 import 'package:instamfin/screens/common/validator.dart';
-import './../services/controllers/auth_controller.dart';
+import './../services/controllers/auth/auth_controller.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({this.toggleView});
@@ -179,7 +179,7 @@ class _RegisterFormState extends State<RegisterForm> {
               children: <Widget>[
                 new Container(
                   child: const Text(
-                    ' Already have an account?',
+                    'Already have an account?',
                     style: TextStyle(
                       fontSize: 20,
                       color: CustomColors.mfinWhite,
@@ -188,10 +188,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 FlatButton(
                   padding: const EdgeInsets.all(20.0),
-                  onPressed: () => {
-                    // Navigator.pushNamed(context, '/home');
-                    widget.toggleView(),
-                  },
+                  onPressed: () => widget.toggleView(),
                   child: const Text(
                     'LOGIN',
                     style: TextStyle(
@@ -242,7 +239,7 @@ class _RegisterFormState extends State<RegisterForm> {
       dynamic result = await _authController.registerUserWithEmailPassword(
           email, password, name, mobileNumber);
       if (!result['is_registered']) {
-        print("Unable to register USER: " + result['error_code']);
+        print("Unable to register USER: " + result['message']);
       } else {
         print("Successfully registered the user");
       }

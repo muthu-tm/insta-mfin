@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './services/auth_wrapper.dart';
 import 'services/authenticate/auth.dart';
 import 'package:provider/provider.dart';
-import 'models/user.dart';
+import 'db/models/user.dart';
 
 void main() => runApp(MyApp());
 

@@ -18,7 +18,7 @@ class Model {
 
   add(data) async {
     attachCommonAttributes(data);
-
+    
     return await this.getCollectionRef().document(data['id']).setData(data);
   }
 

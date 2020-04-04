@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:instamfin/screens/authenticate.dart';
 import './../customer/profile.dart';
-import './../models/user.dart';
+import './../db/models/user.dart';
 
 class Wrapper extends StatelessWidget {
   @override

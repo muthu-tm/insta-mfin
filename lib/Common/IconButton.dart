@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/common/colors.dart';
 
 Widget customIconButton(icon, size, color) {
   return IconButton(
