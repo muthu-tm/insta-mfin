@@ -1,10 +1,12 @@
-import './../../authenticate/auth.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 import 'package:instamfin/db/models/user.dart' as fb;
 import 'package:instamfin/db/sqlite/sql_users.dart';
+import './../../authenticate/auth.dart';
 
 class AuthController {
   AuthService _authService = AuthService();
-  UserDatabase _userDatabase = UserDatabase();
+  static UserDatabase _userDatabase = UserDatabase();
+  UserDao _userDao = UserDao(_userDatabase);
 
   dynamic registerUserWithEmailPassword(
       emailID, passkey, userName, mobileNumber) async {
@@ -20,8 +22,8 @@ class AuthController {
 
       //Create an user document in User collection
       await user.create();
-      User sqlUser = User.fromJson(user.toJson());
-      _userDatabase.insertUser(sqlUser);
+      User sqlUser = User.fromData(user.toJson(), _userDatabase);
+      _userDao.insertUser(sqlUser);
 
       return {
         'is_registered': true,
@@ -39,14 +41,19 @@ class AuthController {
 
   dynamic signInWithEmailPassword(String emailID, String passkey) async {
     try {
-      List<User> users = await _userDatabase.getAllUsers();
-      print("USERS: " + users.toString());
+      var userObj = await _userDao.getUserByEmail(emailID);
 
-      var userObj = await _authService.signInWithEmailPassword(emailID, passkey);
+      if (userObj == null) {
+        userObj = await _authService.signInWithEmailPassword(emailID, passkey);
+      }
+      
       fb.User user = fb.User(userObj['id'], userObj['email']);
+
+      // update cloud firestore "users" collection
       user.update(
-          userObj['id'], {'last_signed_in_at': userObj['last_signed_in_at']});
-      // _userDatabase.updateUser(User.fromJson(user.toJson()));
+          userObj['id'], {'last_signed_in_at': DateTime.now()});
+      // update sqlite usign Moor ORM
+      _userDao.updateSignIn(UserModelCompanion(lastSignInTime: Value(DateTime.now().toString())), userObj['email']);
 
       return {
         'is_logged_in': true,

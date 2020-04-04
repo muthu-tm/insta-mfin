@@ -34,13 +34,13 @@ class UserModel extends Table {
   TextColumn get gender => text().named('gender').nullable()();
   DateTimeColumn get dateOfBirth =>
       dateTime().named('date_of_birth').nullable()();
-  DateTimeColumn get lastSignInTime =>
-      dateTime().named('last_signed_in_at').nullable()();
+  TextColumn get lastSignInTime =>
+      text().named('last_signed_in_at').nullable()();
   TextColumn get address =>
       text().map(const AddressConverter()).nullable()();
 }
 
-@UseMoor(tables: [UserModel])
+@UseMoor(tables: [UserModel], daos: [UserDao])
 class UserDatabase extends _$UserDatabase {
   UserDatabase()
       : super(FlutterQueryExecutor.inDatabaseFolder(
@@ -48,10 +48,41 @@ class UserDatabase extends _$UserDatabase {
 
   @override
   int get schemaVersion => 1;
+}
+
+@UseDao(tables: [UserModel])
+class UserDao extends DatabaseAccessor<UserDatabase> with _$UserDaoMixin {
+  final UserDatabase userDB;
+
+  UserDao(this.userDB) : super(userDB);
+
+  dynamic getUserByEmail(String emailID) async {
+    try {
+      List<User> users = await (select(userModel)..where((t) => t.email.equals(emailID))).get();
+
+      if (users.isEmpty) {
+        return null;
+      }
+
+      return users.first.toJson();
+    } catch (err) {
+      print("Error while fetching user details for emailID: " + emailID);
+      return null;
+    }
+  }
+
+  Future<int> updateSignIn(Insertable<User> user, String emailID) async {
+    try {
+      return await (update(userModel)..where((t) => t.email.equals(emailID))).write(user);
+    } catch (err) {
+      print("Error while updating user lastSignIn for emailID: " + emailID);
+      return null;
+    }
+  }
 
   Future<List<User>> getAllUsers() => select(userModel).get();
   Stream<List<User>> watchAllUsers() => select(userModel).watch();
-  Future insertUser(User user) => into(userModel).insert(user);
-  Future updateUser(User user) => update(userModel).replace(user);
-  Future deleteUser(User user) => delete(userModel).delete(user);
+  Future insertUser(Insertable<User> user) => into(userModel).insert(user);
+  Future updateUser(Insertable<User> user) => update(userModel).replace(user);
+  Future deleteUser(Insertable<User> user) => delete(userModel).delete(user);
 }

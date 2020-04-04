@@ -37,7 +37,7 @@ class User extends DataClass implements Insertable<User> {
   final String password;
   final String gender;
   final DateTime dateOfBirth;
-  final DateTime lastSignInTime;
+  final String lastSignInTime;
   final UserAddress address;
   User(
       {@required this.id,
@@ -69,7 +69,7 @@ class User extends DataClass implements Insertable<User> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}gender']),
       dateOfBirth: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}date_of_birth']),
-      lastSignInTime: dateTimeType
+      lastSignInTime: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}last_signed_in_at']),
       address: $UserModelTable.$converter0.mapToDart(stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}address'])),
@@ -86,7 +86,7 @@ class User extends DataClass implements Insertable<User> {
       password: serializer.fromJson<String>(json['password']),
       gender: serializer.fromJson<String>(json['gender']),
       dateOfBirth: serializer.fromJson<DateTime>(json['dateOfBirth']),
-      lastSignInTime: serializer.fromJson<DateTime>(json['lastSignInTime']),
+      lastSignInTime: serializer.fromJson<String>(json['lastSignInTime']),
       address: serializer.fromJson<UserAddress>(json['address']),
     );
   }
@@ -101,7 +101,7 @@ class User extends DataClass implements Insertable<User> {
       'password': serializer.toJson<String>(password),
       'gender': serializer.toJson<String>(gender),
       'dateOfBirth': serializer.toJson<DateTime>(dateOfBirth),
-      'lastSignInTime': serializer.toJson<DateTime>(lastSignInTime),
+      'lastSignInTime': serializer.toJson<String>(lastSignInTime),
       'address': serializer.toJson<UserAddress>(address),
     };
   }
@@ -141,7 +141,7 @@ class User extends DataClass implements Insertable<User> {
           String password,
           String gender,
           DateTime dateOfBirth,
-          DateTime lastSignInTime,
+          String lastSignInTime,
           UserAddress address}) =>
       User(
         id: id ?? this.id,
@@ -210,7 +210,7 @@ class UserModelCompanion extends UpdateCompanion<User> {
   final Value<String> password;
   final Value<String> gender;
   final Value<DateTime> dateOfBirth;
-  final Value<DateTime> lastSignInTime;
+  final Value<String> lastSignInTime;
   final Value<UserAddress> address;
   const UserModelCompanion({
     this.id = const Value.absent(),
@@ -244,7 +244,7 @@ class UserModelCompanion extends UpdateCompanion<User> {
       Value<String> password,
       Value<String> gender,
       Value<DateTime> dateOfBirth,
-      Value<DateTime> lastSignInTime,
+      Value<String> lastSignInTime,
       Value<UserAddress> address}) {
     return UserModelCompanion(
       id: id ?? this.id,
@@ -354,12 +354,12 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
 
   final VerificationMeta _lastSignInTimeMeta =
       const VerificationMeta('lastSignInTime');
-  GeneratedDateTimeColumn _lastSignInTime;
+  GeneratedTextColumn _lastSignInTime;
   @override
-  GeneratedDateTimeColumn get lastSignInTime =>
+  GeneratedTextColumn get lastSignInTime =>
       _lastSignInTime ??= _constructLastSignInTime();
-  GeneratedDateTimeColumn _constructLastSignInTime() {
-    return GeneratedDateTimeColumn(
+  GeneratedTextColumn _constructLastSignInTime() {
+    return GeneratedTextColumn(
       'last_signed_in_at',
       $tableName,
       true,
@@ -480,7 +480,7 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
     }
     if (d.lastSignInTime.present) {
       map['last_signed_in_at'] =
-          Variable<DateTime, DateTimeType>(d.lastSignInTime.value);
+          Variable<String, StringType>(d.lastSignInTime.value);
     }
     if (d.address.present) {
       final converter = $UserModelTable.$converter0;
@@ -503,8 +503,18 @@ abstract class _$UserDatabase extends GeneratedDatabase {
   _$UserDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $UserModelTable _userModel;
   $UserModelTable get userModel => _userModel ??= $UserModelTable(this);
+  UserDao _userDao;
+  UserDao get userDao => _userDao ??= UserDao(this as UserDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [userModel];
+}
+
+// **************************************************************************
+// DaoGenerator
+// **************************************************************************
+
+mixin _$UserDaoMixin on DatabaseAccessor<UserDatabase> {
+  $UserModelTable get userModel => db.userModel;
 }

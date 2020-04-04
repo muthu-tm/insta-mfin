@@ -42,7 +42,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
           ],
         ),
       ),
-    bottomSheet: bottomBar(),
+    bottomSheet: bottomBar(context),
     );
   }
 }

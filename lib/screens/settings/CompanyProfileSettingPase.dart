@@ -58,7 +58,7 @@ customTextFormField('Refer & Earn',Colors.grey[350],Icons.notifications,TextInpu
             ),
           ),
         ),
-      bottomSheet: bottomBar(),
+      bottomSheet: bottomBar(context),
     );
   }
 }

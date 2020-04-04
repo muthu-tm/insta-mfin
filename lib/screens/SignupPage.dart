@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/common/colors.dart';
 import 'package:instamfin/screens/common/validator.dart';
 import './../services/controllers/auth/auth_controller.dart';
+import 'package:instamfin/screens/settings/SettingsPage.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({this.toggleView});
@@ -242,6 +243,10 @@ class _RegisterFormState extends State<RegisterForm> {
         print("Unable to register USER: " + result['message']);
       } else {
         print("Successfully registered the user");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SettingMain()),
+        );
       }
     } else {
       print("Invalid form values");

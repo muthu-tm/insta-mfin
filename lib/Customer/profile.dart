@@ -67,7 +67,7 @@ child: customTextFormField('Email',Colors.white,Icons.mail,TextInputType.emailAd
           );
         },
       ),
-      bottomSheet: bottomBar(),
+      bottomSheet: bottomBar(context),
     );
   }
 }
