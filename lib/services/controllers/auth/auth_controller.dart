@@ -1,10 +1,10 @@
 import './../../authenticate/auth.dart';
-import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/models/user.dart' as fb;
 import 'package:instamfin/db/sqlite/sql_users.dart';
 
 class AuthController {
   AuthService _authService = AuthService();
-  UserAuth _userAuth = UserAuth();
+  UserDatabase _userDatabase = UserDatabase();
 
   dynamic registerUserWithEmailPassword(
       emailID, passkey, userName, mobileNumber) async {
@@ -12,7 +12,7 @@ class AuthController {
       var userObj =
           await _authService.registerWithEmailPassword(emailID, passkey);
 
-      User user = User(userObj['id'], userObj['email']);
+      fb.User user = fb.User(userObj['id'], userObj['email']);
       user.setPassword(passkey);
       user.setName(userName);
       user.setMobileNumber(int.parse(mobileNumber));
@@ -20,7 +20,8 @@ class AuthController {
 
       //Create an user document in User collection
       await user.create();
-      await _userAuth.saveUser(user);
+      User sqlUser = User.fromJson(user.toJson());
+      _userDatabase.insertUser(sqlUser);
 
       return {
         'is_registered': true,
@@ -38,14 +39,14 @@ class AuthController {
 
   dynamic signInWithEmailPassword(String emailID, String passkey) async {
     try {
-      var userObj = await _userAuth.getLogin(emailID, passkey);
-      if (userObj == null) {
-        userObj = await _authService.signInWithEmailPassword(emailID, passkey);
-      }
+      List<User> users = await _userDatabase.getAllUsers();
+      print("USERS: " + users.toString());
 
-      User user = User(userObj['id'], userObj['email']);
+      var userObj = await _authService.signInWithEmailPassword(emailID, passkey);
+      fb.User user = fb.User(userObj['id'], userObj['email']);
       user.update(
           userObj['id'], {'last_signed_in_at': userObj['last_signed_in_at']});
+      // _userDatabase.updateUser(User.fromJson(user.toJson()));
 
       return {
         'is_logged_in': true,
