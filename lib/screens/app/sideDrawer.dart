@@ -13,7 +13,7 @@ Widget openDrawer(BuildContext context) {
           backgroundColor: CustomColors.mfinBlue, child: new Text("Test")),
     ),
     new ListTile(
-      leading: new Icon(Icons.home),
+      leading: new Icon(Icons.home, color: CustomColors.mfinButtonGreen),
       title: new Text('Home'),
       onTap: () => Navigator.push(
         context,
@@ -23,46 +23,61 @@ Widget openDrawer(BuildContext context) {
     new Divider(),
     new ExpansionTile(
       title: new Text("Transactions"),
-      leading: new Icon(Icons.content_copy),
-      trailing: new Icon(Icons.keyboard_arrow_down),
+      leading: new Icon(Icons.content_copy, color: CustomColors.mfinButtonGreen),
       children: <Widget>[
         new ListTile(
           title: new Text('Make a Transaction'),
-          onTap: () => null,
-        ),
-        new ListTile(
-          title: new Text('Edit a Transaction'),
+          trailing: new Icon(Icons.keyboard_arrow_right),
           onTap: () => null,
         ),
         new ListTile(
           title: new Text('View Transactions'),
+          trailing: new Icon(Icons.keyboard_arrow_right),
           onTap: () => null,
         ),
       ],
     ),
-    new ListTile(
-      leading: new Icon(Icons.supervisor_account),
-      title: new Text('My Customer'),
-      onTap: () => null,
-    ),
     new ExpansionTile(
-      title: new Text("Statistics"),
-      leading: new Icon(Icons.assessment),
-      trailing: new Icon(Icons.keyboard_arrow_down),
+      leading: new Icon(Icons.supervisor_account, color: CustomColors.mfinButtonGreen),
+      title: new Text('My Customers'),
       children: <Widget>[
         new ListTile(
-          title: new Text('View Daily Statistics'),
+          title: new Text('Add a Customer'),
+          trailing: new Icon(Icons.keyboard_arrow_right),
           onTap: () => null,
         ),
         new ListTile(
-          title: new Text('View Monthly Statistics'),
+          title: new Text('View all Customers'),
+          trailing: new Icon(Icons.keyboard_arrow_right),
+          onTap: () => null,
+        ),
+      ],
+    ),
+    new ExpansionTile(
+      title: new Text("Statistics"),
+      leading: new Icon(Icons.assessment, color: CustomColors.mfinButtonGreen),
+      children: <Widget>[
+        new ListTile(
+          title: new Text('Daily Statistics'),
+          trailing: new Icon(Icons.keyboard_arrow_right),
+          onTap: () => null,
+        ),
+        new ListTile(
+          title: new Text('Monthly Statistics'),
+          trailing: new Icon(Icons.keyboard_arrow_right),
           onTap: () => null,
         )
       ],
     ),
     new Divider(),
     new ListTile(
-      leading: new Icon(Icons.account_balance),
+      leading: new Icon(Icons.notifications_active, color: CustomColors.mfinButtonGreen),
+      title: new Text('Notifications'),
+      onTap: () => null,
+    ),
+    new Divider(),
+    new ListTile(
+      leading: new Icon(Icons.account_balance, color: CustomColors.mfinButtonGreen),
       title: new Text('Company Settings'),
       onTap: () => Navigator.push(
         context,
@@ -70,23 +85,18 @@ Widget openDrawer(BuildContext context) {
       ),
     ),
     new ListTile(
-      leading: new Icon(Icons.notifications),
-      title: new Text('Notifications'),
-      onTap: () => null,
-    ),
-    new ListTile(
-      leading: new Icon(Icons.settings),
+      leading: new Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
       title: new Text('Profile Settings'),
       onTap: () => null,
     ),
     new Divider(),
     new ListTile(
-      leading: new Icon(Icons.headset_mic),
+      leading: new Icon(Icons.headset_mic, color: CustomColors.mfinButtonGreen),
       title: new Text('Help & Support'),
       onTap: () => null,
     ),
     new ListTile(
-      leading: new Icon(Icons.error),
+      leading: new Icon(Icons.error, color: CustomColors.mfinAlertRed),
       title: new Text('Logout'),
       onTap: () => null,
     ),
@@ -94,15 +104,17 @@ Widget openDrawer(BuildContext context) {
         color: CustomColors.mfinBlue,
         child: new ListTile(
           leading: new Text(
-            'INSTA - MFIN',
+            'InstamFIN',
             style: TextStyle(
-              color: Colors.white,
+              color: CustomColors.mfinButtonGreen,
+              fontSize: 15.0,
             ),
           ),
           trailing: Text(
-            "v0.50",
+            "v0.5.0 (beta)",
             style: TextStyle(
-              color: Colors.white,
+              color: CustomColors.mfinButtonGreen,
+              fontSize: 15.0,
             ),
           ),
           onTap: () => null,
