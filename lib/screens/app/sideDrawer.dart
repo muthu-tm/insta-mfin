@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
+import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/colors.dart';
 
 Widget openDrawer(BuildContext context) {
@@ -80,19 +81,24 @@ Widget openDrawer(BuildContext context) {
     ),
     new Divider(),
     new ListTile(
-      leading:
-          new Icon(Icons.account_balance, color: CustomColors.mfinButtonGreen),
-      title: new Text('Company Settings'),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CompanyProfileSetting()),
-      ),
-    ),
-    new Divider(),
+        leading: new Icon(Icons.account_balance,
+            color: CustomColors.mfinButtonGreen),
+        title: new Text('Company Settings'),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CompanyProfileSetting()),
+          );
+        }),
     new ListTile(
       leading: new Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
       title: new Text('Profile Settings'),
-      onTap: () => null,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UserProfileSetting()),
+        );
+      },
     ),
     new Divider(),
     new ListTile(

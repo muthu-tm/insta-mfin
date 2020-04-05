@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/utils/colors.dart';
@@ -60,7 +61,12 @@ class _SettingMainState extends State<SettingMain> {
                 ),
                 InkWell(
                   splashColor: CustomColors.mfinButtonGreen, // splash color
-                  onTap: () {}, // button pressed
+                  onTap: () {
+                     Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UserProfileSetting()),
+                    );
+                  }, // button pressed
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -135,6 +141,7 @@ class _SettingMainState extends State<SettingMain> {
 
               children: <Widget>[
                 InkWell(
+                  splashColor: CustomColors.mfinButtonGreen,
                   onTap: () {}, // button pressed
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
