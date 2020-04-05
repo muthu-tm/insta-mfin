@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:instamfin/main.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/CustomTextFormField.dart';
 import 'package:instamfin/screens/home/HomeOptions.dart';
 import 'package:instamfin/screens/utils/colors.dart';
@@ -83,9 +84,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         child: Scaffold(
           backgroundColor: Colors.blue[800],
           appBar: topAppBar(),
-          drawer: Drawer(
-              child: customTextFormField('Email', Colors.white, Icons.mail,
-                  TextInputType.emailAddress)),
+          drawer: openDrawer(context),
           body: ListView.builder(
             itemCount: options.length + 2,
             itemBuilder: (BuildContext context, int index) {
