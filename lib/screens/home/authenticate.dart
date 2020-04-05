@@ -8,10 +8,8 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
-
   bool showSignIn = true;
-  void toggleView(){
-    //print(showSignIn.toString());
+  void toggleView() {
     setState(() => showSignIn = !showSignIn);
   }
 
@@ -20,7 +18,7 @@ class _AuthenticateState extends State<Authenticate> {
     if (showSignIn) {
       return LoginController(toggleView: toggleView);
     } else {
-      return RegisterForm(toggleView:  toggleView);
+      return RegisterForm(toggleView: toggleView);
     }
   }
 }

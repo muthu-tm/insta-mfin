@@ -4,7 +4,6 @@ import './../../db/models/user.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   User _userFromFirebaseUser(String user) {
     Map userMap = jsonDecode(user);
@@ -15,19 +14,6 @@ class AuthService {
     return _auth.onAuthStateChanged
         .map((FirebaseUser user) => _userFromFirebaseUser(user.toString()));
   }
-
-  // Future<FirebaseUser> googleSignIn() async {
-
-  //   GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-
-  //   GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-  //   // FirebaseUser user = await _auth.signInWithGoogle(
-  //   //     accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-
-  //   AuthResult result = await _auth.signInWithCustomToken(token: googleAuth.accessToken);
-  //   print("signed in using Google:  " + result.user.toString());
-  //   return result.user;
-  // }
 
   Future signInWithEmailPassword(String emailID, String passkey) async {
     try {
