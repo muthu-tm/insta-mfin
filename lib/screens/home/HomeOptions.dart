@@ -9,17 +9,6 @@ class Option {
 
 final options = [
   Option(
-    title: 'Cash  In Hand:',
-    size: '40',
-    value: '50.0',
-
-  ),
-  Option(
-    title: 'Last Month Stock',
-    size: '40',
-    value: '50.0',
-    ),
-  Option(
     title: 'Loan Amount',
     size: '40',
     value: '50.0', 
