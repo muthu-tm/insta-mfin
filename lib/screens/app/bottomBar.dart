@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/Common/IconButton.dart';
-import 'package:instamfin/Customer/profile.dart';
+import 'package:instamfin/Customer/CustomerHome.dart';
 import 'package:instamfin/screens/settings/SettingsPage.dart';
 import 'package:instamfin/screens/utils/colors.dart';
 
@@ -20,7 +20,7 @@ Widget bottomBar(BuildContext context) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CustomerTransactionScreen()),
+                      builder: (context) => CustomerScreen()),
                 );
               }, // button pressed
               child: Column(

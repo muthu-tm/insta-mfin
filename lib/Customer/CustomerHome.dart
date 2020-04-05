@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/Common/IconButton.dart';
+import 'package:instamfin/Customer/AddCustomerPage.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/Common/IconButton.dart';
-import 'package:instamfin/screens/settings/CompanyProfileSettingPase.dart';
 import 'package:instamfin/screens/utils/colors.dart';
 
-class SettingMain extends StatefulWidget {
-  const SettingMain({this.toggleView});
 
-  final Function toggleView;
+class CustomerScreen extends StatefulWidget {
+  const CustomerScreen({Key key}) : super(key: key);
 
   @override
-  _SettingMainState createState() => _SettingMainState();
+  _CustomerScreenState createState() => _CustomerScreenState();
 }
 
-class _SettingMainState extends State<SettingMain> {
+class _CustomerScreenState extends State<CustomerScreen> {
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -36,17 +36,17 @@ class _SettingMainState extends State<SettingMain> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CompanyProfileSetting()),
+                      MaterialPageRoute(builder: (context) => AddCustomerScreen()),
                     );
                   }, // button pressed
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.account_balance, 50.0, CustomColors.mfinBlue),
+                          Icons.person_add, 50.0, CustomColors.mfinBlue),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Company Settings",
+                        "Add Customer",
                         style: TextStyle(
                           fontSize: 17,
                           color: CustomColors.mfinGrey,
@@ -63,10 +63,10 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.account_box, 50.0, CustomColors.mfinBlue),
+                          Icons.group, 50.0, CustomColors.mfinBlue),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Profile Settings",
+                        "All Customers",
                         style: TextStyle(
                           fontSize: 17,
                           color: CustomColors.mfinGrey,
@@ -90,14 +90,14 @@ class _SettingMainState extends State<SettingMain> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      customIconButton(Icons.notifications_active, 50.0,
-                          CustomColors.mfinBlue),
+                      customIconButton(Icons.group, 50.0,
+                          CustomColors.mfinPositiveGreen),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Notification Settings",
+                        "Active Customers",
                         style: TextStyle(
                           fontSize: 17,
-                          color: CustomColors.mfinGrey,
+                          color: CustomColors.mfinPositiveGreen,
                           fontWeight: FontWeight.bold,
                         ),
                       ), // text
@@ -111,13 +111,13 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.fingerprint, 50.0, CustomColors.mfinBlue),
+                          Icons.group, 50.0, CustomColors.mfinAlertRed),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "FingerPrint Login",
+                        "Pending Customers",
                         style: TextStyle(
                           fontSize: 17,
-                          color: CustomColors.mfinGrey,
+                          color: CustomColors.mfinAlertRed,
                           fontWeight: FontWeight.bold,
                         ),
                       ), // text
@@ -138,10 +138,10 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       customIconButton(
-                          Icons.brightness_4, 50.0, CustomColors.mfinBlue),
+                          Icons.group, 50.0, CustomColors.mfinGrey),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Dark Theme",
+                        "Closed Customers",
                         style: TextStyle(
                           fontSize: 17,
                           color: CustomColors.mfinGrey,
