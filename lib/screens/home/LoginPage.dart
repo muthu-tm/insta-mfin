@@ -34,7 +34,8 @@ class _LoginControllerState extends State<LoginController> {
         title: Text('Login'),
         backgroundColor: CustomColors.mfinBlue,
       ),
-      body: new Container(
+      body: new Center(
+      child: Container(
         child: new SingleChildScrollView(
           child: new Column(
             children: <Widget>[
@@ -164,6 +165,7 @@ class _LoginControllerState extends State<LoginController> {
           ),
         ),
       ),
+      ),
     );
   }
 
@@ -192,7 +194,7 @@ class _LoginControllerState extends State<LoginController> {
         print("User logged in successfully");
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CustomerTransactionScreen()),
+          MaterialPageRoute(builder: (context) => UserHomeScreen()),
         );
       }
     } else {
