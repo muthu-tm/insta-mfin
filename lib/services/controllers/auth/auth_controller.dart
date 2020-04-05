@@ -77,19 +77,20 @@ class AuthController {
 
   dynamic signOut() async {
     try {
-      await _authService.signOut();
+      return await _authService.signOut();
 
-      return {
-        'is_signed_out': true,
-        "error_code": 0,
-        "message": "Successfully signed out!"
-      };
+      // return {
+      //   'is_signed_out': true,
+      //   "error_code": 0,
+      //   "message": "Successfully signed out!"
+      // };
     } catch (err) {
-      return {
-        'is_signed_out': false,
-        // "error_code": err.code,
-        "message": err.message
-      };
+      // return {
+      //   'is_signed_out': false,
+      //   // "error_code": err.code,
+      //   "message": err.message
+      // };
+      return null;
     }
   }
 
