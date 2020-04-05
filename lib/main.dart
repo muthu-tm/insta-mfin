@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './services/auth_wrapper.dart';
+import 'package:instamfin/screens/utils/auth_wrapper.dart';
 import 'services/authenticate/auth.dart';
 import 'package:provider/provider.dart';
 import 'db/models/user.dart';

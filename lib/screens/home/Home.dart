@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/Common/CustomTextFormField.dart';
-import 'package:instamfin/Customer/customerOptions.dart';
+import 'package:instamfin/screens/utils/CustomTextFormField.dart';
+import 'package:instamfin/screens/home/HomeOptions.dart';
 
 
-class CustomerTransactionScreen extends StatefulWidget {
+class UserHomeScreen extends StatefulWidget {
   @override
-  _CustomerTransactionScreenState createState() => _CustomerTransactionScreenState();
+  _UserHomeScreenState createState() => _UserHomeScreenState();
 }
 
-class _CustomerTransactionScreenState extends State<CustomerTransactionScreen> {
+class _UserHomeScreenState extends State<UserHomeScreen> {
   int _selectedOption = 0;
 
   get child => null;

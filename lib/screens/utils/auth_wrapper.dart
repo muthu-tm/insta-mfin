@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:instamfin/screens/home/authenticate.dart';
-import './../customer/profile.dart';
-import './../db/models/user.dart';
+import 'package:instamfin/screens/home/Authenticate.dart';
+import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/db/models/user.dart';
 
 class Wrapper extends StatelessWidget {
   @override
@@ -12,9 +12,7 @@ class Wrapper extends StatelessWidget {
       if (user == null) {
         return Authenticate();
       } else {
-        print("SIGNED IN");
-        return CustomerTransactionScreen(); 
+        return UserHomeScreen(); 
       }
-      // return either the Home or Authenticate screen
   }
 }

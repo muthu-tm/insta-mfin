@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
-import 'package:instamfin/Common/CustomTextFormField.dart';
+import 'package:instamfin/screens/utils/CustomTextFormField.dart';
 
 class AddCustomerScreen extends StatefulWidget {
   const AddCustomerScreen({Key key}) : super(key: key);

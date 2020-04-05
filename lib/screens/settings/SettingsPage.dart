@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/Common/IconButton.dart';
-import 'package:instamfin/screens/settings/CompanyProfileSettingPase.dart';
+import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/utils/colors.dart';
 
 class SettingMain extends StatefulWidget {

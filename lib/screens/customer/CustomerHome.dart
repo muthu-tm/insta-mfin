@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/Common/IconButton.dart';
-import 'package:instamfin/Customer/AddCustomerPage.dart';
+import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/screens/customer/AddCustomerPage.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/colors.dart';
