@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/CustomTextFormField.dart';
 
 class CompanyProfileSetting extends StatefulWidget {
@@ -17,6 +18,7 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: topAppBar(),
+      drawer: openDrawer(context),
       //hit Ctrl+space in intellij to know what are the options you can use in flutter widgets
       body: SingleChildScrollView(
         child: Center(

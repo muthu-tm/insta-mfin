@@ -69,11 +69,13 @@ Widget openDrawer(BuildContext context) {
         MaterialPageRoute(builder: (context) => CompanyProfileSetting()),
       ),
     ),
+        new Divider(),
     new ListTile(
       leading: new Icon(Icons.notifications),
       title: new Text('Notifications'),
       onTap: () => null,
     ),
+        new Divider(),
     new ListTile(
       leading: new Icon(Icons.settings),
       title: new Text('Profile Settings'),
