@@ -23,7 +23,8 @@ Widget openDrawer(BuildContext context) {
     new Divider(),
     new ExpansionTile(
       title: new Text("Transactions"),
-      leading: new Icon(Icons.content_copy, color: CustomColors.mfinButtonGreen),
+      leading:
+          new Icon(Icons.content_copy, color: CustomColors.mfinButtonGreen),
       children: <Widget>[
         new ListTile(
           title: new Text('Make a Transaction'),
@@ -38,7 +39,8 @@ Widget openDrawer(BuildContext context) {
       ],
     ),
     new ExpansionTile(
-      leading: new Icon(Icons.supervisor_account, color: CustomColors.mfinButtonGreen),
+      leading: new Icon(Icons.supervisor_account,
+          color: CustomColors.mfinButtonGreen),
       title: new Text('My Customers'),
       children: <Widget>[
         new ListTile(
@@ -71,19 +73,22 @@ Widget openDrawer(BuildContext context) {
     ),
     new Divider(),
     new ListTile(
-      leading: new Icon(Icons.notifications_active, color: CustomColors.mfinButtonGreen),
+      leading: new Icon(Icons.notifications_active,
+          color: CustomColors.mfinButtonGreen),
       title: new Text('Notifications'),
       onTap: () => null,
     ),
     new Divider(),
     new ListTile(
-      leading: new Icon(Icons.account_balance, color: CustomColors.mfinButtonGreen),
+      leading:
+          new Icon(Icons.account_balance, color: CustomColors.mfinButtonGreen),
       title: new Text('Company Settings'),
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => CompanyProfileSetting()),
       ),
     ),
+    new Divider(),
     new ListTile(
       leading: new Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
       title: new Text('Profile Settings'),

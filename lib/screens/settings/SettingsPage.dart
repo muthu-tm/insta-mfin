@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/utils/colors.dart';
@@ -19,6 +20,7 @@ class _SettingMainState extends State<SettingMain> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: topAppBar(),
+      drawer: openDrawer(context),
       //hit Ctrl+space in intellij to know what are the options you can use in flutter widgets
       body: new Container(
         height: MediaQuery.of(context).size.height * 0.80,

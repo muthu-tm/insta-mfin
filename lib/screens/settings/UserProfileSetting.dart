@@ -4,16 +4,16 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/CustomTextFormField.dart';
 
-class CompanyProfileSetting extends StatefulWidget {
-  const CompanyProfileSetting({this.toggleView});
+class UserProfileSetting extends StatefulWidget {
+  const UserProfileSetting({this.toggleView});
 
   final Function toggleView;
 
   @override
-  _CompanyProfileSettingState createState() => _CompanyProfileSettingState();
+  _UserProfileSettingState createState() => _UserProfileSettingState();
 }
 
-class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
+class _UserProfileSettingState extends State<UserProfileSetting> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -45,21 +45,15 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                   letterSpacing: 2.5,
                 ),
               ),
-              customTextFormField('Registered ID', Colors.grey[350],
+              customTextFormField('Mobile Number', Colors.grey[350],
                   Icons.navigate_next, TextInputType.text),
-              customTextFormField('Contact Number', Colors.grey[350],
-                  Icons.navigate_next, TextInputType.number),
               customTextFormField('Email', Colors.grey[350],
                   Icons.navigate_next, TextInputType.emailAddress),
-              customTextFormField('Date of Registration', Colors.grey[350],
+              customTextFormField('Date of Birth', Colors.grey[350],
                   Icons.navigate_next, TextInputType.datetime),
-              customTextFormField('Next Renewal Date', Colors.grey[350],
+              customTextFormField('Date of Join', Colors.grey[350],
                   Icons.navigate_next, TextInputType.datetime),
-              customTextFormField('Number of Lines/Area', Colors.grey[350],
-                  Icons.navigate_next, TextInputType.text),
               customTextFormField('Office Address', Colors.grey[350],
-                  Icons.navigate_next, TextInputType.text),
-              customTextFormField('Customize App Appearence', Colors.grey[350],
                   Icons.navigate_next, TextInputType.text),
               customTextFormField('Refer & Earn', Colors.grey[350],
                   Icons.notifications, TextInputType.text),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
+import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/CustomTextFormField.dart';
 
 class AddCustomerScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
     return Scaffold(
       backgroundColor: Colors.blue[800],
       appBar: topAppBar(),
+      drawer: openDrawer(context),
       body: Column(children: <Widget>[
               Row(
                 //ROW 1
