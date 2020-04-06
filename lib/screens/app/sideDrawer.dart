@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
-import 'package:instamfin/screens/utils/colors.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 Widget openDrawer(BuildContext context) {
+  final AuthController _authController = AuthController();
+
   return new Drawer(
       child: new ListView(children: <Widget>[
     new UserAccountsDrawerHeader(
@@ -116,7 +120,10 @@ Widget openDrawer(BuildContext context) {
     new ListTile(
       leading: new Icon(Icons.error, color: CustomColors.mfinAlertRed),
       title: new Text('Logout'),
-      onTap: () => null,
+      onTap: () => CustomDialogs.confirm(
+          context, "Warning!", "Do you really want to exit?", () async {
+        await _authController.signOut();
+      }, () => Navigator.pop(context, false)),
     ),
     new Container(
         color: CustomColors.mfinBlue,

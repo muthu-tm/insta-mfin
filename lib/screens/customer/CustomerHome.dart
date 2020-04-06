@@ -4,7 +4,7 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/customer/AddCustomerPage.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/screens/utils/colors.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
 
 
 class CustomerScreen extends StatefulWidget {

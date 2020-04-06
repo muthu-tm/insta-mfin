@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:instamfin/main.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/utils/CustomTextFormField.dart';
 import 'package:instamfin/screens/home/HomeOptions.dart';
-import 'package:instamfin/screens/utils/colors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class UserHomeScreen extends StatefulWidget {
@@ -24,63 +22,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
-        onWillPop: () => showDialog<bool>(
-              context: context,
-              builder: (c) => AlertDialog(
-                backgroundColor: CustomColors.mfinGrey,
-                titlePadding: EdgeInsets.all(10),
-                title: Container(
-                  // decoration: BoxDecoration(color: CustomColors.mfinAlertRed),
-                  child: new Text(
-                    'Warning!',
-                    style: TextStyle(
-                        color: CustomColors.mfinAlertRed, fontSize: 18.0),
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                content: new Container(
-                  child: new Text(
-                    'Do you really want to exit?',
-                    style:
-                        TextStyle(color: CustomColors.mfinBlue, fontSize: 18.0),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                actions: <Widget>[
-                  RaisedButton(
-                    child: new Text(
-                      'YES',
-                      style: TextStyle(
-                          color: CustomColors.mfinAlertRed, fontSize: 18.0),
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: () async {
-                      await _authController.signOut();
-
-                      // if (!result['is_signed_out']) {
-                      //   print(
-                      //       "Unable to SIGN OUT, Error: " + result['message']);
-                      // } else {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => MyApp()),
-                      //   );
-                      // }
-                    },
-                  ),
-                  RaisedButton(
-                    child: new Text(
-                      'NO',
-                      style: TextStyle(
-                          color: CustomColors.mfinButtonGreen, fontSize: 18.0),
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: () => Navigator.pop(c, false),
-                  ),
-                ],
-              ),
-            ),
+        onWillPop: () => CustomDialogs.confirm(
+                context, "Warning!", "Do you really want to exit?", () async {
+              await _authController.signOut();
+            }, () => Navigator.pop(context, false)),
         child: Scaffold(
           backgroundColor: Colors.blue[800],
           appBar: topAppBar(),

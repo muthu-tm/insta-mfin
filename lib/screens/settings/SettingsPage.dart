@@ -5,7 +5,7 @@ import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
-import 'package:instamfin/screens/utils/colors.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class SettingMain extends StatefulWidget {
   const SettingMain({this.toggleView});
