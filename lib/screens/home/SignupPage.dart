@@ -267,7 +267,10 @@ class _RegisterFormState extends State<RegisterForm> {
         print("Successfully registered the user");
         print("UPLOADING image file: " + _imageFile.toString());
         if (_imageFile != null) {
+          String filePath = await Uploader.copyToAppDirectory(_imageFile, emailID);
+
           Uploader.uploadImage(
+              "users_profile",
               _imageFile.path,
               emailID,
               (downloadURL) => Navigator.push(
@@ -276,7 +279,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
               () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserProfileSetting("")),
+                    MaterialPageRoute(builder: (context) => UserProfileSetting(filePath)),
                   ));
         } else {
           Navigator.push(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/home/ImageUploader.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
@@ -58,9 +59,13 @@ class _SettingMainState extends State<SettingMain> {
                 InkWell(
                   splashColor: CustomColors.mfinButtonGreen, // splash color
                   onTap: () {
+                    String filePath = Uploader.userImageLocalPath;
+                    if (filePath.isEmpty) {
+                      filePath = Uploader.userImageCloudPath;
+                    }
                      Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => UserProfileSetting("")),
+                      MaterialPageRoute(builder: (context) => UserProfileSetting(filePath)),
                     );
                   }, // button pressed
                   child: Column(

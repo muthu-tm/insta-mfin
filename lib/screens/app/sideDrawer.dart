@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/ImageUploader.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -16,9 +18,13 @@ Widget openDrawer(BuildContext context) {
       accountEmail: const Text("A&E Specialties"),
       arrowColor: CustomColors.mfinBlue,
       onDetailsPressed: () {
+        String filePath = Uploader.userImageLocalPath;
+        if (filePath.isEmpty) {
+          filePath = Uploader.userImageCloudPath;
+        }
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserProfileSetting("")),
+          MaterialPageRoute(builder: (context) => UserProfileSetting(filePath)),
         );
       },
       currentAccountPicture: new CircleAvatar(
@@ -105,9 +111,13 @@ Widget openDrawer(BuildContext context) {
       leading: new Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
       title: new Text('Profile Settings'),
       onTap: () {
+        String filePath = Uploader.userImageLocalPath;
+        if (filePath.isEmpty) {
+          filePath = Uploader.userImageCloudPath;
+        }
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserProfileSetting("")),
+          MaterialPageRoute(builder: (context) => UserProfileSetting(filePath)),
         );
       },
     ),
@@ -123,6 +133,10 @@ Widget openDrawer(BuildContext context) {
       onTap: () => CustomDialogs.confirm(
           context, "Warning!", "Do you really want to exit?", () async {
         await _authController.signOut();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Authenticate()),
+        );
       }, () => Navigator.pop(context, false)),
     ),
     new Container(
