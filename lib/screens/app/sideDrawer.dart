@@ -10,6 +10,13 @@ Widget openDrawer(BuildContext context) {
     new UserAccountsDrawerHeader(
       accountName: const Text("Vale"),
       accountEmail: const Text("A&E Specialties"),
+      arrowColor: CustomColors.mfinBlue,
+      onDetailsPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UserProfileSetting()),
+        );
+      },
       currentAccountPicture: new CircleAvatar(
           backgroundColor: CustomColors.mfinBlue, child: new Text("Test")),
     ),
