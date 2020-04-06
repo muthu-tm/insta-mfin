@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/HomeOptions.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
@@ -25,6 +26,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         onWillPop: () => CustomDialogs.confirm(
                 context, "Warning!", "Do you really want to exit?", () async {
               await _authController.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Authenticate()),
+              );
             }, () => Navigator.pop(context, false)),
         child: Scaffold(
           backgroundColor: Colors.blue[800],

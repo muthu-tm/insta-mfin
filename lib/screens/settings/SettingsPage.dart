@@ -8,10 +8,6 @@ import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class SettingMain extends StatefulWidget {
-  const SettingMain({this.toggleView});
-
-  final Function toggleView;
-
   @override
   _SettingMainState createState() => _SettingMainState();
 }
@@ -64,7 +60,7 @@ class _SettingMainState extends State<SettingMain> {
                   onTap: () {
                      Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => UserProfileSetting()),
+                      MaterialPageRoute(builder: (context) => UserProfileSetting("")),
                     );
                   }, // button pressed
                   child: Column(

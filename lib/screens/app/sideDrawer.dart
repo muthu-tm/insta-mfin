@@ -18,7 +18,7 @@ Widget openDrawer(BuildContext context) {
       onDetailsPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserProfileSetting()),
+          MaterialPageRoute(builder: (context) => UserProfileSetting("")),
         );
       },
       currentAccountPicture: new CircleAvatar(
@@ -107,7 +107,7 @@ Widget openDrawer(BuildContext context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserProfileSetting()),
+          MaterialPageRoute(builder: (context) => UserProfileSetting("")),
         );
       },
     ),

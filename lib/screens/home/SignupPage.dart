@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instamfin/screens/home/ImageUploader.dart';
+import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/validator.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
-import 'package:instamfin/screens/settings/SettingsPage.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({this.toggleView});
@@ -20,7 +21,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AuthController _authController = AuthController();
 
-  String email;
+  String emailID;
   String password;
   String name;
   String mobileNumber;
@@ -230,7 +231,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   setEmailID(String emailID) {
     setState(() {
-      this.email = emailID.trim();
+      this.emailID = emailID.trim();
     });
   }
 
@@ -259,15 +260,30 @@ class _RegisterFormState extends State<RegisterForm> {
 
     if (form.validate()) {
       dynamic result = await _authController.registerUserWithEmailPassword(
-          email, password, name, mobileNumber);
+          emailID, password, name, mobileNumber);
       if (!result['is_registered']) {
         print("Unable to register USER: " + result['message']);
       } else {
         print("Successfully registered the user");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SettingMain()),
-        );
+        print("UPLOADING image file: " + _imageFile.toString());
+        if (_imageFile != null) {
+          Uploader.uploadImage(
+              _imageFile.path,
+              emailID,
+              (downloadURL) => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserProfileSetting(downloadURL)),
+                  ),
+              () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserProfileSetting("")),
+                  ));
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => UserProfileSetting("")),
+          );
+        }
       }
     } else {
       print("Invalid form values");

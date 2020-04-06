@@ -77,7 +77,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                 ),
               ],
             ),
-            Uploader(file: _imageFile)
+            // Uploader(_imageFile)
           ]
         ],
       ),
