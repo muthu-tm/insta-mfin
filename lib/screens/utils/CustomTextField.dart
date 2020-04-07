@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
 
 Widget customTextField(
     hintText, bodyColor, suffixIcon, prefixIcon, prefixIconColor) {
@@ -10,7 +11,7 @@ Widget customTextField(
       border: InputBorder.none,
       suffixIcon: Icon(
         suffixIcon,
-        color: Colors.blue[200],
+        color: CustomColors.mfinBlue,
         size: 35.0,
       ),
       prefixIcon: Icon(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomTextFormField.dart';
 
 class AddCustomerScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[800],
+      backgroundColor: CustomColors.mfinBlue,
       appBar: topAppBar(context),
       drawer: openDrawer(context),
       body: Column(children: <Widget>[
@@ -25,27 +26,27 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 //ROW 1
                 children: [
                  Text('Customer ID:'),
-                 customTextFormField('Customer ID', Colors.black, null, TextInputType.text)
+                 customTextFormField('Customer ID', CustomColors.mfinWhite, null, TextInputType.text)
                 ],
               ),
               Row(//ROW 2
                   children: [
                 Container(
-                  color: Colors.orange,
+                  color: CustomColors.mfinGrey,
                   margin: EdgeInsets.all(25.0),
                   child: FlutterLogo(
                     size: 60.0,
                   ),
                 ),
                 Container(
-                  color: Colors.blue,
+                  color: CustomColors.mfinGrey,
                   margin: EdgeInsets.all(25.0),
                   child: FlutterLogo(
                     size: 60.0,
                   ),
                 ),
                 Container(
-                  color: Colors.purple,
+                  color: CustomColors.mfinGrey,
                   margin: EdgeInsets.all(25.0),
                   child: FlutterLogo(
                     size: 60.0,
@@ -55,21 +56,21 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               Row(// ROW 3
                   children: [
                 Container(
-                  color: Colors.orange,
+                  color: CustomColors.mfinGrey,
                   margin: EdgeInsets.all(25.0),
                   child: FlutterLogo(
                     size: 60.0,
                   ),
                 ),
                 Container(
-                  color: Colors.blue,
+                  color: CustomColors.mfinGrey,
                   margin: EdgeInsets.all(25.0),
                   child: FlutterLogo(
                     size: 60.0,
                   ),
                 ),
                 Container(
-                  color: Colors.purple,
+                  color: CustomColors.mfinGrey,
                   margin: EdgeInsets.all(25.0),
                   child: FlutterLogo(
                     size: 60.0,

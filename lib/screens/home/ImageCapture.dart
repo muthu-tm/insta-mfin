@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instamfin/screens/home/ImageUploader.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
 
 /// Widget to capture and crop the image
 class ImageCapture extends StatefulWidget {
@@ -18,8 +18,8 @@ class _ImageCaptureState extends State<ImageCapture> {
     File cropped = await ImageCropper.cropImage(
         sourcePath: _imageFile.path,
         androidUiSettings: AndroidUiSettings(
-            toolbarColor: Colors.purple,
-            toolbarWidgetColor: Colors.white,
+            toolbarColor: CustomColors.mfinPositiveGreen,
+            toolbarWidgetColor: CustomColors.mfinWhite,
             toolbarTitle: 'Crop Image'));
 
     setState(() {

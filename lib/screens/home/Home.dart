@@ -5,6 +5,7 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/HomeOptions.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
@@ -32,7 +33,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               );
             }, () => Navigator.pop(context, false)),
         child: Scaffold(
-          backgroundColor: Colors.blue[800],
+          backgroundColor: CustomColors.mfinBlue,
           appBar: topAppBar(context),
           drawer: openDrawer(context),
           body: ListView.builder(
@@ -49,10 +50,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 width: double.infinity,
                 height: 70.0,
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: CustomColors.mfinGrey,
                   borderRadius: BorderRadius.circular(10.0),
                   border: _selectedOption == index - 1
-                      ? Border.all(color: Colors.white)
+                      ? Border.all(color: CustomColors.mfinWhite)
                       : null,
                 ),
                 child: ListTile(
@@ -61,8 +62,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     options[index - 1].title,
                     style: TextStyle(
                       color: _selectedOption == index - 1
-                          ? Colors.black
-                          : Colors.grey[600],
+                          ? CustomColors.mfinWhite
+                          : CustomColors.mfinGrey,
                     ),
                   ),
                   selected: _selectedOption == index - 1,
