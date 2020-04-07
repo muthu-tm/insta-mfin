@@ -36,7 +36,7 @@ Widget openDrawer(BuildContext context) {
         MaterialPageRoute(builder: (context) => UserHomeScreen()),
       ),
     ),
-    new Divider(),
+    new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
     new ExpansionTile(
       title: new Text("Transactions"),
       leading:
@@ -87,14 +87,14 @@ Widget openDrawer(BuildContext context) {
         )
       ],
     ),
-    new Divider(),
+    new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
     new ListTile(
       leading: new Icon(Icons.notifications_active,
           color: CustomColors.mfinButtonGreen),
       title: new Text('Notifications'),
       onTap: () => null,
     ),
-    new Divider(),
+    new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
     new ListTile(
         leading: new Icon(Icons.account_balance,
             color: CustomColors.mfinButtonGreen),
@@ -115,7 +115,7 @@ Widget openDrawer(BuildContext context) {
         );
       },
     ),
-    new Divider(),
+    new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
     new ListTile(
       leading: new Icon(Icons.headset_mic, color: CustomColors.mfinButtonGreen),
       title: new Text('Help & Support'),
