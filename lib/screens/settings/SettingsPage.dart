@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/home/ImageUploader.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
@@ -17,9 +16,8 @@ class _SettingMainState extends State<SettingMain> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: topAppBar(),
       drawer: openDrawer(context),
-      //hit Ctrl+space in intellij to know what are the options you can use in flutter widgets
+      appBar: topAppBar(context),
       body: new Container(
         height: MediaQuery.of(context).size.height * 0.80,
         child: new Column(
@@ -36,14 +34,22 @@ class _SettingMainState extends State<SettingMain> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CompanyProfileSetting()),
+                      MaterialPageRoute(
+                          builder: (context) => CompanyProfileSetting()),
                     );
                   }, // button pressed
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.account_balance, 50.0, CustomColors.mfinBlue),
+                          Icons.account_balance, 50.0, CustomColors.mfinBlue,
+                          () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CompanyProfileSetting()),
+                        );
+                      }),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Company Settings",
@@ -59,20 +65,24 @@ class _SettingMainState extends State<SettingMain> {
                 InkWell(
                   splashColor: CustomColors.mfinButtonGreen, // splash color
                   onTap: () {
-                    String filePath = Uploader.userImageLocalPath;
-                    if (filePath.isEmpty) {
-                      filePath = Uploader.userImageCloudPath;
-                    }
-                     Navigator.push(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => UserProfileSetting(filePath)),
+                      MaterialPageRoute(
+                          builder: (context) => UserProfileSetting()),
                     );
                   }, // button pressed
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.account_box, 50.0, CustomColors.mfinBlue),
+                          Icons.account_box, 50.0, CustomColors.mfinBlue, () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  UserProfileSetting()),
+                        );
+                      }),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Profile Settings",
@@ -100,7 +110,9 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(Icons.notifications_active, 50.0,
-                          CustomColors.mfinBlue),
+                          CustomColors.mfinBlue, () {
+                        print("Pressed Notifications");
+                      }),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Notification Settings",
@@ -120,7 +132,9 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.fingerprint, 50.0, CustomColors.mfinBlue),
+                          Icons.fingerprint, 50.0, CustomColors.mfinBlue, () {
+                        print("Pressed Fingerprint Login");
+                      }),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "FingerPrint Login",
@@ -148,7 +162,9 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       customIconButton(
-                          Icons.brightness_4, 50.0, CustomColors.mfinBlue),
+                          Icons.brightness_4, 50.0, CustomColors.mfinBlue, () {
+                        print("Pressed Dark Theme");
+                      }),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Dark Theme",

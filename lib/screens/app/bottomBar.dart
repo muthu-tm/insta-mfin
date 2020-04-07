@@ -19,15 +19,19 @@ Widget bottomBar(BuildContext context) {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => CustomerScreen()),
+                  MaterialPageRoute(builder: (context) => CustomerScreen()),
                 );
               }, // button pressed
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   customIconButton(Icons.supervisor_account, 40.0,
-                      CustomColors.mfinButtonGreen),
+                      CustomColors.mfinButtonGreen, () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CustomerScreen()),
+                    );
+                  }),
                   Text(
                     "Customers",
                     style: TextStyle(
@@ -52,7 +56,9 @@ Widget bottomBar(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   customIconButton(
-                      Icons.assessment, 35.0, CustomColors.mfinButtonGreen),
+                      Icons.assessment, 35.0, CustomColors.mfinButtonGreen, () {
+                    print("Pressed Statistics");
+                  }),
                   Text(
                     "Statistics",
                     style: TextStyle(
@@ -76,7 +82,10 @@ Widget bottomBar(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   customIconButton(
-                      Icons.content_copy, 35.0, CustomColors.mfinButtonGreen),
+                      Icons.content_copy, 35.0, CustomColors.mfinButtonGreen,
+                      () {
+                    print("Pressed Transactions");
+                  }),
                   Text(
                     "Transactions",
                     style: TextStyle(
@@ -105,7 +114,12 @@ Widget bottomBar(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   customIconButton(
-                      Icons.settings, 35.0, CustomColors.mfinButtonGreen),
+                      Icons.settings, 35.0, CustomColors.mfinButtonGreen, () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingMain()),
+                    );
+                  }),
                   Text(
                     "Settings",
                     style: TextStyle(

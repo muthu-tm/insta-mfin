@@ -6,6 +6,14 @@ class Uploader {
   static String userImageLocalPath = "";
   static String userImageCloudPath = "";
 
+  static String getUserImagePath() {
+    if (userImageLocalPath.isEmpty) {
+      return userImageCloudPath;
+    }
+
+    return userImageLocalPath;
+  }
+
   static Future<String> copyToAppDirectory(File image, String emailID) async {
     try {
       // getting a directory path for saving

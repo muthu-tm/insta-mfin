@@ -6,7 +6,6 @@ import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({Key key}) : super(key: key);
 
@@ -15,13 +14,11 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: topAppBar(),
+      appBar: topAppBar(context),
       drawer: openDrawer(context),
-      //hit Ctrl+space in intellij to know what are the options you can use in flutter widgets
       body: new Container(
         height: MediaQuery.of(context).size.height * 0.80,
         child: new Column(
@@ -38,14 +35,21 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddCustomerScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => AddCustomerScreen()),
                     );
                   }, // button pressed
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.person_add, 50.0, CustomColors.mfinBlue),
+                          Icons.person_add, 50.0, CustomColors.mfinBlue, () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddCustomerScreen()),
+                        );
+                      }),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Add Customer",
@@ -65,7 +69,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.group, 50.0, CustomColors.mfinBlue),
+                          Icons.group, 50.0, CustomColors.mfinBlue, () {print("Pressed All Customers");}),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "All Customers",
@@ -92,8 +96,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      customIconButton(Icons.group, 50.0,
-                          CustomColors.mfinPositiveGreen),
+                      customIconButton(
+                          Icons.group, 50.0, CustomColors.mfinPositiveGreen, () {print("Pressed All Customers");}),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Active Customers",
@@ -113,7 +117,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.group, 50.0, CustomColors.mfinAlertRed),
+                          Icons.group, 50.0, CustomColors.mfinAlertRed, () {print("Pressed All Customers");}),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Pending Customers",
@@ -140,7 +144,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       customIconButton(
-                          Icons.group, 50.0, CustomColors.mfinGrey),
+                          Icons.group, 50.0, CustomColors.mfinGrey, () {print("Pressed All Customers");}),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Closed Customers",

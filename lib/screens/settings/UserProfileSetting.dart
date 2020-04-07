@@ -4,11 +4,9 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/CustomTextFormField.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instamfin/screens/utils/static_data.dart';
 
 class UserProfileSetting extends StatefulWidget {
-  const UserProfileSetting(this.profileURL);
-
-  final String profileURL;
 
   @override
   _UserProfileSettingState createState() => _UserProfileSettingState();
@@ -18,9 +16,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: topAppBar(),
+      appBar: topAppBar(context),
       drawer: openDrawer(context),
-      //hit Ctrl+space in intellij to know what are the options you can use in flutter widgets
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -28,7 +25,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
             children: <Widget>[
               CircleAvatar(
                 radius: 30,
-                backgroundImage: CachedNetworkImageProvider(widget.profileURL),
+                backgroundImage: CachedNetworkImageProvider(StaticData.userProfileImagePath),
               ),
               Text(
                 'Vale Muthu',

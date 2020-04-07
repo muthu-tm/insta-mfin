@@ -33,7 +33,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
             }, () => Navigator.pop(context, false)),
         child: Scaffold(
           backgroundColor: Colors.blue[800],
-          appBar: topAppBar(),
+          appBar: topAppBar(context),
           drawer: openDrawer(context),
           body: ListView.builder(
             itemCount: options.length + 2,

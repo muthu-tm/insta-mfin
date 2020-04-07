@@ -17,9 +17,8 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: topAppBar(),
+      appBar: topAppBar(context),
       drawer: openDrawer(context),
-      //hit Ctrl+space in intellij to know what are the options you can use in flutter widgets
       body: SingleChildScrollView(
         child: Center(
           child: Column(

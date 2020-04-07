@@ -1,16 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
-import 'package:instamfin/screens/home/ImageUploader.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/static_data.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 Widget openDrawer(BuildContext context) {
   final AuthController _authController = AuthController();
-
   return new Drawer(
       child: new ListView(children: <Widget>[
     new UserAccountsDrawerHeader(
@@ -18,17 +18,15 @@ Widget openDrawer(BuildContext context) {
       accountEmail: const Text("A&E Specialties"),
       arrowColor: CustomColors.mfinBlue,
       onDetailsPressed: () {
-        String filePath = Uploader.userImageLocalPath;
-        if (filePath.isEmpty) {
-          filePath = Uploader.userImageCloudPath;
-        }
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserProfileSetting(filePath)),
+          MaterialPageRoute(builder: (context) => UserProfileSetting()),
         );
       },
       currentAccountPicture: new CircleAvatar(
-          backgroundColor: CustomColors.mfinBlue, child: new Text("Test")),
+          backgroundImage: CachedNetworkImageProvider(StaticData.userProfileImagePath),
+          backgroundColor: CustomColors.mfinBlue,
+          child: new Text("Test")),
     ),
     new ListTile(
       leading: new Icon(Icons.home, color: CustomColors.mfinButtonGreen),
@@ -111,13 +109,9 @@ Widget openDrawer(BuildContext context) {
       leading: new Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
       title: new Text('Profile Settings'),
       onTap: () {
-        String filePath = Uploader.userImageLocalPath;
-        if (filePath.isEmpty) {
-          filePath = Uploader.userImageCloudPath;
-        }
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserProfileSetting(filePath)),
+          MaterialPageRoute(builder: (context) => UserProfileSetting()),
         );
       },
     ),

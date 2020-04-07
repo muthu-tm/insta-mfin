@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instamfin/screens/home/ImageUploader.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/validator.dart';
+import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -275,16 +275,16 @@ class _RegisterFormState extends State<RegisterForm> {
               emailID,
               (downloadURL) => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserProfileSetting(downloadURL)),
+                    MaterialPageRoute(builder: (context) => UserProfileSetting()),
                   ),
               () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserProfileSetting(filePath)),
+                    MaterialPageRoute(builder: (context) => UserProfileSetting()),
                   ));
         } else {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UserProfileSetting("")),
+            MaterialPageRoute(builder: (context) => UserProfileSetting()),
           );
         }
       }

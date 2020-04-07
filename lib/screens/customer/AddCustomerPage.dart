@@ -18,7 +18,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[800],
-      appBar: topAppBar(),
+      appBar: topAppBar(context),
       drawer: openDrawer(context),
       body: Column(children: <Widget>[
               Row(
