@@ -6,7 +6,7 @@ import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
-import 'package:instamfin/screens/utils/static_data.dart';
+import 'package:instamfin/screens/utils/utils.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 Widget openDrawer(BuildContext context) {
@@ -14,20 +14,19 @@ Widget openDrawer(BuildContext context) {
   return new Drawer(
       child: new ListView(children: <Widget>[
     new UserAccountsDrawerHeader(
-      accountName: const Text("Vale"),
-      accountEmail: const Text("A&E Specialties"),
-      arrowColor: CustomColors.mfinBlue,
-      onDetailsPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => UserProfileSetting()),
-        );
-      },
-      currentAccountPicture: new CircleAvatar(
-          backgroundImage: CachedNetworkImageProvider(StaticData.userProfileImagePath),
+        accountName: const Text("Vale"),
+        accountEmail: const Text("A&E Specialties"),
+        arrowColor: CustomColors.mfinBlue,
+        onDetailsPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => UserProfileSetting()),
+          );
+        },
+        currentAccountPicture: new CircleAvatar(
+          backgroundImage: Utils.getUserDisplayImage(),
           backgroundColor: CustomColors.mfinBlue,
-          child: new Text("Test")),
-    ),
+        )),
     new ListTile(
       leading: new Icon(Icons.home, color: CustomColors.mfinButtonGreen),
       title: new Text('Home'),

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instamfin/screens/home/ImageUploader.dart';
+import 'package:instamfin/services/storage/image_uploader.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -267,7 +267,7 @@ class _RegisterFormState extends State<RegisterForm> {
         print("Successfully registered the user");
         print("UPLOADING image file: " + _imageFile.toString());
         if (_imageFile != null) {
-          String filePath = await Uploader.copyToAppDirectory(_imageFile, emailID);
+          await Uploader.copyToAppDirectory(_imageFile, emailID);
 
           Uploader.uploadImage(
               "users_profile",

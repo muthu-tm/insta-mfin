@@ -5,8 +5,7 @@ import './../../authenticate/auth.dart';
 
 class AuthController {
   AuthService _authService = AuthService();
-  static UserDatabase _userDatabase = UserDatabase();
-  UserDao _userDao = UserDao(_userDatabase);
+  UserDao _userDao = UserDao(database);
 
   dynamic registerUserWithEmailPassword(
       emailID, passkey, userName, mobileNumber) async {
@@ -14,7 +13,8 @@ class AuthController {
       var userObj =
           await _authService.registerWithEmailPassword(emailID, passkey);
 
-      fb.User user = fb.User(userObj['id'], userObj['email']);
+      fb.User user = fb.User(userObj['email']);
+      user.setUserID(userObj['id']);
       user.setPassword(passkey);
       user.setName(userName);
       user.setMobileNumber(int.parse(mobileNumber));
@@ -22,8 +22,10 @@ class AuthController {
 
       //Create an user document in User collection
       await user.create();
-      User sqlUser = User.fromData(user.toJson(), _userDatabase);
-      _userDao.insertUser(sqlUser);
+      await _userDao.insertUser(user.toJson());
+
+      await user.setGlobalUserState(emailID);
+      await _userDao.setUserState(emailID);
 
       return {
         'is_registered': true,
@@ -47,15 +49,20 @@ class AuthController {
         userObj = await _authService.signInWithEmailPassword(emailID, passkey);
       }
 
-      fb.User user = fb.User(userObj['id'], userObj['email']);
+      fb.User user = fb.User(userObj['email']);
 
       // update cloud firestore "users" collection
-      user.update(userObj['id'], {'last_signed_in_at': DateTime.now()});
+      user.update(userObj['email'], {'last_signed_in_at': DateTime.now().toString()});
       // update sqlite usign Moor ORM
-      _userDao.updateSignIn(
-          UserModelCompanion(lastSignInTime: Value(DateTime.now().toString())),
+      _userDao.updateByEmailID(
+          UserModelCompanion(
+              lastSignInTime: Value(DateTime.now().toString()),
+              updatedAt: Value(DateTime.now().toString())),
           userObj['email']);
 
+      await user.setGlobalUserState(emailID);
+      await _userDao.setUserState(emailID);
+      
       return {
         'is_logged_in': true,
         "error_code": 0,

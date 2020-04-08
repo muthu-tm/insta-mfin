@@ -36,17 +36,25 @@ class User extends DataClass implements Insertable<User> {
   final int mobileNumber;
   final String password;
   final String gender;
+  final String displayProfileLocal;
+  final String displayProfileCloud;
   final DateTime dateOfBirth;
+  final String createdAt;
+  final String updatedAt;
   final String lastSignInTime;
   final UserAddress address;
   User(
-      {@required this.id,
+      {this.id,
       this.name,
       @required this.email,
       this.mobileNumber,
-      @required this.password,
+      this.password,
       this.gender,
+      this.displayProfileLocal,
+      this.displayProfileCloud,
       this.dateOfBirth,
+      this.createdAt,
+      this.updatedAt,
       this.lastSignInTime,
       this.address});
   factory User.fromData(Map<String, dynamic> data, GeneratedDatabase db,
@@ -67,8 +75,16 @@ class User extends DataClass implements Insertable<User> {
           .mapFromDatabaseResponse(data['${effectivePrefix}password']),
       gender:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}gender']),
+      displayProfileLocal: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}display_profile_local']),
+      displayProfileCloud: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}display_profile_cloud']),
       dateOfBirth: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}date_of_birth']),
+      createdAt: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
+      updatedAt: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
       lastSignInTime: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}last_signed_in_at']),
       address: $UserModelTable.$converter0.mapToDart(stringType
@@ -85,7 +101,13 @@ class User extends DataClass implements Insertable<User> {
       mobileNumber: serializer.fromJson<int>(json['mobileNumber']),
       password: serializer.fromJson<String>(json['password']),
       gender: serializer.fromJson<String>(json['gender']),
+      displayProfileLocal:
+          serializer.fromJson<String>(json['displayProfileLocal']),
+      displayProfileCloud:
+          serializer.fromJson<String>(json['displayProfileCloud']),
       dateOfBirth: serializer.fromJson<DateTime>(json['dateOfBirth']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
       lastSignInTime: serializer.fromJson<String>(json['lastSignInTime']),
       address: serializer.fromJson<UserAddress>(json['address']),
     );
@@ -100,7 +122,11 @@ class User extends DataClass implements Insertable<User> {
       'mobileNumber': serializer.toJson<int>(mobileNumber),
       'password': serializer.toJson<String>(password),
       'gender': serializer.toJson<String>(gender),
+      'displayProfileLocal': serializer.toJson<String>(displayProfileLocal),
+      'displayProfileCloud': serializer.toJson<String>(displayProfileCloud),
       'dateOfBirth': serializer.toJson<DateTime>(dateOfBirth),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'updatedAt': serializer.toJson<String>(updatedAt),
       'lastSignInTime': serializer.toJson<String>(lastSignInTime),
       'address': serializer.toJson<UserAddress>(address),
     };
@@ -121,9 +147,21 @@ class User extends DataClass implements Insertable<User> {
           : Value(password),
       gender:
           gender == null && nullToAbsent ? const Value.absent() : Value(gender),
+      displayProfileLocal: displayProfileLocal == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayProfileLocal),
+      displayProfileCloud: displayProfileCloud == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayProfileCloud),
       dateOfBirth: dateOfBirth == null && nullToAbsent
           ? const Value.absent()
           : Value(dateOfBirth),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
       lastSignInTime: lastSignInTime == null && nullToAbsent
           ? const Value.absent()
           : Value(lastSignInTime),
@@ -140,7 +178,11 @@ class User extends DataClass implements Insertable<User> {
           int mobileNumber,
           String password,
           String gender,
+          String displayProfileLocal,
+          String displayProfileCloud,
           DateTime dateOfBirth,
+          String createdAt,
+          String updatedAt,
           String lastSignInTime,
           UserAddress address}) =>
       User(
@@ -150,7 +192,11 @@ class User extends DataClass implements Insertable<User> {
         mobileNumber: mobileNumber ?? this.mobileNumber,
         password: password ?? this.password,
         gender: gender ?? this.gender,
+        displayProfileLocal: displayProfileLocal ?? this.displayProfileLocal,
+        displayProfileCloud: displayProfileCloud ?? this.displayProfileCloud,
         dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
         lastSignInTime: lastSignInTime ?? this.lastSignInTime,
         address: address ?? this.address,
       );
@@ -163,7 +209,11 @@ class User extends DataClass implements Insertable<User> {
           ..write('mobileNumber: $mobileNumber, ')
           ..write('password: $password, ')
           ..write('gender: $gender, ')
+          ..write('displayProfileLocal: $displayProfileLocal, ')
+          ..write('displayProfileCloud: $displayProfileCloud, ')
           ..write('dateOfBirth: $dateOfBirth, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
           ..write('lastSignInTime: $lastSignInTime, ')
           ..write('address: $address')
           ..write(')'))
@@ -184,9 +234,17 @@ class User extends DataClass implements Insertable<User> {
                       $mrjc(
                           gender.hashCode,
                           $mrjc(
-                              dateOfBirth.hashCode,
-                              $mrjc(lastSignInTime.hashCode,
-                                  address.hashCode)))))))));
+                              displayProfileLocal.hashCode,
+                              $mrjc(
+                                  displayProfileCloud.hashCode,
+                                  $mrjc(
+                                      dateOfBirth.hashCode,
+                                      $mrjc(
+                                          createdAt.hashCode,
+                                          $mrjc(
+                                              updatedAt.hashCode,
+                                              $mrjc(lastSignInTime.hashCode,
+                                                  address.hashCode)))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -197,7 +255,11 @@ class User extends DataClass implements Insertable<User> {
           other.mobileNumber == this.mobileNumber &&
           other.password == this.password &&
           other.gender == this.gender &&
+          other.displayProfileLocal == this.displayProfileLocal &&
+          other.displayProfileCloud == this.displayProfileCloud &&
           other.dateOfBirth == this.dateOfBirth &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
           other.lastSignInTime == this.lastSignInTime &&
           other.address == this.address);
 }
@@ -209,7 +271,11 @@ class UserModelCompanion extends UpdateCompanion<User> {
   final Value<int> mobileNumber;
   final Value<String> password;
   final Value<String> gender;
+  final Value<String> displayProfileLocal;
+  final Value<String> displayProfileCloud;
   final Value<DateTime> dateOfBirth;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
   final Value<String> lastSignInTime;
   final Value<UserAddress> address;
   const UserModelCompanion({
@@ -219,23 +285,29 @@ class UserModelCompanion extends UpdateCompanion<User> {
     this.mobileNumber = const Value.absent(),
     this.password = const Value.absent(),
     this.gender = const Value.absent(),
+    this.displayProfileLocal = const Value.absent(),
+    this.displayProfileCloud = const Value.absent(),
     this.dateOfBirth = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
     this.lastSignInTime = const Value.absent(),
     this.address = const Value.absent(),
   });
   UserModelCompanion.insert({
-    @required String id,
+    this.id = const Value.absent(),
     this.name = const Value.absent(),
     @required String email,
     this.mobileNumber = const Value.absent(),
-    @required String password,
+    this.password = const Value.absent(),
     this.gender = const Value.absent(),
+    this.displayProfileLocal = const Value.absent(),
+    this.displayProfileCloud = const Value.absent(),
     this.dateOfBirth = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
     this.lastSignInTime = const Value.absent(),
     this.address = const Value.absent(),
-  })  : id = Value(id),
-        email = Value(email),
-        password = Value(password);
+  }) : email = Value(email);
   UserModelCompanion copyWith(
       {Value<String> id,
       Value<String> name,
@@ -243,7 +315,11 @@ class UserModelCompanion extends UpdateCompanion<User> {
       Value<int> mobileNumber,
       Value<String> password,
       Value<String> gender,
+      Value<String> displayProfileLocal,
+      Value<String> displayProfileCloud,
       Value<DateTime> dateOfBirth,
+      Value<String> createdAt,
+      Value<String> updatedAt,
       Value<String> lastSignInTime,
       Value<UserAddress> address}) {
     return UserModelCompanion(
@@ -253,7 +329,11 @@ class UserModelCompanion extends UpdateCompanion<User> {
       mobileNumber: mobileNumber ?? this.mobileNumber,
       password: password ?? this.password,
       gender: gender ?? this.gender,
+      displayProfileLocal: displayProfileLocal ?? this.displayProfileLocal,
+      displayProfileCloud: displayProfileCloud ?? this.displayProfileCloud,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       lastSignInTime: lastSignInTime ?? this.lastSignInTime,
       address: address ?? this.address,
     );
@@ -272,7 +352,7 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
     return GeneratedTextColumn(
       'id',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -322,7 +402,7 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
     return GeneratedTextColumn(
       'password',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -338,6 +418,28 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
     );
   }
 
+  final VerificationMeta _displayProfileLocalMeta =
+      const VerificationMeta('displayProfileLocal');
+  GeneratedTextColumn _displayProfileLocal;
+  @override
+  GeneratedTextColumn get displayProfileLocal =>
+      _displayProfileLocal ??= _constructDisplayProfileLocal();
+  GeneratedTextColumn _constructDisplayProfileLocal() {
+    return GeneratedTextColumn('display_profile_local', $tableName, true,
+        defaultValue: Constant(''));
+  }
+
+  final VerificationMeta _displayProfileCloudMeta =
+      const VerificationMeta('displayProfileCloud');
+  GeneratedTextColumn _displayProfileCloud;
+  @override
+  GeneratedTextColumn get displayProfileCloud =>
+      _displayProfileCloud ??= _constructDisplayProfileCloud();
+  GeneratedTextColumn _constructDisplayProfileCloud() {
+    return GeneratedTextColumn('display_profile_cloud', $tableName, true,
+        defaultValue: Constant(''));
+  }
+
   final VerificationMeta _dateOfBirthMeta =
       const VerificationMeta('dateOfBirth');
   GeneratedDateTimeColumn _dateOfBirth;
@@ -347,6 +449,30 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
   GeneratedDateTimeColumn _constructDateOfBirth() {
     return GeneratedDateTimeColumn(
       'date_of_birth',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  GeneratedTextColumn _createdAt;
+  @override
+  GeneratedTextColumn get createdAt => _createdAt ??= _constructCreatedAt();
+  GeneratedTextColumn _constructCreatedAt() {
+    return GeneratedTextColumn(
+      'created_at',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedTextColumn _updatedAt;
+  @override
+  GeneratedTextColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedTextColumn _constructUpdatedAt() {
+    return GeneratedTextColumn(
+      'updated_at',
       $tableName,
       true,
     );
@@ -386,7 +512,11 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
         mobileNumber,
         password,
         gender,
+        displayProfileLocal,
+        displayProfileCloud,
         dateOfBirth,
+        createdAt,
+        updatedAt,
         lastSignInTime,
         address
       ];
@@ -402,8 +532,6 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
     final context = VerificationContext();
     if (d.id.present) {
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (d.name.present) {
       context.handle(
@@ -424,16 +552,34 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
     if (d.password.present) {
       context.handle(_passwordMeta,
           password.isAcceptableValue(d.password.value, _passwordMeta));
-    } else if (isInserting) {
-      context.missing(_passwordMeta);
     }
     if (d.gender.present) {
       context.handle(
           _genderMeta, gender.isAcceptableValue(d.gender.value, _genderMeta));
     }
+    if (d.displayProfileLocal.present) {
+      context.handle(
+          _displayProfileLocalMeta,
+          displayProfileLocal.isAcceptableValue(
+              d.displayProfileLocal.value, _displayProfileLocalMeta));
+    }
+    if (d.displayProfileCloud.present) {
+      context.handle(
+          _displayProfileCloudMeta,
+          displayProfileCloud.isAcceptableValue(
+              d.displayProfileCloud.value, _displayProfileCloudMeta));
+    }
     if (d.dateOfBirth.present) {
       context.handle(_dateOfBirthMeta,
           dateOfBirth.isAcceptableValue(d.dateOfBirth.value, _dateOfBirthMeta));
+    }
+    if (d.createdAt.present) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+    }
+    if (d.updatedAt.present) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableValue(d.updatedAt.value, _updatedAtMeta));
     }
     if (d.lastSignInTime.present) {
       context.handle(
@@ -474,9 +620,23 @@ class $UserModelTable extends UserModel with TableInfo<$UserModelTable, User> {
     if (d.gender.present) {
       map['gender'] = Variable<String, StringType>(d.gender.value);
     }
+    if (d.displayProfileLocal.present) {
+      map['display_profile_local'] =
+          Variable<String, StringType>(d.displayProfileLocal.value);
+    }
+    if (d.displayProfileCloud.present) {
+      map['display_profile_cloud'] =
+          Variable<String, StringType>(d.displayProfileCloud.value);
+    }
     if (d.dateOfBirth.present) {
       map['date_of_birth'] =
           Variable<DateTime, DateTimeType>(d.dateOfBirth.value);
+    }
+    if (d.createdAt.present) {
+      map['created_at'] = Variable<String, StringType>(d.createdAt.value);
+    }
+    if (d.updatedAt.present) {
+      map['updated_at'] = Variable<String, StringType>(d.updatedAt.value);
     }
     if (d.lastSignInTime.present) {
       map['last_signed_in_at'] =

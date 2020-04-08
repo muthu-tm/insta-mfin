@@ -4,8 +4,8 @@ class Model {
   static final Firestore db = Firestore.instance;
 
   static void attachCommonAttributes(data) {
-    data['created_at'] = DateTime.now();
-    data['updated_at'] = data['created_at'];
+    data['created_at'] = DateTime.now().toString();
+    data['updated_at'] = DateTime.now().toString();
   }
 
   CollectionReference  getCollectionRef() {
@@ -19,7 +19,7 @@ class Model {
   add(data) async {
     attachCommonAttributes(data);
     
-    return await this.getCollectionRef().document(data['id']).setData(data);
+    return await this.getCollectionRef().document(data['email']).setData(data);
   }
 
   /* merge fields in the document or create it if it doesn't exists */
@@ -31,7 +31,7 @@ class Model {
   }
 
   update(id, data) async {
-    data['updated_at'] = DateTime.now();
+    data['updated_at'] = DateTime.now().toString();
     await this.getDocumentRef(id).updateData(data);
 
     return data;
@@ -44,7 +44,7 @@ class Model {
   }
 
   Future<Map<String, dynamic>> getByID(id) async {
-    if (!id) {
+    if (id == "" || id == null) {
       return null;
     }
 

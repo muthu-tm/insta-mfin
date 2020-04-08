@@ -4,6 +4,8 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 part 'sql_users.g.dart';
 
+User localUserState;
+
 @json.JsonSerializable()
 class UserAddress {
   @json.JsonKey(name: 'street', nullable: false)
@@ -26,14 +28,24 @@ class UserAddress {
 
 @DataClassName('User')
 class UserModel extends Table {
-  TextColumn get id => text().named('id')();
+  TextColumn get id => text().named('id').nullable()();
   TextColumn get name => text().named('user_name').nullable()();
   TextColumn get email => text().named('email')();
   IntColumn get mobileNumber => integer().named('mobile_number').nullable()();
-  TextColumn get password => text().named('password')();
+  TextColumn get password => text().named('password').nullable()();
   TextColumn get gender => text().named('gender').nullable()();
+  TextColumn get displayProfileLocal => text()
+      .named('display_profile_local')
+      .nullable()
+      .withDefault(Constant(''))();
+  TextColumn get displayProfileCloud => text()
+      .named('display_profile_cloud')
+      .nullable()
+      .withDefault(Constant(''))();
   DateTimeColumn get dateOfBirth =>
       dateTime().named('date_of_birth').nullable()();
+  TextColumn get createdAt => text().named('created_at').nullable()();
+  TextColumn get updatedAt => text().named('updated_at').nullable()();
   TextColumn get lastSignInTime =>
       text().named('last_signed_in_at').nullable()();
   TextColumn get address => text().map(const AddressConverter()).nullable()();
@@ -49,6 +61,11 @@ class UserDatabase extends _$UserDatabase {
   int get schemaVersion => 1;
 }
 
+UserDatabase _instance;
+UserDatabase get database {
+  return _instance ??= UserDatabase();
+}
+
 @UseDao(tables: [UserModel])
 class UserDao extends DatabaseAccessor<UserDatabase> with _$UserDaoMixin {
   final UserDatabase userDB;
@@ -59,7 +76,11 @@ class UserDao extends DatabaseAccessor<UserDatabase> with _$UserDaoMixin {
     return await delete(userModel).go();
   }
 
-  dynamic getUserByEmail(String emailID) async {
+  setUserState(String emailID) async {
+    localUserState = User.fromJson(await getUserByEmail(emailID));
+  }
+
+  Future<Map<String, dynamic>> getUserByEmail(String emailID) async {
     try {
       List<User> users = await (select(userModel)
             ..where((t) => t.email.equals(emailID)))
@@ -76,7 +97,7 @@ class UserDao extends DatabaseAccessor<UserDatabase> with _$UserDaoMixin {
     }
   }
 
-  Future<int> updateSignIn(Insertable<User> user, String emailID) async {
+  Future<int> updateByEmailID(Insertable<User> user, String emailID) async {
     try {
       return await (update(userModel)..where((t) => t.email.equals(emailID)))
           .write(user);
@@ -86,9 +107,19 @@ class UserDao extends DatabaseAccessor<UserDatabase> with _$UserDaoMixin {
     }
   }
 
+  Future<int> insertUser(Map<String, dynamic> user) async {
+    try {
+      user['created_at'] = DateTime.now().toString();
+      user['updated_at'] = DateTime.now().toString();
+
+      return await insert(User.fromData(user, db));
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future<List<User>> getAllUsers() => select(userModel).get();
   Stream<List<User>> watchAllUsers() => select(userModel).watch();
-  Future insertUser(Insertable<User> user) => into(userModel).insert(user);
-  Future updateUser(Insertable<User> user) => update(userModel).replace(user);
+  Future insert(Insertable<User> user) => into(userModel).insert(user);
   Future deleteUser(Insertable<User> user) => delete(userModel).delete(user);
 }

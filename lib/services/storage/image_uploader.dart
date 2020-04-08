@@ -1,8 +1,13 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:instamfin/db/sqlite/sql_users.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:instamfin/db/models/user.dart' as fb;
 
 class Uploader {
+  static UserDao _userDao = UserDao(database);
+
   static String userImageLocalPath = "";
   static String userImageCloudPath = "";
 
@@ -14,7 +19,7 @@ class Uploader {
     return userImageLocalPath;
   }
 
-  static Future<String> copyToAppDirectory(File image, String emailID) async {
+  static Future<void> copyToAppDirectory(File image, String emailID) async {
     try {
       // getting a directory path for saving
       final String path = (await getApplicationDocumentsDirectory()).path;
@@ -25,7 +30,6 @@ class Uploader {
       print("Error while copying image file: " + err.toString());
     }
     print("Local User Profile Image Path: " + userImageLocalPath);
-    return userImageLocalPath;
   }
 
   static void uploadImage(String fileDir, String originalFile, String emailID,
@@ -40,10 +44,33 @@ class Uploader {
     storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
       print("Image uploaded; downloadURL - " + downloadUrl);
       userImageCloudPath = downloadUrl;
+      updateUserData(emailID);
       onUploaded(userImageCloudPath);
     }).catchError((err) {
       print("Error while uploading image file: " + err.toString());
+      updateUserData(emailID);
       onFailed();
     });
+  }
+
+  static void updateUserData(String emailID) {
+    try {
+      fb.User user = fb.User(emailID);
+      user.update(emailID, {
+        'display_profile_local': userImageLocalPath,
+        'display_profile_cloud': userImageCloudPath
+      });
+
+      _userDao.updateByEmailID(
+          UserModelCompanion(
+              displayProfileCloud: Value(userImageCloudPath),
+              displayProfileLocal: Value(userImageLocalPath),
+              updatedAt: Value(DateTime.now().toString())),
+          emailID);
+    } catch (err) {
+      print(
+          "Error occurred while updting user data with display profile Image path: " +
+              err.toString());
+    }
   }
 }

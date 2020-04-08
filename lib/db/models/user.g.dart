@@ -8,9 +8,9 @@ part of 'user.dart';
 
 User _$UserFromJson(Map<String, dynamic> json) {
   return User(
-    json['id'],
     json['email'],
   )
+    ..id = json['id'] as String
     ..name = json['user_name'] as String
     ..mobileNumber = json['mobile_number'] as int
     ..password = json['password'] as String
@@ -21,7 +21,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['last_signed_in_at'] as String)
     ..address = json['address'] == null
         ? null
-        : Address.fromJson(json['address'] as Map<String, dynamic>);
+        : Address.fromJson(json['address'] as Map<String, dynamic>)
+    ..displayProfileLocal = json['display_profile_local'] as String ?? ''
+    ..displayProfileCloud = json['display_profile_cloud'] as String ?? '';
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -34,4 +36,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'date_of_birth': instance.dateOfBirth,
       'last_signed_in_at': instance.lastSignInTime?.toIso8601String(),
       'address': instance.address?.toJson(),
+      'display_profile_local': instance.displayProfileLocal,
+      'display_profile_cloud': instance.displayProfileCloud,
     };

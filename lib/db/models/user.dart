@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'gender_enum.dart';
 part 'user.g.dart';
 
+User cloudUserState;
+
 @JsonSerializable(explicitToJson: true)
 class User extends Model {
   
@@ -29,10 +31,21 @@ class User extends Model {
   DateTime lastSignInTime;
   @JsonKey(name: 'address', nullable: true)
   Address address;
+  @JsonKey(name: 'display_profile_local', defaultValue: "")
+  String displayProfileLocal;
+  @JsonKey(name: 'display_profile_cloud', defaultValue: "")
+  String displayProfileCloud;
 
-  User(id, email) {
-    this.id = id;
+  User(email) {
     this.email = email;
+  }
+
+  setGlobalUserState(String emailID) async {
+    cloudUserState = User.fromJson(await getByID(emailID));
+  }
+
+  setUserID(String id) {
+    this.id = id;
   }
 
   setPassword(String password) {
@@ -65,6 +78,14 @@ class User extends Model {
 
   setLastSignInTime(DateTime dateTime) {
     this.lastSignInTime = dateTime;
+  }
+
+  setLocalProfilePath(String localPath) {
+    this.displayProfileLocal = localPath;
+  }
+
+  setCloudProfilePath(String cloudPath) {
+    this.displayProfileCloud = cloudPath;
   }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
