@@ -98,17 +98,17 @@ class User extends DataClass implements Insertable<User> {
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       email: serializer.fromJson<String>(json['email']),
-      mobileNumber: serializer.fromJson<int>(json['mobileNumber']),
+      mobileNumber: serializer.fromJson<int>(json['mobile_number']),
       password: serializer.fromJson<String>(json['password']),
       gender: serializer.fromJson<String>(json['gender']),
       displayProfileLocal:
-          serializer.fromJson<String>(json['displayProfileLocal']),
+          serializer.fromJson<String>(json['display_profile_local']),
       displayProfileCloud:
-          serializer.fromJson<String>(json['displayProfileCloud']),
-      dateOfBirth: serializer.fromJson<DateTime>(json['dateOfBirth']),
-      createdAt: serializer.fromJson<String>(json['createdAt']),
-      updatedAt: serializer.fromJson<String>(json['updatedAt']),
-      lastSignInTime: serializer.fromJson<String>(json['lastSignInTime']),
+          serializer.fromJson<String>(json['display_profile_cloud']),
+      dateOfBirth: serializer.fromJson<DateTime>(json['date_of_birth']),
+      createdAt: serializer.fromJson<String>(json['created_at']),
+      updatedAt: serializer.fromJson<String>(json['updated_at']),
+      lastSignInTime: serializer.fromJson<String>(json['last_signed_in_at']),
       address: serializer.fromJson<UserAddress>(json['address']),
     );
   }
@@ -117,17 +117,17 @@ class User extends DataClass implements Insertable<User> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'name': serializer.toJson<String>(name),
+      'user_name': serializer.toJson<String>(name),
       'email': serializer.toJson<String>(email),
-      'mobileNumber': serializer.toJson<int>(mobileNumber),
+      'mobile_number': serializer.toJson<int>(mobileNumber),
       'password': serializer.toJson<String>(password),
       'gender': serializer.toJson<String>(gender),
-      'displayProfileLocal': serializer.toJson<String>(displayProfileLocal),
-      'displayProfileCloud': serializer.toJson<String>(displayProfileCloud),
-      'dateOfBirth': serializer.toJson<DateTime>(dateOfBirth),
-      'createdAt': serializer.toJson<String>(createdAt),
-      'updatedAt': serializer.toJson<String>(updatedAt),
-      'lastSignInTime': serializer.toJson<String>(lastSignInTime),
+      'display_profile_local': serializer.toJson<String>(displayProfileLocal),
+      'display_profile_cloud': serializer.toJson<String>(displayProfileCloud),
+      'date_of_birth': serializer.toJson<DateTime>(dateOfBirth),
+      'created_at': serializer.toJson<String>(createdAt),
+      'updated_at': serializer.toJson<String>(updatedAt),
+      'last_signed_in_at': serializer.toJson<String>(lastSignInTime),
       'address': serializer.toJson<UserAddress>(address),
     };
   }

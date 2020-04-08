@@ -4,7 +4,7 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomTextFormField.dart';
-import 'package:instamfin/screens/utils/utils.dart';
+import 'package:instamfin/services/utils/users_utils.dart';
 
 class UserProfileSetting extends StatefulWidget {
   @override
@@ -24,10 +24,9 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
             children: <Widget>[
               CircleAvatar(
                 radius: 30,
-                backgroundImage: Utils.getUserDisplayImage(),
+                backgroundImage: UserUtils.getUserDisplayImage(),
               ),
-              Text(
-                'Vale Muthu',
+              Text(userState['user_name'],
                 style: TextStyle(
                   fontFamily: 'SourceSansPro',
                   fontSize: 25,

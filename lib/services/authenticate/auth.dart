@@ -19,16 +19,12 @@ class AuthService {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: emailID, password: passkey);
-      FirebaseUser user = result.user;
+      FirebaseUser fbUser = result.user;
 
-      return {
-        "email": user.email,
-        "provider_id": user.providerId,
-        "id": user.uid,
-        "is_email_verified": user.isEmailVerified,
-        "created_at": user.metadata.creationTime,
-        "last_signed_in_at": user.metadata.lastSignInTime
-      };
+      User user = User(fbUser.email);
+      Map<String, dynamic> userMap = await user.getByID(fbUser.email);
+
+      return userMap;
     } catch (err) {
       print(err.toString());
       throw err;

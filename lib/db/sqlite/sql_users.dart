@@ -4,7 +4,7 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 part 'sql_users.g.dart';
 
-User localUserState;
+Map<String, dynamic> localUserState;
 
 @json.JsonSerializable()
 class UserAddress {
@@ -77,7 +77,9 @@ class UserDao extends DatabaseAccessor<UserDatabase> with _$UserDaoMixin {
   }
 
   setUserState(String emailID) async {
-    localUserState = User.fromJson(await getUserByEmail(emailID));
+    localUserState = await getUserByEmail(emailID);
+    
+    print("Local User State: " + localUserState.toString());
   }
 
   Future<Map<String, dynamic>> getUserByEmail(String emailID) async {

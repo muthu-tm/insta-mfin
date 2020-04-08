@@ -1,3 +1,4 @@
+import 'package:instamfin/services/utils/users_utils.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:instamfin/db/models/user.dart' as fb;
 import 'package:instamfin/db/sqlite/sql_users.dart';
@@ -19,6 +20,8 @@ class AuthController {
       user.setName(userName);
       user.setMobileNumber(int.parse(mobileNumber));
       user.setLastSignInTime(userObj['last_signed_in_at']);
+      user.setCloudProfilePath("");
+      user.setLocalProfilePath("");
 
       //Create an user document in User collection
       await user.create();
@@ -47,6 +50,9 @@ class AuthController {
 
       if (userObj == null) {
         userObj = await _authService.signInWithEmailPassword(emailID, passkey);
+        print("New USER fetched from FireBase successfully --> " + userObj.toString());
+
+        await _userDao.insertUser(userObj);
       }
 
       fb.User user = fb.User(userObj['email']);
@@ -60,8 +66,7 @@ class AuthController {
               updatedAt: Value(DateTime.now().toString())),
           userObj['email']);
 
-      await user.setGlobalUserState(emailID);
-      await _userDao.setUserState(emailID);
+      UserUtils.setUserState(userObj);
       
       return {
         'is_logged_in': true,

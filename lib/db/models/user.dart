@@ -6,13 +6,12 @@ import 'package:intl/intl.dart';
 import 'gender_enum.dart';
 part 'user.g.dart';
 
-User cloudUserState;
+Map<String, dynamic> cloudUserState;
 
 @JsonSerializable(explicitToJson: true)
 class User extends Model {
-  
   static CollectionReference _userCollRef = Model.db.collection("user");
-  
+
   @JsonKey(name: 'id', nullable: false)
   String id;
   @JsonKey(name: 'email', nullable: false)
@@ -41,7 +40,9 @@ class User extends Model {
   }
 
   setGlobalUserState(String emailID) async {
-    cloudUserState = User.fromJson(await getByID(emailID));
+    cloudUserState = await getByID(emailID);
+    
+    print("Cloud User State: " + cloudUserState.toString());
   }
 
   setUserID(String id) {
@@ -53,7 +54,7 @@ class User extends Model {
   }
 
   setGender(Gender val) {
-    switch(val) {
+    switch (val) {
       case Gender.Male:
         this.gender = "Male";
         break;
@@ -99,5 +100,4 @@ class User extends Model {
     dynamic result = await super.add(this.toJson());
     print(result);
   }
-
 }

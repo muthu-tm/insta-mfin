@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
@@ -6,16 +5,17 @@ import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
-import 'package:instamfin/screens/utils/utils.dart';
+import 'package:instamfin/services/utils/users_utils.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 Widget openDrawer(BuildContext context) {
   final AuthController _authController = AuthController();
+
   return new Drawer(
       child: new ListView(children: <Widget>[
     new UserAccountsDrawerHeader(
-        accountName: const Text("Vale"),
-        accountEmail: const Text("A&E Specialties"),
+        accountName: Text(userState['user_name']),
+        accountEmail: Text("A&E Specialties"),
         arrowColor: CustomColors.mfinBlue,
         onDetailsPressed: () {
           Navigator.push(
@@ -24,7 +24,7 @@ Widget openDrawer(BuildContext context) {
           );
         },
         currentAccountPicture: new CircleAvatar(
-          backgroundImage: Utils.getUserDisplayImage(),
+          backgroundImage: UserUtils.getUserDisplayImage(),
           backgroundColor: CustomColors.mfinBlue,
         )),
     new ListTile(

@@ -8,6 +8,7 @@ import 'package:instamfin/screens/home/HomeOptions.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
+import 'package:instamfin/services/utils/users_utils.dart';
 
 class UserHomeScreen extends StatefulWidget {
   @override
@@ -27,6 +28,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         onWillPop: () => CustomDialogs.confirm(
                 context, "Warning!", "Do you really want to exit?", () async {
               await _authController.signOut();
+              userState.clear();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Authenticate()),
