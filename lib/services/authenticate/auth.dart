@@ -1,53 +1,47 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:convert';
 import './../../db/models/user.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  User _userFromFirebaseUser(String user) {
-    Map userMap = jsonDecode(user);
-    return User.fromJson(userMap);
-  }
+  Future<User> registerWithMobileNumber(int mobileNumber, String password, String name) async {
+     try {
+      User user = User(mobileNumber);
+      var data = await user.getByID();
+      if (data != null) {
+        print("Found an existing user for this mobile number");
+        return null;
+      }
 
-  Stream<User> get user {
-    return _auth.onAuthStateChanged
-        .map((FirebaseUser user) => _userFromFirebaseUser(user.toString()));
-  }
+      user.setPassword(password);
+      user.setName(name);
+      user.setProfilePath("");
+      await user.create();
 
-  Future signInWithEmailPassword(String emailID, String passkey) async {
-    try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
-          email: emailID, password: passkey);
-      FirebaseUser fbUser = result.user;
-
-      User user = User(fbUser.email);
-      Map<String, dynamic> userMap = await user.getByID(fbUser.email);
-
-      return userMap;
+      return user ??= User.fromJson(await user.getByID());
     } catch (err) {
       print(err.toString());
       throw err;
     }
   }
 
-  Future registerWithEmailPassword(String emailID, String passkey) async {
+  Future<User> signInWithMobileNumber(int mobileNumber, String passkey) async{
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(
-          email: emailID, password: passkey);
+      User user = User(mobileNumber);
+      var data = await user.getByID();
+      if (data == null) {
+        throw ("No users found for this mobile number");
+        // return null;
+      }
 
-      FirebaseUser user = result.user;
-      print("Newly registered USER id: " + user.uid);
+      if (data["password"] == passkey) {
+        print("Successful login");
+        return User.fromJson(data);
+      } else {
+        throw ("Wrong password! Pease try again");
+        // return null; 
+      }
 
-      return {
-        "email": user.email,
-        "provider_id": user.providerId,
-        "id": user.uid,
-        "is_email_verified": user.isEmailVerified,
-        "is_new_user": result.additionalUserInfo.isNewUser,
-        "created_at": user.metadata.creationTime,
-        "last_signed_in_at": user.metadata.lastSignInTime
-      };
     } catch (err) {
       print(err.toString());
       throw err;
@@ -62,4 +56,6 @@ class AuthService {
       throw err;
     }
   }
+
+
 }

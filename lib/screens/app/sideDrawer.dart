@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
@@ -14,7 +15,7 @@ Widget openDrawer(BuildContext context) {
   return new Drawer(
       child: new ListView(children: <Widget>[
     new UserAccountsDrawerHeader(
-        accountName: Text(userState['user_name']),
+        accountName: Text(userState.name),
         accountEmail: Text("A&E Specialties"),
         arrowColor: CustomColors.mfinBlue,
         onDetailsPressed: () {

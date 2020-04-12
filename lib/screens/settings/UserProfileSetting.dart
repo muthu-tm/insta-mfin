@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
@@ -26,7 +27,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 radius: 30,
                 backgroundImage: UserUtils.getUserDisplayImage(),
               ),
-              Text(userState['user_name'],
+              Text(userState.name,
                 style: TextStyle(
                   fontFamily: 'SourceSansPro',
                   fontSize: 25,

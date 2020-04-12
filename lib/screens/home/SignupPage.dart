@@ -103,22 +103,22 @@ class _RegisterFormState extends State<RegisterForm> {
                               validator: (mobileNumber) =>
                                   FieldValidator.mobileValidator(
                                       mobileNumber.trim(), setMobileNumber))),
-                      new ListTile(
-                          title: TextFormField(
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                hintText: 'Email',
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                suffixIcon: Icon(
-                                  Icons.mail,
-                                  color: CustomColors.mfinFadedButtonGreen,
-                                  size: 35.0,
-                                ),
-                              ),
-                              validator: (emailID) =>
-                                  FieldValidator.emailValidator(
-                                      emailID.trim(), setEmailID))),
+                      // new ListTile(
+                      //     title: TextFormField(
+                      //         keyboardType: TextInputType.emailAddress,
+                      //         decoration: InputDecoration(
+                      //           hintText: 'Email',
+                      //           fillColor: CustomColors.mfinWhite,
+                      //           filled: true,
+                      //           suffixIcon: Icon(
+                      //             Icons.mail,
+                      //             color: CustomColors.mfinFadedButtonGreen,
+                      //             size: 35.0,
+                      //           ),
+                      //         ),
+                      //         validator: (emailID) =>
+                      //             FieldValidator.emailValidator(
+                      //                 emailID.trim(), setEmailID))),
                       new ListTile(
                           title: TextFormField(
                               obscureText: showPassword,
@@ -259,8 +259,8 @@ class _RegisterFormState extends State<RegisterForm> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      dynamic result = await _authController.registerUserWithEmailPassword(
-          emailID, password, name, mobileNumber);
+      dynamic result = await _authController.registerWithMobileNumber(
+          int.parse(mobileNumber), password, name);
       if (!result['is_registered']) {
         print("Unable to register USER: " + result['message']);
       } else {
@@ -272,7 +272,7 @@ class _RegisterFormState extends State<RegisterForm> {
           Uploader.uploadImage(
               "users_profile",
               _imageFile.path,
-              emailID,
+              int.parse(mobileNumber),
               (downloadURL) => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => UserProfileSetting()),

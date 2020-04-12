@@ -19,7 +19,7 @@ class _LoginControllerState extends State<LoginController> {
   TextEditingController passwordController = TextEditingController();
   final AuthController _authController = AuthController();
 
-  String email;
+  String mobileNumber;
   String password;
   bool _passwordVisible = false;
   bool hidePassword = true;
@@ -63,20 +63,20 @@ class _LoginControllerState extends State<LoginController> {
                           Container(
                             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                             child: TextFormField(
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
-                                  hintText: 'Email',
+                                  hintText: 'Mobile Number',
                                   fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                   suffixIcon: Icon(
-                                    Icons.mail,
+                                    Icons.phone,
                                     color: CustomColors.mfinFadedButtonGreen,
                                     size: 35.0,
                                   ),
                                 ),
-                                validator: (emailID) =>
-                                    FieldValidator.emailValidator(
-                                        emailID.trim(), setEmailID)),
+                                validator: (mobileNumber) =>
+                                    FieldValidator.mobileValidator(
+                                        mobileNumber.trim(), setMobileNumber)),
                           ),
                           Container(
                             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -173,9 +173,9 @@ class _LoginControllerState extends State<LoginController> {
         ));
   }
 
-  setEmailID(String emailID) {
+  setMobileNumber(String mobileNumber) {
     setState(() {
-      this.email = emailID.trim();
+      this.mobileNumber = mobileNumber;
     });
   }
 
@@ -190,7 +190,7 @@ class _LoginControllerState extends State<LoginController> {
 
     if (form.validate()) {
       var result =
-          await _authController.signInWithEmailPassword(email, password);
+          await _authController.signInWithMobileNumber(int.parse(mobileNumber), password);
 
       if (!result['is_logged_in']) {
         print("Unable to Login: " + result['message']);

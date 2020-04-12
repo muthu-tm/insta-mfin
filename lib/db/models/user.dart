@@ -6,48 +6,45 @@ import 'package:intl/intl.dart';
 import 'gender_enum.dart';
 part 'user.g.dart';
 
-Map<String, dynamic> cloudUserState;
+User userState;
 
 @JsonSerializable(explicitToJson: true)
 class User extends Model {
   static CollectionReference _userCollRef = Model.db.collection("user");
 
-  @JsonKey(name: 'id', nullable: false)
-  String id;
-  @JsonKey(name: 'email', nullable: false)
-  String email;
   @JsonKey(name: 'user_name', nullable: true)
   String name;
-  @JsonKey(name: 'mobile_number', nullable: true)
+  @JsonKey(name: 'mobile_number', nullable: false)
   int mobileNumber;
   @JsonKey(name: 'password', nullable: false)
   String password;
   @JsonKey(name: 'gender', nullable: true)
   String gender;
+  @JsonKey(name: 'display_profile_path', defaultValue: "")
+  String displayProfilePath;
   @JsonKey(name: 'date_of_birth', nullable: true)
   String dateOfBirth;
-  @JsonKey(name: 'last_signed_in_at', nullable: true)
-  DateTime lastSignInTime;
   @JsonKey(name: 'address', nullable: true)
   Address address;
-  @JsonKey(name: 'display_profile_local', defaultValue: "")
-  String displayProfileLocal;
-  @JsonKey(name: 'display_profile_cloud', defaultValue: "")
-  String displayProfileCloud;
+  @JsonKey(name: 'last_signed_in_at', nullable: true)
+  DateTime lastSignInTime;
+  @JsonKey(name: 'primary_company', nullable: true)
+  String primaryCompany;
+  @JsonKey(name: 'primary_branch', nullable: true)
+  String primaryBranch;
+  @JsonKey(name: 'primary_sub_branch', nullable: true)
+  String primarySubBranch;
 
-  User(email) {
-    this.email = email;
+  User(mobileNumber) {
+    this.mobileNumber = mobileNumber;
   }
 
-  setGlobalUserState(String emailID) async {
-    cloudUserState = await getByID(emailID);
+  setUserState() async {
+    userState = User.fromJson(await getByID());
     
-    print("Cloud User State: " + cloudUserState.toString());
+    print("USER STATE change occurred: " + userState.toJson().toString());
   }
 
-  setUserID(String id) {
-    this.id = id;
-  }
 
   setPassword(String password) {
     this.password = password;
@@ -68,10 +65,6 @@ class User extends Model {
     this.name = name;
   }
 
-  setMobileNumber(int number) {
-    this.mobileNumber = number;
-  }
-
   setDOB(date) {
     var formatter = new DateFormat('dd-MM-yyyy');
     this.dateOfBirth = formatter.format(date);
@@ -81,12 +74,24 @@ class User extends Model {
     this.lastSignInTime = dateTime;
   }
 
-  setLocalProfilePath(String localPath) {
-    this.displayProfileLocal = localPath;
+  setProfilePath(String profilePath) {
+    this.displayProfilePath = profilePath;
   }
 
-  setCloudProfilePath(String cloudPath) {
-    this.displayProfileCloud = cloudPath;
+  setPrimaryCompany(String companyID) {
+    this.primaryCompany = companyID;
+  }
+
+  setPrimaryBranch(String branchID){
+    this.primaryBranch = branchID;
+  }
+
+  setPrimarySubBranchID(String subBranchID) {
+    this.primarySubBranch = subBranchID;
+  }
+
+  setAddress(Address address) {
+    this.address = address;
   }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -94,6 +99,10 @@ class User extends Model {
 
   CollectionReference getCollectionRef() {
     return _userCollRef;
+  }
+
+  String getID() {
+    return this.mobileNumber.toString();
   }
 
   create() async {
