@@ -9,7 +9,7 @@ Widget topAppBar(BuildContext context) {
     backgroundColor: CustomColors.mfinBlue,
     leading: Builder(
       builder: (context) => IconButton(
-        icon: new Icon(Icons.account_box,
+        icon: new Icon(Icons.account_circle,
             size: 45.0, color: CustomColors.mfinWhite),
         onPressed: () => Scaffold.of(context).openDrawer(),
       ),
