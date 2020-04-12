@@ -18,12 +18,18 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..address = json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
-    ..lastSignInTime = json['last_signed_in_at'] == null
-        ? null
-        : DateTime.fromMicrosecondsSinceEpoch(_getMillisecondsSinceEpoch(json['last_signed_in_at'] as Timestamp))
     ..primaryCompany = json['primary_company'] as String
     ..primaryBranch = json['primary_branch'] as String
-    ..primarySubBranch = json['primary_sub_branch'] as String;
+    ..primarySubBranch = json['primary_sub_branch'] as String
+    ..lastSignInTime = json['last_signed_in_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(json['last_signed_in_at'] as Timestamp))
+    ..createdAt = json['created_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
+    ..updatedAt = json['updated_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
 }
 
 int _getMillisecondsSinceEpoch(Timestamp ts) {
@@ -38,8 +44,10 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'display_profile_path': instance.displayProfilePath,
       'date_of_birth': instance.dateOfBirth,
       'address': instance.address?.toJson(),
-      'last_signed_in_at': instance.lastSignInTime?.toIso8601String(),
       'primary_company': instance.primaryCompany,
       'primary_branch': instance.primaryBranch,
       'primary_sub_branch': instance.primarySubBranch,
+      'last_signed_in_at': instance.lastSignInTime?.toIso8601String(),
+      'created_at': instance.createdAt?.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
     };

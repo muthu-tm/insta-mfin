@@ -26,6 +26,13 @@ class Model {
     return await this.getCollectionRef().document(this.getID()).setData(data);
   }
 
+  upsert(data, createdAt) async {
+    data['created_at'] = createdAt;
+    data['updated_at'] = DateTime.now();
+
+    return await this.getCollectionRef().document(this.getID()).setData(data);
+  }
+
   /* merge fields in the document or create it if it doesn't exists */
   mergeOrInsert(id, data) async {
     attachCommonAttributes(data);

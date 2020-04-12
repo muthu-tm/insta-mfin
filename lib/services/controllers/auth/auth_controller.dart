@@ -19,7 +19,8 @@ class AuthController {
 
       user.update({'last_signed_in_at': DateTime.now()});
 
-      // await user.setGlobalUserState(emailID);
+      // set user global state
+      await user.setUserState();
 
       return {
         'is_registered': true,

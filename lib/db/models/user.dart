@@ -26,14 +26,18 @@ class User extends Model {
   String dateOfBirth;
   @JsonKey(name: 'address', nullable: true)
   Address address;
-  @JsonKey(name: 'last_signed_in_at', nullable: true)
-  DateTime lastSignInTime;
   @JsonKey(name: 'primary_company', nullable: true)
   String primaryCompany;
   @JsonKey(name: 'primary_branch', nullable: true)
   String primaryBranch;
   @JsonKey(name: 'primary_sub_branch', nullable: true)
   String primarySubBranch;
+  @JsonKey(name: 'last_signed_in_at', nullable: true)
+  DateTime lastSignInTime;
+  @JsonKey(name: 'created_at', nullable: true)
+  DateTime createdAt;
+  @JsonKey(name: 'updated_at', nullable: true)
+  DateTime updatedAt;
 
   User(mobileNumber) {
     this.mobileNumber = mobileNumber;
@@ -107,6 +111,12 @@ class User extends Model {
 
   create() async {
     dynamic result = await super.add(this.toJson());
+    print(result);
+  }
+
+  replace() async {
+    var user = await getByID();
+    dynamic result = await super.upsert(this.toJson(), user['created_at']);
     print(result);
   }
 }
