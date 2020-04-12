@@ -17,6 +17,8 @@ class Company extends Model {
   String registrationID;
   @JsonKey(name: 'finance_name', nullable: true)
   String financeName;
+  @JsonKey(name: 'emails', nullable: true)
+  List<String> emails;
   @JsonKey(name: 'braches', nullable: true)
   List<String> branches;
   @JsonKey(name: 'admins', nullable: true)
@@ -48,6 +50,10 @@ class Company extends Model {
 
   setRegistrationID(String registrationID) {
     this.registrationID = registrationID;
+  }
+
+  addEmails(List<String> emails) {
+    this.emails.addAll(emails);
   }
 
   addAdmins(List<String> admins) {
