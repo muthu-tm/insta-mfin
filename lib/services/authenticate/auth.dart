@@ -15,7 +15,7 @@ class AuthService {
 
       user.setPassword(password);
       user.setName(name);
-      user.setProfilePath("");
+      user.setDisplayProfilePath("");
       await user.create();
 
       return user ??= User.fromJson(await user.getByID());

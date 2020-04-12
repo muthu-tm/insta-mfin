@@ -45,10 +45,9 @@ class User extends Model {
 
   setUserState() async {
     userState = User.fromJson(await getByID());
-    
+
     print("USER STATE change occurred: " + userState.toJson().toString());
   }
-
 
   setPassword(String password) {
     this.password = password;
@@ -78,7 +77,7 @@ class User extends Model {
     this.lastSignInTime = dateTime;
   }
 
-  setProfilePath(String profilePath) {
+  setDisplayProfilePath(String profilePath) {
     this.displayProfilePath = profilePath;
   }
 
@@ -86,7 +85,7 @@ class User extends Model {
     this.primaryCompany = companyID;
   }
 
-  setPrimaryBranch(String branchID){
+  setPrimaryBranch(String branchID) {
     this.primaryBranch = branchID;
   }
 
