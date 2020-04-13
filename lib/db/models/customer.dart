@@ -1,23 +1,23 @@
+import 'package:instamfin/db/enums/action_type.dart';
 import 'package:instamfin/db/enums/gender.dart';
-import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/db/models/address.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-part 'user.g.dart';
 
-User userState;
+part 'customer.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class User extends Model {
-  static CollectionReference _userCollRef = Model.db.collection("users");
+class Customer extends Model {
+  static CollectionReference _customerCollRef = Model.db.collection("customers");
 
-  @JsonKey(name: 'user_name', nullable: true)
-  String name;
+  @JsonKey(name: 'customer_id', nullable: true)
+  String customerID;
   @JsonKey(name: 'mobile_number', nullable: false)
   int mobileNumber;
-  @JsonKey(name: 'password', nullable: false)
-  String password;
+  @JsonKey(name: 'customer_name', nullable: true)
+  String name;
   @JsonKey(name: 'gender', nullable: true)
   String gender;
   @JsonKey(name: 'display_profile_path', defaultValue: "")
@@ -26,35 +26,33 @@ class User extends Model {
   String dateOfBirth;
   @JsonKey(name: 'address', nullable: true)
   Address address;
-  @JsonKey(name: 'primary_company', nullable: true)
-  String primaryCompany;
-  @JsonKey(name: 'primary_branch', nullable: true)
-  String primaryBranch;
-  @JsonKey(name: 'primary_sub_branch', nullable: true)
-  String primarySubBranch;
-  @JsonKey(name: 'last_signed_in_at', nullable: true)
-  DateTime lastSignInTime;
+  @JsonKey(name: 'branch_id', nullable: true)
+  String branchID;
+  @JsonKey(name: 'sub_branch_id', nullable: true)
+  String subBranchID;
+  @JsonKey(name: 'last_transaction_type', defaultValue: "")
+  String lastTransactionType;
+  @JsonKey(name: 'last_transaction_at', nullable: true)
+  DateTime lastTransactionTime;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
 
-  User(int mobileNumber) {
+  Customer(String customerID) {
+    this.customerID = customerID;
+  }
+
+  setMobileNumber(int mibileNumber) {
     this.mobileNumber = mobileNumber;
-  }
-
-  setUserState() async {
-    userState = User.fromJson(await getByID());
-
-    print("USER STATE change occurred: " + userState.toJson().toString());
-  }
-
-  setPassword(String password) {
-    this.password = password;
   }
 
   setGender(Gender gender) {
     this.gender = gender.name;
+  }
+
+  setLastActionType(ActionType actionType) {
+    this.lastTransactionType = actionType.name;
   }
 
   setName(String name) {
@@ -66,39 +64,35 @@ class User extends Model {
     this.dateOfBirth = formatter.format(date);
   }
 
-  setLastSignInTime(DateTime dateTime) {
-    this.lastSignInTime = dateTime;
+  setLastTransactionTime(DateTime dateTime) {
+    this.lastTransactionTime = dateTime;
   }
 
   setDisplayProfilePath(String profilePath) {
     this.displayProfilePath = profilePath;
   }
 
-  setPrimaryCompany(String companyID) {
-    this.primaryCompany = companyID;
+  setBranchID(String branchID) {
+    this.branchID = branchID;
   }
 
-  setPrimaryBranch(String branchID) {
-    this.primaryBranch = branchID;
-  }
-
-  setPrimarySubBranchID(String subBranchID) {
-    this.primarySubBranch = subBranchID;
+  setSubBranchID(String subBranchID) {
+    this.subBranchID = subBranchID;
   }
 
   setAddress(Address address) {
     this.address = address;
   }
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  factory Customer.fromJson(Map<String, dynamic> json) => _$CustomerFromJson(json);
+  Map<String, dynamic> toJson() => _$CustomerToJson(this);
 
   CollectionReference getCollectionRef() {
-    return _userCollRef;
+    return _customerCollRef;
   }
 
   String getID() {
-    return this.mobileNumber.toString();
+    return this.customerID;
   }
 
   create() async {
@@ -111,4 +105,5 @@ class User extends Model {
     dynamic result = await super.upsert(this.toJson(), user['created_at']);
     print(result);
   }
+
 }

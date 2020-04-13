@@ -1,30 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'customer.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return User(
-    json['mobile_number'] as int,
+Customer _$CustomerFromJson(Map<String, dynamic> json) {
+  return Customer(
+    json['customer_id'] as String,
   )
-    ..name = json['user_name'] as String
-    ..password = json['password'] as String
+    ..mobileNumber = json['mobile_number'] as int
+    ..name = json['customer_name'] as String
     ..gender = json['gender'] as String
     ..displayProfilePath = json['display_profile_path'] as String ?? ''
     ..dateOfBirth = json['date_of_birth'] as String
     ..address = json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
-    ..primaryCompany = json['primary_company'] as String
-    ..primaryBranch = json['primary_branch'] as String
-    ..primarySubBranch = json['primary_sub_branch'] as String
-    ..lastSignInTime = json['last_signed_in_at'] == null
+    ..branchID = json['branch_id'] as String
+    ..subBranchID = json['sub_branch_id'] as String
+    ..lastTransactionType = json['last_transaction_type'] as String ?? ''
+    ..lastTransactionTime = json['last_transaction_at'] == null
         ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['last_signed_in_at'] as Timestamp))
+        : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(
+            json['last_transaction_at'] as Timestamp))
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -39,20 +39,20 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
   return ts.millisecondsSinceEpoch;
 }
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'user_name': instance.name,
+Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
+      'customer_id': instance.customerID,
       'mobile_number': instance.mobileNumber,
-      'password': instance.password,
+      'customer_name': instance.name,
       'gender': instance.gender,
       'display_profile_path': instance.displayProfilePath == null
           ? ''
           : instance.displayProfilePath,
       'date_of_birth': instance.dateOfBirth,
       'address': instance.address?.toJson(),
-      'primary_company': instance.primaryCompany,
-      'primary_branch': instance.primaryBranch,
-      'primary_sub_branch': instance.primarySubBranch,
-      'last_signed_in_at': instance.lastSignInTime?.toIso8601String(),
+      'branch_id': instance.branchID,
+      'sub_branch_id': instance.subBranchID,
+      'last_transaction_type': instance.lastTransactionType,
+      'last_transaction_at': instance.lastTransactionTime?.toIso8601String(),
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
     };
