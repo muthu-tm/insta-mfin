@@ -39,7 +39,7 @@ class User extends Model {
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
 
-  User(mobileNumber) {
+  User(int mobileNumber) {
     this.mobileNumber = mobileNumber;
   }
 

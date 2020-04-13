@@ -22,10 +22,9 @@ class UserProfileSetting extends StatefulWidget {
 
 class _UserProfileSettingState extends State<UserProfileSetting> {
   bool _status = true;
-  String mobileNumber = "9578632283";
 
   final FocusNode myFocusNode = FocusNode();
-  final User user = User("mobileNumber");
+  final User user = User(userState.mobileNumber);
 
   Branch selectedBranch;
   List<Branch> branches = <Branch>[
@@ -100,7 +99,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                                     return 'Please enter your Mobile Number';
                                   }
 
-                                  setState(() => mobileNumber = value.trim());
+                                  setState(() => {});
                                   return null;
                                 }),
                           ),

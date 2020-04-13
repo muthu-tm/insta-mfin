@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/screens/settings/CompanySettingsOptions.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class CompanyProfileSetting extends StatefulWidget {
