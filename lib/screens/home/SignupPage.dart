@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/services/storage/image_uploader.dart';
-import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
@@ -261,12 +261,12 @@ class _RegisterFormState extends State<RegisterForm> {
     if (form.validate()) {
       dynamic result = await _authController.registerWithMobileNumber(
           int.parse(mobileNumber), password, name);
-      if (!result['is_registered']) {
+      if (!result['is_success']) {
         print("Unable to register USER: " + result['message']);
       } else {
         print("Successfully registered the user");
-        print("UPLOADING image file: " + _imageFile.toString());
         if (_imageFile != null) {
+          print("UPLOADING image file: " + _imageFile.toString());
           await Uploader.copyToAppDirectory(_imageFile, emailID);
 
           Uploader.uploadImage(
@@ -275,16 +275,18 @@ class _RegisterFormState extends State<RegisterForm> {
               int.parse(mobileNumber),
               (downloadURL) => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserProfileSetting()),
+                    MaterialPageRoute(
+                        builder: (context) => UserHomeScreen()),
                   ),
               () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserProfileSetting()),
+                    MaterialPageRoute(
+                        builder: (context) => UserHomeScreen()),
                   ));
         } else {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UserProfileSetting()),
+            MaterialPageRoute(builder: (context) => UserHomeScreen()),
           );
         }
       }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/company.dart';
+import 'package:instamfin/services/utils/response_utils.dart';
 
 class CompanyController {
   Future createFinance(String name, String registeredID, List<String> emails,
@@ -24,9 +25,9 @@ class CompanyController {
 
       financeCompany = await financeCompany.create();
 
-      return {"is_success": true, "message": financeCompany};
+      return CustomResponse.getSuccesReponse(financeCompany);
     } catch (err) {
-      return {"is_success": true, "message": err.toString()};
+      return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
@@ -34,9 +35,9 @@ class CompanyController {
     try {
       finance = await finance.replace();
 
-      return {"is_success": true, "message": finance};
+      return CustomResponse.getSuccesReponse(finance);
     } catch (err) {
-      return {"is_success": true, "message": err.toString()};
+      return CustomResponse.getFailureReponse(err.toString());
     }
   }
 }

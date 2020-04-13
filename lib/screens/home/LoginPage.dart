@@ -192,7 +192,7 @@ class _LoginControllerState extends State<LoginController> {
       var result =
           await _authController.signInWithMobileNumber(int.parse(mobileNumber), password);
 
-      if (!result['is_logged_in']) {
+      if (!result['is_success']) {
         print("Unable to Login: " + result['message']);
       } else {
         print("User logged in successfully");

@@ -1,4 +1,5 @@
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/utils/response_utils.dart';
 import './../../authenticate/auth.dart';
 
 class AuthController {
@@ -10,11 +11,7 @@ class AuthController {
           mobileNumber, passkey, userName);
 
       if (user == null) {
-        return {
-          'is_registered': false,
-          "error_code": 1,
-          'message': "Found an existing user for this mobile number"
-        };
+        return CustomResponse.getFailureReponse("Found an existing user for this mobile number");
       }
 
       user.update({'last_signed_in_at': DateTime.now()});
@@ -22,17 +19,9 @@ class AuthController {
       // set user global state
       await user.setUserState();
 
-      return {
-        'is_registered': true,
-        "error_code": 0,
-        'message': user
-      };
+      return CustomResponse.getSuccesReponse(user);
     } catch (err) {
-      return {
-        'is_registered': false,
-        // "error_code": err.code,
-        "message": err.toString()
-      };
+      return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
@@ -44,36 +33,19 @@ class AuthController {
       user.update({'last_signed_in_at': DateTime.now()});
       await user.setUserState();
 
-      return {
-        'is_logged_in': true,
-        "error_code": 0,
-        'message': user
-      };
+      return CustomResponse.getSuccesReponse(user);
     } catch (err) {
-      return {
-        'is_logged_in': false,
-        // "error_code": err.code,
-        "message": err.toString()
-      };
+      return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
   dynamic signOut() async {
     try {
-      return await _authService.signOut();
+      await _authService.signOut();
 
-      // return {
-      //   'is_signed_out': true,
-      //   "error_code": 0,
-      //   "message": "Successfully signed out!"
-      // };
+      return CustomResponse.getSuccesReponse("Successfully signed out");
     } catch (err) {
-      // return {
-      //   'is_signed_out': false,
-      //   // "error_code": err.code,
-      //   "message": err.message
-      // };
-      return null;
+      return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
