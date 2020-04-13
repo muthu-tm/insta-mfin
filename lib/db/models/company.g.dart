@@ -41,7 +41,7 @@ Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{
       'finance_name': instance.financeName,
       'braches': instance.branches,
       'admins': instance.admins,
-      'display_profile_path': instance.displayProfilePath,
+      'display_profile_path': instance.displayProfilePath == null ? '' : instance.displayProfilePath,
       'address': instance.address?.toJson(),
       'date_of_registration': instance.dateOfRegistration,
       'allocated_branch_count': instance.allocatedBranchCount,

@@ -10,7 +10,7 @@ User userState;
 
 @JsonSerializable(explicitToJson: true)
 class User extends Model {
-  static CollectionReference _userCollRef = Model.db.collection("user");
+  static CollectionReference _userCollRef = Model.db.collection("users");
 
   @JsonKey(name: 'user_name', nullable: true)
   String name;

@@ -41,7 +41,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'mobile_number': instance.mobileNumber,
       'password': instance.password,
       'gender': instance.gender,
-      'display_profile_path': instance.displayProfilePath,
+      'display_profile_path': instance.displayProfilePath == null ? '' : instance.displayProfilePath,
       'date_of_birth': instance.dateOfBirth,
       'address': instance.address?.toJson(),
       'primary_company': instance.primaryCompany,
