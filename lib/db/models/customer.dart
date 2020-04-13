@@ -26,14 +26,20 @@ class Customer extends Model {
   String dateOfBirth;
   @JsonKey(name: 'address', nullable: true)
   Address address;
+  @JsonKey(name: 'age', nullable: true)
+  int age;
   @JsonKey(name: 'branch_id', nullable: true)
   String branchID;
   @JsonKey(name: 'sub_branch_id', nullable: true)
   String subBranchID;
+  @JsonKey(name: 'guarantied_by', nullable: true)
+  int guarantiedBy;
   @JsonKey(name: 'last_transaction_type', defaultValue: "")
   String lastTransactionType;
   @JsonKey(name: 'last_transaction_at', nullable: true)
   DateTime lastTransactionTime;
+  @JsonKey(name: 'added_by', nullable: true)
+  int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -43,7 +49,7 @@ class Customer extends Model {
     this.customerID = customerID;
   }
 
-  setMobileNumber(int mibileNumber) {
+  setMobileNumber(int mobileNumber) {
     this.mobileNumber = mobileNumber;
   }
 
@@ -64,6 +70,14 @@ class Customer extends Model {
     this.dateOfBirth = formatter.format(date);
   }
 
+  setAge(int age) {
+    this.age = age;
+  }
+
+  setGuarantiedBy(int guarantiedBy) {
+    this.guarantiedBy = guarantiedBy;
+  }
+
   setLastTransactionTime(DateTime dateTime) {
     this.lastTransactionTime = dateTime;
   }
@@ -82,6 +96,10 @@ class Customer extends Model {
 
   setAddress(Address address) {
     this.address = address;
+  }
+
+  setAddedBy(int mobileNumber) {
+    this.addedBy = mobileNumber;
   }
 
   factory Customer.fromJson(Map<String, dynamic> json) => _$CustomerFromJson(json);

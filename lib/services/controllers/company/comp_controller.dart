@@ -5,7 +5,7 @@ import 'package:instamfin/services/utils/response_utils.dart';
 
 class CompanyController {
   Future createFinance(String name, String registeredID, List<String> emails,
-      Address address, DateTime dateOfRegistration) async {
+      Address address, DateTime dateOfRegistration, int addedBy) async {
     try {
       String financeID = "";
 
@@ -16,14 +16,15 @@ class CompanyController {
       }
 
       financeID +=
-          financeID + '_' + DateTime.now().millisecondsSinceEpoch.toString();
-      Company financeCompany = Company();
+          financeID + '_' + (DateTime.now().millisecondsSinceEpoch/1000).ceil().toString();
+      Company financeCompany = Company(financeID);
       financeCompany.setFianceName(name);
       financeCompany.setRegistrationID(registeredID);
       financeCompany.setAddress(address);
       financeCompany.addEmails(emails);
+      financeCompany.setAddedBy(addedBy);
 
-      financeCompany = await financeCompany.create();
+      await financeCompany.create();
 
       return CustomResponse.getSuccesReponse(financeCompany);
     } catch (err) {

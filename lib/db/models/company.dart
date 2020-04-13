@@ -37,12 +37,16 @@ class Company extends Model {
   int allocatedUsersCount;
   @JsonKey(name: 'available_users_count', nullable: true)
   int availableUsersCount;
+  @JsonKey(name: 'added_by', nullable: true)
+  int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
 
-  Company();
+  Company(String financeID) {
+    this.financeID = financeID;
+  }
 
   setFianceName(String name) {
     this.financeName = name;
@@ -83,6 +87,10 @@ class Company extends Model {
 
   setAllocatedUsersCount(int allocUsersCount) {
     this.allocatedUsersCount = allocUsersCount;
+  }
+
+  setAddedBy(int mobileNumber) {
+    this.addedBy = mobileNumber;
   }
 
   factory Company.fromJson(Map<String, dynamic> json) =>

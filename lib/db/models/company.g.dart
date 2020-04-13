@@ -7,8 +7,9 @@ part of 'company.dart';
 // **************************************************************************
 
 Company _$CompanyFromJson(Map<String, dynamic> json) {
-  return Company()
-    ..financeID = json['finance_id'] as String
+  return Company(
+    json['finance_id'] as String,
+  )
     ..registrationID = json['registration_id'] as String
     ..financeName = json['finance_name'] as String
     ..emails = (json['emails'] as List)?.map((e) => e as String)?.toList()
@@ -23,6 +24,7 @@ Company _$CompanyFromJson(Map<String, dynamic> json) {
     ..availableBranchCount = json['available_branch_count'] as int
     ..allocatedUsersCount = json['allocated_users_count'] as int
     ..availableUsersCount = json['available_users_count'] as int
+    ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -41,6 +43,7 @@ Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{
       'finance_id': instance.financeID,
       'registration_id': instance.registrationID,
       'finance_name': instance.financeName,
+      'emails': instance.emails,
       'braches': instance.branches,
       'admins': instance.admins,
       'display_profile_path': instance.displayProfilePath == null
@@ -52,6 +55,7 @@ Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{
       'available_branch_count': instance.availableBranchCount,
       'allocated_users_count': instance.allocatedUsersCount,
       'available_users_count': instance.availableUsersCount,
+      'added_by': instance.addedBy,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
     };

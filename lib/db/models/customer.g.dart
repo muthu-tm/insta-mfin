@@ -18,13 +18,16 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
     ..address = json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
+    ..age = json['age'] as int
     ..branchID = json['branch_id'] as String
     ..subBranchID = json['sub_branch_id'] as String
+    ..guarantiedBy = json['guarantied_by'] as int
     ..lastTransactionType = json['last_transaction_type'] as String ?? ''
     ..lastTransactionTime = json['last_transaction_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(
             json['last_transaction_at'] as Timestamp))
+    ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -49,10 +52,13 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
           : instance.displayProfilePath,
       'date_of_birth': instance.dateOfBirth,
       'address': instance.address?.toJson(),
+      'age': instance.age,
       'branch_id': instance.branchID,
       'sub_branch_id': instance.subBranchID,
+      'guarantied_by': instance.guarantiedBy,
       'last_transaction_type': instance.lastTransactionType,
       'last_transaction_at': instance.lastTransactionTime?.toIso8601String(),
+      'added_by': instance.addedBy,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
     };
