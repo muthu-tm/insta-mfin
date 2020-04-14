@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
+import 'package:intl/intl.dart';
 
 class Branch {
   const Branch(this.name, this.branchId);
@@ -43,15 +44,13 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
     'primary_company': 'Tamilnadu',
   };
 
-  var _groupValue;
-
-  var _myActivity;
-
-  var _controller;
-
   var groupValue = -1;
 
   String name;
+  bool _passwordVisible = false;
+  bool hidePassword = true;
+
+  var _controller;
   @override
   void initState() {
     super.initState();
@@ -136,12 +135,29 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                             child: new TextFormField(
                               keyboardType: TextInputType.text,
                               initialValue: userProfileSettingsMap['password'],
-                              obscureText: true,
-                              decoration: const InputDecoration(
+                              obscureText: hidePassword,
+                              decoration: InputDecoration(
+                                hintText: 'Enter the Password',
                                 labelText: "Password",
-                                hintText: "Enter the Password",
-                                filled: true,
                                 fillColor: CustomColors.mfinGrey,
+                                filled: true,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    // Based on passwordVisible state choose the icon
+                                    _passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: CustomColors.mfinFadedButtonGreen,
+                                    size: 35.0,
+                                  ),
+                                  onPressed: () {
+                                    // Update the state i.e. toogle the state of passwordVisible variable
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                      hidePassword = !hidePassword;
+                                    });
+                                  },
+                                ),
                               ),
                               enabled: !_status,
                               autofocus: !_status,
@@ -156,9 +172,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                         children: <Widget>[
                           new Flexible(
                             child: new TextFormField(
-                                keyboardType: TextInputType.datetime,
-                                initialValue:
-                                    userProfileSettingsMap['date_of_birth'],
+                                controller: _date,
                                 decoration: const InputDecoration(
                                   labelText: "Date of Birth",
                                   hintText: "Enter Your Date of Birth",
@@ -167,12 +181,13 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                                 ),
                                 enabled: !_status,
                                 autofocus: !_status,
-                                validator: (value) {
-                                  if (value.isEmpty) {
+                                onTap: () => _selectDate(context),
+                                validator: (_selectDate) {
+                                  if (_selectDate.isEmpty) {
                                     return 'Please enter your Date of Birth';
                                   }
 
-                                  setState(() => user.setDOB(value));
+                                  setState(() => user.setDOB(_selectDate));
                                   return null;
                                 }),
                           ),
@@ -189,7 +204,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                                     color: Colors.black38,
                                   )),
                               Radio(
-                                value: "Male",
+                                value: 0,
                                 groupValue: groupValue,
                                 activeColor: CustomColors.mfinBlue,
                                 onChanged: !_status
@@ -206,7 +221,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                                 ),
                               ),
                               Radio(
-                                value: "Female",
+                                value: 1,
                                 groupValue: groupValue,
                                 activeColor: CustomColors.mfinBlue,
                                 onChanged: !_status
@@ -232,7 +247,6 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                             child: TextFormField(
                               initialValue:
                                   userProfileSettingsMap['primary_company'],
-                              controller: _controller,
                               decoration: InputDecoration(
                                 labelText: "Primary Company",
                                 hintText: "Choose your primary company",
@@ -241,7 +255,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                                 suffixIcon: PopupMenuButton<String>(
                                   icon: const Icon(Icons.arrow_drop_down),
                                   onSelected: (String value) {
-                                    _controller.text = value;
+                                    user.setPrimaryBranch(value);
                                   },
                                   itemBuilder: (BuildContext context) {
                                     return branches.map<PopupMenuItem<String>>(
@@ -297,7 +311,6 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                             child: TextFormField(
                               initialValue:
                                   userProfileSettingsMap['primary_sub_branch'],
-                              controller: _controller,
                               decoration: InputDecoration(
                                 labelText: "Primary Sub Branch",
                                 hintText: "Choose your primary  sub branch",
@@ -437,7 +450,23 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
     });
   }
 
+  DateTime selectedDate = DateTime.now();
+  TextEditingController _date = new TextEditingController();
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1901, 1),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        _date.value = TextEditingValue(text: DateFormat('yyyy-MM-dd').format(picked));
+      });
+  }
+
   void _saveUser() async {
-    var result = await user.create();
+    var result = await user.update(user);
   }
 }
