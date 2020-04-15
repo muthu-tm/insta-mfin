@@ -21,7 +21,7 @@ class _SettingMainState extends State<SettingMain> {
       body: new Container(
         height: MediaQuery.of(context).size.height * 0.80,
         child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             new Row(
@@ -79,8 +79,7 @@ class _SettingMainState extends State<SettingMain> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  UserProfileSetting()),
+                              builder: (context) => UserProfileSetting()),
                         );
                       }),
                       Padding(padding: EdgeInsets.all(05.0)),
@@ -149,32 +148,50 @@ class _SettingMainState extends State<SettingMain> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly, //change here don't //worked
-              crossAxisAlignment: CrossAxisAlignment.start,
-
+            Column(
               children: <Widget>[
                 InkWell(
                   splashColor: CustomColors.mfinButtonGreen,
                   onTap: () {}, // button pressed
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      customIconButton(
-                          Icons.brightness_4, 50.0, CustomColors.mfinBlue, () {
-                        print("Pressed Dark Theme");
-                      }),
-                      Padding(padding: EdgeInsets.all(05.0)),
-                      Text(
-                        "Dark Theme",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: CustomColors.mfinGrey,
-                          fontWeight: FontWeight.bold,
+                      new Row(children: <Widget>[
+                        Text(
+                          " Wish to be a complete financier?",
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: CustomColors.mfinBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ), // text
+                      ]),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 60.0, top: 20),
+                  child: InkWell(
+                    splashColor: CustomColors.mfinButtonGreen,
+                    onTap: () {}, // button pressed
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        new Container(
+                          color: CustomColors.mfinBlue,
+                          child: new Row(children: <Widget>[
+                            customIconButton(Icons.work, 35.0,
+                                CustomColors.mfinButtonGreen, null),
+                            new Text(
+                              "Register your finance here!",
+                              style: TextStyle(
+                                  color: CustomColors.mfinButtonGreen,
+                                  fontSize: 17.0),
+                            ),
+                          ]),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
