@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/settings/BranchSetting.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -103,6 +104,16 @@ Widget openDrawer(BuildContext context) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => CompanyProfileSetting()),
+          );
+        }),
+            new ListTile(
+        leading: new Icon(Icons.store,
+            color: CustomColors.mfinButtonGreen),
+        title: new Text('Branch Settings'),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BranchSetting()),
           );
         }),
     new ListTile(
