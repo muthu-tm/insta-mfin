@@ -95,6 +95,10 @@ class Company extends Model {
     return this.createdAt.millisecondsSinceEpoch.toString();
   }
 
+  Future<DocumentSnapshot> getFinance(String financeID) async {
+    return await getCollectionRef().document(financeID).get();
+  }
+
   create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
