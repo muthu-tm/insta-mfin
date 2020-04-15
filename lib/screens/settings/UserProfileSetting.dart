@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:intl/intl.dart';
 
 class Branch {
@@ -23,10 +25,12 @@ class UserProfileSetting extends StatefulWidget {
 
 class _UserProfileSettingState extends State<UserProfileSetting> {
   bool _status = true;
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode myFocusNode = FocusNode();
   final User user = User(userState.mobileNumber);
-
+  final UserController userController = UserController();
+  DateTime selectedDate = DateTime.now();
+  DateTime dateOfBirth;
   Branch selectedBranch;
   List<Branch> branches = <Branch>[
     const Branch('Dindigul Main', "1"),
@@ -50,7 +54,6 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   bool _passwordVisible = false;
   bool hidePassword = true;
 
-  var _controller;
   @override
   void initState() {
     super.initState();
@@ -70,278 +73,280 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
         color: CustomColors.mfinGrey,
         child: new ListView(
           children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                new Container(
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                                initialValue:
-                                    userProfileSettingsMap['mobile_number'],
-                                keyboardType: TextInputType.phone,
-                                decoration: const InputDecoration(
-                                  labelText: "Mobile Number",
-                                  hintText: "Enter Your Mobile number",
-                                  filled: true,
-                                  fillColor: CustomColors.mfinGrey,
-                                ),
-                                enabled: !_status,
-                                autofocus: !_status,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Please enter your Mobile Number';
-                                  }
-
-                                  setState(() => {});
-                                  return null;
-                                }),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                                keyboardType: TextInputType.text,
-                                initialValue: userProfileSettingsMap['name'],
-                                decoration: const InputDecoration(
-                                  labelText: "Name",
-                                  hintText: "Enter the User Name",
-                                  filled: true,
-                                  fillColor: CustomColors.mfinGrey,
-                                ),
-                                enabled: !_status,
-                                autofocus: !_status,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Please enter your Name';
-                                  }
-
-                                  setState(() => user.setName(value.trim()));
-                                  return null;
-                                }),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              keyboardType: TextInputType.text,
-                              initialValue: userProfileSettingsMap['password'],
-                              obscureText: hidePassword,
-                              decoration: InputDecoration(
-                                hintText: 'Enter the Password',
-                                labelText: "Password",
-                                fillColor: CustomColors.mfinGrey,
-                                filled: true,
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    // Based on passwordVisible state choose the icon
-                                    _passwordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: CustomColors.mfinFadedButtonGreen,
-                                    size: 35.0,
+            Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Container(
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        new Row(
+                          children: <Widget>[
+                            new Flexible(
+                              child: new TextFormField(
+                                  initialValue:
+                                      userProfileSettingsMap['mobile_number'],
+                                  keyboardType: TextInputType.phone,
+                                  decoration: const InputDecoration(
+                                    labelText: "Mobile Number",
+                                    hintText: "Enter Your Mobile number",
+                                    filled: true,
+                                    fillColor: CustomColors.mfinGrey,
                                   ),
-                                  onPressed: () {
-                                    // Update the state i.e. toogle the state of passwordVisible variable
-                                    setState(() {
-                                      _passwordVisible = !_passwordVisible;
-                                      hidePassword = !hidePassword;
-                                    });
-                                  },
-                                ),
-                              ),
-                              enabled: !_status,
-                              autofocus: !_status,
-                              validator: (passkey) =>
-                                  FieldValidator.passwordValidator(
-                                      passkey, user.setPassword(passkey)),
+                                  enabled: false,
+                                  autofocus: !_status,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter your Mobile Number';
+                                    }
+
+                                    setState(() => {});
+                                    return null;
+                                  }),
                             ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                                controller: _date,
-                                decoration: const InputDecoration(
-                                  labelText: "Date of Birth",
-                                  hintText: "Enter Your Date of Birth",
-                                  filled: true,
+                          ],
+                        ),
+                        new Row(
+                          children: <Widget>[
+                            new Flexible(
+                              child: new TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  initialValue: userProfileSettingsMap['name'],
+                                  decoration: const InputDecoration(
+                                    labelText: "Name",
+                                    hintText: "Enter the User Name",
+                                    filled: true,
+                                    fillColor: CustomColors.mfinGrey,
+                                  ),
+                                  enabled: !_status,
+                                  autofocus: !_status,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter your Name';
+                                    }
+                                    name = value;
+                                    setState(() => user.setName(value.trim()));
+                                  }),
+                            ),
+                          ],
+                        ),
+                        new Row(
+                          children: <Widget>[
+                            new Flexible(
+                              child: new TextFormField(
+                                keyboardType: TextInputType.text,
+                                initialValue:
+                                    userProfileSettingsMap['password'],
+                                obscureText: hidePassword,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter the Password',
+                                  labelText: "Password",
                                   fillColor: CustomColors.mfinGrey,
+                                  filled: true,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      // Based on passwordVisible state choose the icon
+                                      _passwordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: CustomColors.mfinBlue,
+                                      size: 35.0,
+                                    ),
+                                    onPressed: () {
+                                      // Update the state i.e. toogle the state of passwordVisible variable
+                                      setState(() {
+                                        _passwordVisible = !_passwordVisible;
+                                        hidePassword = !hidePassword;
+                                      });
+                                    },
+                                  ),
                                 ),
                                 enabled: !_status,
                                 autofocus: !_status,
-                                onTap: () => _selectDate(context),
-                                validator: (_selectDate) {
-                                  if (_selectDate.isEmpty) {
-                                    return 'Please enter your Date of Birth';
-                                  }
-
-                                  setState(() => user.setDOB(_selectDate));
-                                  return null;
-                                }),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          ButtonBar(
-                            alignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text(" Gender",
+                                validator: (passkey) =>
+                                    FieldValidator.passwordValidator(
+                                        passkey, setPassKey),
+                              ),
+                            ),
+                          ],
+                        ),
+                        new Row(
+                          children: <Widget>[
+                            new Flexible(
+                              child: new TextFormField(
+                                  controller: _date,
+                                  decoration: const InputDecoration(
+                                    labelText: "Date of Birth",
+                                    hintText: "Enter Your Date of Birth",
+                                    filled: true,
+                                    fillColor: CustomColors.mfinGrey,
+                                  ),
+                                  enabled: !_status,
+                                  autofocus: !_status,
+                                  onTap: () => _selectDate(context),
+                                  validator: (dateOfBirth) {
+                                    print(selectedDate);
+                                    user.setDOB(selectedDate);
+                                  }),
+                            ),
+                          ],
+                        ),
+                        new Row(
+                          children: <Widget>[
+                            ButtonBar(
+                              alignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(" Gender",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black38,
+                                    )),
+                                Radio(
+                                  value: 0,
+                                  groupValue: groupValue,
+                                  activeColor: CustomColors.mfinBlue,
+                                  onChanged: !_status
+                                      ? (val) {
+                                          setSelectedRadio(val);
+                                        }
+                                      : null,
+                                ),
+                                Text(
+                                  "Male",
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black38,
-                                  )),
-                              Radio(
-                                value: 0,
-                                groupValue: groupValue,
-                                activeColor: CustomColors.mfinBlue,
-                                onChanged: !_status
-                                    ? (val) {
-                                        setSelectedRadio(val);
-                                      }
-                                    : null,
-                              ),
-                              Text(
-                                "Male",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black38,
+                                  ),
                                 ),
-                              ),
-                              Radio(
-                                value: 1,
-                                groupValue: groupValue,
-                                activeColor: CustomColors.mfinBlue,
-                                onChanged: !_status
-                                    ? (val) {
-                                        setSelectedRadio(val);
-                                      }
-                                    : null,
-                              ),
-                              Text(
-                                "FeMale",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black38,
+                                Radio(
+                                  value: 1,
+                                  groupValue: groupValue,
+                                  activeColor: CustomColors.mfinBlue,
+                                  onChanged: !_status
+                                      ? (val) {
+                                          setSelectedRadio(val);
+                                        }
+                                      : null,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: TextFormField(
-                              initialValue:
-                                  userProfileSettingsMap['primary_company'],
-                              decoration: InputDecoration(
-                                labelText: "Primary Company",
-                                hintText: "Choose your primary company",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                                suffixIcon: PopupMenuButton<String>(
-                                  icon: const Icon(Icons.arrow_drop_down),
-                                  onSelected: (String value) {
-                                    user.setPrimaryBranch(value);
-                                  },
-                                  itemBuilder: (BuildContext context) {
-                                    return branches.map<PopupMenuItem<String>>(
-                                        (Branch branch) {
-                                      return new PopupMenuItem(
-                                          child: new Text(branch.name),
-                                          value: branch.name);
-                                    }).toList();
-                                  },
+                                Text(
+                                  "FeMale",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black38,
+                                  ),
                                 ),
-                              ),
-                              enabled: !_status,
-                              autofocus: !_status,
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: TextFormField(
-                              initialValue:
-                                  userProfileSettingsMap['primary_branch'],
-                              decoration: InputDecoration(
-                                labelText: "Primary Branch",
-                                hintText: "Choose your primary branch",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                                suffixIcon: PopupMenuButton<String>(
-                                  icon: const Icon(Icons.arrow_drop_down),
-                                  onSelected: (String branchID) {
-                                    user.setPrimaryBranch(branchID);
-                                  },
-                                  itemBuilder: (BuildContext context) {
-                                    return branches.map<PopupMenuItem<String>>(
-                                        (Branch branch) {
-                                      return new PopupMenuItem(
-                                          child: new Text(branch.name),
-                                          value: branch.branchId);
-                                    }).toList();
-                                  },
+                          ],
+                        ),
+                        new Row(
+                          children: <Widget>[
+                            new Flexible(
+                              child: TextFormField(
+                                initialValue:
+                                    userProfileSettingsMap['primary_company'],
+                                decoration: InputDecoration(
+                                  labelText: "Primary Company",
+                                  hintText: "Choose your primary company",
+                                  filled: true,
+                                  fillColor: CustomColors.mfinGrey,
+                                  suffixIcon: PopupMenuButton<String>(
+                                    icon: const Icon(Icons.arrow_drop_down),
+                                    onSelected: (String value) {
+                                      user.setPrimaryCompany(value);
+                                    },
+                                    itemBuilder: (BuildContext context) {
+                                      return branches
+                                          .map<PopupMenuItem<String>>(
+                                              (Branch branch) {
+                                        return new PopupMenuItem(
+                                            child: new Text(branch.name),
+                                            value: branch.branchId);
+                                      }).toList();
+                                    },
+                                  ),
                                 ),
+                                enabled: !_status,
+                                autofocus: !_status,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: TextFormField(
-                              initialValue:
-                                  userProfileSettingsMap['primary_sub_branch'],
-                              decoration: InputDecoration(
-                                labelText: "Primary Sub Branch",
-                                hintText: "Choose your primary  sub branch",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                                suffixIcon: PopupMenuButton<String>(
-                                  icon: const Icon(Icons.arrow_drop_down),
-                                  onSelected: (String subBranchID) {
-                                    user.setPrimarySubBranchID(subBranchID);
-                                  },
-                                  itemBuilder: (BuildContext context) {
-                                    return branches.map<PopupMenuItem<String>>(
-                                        (Branch branch) {
-                                      return new PopupMenuItem(
-                                          child: new Text(branch.name),
-                                          value: branch.branchId);
-                                    }).toList();
-                                  },
+                          ],
+                        ),
+                        new Row(
+                          children: <Widget>[
+                            new Flexible(
+                              child: TextFormField(
+                                initialValue:
+                                    userProfileSettingsMap['primary_branch'],
+                                decoration: InputDecoration(
+                                  labelText: "Primary Branch",
+                                  hintText: "Choose your primary branch",
+                                  filled: true,
+                                  fillColor: CustomColors.mfinGrey,
+                                  suffixIcon: PopupMenuButton<String>(
+                                    icon: const Icon(Icons.arrow_drop_down),
+                                    onSelected: (String branchID) {
+                                      user.setPrimaryBranch(branchID);
+                                    },
+                                    itemBuilder: (BuildContext context) {
+                                      return branches
+                                          .map<PopupMenuItem<String>>(
+                                              (Branch branch) {
+                                        return new PopupMenuItem(
+                                            child: new Text(branch.name),
+                                            value: branch.branchId);
+                                      }).toList();
+                                    },
+                                  ),
                                 ),
+                                enabled: !_status,
+                                autofocus: !_status,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
-                          ),
-                        ],
-                      ),
-                      !_status ? _getActionButtons() : new Container(),
-                    ],
+                          ],
+                        ),
+                        new Row(
+                          children: <Widget>[
+                            new Flexible(
+                              child: TextFormField(
+                                initialValue: userProfileSettingsMap[
+                                    'primary_sub_branch'],
+                                decoration: InputDecoration(
+                                  labelText: "Primary Sub Branch",
+                                  hintText: "Choose your primary  sub branch",
+                                  filled: true,
+                                  fillColor: CustomColors.mfinGrey,
+                                  suffixIcon: PopupMenuButton<String>(
+                                    icon: const Icon(Icons.arrow_drop_down),
+                                    onSelected: (String subBranchID) {
+                                      user.setPrimarySubBranchID(subBranchID);
+                                    },
+                                    itemBuilder: (BuildContext context) {
+                                      return branches
+                                          .map<PopupMenuItem<String>>(
+                                              (Branch branch) {
+                                        return new PopupMenuItem(
+                                            child: new Text(branch.name),
+                                            value: branch.branchId);
+                                      }).toList();
+                                    },
+                                  ),
+                                ),
+                                enabled: !_status,
+                                autofocus: !_status,
+                              ),
+                            ),
+                          ],
+                        ),
+                        !_status ? _getActionButtons() : new Container(),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -391,6 +396,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   setState(() {
                     _status = true;
                     FocusScope.of(context).requestFocus(new FocusNode());
+                    _saveUser();
                   });
                 },
                 shape: new RoundedRectangleBorder(
@@ -447,11 +453,22 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   setSelectedRadio(int val) {
     setState(() {
       groupValue = val;
+      if (val == 0) {
+        user.setGender(Gender.Male);
+      } else {
+        user.setGender(Gender.Female);
+      }
     });
   }
 
-  DateTime selectedDate = DateTime.now();
+  setPassKey(String passkey) {
+    setState(() {
+      user.setPassword(passkey);
+    });
+  }
+
   TextEditingController _date = new TextEditingController();
+  var formatter = new DateFormat('dd-MM-yyyy');
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -462,11 +479,16 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        _date.value = TextEditingValue(text: DateFormat('yyyy-MM-dd').format(picked));
+        dateOfBirth = picked;
+        _date.value = TextEditingValue(text: formatter.format(picked));
       });
   }
 
   void _saveUser() async {
-    var result = await user.update(user);
+    final FormState form = _formKey.currentState;
+    if (form.validate()) {
+      print(user);
+      var result = await userController.updateUser(user);
+    }
   }
 }

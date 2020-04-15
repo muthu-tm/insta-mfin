@@ -61,7 +61,7 @@ class User extends Model {
     this.name = name;
   }
 
-  setDOB(date) {
+  setDOB(DateTime date) {
     var formatter = new DateFormat('dd-MM-yyyy');
     this.dateOfBirth = formatter.format(date);
   }
