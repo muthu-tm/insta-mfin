@@ -19,8 +19,6 @@ class Company extends Model {
   String financeName;
   @JsonKey(name: 'emails', nullable: true)
   List<String> emails;
-  @JsonKey(name: 'braches', nullable: true)
-  List<String> branches;
   @JsonKey(name: 'admins', nullable: true)
   List<String> admins;
   @JsonKey(name: 'display_profile_path', nullable: true)
@@ -64,11 +62,7 @@ class Company extends Model {
     this.admins.addAll(admins);
   }
 
-  addBranches(List<String> branches) {
-    this.branches.addAll(branches);
-  }
-
-  setDOR(date) {
+  setDOR(DateTime date) {
     var formatter = new DateFormat('dd-MM-yyyy');
     this.dateOfRegistration = formatter.format(date);
   }
