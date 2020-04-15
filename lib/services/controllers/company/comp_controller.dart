@@ -21,6 +21,23 @@ class CompanyController {
     }
   }
 
+  Future getFinanceByUserID(String userID) async {
+    try {
+      Company finance = Company();
+      List<Company> finances = await finance.getFinanceByUserID(userID);
+
+      if (finances == null) {
+        return [];
+      }
+
+      return finances;
+
+    } catch (err) {
+      print("Error while retrieving finace for an user: " + userID);
+      return null;
+    }
+  }
+
   Future updateCompany(Company finance) async {
     try {
       finance = await finance.replace();

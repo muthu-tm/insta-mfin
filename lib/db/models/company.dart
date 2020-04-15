@@ -99,6 +99,26 @@ class Company extends Model {
     return await getCollectionRef().document(financeID).get();
   }
 
+  Future<List<Company>> getFinanceByUserID(String userID) async {
+    List<DocumentSnapshot> docSnapshot = (await getCollectionRef()
+            .where('admins', arrayContains: userID)
+            .getDocuments())
+        .documents;
+    
+    if (docSnapshot.isEmpty) {
+      return null;
+    }
+
+    List<Company> finances;
+
+    for (var doc in docSnapshot) {
+      Company finance = Company.fromJson(doc.data);
+      finances.add(finance);
+    }
+
+    return finances;
+  }
+
   create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
