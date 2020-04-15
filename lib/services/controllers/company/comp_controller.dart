@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/company.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
@@ -7,17 +6,7 @@ class CompanyController {
   Future createFinance(String name, String registeredID, List<String> emails,
       Address address, DateTime dateOfRegistration, int addedBy) async {
     try {
-      String financeID = "";
-
-      if (registeredID != null || registeredID != "") {
-        financeID = financeID + registeredID;
-      } else {
-        financeID += financeID + UniqueKey().toString();
-      }
-
-      financeID +=
-          financeID + '_' + (DateTime.now().millisecondsSinceEpoch/1000).ceil().toString();
-      Company financeCompany = Company(financeID);
+      Company financeCompany = Company();
       financeCompany.setFianceName(name);
       financeCompany.setRegistrationID(registeredID);
       financeCompany.setAddress(address);

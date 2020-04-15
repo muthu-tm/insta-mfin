@@ -53,6 +53,14 @@ class SubBranch {
     this.addedBy = mobileNumber;
   }
 
+  setCreatedAt(DateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  setUpdatedAt(DateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
   factory SubBranch.fromJson(Map<String, dynamic> json) => _$SubBranchFromJson(json);
   Map<String, dynamic> toJson() => _$SubBranchToJson(this);
 }

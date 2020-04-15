@@ -3,11 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Model {
   static final Firestore db = Firestore.instance;
 
-  static void attachCommonAttributes(data) {
-    data['created_at'] = DateTime.now();
-    data['updated_at'] = DateTime.now();
-  }
-
   CollectionReference  getCollectionRef() {
     throw new Exception("Should be implemented by subclass");
   }
@@ -21,8 +16,6 @@ class Model {
   }
 
   add(data) async {
-    attachCommonAttributes(data);
-    
     return await this.getCollectionRef().document(this.getID()).setData(data);
   }
 
@@ -31,14 +24,6 @@ class Model {
     data['updated_at'] = DateTime.now();
 
     return await this.getCollectionRef().document(this.getID()).setData(data);
-  }
-
-  /* merge fields in the document or create it if it doesn't exists */
-  mergeOrInsert(id, data) async {
-    attachCommonAttributes(data);
-
-    await this.getDocumentRef(id).setData(data, merge: true);
-    return data;
   }
 
   update(data) async {

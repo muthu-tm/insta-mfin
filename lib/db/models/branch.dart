@@ -57,6 +57,14 @@ class Branch {
     this.addedBy = mobileNumber;
   }
 
+  setCreatedAt(DateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  setUpdatedAt(DateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
   factory Branch.fromJson(Map<String, dynamic> json) => _$BranchFromJson(json);
   Map<String, dynamic> toJson() => _$BranchToJson(this);
 }

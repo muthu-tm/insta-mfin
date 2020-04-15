@@ -7,9 +7,7 @@ part of 'company.dart';
 // **************************************************************************
 
 Company _$CompanyFromJson(Map<String, dynamic> json) {
-  return Company(
-    json['finance_id'] as String,
-  )
+  return Company()
     ..registrationID = json['registration_id'] as String
     ..financeName = json['finance_name'] as String
     ..emails = (json['emails'] as List)?.map((e) => e as String)?.toList()
@@ -39,7 +37,6 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{
-      'finance_id': instance.financeID,
       'registration_id': instance.registrationID,
       'finance_name': instance.financeName,
       'emails': instance.emails,

@@ -102,6 +102,9 @@ class User extends Model {
   }
 
   create() async {
+    this.createdAt = DateTime.now();
+    this.updatedAt = DateTime.now();
+    
     dynamic result = await super.add(this.toJson());
     print(result);
   }

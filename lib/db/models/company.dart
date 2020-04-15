@@ -11,8 +11,6 @@ class Company extends Model {
   static CollectionReference _companyCollRef =
       Model.db.collection("finance_companies");
 
-  @JsonKey(name: 'finance_id', nullable: true)
-  String financeID;
   @JsonKey(name: 'registration_id', nullable: true)
   String registrationID;
   @JsonKey(name: 'finance_name', nullable: true)
@@ -42,9 +40,7 @@ class Company extends Model {
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
 
-  Company(String financeID) {
-    this.financeID = financeID;
-  }
+  Company();
 
   setFianceName(String name) {
     this.financeName = name;
@@ -96,10 +92,13 @@ class Company extends Model {
   }
 
   String getID() {
-    return this.financeID;
+    return this.createdAt.millisecondsSinceEpoch.toString();
   }
 
   create() async {
+    this.createdAt = DateTime.now();
+    this.updatedAt = DateTime.now();
+
     dynamic result = await super.add(this.toJson());
     print(result);
   }
