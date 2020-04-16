@@ -47,7 +47,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
         key: _formKey,
         child: SingleChildScrollView(
           child: new Container(
-            height: MediaQuery.of(context).size.height * 1.00,
+            height: MediaQuery.of(context).size.height * 1.16,
             color: CustomColors.mfinLightGrey,
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -78,7 +78,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -113,7 +113,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
                       suffixIcon: IconButton(
                         icon: Icon(
                           // Based on passwordVisible state choose the icon
@@ -161,7 +161,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (passkey) =>
                         FieldValidator.emailValidator(passkey, setEmailID),
@@ -192,7 +192,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
                       suffixIcon: Icon(
                         Icons.perm_contact_calendar,
                         color: CustomColors.mfinBlue,
@@ -287,6 +287,30 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             hintText: 'City',
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 5.0),
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        title: TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: 'State',
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 5.0),
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        title: TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: 'Pincode',
                             fillColor: CustomColors.mfinWhite,
                             filled: true,
                             contentPadding: new EdgeInsets.symmetric(

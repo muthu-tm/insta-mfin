@@ -76,6 +76,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
+                                enabled: false,
+                                autofocus: false,
                               ),
                             ),
                             ListTile(
@@ -93,6 +95,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
+                                enabled: false,
+                                autofocus: false,
                               ),
                             ),
                             ListTile(
@@ -106,10 +110,13 @@ class _UserSettingState extends State<UserSetting> {
                                       vertical: 3.0, horizontal: 3.0),
                                   fillColor: CustomColors.mfinWhite,
                                   filled: true,
+                                  enabled: false,
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
+                                enabled: false,
+                                autofocus: false,
                               ),
                             ),
                             new Text(""),
@@ -164,6 +171,8 @@ class _UserSettingState extends State<UserSetting> {
                                     color: CustomColors.mfinGrey,
                                   )),
                                 ),
+                                enabled: false,
+                                autofocus: false,
                               ),
                             ),
                             ListTile(
@@ -179,6 +188,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
+                                enabled: false,
+                                autofocus: false,
                               ),
                             ),
                             ListTile(
@@ -194,6 +205,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
+                                enabled: false,
+                                autofocus: false,
                               ),
                             ),
                             ListTile(
@@ -209,6 +222,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
+                                enabled: false,
+                                autofocus: false,
                               ),
                             ),
                             ListTile(
@@ -224,6 +239,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
+                                enabled: false,
+                                autofocus: false,
                               ),
                             ),
                             ListTile(
@@ -240,6 +257,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
+                                enabled: false,
+                                autofocus: false,
                               ),
                             ),
                             new Text(""),
