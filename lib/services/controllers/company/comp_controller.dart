@@ -11,11 +11,12 @@ class CompanyController {
       financeCompany.setRegistrationID(registeredID);
       financeCompany.setAddress(address);
       financeCompany.addEmails(emails);
+      financeCompany.addAdmins([addedBy]);
       financeCompany.setAddedBy(addedBy);
 
-      await financeCompany.create();
+      financeCompany = await financeCompany.create();
 
-      return CustomResponse.getSuccesReponse(financeCompany);
+      return CustomResponse.getSuccesReponse(financeCompany.toJson());
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -31,7 +32,6 @@ class CompanyController {
       }
 
       return finances;
-
     } catch (err) {
       print("Error while retrieving finace for an user: " + userID);
       return null;
@@ -42,7 +42,7 @@ class CompanyController {
     try {
       finance = await finance.replace();
 
-      return CustomResponse.getSuccesReponse(finance);
+      return CustomResponse.getSuccesReponse(finance.toJson());
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

@@ -8,7 +8,7 @@ class UserController {
 
       await user.setUserState();
 
-      return CustomResponse.getFailureReponse(user);
+      return CustomResponse.getSuccesReponse(user);
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

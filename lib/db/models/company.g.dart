@@ -11,7 +11,7 @@ Company _$CompanyFromJson(Map<String, dynamic> json) {
     ..registrationID = json['registration_id'] as String
     ..financeName = json['finance_name'] as String
     ..emails = (json['emails'] as List)?.map((e) => e as String)?.toList()
-    ..admins = (json['admins'] as List)?.map((e) => e as String)?.toList()
+    ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
     ..displayProfilePath = json['display_profile_path'] as String
     ..address = json['address'] == null
         ? null

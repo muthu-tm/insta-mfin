@@ -13,7 +13,7 @@ Branch _$BranchFromJson(Map<String, dynamic> json) {
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
     ..emails = (json['emails'] as List)?.map((e) => e as String)?.toList()
-    ..admins = (json['admins'] as List)?.map((e) => e as String)?.toList()
+    ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
     ..displayProfilePath = json['display_profile_path'] as String
     ..dateOfRegistration = json['date_of_registration'] as String
     ..addedBy = json['added_by'] as int

@@ -29,7 +29,7 @@ class CustController {
 
       await cust.create();
 
-      return CustomResponse.getSuccesReponse(cust);
+      return CustomResponse.getSuccesReponse(cust.toJson());
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -39,7 +39,7 @@ class CustController {
     try {
       customer = await customer.replace();
 
-      return CustomResponse.getFailureReponse(customer);
+      return CustomResponse.getFailureReponse(customer.toJson());
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

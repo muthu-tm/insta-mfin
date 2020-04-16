@@ -14,7 +14,7 @@ class SubBranch {
   @JsonKey(name: 'emails', nullable: true)
   List<String> emails;
   @JsonKey(name: 'admins', nullable: true)
-  List<String> admins;
+  List<int> admins;
   @JsonKey(name: 'display_profile_path', nullable: true)
   String displayProfilePath;
   @JsonKey(name: 'date_of_registration', nullable: true)
@@ -32,7 +32,7 @@ class SubBranch {
     this.emails.addAll(emails);
   }
 
-  addAdmins(List<String> admins) {
+  addAdmins(List<int> admins) {
     this.admins.addAll(admins);
   }
 

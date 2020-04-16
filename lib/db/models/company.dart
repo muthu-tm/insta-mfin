@@ -18,7 +18,7 @@ class Company extends Model {
   @JsonKey(name: 'emails', nullable: true)
   List<String> emails;
   @JsonKey(name: 'admins', nullable: true)
-  List<String> admins;
+  List<int> admins;
   @JsonKey(name: 'display_profile_path', nullable: true)
   String displayProfilePath;
   @JsonKey(name: 'address', nullable: true)
@@ -54,7 +54,7 @@ class Company extends Model {
     this.emails.addAll(emails);
   }
 
-  addAdmins(List<String> admins) {
+  addAdmins(List<int> admins) {
     this.admins.addAll(admins);
   }
 
@@ -119,12 +119,13 @@ class Company extends Model {
     return finances;
   }
 
-  create() async {
+  Future<Company> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
 
     dynamic result = await super.add(this.toJson());
     print(result);
+    return this;
   }
 
   replace() async {
