@@ -13,7 +13,7 @@ class UserSetting extends StatefulWidget {
 }
 
 class _UserSettingState extends State<UserSetting> {
-  bool branchStatus = false;
+  bool financeStatus = false;
   final FocusNode myFocusNode = FocusNode();
 
   bool profileStatus = false;
@@ -65,7 +65,7 @@ class _UserSettingState extends State<UserSetting> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      branchStatus = true;
+                                      financeStatus = true;
                                       FocusScope.of(context)
                                           .requestFocus(new FocusNode());
                                     });
@@ -86,8 +86,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: branchStatus,
-                                autofocus: branchStatus,
+                                enabled: financeStatus,
+                                autofocus: financeStatus,
                               ),
                             ),
                             ListTile(
@@ -105,8 +105,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: branchStatus,
-                                autofocus: branchStatus,
+                                enabled: financeStatus,
+                                autofocus: financeStatus,
                               ),
                             ),
                             ListTile(
@@ -124,8 +124,8 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: branchStatus,
-                                autofocus: branchStatus,
+                                enabled: financeStatus,
+                                autofocus: financeStatus,
                               ),
                             ),
                             new Text(""),

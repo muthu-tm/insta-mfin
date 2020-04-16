@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:intl/intl.dart';
 
 class UserProfileSetting extends StatefulWidget {
   const UserProfileSetting({this.toggleView});
@@ -22,13 +24,12 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   TextEditingController passwordController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
+  var dateFormatter = new DateFormat('dd-MM-yyyy');
   DateTime dateOfBirth;
-
   var _passwordVisible = false;
-
   var hidePassword = true;
-
   String password = "";
+  var groupValue = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +42,10 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: Form(
-          key: _formKey,
-          child:SingleChildScrollView(
+        key: _formKey,
+        child: SingleChildScrollView(
           child: new Container(
-            height: MediaQuery.of(context).size.height * 0.90,
+            height: MediaQuery.of(context).size.height * 1.00,
             color: CustomColors.mfinLightGrey,
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -182,9 +183,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 ),
                 ListTile(
                   title: new TextFormField(
-                    keyboardType: TextInputType.text,
+                    controller: _date,
                     decoration: InputDecoration(
-                      hintText: 'Enter the Password',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -197,50 +197,104 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                         size: 35.0,
                       ),
                     ),
-                    validator: (passkey) =>
-                        FieldValidator.passwordValidator(passkey, setPassKey),
+                    onTap: () => _selectDate(context),
                   ),
                 ),
-                  new Card(
-                      color: CustomColors.mfinLightGrey,
-                      child: new Column(
-                        children: <Widget>[
-                          ListTile(
-                            leading: new Text(
-                              "Address",
-                              style: TextStyle(
-                                  color: CustomColors.mfinGrey,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17),
-                            ),
-                          ),
-                          ListTile(
-                            title: TextFormField(
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: 'Street',
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 5.0),
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            title: TextFormField(
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: 'City',
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 5.0),
-                              ),
-                            ),
-                          ),
-                          new Text(""),
-                        ],
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: new EdgeInsets.only(left: 15.0, top: 10),
+                      child: new Text(
+                        "Gender",
+                        style: TextStyle(
+                            color: CustomColors.mfinGrey,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17),
                       ),
+                    ),
+                  ],
+                ),
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    ButtonBar(
+                      alignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Radio(
+                          value: 0,
+                          groupValue: groupValue,
+                          activeColor: CustomColors.mfinBlue,
+                          onChanged: (val) {
+                                  setSelectedRadio(val);
+                                },
+                        ),
+                        Text(
+                          "Male",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black38,
+                          ),
+                        ),
+                        Radio(
+                          value: 1,
+                          groupValue: groupValue,
+                          activeColor: CustomColors.mfinBlue,
+                          onChanged: (val) {
+                                  setSelectedRadio(val);
+                                },
+                        ),
+                        Text(
+                          "FeMale",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black38,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                new Card(
+                  color: CustomColors.mfinLightGrey,
+                  child: new Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: new Text(
+                          "Address",
+                          style: TextStyle(
+                              color: CustomColors.mfinGrey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17),
+                        ),
+                      ),
+                      ListTile(
+                        title: TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: 'Street',
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 5.0),
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        title: TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: 'City',
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 5.0),
+                          ),
+                        ),
+                      ),
+                      new Text(""),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -248,51 +302,48 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
         ),
       ),
       bottomSheet: Padding(
-      padding: EdgeInsets.only(left: 15.0, right: 25.0, top: 25.0),
-      child: new Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: Container(
-                  child: new RaisedButton(
-                child: new Text("Save"),
-                textColor: CustomColors.mfinWhite,
-                color: CustomColors.mfinButtonGreen,
-                onPressed: () {
-                  setState(() {
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
+        padding: EdgeInsets.only(left: 15.0, right: 25.0, top: 25.0),
+        child: new Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(right: 10.0),
+                child: Container(
+                    child: new RaisedButton(
+                  child: new Text("Save"),
+                  textColor: CustomColors.mfinWhite,
+                  color: CustomColors.mfinButtonGreen,
+                  onPressed: () {
+                    setState(() {});
+                  },
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(20.0)),
+                )),
+              ),
+              flex: 2,
             ),
-            flex: 2,
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Container(
-                  child: new RaisedButton(
-                child: new Text("Cancel"),
-                textColor: CustomColors.mfinWhite,
-                color: CustomColors.mfinAlertRed,
-                onPressed: () {
-                  setState(() {
-
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: 10.0),
+                child: Container(
+                    child: new RaisedButton(
+                  child: new Text("Cancel"),
+                  textColor: CustomColors.mfinWhite,
+                  color: CustomColors.mfinAlertRed,
+                  onPressed: () {
+                    setState(() {});
+                  },
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(20.0)),
+                )),
+              ),
+              flex: 2,
             ),
-            flex: 2,
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
       bottomNavigationBar: bottomBar(context),
     );
   }
@@ -300,6 +351,34 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   setPassKey(String passkey) {
     setState(() {
       this.password = passkey;
+    });
+  }
+
+  TextEditingController _date = new TextEditingController();
+  var formatter = new DateFormat('dd-MM-yyyy');
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1901, 1),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        dateOfBirth = picked;
+        _date.value = TextEditingValue(text: formatter.format(picked));
+      });
+  }
+
+  setSelectedRadio(int val) {
+    setState(() {
+      groupValue = val;
+      if (val == 0) {
+        user.setGender(Gender.Male);
+      } else {
+        user.setGender(Gender.Female);
+      }
     });
   }
 }
