@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class UserSetting extends StatefulWidget {
@@ -13,11 +14,6 @@ class UserSetting extends StatefulWidget {
 }
 
 class _UserSettingState extends State<UserSetting> {
-  bool financeStatus = false;
-  final FocusNode myFocusNode = FocusNode();
-
-  bool profileStatus = false;
-
   @override
   void initState() {
     super.initState();
@@ -30,7 +26,7 @@ class _UserSettingState extends State<UserSetting> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('User Settings'),
+        title: Text('Profile Settings'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: new Center(
@@ -63,13 +59,7 @@ class _UserSettingState extends State<UserSetting> {
                                     Icons.edit,
                                     color: CustomColors.mfinBlue,
                                   ),
-                                  onPressed: () {
-                                    setState(() {
-                                      financeStatus = true;
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
-                                    });
-                                  },
+                                  onPressed: () {},
                                 )),
                             ListTile(
                               leading: Icon(Icons.account_balance,
@@ -86,8 +76,6 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: financeStatus,
-                                autofocus: financeStatus,
                               ),
                             ),
                             ListTile(
@@ -105,8 +93,6 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: financeStatus,
-                                autofocus: financeStatus,
                               ),
                             ),
                             ListTile(
@@ -124,8 +110,6 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: financeStatus,
-                                autofocus: financeStatus,
                               ),
                             ),
                             new Text(""),
@@ -158,11 +142,12 @@ class _UserSettingState extends State<UserSetting> {
                                     color: CustomColors.mfinBlue,
                                   ),
                                   onPressed: () {
-                                    setState(() {
-                                      profileStatus = true;
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
-                                    });
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              UserProfileSetting()),
+                                    );
                                   },
                                 )),
                             ListTile(
@@ -179,8 +164,6 @@ class _UserSettingState extends State<UserSetting> {
                                     color: CustomColors.mfinGrey,
                                   )),
                                 ),
-                                enabled: profileStatus,
-                                autofocus: profileStatus,
                               ),
                             ),
                             ListTile(
@@ -196,8 +179,6 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: profileStatus,
-                                autofocus: profileStatus,
                               ),
                             ),
                             ListTile(
@@ -213,8 +194,6 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: profileStatus,
-                                autofocus: profileStatus,
                               ),
                             ),
                             ListTile(
@@ -230,8 +209,6 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: profileStatus,
-                                autofocus: profileStatus,
                               ),
                             ),
                             ListTile(
@@ -247,8 +224,6 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: profileStatus,
-                                autofocus: profileStatus,
                               ),
                             ),
                             ListTile(
@@ -265,8 +240,6 @@ class _UserSettingState extends State<UserSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: profileStatus,
-                                autofocus: profileStatus,
                               ),
                             ),
                             new Text(""),

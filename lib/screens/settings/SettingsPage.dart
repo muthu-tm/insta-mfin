@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/settings/UserProfileSetting.dart';
+import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -68,7 +68,7 @@ class _SettingMainState extends State<SettingMain> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => UserProfileSetting()),
+                          builder: (context) => UserSetting()),
                     );
                   }, // button pressed
                   child: Column(
@@ -79,7 +79,7 @@ class _SettingMainState extends State<SettingMain> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => UserProfileSetting()),
+                              builder: (context) => UserSetting()),
                         );
                       }),
                       Padding(padding: EdgeInsets.all(05.0)),

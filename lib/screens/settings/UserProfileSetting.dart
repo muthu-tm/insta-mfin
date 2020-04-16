@@ -3,6 +3,7 @@ import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +30,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   var _passwordVisible = false;
   var hidePassword = true;
   String password = "";
+  String emailID;
   var groupValue = -1;
 
   @override
@@ -38,7 +40,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('User Settings'),
+        title: Text('Edit Profile'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: Form(
@@ -70,7 +72,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: 'User_Name',
+                      hintText: 'User Name',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -80,7 +82,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Enter your UserName';
+                        return 'Enter your Name';
                       }
                     },
                   ),
@@ -105,7 +107,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                     keyboardType: TextInputType.text,
                     obscureText: hidePassword,
                     decoration: InputDecoration(
-                      hintText: 'Enter the Password',
+                      hintText: 'Enter your new Password',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -152,9 +154,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
-                    obscureText: hidePassword,
                     decoration: InputDecoration(
-                      hintText: 'Enter the Email',
+                      hintText: 'Enter your EmailID',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -163,7 +164,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                           borderSide: BorderSide(color: CustomColors.mfinGrey)),
                     ),
                     validator: (passkey) =>
-                        FieldValidator.passwordValidator(passkey, setPassKey),
+                        FieldValidator.emailValidator(passkey, setEmailID),
                   ),
                 ),
                 new Row(
@@ -185,6 +186,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   title: new TextFormField(
                     controller: _date,
                     decoration: InputDecoration(
+                      hintText: DateUtils.getCurrentFormattedDate(),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -226,8 +228,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                           groupValue: groupValue,
                           activeColor: CustomColors.mfinBlue,
                           onChanged: (val) {
-                                  setSelectedRadio(val);
-                                },
+                            setSelectedRadio(val);
+                          },
                         ),
                         Text(
                           "Male",
@@ -241,11 +243,11 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                           groupValue: groupValue,
                           activeColor: CustomColors.mfinBlue,
                           onChanged: (val) {
-                                  setSelectedRadio(val);
-                                },
+                            setSelectedRadio(val);
+                          },
                         ),
                         Text(
-                          "FeMale",
+                          "Female",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
@@ -350,8 +352,13 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
     });
   }
 
+  setEmailID(String emailID) {
+    setState(() {
+      this.emailID = emailID;
+    });
+  }
+
   TextEditingController _date = new TextEditingController();
-  var formatter = new DateFormat('dd-MM-yyyy');
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -363,7 +370,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
       setState(() {
         selectedDate = picked;
         dateOfBirth = picked;
-        _date.value = TextEditingValue(text: formatter.format(picked));
+        _date.value = TextEditingValue(text: DateUtils.formatDate(picked));
       });
   }
 
