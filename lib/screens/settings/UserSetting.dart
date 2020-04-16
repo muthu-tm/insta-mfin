@@ -22,7 +22,7 @@ class _UserSettingState extends State<UserSetting> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: CustomColors.mfinGrey,
+      backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -38,15 +38,15 @@ class _UserSettingState extends State<UserSetting> {
                 children: <Widget>[
                   new Card(
                     child: new Container(
-                      color: CustomColors.mfinGrey,
+                      color: CustomColors.mfinWhite,
                       child: new Card(
                         color: CustomColors.mfinLightGrey,
                         child: new Column(
                           children: <Widget>[
                             ListTile(
                                 leading: Icon(
-                                  Icons.work,
-                                  size: 30,
+                                  Icons.business_center,
+                                  size: 35,
                                   color: CustomColors.mfinFadedButtonGreen,
                                 ),
                                 title: new Text(
@@ -57,10 +57,12 @@ class _UserSettingState extends State<UserSetting> {
                                 trailing: IconButton(
                                   icon: Icon(
                                     Icons.edit,
+                                    size: 35,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   onPressed: () {},
                                 )),
+                            new Divider(color: CustomColors.mfinBlue,),
                             ListTile(
                               leading: Icon(Icons.account_balance,
                                   color: CustomColors.mfinBlue, size: 30.0),
@@ -127,15 +129,15 @@ class _UserSettingState extends State<UserSetting> {
                   ),
                   new Card(
                     child: new Container(
-                      color: CustomColors.mfinGrey,
+                      color: CustomColors.mfinWhite,
                       child: new Card(
                         color: CustomColors.mfinLightGrey,
                         child: new Column(
                           children: <Widget>[
                             ListTile(
                                 leading: Icon(
-                                  Icons.menu,
-                                  size: 30,
+                                  Icons.art_track,
+                                  size: 40,
                                   color: CustomColors.mfinFadedButtonGreen,
                                 ),
                                 title: new Text(
@@ -146,6 +148,7 @@ class _UserSettingState extends State<UserSetting> {
                                 trailing: IconButton(
                                   icon: Icon(
                                     Icons.edit,
+                                    size: 35,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   onPressed: () {
@@ -157,6 +160,7 @@ class _UserSettingState extends State<UserSetting> {
                                     );
                                   },
                                 )),
+                            new Divider(color: CustomColors.mfinBlue,),
                             ListTile(
                               title: TextFormField(
                                 keyboardType: TextInputType.text,

@@ -180,7 +180,7 @@ class _SettingMainState extends State<SettingMain> {
                         new Container(
                           color: CustomColors.mfinBlue,
                           child: new Row(children: <Widget>[
-                            customIconButton(Icons.work, 35.0,
+                            customIconButton(Icons.business_center, 35.0,
                                 CustomColors.mfinButtonGreen, null),
                             new Text(
                               "Register your finance here!",
