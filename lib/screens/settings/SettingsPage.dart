@@ -52,9 +52,9 @@ class _SettingMainState extends State<SettingMain> {
                       }),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Company Settings",
+                        "Finance Settings",
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                           color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -86,7 +86,7 @@ class _SettingMainState extends State<SettingMain> {
                       Text(
                         "Profile Settings",
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                           color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -114,9 +114,9 @@ class _SettingMainState extends State<SettingMain> {
                       }),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Notification Settings",
+                        "Notifications Settings",
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                           color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -131,14 +131,15 @@ class _SettingMainState extends State<SettingMain> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.fingerprint, 50.0, CustomColors.mfinBlue, () {
-                        print("Pressed Fingerprint Login");
+                          Icons.phonelink_setup, 50.0, CustomColors.mfinBlue,
+                          () {
+                        print("Pressed App Settings");
                       }),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "FingerPrint Login",
+                        "App Settings",
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                           color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -151,15 +152,14 @@ class _SettingMainState extends State<SettingMain> {
             Column(
               children: <Widget>[
                 InkWell(
-                  splashColor: CustomColors.mfinButtonGreen,
-                  onTap: () {}, // button pressed
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       new Row(children: <Widget>[
                         Text(
-                          " Wish to be a complete financier?",
+                          " Wish to be a Complete Financier?",
                           style: TextStyle(
+                            fontFamily: 'Georgia',
                             fontSize: 17,
                             color: CustomColors.mfinBlue,
                             fontWeight: FontWeight.bold,
@@ -170,7 +170,7 @@ class _SettingMainState extends State<SettingMain> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 60.0, top: 20),
+                  padding: EdgeInsets.only(left: 120.0, top: 10),
                   child: InkWell(
                     splashColor: CustomColors.mfinButtonGreen,
                     onTap: () {}, // button pressed
@@ -185,6 +185,7 @@ class _SettingMainState extends State<SettingMain> {
                             new Text(
                               "Register your finance here!",
                               style: TextStyle(
+                                  fontFamily: 'Georgia',
                                   color: CustomColors.mfinButtonGreen,
                                   fontSize: 17.0),
                             ),
