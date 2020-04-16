@@ -313,13 +313,11 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 child: Container(
                     child: new RaisedButton(
                   child: new Text("Save"),
-                  textColor: CustomColors.mfinWhite,
-                  color: CustomColors.mfinButtonGreen,
+                  textColor: CustomColors.mfinButtonGreen,
+                  color: CustomColors.mfinBlue,
                   onPressed: () {
                     setState(() {});
                   },
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(20.0)),
                 )),
               ),
               flex: 2,
@@ -329,14 +327,12 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 padding: EdgeInsets.only(left: 10.0),
                 child: Container(
                     child: new RaisedButton(
-                  child: new Text("Cancel"),
-                  textColor: CustomColors.mfinWhite,
-                  color: CustomColors.mfinAlertRed,
+                  child: new Text("Close"),
+                  textColor: CustomColors.mfinAlertRed,
+                  color: CustomColors.mfinBlue,
                   onPressed: () {
                     setState(() {});
                   },
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(20.0)),
                 )),
               ),
               flex: 2,
