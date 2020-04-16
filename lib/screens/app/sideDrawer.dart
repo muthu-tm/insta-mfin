@@ -5,6 +5,7 @@ import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/settings/BranchSetting.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
+import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/utils/users_utils.dart';
@@ -114,6 +115,15 @@ Widget openDrawer(BuildContext context) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => BranchSetting()),
+          );
+        }),            new ListTile(
+        leading: new Icon(Icons.supervised_user_circle,
+            color: CustomColors.mfinButtonGreen),
+        title: new Text('User Settings'),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => UserSetting()),
           );
         }),
     new ListTile(

@@ -8,7 +8,6 @@ import 'package:instamfin/screens/home/HomeOptions.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
-import 'package:instamfin/services/utils/users_utils.dart';
 
 class UserHomeScreen extends StatefulWidget {
   @override

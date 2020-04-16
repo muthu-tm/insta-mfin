@@ -36,7 +36,7 @@ class _BranchSettingState extends State<BranchSetting> {
       ),
       body: new Center(
         child: new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               new Card(
                 child: new Container(
@@ -71,6 +71,8 @@ class _BranchSettingState extends State<BranchSetting> {
                               hintText: 'Branch_Name01',
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 5.0, horizontal: 5.0),
                               border: OutlineInputBorder(
                                   borderSide:
                                       BorderSide(color: CustomColors.mfinGrey)),
@@ -86,6 +88,8 @@ class _BranchSettingState extends State<BranchSetting> {
                               hintText: 'Registered Date',
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 5.0, horizontal: 5.0),
                               border: OutlineInputBorder(
                                   borderSide:
                                       BorderSide(color: CustomColors.mfinGrey)),
@@ -100,6 +104,8 @@ class _BranchSettingState extends State<BranchSetting> {
                             maxLines: 3,
                             decoration: InputDecoration(
                               hintText: 'Address',
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 5.0, horizontal: 5.0),
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
                               border: OutlineInputBorder(
@@ -116,7 +122,6 @@ class _BranchSettingState extends State<BranchSetting> {
                   ),
                 ),
               ),
-              new Spacer(),
               new Card(
                 child: new Container(
                   color: CustomColors.mfinGrey,
@@ -150,6 +155,8 @@ class _BranchSettingState extends State<BranchSetting> {
                                 hintText: 'Sub_Branch_Name01',
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 5.0),
                                 suffixIcon: customIconButton(
                                     Icons.navigate_next,
                                     35.0,
@@ -175,13 +182,15 @@ class _BranchSettingState extends State<BranchSetting> {
                                 });
                               },
                             )),
-                                                    ListTile(
+                        ListTile(
                             title: TextFormField(
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 hintText: 'Sub_Branch_Name02',
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 5.0),
                                 suffixIcon: customIconButton(
                                     Icons.navigate_next,
                                     35.0,
@@ -207,13 +216,15 @@ class _BranchSettingState extends State<BranchSetting> {
                                 });
                               },
                             )),
-                                                    ListTile(
+                        ListTile(
                             title: TextFormField(
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 hintText: 'Sub_Branch_Name03',
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 5.0),
                                 suffixIcon: customIconButton(
                                     Icons.navigate_next,
                                     35.0,
