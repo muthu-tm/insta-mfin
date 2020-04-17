@@ -3,6 +3,7 @@ import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/buildAddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -257,71 +258,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                     ),
                   ],
                 ),
-                new Card(
-                  color: CustomColors.mfinLightGrey,
-                  child: new Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: new Text(
-                          "Address",
-                          style: TextStyle(
-                              color: CustomColors.mfinGrey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17),
-                        ),
-                      ),
-                      ListTile(
-                        title: TextFormField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: 'Street',
-                            fillColor: CustomColors.mfinWhite,
-                            filled: true,
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 5.0),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        title: TextFormField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: 'City',
-                            fillColor: CustomColors.mfinWhite,
-                            filled: true,
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 5.0),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        title: TextFormField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: 'State',
-                            fillColor: CustomColors.mfinWhite,
-                            filled: true,
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 5.0),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        title: TextFormField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: 'Pincode',
-                            fillColor: CustomColors.mfinWhite,
-                            filled: true,
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 5.0),
-                          ),
-                        ),
-                      ),
-                      new Text(""),
-                    ],
-                  ),
-                ),
+                buildAddressWidget("Address"),
               ],
             ),
           ),
