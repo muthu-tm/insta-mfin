@@ -54,21 +54,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "Name",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderTextBox(textName: 'Name'),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
@@ -79,7 +65,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -88,21 +75,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                     },
                   ),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "Password",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderTextBox(textName: 'Password'),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
@@ -114,7 +87,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
                       suffixIcon: IconButton(
                         icon: Icon(
                           // Based on passwordVisible state choose the icon
@@ -137,21 +111,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                         FieldValidator.passwordValidator(passkey, setPassKey),
                   ),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "Email",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderTextBox(textName: 'Email'),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
@@ -162,27 +122,14 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (passkey) =>
                         FieldValidator.emailValidator(passkey, setEmailID),
                   ),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "Date Of Birth",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderTextBox(textName: 'Date Of Birth'),
                 ListTile(
                   title: new TextFormField(
                     controller: _date,
@@ -193,7 +140,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
                       suffixIcon: Icon(
                         Icons.perm_contact_calendar,
                         color: CustomColors.mfinBlue,
@@ -203,21 +151,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                     onTap: () => _selectDate(context),
                   ),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "Gender",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderTextBox(textName: 'Gender'),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -344,5 +278,30 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
         user.setGender(Gender.Female);
       }
     });
+  }
+}
+
+class RowHeaderTextBox extends StatelessWidget {
+  RowHeaderTextBox({this.textName});
+
+  final String textName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: new EdgeInsets.only(left: 15.0, top: 10),
+          child: new Text(
+            textName,
+            style: TextStyle(
+                color: CustomColors.mfinGrey,
+                fontWeight: FontWeight.bold,
+                fontSize: 17),
+          ),
+        ),
+      ],
+    );
   }
 }
