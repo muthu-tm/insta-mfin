@@ -63,7 +63,6 @@ Widget buildAddressWidget(String addreesTitle) {
             ),
           ),
         ),
-        new Text(""),
       ],
     ),
   );

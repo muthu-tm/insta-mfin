@@ -33,7 +33,7 @@ class _UserSettingState extends State<UserSetting> {
       body: new Center(
         child: SingleChildScrollView(
           child: new Container(
-            height: MediaQuery.of(context).size.height * 1.10,
+            height: MediaQuery.of(context).size.height * 1.03,
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[

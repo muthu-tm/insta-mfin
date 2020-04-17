@@ -7,12 +7,8 @@ import 'package:instamfin/screens/utils/buildAddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
-import 'package:intl/intl.dart';
 
 class UserProfileSetting extends StatefulWidget {
-  const UserProfileSetting({this.toggleView});
-
-  final Function toggleView;
 
   @override
   _UserProfileSettingState createState() => _UserProfileSettingState();
@@ -26,7 +22,6 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   TextEditingController passwordController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
-  var dateFormatter = new DateFormat('dd-MM-yyyy');
   DateTime dateOfBirth;
   var _passwordVisible = false;
   var hidePassword = true;
