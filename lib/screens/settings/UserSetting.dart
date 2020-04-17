@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/buildFinanceDetails.dart';
 import 'package:instamfin/screens/settings/buildUserSetting.dart';
@@ -38,19 +37,8 @@ class _UserSettingState extends State<UserSetting> {
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  new Card(
-                    child: new Container(
-                      color: CustomColors.mfinWhite,
-                      child: buildFinanceDetails("Finance Details"),
-                    ),
-                  ),
-                  new Card(
-                    child: new Container(
-                      color: CustomColors.mfinWhite,
-                      child: buildUserSettingsWidget("Profile Details", context)
-                    ),
-                  ),
-                  new Spacer(),
+                  buildFinanceDetails("Finance Details"),
+                  buildUserSettingsWidget("Profile Details", context)
                 ]),
           ),
         ),

@@ -173,7 +173,13 @@ class _SettingMainState extends State<SettingMain> {
                   padding: EdgeInsets.only(left: 120.0, top: 10),
                   child: InkWell(
                     splashColor: CustomColors.mfinButtonGreen,
-                    onTap: () {}, // button pressed
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddFinancePage()),
+                      );
+                    }, // button pressed
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
