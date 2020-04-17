@@ -19,7 +19,7 @@ Widget buildAddressWidget(String addreesTitle) {
           title: TextFormField(
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
-              hintText: 'Street',
+              hintText: 'Building No. & Street',
               fillColor: CustomColors.mfinWhite,
               filled: true,
               contentPadding:

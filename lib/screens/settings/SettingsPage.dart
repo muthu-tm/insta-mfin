@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/settings/AddNewFinance.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
@@ -67,8 +68,7 @@ class _SettingMainState extends State<SettingMain> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => UserSetting()),
+                      MaterialPageRoute(builder: (context) => UserSetting()),
                     );
                   }, // button pressed
                   child: Column(
@@ -181,7 +181,13 @@ class _SettingMainState extends State<SettingMain> {
                           color: CustomColors.mfinBlue,
                           child: new Row(children: <Widget>[
                             customIconButton(Icons.business_center, 35.0,
-                                CustomColors.mfinButtonGreen, null),
+                                CustomColors.mfinButtonGreen, () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddFinancePage()),
+                              );
+                            }),
                             new Text(
                               "Register your finance here!",
                               style: TextStyle(
