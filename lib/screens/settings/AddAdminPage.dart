@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddAdminPage extends StatefulWidget {
@@ -15,11 +16,19 @@ class AddAdminPage extends StatefulWidget {
 class _AddAdminPageState extends State<AddAdminPage> {
   final UserController userController = UserController();
   Map<String, dynamic> _userDetails;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   bool searchTriggered = false;
+  bool showSearch = false;
+
+  var mobileNumber;
+
+  bool mobileNumberValid = true;
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -29,7 +38,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
       ),
       body: SingleChildScrollView(
         child: new Container(
-          height: MediaQuery.of(context).size.height * 1.16,
+          height: MediaQuery.of(context).size.height * 0.80,
           color: CustomColors.mfinLightGrey,
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -46,7 +55,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
                           style: TextStyle(
                               color: CustomColors.mfinAlertRed, fontSize: 13)),
                       new Text(
-                        "\n\nThis user will get ADMIN access over your selected \n. And the user can add/edit other user to this.\n\n",
+                        "\n\nThis user will get ADMIN access over your selected \n ${user.primary_company}. And the user can add/edit other user to this.\n\n",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: CustomColors.mfinAlertRed, fontSize: 13),
@@ -59,58 +68,70 @@ class _AddAdminPageState extends State<AddAdminPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   keyboardType: TextInputType.number,
-                  onChanged: (value) async {
-                    if (value.length == 10) {
-                      Map<String, dynamic> apiResponse = await userController
-                          .getByMobileNumber(int.parse(value));
-                      if (apiResponse['is_success']) {
-                        setState(() {
-                          _userDetails = apiResponse['message'];
-                        });
-                      }
-                      print(_userDetails.toString());
-                      searchTriggered = true;
-                    }
+                  onChanged: (value) {
+                    mobileNumber = value;
                   },
                   decoration: InputDecoration(
                       fillColor: CustomColors.mfinGrey,
                       filled: true,
                       hintText: "Search user by mobile number",
-                      prefixIcon:
-                          Icon(Icons.search, color: CustomColors.mfinBlue),
+                      errorText: !mobileNumberValid
+                          ? 'Enter the valid 10 digit MobileNumber'
+                          : null,
+                      suffixIcon: customIconButton(
+                          Icons.search, 30.0, CustomColors.mfinBlue, () async {
+                        if (mobileNumber.length == 10) {
+                          Map<String, dynamic> apiResponse =
+                              await userController
+                                  .getByMobileNumber(int.parse(mobileNumber));
+                          if (apiResponse['is_success']) {
+                            setState(() {
+                              _userDetails = apiResponse['message'];
+                              mobileNumberValid = true;
+                            });
+                            print(_userDetails.toString());
+                            searchTriggered = true;
+                          } else {
+                            setState(() {
+                              mobileNumberValid = true;
+                              searchTriggered = false;
+                            });
+                          }
+                        } else {
+                          setState(() {
+                            mobileNumberValid = false;
+                            searchTriggered = false;
+                          });
+                        }
+                      }),
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(25.0)))),
                 ),
               ),
-              new Expanded(
+              new Card(
                 child: searchTriggered
-                    ? new ListView.builder(
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return new Card(
-                            child: new ListTile(
-                              leading: Icon(
-                                Icons.person,
-                                color: CustomColors.mfinButtonGreen,
-                                size: 50,
-                              ),
-                              title: new Text(
-                                _userDetails[index]['user_name'],
-                                style: TextStyle(
-                                  color: CustomColors.mfinLightGrey,
-                                ),
-                              ),
-                              subtitle: new Text(
-                                _userDetails[index]['mobile_number'],
-                                style: TextStyle(
-                                  color: CustomColors.mfinLightGrey,
-                                ),
-                              ),
+                    ? new Container(
+                        color: CustomColors.mfinBlue,
+                        child: new ListTile(
+                          leading: Icon(
+                            Icons.person,
+                            color: CustomColors.mfinButtonGreen,
+                            size: 50,
+                          ),
+                          title: new Text(
+                            _userDetails['user_name'],
+                            style: TextStyle(
+                              color: CustomColors.mfinLightGrey,
                             ),
-                            margin: const EdgeInsets.all(0.0),
-                          );
-                        },
+                          ),
+                          subtitle: new Text(
+                            _userDetails['mobile_number'].toString(),
+                            style: TextStyle(
+                              color: CustomColors.mfinLightGrey,
+                            ),
+                          ),
+                        ),
                       )
                     : null,
               ),
@@ -160,4 +181,5 @@ class _AddAdminPageState extends State<AddAdminPage> {
       bottomNavigationBar: bottomBar(context),
     );
   }
+
 }
