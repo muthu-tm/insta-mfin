@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/settings/AddAdminPage.dart';
 import 'package:instamfin/screens/settings/BranchSetting.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
@@ -133,6 +134,16 @@ Widget openDrawer(BuildContext context) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => UserProfileSetting()),
+        );
+      },
+    ),
+        new ListTile(
+      leading: new Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
+      title: new Text('User Management'),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AddAdminPage()),
         );
       },
     ),
