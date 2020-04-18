@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddAdminPage extends StatefulWidget {
   const AddAdminPage({this.toggleView});
@@ -13,7 +13,7 @@ class AddAdminPage extends StatefulWidget {
 }
 
 class _AddAdminPageState extends State<AddAdminPage> {
-  final User user = User(userState.mobileNumber);
+  final UserController userController = UserController();
   Map<String, dynamic> _userDetails;
   bool searchTriggered = false;
 
@@ -59,9 +59,16 @@ class _AddAdminPageState extends State<AddAdminPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    if (value.length >= 7) {
-                      _userDetails = user.getByID();
+                  onChanged: (value) async {
+                    if (value.length == 10) {
+                      Map<String, dynamic> apiResponse = await userController
+                          .getByMobileNumber(int.parse(value));
+                      if (apiResponse['is_success']) {
+                        setState(() {
+                          _userDetails = apiResponse['message'];
+                        });
+                      }
+                      print(_userDetails.toString());
                       searchTriggered = true;
                     }
                   },
@@ -79,7 +86,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
               new Expanded(
                 child: searchTriggered
                     ? new ListView.builder(
-                        itemCount: _userDetails.length,
+                        itemCount: 1,
                         itemBuilder: (context, index) {
                           return new Card(
                             child: new ListTile(
@@ -89,13 +96,13 @@ class _AddAdminPageState extends State<AddAdminPage> {
                                 size: 50,
                               ),
                               title: new Text(
-                                _userDetails[index].name,
+                                _userDetails[index]['user_name'],
                                 style: TextStyle(
                                   color: CustomColors.mfinLightGrey,
                                 ),
                               ),
                               subtitle: new Text(
-                                _userDetails[index].mobileNumber,
+                                _userDetails[index]['mobile_number'],
                                 style: TextStyle(
                                   color: CustomColors.mfinLightGrey,
                                 ),
