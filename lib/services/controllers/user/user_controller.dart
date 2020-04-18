@@ -13,4 +13,18 @@ class UserController {
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
+
+  Future getByMobileNumber(int mobileNumber) async {
+    try {
+      User user = User(mobileNumber);
+      var userJson = await user.getByID();
+      if (userJson == null) {
+        return CustomResponse.getFailureReponse("No user found for this mobile number!");
+      }
+
+      return CustomResponse.getSuccesReponse(userJson);
+    } catch (err) {
+      return  CustomResponse.getFailureReponse(err.toString());
+    }
+  }
 }
