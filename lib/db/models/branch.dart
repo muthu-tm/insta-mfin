@@ -9,7 +9,6 @@ part 'branch.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Branch {
-
   Finance finance = Finance();
 
   @JsonKey(name: 'branch_name', nullable: true)
@@ -111,13 +110,17 @@ class Branch {
     return branchSnap.exists;
   }
 
-  updateArrayField(
-      Map<String, dynamic> data, String financeID, String branchName) async {
+  updateArrayField(bool isAdd, Map<String, dynamic> data, String financeID,
+      String branchName) async {
     Map<String, dynamic> fields = Map();
     fields['updated_at'] = DateTime.now();
 
     data.forEach((key, value) {
-      fields[key] = FieldValue.arrayUnion(value);
+      if (isAdd) {
+        fields[key] = FieldValue.arrayUnion(value);
+      } else {
+        fields[key] = FieldValue.arrayRemove(value);
+      }
     });
 
     String docId = getDocumentID(financeID, branchName);
@@ -159,12 +162,14 @@ class Branch {
     return Branch.fromJson(branchSnap.first.documents.first.data);
   }
 
-  Future<List<Branch>> getBranchByUserID(String financeID, String userID) async {
-    List<DocumentSnapshot> docSnapshot = (await getBranchCollectionRef(financeID)
-            .where('users', arrayContains: userID)
-            .getDocuments())
-        .documents;
-    
+  Future<List<Branch>> getBranchByUserID(
+      String financeID, String userID) async {
+    List<DocumentSnapshot> docSnapshot =
+        (await getBranchCollectionRef(financeID)
+                .where('users', arrayContains: userID)
+                .getDocuments())
+            .documents;
+
     if (docSnapshot.isEmpty) {
       return null;
     }

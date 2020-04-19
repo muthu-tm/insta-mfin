@@ -29,16 +29,17 @@ class BranchController {
     }
   }
 
-  Future updateBranchAdmins(
-      List<int> userList, String financeID, String branchName) async {
+  Future updateBranchAdmins(bool isAdd, List<int> userList, String financeID,
+      String branchName) async {
     try {
       Branch branch = Branch();
-      await branch
-          .updateArrayField({'admins': userList, 'users': userList}, financeID, branchName);
+      await branch.updateArrayField(isAdd,
+          {'admins': userList, 'users': userList}, financeID, branchName);
 
       List<SubBranch> subBranches =
           await getAllSubBranches(financeID, branchName);
-      await updateSubBranchAdmins(subBranches, userList, financeID, branchName);
+      await updateSubBranchAdmins(
+          isAdd, subBranches, userList, financeID, branchName);
 
       return CustomResponse.getSuccesReponse(branch.toJson());
     } catch (err) {
@@ -46,16 +47,15 @@ class BranchController {
     }
   }
 
-  Future<void> updateSubBranchAdmins(List<SubBranch> subBranches,
+  Future<void> updateSubBranchAdmins(bool isAdd, List<SubBranch> subBranches,
       List<int> userList, String financeID, String branchName) async {
-    
     if (subBranches != null) {
       for (var index = 0; index < subBranches.length; index++) {
         SubBranch subBranch = subBranches[index];
         String subBranchName = subBranch.subBranchName;
 
         await _subBranchController.updateSubBranchAdmins(
-            userList, financeID, branchName, subBranchName);
+            isAdd, userList, financeID, branchName, subBranchName);
       }
     }
   }

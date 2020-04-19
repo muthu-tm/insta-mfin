@@ -31,12 +31,16 @@ class SubBranchController {
     }
   }
 
-  Future updateSubBranchAdmins(List<int> userList, String financeID,
+  Future updateSubBranchAdmins(bool isAdd, List<int> userList, String financeID,
       String branchName, String subBranchName) async {
     try {
       SubBranch subBranch = SubBranch();
       await subBranch.updateArrayField(
-          {'admins': userList, 'users': userList}, financeID, branchName, subBranchName);
+          isAdd,
+          {'admins': userList, 'users': userList},
+          financeID,
+          branchName,
+          subBranchName);
 
       return CustomResponse.getSuccesReponse(subBranch.toJson());
     } catch (err) {
@@ -44,11 +48,12 @@ class SubBranchController {
     }
   }
 
-
-  Future getSubBranchByUserID(String financeID, String branchName, String userID) async {
+  Future getSubBranchByUserID(
+      String financeID, String branchName, String userID) async {
     try {
       SubBranch subBranch = SubBranch();
-      List<SubBranch> subBranches = await subBranch.getSubBranchByUserID(financeID, branchName, userID);
+      List<SubBranch> subBranches =
+          await subBranch.getSubBranchByUserID(financeID, branchName, userID);
 
       if (subBranches == null) {
         return [];

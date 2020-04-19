@@ -33,16 +33,21 @@ class Model {
     return data;
   }
 
-  updateArrayField(Map<String, dynamic> data, String documentID) async {
+  updateArrayField(
+      bool isAdd, Map<String, dynamic> data, String documentID) async {
     Map<String, dynamic> fields = Map();
     fields['updated_at'] = DateTime.now();
 
     data.forEach((key, value) {
-      fields[key] = FieldValue.arrayUnion(value);
+      if (isAdd) {
+        fields[key] = FieldValue.arrayUnion(value);
+      } else {
+        fields[key] = FieldValue.arrayRemove(value);
+      }
     });
 
     String docId = this.getID();
-    
+
     if (documentID != null || documentID != "") {
       docId = documentID;
     }

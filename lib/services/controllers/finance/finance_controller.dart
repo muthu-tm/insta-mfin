@@ -47,13 +47,15 @@ class FinanceController {
     }
   }
 
-  Future addAdmins(List<int> userList, String financeID) async {
+  Future updateFinanceAdmins(
+      bool isAdd, List<int> userList, String financeID) async {
     try {
       Finance finance = Finance();
-      await finance.updateArrayField({'admins': userList, 'users': userList}, financeID);
+      await finance.updateArrayField(
+          isAdd, {'admins': userList, 'users': userList}, financeID);
 
       List<Branch> branches = await getAllBranches(financeID);
-      await updateBranchAdmins(branches, userList, financeID);
+      await updateBranchAdmins(isAdd, branches, userList, financeID);
 
       return CustomResponse.getSuccesReponse(finance.toJson());
     } catch (err) {
@@ -61,15 +63,15 @@ class FinanceController {
     }
   }
 
-  Future<void> updateBranchAdmins(
-      List<Branch> branches, List<int> userList, String financeID) async {
+  Future<void> updateBranchAdmins(bool isAdd, List<Branch> branches,
+      List<int> userList, String financeID) async {
     if (branches != null) {
       for (var index = 0; index < branches.length; index++) {
         Branch branch = branches[index];
         String branchName = branch.branchName;
 
         await _branchController.updateBranchAdmins(
-            userList, financeID, branchName);
+            isAdd, userList, financeID, branchName);
       }
     }
   }

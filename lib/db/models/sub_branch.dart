@@ -113,13 +113,17 @@ class SubBranch {
     return branchSnap.exists;
   }
 
-  updateArrayField(Map<String, dynamic> data, String financeID,
+  updateArrayField(bool isAdd, Map<String, dynamic> data, String financeID,
       String branchName, String subBranchName) async {
     Map<String, dynamic> fields = Map();
     fields['updated_at'] = DateTime.now();
 
     data.forEach((key, value) {
-      fields[key] = FieldValue.arrayUnion(value);
+      if (isAdd) {
+        fields[key] = FieldValue.arrayUnion(value);
+      } else {
+        fields[key] = FieldValue.arrayRemove(value);
+      }
     });
 
     String docId = getDocumentID(branchName, subBranchName);
@@ -165,12 +169,14 @@ class SubBranch {
     return SubBranch.fromJson(subBranchSnap.first.documents.first.data);
   }
 
-  Future<List<SubBranch>> getSubBranchByUserID(String financeID, String branchName, String userID) async {
-    List<DocumentSnapshot> docSnapshot = (await getSubBranchCollectionRef(financeID, branchName)
-            .where('users', arrayContains: userID)
-            .getDocuments())
-        .documents;
-    
+  Future<List<SubBranch>> getSubBranchByUserID(
+      String financeID, String branchName, String userID) async {
+    List<DocumentSnapshot> docSnapshot =
+        (await getSubBranchCollectionRef(financeID, branchName)
+                .where('users', arrayContains: userID)
+                .getDocuments())
+            .documents;
+
     if (docSnapshot.isEmpty) {
       return null;
     }
