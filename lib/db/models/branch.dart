@@ -159,6 +159,26 @@ class Branch {
     return Branch.fromJson(branchSnap.first.documents.first.data);
   }
 
+  Future<List<Branch>> getBranchByUserID(String financeID, String userID) async {
+    List<DocumentSnapshot> docSnapshot = (await getBranchCollectionRef(financeID)
+            .where('users', arrayContains: userID)
+            .getDocuments())
+        .documents;
+    
+    if (docSnapshot.isEmpty) {
+      return null;
+    }
+
+    List<Branch> branches;
+
+    for (var doc in docSnapshot) {
+      Branch branch = Branch.fromJson(doc.data);
+      branches.add(branch);
+    }
+
+    return branches;
+  }
+
   Future<Branch> update(String financeID) async {
     this.updatedAt = DateTime.now();
 

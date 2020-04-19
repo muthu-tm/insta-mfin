@@ -165,6 +165,26 @@ class SubBranch {
     return SubBranch.fromJson(subBranchSnap.first.documents.first.data);
   }
 
+  Future<List<SubBranch>> getSubBranchByUserID(String financeID, String branchName, String userID) async {
+    List<DocumentSnapshot> docSnapshot = (await getSubBranchCollectionRef(financeID, branchName)
+            .where('users', arrayContains: userID)
+            .getDocuments())
+        .documents;
+    
+    if (docSnapshot.isEmpty) {
+      return null;
+    }
+
+    List<SubBranch> subBranches;
+
+    for (var doc in docSnapshot) {
+      SubBranch subBranch = SubBranch.fromJson(doc.data);
+      subBranches.add(subBranch);
+    }
+
+    return subBranches;
+  }
+
   Future<SubBranch> update(String financeID, String branchName) async {
     this.updatedAt = DateTime.now();
 

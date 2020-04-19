@@ -107,7 +107,7 @@ class Finance extends Model {
 
   Future<List<Finance>> getFinanceByUserID(String userID) async {
     List<DocumentSnapshot> docSnapshot = (await getCollectionRef()
-            .where('admins', arrayContains: userID)
+            .where('users', arrayContains: userID)
             .getDocuments())
         .documents;
     

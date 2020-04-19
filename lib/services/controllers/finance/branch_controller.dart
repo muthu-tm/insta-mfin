@@ -60,6 +60,22 @@ class BranchController {
     }
   }
 
+  Future getBranchByUserID(String financeID, String userID) async {
+    try {
+      Branch branch = Branch();
+      List<Branch> branches = await branch.getBranchByUserID(financeID, userID);
+
+      if (branches == null) {
+        return [];
+      }
+
+      return branches;
+    } catch (err) {
+      print("Error while retrieving branches for an user: " + userID);
+      return null;
+    }
+  }
+
   Future<List<SubBranch>> getAllSubBranches(
       String financeID, String branchName) async {
     try {
