@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-Widget buildAddressWidget(String addreesTitle) {
+Widget buildAddressWidget(String addreesTitle, Address address) {
   return new Card(
     color: CustomColors.mfinLightGrey,
     child: new Column(
@@ -17,6 +18,7 @@ Widget buildAddressWidget(String addreesTitle) {
         ),
         ListTile(
           title: TextFormField(
+            initialValue: address.street,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               hintText: 'Building No. & Street',
@@ -30,6 +32,7 @@ Widget buildAddressWidget(String addreesTitle) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
+            initialValue: address.city,
             decoration: InputDecoration(
               hintText: 'City',
               fillColor: CustomColors.mfinWhite,
@@ -42,6 +45,7 @@ Widget buildAddressWidget(String addreesTitle) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
+            initialValue: address.state,
             decoration: InputDecoration(
               hintText: 'State',
               fillColor: CustomColors.mfinWhite,
@@ -54,6 +58,7 @@ Widget buildAddressWidget(String addreesTitle) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
+            initialValue: address.pincode.toString(),
             decoration: InputDecoration(
               hintText: 'Pincode',
               fillColor: CustomColors.mfinWhite,

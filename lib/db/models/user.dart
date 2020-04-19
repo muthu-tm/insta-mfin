@@ -16,6 +16,8 @@ class User extends Model {
   String name;
   @JsonKey(name: 'mobile_number', nullable: false)
   int mobileNumber;
+  @JsonKey(name: 'emailID', nullable: false)
+  String emailID;
   @JsonKey(name: 'password', nullable: false)
   String password;
   @JsonKey(name: 'gender', nullable: true)
@@ -55,6 +57,10 @@ class User extends Model {
 
   setGender(Gender gender) {
     this.gender = gender.name;
+  }
+
+  setEmailID(String emailID) {
+    this.emailID = emailID;
   }
 
   setName(String name) {

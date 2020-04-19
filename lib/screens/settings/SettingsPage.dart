@@ -8,12 +8,7 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-class SettingMain extends StatefulWidget {
-  @override
-  _SettingMainState createState() => _SettingMainState();
-}
-
-class _SettingMainState extends State<SettingMain> {
+class SettingMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(

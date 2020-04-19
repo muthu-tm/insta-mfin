@@ -11,6 +11,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     json['mobile_number'] as int,
   )
     ..name = json['user_name'] as String
+    ..emailID = json['emailID'] as String
     ..password = json['password'] as String
     ..gender = json['gender'] as String
     ..displayProfilePath = json['display_profile_path'] as String ?? ''
@@ -42,6 +43,7 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'user_name': instance.name,
       'mobile_number': instance.mobileNumber,
+      'emailID': instance.emailID,
       'password': instance.password,
       'gender': instance.gender,
       'display_profile_path': instance.displayProfilePath == null

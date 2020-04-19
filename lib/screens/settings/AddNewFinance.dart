@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/buildAddressWidget.dart';
@@ -172,7 +173,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
                         FieldValidator.emailValidator(passkey, setEmailID),
                   ),
                 ),
-                buildAddressWidget("Office Address"),
+                buildAddressWidget("Office Address", new Address()),
               ],
             ),
           ),

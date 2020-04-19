@@ -15,7 +15,23 @@ class Address {
   @JsonKey(name: 'pincode', nullable: false)
   int pincode;
 
-  Address(this.street, this.city, this.state, this.pincode);
+  Address();
+
+  setStreet(String street) {
+    this.street = street;
+  }
+
+  setCity(String city) {
+    this.city = city;
+  }
+
+  setState(String state) {
+    this.state = state;
+  }
+
+  setPinCode(int pincode) {
+    this.pincode = pincode;
+  }
 
   factory Address.fromJson(Map<String, dynamic> json) => _$AddressFromJson(json);
   Map<String, dynamic> toJson() => _$AddressToJson(this);

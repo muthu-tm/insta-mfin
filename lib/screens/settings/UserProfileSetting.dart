@@ -9,6 +9,9 @@ import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class UserProfileSetting extends StatefulWidget {
+  UserProfileSetting({this.user});
+
+  final User user;
 
   @override
   _UserProfileSettingState createState() => _UserProfileSettingState();
@@ -17,12 +20,13 @@ class UserProfileSetting extends StatefulWidget {
 class _UserProfileSettingState extends State<UserProfileSetting> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode myFocusNode = FocusNode();
-  final User user = User(userState.mobileNumber);
+  // final User user = User(userState.mobileNumber);
   final UserController userController = UserController();
   TextEditingController passwordController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
   DateTime dateOfBirth;
+  Gender gender;
   var _passwordVisible = false;
   var hidePassword = true;
   String password = "";
@@ -53,6 +57,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
+                    initialValue: widget.user.name,
                     decoration: InputDecoration(
                       hintText: 'User Name',
                       fillColor: CustomColors.mfinWhite,
@@ -75,6 +80,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
                     obscureText: hidePassword,
+                    initialValue: widget.user.password,
                     decoration: InputDecoration(
                       hintText: 'Enter your new Password',
                       fillColor: CustomColors.mfinWhite,
@@ -110,6 +116,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
+                    initialValue: widget.user.emailID,
                     decoration: InputDecoration(
                       hintText: 'Enter your EmailID',
                       fillColor: CustomColors.mfinWhite,
@@ -128,6 +135,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 ListTile(
                   title: new TextFormField(
                     controller: _date,
+                    initialValue: widget.user.dateOfBirth,
                     decoration: InputDecoration(
                       hintText: DateUtils.getCurrentFormattedDate(),
                       fillColor: CustomColors.mfinWhite,
@@ -187,12 +195,11 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                     ),
                   ],
                 ),
-                buildAddressWidget("Address"),
+                buildAddressWidget("Address", widget.user.address),
               ],
             ),
           ),
-        ),
-      ),
+        )),
       bottomSheet: Padding(
         padding: EdgeInsets.only(left: 15.0, right: 25.0, top: 25.0),
         child: new Row(
@@ -223,7 +230,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   textColor: CustomColors.mfinAlertRed,
                   color: CustomColors.mfinBlue,
                   onPressed: () {
-                    setState(() {});
+                    Navigator.pop(context);
                   },
                 )),
               ),
@@ -268,9 +275,9 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
     setState(() {
       groupValue = val;
       if (val == 0) {
-        user.setGender(Gender.Male);
+        gender = Gender.Male;
       } else {
-        user.setGender(Gender.Female);
+        gender = Gender.Female;
       }
     });
   }
