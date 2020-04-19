@@ -18,7 +18,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..address = json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
-    ..primaryCompany = json['primary_company'] as String
+    ..primaryFinance = json['primary_finance'] as String
     ..primaryBranch = json['primary_branch'] as String
     ..primarySubBranch = json['primary_sub_branch'] as String
     ..lastSignInTime = json['last_signed_in_at'] == null
@@ -49,7 +49,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
           : instance.displayProfilePath,
       'date_of_birth': instance.dateOfBirth,
       'address': instance.address?.toJson(),
-      'primary_company': instance.primaryCompany,
+      'primary_finance': instance.primaryFinance,
       'primary_branch': instance.primaryBranch,
       'primary_sub_branch': instance.primarySubBranch,
       'last_signed_in_at': instance.lastSignInTime?.toIso8601String(),

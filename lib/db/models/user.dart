@@ -26,8 +26,8 @@ class User extends Model {
   String dateOfBirth;
   @JsonKey(name: 'address', nullable: true)
   Address address;
-  @JsonKey(name: 'primary_company', nullable: true)
-  String primaryCompany;
+  @JsonKey(name: 'primary_finance', nullable: true)
+  String primaryFinance;
   @JsonKey(name: 'primary_branch', nullable: true)
   String primaryBranch;
   @JsonKey(name: 'primary_sub_branch', nullable: true)
@@ -74,8 +74,8 @@ class User extends Model {
     this.displayProfilePath = profilePath;
   }
 
-  setPrimaryCompany(String companyID) {
-    this.primaryCompany = companyID;
+  setPrimaryFinance(String financeID) {
+    this.primaryFinance = financeID;
   }
 
   setPrimaryBranch(String branchID) {

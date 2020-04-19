@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Model {
   static final Firestore db = Firestore.instance;
 
-  CollectionReference  getCollectionRef() {
+  CollectionReference getCollectionRef() {
     throw new Exception("Should be implemented by subclass");
   }
 
-  String  getID() {
+  String getID() {
     throw new Exception("Should be implemented by subclass");
   }
 
@@ -30,6 +30,24 @@ class Model {
     data['updated_at'] = DateTime.now();
     await this.getDocumentRef(this.getID()).updateData(data);
 
+    return data;
+  }
+
+  updateArrayField(Map<String, dynamic> data, String documentID) async {
+    Map<String, dynamic> fields = Map();
+    fields['updated_at'] = DateTime.now();
+
+    data.forEach((key, value) {
+      fields[key] = FieldValue.arrayUnion(value);
+    });
+
+    String docId = this.getID();
+    
+    if (documentID != null || documentID != "") {
+      docId = documentID;
+    }
+
+    await this.getDocumentRef(docId).updateData(fields);
     return data;
   }
 

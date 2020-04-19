@@ -14,6 +14,7 @@ SubBranch _$SubBranchFromJson(Map<String, dynamic> json) {
         : Address.fromJson(json['address'] as Map<String, dynamic>)
     ..emails = (json['emails'] as List)?.map((e) => e as String)?.toList()
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
+    ..users = (json['users'] as List)?.map((e) => e as int)?.toList()
     ..displayProfilePath = json['display_profile_path'] as String
     ..dateOfRegistration = json['date_of_registration'] as String
     ..addedBy = json['added_by'] as int
@@ -36,6 +37,7 @@ Map<String, dynamic> _$SubBranchToJson(SubBranch instance) => <String, dynamic>{
       'address': instance.address?.toJson(),
       'emails': instance.emails,
       'admins': instance.admins,
+      'users': instance.users,
       'display_profile_path': instance.displayProfilePath == null
           ? ''
           : instance.displayProfilePath,

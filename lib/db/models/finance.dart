@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-part 'company.g.dart';
+part 'finance.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Company extends Model {
+class Finance extends Model {
   static CollectionReference _companyCollRef =
       Model.db.collection("finance_companies");
 
@@ -19,6 +19,8 @@ class Company extends Model {
   List<String> emails;
   @JsonKey(name: 'admins', nullable: true)
   List<int> admins;
+  @JsonKey(name: 'users', nullable: true)
+  List<int> users;
   @JsonKey(name: 'display_profile_path', nullable: true)
   String displayProfilePath;
   @JsonKey(name: 'address', nullable: true)
@@ -40,7 +42,7 @@ class Company extends Model {
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
 
-  Company();
+  Finance();
 
   setFianceName(String name) {
     this.financeName = name;
@@ -56,6 +58,10 @@ class Company extends Model {
 
   addAdmins(List<int> admins) {
     this.admins.addAll(admins);
+  }
+
+  addUsers(List<int> users) {
+    this.users.addAll(users);
   }
 
   setDOR(DateTime date) {
@@ -83,9 +89,9 @@ class Company extends Model {
     this.addedBy = mobileNumber;
   }
 
-  factory Company.fromJson(Map<String, dynamic> json) =>
-      _$CompanyFromJson(json);
-  Map<String, dynamic> toJson() => _$CompanyToJson(this);
+  factory Finance.fromJson(Map<String, dynamic> json) =>
+      _$FinanceFromJson(json);
+  Map<String, dynamic> toJson() => _$FinanceToJson(this);
 
   CollectionReference getCollectionRef() {
     return _companyCollRef;
@@ -99,7 +105,7 @@ class Company extends Model {
     return await getCollectionRef().document(financeID).get();
   }
 
-  Future<List<Company>> getFinanceByUserID(String userID) async {
+  Future<List<Finance>> getFinanceByUserID(String userID) async {
     List<DocumentSnapshot> docSnapshot = (await getCollectionRef()
             .where('admins', arrayContains: userID)
             .getDocuments())
@@ -109,17 +115,17 @@ class Company extends Model {
       return null;
     }
 
-    List<Company> finances;
+    List<Finance> finances;
 
     for (var doc in docSnapshot) {
-      Company finance = Company.fromJson(doc.data);
+      Finance finance = Finance.fromJson(doc.data);
       finances.add(finance);
     }
 
     return finances;
   }
 
-  Future<Company> create() async {
+  Future<Finance> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
 

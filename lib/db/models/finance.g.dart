@@ -1,17 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'company.dart';
+part of 'finance.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Company _$CompanyFromJson(Map<String, dynamic> json) {
-  return Company()
+Finance _$FinanceFromJson(Map<String, dynamic> json) {
+  return Finance()
     ..registrationID = json['registration_id'] as String
     ..financeName = json['finance_name'] as String
     ..emails = (json['emails'] as List)?.map((e) => e as String)?.toList()
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
+    ..users = (json['users'] as List)?.map((e) => e as int)?.toList()
     ..displayProfilePath = json['display_profile_path'] as String
     ..address = json['address'] == null
         ? null
@@ -36,11 +37,12 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
   return ts.millisecondsSinceEpoch;
 }
 
-Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{
+Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
       'registration_id': instance.registrationID,
       'finance_name': instance.financeName,
       'emails': instance.emails,
       'admins': instance.admins,
+      'users': instance.users,
       'display_profile_path': instance.displayProfilePath == null
           ? ''
           : instance.displayProfilePath,
