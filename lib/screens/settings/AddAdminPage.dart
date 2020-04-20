@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddAdminPage extends StatefulWidget {
@@ -16,13 +18,20 @@ class AddAdminPage extends StatefulWidget {
 
 class _AddAdminPageState extends State<AddAdminPage> {
   final UserController userController = UserController();
+  final FinanceController financeController = FinanceController();
+  Finance finance = new Finance();
+
   Map<String, dynamic> _userDetails;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<int> userList = new List<int>();
+  List<bool> userStatusList = new List<bool>();
 
   bool searchTriggered = false;
   bool showSearch = false;
+  bool userSelected = false;
 
   var mobileNumber;
+  var primaryFinanceName;
 
   bool mobileNumberValid = true;
 
@@ -132,9 +141,55 @@ class _AddAdminPageState extends State<AddAdminPage> {
                               color: CustomColors.mfinLightGrey,
                             ),
                           ),
+                          trailing: Checkbox(
+                            value: userSelected,
+                            onChanged: (bool value) {
+                              setState(() {
+                                userSelected = value;
+                                if (value == true) {
+                                  userList.add(_userDetails['mobile_number']);
+                                  primaryFinanceName =
+                                      _userDetails['primary_company'];
+                                  userStatusList.add(userSelected);
+                                  userSelected = false;
+                                }
+                              });
+                            },
+                          ),
                         ),
                       )
-                    : null,
+                    : new Container(),
+              ),
+              new Expanded(
+                child: userList.length >1 
+                    ? new ListView.builder(
+                        itemCount: userList.length,
+                        itemBuilder: (context, index) {
+                          return new Container(
+                            color: CustomColors.mfinBlue,
+                            child: new ListTile(
+                                leading: new Text(
+                                  userList.elementAt(index).toString(),
+                                  style: TextStyle(
+                                    color: CustomColors.mfinWhite,
+                                  ),
+                                ),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.remove_circle,
+                                    color: CustomColors.mfinAlertRed,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      getListViewItems(
+                                          userList.elementAt(index).toString());
+                                    });
+                                  },
+                                )),
+                          );
+                        },
+                      )
+                    : new Container(),
               ),
             ],
           ),
@@ -155,7 +210,10 @@ class _AddAdminPageState extends State<AddAdminPage> {
                   textColor: CustomColors.mfinButtonGreen,
                   color: CustomColors.mfinBlue,
                   onPressed: () {
-                    setState(() {});
+                    setState(() {
+                      financeController.updateFinanceAdmins(
+                          userSelected, userList, primaryFinanceName);
+                    });
                   },
                 )),
               ),
@@ -183,4 +241,35 @@ class _AddAdminPageState extends State<AddAdminPage> {
     );
   }
 
+  getListViewItems(String item) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Do you want to remove this user from selected list?"),
+          actions: <Widget>[
+            FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                setState(() {
+                  removeUser(item);
+                  Navigator.of(context).pop();
+                });
+              },
+            ),
+                 FlatButton(
+              child: new Text("Cancel"),
+              onPressed: () {
+                  Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  removeUser(String userID) {
+    setState(() => userList.removeWhere((data) => data == userID));
+  }
 }
