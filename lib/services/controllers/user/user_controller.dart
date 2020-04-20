@@ -34,7 +34,7 @@ class UserController {
   Future getByMobileNumber(int mobileNumber) async {
     try {
       User user = User(mobileNumber);
-      var userJson = await user.getByID();
+      var userJson = await user.getByID(mobileNumber.toString());
       if (userJson == null) {
         return CustomResponse.getFailureReponse(
             "No user found for this mobile number!");

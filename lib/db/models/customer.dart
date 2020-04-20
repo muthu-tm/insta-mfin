@@ -122,7 +122,7 @@ class Customer extends Model {
   }
 
   replace() async {
-    var user = await getByID();
+    var user = await getByID("");
     dynamic result = await super.upsert(this.toJson(), user['created_at']);
     print(result);
   }

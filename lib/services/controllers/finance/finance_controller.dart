@@ -47,6 +47,20 @@ class FinanceController {
     }
   }
 
+  Future<Finance> getFinanceByID(String financeID) {
+    try {
+      Finance finance = Finance();
+      var financeData = finance.getByID(financeID);
+      if (financeData == null) {
+        return null;
+      }
+      return CustomResponse.getSuccesReponse(financeData);
+    } catch (err) {
+      print("Error while fetching Finance using financeID: " + err.toString());
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
   Future updateFinanceAdmins(
       bool isAdd, List<int> userList, String financeID) async {
     try {

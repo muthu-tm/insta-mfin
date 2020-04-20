@@ -12,7 +12,7 @@ class UserSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureProvider<User>(
         create: (context) async {
-          return User.fromJson(await User(userState.mobileNumber).getByID());
+          return User.fromJson(await User(userState.mobileNumber).getByID(""));
         },
         child: new Scaffold(
           backgroundColor: CustomColors.mfinWhite,

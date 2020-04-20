@@ -7,7 +7,7 @@ class AuthService {
   Future<User> registerWithMobileNumber(int mobileNumber, String password, String name) async {
      try {
       User user = User(mobileNumber);
-      var data = await user.getByID();
+      var data = await user.getByID(mobileNumber.toString());
       if (data != null) {
         print("Found an existing user for this mobile number");
         return null;
@@ -17,7 +17,7 @@ class AuthService {
       user.setName(name);
       await user.create();
 
-      return user ??= User.fromJson(await user.getByID());
+      return user ??= User.fromJson(await user.getByID(mobileNumber.toString()));
     } catch (err) {
       print(err.toString());
       throw err;
@@ -27,7 +27,7 @@ class AuthService {
   Future<User> signInWithMobileNumber(int mobileNumber, String passkey) async{
     try {
       User user = User(mobileNumber);
-      var data = await user.getByID();
+      var data = await user.getByID(mobileNumber.toString());
       if (data == null) {
         throw ("No users found for this mobile number");
         // return null;

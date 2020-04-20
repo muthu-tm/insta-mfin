@@ -62,9 +62,13 @@ class Model {
     return true;
   }
 
-  Future<Map<String, dynamic>> getByID() async {
-    String id = this.getID();
-    if (id == "" || id == null) {
+  Future<Map<String, dynamic>> getByID(String docID) async {
+    String id;
+    if (docID != null && docID != "") {
+      id =  docID;
+    } else if (this.getID() != null && this.getID() != null) {
+      id =  this.getID();
+    } else {
       return null;
     }
 

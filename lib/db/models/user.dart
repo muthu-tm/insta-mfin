@@ -46,7 +46,7 @@ class User extends Model {
   }
 
   setUserState() async {
-    userState = User.fromJson(await getByID());
+    userState = User.fromJson(await getByID(""));
 
     print("USER STATE change occurred: " + userState.toJson().toString());
   }
@@ -116,7 +116,7 @@ class User extends Model {
   }
 
   replace() async {
-    var user = await getByID();
+    var user = await getByID("");
     dynamic result = await super.upsert(this.toJson(), user['created_at']);
     print(result);
   }

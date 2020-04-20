@@ -135,7 +135,7 @@ class Finance extends Model {
   }
 
   replace() async {
-    var finance = await getByID();
+    var finance = await getByID("");
     dynamic result = await super.upsert(this.toJson(), finance['created_at']);
     print(result);
   }
