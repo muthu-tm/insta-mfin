@@ -105,6 +105,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
                             setState(() {
                               mobileNumberValid = true;
                               searchTriggered = false;
+                              getListViewItems();
                             });
                           }
                         } else {
@@ -146,12 +147,10 @@ class _AddAdminPageState extends State<AddAdminPage> {
                             onChanged: (bool value) {
                               setState(() {
                                 userSelected = value;
-                                if (value == true) {
+                                if (value == true && !userList.contains(mobileNumber)) {
                                   userList.add(_userDetails['mobile_number']);
                                   primaryFinanceName =
                                       _userDetails['primary_company'];
-                                  userStatusList.add(userSelected);
-                                  userSelected = false;
                                 }
                               });
                             },
@@ -160,37 +159,48 @@ class _AddAdminPageState extends State<AddAdminPage> {
                       )
                     : new Container(),
               ),
-              new Expanded(
-                child: userList.length >1 
-                    ? new ListView.builder(
-                        itemCount: userList.length,
-                        itemBuilder: (context, index) {
-                          return new Container(
-                            color: CustomColors.mfinBlue,
-                            child: new ListTile(
-                                leading: new Text(
-                                  userList.elementAt(index).toString(),
-                                  style: TextStyle(
-                                    color: CustomColors.mfinWhite,
-                                  ),
-                                ),
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    Icons.remove_circle,
-                                    color: CustomColors.mfinAlertRed,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      getListViewItems(
-                                          userList.elementAt(index).toString());
-                                    });
-                                  },
-                                )),
-                          );
-                        },
-                      )
-                    : new Container(),
-              ),
+              // new Expanded(
+              //   child: searchTriggered
+              //       ? new ListView.builder(
+              //           itemCount: userList.length,
+              //           itemBuilder: (context, index) {
+              //             return new Container(
+              //               color: CustomColors.mfinBlue,
+              //               child: new ListTile(
+              //                   leading: Icon(
+              //               Icons.person,
+              //               color: CustomColors.mfinButtonGreen,
+              //               size: 50,
+              //             ),
+              //             title: new Text(
+              //               _userDetails['user_name'],
+              //               style: TextStyle(
+              //                 color: CustomColors.mfinLightGrey,
+              //               ),
+              //             ),
+              //             subtitle: new Text(
+              //               _userDetails['mobile_number'].toString(),
+              //               style: TextStyle(
+              //                 color: CustomColors.mfinLightGrey,
+              //               ),
+              //             ),
+              //                   trailing: IconButton(
+              //                     icon: Icon(
+              //                       Icons.remove_circle,
+              //                       color: CustomColors.mfinAlertRed,
+              //                     ),
+              //                     onPressed: () {
+              //                       setState(() {
+              //                         getListViewItems(
+              //                             userList.elementAt(index).toString());
+              //                       });
+              //                     },
+              //                   )),
+              //             );
+              //           },
+              //         )
+              //       : new Container(),
+              // ),
             ],
           ),
         ),
@@ -241,18 +251,19 @@ class _AddAdminPageState extends State<AddAdminPage> {
     );
   }
 
-  getListViewItems(String item) {
+  getListViewItems() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("Do you want to remove this user from selected list?"),
+          title: new Text("No results Found",           style: TextStyle(
+                              color: CustomColors.mfinBlue,fontSize: 16.0
+                            ),),
           actions: <Widget>[
             FlatButton(
               child: new Text("OK"),
               onPressed: () {
                 setState(() {
-                  removeUser(item);
                   Navigator.of(context).pop();
                 });
               },
