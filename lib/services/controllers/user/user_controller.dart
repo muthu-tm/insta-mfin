@@ -1,13 +1,16 @@
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
+
+UserService _userService = locator<UserService>();
 
 class UserController {
   Future updateUser(User user) async {
     try {
       user = await user.replace();
 
-      await user.setUserState();
-
+      _userService.setCachedUser(user);
+      
       return CustomResponse.getSuccesReponse(user);
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());

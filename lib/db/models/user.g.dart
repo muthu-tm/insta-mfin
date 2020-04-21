@@ -10,18 +10,18 @@ User _$UserFromJson(Map<String, dynamic> json) {
   return User(
     json['mobile_number'] as int,
   )
-    ..name = json['user_name'] as String
-    ..emailID = json['emailID'] as String
+    ..name = json['user_name'] as String ?? ''
+    ..emailID = json['emailID'] as String ?? ''
     ..password = json['password'] as String
-    ..gender = json['gender'] as String
+    ..gender = json['gender'] as String ?? ''
     ..displayProfilePath = json['display_profile_path'] as String ?? ''
-    ..dateOfBirth = json['date_of_birth'] as String
+    ..dateOfBirth = json['date_of_birth'] as String ?? ''
     ..address = json['address'] == null
-        ? null
+        ? new Address()
         : Address.fromJson(json['address'] as Map<String, dynamic>)
-    ..primaryFinance = json['primary_finance'] as String
-    ..primaryBranch = json['primary_branch'] as String
-    ..primarySubBranch = json['primary_sub_branch'] as String
+    ..primaryFinance = json['primary_finance'] as String ?? ''
+    ..primaryBranch = json['primary_branch'] as String ?? ''
+    ..primarySubBranch = json['primary_sub_branch'] as String ?? ''
     ..lastSignInTime = json['last_signed_in_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(

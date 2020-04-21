@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/buildFinanceDetails.dart';
 import 'package:instamfin/screens/settings/buildUserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:provider/provider.dart';
 
 class UserSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureProvider<User>(
-        create: (context) async {
-          return User.fromJson(await User(userState.mobileNumber).getByID(""));
-        },
-        child: new Scaffold(
+    return new Scaffold(
           backgroundColor: CustomColors.mfinWhite,
           appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
@@ -36,6 +30,6 @@ class UserSetting extends StatelessWidget {
             ),
           ),
           bottomNavigationBar: bottomBar(context),
-        ));
+        );
   }
 }

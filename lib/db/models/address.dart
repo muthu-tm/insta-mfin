@@ -4,15 +4,15 @@ part 'address.g.dart';
 @JsonSerializable()
 class Address {
   
-  @JsonKey(name: 'street', nullable: false)
+  @JsonKey(name: 'street', defaultValue: '')
   String street;
-  @JsonKey(name: 'city', nullable: true)
+  @JsonKey(name: 'city', defaultValue: '')
   String city;
-  @JsonKey(name: 'state', nullable: false)
+  @JsonKey(name: 'state', defaultValue: '')
   String state;
   @JsonKey(name: 'country', defaultValue: 'India')
   String country;
-  @JsonKey(name: 'pincode', nullable: false)
+  @JsonKey(name: 'pincode', defaultValue: 00)
   int pincode;
 
   Address();

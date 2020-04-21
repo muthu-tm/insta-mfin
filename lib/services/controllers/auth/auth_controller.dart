@@ -1,23 +1,28 @@
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 import './../../authenticate/auth.dart';
+
+UserService _userService = locator<UserService>();
 
 class AuthController {
   AuthService _authService = AuthService();
 
-  dynamic registerWithMobileNumber(int mobileNumber, String passkey, String userName) async {
+  dynamic registerWithMobileNumber(
+      int mobileNumber, String passkey, String userName) async {
     try {
       User user = await _authService.registerWithMobileNumber(
           mobileNumber, passkey, userName);
 
       if (user == null) {
-        return CustomResponse.getFailureReponse("Found an existing user for this mobile number");
+        return CustomResponse.getFailureReponse(
+            "Found an existing user for this mobile number");
       }
 
       user.update({'last_signed_in_at': DateTime.now()});
 
-      // set user global state
-      await user.setUserState();
+      // cache the user data
+      _userService.setCachedUser(user);
 
       return CustomResponse.getSuccesReponse(user);
     } catch (err) {
@@ -27,11 +32,14 @@ class AuthController {
 
   dynamic signInWithMobileNumber(int mobileNumber, String passkey) async {
     try {
-       User user = await _authService.signInWithMobileNumber(mobileNumber, passkey);
+      User user =
+          await _authService.signInWithMobileNumber(mobileNumber, passkey);
 
       // update cloud firestore "users" collection
       user.update({'last_signed_in_at': DateTime.now()});
-      await user.setUserState();
+
+      // cache the user data
+      _userService.setCachedUser(user);
 
       return CustomResponse.getSuccesReponse(user);
     } catch (err) {
@@ -48,5 +56,4 @@ class AuthController {
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
-
 }

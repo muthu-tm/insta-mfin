@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/finance.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
@@ -65,7 +64,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
                           style: TextStyle(
                               color: CustomColors.mfinAlertRed, fontSize: 13)),
                       new Text(
-                        "\n\nThis user will get ADMIN access over your selected \n ${userState.primaryFinance}. And the user can add/edit other user to this.\n\n",
+                        "\n\nThis user will get ADMIN access over your selected \n . And the user can add/edit other user to this.\n\n",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: CustomColors.mfinAlertRed, fontSize: 13),

@@ -6,33 +6,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 part 'user.g.dart';
 
-User userState;
 
 @JsonSerializable(explicitToJson: true)
 class User extends Model {
   static CollectionReference _userCollRef = Model.db.collection("users");
 
-  @JsonKey(name: 'user_name', nullable: true)
+  @JsonKey(name: 'user_name', defaultValue: "")
   String name;
   @JsonKey(name: 'mobile_number', nullable: false)
   int mobileNumber;
-  @JsonKey(name: 'emailID', nullable: false)
+  @JsonKey(name: 'emailID', defaultValue: "")
   String emailID;
   @JsonKey(name: 'password', nullable: false)
   String password;
-  @JsonKey(name: 'gender', nullable: true)
+  @JsonKey(name: 'gender', defaultValue: "")
   String gender;
   @JsonKey(name: 'display_profile_path', defaultValue: "")
   String displayProfilePath;
-  @JsonKey(name: 'date_of_birth', nullable: true)
+  @JsonKey(name: 'date_of_birth', defaultValue: "")
   String dateOfBirth;
   @JsonKey(name: 'address', nullable: true)
   Address address;
-  @JsonKey(name: 'primary_finance', nullable: true)
+  @JsonKey(name: 'primary_finance', defaultValue: "")
   String primaryFinance;
-  @JsonKey(name: 'primary_branch', nullable: true)
+  @JsonKey(name: 'primary_branch', defaultValue: "")
   String primaryBranch;
-  @JsonKey(name: 'primary_sub_branch', nullable: true)
+  @JsonKey(name: 'primary_sub_branch', defaultValue: "")
   String primarySubBranch;
   @JsonKey(name: 'last_signed_in_at', nullable: true)
   DateTime lastSignInTime;
@@ -43,12 +42,6 @@ class User extends Model {
 
   User(int mobileNumber) {
     this.mobileNumber = mobileNumber;
-  }
-
-  setUserState() async {
-    userState = User.fromJson(await getByID(""));
-
-    print("USER STATE change occurred: " + userState.toJson().toString());
   }
 
   setPassword(String password) {

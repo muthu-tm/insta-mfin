@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+  setupLocator();
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

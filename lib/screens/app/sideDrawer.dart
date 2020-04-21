@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/settings/AddAdminPage.dart';
 import 'package:instamfin/screens/settings/BranchSetting.dart';
 import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
-import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
-import 'package:instamfin/services/utils/users_utils.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
+
+UserService _userService = locator<UserService>();
 
 Widget openDrawer(BuildContext context) {
   final AuthController _authController = AuthController();
@@ -18,17 +18,17 @@ Widget openDrawer(BuildContext context) {
   return new Drawer(
       child: new ListView(children: <Widget>[
     new UserAccountsDrawerHeader(
-        accountName: Text(userState.name),
-        accountEmail: Text("A&E Specialties"),
+        accountName: Text(_userService.cachedUser.name),
+        accountEmail: Text(_userService.cachedUser.emailID),
         arrowColor: CustomColors.mfinBlue,
         onDetailsPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UserProfileSetting()),
+            MaterialPageRoute(builder: (context) => UserSetting()),
           );
         },
         currentAccountPicture: new CircleAvatar(
-          backgroundImage: UserUtils.getUserDisplayImage(),
+          backgroundImage: _userService.getUserDisplayImage(),
           backgroundColor: CustomColors.mfinBlue,
         )),
     new ListTile(
@@ -108,16 +108,16 @@ Widget openDrawer(BuildContext context) {
             MaterialPageRoute(builder: (context) => CompanyProfileSetting()),
           );
         }),
-            new ListTile(
-        leading: new Icon(Icons.store,
-            color: CustomColors.mfinButtonGreen),
+    new ListTile(
+        leading: new Icon(Icons.store, color: CustomColors.mfinButtonGreen),
         title: new Text('Branch Settings'),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => BranchSetting()),
           );
-        }),            new ListTile(
+        }),
+    new ListTile(
         leading: new Icon(Icons.supervised_user_circle,
             color: CustomColors.mfinButtonGreen),
         title: new Text('User Settings'),
@@ -133,11 +133,11 @@ Widget openDrawer(BuildContext context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserProfileSetting()),
+          MaterialPageRoute(builder: (context) => UserSetting()),
         );
       },
     ),
-        new ListTile(
+    new ListTile(
       leading: new Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
       title: new Text('User Management'),
       onTap: () {

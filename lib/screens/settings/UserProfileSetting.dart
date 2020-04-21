@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/enums/gender.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/buildAddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
+
+UserService _userService = locator<UserService>();
 
 class UserProfileSetting extends StatefulWidget {
-  UserProfileSetting({this.user});
-
-  final User user;
 
   @override
   _UserProfileSettingState createState() => _UserProfileSettingState();
@@ -57,7 +56,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
-                    initialValue: widget.user.name,
+                    initialValue: _userService.cachedUser.name,
                     decoration: InputDecoration(
                       hintText: 'User Name',
                       fillColor: CustomColors.mfinWhite,
@@ -80,7 +79,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
                     obscureText: hidePassword,
-                    initialValue: widget.user.password,
+                    initialValue: _userService.cachedUser.password,
                     decoration: InputDecoration(
                       hintText: 'Enter your new Password',
                       fillColor: CustomColors.mfinWhite,
@@ -116,7 +115,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
-                    initialValue: widget.user.emailID,
+                    initialValue: _userService.cachedUser.emailID,
                     decoration: InputDecoration(
                       hintText: 'Enter your EmailID',
                       fillColor: CustomColors.mfinWhite,
@@ -134,8 +133,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                 RowHeaderTextBox(textName: 'Date Of Birth'),
                 ListTile(
                   title: new TextFormField(
-                    controller: _date,
-                    initialValue: widget.user.dateOfBirth,
+                    // controller: _date,
+                    initialValue: _userService.cachedUser.dateOfBirth,
                     decoration: InputDecoration(
                       hintText: DateUtils.getCurrentFormattedDate(),
                       fillColor: CustomColors.mfinWhite,
@@ -195,7 +194,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                     ),
                   ],
                 ),
-                buildAddressWidget("Address", widget.user.address),
+                buildAddressWidget("Address", _userService.cachedUser.address),
               ],
             ),
           ),
