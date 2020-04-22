@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/storage/image_uploader.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -19,6 +20,7 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AuthController _authController = AuthController();
 
@@ -35,6 +37,7 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Registration'),
@@ -266,14 +269,15 @@ class _RegisterFormState extends State<RegisterForm> {
           int.parse(mobileNumber), password, name);
       if (!result['is_success']) {
         Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
         print("Unable to register USER: " + result['message']);
       } else {
         Navigator.pop(context);
         print("Successfully registered the user");
         if (_imageFile != null) {
           print("UPLOADING image file: " + _imageFile.toString());
-          await Uploader.copyToAppDirectory(_imageFile, emailID);
-
+          // await Uploader.copyToAppDirectory(_imageFile, emailID);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar("Uploading profile Image", 3));
           Uploader.uploadImage(
               "users_profile",
               _imageFile.path,
@@ -298,6 +302,7 @@ class _RegisterFormState extends State<RegisterForm> {
       }
     } else {
       print("Invalid form values");
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
   }
 }

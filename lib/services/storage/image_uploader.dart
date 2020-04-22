@@ -5,17 +5,17 @@ import 'package:instamfin/db/models/user.dart';
 
 class Uploader {
 
-  static Future<void> copyToAppDirectory(File image, String emailID) async {
-    try {
-      // getting a directory path for saving
-      final String path = (await getApplicationDocumentsDirectory()).path;
+  // static Future<void> copyToAppDirectory(File image, String emailID) async {
+  //   try {
+  //     // getting a directory path for saving
+  //     final String path = (await getApplicationDocumentsDirectory()).path;
 
-      File file = await image.copy('$path/$emailID.png');
-    print("Local User Profile Image Path: " + file.path);
-    } catch (err) {
-      print("Error while copying image file: " + err.toString());
-    }
-  }
+  //     File file = await image.copy('$path/$emailID.png');
+  //   print("Local User Profile Image Path: " + file.path);
+  //   } catch (err) {
+  //     print("Error while copying image file: " + err.toString());
+  //   }
+  // }
 
   static void uploadImage(String fileDir, String originalFile, int mobileNumber,
       Function onUploaded, Function onFailed) async {
