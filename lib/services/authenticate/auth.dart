@@ -17,7 +17,7 @@ class AuthService {
       user.setName(name);
       await user.create();
 
-      return user ??= User.fromJson(await user.getByID(mobileNumber.toString()));
+      return User.fromJson(await user.getByID(mobileNumber.toString()));
     } catch (err) {
       print(err.toString());
       throw err;

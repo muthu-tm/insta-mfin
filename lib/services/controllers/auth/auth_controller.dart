@@ -19,10 +19,11 @@ class AuthController {
             "Found an existing user for this mobile number");
       }
 
-      user.update({'last_signed_in_at': DateTime.now()});
 
+      user.update({'last_signed_in_at': DateTime.now()});
+      
       // cache the user data
-      _userService.setCachedUser(User.fromJson(user.toJson()));
+      _userService.setCachedUser(user);
 
       return CustomResponse.getSuccesReponse(user);
     } catch (err) {

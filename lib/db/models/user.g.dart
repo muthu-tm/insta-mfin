@@ -24,29 +24,39 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..primarySubBranch = json['primary_sub_branch'] as String ?? ''
     ..lastSignInTime = json['last_signed_in_at'] == null
         ? null
-        : json['last_signed_in_at'] as DateTime
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['last_signed_in_at'] as Timestamp))
     ..createdAt = json['created_at'] == null
         ? null
-        : json['created_at'] as DateTime
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
     ..updatedAt = json['updated_at'] == null
         ? null
-        : json['updated_at'] as DateTime;
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
+}
+
+int _getMillisecondsSinceEpoch(Timestamp ts) {
+  return ts.millisecondsSinceEpoch;
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'user_name': instance.name,
+      'user_name': instance.name == null ? '' : instance.name,
       'mobile_number': instance.mobileNumber,
-      'emailID': instance.emailID,
+      'emailID': instance.emailID == null ? '' : instance.emailID,
       'password': instance.password,
-      'gender': instance.gender,
+      'gender': instance.gender == null ? '' : instance.gender,
       'display_profile_path': instance.displayProfilePath == null
           ? ''
           : instance.displayProfilePath,
-      'date_of_birth': instance.dateOfBirth,
+      'date_of_birth': instance.dateOfBirth == null ? '' : instance.dateOfBirth,
       'address': instance.address?.toJson(),
-      'primary_finance': instance.primaryFinance,
-      'primary_branch': instance.primaryBranch,
-      'primary_sub_branch': instance.primarySubBranch,
+      'primary_finance':
+          instance.primaryFinance == null ? '' : instance.primaryFinance,
+      'primary_branch':
+          instance.primaryBranch == null ? '' : instance.primaryBranch,
+      'primary_sub_branch':
+          instance.primarySubBranch == null ? '' : instance.primarySubBranch,
       'last_signed_in_at': instance.lastSignInTime,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
