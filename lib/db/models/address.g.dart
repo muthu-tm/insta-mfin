@@ -8,17 +8,17 @@ part of 'address.dart';
 
 Address _$AddressFromJson(Map<String, dynamic> json) {
   return Address()
-  ..street = json['street'] as String ?? ''
-  ..city = json['city'] as String ?? ''
-  ..state = json['state'] as String ?? ''
-  ..pincode = json['pincode'] as int ?? 00
-  ..country = json['country'] as String ?? 'India';
+    ..street = json['street'] as String ?? ''
+    ..city = json['city'] as String ?? ''
+    ..state = json['state'] as String ?? ''
+    ..pincode = json['pincode'] as int ?? 00
+    ..country = json['country'] as String ?? 'India';
 }
 
 Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
-      'street': instance.street,
-      'city': instance.city,
-      'state': instance.state,
+      'street': instance.street == null ? '' : instance.street,
+      'city': instance.city == null ? '' : instance.city,
+      'state': instance.state == null ? '' : instance.state,
       'country': instance.country == null ? 'India' : instance.country,
-      'pincode': instance.pincode,
+      'pincode': instance.pincode == null ? 000000 : instance.pincode,
     };

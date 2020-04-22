@@ -38,21 +38,32 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
-      'registration_id': instance.registrationID,
+      'registration_id':
+          instance.registrationID == null ? '' : instance.registrationID,
       'finance_name': instance.financeName,
-      'emails': instance.emails,
-      'admins': instance.admins,
-      'users': instance.users,
+      'emails': instance.emails == null ? [] : instance.emails,
+      'admins': instance.admins == null ? [instance.addedBy] : instance.admins,
+      'users': instance.users == null ? [instance.addedBy] : instance.users,
       'display_profile_path': instance.displayProfilePath == null
           ? ''
           : instance.displayProfilePath,
       'address': instance.address?.toJson(),
-      'date_of_registration': instance.dateOfRegistration,
-      'allocated_branch_count': instance.allocatedBranchCount,
-      'available_branch_count': instance.availableBranchCount,
-      'allocated_users_count': instance.allocatedUsersCount,
-      'available_users_count': instance.availableUsersCount,
+      'date_of_registration': instance.dateOfRegistration == null
+          ? ''
+          : instance.dateOfRegistration,
+      'allocated_branch_count': instance.allocatedBranchCount == null
+          ? 1
+          : instance.allocatedBranchCount,
+      'available_branch_count': instance.availableBranchCount == null
+          ? 1
+          : instance.availableBranchCount,
+      'allocated_users_count': instance.allocatedUsersCount == null
+          ? 1
+          : instance.allocatedUsersCount,
+      'available_users_count': instance.availableUsersCount == null
+          ? 1
+          : instance.availableUsersCount,
       'added_by': instance.addedBy,
-      'created_at': instance.createdAt?.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };

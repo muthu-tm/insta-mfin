@@ -43,22 +43,26 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
-      'customer_id': instance.customerID,
+      'customer_id': instance.customerID == null ? '' : instance.customerID,
       'mobile_number': instance.mobileNumber,
-      'customer_name': instance.name,
-      'gender': instance.gender,
+      'customer_name': instance.name == null ? '' : instance.name,
+      'gender': instance.gender == null ? '' : instance.gender,
       'display_profile_path': instance.displayProfilePath == null
           ? ''
           : instance.displayProfilePath,
-      'date_of_birth': instance.dateOfBirth,
+      'date_of_birth': instance.dateOfBirth == null ? '' : instance.dateOfBirth,
       'address': instance.address?.toJson(),
-      'age': instance.age,
-      'branch_id': instance.branchID,
-      'sub_branch_id': instance.subBranchID,
-      'guarantied_by': instance.guarantiedBy,
-      'last_transaction_type': instance.lastTransactionType,
-      'last_transaction_at': instance.lastTransactionTime?.toIso8601String(),
+      'age': instance.age == null ? 00 : instance.age,
+      'branch_id': instance.branchID == null ? '' : instance.branchID,
+      'sub_branch_id': instance.subBranchID == null ? '' : instance.subBranchID,
+      'guarantied_by': instance.guarantiedBy == null
+          ? instance.addedBy
+          : instance.guarantiedBy,
+      'last_transaction_type': instance.lastTransactionType == null
+          ? ''
+          : instance.lastTransactionType,
+      'last_transaction_at': instance.lastTransactionTime,
       'added_by': instance.addedBy,
-      'created_at': instance.createdAt?.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };

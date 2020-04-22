@@ -35,14 +35,16 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 Map<String, dynamic> _$SubBranchToJson(SubBranch instance) => <String, dynamic>{
       'sub_branch_name': instance.subBranchName,
       'address': instance.address?.toJson(),
-      'emails': instance.emails,
-      'admins': instance.admins,
-      'users': instance.users,
+      'emails': instance.emails == null ? [] : instance.emails,
+      'admins': instance.admins == null ? [instance.addedBy] : instance.admins,
+      'users': instance.users == null ? [instance.addedBy] : instance.users,
       'display_profile_path': instance.displayProfilePath == null
           ? ''
           : instance.displayProfilePath,
-      'date_of_registration': instance.dateOfRegistration,
+      'date_of_registration': instance.dateOfRegistration == null
+          ? ''
+          : instance.dateOfRegistration,
       'added_by': instance.addedBy,
-      'created_at': instance.createdAt?.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };
