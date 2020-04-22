@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/storage/image_uploader.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -259,11 +260,15 @@ class _RegisterFormState extends State<RegisterForm> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
+      CustomDialogs.actionWaiting(context, "Registering User");
+
       dynamic result = await _authController.registerWithMobileNumber(
           int.parse(mobileNumber), password, name);
       if (!result['is_success']) {
+        Navigator.pop(context);
         print("Unable to register USER: " + result['message']);
       } else {
+        Navigator.pop(context);
         print("Successfully registered the user");
         if (_imageFile != null) {
           print("UPLOADING image file: " + _imageFile.toString());
@@ -273,20 +278,21 @@ class _RegisterFormState extends State<RegisterForm> {
               "users_profile",
               _imageFile.path,
               int.parse(mobileNumber),
-              (downloadURL) => Navigator.push(
+              (downloadURL) => Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => UserHomeScreen()),
+                    MaterialPageRoute(builder: (context) => UserHomeScreen()),
+                    (Route<dynamic> route) => false,
                   ),
-              () => Navigator.push(
+              () => Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => UserHomeScreen()),
+                    MaterialPageRoute(builder: (context) => UserHomeScreen()),
+                    (Route<dynamic> route) => false,
                   ));
         } else {
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => UserHomeScreen()),
+            (Route<dynamic> route) => false,
           );
         }
       }

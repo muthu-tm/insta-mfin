@@ -22,7 +22,7 @@ class AuthController {
       user.update({'last_signed_in_at': DateTime.now()});
 
       // cache the user data
-      _userService.setCachedUser(user);
+      _userService.setCachedUser(User.fromJson(user.toJson()));
 
       return CustomResponse.getSuccesReponse(user);
     } catch (err) {

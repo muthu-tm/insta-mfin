@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
@@ -189,16 +190,20 @@ class _LoginControllerState extends State<LoginController> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      var result =
-          await _authController.signInWithMobileNumber(int.parse(mobileNumber), password);
+      CustomDialogs.actionWaiting(context, "Loggin in");
+      var result = await _authController.signInWithMobileNumber(
+          int.parse(mobileNumber), password);
 
       if (!result['is_success']) {
+        Navigator.pop(context);
         print("Unable to Login: " + result['message']);
       } else {
+        Navigator.pop(context);
         print("User logged in successfully");
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => UserHomeScreen()),
+          (Route<dynamic> route) => false,
         );
       }
     } else {

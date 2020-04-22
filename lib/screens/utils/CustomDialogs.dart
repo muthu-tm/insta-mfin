@@ -44,7 +44,28 @@ class CustomDialogs {
         });
   }
 
-  static confirm(BuildContext context, String title, String description, Function() yesAction, Function() noAction) {
+  static actionWaiting(BuildContext context, String actionName) {
+    AlertDialog alert = AlertDialog(
+      content: new Row(
+        children: [
+          CircularProgressIndicator(
+            backgroundColor: CustomColors.mfinButtonGreen,
+          ),
+          Container(margin: EdgeInsets.only(left: 5), child: Text(actionName)),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  static confirm(BuildContext context, String title, String description,
+      Function() yesAction, Function() noAction) {
     return showDialog(
         context: context,
         barrierDismissible: true,

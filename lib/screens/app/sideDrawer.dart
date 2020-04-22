@@ -159,9 +159,10 @@ Widget openDrawer(BuildContext context) {
       onTap: () => CustomDialogs.confirm(
           context, "Warning!", "Do you really want to exit?", () async {
         await _authController.signOut();
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Authenticate()),
+          (Route<dynamic> route) => false,
         );
       }, () => Navigator.pop(context, false)),
     ),
