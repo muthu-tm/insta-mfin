@@ -20,10 +20,16 @@ Branch _$BranchFromJson(Map<String, dynamic> json) {
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
-        : json['created_at'] as DateTime
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
     ..updatedAt = json['updated_at'] == null
         ? null
-        : json['updated_at'] as DateTime;
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
+}
+
+int _getMillisecondsSinceEpoch(Timestamp ts) {
+  return ts.millisecondsSinceEpoch;
 }
 
 Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
@@ -37,6 +43,6 @@ Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
           : instance.displayProfilePath,
       'date_of_registration': instance.dateOfRegistration,
       'added_by': instance.addedBy,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
+      'created_at': instance.createdAt?.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
     };

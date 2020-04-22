@@ -25,14 +25,21 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
     ..lastTransactionType = json['last_transaction_type'] as String ?? ''
     ..lastTransactionTime = json['last_transaction_at'] == null
         ? null
-        : json['last_transaction_at'] as DateTime
+        : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(
+            json['last_transaction_at'] as Timestamp))
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
-        : json['created_at'] as DateTime
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
     ..updatedAt = json['updated_at'] == null
         ? null
-        : json['updated_at'] as DateTime;
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
+}
+
+int _getMillisecondsSinceEpoch(Timestamp ts) {
+  return ts.millisecondsSinceEpoch;
 }
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
@@ -50,8 +57,8 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'sub_branch_id': instance.subBranchID,
       'guarantied_by': instance.guarantiedBy,
       'last_transaction_type': instance.lastTransactionType,
-      'last_transaction_at': instance.lastTransactionTime,
+      'last_transaction_at': instance.lastTransactionTime?.toIso8601String(),
       'added_by': instance.addedBy,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
+      'created_at': instance.createdAt?.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
     };
