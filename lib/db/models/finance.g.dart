@@ -25,16 +25,10 @@ Finance _$FinanceFromJson(Map<String, dynamic> json) {
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
+        : json['created_at'] as DateTime
     ..updatedAt = json['updated_at'] == null
         ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
-}
-
-int _getMillisecondsSinceEpoch(Timestamp ts) {
-  return ts.millisecondsSinceEpoch;
+        : json['updated_at'] as DateTime;
 }
 
 Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
@@ -53,6 +47,6 @@ Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
       'allocated_users_count': instance.allocatedUsersCount,
       'available_users_count': instance.availableUsersCount,
       'added_by': instance.addedBy,
-      'created_at': instance.createdAt?.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };
