@@ -29,7 +29,7 @@ class UserSetting extends StatelessWidget {
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  PrimaryFinanceWidget("Finance Details", _user),
+                  PrimaryFinanceWidget("Finance Details"),
                   UserProfileWidget(_user),
                 ]),
           ),

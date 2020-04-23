@@ -191,6 +191,17 @@ class SubBranch {
     return subBranches;
   }
 
+  Future<SubBranch> getSubBranchByID(String financeID, String branchID, String subBranchID) async {
+    DocumentSnapshot snapshot =
+        await getSubBranchCollectionRef(financeID, branchID).document(subBranchID).get();
+
+    if (snapshot.exists) {
+      return SubBranch.fromJson(snapshot.data);
+    } else {
+      return null;
+    }
+  }
+
   Future<SubBranch> update(String financeID, String branchName) async {
     this.updatedAt = DateTime.now();
 

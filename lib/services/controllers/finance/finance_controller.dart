@@ -6,12 +6,12 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class FinanceController {
-  UserController _userController = UserController();
   BranchController _branchController = BranchController();
 
   Future createFinance(String name, String registeredID, List<String> emails,
       Address address, DateTime dateOfRegistration, int addedBy) async {
     try {
+      UserController _userController = UserController();
       Finance financeCompany = Finance();
       financeCompany.setFianceName(name);
       financeCompany.setRegistrationID(registeredID);
@@ -47,14 +47,14 @@ class FinanceController {
     }
   }
 
-  Future<Finance> getFinanceByID(String financeID) {
+  Future<Finance> getFinanceByID(String financeID) async{
     try {
       Finance finance = Finance();
-      var financeData = finance.getByID(financeID);
+      var financeData = await finance.getByID(financeID);
       if (financeData == null) {
         return null;
       }
-      return CustomResponse.getSuccesReponse(financeData);
+      return Finance.fromJson(financeData);
     } catch (err) {
       print("Error while fetching Finance using financeID: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());

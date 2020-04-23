@@ -48,7 +48,7 @@ class SubBranchController {
     }
   }
 
-  Future getSubBranchByUserID(
+  Future getSubBranchesForUserID(
       String financeID, String branchName, String userID) async {
     try {
       SubBranch subBranch = SubBranch();
@@ -62,6 +62,16 @@ class SubBranchController {
       return subBranches;
     } catch (err) {
       print("Error while retrieving Sub branches for an user: " + userID);
+      return null;
+    }
+  }
+
+  Future<SubBranch> getSubBranchByID(String financeID, String branchID, String subBranchID) async {
+    try {
+      SubBranch subBranch = SubBranch();
+      return await subBranch.getSubBranchByID(financeID, branchID, subBranchID);
+    } catch (err) {
+      print("Error while retrieving Sub Branch for Sub_BranchID: " + subBranchID);
       return null;
     }
   }
