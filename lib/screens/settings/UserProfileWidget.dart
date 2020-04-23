@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
 
-UserService _userService = locator<UserService>();
+class UserProfileWidget extends StatelessWidget {
+  UserProfileWidget(this.user);
 
-Widget buildUserSettingsWidget(User user, BuildContext context) {
-  User user = _userService.cachedUser;
+  final User user;
 
+  @override
+  Widget build(BuildContext context) {
   return Card(
       color: CustomColors.mfinLightGrey,
       child: new Column(children: <Widget>[
@@ -30,8 +31,7 @@ Widget buildUserSettingsWidget(User user, BuildContext context) {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => UserProfileSetting(user: user)),
+                  MaterialPageRoute(builder: (context) => UserProfileSetting()),
                 );
               },
             )),
@@ -75,6 +75,7 @@ Widget buildUserSettingsWidget(User user, BuildContext context) {
           title: TextFormField(
             keyboardType: TextInputType.text,
             initialValue: user.password,
+            obscureText: true,
             decoration: InputDecoration(
               hintText: 'Password',
               fillColor: CustomColors.mfinWhite,
@@ -100,6 +101,23 @@ Widget buildUserSettingsWidget(User user, BuildContext context) {
                   new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
               border: OutlineInputBorder(
                   borderSide: BorderSide(color: CustomColors.mfinGrey)),
+            ),
+            enabled: false,
+            autofocus: false,
+          ),
+        ),
+        ListTile(
+          title: new TextFormField(
+            keyboardType: TextInputType.text,
+            initialValue: user.emailID,
+            decoration: InputDecoration(
+              hintText: 'Enter your EmailID',
+              fillColor: CustomColors.mfinWhite,
+              filled: true,
+              contentPadding:
+                  new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: CustomColors.mfinWhite)),
             ),
             enabled: false,
             autofocus: false,
@@ -141,4 +159,5 @@ Widget buildUserSettingsWidget(User user, BuildContext context) {
           ),
         )
       ]));
+  }
 }

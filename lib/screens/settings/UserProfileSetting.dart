@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/enums/gender.dart';
+import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
+
+
+final UserService _userService = locator<UserService>();
 
 class UserProfileSetting extends StatefulWidget {
-  UserProfileSetting({this.user});
-
-  final User user;
 
   @override
   _UserProfileSettingState createState() => _UserProfileSettingState();
 }
 
 class _UserProfileSettingState extends State<UserProfileSetting> {
+  final User user = _userService.cachedUser;
+  final Map<String, dynamic> updatedUser = new Map();
+  final Address updatedAddress = new Address();
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode myFocusNode = FocusNode();
   final UserController _userController = UserController();
   TextEditingController passwordController = TextEditingController();
+
 
   DateTime selectedDate = DateTime.now();
   var _passwordVisible = false;
@@ -34,6 +42,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
 
   @override
   Widget build(BuildContext context) {
+    updatedUser['mobile_number'] = user.mobileNumber;
+
     return new Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
@@ -57,7 +67,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   ListTile(
                     title: TextFormField(
                       keyboardType: TextInputType.text,
-                      initialValue: widget.user.name,
+                      initialValue: user.name,
                       decoration: InputDecoration(
                         hintText: 'User Name',
                         fillColor: CustomColors.mfinWhite,
@@ -72,10 +82,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                         if (value.isEmpty) {
                           return 'Enter your Name';
                         }
-
-                        setState(() {
-                          widget.user.name = value;
-                        });
+                        updatedUser['user_name'] = value;
                       },
                     ),
                   ),
@@ -84,7 +91,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                     title: new TextFormField(
                       keyboardType: TextInputType.text,
                       obscureText: hidePassword,
-                      initialValue: widget.user.password,
+                      initialValue: user.password,
                       decoration: InputDecoration(
                         hintText: 'Enter your new Password',
                         fillColor: CustomColors.mfinWhite,
@@ -120,7 +127,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   ListTile(
                     title: new TextFormField(
                       keyboardType: TextInputType.text,
-                      initialValue: widget.user.emailID,
+                      initialValue: user.emailID,
                       decoration: InputDecoration(
                         hintText: 'Enter your EmailID',
                         fillColor: CustomColors.mfinWhite,
@@ -139,7 +146,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   ListTile(
                     title: new TextFormField(
                       // controller: _date,
-                      initialValue: widget.user.dateOfBirth,
+                      initialValue: user.dateOfBirth,
                       decoration: InputDecoration(
                         hintText: DateUtils.getCurrentFormattedDate(),
                         fillColor: CustomColors.mfinWhite,
@@ -199,107 +206,100 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       ),
                     ],
                   ),
-                  // buildAddressWidget("Address", widget.user.address),
-                  new Card(
-                    color: CustomColors.mfinLightGrey,
-                    child: new Column(
-                      children: <Widget>[
-                        ListTile(
-                          leading: new Text(
-                            "Address",
-                            style: TextStyle(
-                                color: CustomColors.mfinGrey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                          ),
-                        ),
-                        ListTile(
-                          title: TextFormField(
-                            initialValue: widget.user.address.street,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: 'Building No. & Street',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 5.0),
-                            ),
-                            validator: (street) {
-                              if (street.trim() != "") {
-                                setState(() {
-                                  widget.user.address.street = street.trim();
-                                });
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        ListTile(
-                          title: TextFormField(
-                            keyboardType: TextInputType.text,
-                            initialValue: widget.user.address.city,
-                            decoration: InputDecoration(
-                              hintText: 'City',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 5.0),
-                            ),
-                            validator: (city) {
-                              if (city.trim() != "") {
-                                setState(() {
-                                  widget.user.address.city = city.trim();
-                                });
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        ListTile(
-                          title: TextFormField(
-                            keyboardType: TextInputType.text,
-                            initialValue: widget.user.address.state,
-                            decoration: InputDecoration(
-                              hintText: 'State',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 5.0),
-                            ),
-                            validator: (state) {
-                              if (state.trim() != "") {
-                                setState(() {
-                                  widget.user.address.state = state.trim();
-                                });
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        ListTile(
-                          title: TextFormField(
-                            keyboardType: TextInputType.text,
-                            initialValue: widget.user.address.pincode,
-                            decoration: InputDecoration(
-                              hintText: 'Pincode',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 5.0),
-                            ),
-                            validator: (pinCode) {
-                              if (pinCode.trim() != "") {
-                                setState(() {
-                                  widget.user.address.pincode = pinCode.trim();
-                                });
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  AddressWidget(
+                      "Address", user.address, updatedAddress),
+                  // new Card(
+                  //   color: CustomColors.mfinLightGrey,
+                  //   child: new Column(
+                  //     children: <Widget>[
+                  //       ListTile(
+                  //         leading: new Text(
+                  //           "Address",
+                  //           style: TextStyle(
+                  //               color: CustomColors.mfinGrey,
+                  //               fontWeight: FontWeight.bold,
+                  //               fontSize: 17),
+                  //         ),
+                  //       ),
+                  //       ListTile(
+                  //         title: TextFormField(
+                  //           initialValue: widget.user.address.street,
+                  //           keyboardType: TextInputType.text,
+                  //           decoration: InputDecoration(
+                  //             hintText: 'Building No. & Street',
+                  //             fillColor: CustomColors.mfinWhite,
+                  //             filled: true,
+                  //             contentPadding: new EdgeInsets.symmetric(
+                  //                 vertical: 5.0, horizontal: 5.0),
+                  //           ),
+                  //           validator: (street) {
+                  //             if (street.trim() != "") {
+                  //                 widget.user.address.street = street.trim();
+                  //             }
+                  //             return null;
+                  //           },
+                  //         ),
+                  //       ),
+                  //       ListTile(
+                  //         title: TextFormField(
+                  //           keyboardType: TextInputType.text,
+                  //           initialValue: widget.user.address.city,
+                  //           decoration: InputDecoration(
+                  //             hintText: 'City',
+                  //             fillColor: CustomColors.mfinWhite,
+                  //             filled: true,
+                  //             contentPadding: new EdgeInsets.symmetric(
+                  //                 vertical: 5.0, horizontal: 5.0),
+                  //           ),
+                  //           validator: (city) {
+                  //             if (city.trim() != "") {
+                  //                 widget.user.address.city = city.trim();
+                  //             }
+                  //             return null;
+                  //           },
+                  //         ),
+                  //       ),
+                  //       ListTile(
+                  //         title: TextFormField(
+                  //           keyboardType: TextInputType.text,
+                  //           initialValue: widget.user.address.state,
+                  //           decoration: InputDecoration(
+                  //             hintText: 'State',
+                  //             fillColor: CustomColors.mfinWhite,
+                  //             filled: true,
+                  //             contentPadding: new EdgeInsets.symmetric(
+                  //                 vertical: 5.0, horizontal: 5.0),
+                  //           ),
+                  //           validator: (state) {
+                  //             if (state.trim() != "") {
+                  //                 widget.user.address.state = state.trim();
+                  //             }
+                  //             return null;
+                  //           },
+                  //         ),
+                  //       ),
+                  //       ListTile(
+                  //         title: TextFormField(
+                  //           keyboardType: TextInputType.text,
+                  //           initialValue: widget.user.address.pincode,
+                  //           decoration: InputDecoration(
+                  //             hintText: 'Pincode',
+                  //             fillColor: CustomColors.mfinWhite,
+                  //             filled: true,
+                  //             contentPadding: new EdgeInsets.symmetric(
+                  //                 vertical: 5.0, horizontal: 5.0),
+                  //           ),
+                  //           validator: (pinCode) {
+                  //             if (pinCode.trim() != "") {
+                  //                 widget.user.address.pincode = pinCode.trim();
+                  //             }
+                  //             return null;
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -346,15 +346,11 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   }
 
   setPassKey(String passkey) {
-    setState(() {
-      widget.user.password = passkey;
-    });
+    updatedUser['password'] = passkey;
   }
 
   setEmailID(String emailID) {
-    setState(() {
-      widget.user.emailID = emailID;
-    });
+    updatedUser['emailID'] = emailID;
   }
 
   TextEditingController _date = new TextEditingController();
@@ -368,20 +364,18 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        widget.user.dateOfBirth = DateUtils.formatDate(picked);
+        updatedUser['date_of_birth'] = DateUtils.formatDate(picked);
         _date.value = TextEditingValue(text: DateUtils.formatDate(picked));
       });
   }
 
   setSelectedRadio(int val) {
-    setState(() {
-      groupValue = val;
-      if (val == 0) {
-        widget.user.setGender(Gender.Male);
-      } else {
-        widget.user.setGender(Gender.Female);
-      }
-    });
+    this.groupValue = val;
+    if (val == 0) {
+      updatedUser['gender'] = Gender.Male.name;
+    } else {
+      updatedUser['gender'] = Gender.Female.name;
+    }
   }
 
   Future<void> _submit() async {
@@ -389,7 +383,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Updating Profile");
-      var result = await _userController.updateUser(widget.user);
+      updatedUser['address'] = updatedAddress.toJson();
+      var result = await _userController.updateUser(updatedUser);
 
       if (!result['is_success']) {
         Navigator.pop(context);

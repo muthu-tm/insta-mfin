@@ -5,13 +5,26 @@ import 'package:instamfin/services/utils/response_utils.dart';
 UserService _userService = locator<UserService>();
 
 class UserController {
-  Future updateUser(User user) async {
+  Future replaceUser(User user) async {
     try {
-      user = await user.replace();
+      var result = await user.replace();
 
-      _userService.setCachedUser(user);
+      _userService.setCachedUser(User.fromJson(await user.getByID(user.mobileNumber.toString())));
       
-      return CustomResponse.getSuccesReponse(user);
+      return CustomResponse.getSuccesReponse(result);
+    } catch (err) {
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future updateUser(Map<String, dynamic> userJson) async {
+    try {
+      User user = User(userJson['mobile_number']);
+      var result = await user.update(userJson);
+
+      _userService.setCachedUser(User.fromJson(await user.getByID(user.mobileNumber.toString())));
+      
+      return CustomResponse.getSuccesReponse(result);
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

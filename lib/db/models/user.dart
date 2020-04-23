@@ -42,6 +42,7 @@ class User extends Model {
 
   User(int mobileNumber) {
     this.mobileNumber = mobileNumber;
+    this.address = new Address();
   }
 
   setPassword(String password) {
