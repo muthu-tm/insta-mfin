@@ -58,7 +58,7 @@ Widget buildAddressWidget(String addreesTitle, Address address) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
-            initialValue: address.pincode.toString(),
+            initialValue: address.pincode,
             decoration: InputDecoration(
               hintText: 'Pincode',
               fillColor: CustomColors.mfinWhite,

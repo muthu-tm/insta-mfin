@@ -12,8 +12,8 @@ class Address {
   String state;
   @JsonKey(name: 'country', defaultValue: 'India')
   String country;
-  @JsonKey(name: 'pincode', defaultValue: 00)
-  int pincode;
+  @JsonKey(name: 'pincode', defaultValue: '')
+  String pincode;
 
   Address();
 
@@ -29,10 +29,14 @@ class Address {
     this.state = state;
   }
 
-  setPinCode(int pincode) {
+  setPinCode(String pincode) {
     this.pincode = pincode;
   }
 
   factory Address.fromJson(Map<String, dynamic> json) => _$AddressFromJson(json);
   Map<String, dynamic> toJson() => _$AddressToJson(this);
+
+  String toString() {
+    return this.street + '\n' + this.city + '\n' + this.state + '\n' + this.country + '\n' + this.pincode;
+  }
 }

@@ -125,7 +125,8 @@ Widget buildUserSettingsWidget(User user, BuildContext context) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
-            maxLines: 4,
+            initialValue: user.address.toString(),
+            maxLines: 5,
             decoration: InputDecoration(
               hintText: 'Address',
               fillColor: CustomColors.mfinWhite,
