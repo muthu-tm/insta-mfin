@@ -150,7 +150,7 @@ class _FinanceSettingState extends State<FinanceSetting> {
           ),
         ),
       ),
-      bottomSheet: bottomSaveButton(() {}, () {}),
+      bottomSheet: EditorsActionButtons(() {}, () {}),
       bottomNavigationBar: bottomBar(context),
     );
   }

@@ -180,7 +180,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
           ),
         ),
       ),
-      bottomSheet: bottomSaveButton(() {}, () {}),
+      bottomSheet: EditorsActionButtons(() {}, () {}),
       bottomNavigationBar: bottomBar(context),
     );
   }

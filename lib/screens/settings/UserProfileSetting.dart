@@ -211,7 +211,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
               ),
             ),
           )),
-      bottomSheet: bottomSaveButton(() {
+      bottomSheet: EditorsActionButtons(() {
         _submit();
       }, () {
         Navigator.pop(context);
