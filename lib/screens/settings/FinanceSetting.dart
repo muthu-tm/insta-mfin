@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/bottomSaveButton.dart';
+import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 
 class Company {
@@ -23,10 +23,7 @@ class Company {
 }
 
 class FinanceSetting extends StatefulWidget {
-  const FinanceSetting({this.toggleView});
-
-  final Function toggleView;
-
+  
   @override
   _FinanceSettingState createState() => _FinanceSettingState();
 }

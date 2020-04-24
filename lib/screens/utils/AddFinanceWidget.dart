@@ -27,7 +27,7 @@ class AddFinanceWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 115.0, top: 10),
+          padding: EdgeInsets.only(left: 115.0, top: 10, bottom: 10),
           child: InkWell(
             splashColor: CustomColors.mfinButtonGreen,
             onTap: () {

@@ -3,15 +3,12 @@ import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
-import 'package:instamfin/screens/utils/bottomSaveButton.dart';
+import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 
 class AddFinancePage extends StatefulWidget {
-  const AddFinancePage({this.toggleView});
-
-  final Function toggleView;
-
+  
   @override
   _AddFinancePageState createState() => _AddFinancePageState();
 }

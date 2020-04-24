@@ -6,10 +6,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
 class BranchSetting extends StatefulWidget {
-  const BranchSetting({this.toggleView});
-
-  final Function toggleView;
-
+  
   @override
   _BranchSettingState createState() => _BranchSettingState();
 }

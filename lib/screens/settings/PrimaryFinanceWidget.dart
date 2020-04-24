@@ -193,6 +193,10 @@ class PrimaryFinanceWidget extends StatelessWidget {
                       ),
                       onPressed: () {},
                     )),
+                new Divider(
+                  color: CustomColors.mfinBlue,
+                  thickness: 1,
+                ),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

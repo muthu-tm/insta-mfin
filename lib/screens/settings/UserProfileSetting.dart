@@ -8,7 +8,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
-import 'package:instamfin/screens/utils/bottomSaveButton.dart';
+import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -18,6 +18,7 @@ import 'package:instamfin/services/controllers/user/user_service.dart';
 final UserService _userService = locator<UserService>();
 
 class UserProfileSetting extends StatefulWidget {
+  
   @override
   _UserProfileSettingState createState() => _UserProfileSettingState();
 }

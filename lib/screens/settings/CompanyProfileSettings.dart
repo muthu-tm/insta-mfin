@@ -4,9 +4,6 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class CompanyProfileSetting extends StatefulWidget {
-  const CompanyProfileSetting({this.toggleView});
-
-  final Function toggleView;
 
   @override
   _CompanyProfileSettingState createState() => _CompanyProfileSettingState();

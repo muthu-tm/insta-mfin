@@ -3,15 +3,12 @@ import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
-import 'package:instamfin/screens/utils/bottomSaveButton.dart';
+import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddAdminPage extends StatefulWidget {
-  const AddAdminPage({this.toggleView});
-
-  final Function toggleView;
-
+  
   @override
   _AddAdminPageState createState() => _AddAdminPageState();
 }
