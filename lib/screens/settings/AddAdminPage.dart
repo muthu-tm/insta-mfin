@@ -197,7 +197,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
           ),
         ),
       ),
-      bottomSheet: bottomSaveButton(() {
+      bottomSheet: EditorsActionButtons(() {
         setState(() {
           financeController.updateFinanceAdmins(
               userSelected, userList, primaryFinanceName);
