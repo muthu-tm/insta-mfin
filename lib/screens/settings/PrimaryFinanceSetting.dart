@@ -22,13 +22,13 @@ class Company {
   }
 }
 
-class FinanceSetting extends StatefulWidget {
+class PrimaryFinanceSetting extends StatefulWidget {
   
   @override
-  _FinanceSettingState createState() => _FinanceSettingState();
+  _PrimaryFinanceSettingState createState() => _PrimaryFinanceSettingState();
 }
 
-class _FinanceSettingState extends State<FinanceSetting> {
+class _PrimaryFinanceSettingState extends State<PrimaryFinanceSetting> {
   bool branchStatus = false;
   final FocusNode myFocusNode = FocusNode();
   FinanceController financeController = new FinanceController();
@@ -64,7 +64,7 @@ class _FinanceSettingState extends State<FinanceSetting> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Branch Settings'),
+        title: Text('Edit Primary Finance'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: new Center(

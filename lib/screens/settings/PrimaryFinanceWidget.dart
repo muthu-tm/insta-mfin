@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/settings/AddNewFinance.dart';
+import 'package:instamfin/screens/settings/PrimaryFinanceSetting.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
@@ -103,7 +104,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AddFinancePage()),
+                              builder: (context) => PrimaryFinanceSetting()),
                         );
                       }, // button pressed
                       child: Column(

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/AddAdminPage.dart';
+import 'package:instamfin/screens/settings/EditBranchSetting.dart';
+import 'package:instamfin/screens/settings/EditSubBranchSetting.dart';
+import 'package:instamfin/screens/utils/BranchWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
 class BranchSetting extends StatefulWidget {
-  
   @override
   _BranchSettingState createState() => _BranchSettingState();
 }
@@ -60,46 +62,16 @@ class _BranchSettingState extends State<BranchSetting> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      branchStatus = true;
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditBranchSetting()),
+                                      );
                                     });
                                   },
                                 )),
-                            ListTile(
-                              title: TextFormField(
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  hintText: 'Branch_Name01',
-                                  fillColor: CustomColors.mfinWhite,
-                                  filled: true,
-                                  contentPadding: new EdgeInsets.symmetric(
-                                      vertical: 5.0, horizontal: 5.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors.mfinGrey)),
-                                ),
-                                enabled: branchStatus,
-                                autofocus: branchStatus,
-                              ),
-                            ),
-                            ListTile(
-                              title: TextFormField(
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  hintText: 'Registered Date',
-                                  fillColor: CustomColors.mfinWhite,
-                                  filled: true,
-                                  contentPadding: new EdgeInsets.symmetric(
-                                      vertical: 5.0, horizontal: 5.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors.mfinGrey)),
-                                ),
-                                enabled: branchStatus,
-                                autofocus: branchStatus,
-                              ),
-                            ),
+                            BranchWidget(),
                             ListTile(
                               title: TextFormField(
                                 keyboardType: TextInputType.text,
@@ -114,11 +86,8 @@ class _BranchSettingState extends State<BranchSetting> {
                                       borderSide: BorderSide(
                                           color: CustomColors.mfinGrey)),
                                 ),
-                                enabled: branchStatus,
-                                autofocus: branchStatus,
                               ),
                             ),
-                            new Text(""),
                           ],
                         ),
                       ),
@@ -146,8 +115,12 @@ class _BranchSettingState extends State<BranchSetting> {
                                   onPressed: () {
                                     setState(() {
                                       branchStatus = true;
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditSubBranchSetting()),
+                                      );
                                     });
                                   },
                                 )),
