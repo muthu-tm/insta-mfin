@@ -8,23 +8,19 @@ class AddFinanceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        InkWell(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Row(children: <Widget>[
-                Text(
-                  " Wish to be a Complete Financier?",
-                  style: TextStyle(
-                    fontFamily: 'Georgia',
-                    fontSize: 17,
-                    color: CustomColors.mfinBlue,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ]),
-            ],
-          ),
+        Row(
+          children: <Widget>[
+            Text(
+              " Wish to be a Complete Financier?",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Georgia',
+                fontSize: 17,
+                color: CustomColors.mfinBlue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
         Padding(
           padding: EdgeInsets.only(left: 115.0, top: 10, bottom: 10),
@@ -36,30 +32,25 @@ class AddFinanceWidget extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => AddFinancePage()),
               );
             }, // button pressed
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                new Container(
-                  color: CustomColors.mfinBlue,
-                  child: new Row(children: <Widget>[
-                    customIconButton(Icons.business_center, 35.0,
-                        CustomColors.mfinButtonGreen, () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddFinancePage()),
-                      );
-                    }),
-                    new Text(
-                      "Register your Finance here!",
-                      style: TextStyle(
-                          fontFamily: 'Georgia',
-                          color: CustomColors.mfinButtonGreen,
-                          fontSize: 17.0),
-                    ),
-                  ]),
+            child: Container(
+              color: CustomColors.mfinBlue,
+              child: new Row(children: <Widget>[
+                customIconButton(
+                    Icons.business_center, 35.0, CustomColors.mfinButtonGreen,
+                    () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddFinancePage()),
+                  );
+                }),
+                new Text(
+                  "Register your Finance here!",
+                  style: TextStyle(
+                      fontFamily: 'Georgia',
+                      color: CustomColors.mfinButtonGreen,
+                      fontSize: 17.0),
                 ),
-              ],
+              ]),
             ),
           ),
         ),

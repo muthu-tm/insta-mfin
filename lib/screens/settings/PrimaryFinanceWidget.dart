@@ -84,17 +84,20 @@ class PrimaryFinanceWidget extends StatelessWidget {
               ];
             } else {
               children = <Widget>[
-                new Row(children: <Widget>[
-                  Text(
-                    "Already a registered Financier? Great!",
-                    style: TextStyle(
-                      fontFamily: 'Georgia',
-                      fontSize: 17,
-                      color: CustomColors.mfinBlue,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  children: <Widget>[
+                    Text(
+                      " Already a registered Financier? Great!",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontFamily: 'Georgia',
+                        fontSize: 17,
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ]),
+                  ],
+                ),
                 Padding(
                     padding: EdgeInsets.only(left: 115.0, top: 10),
                     child: InkWell(
@@ -106,30 +109,26 @@ class PrimaryFinanceWidget extends StatelessWidget {
                               builder: (context) => AddFinancePage()),
                         );
                       }, // button pressed
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          new Container(
-                            color: CustomColors.mfinBlue,
-                            child: new Row(children: <Widget>[
-                              customIconButton(Icons.edit, 35.0,
-                                  CustomColors.mfinButtonGreen, () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddFinancePage()),
-                                );
-                              }),
-                              new Text(
-                                "Select your primary Finance!",
-                                style: TextStyle(
-                                    fontFamily: 'Georgia',
-                                    color: CustomColors.mfinButtonGreen,
-                                    fontSize: 17.0),
-                              ),
-                            ]),
+                      child: Container(
+                        color: CustomColors.mfinBlue,
+                        child: new Row(children: <Widget>[
+                          customIconButton(
+                              Icons.edit, 35.0, CustomColors.mfinButtonGreen,
+                              () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddFinancePage()),
+                            );
+                          }),
+                          new Text(
+                            "Select your primary Finance!",
+                            style: TextStyle(
+                                fontFamily: 'Georgia',
+                                color: CustomColors.mfinButtonGreen,
+                                fontSize: 17.0),
                           ),
-                        ],
+                        ]),
                       ),
                     )),
                 Padding(
