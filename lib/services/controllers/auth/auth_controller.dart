@@ -19,8 +19,8 @@ class AuthController {
             "Found an existing user for this mobile number");
       }
 
-
       user.update({'last_signed_in_at': DateTime.now()});
+      user.setLastSignInTime(DateTime.now());
       
       // cache the user data
       _userService.setCachedUser(user);

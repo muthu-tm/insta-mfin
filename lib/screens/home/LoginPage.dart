@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
@@ -15,6 +16,8 @@ class LoginController extends StatefulWidget {
 }
 
 class _LoginControllerState extends State<LoginController> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -27,9 +30,8 @@ class _LoginControllerState extends State<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
+    return Scaffold(
+          key: _scaffoldKey,
           backgroundColor: CustomColors.mfinGrey,
           appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
@@ -171,7 +173,7 @@ class _LoginControllerState extends State<LoginController> {
               ),
             ),
           ),
-        ));
+        );
   }
 
   setMobileNumber(String mobileNumber) {
@@ -196,6 +198,7 @@ class _LoginControllerState extends State<LoginController> {
 
       if (!result['is_success']) {
         Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
         print("Unable to Login: " + result['message']);
       } else {
         Navigator.pop(context);
@@ -208,6 +211,7 @@ class _LoginControllerState extends State<LoginController> {
       }
     } else {
       print('Form not valid');
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
   }
 }

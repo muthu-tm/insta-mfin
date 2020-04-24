@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/enums/gender.dart';
+import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/bottomSaveButton.dart';
-import 'package:instamfin/screens/utils/buildAddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 
-UserService _userService = locator<UserService>();
+
+final UserService _userService = locator<UserService>();
 
 class UserProfileSetting extends StatefulWidget {
   @override
@@ -17,24 +23,29 @@ class UserProfileSetting extends StatefulWidget {
 }
 
 class _UserProfileSettingState extends State<UserProfileSetting> {
+  final User user = _userService.cachedUser;
+  final Map<String, dynamic> updatedUser = new Map();
+  final Address updatedAddress = new Address();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode myFocusNode = FocusNode();
-  // final User user = User(userState.mobileNumber);
-  final UserController userController = UserController();
+  final UserController _userController = UserController();
   TextEditingController passwordController = TextEditingController();
 
+
   DateTime selectedDate = DateTime.now();
-  String dateOfBirth = _userService.cachedUser.dateOfBirth;
-  Gender gender;
   var _passwordVisible = false;
   var hidePassword = true;
-  String password = "";
-  String emailID;
   var groupValue = -1;
 
   @override
   Widget build(BuildContext context) {
+    updatedUser['mobile_number'] = user.mobileNumber;
+
     return new Scaffold(
+      key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -56,7 +67,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   ListTile(
                     title: TextFormField(
                       keyboardType: TextInputType.text,
-                      initialValue: _userService.cachedUser.name,
+                      initialValue: user.name,
                       decoration: InputDecoration(
                         hintText: 'User Name',
                         fillColor: CustomColors.mfinWhite,
@@ -71,6 +82,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                         if (value.isEmpty) {
                           return 'Enter your Name';
                         }
+                        updatedUser['user_name'] = value;
                       },
                     ),
                   ),
@@ -79,7 +91,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                     title: new TextFormField(
                       keyboardType: TextInputType.text,
                       obscureText: hidePassword,
-                      initialValue: _userService.cachedUser.password,
+                      initialValue: user.password,
                       decoration: InputDecoration(
                         hintText: 'Enter your new Password',
                         fillColor: CustomColors.mfinWhite,
@@ -115,7 +127,7 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   ListTile(
                     title: new TextFormField(
                       keyboardType: TextInputType.text,
-                      initialValue: _userService.cachedUser.emailID,
+                      initialValue: user.emailID,
                       decoration: InputDecoration(
                         hintText: 'Enter your EmailID',
                         fillColor: CustomColors.mfinWhite,
@@ -133,8 +145,10 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   RowHeaderTextBox(textName: 'Date Of Birth'),
                   ListTile(
                     title: new TextFormField(
-                      initialValue: dateOfBirth,
+                      // controller: _date,
+                      initialValue: user.dateOfBirth,
                       decoration: InputDecoration(
+                        hintText: DateUtils.getCurrentFormattedDate(),
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
                         contentPadding: new EdgeInsets.symmetric(
@@ -192,13 +206,13 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       ),
                     ],
                   ),
-                  buildAddressWidget(
-                      "Address", _userService.cachedUser.address),
+                  AddressWidget(
+                      "Address", user.address, updatedAddress),
                 ],
               ),
             ),
           )),
-      bottomSheet: bottomSaveButton(() {}, () {
+      bottomSheet: bottomSaveButton(() {_submit();}, () {
         Navigator.pop(context);
       }),
       bottomNavigationBar: bottomBar(context),
@@ -206,15 +220,11 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   }
 
   setPassKey(String passkey) {
-    setState(() {
-      this.password = passkey;
-    });
+    updatedUser['password'] = passkey;
   }
 
   setEmailID(String emailID) {
-    setState(() {
-      this.emailID = emailID;
-    });
+    updatedUser['emailID'] = emailID;
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -226,19 +236,47 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        dateOfBirth = DateUtils.formatDate(picked);
+        updatedUser['date_of_birth'] = DateUtils.formatDate(picked);
       });
   }
 
   setSelectedRadio(int val) {
-    setState(() {
-      groupValue = val;
-      if (val == 0) {
-        gender = Gender.Male;
+    this.groupValue = val;
+    if (val == 0) {
+      updatedUser['gender'] = Gender.Male.name;
+    } else {
+      updatedUser['gender'] = Gender.Female.name;
+    }
+  }
+
+  Future<void> _submit() async {
+    final FormState form = _formKey.currentState;
+
+    if (form.validate()) {
+      CustomDialogs.actionWaiting(context, "Updating Profile");
+      updatedUser['address'] = updatedAddress.toJson();
+      var result = await _userController.updateUser(updatedUser);
+
+      if (!result['is_success']) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState
+            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
+        print("User profile update failed: " + result['message']);
       } else {
-        gender = Gender.Female;
+        Navigator.pop(context);
+        print("Updated user profile data");
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UserSetting()),
+        );
       }
-    });
+    } else {
+      print('Form not valid');
+      _scaffoldKey.currentState.showSnackBar(
+          CustomSnackBar.errorSnackBar("Please fill valid data!", 2));
+    }
   }
 }
 

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/bottomSaveButton.dart';
-import 'package:instamfin/screens/utils/buildAddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
-import 'package:intl/intl.dart';
 
 class AddFinancePage extends StatefulWidget {
   const AddFinancePage({this.toggleView});
@@ -22,7 +21,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
   final FocusNode myFocusNode = FocusNode();
 
   DateTime selectedDate = DateTime.now();
-  var dateFormatter = new DateFormat('dd-MM-yyyy');
+  var dateFormatter = DateUtils.dateFormatter;
   String emailID;
 
   @override
@@ -178,7 +177,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
                         FieldValidator.emailValidator(passkey, setEmailID),
                   ),
                 ),
-                buildAddressWidget("Office Address", new Address()),
+                AddressWidget("Office Address", new Address(), new Address()),
               ],
             ),
           ),

@@ -43,6 +43,7 @@ class User extends Model {
 
   User(int mobileNumber) {
     this.mobileNumber = mobileNumber;
+    this.address = new Address();
   }
 
   setPassword(String password) {
@@ -109,9 +110,11 @@ class User extends Model {
     print(result);
   }
 
-  replace() async {
+  Future<User> replace() async {
     var user = await getByID("");
-    dynamic result = await super.upsert(this.toJson(), user['created_at']);
-    print(result);
+    
+    await super.upsert(this.toJson(), user['created_at']);
+    
+    return this;
   }
 }

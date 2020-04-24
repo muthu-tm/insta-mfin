@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/settings/UserProfileSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
 
-UserService _userService = locator<UserService>();
+class UserProfileWidget extends StatelessWidget {
+  UserProfileWidget(this.user);
 
-Widget buildUserSettingsWidget(String title, BuildContext context) {
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
   return Card(
       color: CustomColors.mfinLightGrey,
       child: new Column(children: <Widget>[
@@ -16,7 +20,7 @@ Widget buildUserSettingsWidget(String title, BuildContext context) {
               color: CustomColors.mfinFadedButtonGreen,
             ),
             title: new Text(
-              title,
+              "Profile Settings",
               style: TextStyle(color: CustomColors.mfinBlue),
             ),
             trailing: IconButton(
@@ -34,7 +38,7 @@ Widget buildUserSettingsWidget(String title, BuildContext context) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
-            initialValue: _userService.cachedUser.name,
+            initialValue: user.name,
             decoration: InputDecoration(
               hintText: 'User_name',
               fillColor: CustomColors.mfinWhite,
@@ -53,7 +57,7 @@ Widget buildUserSettingsWidget(String title, BuildContext context) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
-            initialValue: _userService.cachedUser.mobileNumber.toString(),
+            initialValue: user.mobileNumber.toString(),
             decoration: InputDecoration(
               hintText: 'Mobile_Number',
               fillColor: CustomColors.mfinWhite,
@@ -70,7 +74,8 @@ Widget buildUserSettingsWidget(String title, BuildContext context) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
-            initialValue: _userService.cachedUser.password,
+            initialValue: user.password,
+            obscureText: true,
             decoration: InputDecoration(
               hintText: 'Password',
               fillColor: CustomColors.mfinWhite,
@@ -87,6 +92,7 @@ Widget buildUserSettingsWidget(String title, BuildContext context) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
+            initialValue: user.gender,
             decoration: InputDecoration(
               hintText: 'Gender',
               fillColor: CustomColors.mfinWhite,
@@ -101,9 +107,26 @@ Widget buildUserSettingsWidget(String title, BuildContext context) {
           ),
         ),
         ListTile(
+          title: new TextFormField(
+            keyboardType: TextInputType.text,
+            initialValue: user.emailID,
+            decoration: InputDecoration(
+              hintText: 'Enter your EmailID',
+              fillColor: CustomColors.mfinWhite,
+              filled: true,
+              contentPadding:
+                  new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: CustomColors.mfinWhite)),
+            ),
+            enabled: false,
+            autofocus: false,
+          ),
+        ),
+        ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
-            initialValue: _userService.cachedUser.dateOfBirth,
+            initialValue: user.dateOfBirth,
             decoration: InputDecoration(
               hintText: 'Date_Of_Birth',
               fillColor: CustomColors.mfinWhite,
@@ -120,7 +143,8 @@ Widget buildUserSettingsWidget(String title, BuildContext context) {
         ListTile(
           title: TextFormField(
             keyboardType: TextInputType.text,
-            maxLines: 4,
+            initialValue: user.address.toString(),
+            maxLines: 5,
             decoration: InputDecoration(
               hintText: 'Address',
               fillColor: CustomColors.mfinWhite,
@@ -135,4 +159,5 @@ Widget buildUserSettingsWidget(String title, BuildContext context) {
           ),
         )
       ]));
+  }
 }

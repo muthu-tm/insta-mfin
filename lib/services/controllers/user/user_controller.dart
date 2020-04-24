@@ -1,19 +1,88 @@
+import 'package:instamfin/db/models/branch.dart';
+import 'package:instamfin/db/models/finance.dart';
+import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/controllers/finance/branch_controller.dart';
+import 'package:instamfin/services/controllers/finance/finance_controller.dart';
+import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 UserService _userService = locator<UserService>();
 
 class UserController {
-  Future updateUser(User user) async {
-    try {
-      user = await user.replace();
+  FinanceController _financeController = FinanceController();
+  BranchController _branchController = BranchController();
+  SubBranchController _subBranchController = SubBranchController();
 
-      _userService.setCachedUser(user);
-      
-      return CustomResponse.getSuccesReponse(user);
+  Future replaceUser(User user) async {
+    try {
+      var result = await user.replace();
+
+      _userService.setCachedUser(
+          User.fromJson(await user.getByID(user.mobileNumber.toString())));
+
+      return CustomResponse.getSuccesReponse(result);
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future updateUser(Map<String, dynamic> userJson) async {
+    try {
+      User user = User(userJson['mobile_number']);
+      var result = await user.update(userJson);
+
+      _userService.setCachedUser(
+          User.fromJson(await user.getByID(user.mobileNumber.toString())));
+
+      return CustomResponse.getSuccesReponse(result);
+    } catch (err) {
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> getPrimaryFinanceDetails() async {
+    try {
+      String primaryFinanceID = _userService.cachedUser.primaryFinance;
+      String primaryBranchID = _userService.cachedUser.primaryBranch;
+      String primarySubBranchID = _userService.cachedUser.primarySubBranch;
+
+      Map<String, dynamic> result = new Map();
+
+      if (primaryFinanceID != null && primaryFinanceID != "") {
+        Finance finance =
+            await _financeController.getFinanceByID(primaryFinanceID);
+        if (finance != null) {
+          result['finance_name'] = finance.financeName;
+        }
+      }
+      if (primaryFinanceID != null &&
+          primaryFinanceID != "" &&
+          primaryBranchID != null &&
+          primaryBranchID != "") {
+        Branch branch = await _branchController.getBranchByID(
+            primaryFinanceID, primaryBranchID);
+        if (branch != null) {
+          result['branch_name'] = branch.branchName;
+        }
+      }
+      if (primaryFinanceID != null &&
+          primaryFinanceID != "" &&
+          primaryBranchID != null &&
+          primaryBranchID != "" &&
+          primarySubBranchID != null &&
+          primarySubBranchID != "") {
+        SubBranch subBranch = await _subBranchController.getSubBranchByID(
+            primaryFinanceID, primaryBranchID, primarySubBranchID);
+        if (subBranch != null) {
+          result['sub_branch_name'] = subBranch.subBranchName;
+        }
+      }
+
+      return result;
+    } catch (err) {
+      throw err;
     }
   }
 
