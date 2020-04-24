@@ -35,11 +35,10 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
   final UserController _userController = UserController();
   TextEditingController passwordController = TextEditingController();
 
-
   DateTime selectedDate = DateTime.now();
   var _passwordVisible = false;
   var hidePassword = true;
-  var groupValue = -1;
+  var groupValue = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +138,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                             borderSide:
                                 BorderSide(color: CustomColors.mfinWhite)),
                       ),
+                      enabled: false,
+                      autofocus: false,
                       validator: (passkey) =>
                           FieldValidator.emailValidator(passkey, setEmailID),
                     ),
@@ -146,10 +147,8 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                   RowHeaderTextBox(textName: 'Date Of Birth'),
                   ListTile(
                     title: new TextFormField(
-                      // controller: _date,
-                      initialValue: user.dateOfBirth,
                       decoration: InputDecoration(
-                        hintText: DateUtils.getCurrentFormattedDate(),
+                        hintText: DateUtils.formatDate(selectedDate),
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
                         contentPadding: new EdgeInsets.symmetric(
@@ -207,13 +206,14 @@ class _UserProfileSettingState extends State<UserProfileSetting> {
                       ),
                     ],
                   ),
-                  AddressWidget(
-                      "Address", user.address, updatedAddress),
+                  AddressWidget("Address", user.address, updatedAddress),
                 ],
               ),
             ),
           )),
-      bottomSheet: bottomSaveButton(() {_submit();}, () {
+      bottomSheet: bottomSaveButton(() {
+        _submit();
+      }, () {
         Navigator.pop(context);
       }),
       bottomNavigationBar: bottomBar(context),
