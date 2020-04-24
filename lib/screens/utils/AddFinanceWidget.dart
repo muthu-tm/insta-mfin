@@ -27,7 +27,7 @@ class AddFinanceWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 120.0, top: 10),
+          padding: EdgeInsets.only(left: 115.0, top: 10),
           child: InkWell(
             splashColor: CustomColors.mfinButtonGreen,
             onTap: () {
@@ -51,7 +51,7 @@ class AddFinanceWidget extends StatelessWidget {
                       );
                     }),
                     new Text(
-                      "Register your finance here!",
+                      "Register your Finance here!",
                       style: TextStyle(
                           fontFamily: 'Georgia',
                           color: CustomColors.mfinButtonGreen,

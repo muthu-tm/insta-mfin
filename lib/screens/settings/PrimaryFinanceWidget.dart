@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/settings/AddNewFinance.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class PrimaryFinanceWidget extends StatelessWidget {
@@ -82,24 +84,65 @@ class PrimaryFinanceWidget extends StatelessWidget {
               ];
             } else {
               children = <Widget>[
-                new Text(
-                  "Please select your primary Finane",
-                  style: TextStyle(
-                    color: CustomColors.mfinBlue,
-                    fontSize: 17.0,
-                    fontFamily: 'Georgia',
-                    fontWeight: FontWeight.bold,
+                new Row(children: <Widget>[
+                  Text(
+                    "Already a registered Financier? Great!",
+                    style: TextStyle(
+                      fontFamily: 'Georgia',
+                      fontSize: 17,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                new Text(
-                  "OR",
-                  style: TextStyle(
-                    color: CustomColors.mfinBlue,
-                    fontSize: 17.0,
-                    fontFamily: 'Georgia',
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                ]),
+                Padding(
+                    padding: EdgeInsets.only(left: 115.0, top: 10),
+                    child: InkWell(
+                      splashColor: CustomColors.mfinButtonGreen,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddFinancePage()),
+                        );
+                      }, // button pressed
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          new Container(
+                            color: CustomColors.mfinBlue,
+                            child: new Row(children: <Widget>[
+                              customIconButton(Icons.edit, 35.0,
+                                  CustomColors.mfinButtonGreen, () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddFinancePage()),
+                                );
+                              }),
+                              new Text(
+                                "Select your primary Finance!",
+                                style: TextStyle(
+                                    fontFamily: 'Georgia',
+                                    color: CustomColors.mfinButtonGreen,
+                                    fontSize: 17.0),
+                              ),
+                            ]),
+                          ),
+                        ],
+                      ),
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: new Text(
+                      "OR",
+                      style: TextStyle(
+                        color: CustomColors.mfinGrey,
+                        fontSize: 17.0,
+                        fontFamily: 'Georgia',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
                 AddFinanceWidget(),
               ];
             }
