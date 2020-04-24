@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/bottomSaveButton.dart';
 import 'package:instamfin/screens/utils/buildAddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -69,7 +70,8 @@ class _AddFinancePageState extends State<AddFinancePage> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -103,7 +105,8 @@ class _AddFinancePageState extends State<AddFinancePage> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -137,7 +140,8 @@ class _AddFinancePageState extends State<AddFinancePage> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     onTap: () => _selectDate(context),
                   ),
@@ -167,7 +171,8 @@ class _AddFinancePageState extends State<AddFinancePage> {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinWhite)),
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (passkey) =>
                         FieldValidator.emailValidator(passkey, setEmailID),
@@ -179,45 +184,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
           ),
         ),
       ),
-      bottomSheet: Padding(
-        padding: EdgeInsets.only(left: 15.0, right: 25.0, top: 25.0),
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(right: 10.0),
-                child: Container(
-                    child: new RaisedButton(
-                  child: new Text("Save"),
-                  textColor: CustomColors.mfinButtonGreen,
-                  color: CustomColors.mfinBlue,
-                  onPressed: () {
-                    setState(() {});
-                  },
-                )),
-              ),
-              flex: 2,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Container(
-                    child: new RaisedButton(
-                  child: new Text("Close"),
-                  textColor: CustomColors.mfinAlertRed,
-                  color: CustomColors.mfinBlue,
-                  onPressed: () {
-                    setState(() {});
-                  },
-                )),
-              ),
-              flex: 2,
-            ),
-          ],
-        ),
-      ),
+      bottomSheet: bottomSaveButton(() {}, () {}),
       bottomNavigationBar: bottomBar(context),
     );
   }
@@ -242,5 +209,4 @@ class _AddFinancePageState extends State<AddFinancePage> {
         _date.value = TextEditingValue(text: DateUtils.formatDate(picked));
       });
   }
-
 }

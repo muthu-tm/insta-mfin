@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/screens/utils/bottomSaveButton.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
@@ -56,20 +57,14 @@ class _AddAdminPageState extends State<AddAdminPage> {
               new Card(
                 child: new Container(
                   color: CustomColors.mfinBlue,
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new Text("\n Important!",
-                          style: TextStyle(
-                              color: CustomColors.mfinAlertRed, fontSize: 13)),
-                      new Text(
-                        "\n\nThis user will get ADMIN access over your selected \n . And the user can add/edit other user to this.\n\n",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: CustomColors.mfinAlertRed, fontSize: 13),
-                      ),
-                    ],
+                  padding: EdgeInsets.all(10),
+                  child: new Text(
+                    " Important! \nThis user will get ADMIN access over your selected Finance/Branch. And the user can add/edit other user to this",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: CustomColors.mfinAlertRed, fontSize: 16.0),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
                   ),
                 ),
               ),
@@ -146,7 +141,8 @@ class _AddAdminPageState extends State<AddAdminPage> {
                             onChanged: (bool value) {
                               setState(() {
                                 userSelected = value;
-                                if (value == true && !userList.contains(mobileNumber)) {
+                                if (value == true &&
+                                    !userList.contains(mobileNumber)) {
                                   userList.add(_userDetails['mobile_number']);
                                   primaryFinanceName =
                                       _userDetails['primary_company'];
@@ -204,48 +200,12 @@ class _AddAdminPageState extends State<AddAdminPage> {
           ),
         ),
       ),
-      bottomSheet: Padding(
-        padding: EdgeInsets.only(left: 15.0, right: 25.0, top: 25.0),
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(right: 10.0),
-                child: Container(
-                    child: new RaisedButton(
-                  child: new Text("Save"),
-                  textColor: CustomColors.mfinButtonGreen,
-                  color: CustomColors.mfinBlue,
-                  onPressed: () {
-                    setState(() {
-                      financeController.updateFinanceAdmins(
-                          userSelected, userList, primaryFinanceName);
-                    });
-                  },
-                )),
-              ),
-              flex: 2,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Container(
-                    child: new RaisedButton(
-                  child: new Text("Close"),
-                  textColor: CustomColors.mfinAlertRed,
-                  color: CustomColors.mfinBlue,
-                  onPressed: () {
-                    setState(() {});
-                  },
-                )),
-              ),
-              flex: 2,
-            ),
-          ],
-        ),
-      ),
+      bottomSheet: bottomSaveButton(() {
+        setState(() {
+          financeController.updateFinanceAdmins(
+              userSelected, userList, primaryFinanceName);
+        });
+      }, () {}),
       bottomNavigationBar: bottomBar(context),
     );
   }
@@ -255,9 +215,10 @@ class _AddAdminPageState extends State<AddAdminPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("No results Found",           style: TextStyle(
-                              color: CustomColors.mfinBlue,fontSize: 16.0
-                            ),),
+          title: new Text(
+            "No results Found",
+            style: TextStyle(color: CustomColors.mfinBlue, fontSize: 16.0),
+          ),
           actions: <Widget>[
             FlatButton(
               child: new Text("OK"),
@@ -267,10 +228,10 @@ class _AddAdminPageState extends State<AddAdminPage> {
                 });
               },
             ),
-                 FlatButton(
+            FlatButton(
               child: new Text("Cancel"),
               onPressed: () {
-                  Navigator.of(context).pop();
+                Navigator.of(context).pop();
               },
             ),
           ],

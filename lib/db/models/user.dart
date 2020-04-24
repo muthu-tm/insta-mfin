@@ -1,6 +1,7 @@
 import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -61,7 +62,7 @@ class User extends Model {
   }
 
   setDOB(DateTime date) {
-    var formatter = new DateFormat('dd-MM-yyyy');
+    var formatter = DateUtils.dateFormatter;
     this.dateOfBirth = formatter.format(date);
   }
 
