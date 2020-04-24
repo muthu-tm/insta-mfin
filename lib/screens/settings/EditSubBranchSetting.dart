@@ -59,7 +59,7 @@ class EditSubBranchSetting extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: bottomSaveButton((){},(){}),
+      bottomSheet: EditorsActionButtons((){},(){}),
       bottomNavigationBar: bottomBar(context),
     );
   }
