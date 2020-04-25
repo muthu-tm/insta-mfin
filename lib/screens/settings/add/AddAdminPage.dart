@@ -203,7 +203,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
               userSelected, userList, primaryFinanceName);
         });
       }, () {}),
-      bottomNavigationBar: bottomBar(context),
+      // bottomNavigationBar: bottomBar(context),
     );
   }
 

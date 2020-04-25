@@ -123,7 +123,18 @@ class FinanceController {
     }
   }
 
-  Future updateCompany(Finance finance) async {
+  Future updateFinance(Map<String, dynamic> financeJson, String financeID) async {
+    try {
+      Finance finance = Finance();
+      var result = await finance.updateByID(financeJson, financeID);
+
+      return CustomResponse.getSuccesReponse(result);
+    } catch (err) {
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future replaceFinanceData(Finance finance) async {
     try {
       finance = await finance.replace();
 

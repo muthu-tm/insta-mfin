@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
+import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -63,7 +63,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  RowHeaderTextBox(textName: 'Name'),
+                  RowHeaderText(textName: 'Name'),
                   ListTile(
                     title: TextFormField(
                       keyboardType: TextInputType.text,
@@ -86,7 +86,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       },
                     ),
                   ),
-                  RowHeaderTextBox(textName: 'Password'),
+                  RowHeaderText(textName: 'Password'),
                   ListTile(
                     title: new TextFormField(
                       keyboardType: TextInputType.text,
@@ -123,7 +123,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                           FieldValidator.passwordValidator(passkey, setPassKey),
                     ),
                   ),
-                  RowHeaderTextBox(textName: 'Email'),
+                  RowHeaderText(textName: 'Email'),
                   ListTile(
                     title: new TextFormField(
                       keyboardType: TextInputType.text,
@@ -144,7 +144,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                           FieldValidator.emailValidator(passkey, setEmailID),
                     ),
                   ),
-                  RowHeaderTextBox(textName: 'Date Of Birth'),
+                  RowHeaderText(textName: 'Date Of Birth'),
                   ListTile(
                     title: new TextFormField(
                       decoration: InputDecoration(
@@ -165,7 +165,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       onTap: () => _selectDate(context),
                     ),
                   ),
-                  RowHeaderTextBox(textName: 'Gender'),
+                  RowHeaderText(textName: 'Gender'),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -216,7 +216,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
       }, () {
         Navigator.pop(context);
       }),
-      bottomNavigationBar: bottomBar(context),
+      // bottomNavigationBar: bottomBar(context),
     );
   }
 
@@ -279,30 +279,5 @@ class _EditUserProfileState extends State<EditUserProfile> {
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill valid data!", 2));
     }
-  }
-}
-
-class RowHeaderTextBox extends StatelessWidget {
-  RowHeaderTextBox({this.textName});
-
-  final String textName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: new EdgeInsets.only(left: 15.0, top: 10),
-          child: new Text(
-            textName,
-            style: TextStyle(
-                color: CustomColors.mfinGrey,
-                fontWeight: FontWeight.bold,
-                fontSize: 17),
-          ),
-        ),
-      ],
-    );
   }
 }

@@ -58,7 +58,7 @@ class EditSubBranchProfile extends StatelessWidget {
         ),
       ),
       bottomSheet: EditorsActionButtons((){},(){}),
-      bottomNavigationBar: bottomBar(context),
+      // bottomNavigationBar: bottomBar(context),
     );
   }
 

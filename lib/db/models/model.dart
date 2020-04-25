@@ -33,6 +33,13 @@ class Model {
     return data;
   }
 
+  updateByID(Map<String, dynamic> data, String docID) async {
+    data['updated_at'] = DateTime.now();
+    await this.getDocumentRef(docID).updateData(data);
+
+    return data;
+  }
+
   updateArrayField(
       bool isAdd, Map<String, dynamic> data, String documentID) async {
     Map<String, dynamic> fields = Map();

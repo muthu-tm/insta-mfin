@@ -7,6 +7,7 @@ import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
+import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
@@ -53,21 +54,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "Finance Name",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderText(textName: "Finance Name"),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
@@ -91,26 +78,12 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     },
                   ),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "RegisterID",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderText(textName: "Registration ID"),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: 'Register ID',
+                      hintText: 'Registration ID',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -128,21 +101,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     },
                   ),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "Registered Date",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderText(textName: "Registered Date"),
                 ListTile(
                   title: new TextFormField(
                     controller: _date,
@@ -159,21 +118,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     onTap: () => _selectDate(context),
                   ),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "Contact Number",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderText(textName: "Contact Number"),
                 ListTile(
                   title: new TextFormField(
                       keyboardType: TextInputType.phone,
@@ -189,27 +134,12 @@ class _AddFinancePageState extends State<AddFinancePage> {
                       ),
                       validator: (number) {
                         if (number.trim().isNotEmpty) {
-                          FieldValidator.mobileValidator(
+                          return FieldValidator.mobileValidator(
                               number.trim(), setContactNumber);
                         }
-                        return null;
                       }),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: new EdgeInsets.only(left: 15.0, top: 10),
-                      child: new Text(
-                        "Email",
-                        style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ),
-                  ],
-                ),
+                RowHeaderText(textName: "Finance EmailID"),
                 ListTile(
                   title: new TextFormField(
                       keyboardType: TextInputType.text,
@@ -225,10 +155,9 @@ class _AddFinancePageState extends State<AddFinancePage> {
                       ),
                       validator: (email) {
                         if (email.trim().isNotEmpty) {
-                          FieldValidator.emailValidator(
+                          return FieldValidator.emailValidator(
                               email.trim(), setEmailID);
                         }
-                        return null;
                       }),
                 ),
                 AddressWidget("Office Address", new Address(), address),
@@ -238,7 +167,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
         ),
       ),
       bottomSheet: EditorsActionButtons(_submit, _close),
-      bottomNavigationBar: bottomBar(context),
+      // bottomNavigationBar: bottomBar(context),
     );
   }
 
@@ -270,7 +199,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Loggin in");
+      CustomDialogs.actionWaiting(context, "Creating Finance for YOU!");
       FinanceController _financeController = FinanceController();
       var result = await _financeController.createFinance(financeName,
           registeredID, contactNumber, emailID, address, registeredDate);

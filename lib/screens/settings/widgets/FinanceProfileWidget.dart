@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/screens/settings/editors/EditFinanceProfile.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 
 class FinanceProfileWidget extends StatelessWidget {
@@ -110,7 +111,7 @@ class FinanceProfileWidget extends StatelessWidget {
                 title: TextFormField(
                   keyboardType: TextInputType.text,
                   initialValue: snapshot.data.address.toString(),
-                  maxLines: 3,
+                  maxLines: 4,
                   decoration: InputDecoration(
                     hintText: 'Finance Address',
                     contentPadding: new EdgeInsets.symmetric(
@@ -148,14 +149,21 @@ class FinanceProfileWidget extends StatelessWidget {
                     trailing: IconButton(
                       icon: Icon(
                         Icons.edit,
+                        size: 30,
                         color: CustomColors.mfinBlue,
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditFinanceProfile()),
-                        );
+                        if (snapshot.hasData) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EditFinanceProfile(snapshot.data)),
+                          );
+                        } else {
+                          Scaffold.of(context).showSnackBar(
+                              CustomSnackBar.errorSnackBar("Unable to open Editor! Finance not loaded correctly!", 3));
+                        }
                       },
                     )),
                 new Divider(

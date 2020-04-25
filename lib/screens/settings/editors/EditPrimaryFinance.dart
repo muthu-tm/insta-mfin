@@ -151,7 +151,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
         ),
       ),
       bottomSheet: EditorsActionButtons(() {}, () {}),
-      bottomNavigationBar: bottomBar(context),
+      // bottomNavigationBar: bottomBar(context),
     );
   }
 

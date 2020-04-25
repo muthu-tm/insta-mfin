@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/settings/FinanceSetting.dart';
+import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
+import 'package:instamfin/screens/utils/RowHeaderText.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/screens/utils/field_validator.dart';
+import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 
 class EditFinanceProfile extends StatefulWidget {
+  EditFinanceProfile(this.finance);
+
+  final Finance finance;
   @override
   _EditFinanceProfileState createState() => _EditFinanceProfileState();
 }
 
 class _EditFinanceProfileState extends State<EditFinanceProfile> {
-  Map<String, String> companySettingsMap = {
-    'registration_id': "SSTIN",
-    'allocated_branch_count': '2',
-    'available_branch_count': '2',
-    'allocated_users_count': '2',
-    'available_users_count': '2',
-    'finance_name': 'A&E Specialties',
-    'street': '1/157 East Street',
-    'city': 'Dindigul',
-    'state': 'Tamilnadu',
-    'pin_code': '624705',
-    'country': 'India',
-    'date_of_registration': '21/21/21'
-  };
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  DateTime selectedDate = DateTime.now();
+  final Map<String, dynamic> updatedFinance = new Map();
+  final Address updatedAddress = new Address();
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -35,213 +41,196 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
         title: Text('Edit Finance Profile'),
         backgroundColor: CustomColors.mfinBlue,
       ),
-      body: new Container(
-        color: CustomColors.mfinGrey,
-        child: new ListView(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                new Container(
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue:
-                                  companySettingsMap['registration_id'],
-                              decoration: const InputDecoration(
-                                labelText: "Register ID",
-                                hintText: "Enter Your company RegisterID",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                            ),
-                          ),
-                        ],
+      body: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: new Container(
+              height: MediaQuery.of(context).size.height * 1.16,
+              color: CustomColors.mfinLightGrey,
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  RowHeaderText(textName: 'Name'),
+                  ListTile(
+                    title: TextFormField(
+                      keyboardType: TextInputType.text,
+                      initialValue: widget.finance.financeName,
+                      decoration: InputDecoration(
+                        hintText: 'Finance Name',
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 3.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
                       ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue: companySettingsMap['finance_name'],
-                              decoration: const InputDecoration(
-                                labelText: "Finance Name",
-                                hintText: "Enter Your Finance Name",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue:
-                                  companySettingsMap['date_of_registration'],
-                              decoration: const InputDecoration(
-                                labelText: "Date of Registration",
-                                hintText: "Enter Your date of registration",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue: companySettingsMap['street'],
-                              decoration: const InputDecoration(
-                                labelText: "Street/Area",
-                                hintText: "Enter Your Street Name",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue: companySettingsMap['city'],
-                              decoration: const InputDecoration(
-                                labelText: "City",
-                                hintText: "Enter Your City Name",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue: companySettingsMap['state'],
-                              decoration: const InputDecoration(
-                                labelText: "State",
-                                hintText: "Enter Your State Name",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue: companySettingsMap['pin_code'],
-                              decoration: const InputDecoration(
-                                labelText: "Pin Code",
-                                hintText: "Enter Your Area Pincode",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue: companySettingsMap['country'],
-                              decoration: const InputDecoration(
-                                labelText: "Country",
-                                hintText: "INDIA",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue:
-                                  companySettingsMap['allocated_branch_count'],
-                              decoration: const InputDecoration(
-                                labelText: "Allocated Branch Count",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue:
-                                  companySettingsMap['available_branch_count'],
-                              decoration: const InputDecoration(
-                                labelText: "Available Branch Count",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue:
-                                  companySettingsMap['allocated_users_count'],
-                              decoration: const InputDecoration(
-                                labelText: "Allocated Users Count",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextFormField(
-                              initialValue:
-                                  companySettingsMap['available_users_count'],
-                              decoration: const InputDecoration(
-                                labelText: "Available Users Count",
-                                filled: true,
-                                fillColor: CustomColors.mfinGrey,
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Enter your Name';
+                        }
+                        updatedFinance['finance_name'] = value;
+                      },
+                    ),
                   ),
-                ),
-              ],
+                  RowHeaderText(textName: 'Registered ID'),
+                  ListTile(
+                    title: new TextFormField(
+                        keyboardType: TextInputType.text,
+                        initialValue: widget.finance.registrationID,
+                        decoration: InputDecoration(
+                          hintText: 'Registered ID',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (registeredID) {
+                          if (registeredID.trim().isNotEmpty) {
+                            updatedFinance['registration_id'] = registeredID;
+                          } else {
+                            updatedFinance['registration_id'] = "";
+                          }
+                        }),
+                  ),
+                  RowHeaderText(textName: 'Email'),
+                  ListTile(
+                    title: new TextFormField(
+                        keyboardType: TextInputType.text,
+                        initialValue: widget.finance.emailID,
+                        decoration: InputDecoration(
+                          hintText: 'Finance EmailID',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (email) {
+                          if (email.trim().isEmpty) {
+                            setEmailID("");
+                          } else {
+                            return FieldValidator.emailValidator(
+                                email.trim(), setEmailID);
+                          }
+                        }),
+                  ),
+                  RowHeaderText(textName: 'Contact Number'),
+                  ListTile(
+                    title: new TextFormField(
+                        keyboardType: TextInputType.phone,
+                        initialValue: widget.finance.contactNumber,
+                        decoration: InputDecoration(
+                          hintText: 'Contact Number',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (number) {
+                          if (number.trim().isEmpty) {
+                            setContactNumber("");
+                            return null;
+                          } else {
+                            return FieldValidator.mobileValidator(
+                                number.trim(), setContactNumber);
+                          }
+                        }),
+                  ),
+                  RowHeaderText(textName: 'Registered Date'),
+                  ListTile(
+                    title: new TextFormField(
+                      decoration: InputDecoration(
+                        hintText: DateUtils.formatDate(selectedDate),
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 3.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
+                        suffixIcon: Icon(
+                          Icons.perm_contact_calendar,
+                          color: CustomColors.mfinBlue,
+                          size: 35.0,
+                        ),
+                      ),
+                      onTap: () => _selectDate(context),
+                    ),
+                  ),
+                  AddressWidget(
+                      "Office Address", widget.finance.address, updatedAddress),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-      bottomSheet: EditorsActionButtons(() {}, () {}),
-      bottomNavigationBar: bottomBar(context),
+          )),
+      bottomSheet: EditorsActionButtons(_submit, _close),
+      // bottomNavigationBar: bottomBar(context),
     );
+  }
+
+  setEmailID(String emailID) {
+    updatedFinance['email'] = emailID;
+  }
+
+  setContactNumber(String contactNumber) {
+    updatedFinance['contact_number'] = contactNumber;
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1901, 1),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        updatedFinance['date_of_registration'] = DateUtils.formatDate(picked);
+      });
+  }
+
+  _submit() async {
+    final FormState form = _formKey.currentState;
+
+    if (form.validate()) {
+      CustomDialogs.actionWaiting(context, "Updating your Finance!");
+      FinanceController _financeController = FinanceController();
+      updatedFinance['address'] = updatedAddress.toJson();
+      var result = await _financeController.updateFinance(
+          updatedFinance, widget.finance.getID());
+
+      if (!result['is_success']) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState
+            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+        print("Unable to update Finance: " + result['message']);
+      } else {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        print("Finance updated successfully");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FinanceSetting()),
+        );
+      }
+    } else {
+      print("Invalid form submitted");
+      _scaffoldKey.currentState.showSnackBar(
+          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+    }
+  }
+
+  _close() {
+    Navigator.pop(context);
   }
 }

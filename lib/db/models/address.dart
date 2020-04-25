@@ -37,6 +37,6 @@ class Address {
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 
   String toString() {
-    return this.street + '\n' + this.city + '\n' + this.state + '\n' + this.country + '\n' + this.pincode;
+    return this.street + '\n' + this.city + '\n' + this.state + '\n' + this.pincode;
   }
 }
