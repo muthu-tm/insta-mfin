@@ -22,13 +22,13 @@ class Company {
   }
 }
 
-class PrimaryFinanceSetting extends StatefulWidget {
+class EditPrimaryFinance extends StatefulWidget {
   
   @override
-  _PrimaryFinanceSettingState createState() => _PrimaryFinanceSettingState();
+  _EditPrimaryFinanceState createState() => _EditPrimaryFinanceState();
 }
 
-class _PrimaryFinanceSettingState extends State<PrimaryFinanceSetting> {
+class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
   bool branchStatus = false;
   final FocusNode myFocusNode = FocusNode();
   FinanceController financeController = new FinanceController();

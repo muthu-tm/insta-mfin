@@ -3,7 +3,7 @@ import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/settings/AddAdminPage.dart';
 import 'package:instamfin/screens/settings/BranchSetting.dart';
-import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
+import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -105,26 +105,7 @@ Widget openDrawer(BuildContext context) {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CompanyProfileSetting()),
-          );
-        }),
-    new ListTile(
-        leading: new Icon(Icons.store, color: CustomColors.mfinButtonGreen),
-        title: new Text('Branch Settings'),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => BranchSetting()),
-          );
-        }),
-    new ListTile(
-        leading: new Icon(Icons.supervised_user_circle,
-            color: CustomColors.mfinButtonGreen),
-        title: new Text('User Settings'),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UserSetting()),
+            MaterialPageRoute(builder: (context) => FinanceSetting()),
           );
         }),
     new ListTile(
@@ -134,16 +115,6 @@ Widget openDrawer(BuildContext context) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => UserSetting()),
-        );
-      },
-    ),
-    new ListTile(
-      leading: new Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
-      title: new Text('User Management'),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AddAdminPage()),
         );
       },
     ),

@@ -1,0 +1,124 @@
+import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/branch.dart';
+import 'package:instamfin/screens/settings/EditBranchSetting.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
+
+class BranchProfileWidget extends StatelessWidget {
+  BranchProfileWidget(this.branch);
+
+  final Branch branch;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Card(
+      color: CustomColors.mfinLightGrey,
+      child: new Column(
+        children: <Widget>[
+          ListTile(
+              leading: Icon(
+                Icons.view_list,
+                size: 30,
+              ),
+              title: new Text(
+                "Branch Details",
+                style: TextStyle(color: CustomColors.mfinBlue),
+              ),
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  color: CustomColors.mfinBlue,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditBranchSetting()),
+                  );
+                },
+              )),
+          ListTile(
+            title: TextFormField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                hintText: 'Branch Name',
+                fillColor: CustomColors.mfinWhite,
+                filled: true,
+                contentPadding:
+                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: CustomColors.mfinGrey)),
+              ),
+              enabled: false,
+              autofocus: false,
+            ),
+          ),
+          ListTile(
+            title: TextFormField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                hintText: 'Registered Date',
+                fillColor: CustomColors.mfinWhite,
+                filled: true,
+                contentPadding:
+                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: CustomColors.mfinGrey)),
+              ),
+              enabled: false,
+              autofocus: false,
+            ),
+          ),
+          ListTile(
+            title: TextFormField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                hintText: 'Contact Number',
+                fillColor: CustomColors.mfinWhite,
+                filled: true,
+                contentPadding:
+                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: CustomColors.mfinGrey)),
+              ),
+              enabled: false,
+              autofocus: false,
+            ),
+          ),
+          ListTile(
+            title: new TextFormField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                hintText: 'Branch EmailID',
+                fillColor: CustomColors.mfinWhite,
+                filled: true,
+                contentPadding:
+                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: CustomColors.mfinWhite)),
+              ),
+              enabled: false,
+              autofocus: false,
+            ),
+          ),
+          ListTile(
+            title: TextFormField(
+              keyboardType: TextInputType.text,
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: 'Address',
+                contentPadding:
+                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                fillColor: CustomColors.mfinWhite,
+                filled: true,
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: CustomColors.mfinGrey)),
+              ),
+              enabled: false,
+              autofocus: false,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

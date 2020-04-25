@@ -4,7 +4,6 @@ import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
-import 'package:instamfin/screens/utils/BranchWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -35,7 +34,6 @@ class EditBranchSetting extends StatelessWidget {
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  BranchWidget(),
                   ListTile(
                     title: new TextFormField(
                       keyboardType: TextInputType.text,

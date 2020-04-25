@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
-import 'package:instamfin/screens/settings/CompanyProfileSettings.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-class SettingMain extends StatelessWidget {
+class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -31,7 +31,7 @@ class SettingMain extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => CompanyProfileSetting()),
+                          builder: (context) => FinanceSetting()),
                     );
                   }, // button pressed
                   child: Column(
@@ -43,7 +43,7 @@ class SettingMain extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CompanyProfileSetting()),
+                              builder: (context) => FinanceSetting()),
                         );
                       }),
                       Padding(padding: EdgeInsets.all(05.0)),

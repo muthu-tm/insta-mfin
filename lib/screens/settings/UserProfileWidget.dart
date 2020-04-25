@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/settings/UserProfileSetting.dart';
+import 'package:instamfin/screens/settings/EditUSerProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class UserProfileWidget extends StatelessWidget {
@@ -31,7 +31,7 @@ class UserProfileWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserProfileSetting()),
+                  MaterialPageRoute(builder: (context) => EditUserProfile()),
                 );
               },
             )),

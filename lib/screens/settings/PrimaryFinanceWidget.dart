@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/settings/AddNewFinance.dart';
-import 'package:instamfin/screens/settings/PrimaryFinanceSetting.dart';
+import 'package:instamfin/screens/settings/EditPrimaryFinance.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
@@ -31,7 +31,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                     keyboardType: TextInputType.text,
                     initialValue: snapshot.data['finance_name'],
                     decoration: InputDecoration(
-                      hintText: 'Company_Name',
+                      hintText: 'Company Name',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -50,7 +50,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                     keyboardType: TextInputType.text,
                     initialValue: snapshot.data['branch_name'],
                     decoration: InputDecoration(
-                      hintText: 'Branch_Name',
+                      hintText: 'Branch Name',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -107,7 +107,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PrimaryFinanceSetting()),
+                              builder: (context) => EditPrimaryFinance()),
                         );
                       }, // button pressed
                       child: Container(
@@ -191,7 +191,13 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         Icons.edit,
                         color: CustomColors.mfinBlue,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditPrimaryFinance()),
+                        );
+                      },
                     )),
                 new Divider(
                   color: CustomColors.mfinBlue,

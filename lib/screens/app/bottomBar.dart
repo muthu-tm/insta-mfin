@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/customer/CustomerHome.dart';
-import 'package:instamfin/screens/settings/SettingsPage.dart';
+import 'package:instamfin/screens/settings/SettingsScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 Widget bottomBar(BuildContext context) {
@@ -107,7 +107,7 @@ Widget bottomBar(BuildContext context) {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SettingMain()),
+                  MaterialPageRoute(builder: (context) => SettingsScreen()),
                 );
               }, // button pressed
               child: Column(
@@ -117,7 +117,7 @@ Widget bottomBar(BuildContext context) {
                       Icons.settings, 35.0, CustomColors.mfinButtonGreen, () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SettingMain()),
+                      MaterialPageRoute(builder: (context) => SettingsScreen()),
                     );
                   }),
                   Text(

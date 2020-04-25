@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-class CompanyProfileSetting extends StatefulWidget {
+class EditFinanceProfile extends StatefulWidget {
 
   @override
-  _CompanyProfileSettingState createState() => _CompanyProfileSettingState();
+  _EditFinanceProfileState createState() => _EditFinanceProfileState();
 }
 
-class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
+class _EditFinanceProfileState extends State<EditFinanceProfile> {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
 

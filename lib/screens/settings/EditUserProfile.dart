@@ -17,13 +17,13 @@ import 'package:instamfin/services/controllers/user/user_service.dart';
 
 final UserService _userService = locator<UserService>();
 
-class UserProfileSetting extends StatefulWidget {
+class EditUserProfile extends StatefulWidget {
   
   @override
-  _UserProfileSettingState createState() => _UserProfileSettingState();
+  _EditUserProfileState createState() => _EditUserProfileState();
 }
 
-class _UserProfileSettingState extends State<UserProfileSetting> {
+class _EditUserProfileState extends State<EditUserProfile> {
   final User user = _userService.cachedUser;
   final Map<String, dynamic> updatedUser = new Map();
   final Address updatedAddress = new Address();
