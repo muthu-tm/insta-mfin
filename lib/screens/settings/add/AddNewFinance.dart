@@ -25,10 +25,10 @@ class _AddFinancePageState extends State<AddFinancePage> {
   DateTime selectedDate = DateTime.now();
   var dateFormatter = DateUtils.dateFormatter;
   String financeName;
-  String registeredID;
-  String registeredDate;
-  String contactNumber;
-  String emailID;
+  String registeredID = "";
+  String registeredDate = "";
+  String contactNumber = "";
+  String emailID = "";
 
   Address address = new Address();
 

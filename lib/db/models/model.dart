@@ -26,7 +26,7 @@ class Model {
     return await this.getCollectionRef().document(this.getID()).setData(data);
   }
 
-  update(data) async {
+  update(Map<String, dynamic> data) async {
     data['updated_at'] = DateTime.now();
     await this.getDocumentRef(this.getID()).updateData(data);
 

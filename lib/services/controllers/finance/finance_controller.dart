@@ -22,7 +22,6 @@ class FinanceController {
       financeCompany.setEmail(email);
       financeCompany.addAdmins([addedBy]);
       financeCompany.addUsers([addedBy]);
-      financeCompany.setAddedBy(addedBy);
 
       financeCompany = await financeCompany.create();
 

@@ -101,6 +101,10 @@ class UserController {
         'primary_sub_branch': subBranchID
       });
 
+      _userService.cachedUser.primaryFinance = financeID;
+      _userService.cachedUser.primaryBranch = branchID;
+      _userService.cachedUser.primarySubBranch = subBranchID;
+
     } catch (err) {
       print('Error while updating Primary Finance for $userNumber.! ' + err.toString());
       throw err;
