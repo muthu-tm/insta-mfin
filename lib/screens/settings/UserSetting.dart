@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/screens/settings/PrimaryFinanceWidget.dart';
-import 'package:instamfin/screens/settings/UserProfileWidget.dart';
+import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
+import 'package:instamfin/screens/settings/widgets/UserProfileWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 

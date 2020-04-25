@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/finance.dart';
-import 'package:instamfin/screens/settings/EditFinanceProfile.dart';
+import 'package:instamfin/screens/settings/editors/EditFinanceProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class FinanceProfileWidget extends StatelessWidget {

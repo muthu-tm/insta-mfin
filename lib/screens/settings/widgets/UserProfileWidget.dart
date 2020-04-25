@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/settings/EditUSerProfile.dart';
+import 'package:instamfin/screens/settings/editors/EditUSerProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class UserProfileWidget extends StatelessWidget {

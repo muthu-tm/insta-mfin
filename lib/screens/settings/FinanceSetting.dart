@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/AddAdminPage.dart';
-import 'package:instamfin/screens/settings/EditSubBranchSetting.dart';
+import 'package:instamfin/screens/settings/editors/EditSubBranchSetting.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceProfileWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';

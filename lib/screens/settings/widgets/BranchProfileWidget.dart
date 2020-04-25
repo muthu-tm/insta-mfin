@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/branch.dart';
-import 'package:instamfin/screens/settings/EditBranchSetting.dart';
+import 'package:instamfin/screens/settings/editors/EditBranchProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class BranchProfileWidget extends StatelessWidget {
@@ -32,7 +32,7 @@ class BranchProfileWidget extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => EditBranchSetting()),
+                        builder: (context) => EditBranchProfile()),
                   );
                 },
               )),

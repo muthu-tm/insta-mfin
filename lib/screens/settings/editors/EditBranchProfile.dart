@@ -11,7 +11,7 @@ import 'package:instamfin/services/controllers/user/user_service.dart';
 
 final UserService _userService = locator<UserService>();
 
-class EditBranchSetting extends StatelessWidget {
+class EditBranchProfile extends StatelessWidget {
   final User user = _userService.cachedUser;
   final Address updatedAddress = new Address();
   final Map<String, dynamic> updatedBranch = new Map();
@@ -24,7 +24,7 @@ class EditBranchSetting extends StatelessWidget {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Edit Branch Settings'),
+        title: Text('Edit Branch Profile'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: new Center(
