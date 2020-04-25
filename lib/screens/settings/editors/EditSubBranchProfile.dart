@@ -11,7 +11,7 @@ import 'package:instamfin/services/controllers/user/user_service.dart';
 
 final UserService _userService = locator<UserService>();
 
-class EditSubBranchSetting extends StatelessWidget {
+class EditSubBranchProfile extends StatelessWidget {
   final User user = _userService.cachedUser;
   final Address updatedAddress = new Address();
   final Map<String, dynamic> updatedBranch = new Map();

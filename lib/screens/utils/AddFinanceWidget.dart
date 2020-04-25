@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/settings/AddNewFinance.dart';
+import 'package:instamfin/screens/settings/add/AddNewFinance.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 

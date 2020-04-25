@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 
 class EditFinanceProfile extends StatefulWidget {
-
   @override
   _EditFinanceProfileState createState() => _EditFinanceProfileState();
 }
 
 class _EditFinanceProfileState extends State<EditFinanceProfile> {
-  bool _status = true;
-  final FocusNode myFocusNode = FocusNode();
-
   Map<String, String> companySettingsMap = {
     'registration_id': "SSTIN",
     'allocated_branch_count': '2',
@@ -29,18 +26,13 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
   };
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Company Settings'),
+        title: Text('Edit Finance Profile'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: new Container(
@@ -66,8 +58,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 filled: true,
                                 fillColor: CustomColors.mfinGrey,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -83,8 +73,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 filled: true,
                                 fillColor: CustomColors.mfinGrey,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -101,8 +89,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 filled: true,
                                 fillColor: CustomColors.mfinGrey,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -118,8 +104,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 filled: true,
                                 fillColor: CustomColors.mfinGrey,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -135,8 +119,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 filled: true,
                                 fillColor: CustomColors.mfinGrey,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -152,8 +134,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 filled: true,
                                 fillColor: CustomColors.mfinGrey,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -169,8 +149,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 filled: true,
                                 fillColor: CustomColors.mfinGrey,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -186,8 +164,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 filled: true,
                                 fillColor: CustomColors.mfinGrey,
                               ),
-                              enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -204,7 +180,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 fillColor: CustomColors.mfinGrey,
                               ),
                               enabled: false,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -221,7 +196,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 fillColor: CustomColors.mfinGrey,
                               ),
                               enabled: false,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -238,7 +212,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 fillColor: CustomColors.mfinGrey,
                               ),
                               enabled: false,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
@@ -255,12 +228,10 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                                 fillColor: CustomColors.mfinGrey,
                               ),
                               enabled: false,
-                              autofocus: !_status,
                             ),
                           ),
                         ],
                       ),
-                      !_status ? _getActionButtons() : new Container(),
                     ],
                   ),
                 ),
@@ -269,100 +240,8 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
           ],
         ),
       ),
-      bottomSheet: new Container(
-          color: CustomColors.mfinGrey,
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              new Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  _status ? _getEditIcon() : new Row(),
-                ],
-              )
-            ],
-          )),
+      bottomSheet: EditorsActionButtons(() {}, () {}),
       bottomNavigationBar: bottomBar(context),
-    );
-  }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the Widget is disposed
-    myFocusNode.dispose();
-    super.dispose();
-  }
-
-  Widget _getActionButtons() {
-    return Padding(
-      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
-      child: new Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: Container(
-                  child: new RaisedButton(
-                child: new Text("Save"),
-                textColor: CustomColors.mfinWhite,
-                color: CustomColors.mfinButtonGreen,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
-            ),
-            flex: 2,
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Container(
-                  child: new RaisedButton(
-                child: new Text("Cancel"),
-                textColor: CustomColors.mfinWhite,
-                color: CustomColors.mfinAlertRed,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
-            ),
-            flex: 2,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _getEditIcon() {
-    return new GestureDetector(
-      child: new CircleAvatar(
-        backgroundColor: CustomColors.mfinBlue,
-        radius: 30.0,
-        child: new Icon(
-          Icons.edit,
-          color: CustomColors.mfinWhite,
-          size: 35.0,
-        ),
-      ),
-      onTap: () {
-        setState(() {
-          _status = false;
-        });
-      },
     );
   }
 }

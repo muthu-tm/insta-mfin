@@ -137,7 +137,7 @@ class Branch {
     var branchDocs = await getBranchCollectionRef(financeID).getDocuments();
 
     if (branchDocs.documents.isEmpty) {
-      return null;
+      throw 'No branch found for $financeID';
     }
 
     List<Branch> branches = [];

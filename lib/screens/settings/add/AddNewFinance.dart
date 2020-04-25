@@ -60,7 +60,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: 'Branch Name',
+                      hintText: 'Finance Name',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -71,7 +71,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Enter the Branch Name';
+                        return 'Enter the Finance Name';
                       }
                     },
                   ),

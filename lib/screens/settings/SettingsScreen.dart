@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
+import 'package:instamfin/screens/settings/editors/EditPrimaryFinance.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class SettingsScreen extends StatelessWidget {
+  final UserService _userService = locator<UserService>();
+
   @override
   Widget build(BuildContext context) {
+    User user = _userService.cachedUser;
+
     return new Scaffold(
       drawer: openDrawer(context),
       appBar: topAppBar(context),
@@ -28,24 +35,17 @@ class SettingsScreen extends StatelessWidget {
                 InkWell(
                   splashColor: CustomColors.mfinButtonGreen, // splash color
                   onTap: () {
+                    // _financeSetting(user, context), // button pressed
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => FinanceSetting()),
+                      MaterialPageRoute(builder: (context) => FinanceSetting()),
                     );
-                  }, // button pressed
+                  },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      customIconButton(
-                          Icons.account_balance, 50.0, CustomColors.mfinBlue,
-                          () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FinanceSetting()),
-                        );
-                      }),
+                      customIconButton(Icons.account_balance, 50.0,
+                          CustomColors.mfinBlue, () {}),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Finance Settings",
@@ -150,5 +150,19 @@ class SettingsScreen extends StatelessWidget {
       ),
       bottomSheet: bottomBar(context),
     );
+  }
+
+  _financeSetting(User user, context) {
+    if (user.primaryFinance != null || user.primaryFinance != "") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => FinanceSetting()),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => EditPrimaryFinance()),
+      );
+    }
   }
 }

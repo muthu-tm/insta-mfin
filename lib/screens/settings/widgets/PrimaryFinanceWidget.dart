@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/settings/AddNewFinance.dart';
+import 'package:instamfin/screens/settings/add/AddNewFinance.dart';
 import 'package:instamfin/screens/settings/editors/EditPrimaryFinance.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
+import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -147,29 +148,9 @@ class PrimaryFinanceWidget extends StatelessWidget {
               ];
             }
           } else if (snapshot.hasError) {
-            children = <Widget>[
-              Icon(
-                Icons.error_outline,
-                color: CustomColors.mfinAlertRed,
-                size: 60,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: Text('Unable to load, Error!'),
-              )
-            ];
+            children = AsyncWidgets.asyncError();
           } else {
-            children = <Widget>[
-              SizedBox(
-                child: CircularProgressIndicator(),
-                width: 60,
-                height: 60,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
-              )
-            ];
+            children = AsyncWidgets.asyncWaiting();
           }
 
           return new Card(

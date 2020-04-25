@@ -52,12 +52,12 @@ class FinanceController {
       Finance finance = Finance();
       var financeData = await finance.getByID(financeID);
       if (financeData == null) {
-        return null;
+        throw 'No Finance found for this ID $financeID';
       }
       return Finance.fromJson(financeData);
     } catch (err) {
       print("Error while fetching Finance using financeID: " + err.toString());
-      return CustomResponse.getFailureReponse(err.toString());
+      throw err;
     }
   }
 
@@ -101,7 +101,22 @@ class FinanceController {
       return branches;
     } catch (err) {
       print("Error while retrieving braches for ID: " + financeID);
-      return null;
+      throw err;
+    }
+  }
+
+  Future<List<int>> getAllAdmins(String financeID) async {
+    try {
+      Finance finance = await getFinanceByID(financeID);
+
+      if (finance == null) {
+        return [];
+      }
+
+      return finance.admins;
+    } catch (err) {
+      print("Error while retrieving braches for ID: " + financeID);
+      throw err;
     }
   }
 

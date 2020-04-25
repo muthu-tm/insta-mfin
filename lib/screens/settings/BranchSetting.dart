@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/screens/settings/AddAdminPage.dart';
-import 'package:instamfin/screens/settings/editors/EditSubBranchSetting.dart';
+import 'package:instamfin/screens/settings/add/AddAdminPage.dart';
+import 'package:instamfin/screens/settings/editors/EditSubBranchProfile.dart';
 import 'package:instamfin/screens/settings/widgets/BranchProfileWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
@@ -53,7 +53,7 @@ class BranchSetting extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          EditSubBranchSetting()),
+                                          EditSubBranchProfile()),
                                 );
                               },
                             )),
