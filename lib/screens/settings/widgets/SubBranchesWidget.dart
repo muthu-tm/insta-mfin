@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -8,15 +9,15 @@ import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 class SubBranchesWidget extends StatelessWidget {
   final BranchController _branchController = BranchController();
 
-  SubBranchesWidget(this.financeID, this.branchName);
+  SubBranchesWidget(this.financeID, this.branch);
 
   final String financeID;
-  final String branchName;
+  final Branch branch;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<SubBranch>>(
-        future: _branchController.getAllSubBranches(financeID, branchName),
+        future: _branchController.getAllSubBranches(financeID, branch.branchName),
         builder:
             (BuildContext context, AsyncSnapshot<List<SubBranch>> snapshot) {
           List<Widget> children;

@@ -15,8 +15,8 @@ class Finance extends Model {
   String registrationID;
   @JsonKey(name: 'finance_name', nullable: true)
   String financeName;
-  @JsonKey(name: 'emails', nullable: true)
-  List<String> emails;
+  @JsonKey(name: 'email', nullable: true)
+  String emailID;
   @JsonKey(name: 'contact_number', nullable: true)
   String contactNumber;
   @JsonKey(name: 'admins', nullable: true)
@@ -54,8 +54,8 @@ class Finance extends Model {
     this.registrationID = registrationID;
   }
 
-  addEmails(List<String> emails) {
-    this.emails.addAll(emails);
+  setEmail(String emailID) {
+    this.emailID = emailID;
   }
 
   setContactNumber(String number) {
@@ -63,11 +63,19 @@ class Finance extends Model {
   }
 
   addAdmins(List<int> admins) {
-    this.admins.addAll(admins);
+    if (this.admins == null) {
+      this.admins = admins;
+    } else {
+      this.admins.addAll(admins);
+    }
   }
 
   addUsers(List<int> users) {
-    this.users.addAll(users);
+    if (this.users == null) {
+      this.users = users;
+    } else {
+      this.users.addAll(users);
+    }
   }
 
   setDOR(DateTime date) {

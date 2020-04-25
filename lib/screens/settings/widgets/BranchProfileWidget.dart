@@ -90,7 +90,7 @@ class BranchProfileWidget extends StatelessWidget {
           ListTile(
             title: new TextFormField(
               keyboardType: TextInputType.text,
-              initialValue: branch.emails.toString(),
+              initialValue: branch.emailID,
               decoration: InputDecoration(
                 hintText: 'Branch EmailID',
                 fillColor: CustomColors.mfinWhite,

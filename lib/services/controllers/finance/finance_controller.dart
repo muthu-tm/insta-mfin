@@ -8,21 +8,25 @@ import 'package:instamfin/services/utils/response_utils.dart';
 class FinanceController {
   BranchController _branchController = BranchController();
 
-  Future createFinance(String name, String registeredID, List<String> emails,
-      Address address, DateTime dateOfRegistration, int addedBy) async {
+  Future createFinance(String name, String registeredID, String contactNumber,
+      String email, Address address, String dateOfRegistration) async {
     try {
       UserController _userController = UserController();
+      int addedBy = _userController.getCurrentUser().mobileNumber;
+
       Finance financeCompany = Finance();
       financeCompany.setFianceName(name);
       financeCompany.setRegistrationID(registeredID);
       financeCompany.setAddress(address);
-      financeCompany.addEmails(emails);
+      financeCompany.setContactNumber(contactNumber);
+      financeCompany.setEmail(email);
       financeCompany.addAdmins([addedBy]);
+      financeCompany.addUsers([addedBy]);
       financeCompany.setAddedBy(addedBy);
 
       financeCompany = await financeCompany.create();
 
-      _userController.updatePrimaryFinance(addedBy,
+      await _userController.updatePrimaryFinance(addedBy,
           financeCompany.createdAt.millisecondsSinceEpoch.toString(), "", "");
 
       return CustomResponse.getSuccesReponse(financeCompany.toJson());
@@ -47,7 +51,7 @@ class FinanceController {
     }
   }
 
-  Future<Finance> getFinanceByID(String financeID) async{
+  Future<Finance> getFinanceByID(String financeID) async {
     try {
       Finance finance = Finance();
       var financeData = await finance.getByID(financeID);

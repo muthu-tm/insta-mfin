@@ -7,14 +7,14 @@ import 'package:instamfin/services/utils/response_utils.dart';
 class BranchController {
   SubBranchController _subBranchController = SubBranchController();
 
-  Future addBranch(String financeID, String branchName, List<String> emails,
+  Future addBranch(String financeID, String branchName, String email,
       Address address, DateTime dateOfRegistration, int addedBy) async {
     try {
       Branch newBranch = Branch();
       newBranch.setBranchName(branchName);
       newBranch.setDOR(dateOfRegistration);
       newBranch.setAddress(address);
-      newBranch.addEmails(emails);
+      newBranch.setEmail(email);
       newBranch.setAddedBy(addedBy);
 
       if (await newBranch.isExist(financeID, branchName)) {

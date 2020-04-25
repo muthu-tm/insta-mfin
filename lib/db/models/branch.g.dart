@@ -13,7 +13,7 @@ Branch _$BranchFromJson(Map<String, dynamic> json) {
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
     ..contactNumber = json['contact_number'] as String
-    ..emails = (json['emails'] as List)?.map((e) => e as String)?.toList()
+    ..emailID = json['email'] as String
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
     ..users = (json['users'] as List)?.map((e) => e as int)?.toList()
     ..displayProfilePath = json['display_profile_path'] as String
@@ -37,7 +37,7 @@ Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
       'branch_name': instance.branchName == null ? '' : instance.branchName,
       'address': instance.address?.toJson(),
       'contact_number': instance.contactNumber == null ? '' : instance.contactNumber,
-      'emails': instance.emails == null ? [] : instance.emails,
+      'email': instance.emailID == null ? '' : instance.emailID,
       'admins': instance.admins == null ? [instance.addedBy] : instance.admins,
       'users': instance.users == null ? [instance.addedBy] : instance.users,
       'display_profile_path': instance.displayProfilePath == null

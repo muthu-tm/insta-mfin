@@ -7,7 +7,7 @@ class SubBranchController {
       String financeID,
       String branchName,
       String subBranchName,
-      List<String> emails,
+      String email,
       Address address,
       DateTime dateOfRegistration,
       int addedBy) async {
@@ -16,7 +16,7 @@ class SubBranchController {
       newSubBranch.setSubBranchName(subBranchName);
       newSubBranch.setDOR(dateOfRegistration);
       newSubBranch.setAddress(address);
-      newSubBranch.addEmails(emails);
+      newSubBranch.setEmail(email);
       newSubBranch.setAddedBy(addedBy);
 
       if (await newSubBranch.isExist(financeID, branchName, subBranchName)) {
@@ -66,12 +66,14 @@ class SubBranchController {
     }
   }
 
-  Future<SubBranch> getSubBranchByID(String financeID, String branchID, String subBranchID) async {
+  Future<SubBranch> getSubBranchByID(
+      String financeID, String branchID, String subBranchID) async {
     try {
       SubBranch subBranch = SubBranch();
       return await subBranch.getSubBranchByID(financeID, branchID, subBranchID);
     } catch (err) {
-      print("Error while retrieving Sub Branch for Sub_BranchID: " + subBranchID);
+      print(
+          "Error while retrieving Sub Branch for Sub_BranchID: " + subBranchID);
       return null;
     }
   }

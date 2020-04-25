@@ -15,8 +15,8 @@ class Branch {
   String branchName;
   @JsonKey(name: 'address', nullable: true)
   Address address;
-  @JsonKey(name: 'emails', nullable: true)
-  List<String> emails;
+  @JsonKey(name: 'email', nullable: true)
+  String emailID;
   @JsonKey(name: 'contact_number', nullable: true)
   String contactNumber;
   @JsonKey(name: 'admins', nullable: true)
@@ -40,8 +40,8 @@ class Branch {
     this.branchName = branchName;
   }
 
-  addEmails(List<String> emails) {
-    this.emails.addAll(emails);
+  setEmail(String emailID) {
+    this.emailID = emailID;
   }
 
   setContactNumber(String number) {
@@ -49,11 +49,19 @@ class Branch {
   }
 
   addAdmins(List<int> admins) {
-    this.admins.addAll(admins);
+    if (this.admins == null) {
+      this.admins = admins;
+    } else {
+      this.admins.addAll(admins);
+    }
   }
 
   addUsers(List<int> users) {
-    this.users.addAll(users);
+    if (this.users == null) {
+      this.users = users;
+    } else {
+      this.users.addAll(users);
+    }
   }
 
   setDOR(DateTime date) {

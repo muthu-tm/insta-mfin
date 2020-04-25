@@ -15,6 +15,10 @@ class UserController {
   BranchController _branchController = BranchController();
   SubBranchController _subBranchController = SubBranchController();
 
+  User getCurrentUser() {
+    return _userService.cachedUser;
+  }
+
   Future replaceUser(User user) async {
     try {
       var result = await user.replace();
@@ -97,9 +101,9 @@ class UserController {
         'primary_sub_branch': subBranchID
       });
 
-      return CustomResponse.getSuccesReponse(user);
     } catch (err) {
-      return CustomResponse.getFailureReponse(err.toString());
+      print('Error while updating Primary Finance for $userNumber.! ' + err.toString());
+      throw err;
     }
   }
 

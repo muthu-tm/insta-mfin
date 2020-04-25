@@ -92,7 +92,7 @@ class FinanceProfileWidget extends StatelessWidget {
               ListTile(
                 title: new TextFormField(
                   keyboardType: TextInputType.text,
-                  initialValue: snapshot.data.emails.toString(),
+                  initialValue: snapshot.data.emailID,
                   decoration: InputDecoration(
                     hintText: 'Finance EmailID',
                     fillColor: CustomColors.mfinWhite,

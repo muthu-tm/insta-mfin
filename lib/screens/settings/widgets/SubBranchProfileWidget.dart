@@ -93,7 +93,7 @@ class SubBranchProfileWidget extends StatelessWidget {
           ListTile(
             title: new TextFormField(
               keyboardType: TextInputType.text,
-              initialValue: subBranch.emails.toString(),
+              initialValue: subBranch.emailID,
               decoration: InputDecoration(
                 hintText: 'SubBranch EmailID',
                 fillColor: CustomColors.mfinWhite,
