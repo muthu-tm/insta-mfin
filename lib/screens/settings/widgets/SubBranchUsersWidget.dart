@@ -4,8 +4,8 @@ import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
-class BranchUsersWidget extends StatelessWidget {
-  BranchUsersWidget(this.financeID, this.branch, this.subBranch);
+class SubBranchUsersWidget extends StatelessWidget {
+  SubBranchUsersWidget(this.financeID, this.branch, this.subBranch);
 
   final String financeID;
   final Branch branch;

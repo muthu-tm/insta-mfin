@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/branch.dart';
+import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/screens/settings/widgets/BranchProfileWidget.dart';
-import 'package:instamfin/screens/settings/widgets/BranchUsersWidget.dart';
-import 'package:instamfin/screens/settings/widgets/SubBranchesWidget.dart';
+import 'package:instamfin/screens/settings/widgets/SubBranchProfileWidget.dart';
+import 'package:instamfin/screens/settings/widgets/SubBranchUsersWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-class BranchSetting extends StatelessWidget {
-  BranchSetting(this.financeID, this.branch);
+class SubBranchSetting extends StatelessWidget {
+  SubBranchSetting(this.financeID, this.branch, this.subBranch);
 
   final String financeID;
   final Branch branch;
+  final SubBranch subBranch;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class BranchSetting extends StatelessWidget {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(branch.branchName),
+        title: Text(subBranch.subBranchName),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: new Center(
@@ -30,9 +31,8 @@ class BranchSetting extends StatelessWidget {
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  BranchProfileWidget(branch),
-                  SubBranchesWidget(financeID, branch),
-                  BranchUsersWidget(financeID, branch),
+                  SubBranchProfileWidget(financeID, branch, subBranch),
+                  SubBranchUsersWidget(financeID, branch, subBranch),
                 ]),
           ),
         ),
