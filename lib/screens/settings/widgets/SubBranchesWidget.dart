@@ -17,7 +17,8 @@ class SubBranchesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<SubBranch>>(
-        future: _branchController.getAllSubBranches(financeID, branch.branchName),
+        future:
+            _branchController.getAllSubBranches(financeID, branch.branchName),
         builder:
             (BuildContext context, AsyncSnapshot<List<SubBranch>> snapshot) {
           List<Widget> children;
@@ -26,6 +27,8 @@ class SubBranchesWidget extends StatelessWidget {
             if (snapshot.data.length != 0) {
               children = <Widget>[
                 ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
@@ -49,6 +52,7 @@ class SubBranchesWidget extends StatelessWidget {
                           trailing: IconButton(
                             icon: Icon(
                               Icons.remove_circle,
+                              size: 35.0,
                               color: CustomColors.mfinAlertRed,
                             ),
                             onPressed: () {},
@@ -71,7 +75,7 @@ class SubBranchesWidget extends StatelessWidget {
                 ListTile(
                     leading: Icon(
                       Icons.menu,
-                      size: 30,
+                      size: 35.0,
                       color: CustomColors.mfinButtonGreen,
                     ),
                     title: new Text(
@@ -81,6 +85,7 @@ class SubBranchesWidget extends StatelessWidget {
                     trailing: IconButton(
                       icon: Icon(
                         Icons.add_box,
+                        size: 35.0,
                         color: CustomColors.mfinBlue,
                       ),
                       onPressed: () {},

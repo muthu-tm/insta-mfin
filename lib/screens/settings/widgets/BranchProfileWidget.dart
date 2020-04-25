@@ -17,7 +17,7 @@ class BranchProfileWidget extends StatelessWidget {
           ListTile(
               leading: Icon(
                 Icons.view_list,
-                size: 30,
+                size: 35.0,
               ),
               title: new Text(
                 "Branch Details",

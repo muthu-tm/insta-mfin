@@ -4,7 +4,6 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
 class BranchUsersWidget extends StatelessWidget {
-
   BranchUsersWidget(this.financeID, this.branch);
 
   final String financeID;
@@ -19,7 +18,7 @@ class BranchUsersWidget extends StatelessWidget {
           ListTile(
               leading: Icon(
                 Icons.person,
-                size: 30,
+                size: 35.0,
                 color: CustomColors.mfinButtonGreen,
               ),
               title: new Text(
@@ -29,6 +28,7 @@ class BranchUsersWidget extends StatelessWidget {
               trailing: IconButton(
                 icon: Icon(
                   Icons.add_box,
+                  size: 35.0,
                   color: CustomColors.mfinBlue,
                 ),
                 onPressed: () {},
@@ -43,6 +43,8 @@ class BranchUsersWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
                     itemCount: branch.admins.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
@@ -66,6 +68,7 @@ class BranchUsersWidget extends StatelessWidget {
                           trailing: IconButton(
                             icon: Icon(
                               Icons.remove_circle,
+                              size: 35.0,
                               color: CustomColors.mfinAlertRed,
                             ),
                             onPressed: () {},

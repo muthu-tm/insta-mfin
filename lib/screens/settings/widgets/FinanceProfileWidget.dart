@@ -139,7 +139,7 @@ class FinanceProfileWidget extends StatelessWidget {
                 ListTile(
                     leading: Icon(
                       Icons.account_balance,
-                      size: 30,
+                      size: 35.0,
                       color: CustomColors.mfinButtonGreen,
                     ),
                     title: new Text(
@@ -149,7 +149,7 @@ class FinanceProfileWidget extends StatelessWidget {
                     trailing: IconButton(
                       icon: Icon(
                         Icons.edit,
-                        size: 30,
+                        size: 35.0,
                         color: CustomColors.mfinBlue,
                       ),
                       onPressed: () {

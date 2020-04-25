@@ -20,7 +20,7 @@ class SubBranchUsersWidget extends StatelessWidget {
           ListTile(
               leading: Icon(
                 Icons.person,
-                size: 30,
+                size: 35.0,
                 color: CustomColors.mfinButtonGreen,
               ),
               title: new Text(
@@ -30,6 +30,7 @@ class SubBranchUsersWidget extends StatelessWidget {
               trailing: IconButton(
                 icon: Icon(
                   Icons.add_box,
+                  size: 35.0,
                   color: CustomColors.mfinBlue,
                 ),
                 onPressed: () {},
@@ -44,6 +45,8 @@ class SubBranchUsersWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
                     itemCount: subBranch.admins.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
@@ -67,6 +70,7 @@ class SubBranchUsersWidget extends StatelessWidget {
                           trailing: IconButton(
                             icon: Icon(
                               Icons.remove_circle,
+                              size: 35.0,
                               color: CustomColors.mfinAlertRed,
                             ),
                             onPressed: () {},

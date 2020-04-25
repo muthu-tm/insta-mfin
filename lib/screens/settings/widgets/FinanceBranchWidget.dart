@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/branch.dart';
+import 'package:instamfin/screens/settings/add/AddNewBranch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
@@ -23,6 +24,8 @@ class FinanceBranchWidget extends StatelessWidget {
             if (snapshot.data.length != 0) {
               children = <Widget>[
                 ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
@@ -46,6 +49,7 @@ class FinanceBranchWidget extends StatelessWidget {
                           trailing: IconButton(
                             icon: Icon(
                               Icons.remove_circle,
+                              size: 35.0,
                               color: CustomColors.mfinAlertRed,
                             ),
                             onPressed: () {},
@@ -68,7 +72,7 @@ class FinanceBranchWidget extends StatelessWidget {
                 ListTile(
                     leading: Icon(
                       Icons.view_stream,
-                      size: 30,
+                      size: 35.0,
                       color: CustomColors.mfinButtonGreen,
                     ),
                     title: new Text(
@@ -78,9 +82,16 @@ class FinanceBranchWidget extends StatelessWidget {
                     trailing: IconButton(
                       icon: Icon(
                         Icons.add_box,
+                        size: 35.0,
                         color: CustomColors.mfinBlue,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddBranch()),
+                        );
+                      },
                     )),
                 new Divider(
                   color: CustomColors.mfinBlue,
