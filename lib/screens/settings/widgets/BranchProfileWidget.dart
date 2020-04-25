@@ -39,6 +39,7 @@ class BranchProfileWidget extends StatelessWidget {
           ListTile(
             title: TextFormField(
               keyboardType: TextInputType.text,
+              initialValue: branch.branchName,
               decoration: InputDecoration(
                 hintText: 'Branch Name',
                 fillColor: CustomColors.mfinWhite,
@@ -55,6 +56,7 @@ class BranchProfileWidget extends StatelessWidget {
           ListTile(
             title: TextFormField(
               keyboardType: TextInputType.text,
+              initialValue: branch.dateOfRegistration,
               decoration: InputDecoration(
                 hintText: 'Registered Date',
                 fillColor: CustomColors.mfinWhite,
@@ -71,6 +73,7 @@ class BranchProfileWidget extends StatelessWidget {
           ListTile(
             title: TextFormField(
               keyboardType: TextInputType.text,
+              // initialValue: branch.contactNumber,
               decoration: InputDecoration(
                 hintText: 'Contact Number',
                 fillColor: CustomColors.mfinWhite,
@@ -87,6 +90,7 @@ class BranchProfileWidget extends StatelessWidget {
           ListTile(
             title: new TextFormField(
               keyboardType: TextInputType.text,
+              initialValue: branch.emails.toString(),
               decoration: InputDecoration(
                 hintText: 'Branch EmailID',
                 fillColor: CustomColors.mfinWhite,
@@ -103,6 +107,7 @@ class BranchProfileWidget extends StatelessWidget {
           ListTile(
             title: TextFormField(
               keyboardType: TextInputType.text,
+              initialValue: branch.address.toString(),
               maxLines: 3,
               decoration: InputDecoration(
                 hintText: 'Address',

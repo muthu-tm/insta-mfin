@@ -87,6 +87,16 @@ class BranchController {
     }
   }
 
+  Future<Branch> getBranchByName(String financeID, String branchName) async {
+    try {
+      Branch branch = Branch();
+      return await branch.getBranchByName(financeID, branchName);
+    } catch (err) {
+      print("Error while retrieving branch for Branch: " + branchName);
+      throw err;
+    }
+  }
+
   Future<List<SubBranch>> getAllSubBranches(
       String financeID, String branchName) async {
     try {
@@ -94,13 +104,28 @@ class BranchController {
           await SubBranch().getAllSubBranches(financeID, branchName);
 
       if (subBranches == null) {
-        return [];
+        throw 'No SubBranches for $branchName';
       }
 
       return subBranches;
     } catch (err) {
       print("Error while retrieving sub braches for Branch: " + branchName);
-      return null;
+      throw err;
+    }
+  }
+
+  Future<List<int>> getAllAdmins(String financeID, String branchName) async {
+    try {
+      Branch branch = await getBranchByName(financeID, branchName);
+
+      if (branch == null) {
+        throw 'No data found for this $branchName';
+      }
+
+      return branch.admins;
+    } catch (err) {
+      print("Error while retrieving data for Branch: " + branchName);
+      throw err;
     }
   }
 

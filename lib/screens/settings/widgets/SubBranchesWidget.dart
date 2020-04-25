@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
-import 'package:instamfin/services/controllers/finance/finance_controller.dart';
+import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 
-class FinanceUserWidget extends StatelessWidget {
-  final FinanceController _financeController = FinanceController();
+class SubBranchesWidget extends StatelessWidget {
+  final BranchController _branchController = BranchController();
 
-  FinanceUserWidget(this.financeID);
+  SubBranchesWidget(this.financeID, this.branchName);
 
   final String financeID;
+  final String branchName;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<int>>(
-        future: _financeController.getAllAdmins(financeID),
-        builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
+    return FutureBuilder<List<SubBranch>>(
+        future: _branchController.getAllSubBranches(financeID, branchName),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<SubBranch>> snapshot) {
           List<Widget> children;
 
           if (snapshot.hasData) {
@@ -27,7 +30,7 @@ class FinanceUserWidget extends StatelessWidget {
                       return ListTile(
                           title: TextFormField(
                             keyboardType: TextInputType.text,
-                            initialValue: snapshot.data[index].toString(),
+                            initialValue: snapshot.data[index].subBranchName,
                             decoration: InputDecoration(
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
@@ -52,7 +55,7 @@ class FinanceUserWidget extends StatelessWidget {
                     }),
               ];
             } else {
-              // No branches for the finance
+              // No sub branches for this branch
             }
           } else if (snapshot.hasError) {
             children = AsyncWidgets.asyncError();
@@ -66,12 +69,12 @@ class FinanceUserWidget extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                     leading: Icon(
-                      Icons.person,
+                      Icons.menu,
                       size: 30,
                       color: CustomColors.mfinButtonGreen,
                     ),
                     title: new Text(
-                      "User Details",
+                      "Sub Branch Details",
                       style: TextStyle(color: CustomColors.mfinBlue),
                     ),
                     trailing: IconButton(

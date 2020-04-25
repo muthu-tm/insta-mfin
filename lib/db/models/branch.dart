@@ -151,15 +151,14 @@ class Branch {
   }
 
   Future<Branch> getBranchByName(String financeID, String branchName) async {
-    var branchSnap = await getBranchCollectionRef(financeID)
-        .where('brach_name', isEqualTo: branchName)
-        .snapshots()
-        .toList();
-    if (branchSnap.isEmpty || branchSnap.first.documents.isEmpty) {
+    String docId = getDocumentID(financeID, branchName);
+
+    var branchSnap = await getBranchCollectionRef(financeID).document(docId).get();
+    if (!branchSnap.exists) {
       return null;
     }
 
-    return Branch.fromJson(branchSnap.first.documents.first.data);
+    return Branch.fromJson(branchSnap.data);
   }
 
   Future<List<Branch>> getBranchByUserID(

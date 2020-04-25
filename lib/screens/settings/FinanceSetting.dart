@@ -4,7 +4,7 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceBranchWidget.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceProfileWidget.dart';
-import 'package:instamfin/screens/settings/widgets/FinanceUserWidget.dart';
+import 'package:instamfin/screens/settings/widgets/FinanceUsersWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 
@@ -31,7 +31,7 @@ class FinanceSetting extends StatelessWidget {
               children: <Widget>[
                 FinanceProfileWidget(_user.primaryFinance),
                 FinanceBranchWidget(_user.primaryFinance),
-                FinanceUserWidget(_user.primaryFinance)
+                FinanceUsersWidget(_user.primaryFinance)
               ]),
         ),
       ),
