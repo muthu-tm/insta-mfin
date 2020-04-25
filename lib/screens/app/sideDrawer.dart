@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
-import 'package:instamfin/screens/settings/AddAdminPage.dart';
-import 'package:instamfin/screens/settings/BranchSetting.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
