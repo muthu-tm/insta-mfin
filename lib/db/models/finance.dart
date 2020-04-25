@@ -17,6 +17,8 @@ class Finance extends Model {
   String financeName;
   @JsonKey(name: 'emails', nullable: true)
   List<String> emails;
+  @JsonKey(name: 'contact_number', nullable: true)
+  String contactNumber;
   @JsonKey(name: 'admins', nullable: true)
   List<int> admins;
   @JsonKey(name: 'users', nullable: true)
@@ -54,6 +56,10 @@ class Finance extends Model {
 
   addEmails(List<String> emails) {
     this.emails.addAll(emails);
+  }
+
+  setContactNumber(String number) {
+    this.contactNumber = number;
   }
 
   addAdmins(List<int> admins) {

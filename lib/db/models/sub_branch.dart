@@ -17,6 +17,8 @@ class SubBranch {
   Address address;
   @JsonKey(name: 'emails', nullable: true)
   List<String> emails;
+  @JsonKey(name: 'contact_number', nullable: true)
+  String contactNumber;
   @JsonKey(name: 'admins', nullable: true)
   List<int> admins;
   @JsonKey(name: 'users', nullable: true)
@@ -40,6 +42,10 @@ class SubBranch {
 
   addEmails(List<String> emails) {
     this.emails.addAll(emails);
+  }
+
+  setContactNumber(String number) {
+    this.contactNumber = number;
   }
 
   addAdmins(List<int> admins) {

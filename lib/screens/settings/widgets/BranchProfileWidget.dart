@@ -73,7 +73,7 @@ class BranchProfileWidget extends StatelessWidget {
           ListTile(
             title: TextFormField(
               keyboardType: TextInputType.text,
-              // initialValue: branch.contactNumber,
+              initialValue: branch.contactNumber,
               decoration: InputDecoration(
                 hintText: 'Contact Number',
                 fillColor: CustomColors.mfinWhite,

@@ -10,6 +10,7 @@ Finance _$FinanceFromJson(Map<String, dynamic> json) {
   return Finance()
     ..registrationID = json['registration_id'] as String
     ..financeName = json['finance_name'] as String
+    ..contactNumber = json['contact_number'] as String
     ..emails = (json['emails'] as List)?.map((e) => e as String)?.toList()
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
     ..users = (json['users'] as List)?.map((e) => e as int)?.toList()
@@ -41,6 +42,7 @@ Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
       'registration_id':
           instance.registrationID == null ? '' : instance.registrationID,
       'finance_name': instance.financeName,
+      'contact_number': instance.contactNumber == null ? '' : instance.contactNumber,
       'emails': instance.emails == null ? [] : instance.emails,
       'admins': instance.admins == null ? [instance.addedBy] : instance.admins,
       'users': instance.users == null ? [instance.addedBy] : instance.users,
