@@ -19,6 +19,24 @@ class UserController {
     return _userService.cachedUser;
   }
 
+  Future<User> getUserByID(String number) async {
+    try {
+      if (number != null && number.trim() != "") {
+        var userJSON = await User(int.parse(number)).getByID(number);
+        if (userJSON != null) {
+          User user = User.fromJson(userJSON);
+          return user;
+        } else {
+          throw 'No User found for mobile number $number';
+        }
+      } else {
+        throw 'Invalid UserID passed $number';
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future replaceUser(User user) async {
     try {
       var result = await user.replace();
@@ -104,9 +122,9 @@ class UserController {
       _userService.cachedUser.primaryFinance = financeID;
       _userService.cachedUser.primaryBranch = branchID;
       _userService.cachedUser.primarySubBranch = subBranchID;
-
     } catch (err) {
-      print('Error while updating Primary Finance for $userNumber.! ' + err.toString());
+      print('Error while updating Primary Finance for $userNumber.! ' +
+          err.toString());
       throw err;
     }
   }

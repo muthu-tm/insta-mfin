@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
+import 'package:instamfin/screens/settings/FinanceViewUser.dart';
 import 'package:instamfin/screens/settings/add/AddAdminPage.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
@@ -81,6 +82,15 @@ class SubBranchUsersWidget extends StatelessWidget {
                         enabled: false,
                         autofocus: false,
                       ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                FinanceUser(subBranch.admins[index].toString()),
+                          ),
+                        );
+                      },
                       trailing: IconButton(
                         icon: Icon(
                           Icons.remove_circle,

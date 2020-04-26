@@ -5,14 +5,19 @@ class AsyncWidgets {
   static asyncWaiting() {
     return <Widget>[
       SizedBox(
-        child: CircularProgressIndicator(),
-        width: 60,
-        height: 60,
+        child: CircularProgressIndicator(
+          backgroundColor: CustomColors.mfinButtonGreen,
+        ),
+        width: 50,
+        height: 50,
       ),
-      const Padding(
-        padding: EdgeInsets.only(top: 16),
-        child: Text('Awaiting result...'),
-      )
+      Text(
+        'Awaiting result...',
+        style: TextStyle(
+            fontSize: 17.0,
+            fontWeight: FontWeight.bold,
+            color: CustomColors.mfinGrey),
+      ),
     ];
   }
 
@@ -23,10 +28,13 @@ class AsyncWidgets {
         color: CustomColors.mfinAlertRed,
         size: 60,
       ),
-      Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: Text('Unable to load, Error!'),
-      )
+      Text(
+        'Unable to load, Error!',
+        style: TextStyle(
+            fontSize: 17.0,
+            fontWeight: FontWeight.bold,
+            color: CustomColors.mfinAlertRed),
+      ),
     ];
   }
 }
