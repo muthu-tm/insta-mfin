@@ -86,11 +86,16 @@ class FinanceUsersWidget extends StatelessWidget {
                         size: 35.0,
                         color: CustomColors.mfinBlue,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        String financeName =
+                            await _financeController.getFinanceName(financeID);
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AddAdminPage()),
+                            builder: (context) => AddAdminPage(
+                                "Finance Admin", financeName, financeID),
+                          ),
                         );
                       },
                     )),

@@ -64,6 +64,19 @@ class FinanceController {
     }
   }
 
+  Future<String> getFinanceName(String financeID) async {
+    try {
+      var financeData = await Finance().getByID(financeID);
+      if (financeData == null) {
+        throw 'No Finance found for this ID $financeID';
+      }
+      return financeData['finance_name'];
+    } catch (err) {
+      print("Error while fetching Finance using financeID: " + err.toString());
+      return "";
+    }
+  }
+
   Future updateFinanceAdmins(
       bool isAdd, List<int> userList, String financeID) async {
     try {

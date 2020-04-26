@@ -89,7 +89,7 @@ class FinanceBranchWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AddBranch()),
+                              builder: (context) => AddBranch(financeID)),
                         );
                       },
                     )),

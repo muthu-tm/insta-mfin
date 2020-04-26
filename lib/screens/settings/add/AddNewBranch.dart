@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/branch.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/settings/SettingsScreen.dart';
+import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -12,26 +11,26 @@ import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class AddBranch extends StatefulWidget {
+  AddBranch(this.financeID);
+
+  final String financeID;
+
   @override
   _AddBranchState createState() => _AddBranchState();
 }
 
 class _AddBranchState extends State<AddBranch> {
-  final Branch branch = new Branch();
-  final UserService _userService = locator<UserService>();
-
- final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode myFocusNode = FocusNode();
 
+  final Branch branch = new Branch();
   DateTime selectedDate = DateTime.now();
   var dateFormatter = DateUtils.dateFormatter;
   String branchName;
-  String financeID = "";
   String registeredDate = "";
   String contactNumber = "";
   String emailID = "";
@@ -41,8 +40,6 @@ class _AddBranchState extends State<AddBranch> {
 
   @override
   Widget build(BuildContext context) {
-        User _user = _userService.cachedUser;
-        userID = -_user.mobileNumber;
     return new Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
@@ -86,32 +83,6 @@ class _AddBranchState extends State<AddBranch> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: "Finance ID"),
-                ListTile(
-                  title: TextFormField(
-                    keyboardType: TextInputType.text,
-                    initialValue: _user.primaryFinance,
-                    decoration: InputDecoration(
-                      hintText: 'Finance ID',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    autofocus: false,
-                    enabled: false,
-                    validator: (financeID) {
-                      if (financeID.trim().isNotEmpty) {
-                        this.financeID = financeID.trim();
-                      }
-
-                      return null;
-                    },
-                  ),
-                ),
                 RowHeaderText(textName: "Registered Date"),
                 ListTile(
                   title: new TextFormField(
@@ -147,6 +118,9 @@ class _AddBranchState extends State<AddBranch> {
                         if (number.trim().isNotEmpty) {
                           return FieldValidator.mobileValidator(
                               number.trim(), setContactNumber);
+                        } else {
+                          this.contactNumber = "";
+                          return null;
                         }
                       }),
                 ),
@@ -168,6 +142,9 @@ class _AddBranchState extends State<AddBranch> {
                         if (email.trim().isNotEmpty) {
                           return FieldValidator.emailValidator(
                               email.trim(), setEmailID);
+                        } else {
+                          this.emailID = "";
+                          return null;
                         }
                       }),
                 ),
@@ -212,7 +189,8 @@ class _AddBranchState extends State<AddBranch> {
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Branch for YOU!");
       BranchController _branchController = BranchController();
-      var result = await _branchController.addBranch(financeID, branchName, emailID, address, DateTime.now(), userID);
+      var result = await _branchController.addBranch(
+          widget.financeID, branchName, emailID, address, DateTime.now(), userID);
 
       if (!result['is_success']) {
         Navigator.pop(context);
@@ -222,9 +200,11 @@ class _AddBranchState extends State<AddBranch> {
       } else {
         Navigator.pop(context);
         print("New Branch added successfully");
+        Navigator.pop(context);
+        Navigator.pop(context);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SettingsScreen()),
+          MaterialPageRoute(builder: (context) => FinanceSetting()),
         );
       }
     } else {
