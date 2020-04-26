@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
-import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:instamfin/db/models/address.dart';
 

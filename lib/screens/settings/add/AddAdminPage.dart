@@ -86,8 +86,8 @@ class _AddAdminPageState extends State<AddAdminPage> {
                     errorText: !mobileNumberValid
                         ? 'Enter the valid 10 digit MobileNumber'
                         : null,
-                    suffixIcon: customIconButton(Icons.search, 30.0,
-                        CustomColors.mfinBlue, _onSearch),
+                    suffixIcon: customIconButton(
+                        Icons.search, 30.0, CustomColors.mfinBlue, _onSearch),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(25.0),
@@ -132,18 +132,20 @@ class _AddAdminPageState extends State<AddAdminPage> {
       ),
       bottomSheet: EditorsActionButtons(() {
         _submit();
-      }, _close()),
+      }, () {
+        _close();
+      }),
     );
   }
 
   _onCheckBoxChanged(bool value) {
     if (value == true && !userList.contains(mobileNumber)) {
       setState(() {
-        userList.add(_userDetails['mobile_number']);
+        // userList.add(_userDetails['mobile_number']);
       });
     } else {
       setState(() {
-        userList.removeWhere((data) => data.toString() == mobileNumber);
+        // userList.removeWhere((data) => data.toString() == mobileNumber);
       });
     }
   }

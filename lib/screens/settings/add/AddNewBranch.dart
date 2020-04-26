@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/branch.dart';
-import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
