@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
+import 'package:instamfin/screens/settings/add/AddNewSubBranch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
@@ -88,7 +89,13 @@ class SubBranchesWidget extends StatelessWidget {
                         size: 35.0,
                         color: CustomColors.mfinBlue,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                                                Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddSubBranch(financeID,branch.branchName,9578632283)),
+                        );
+                      },
                     )),
                 new Divider(
                   color: CustomColors.mfinBlue,
