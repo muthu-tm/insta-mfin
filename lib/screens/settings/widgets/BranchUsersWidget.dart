@@ -36,8 +36,11 @@ class BranchUsersWidget extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddAdminPage("Branch Admin",
-                          branch.branchName, financeID, branch.branchName),
+                      builder: (context) => AddAdminPage(
+                          'Add Admin - ${branch.branchName}',
+                          branch.branchName,
+                          financeID,
+                          branch.branchName),
                     ),
                   );
                 },

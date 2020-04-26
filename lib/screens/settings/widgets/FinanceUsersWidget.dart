@@ -94,7 +94,9 @@ class FinanceUsersWidget extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => AddAdminPage(
-                                "Finance Admin", financeName, financeID),
+                                'Add Admin - $financeName',
+                                financeName,
+                                financeID),
                           ),
                         );
                       },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
-import 'package:instamfin/screens/settings/editors/EditBranchProfile.dart';
+import 'package:instamfin/screens/settings/editors/EditSubBranchProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class SubBranchProfileWidget extends StatelessWidget {
@@ -21,6 +21,7 @@ class SubBranchProfileWidget extends StatelessWidget {
               leading: Icon(
                 Icons.view_list,
                 size: 30,
+                color: CustomColors.mfinButtonGreen,
               ),
               title: new Text(
                 "Sub Branch Details",
@@ -35,7 +36,7 @@ class SubBranchProfileWidget extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => EditBranchProfile()),
+                        builder: (context) => EditSubBranchProfile()),
                   );
                 },
               )),
