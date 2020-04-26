@@ -138,11 +138,11 @@ class BranchController {
     }
   }
 
-  Future updateBranch(String financeID, Branch branch) async {
+  Future updateBranch(String financeID, String branchName, Map<String, dynamic>  branchJSON) async {
     try {
-      branch = await branch.update(financeID);
+      await Branch().update(financeID, branchName, branchJSON);
 
-      return CustomResponse.getSuccesReponse(branch.toJson());
+      return CustomResponse.getSuccesReponse("Updated Branch $branchName");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

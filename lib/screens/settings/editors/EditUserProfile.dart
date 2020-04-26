@@ -14,11 +14,9 @@ import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 
-
 final UserService _userService = locator<UserService>();
 
 class EditUserProfile extends StatefulWidget {
-  
   @override
   _EditUserProfileState createState() => _EditUserProfileState();
 }
@@ -126,23 +124,29 @@ class _EditUserProfileState extends State<EditUserProfile> {
                   RowHeaderText(textName: 'Email'),
                   ListTile(
                     title: new TextFormField(
-                      keyboardType: TextInputType.text,
-                      initialValue: user.emailID,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your EmailID',
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                      validator: (passkey) =>
-                          FieldValidator.emailValidator(passkey, setEmailID),
-                    ),
+                        keyboardType: TextInputType.text,
+                        initialValue: user.emailID,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your EmailID',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        enabled: false,
+                        autofocus: false,
+                        validator: (email) {
+                          if (email.trim().isEmpty) {
+                            setEmailID("");
+                            return null;
+                          } else {
+                            return FieldValidator.emailValidator(
+                                email.trim(), setEmailID);
+                          }
+                        }),
                   ),
                   RowHeaderText(textName: 'Date Of Birth'),
                   ListTile(
@@ -231,7 +235,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        
         initialDate: selectedDate,
         firstDate: DateTime(1901, 1),
         lastDate: DateTime(2100));

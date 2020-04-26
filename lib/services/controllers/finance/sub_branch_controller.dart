@@ -90,11 +90,11 @@ class SubBranchController {
   }
 
   Future updateSubBranch(
-      String financeID, String branchName, SubBranch subBranch) async {
+      String financeID, String branchName, String subBranchName, Map<String, dynamic> subBranchJSON) async {
     try {
-      subBranch = await subBranch.update(financeID, branchName);
+      await SubBranch().update(financeID, branchName, subBranchName, subBranchJSON);
 
-      return CustomResponse.getSuccesReponse(subBranch.toJson());
+      return CustomResponse.getSuccesReponse("Successfully updated the subBranch $subBranchName");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

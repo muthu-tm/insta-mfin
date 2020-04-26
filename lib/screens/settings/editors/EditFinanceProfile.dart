@@ -68,83 +68,90 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                       ),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Enter your Name';
+                          return 'Enter Finance Name';
                         }
                         updatedFinance['finance_name'] = value;
+                        return null;
                       },
                     ),
                   ),
                   RowHeaderText(textName: 'Registered ID'),
                   ListTile(
                     title: new TextFormField(
-                        keyboardType: TextInputType.text,
-                        initialValue: widget.finance.registrationID,
-                        decoration: InputDecoration(
-                          hintText: 'Registered ID',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (registeredID) {
-                          if (registeredID.trim().isNotEmpty) {
-                            updatedFinance['registration_id'] = registeredID;
-                          } else {
-                            updatedFinance['registration_id'] = "";
-                          }
-                        }),
+                      keyboardType: TextInputType.text,
+                      initialValue: widget.finance.registrationID,
+                      decoration: InputDecoration(
+                        hintText: 'Registered ID',
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 3.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
+                      ),
+                      validator: (registeredID) {
+                        if (registeredID.trim().isNotEmpty) {
+                          updatedFinance['registration_id'] = registeredID;
+                        } else {
+                          updatedFinance['registration_id'] = "";
+                        }
+
+                        return null;
+                      },
+                    ),
                   ),
                   RowHeaderText(textName: 'Email'),
                   ListTile(
                     title: new TextFormField(
-                        keyboardType: TextInputType.text,
-                        initialValue: widget.finance.emailID,
-                        decoration: InputDecoration(
-                          hintText: 'Finance EmailID',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
+                      keyboardType: TextInputType.text,
+                      initialValue: widget.finance.emailID,
+                      decoration: InputDecoration(
+                        hintText: 'Finance EmailID',
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 3.0),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: CustomColors.mfinWhite),
                         ),
-                        validator: (email) {
-                          if (email.trim().isEmpty) {
-                            setEmailID("");
-                          } else {
-                            return FieldValidator.emailValidator(
-                                email.trim(), setEmailID);
-                          }
-                        }),
+                      ),
+                      validator: (email) {
+                        if (email.trim().isEmpty) {
+                          setEmailID("");
+                          return null;
+                        } else {
+                          return FieldValidator.emailValidator(
+                              email.trim(), setEmailID);
+                        }
+                      },
+                    ),
                   ),
                   RowHeaderText(textName: 'Contact Number'),
                   ListTile(
                     title: new TextFormField(
-                        keyboardType: TextInputType.phone,
-                        initialValue: widget.finance.contactNumber,
-                        decoration: InputDecoration(
-                          hintText: 'Contact Number',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (number) {
-                          if (number.trim().isEmpty) {
-                            setContactNumber("");
-                            return null;
-                          } else {
-                            return FieldValidator.mobileValidator(
-                                number.trim(), setContactNumber);
-                          }
-                        }),
+                      keyboardType: TextInputType.phone,
+                      initialValue: widget.finance.contactNumber,
+                      decoration: InputDecoration(
+                        hintText: 'Contact Number',
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 3.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
+                      ),
+                      validator: (number) {
+                        if (number.trim().isEmpty) {
+                          setContactNumber("");
+                          return null;
+                        } else {
+                          return FieldValidator.mobileValidator(
+                              number.trim(), setContactNumber);
+                        }
+                      },
+                    ),
                   ),
                   RowHeaderText(textName: 'Registered Date'),
                   ListTile(
@@ -174,7 +181,6 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
             ),
           )),
       bottomSheet: EditorsActionButtons(_submit, _close),
-      // bottomNavigationBar: bottomBar(context),
     );
   }
 

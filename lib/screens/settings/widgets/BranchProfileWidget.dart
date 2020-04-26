@@ -4,8 +4,9 @@ import 'package:instamfin/screens/settings/editors/EditBranchProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class BranchProfileWidget extends StatelessWidget {
-  BranchProfileWidget(this.branch);
+  BranchProfileWidget(this.financeID, this.branch);
 
+  final String financeID;
   final Branch branch;
 
   @override
@@ -36,7 +37,7 @@ class BranchProfileWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EditBranchProfile()),
+                  MaterialPageRoute(builder: (context) => EditBranchProfile(financeID, branch)),
                 );
               },
             ),

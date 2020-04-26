@@ -166,7 +166,8 @@ class Branch {
   Future<Branch> getBranchByName(String financeID, String branchName) async {
     String docId = getDocumentID(financeID, branchName);
 
-    var branchSnap = await getBranchCollectionRef(financeID).document(docId).get();
+    var branchSnap =
+        await getBranchCollectionRef(financeID).document(docId).get();
     if (!branchSnap.exists) {
       return null;
     }
@@ -207,12 +208,10 @@ class Branch {
     }
   }
 
-  Future<Branch> update(String financeID) async {
-    this.updatedAt = DateTime.now();
+  Future<void> update(String financeID, String branchName,
+      Map<String, dynamic> branchJSON) async {
+    branchJSON['updated_at'] = DateTime.now();
 
-    await getDocumentReference(financeID, this.branchName)
-        .updateData(this.toJson());
-
-    return this;
+    await getDocumentReference(financeID, branchName).updateData(branchJSON);
   }
 }

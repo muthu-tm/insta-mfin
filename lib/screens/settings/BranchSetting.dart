@@ -29,7 +29,7 @@ class BranchSetting extends StatelessWidget {
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  BranchProfileWidget(branch),
+                  BranchProfileWidget(financeID, branch),
                   SubBranchesWidget(financeID, branch),
                   BranchUsersWidget(financeID, branch),
                 ]),
