@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/branch.dart';
+import 'package:instamfin/screens/settings/add/AddAdminPage.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
@@ -31,7 +32,15 @@ class BranchUsersWidget extends StatelessWidget {
                   size: 35.0,
                   color: CustomColors.mfinBlue,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddAdminPage("Branch Admin",
+                          branch.branchName, financeID, branch.branchName),
+                    ),
+                  );
+                },
               )),
           new Divider(
             color: CustomColors.mfinBlue,

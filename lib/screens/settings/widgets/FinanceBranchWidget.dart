@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/branch.dart';
+import 'package:instamfin/screens/settings/BranchSetting.dart';
 import 'package:instamfin/screens/settings/add/AddNewBranch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -37,15 +38,37 @@ class FinanceBranchWidget extends StatelessWidget {
                               filled: true,
                               contentPadding: new EdgeInsets.symmetric(
                                   vertical: 5.0, horizontal: 5.0),
-                              suffixIcon: customIconButton(Icons.navigate_next,
-                                  35.0, CustomColors.mfinBlue, null),
+                              suffixIcon: customIconButton(
+                                Icons.navigate_next,
+                                35.0,
+                                CustomColors.mfinBlue,
+                                () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BranchSetting(
+                                          financeID, snapshot.data[index]),
+                                    ),
+                                  );
+                                },
+                              ),
                               border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: CustomColors.mfinGrey)),
+                                borderSide:
+                                    BorderSide(color: CustomColors.mfinGrey),
+                              ),
                             ),
                             enabled: false,
                             autofocus: false,
                           ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BranchSetting(
+                                    financeID, snapshot.data[index]),
+                              ),
+                            );
+                          },
                           trailing: IconButton(
                             icon: Icon(
                               Icons.remove_circle,

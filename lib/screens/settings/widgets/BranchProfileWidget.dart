@@ -16,8 +16,9 @@ class BranchProfileWidget extends StatelessWidget {
         children: <Widget>[
           ListTile(
               leading: Icon(
-                Icons.view_list,
+                Icons.view_stream,
                 size: 35.0,
+                color: CustomColors.mfinButtonGreen,
               ),
               title: new Text(
                 "Branch Details",
@@ -26,6 +27,7 @@ class BranchProfileWidget extends StatelessWidget {
               trailing: IconButton(
                 icon: Icon(
                   Icons.edit,
+                  size: 35.0,
                   color: CustomColors.mfinBlue,
                 ),
                 onPressed: () {

@@ -34,7 +34,6 @@ class _AddBranchState extends State<AddBranch> {
   String registeredDate = "";
   String contactNumber = "";
   String emailID = "";
-  int userID;
 
   Address address = new Address();
 
@@ -190,7 +189,7 @@ class _AddBranchState extends State<AddBranch> {
       CustomDialogs.actionWaiting(context, "Creating Branch for YOU!");
       BranchController _branchController = BranchController();
       var result = await _branchController.addBranch(
-          widget.financeID, branchName, emailID, address, DateTime.now(), userID);
+          widget.financeID, branchName, emailID, address, DateTime.now());
 
       if (!result['is_success']) {
         Navigator.pop(context);
