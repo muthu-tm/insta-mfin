@@ -35,7 +35,7 @@ class FinanceController {
     }
   }
 
-  Future getFinanceByUserID(String userID) async {
+  Future<List<Finance>> getFinanceByUserID(String userID) async {
     try {
       Finance finance = Finance();
       List<Finance> finances = await finance.getFinanceByUserID(userID);

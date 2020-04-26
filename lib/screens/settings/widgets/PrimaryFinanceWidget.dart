@@ -38,7 +38,8 @@ class PrimaryFinanceWidget extends StatelessWidget {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                        borderSide: BorderSide(color: CustomColors.mfinGrey),
+                      ),
                     ),
                     enabled: false,
                     autofocus: false,
@@ -57,7 +58,8 @@ class PrimaryFinanceWidget extends StatelessWidget {
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                        borderSide: BorderSide(color: CustomColors.mfinGrey),
+                      ),
                     ),
                     enabled: false,
                     autofocus: false,
@@ -108,7 +110,10 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditPrimaryFinance()),
+                            builder: (context) => EditPrimaryFinance(
+                              _userController.getCurrentUserID().toString(),
+                            ),
+                          ),
                         );
                       }, // button pressed
                       child: Container(
@@ -180,7 +185,10 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditPrimaryFinance()),
+                            builder: (context) => EditPrimaryFinance(
+                              _userController.getCurrentUserID().toString(),
+                            ),
+                          ),
                         );
                       },
                     )),

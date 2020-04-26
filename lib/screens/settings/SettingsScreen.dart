@@ -152,17 +152,17 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  _financeSetting(User user, context) {
-    if (user.primaryFinance != null || user.primaryFinance != "") {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => FinanceSetting()),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => EditPrimaryFinance()),
-      );
-    }
-  }
+  // _financeSetting(User user, context) {
+  //   if (user.primaryFinance != null || user.primaryFinance != "") {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => FinanceSetting()),
+  //     );
+  //   } else {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => EditPrimaryFinance()),
+  //     );
+  //   }
+  // }
 }

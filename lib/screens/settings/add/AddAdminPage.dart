@@ -118,10 +118,6 @@ class _AddAdminPageState extends State<AddAdminPage> {
                               color: CustomColors.mfinLightGrey,
                             ),
                           ),
-                          trailing: Checkbox(
-                            value: true,
-                            onChanged: (value) => _onCheckBoxChanged(value),
-                          ),
                         ),
                       )
                     : new Container(),
@@ -136,18 +132,6 @@ class _AddAdminPageState extends State<AddAdminPage> {
         _close();
       }),
     );
-  }
-
-  _onCheckBoxChanged(bool value) {
-    if (value == true && !userList.contains(mobileNumber)) {
-      setState(() {
-        // userList.add(_userDetails['mobile_number']);
-      });
-    } else {
-      setState(() {
-        // userList.removeWhere((data) => data.toString() == mobileNumber);
-      });
-    }
   }
 
   _onSearch() async {
