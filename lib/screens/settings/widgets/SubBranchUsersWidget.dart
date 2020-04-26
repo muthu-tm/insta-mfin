@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/screens/settings/FinanceViewUser.dart';
 import 'package:instamfin/screens/settings/add/AddAdminPage.dart';
@@ -7,10 +6,10 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
 class SubBranchUsersWidget extends StatelessWidget {
-  SubBranchUsersWidget(this.financeID, this.branch, this.subBranch);
+  SubBranchUsersWidget(this.financeID, this.branchName, this.subBranch);
 
   final String financeID;
-  final Branch branch;
+  final String branchName;
   final SubBranch subBranch;
 
   @override
@@ -46,7 +45,7 @@ class SubBranchUsersWidget extends StatelessWidget {
                         'Add Admin - ${subBranch.subBranchName}',
                         subBranch.subBranchName,
                         financeID,
-                        branch.branchName,
+                        branchName,
                         subBranch.subBranchName),
                   ),
                 );

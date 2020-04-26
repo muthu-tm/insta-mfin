@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
@@ -151,7 +150,6 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
         ),
       ),
       bottomSheet: EditorsActionButtons(() {}, () {}),
-      // bottomNavigationBar: bottomBar(context),
     );
   }
 

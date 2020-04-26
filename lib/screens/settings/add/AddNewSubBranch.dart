@@ -206,10 +206,8 @@ class _AddSubBranchState extends State<AddSubBranch> {
       } else {
         Navigator.pop(context);
         print("New Sub Branch added successfully");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SettingsScreen()),
-        );
+        Navigator.pop(context);
+        Navigator.pop(context);
       }
     } else {
       print("Invalid form submitted");

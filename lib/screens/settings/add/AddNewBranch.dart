@@ -201,10 +201,6 @@ class _AddBranchState extends State<AddBranch> {
         print("New Branch added successfully");
         Navigator.pop(context);
         Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FinanceSetting()),
-        );
       }
     } else {
       print("Invalid form submitted");

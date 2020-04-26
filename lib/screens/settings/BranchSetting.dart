@@ -27,12 +27,13 @@ class BranchSetting extends StatelessWidget {
           child: new Container(
             height: MediaQuery.of(context).size.height * 1.30,
             child: new Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  BranchProfileWidget(financeID, branch),
-                  SubBranchesWidget(financeID, branch),
-                  BranchUsersWidget(financeID, branch),
-                ]),
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                BranchProfileWidget(financeID, branch),
+                SubBranchesWidget(financeID, branch.branchName),
+                BranchUsersWidget(financeID, branch),
+              ],
+            ),
           ),
         ),
       ),

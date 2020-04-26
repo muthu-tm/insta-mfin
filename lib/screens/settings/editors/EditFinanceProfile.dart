@@ -224,10 +224,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
         Navigator.pop(context);
         Navigator.pop(context);
         print("Finance updated successfully");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FinanceSetting()),
-        );
+        Navigator.pop(context);
       }
     } else {
       print("Invalid form submitted");

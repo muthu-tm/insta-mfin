@@ -14,49 +14,50 @@ class FinanceUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User>(
-        future: _userController.getUserByID(userID),
-        builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-          Container container;
+      future: _userController.getUserByID(userID),
+      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+        Container container;
 
-          if (snapshot.hasData) {
-            container = Container(
-              child: UserProfileWidget(snapshot.data, "User Details"),
-            );
-          } else if (snapshot.hasError) {
-            container = Container(
-              height: MediaQuery.of(context).size.height * 0.8,
-              width: MediaQuery.of(context).size.width * 1.0,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: AsyncWidgets.asyncError(),
-                ),
-              ),
-            );
-          } else {
-            container = Container(
-              height: MediaQuery.of(context).size.height * 0.8,
-              width: MediaQuery.of(context).size.width * 1.0,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: AsyncWidgets.asyncWaiting(),
-                ),
-              ),
-            );
-          }
-
-          return new Scaffold(
-            appBar: AppBar(
-              // Here we take the value from the MyHomePage object that was created by
-              // the App.build method, and use it to set our appbar title.
-              title: Text(userID),
-              backgroundColor: CustomColors.mfinBlue,
-            ),
-            body: container,
+        if (snapshot.hasData) {
+          container = Container(
+            child: UserProfileWidget(snapshot.data, "User Details"),
           );
-        });
+        } else if (snapshot.hasError) {
+          container = Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            width: MediaQuery.of(context).size.width * 1.0,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: AsyncWidgets.asyncError(),
+              ),
+            ),
+          );
+        } else {
+          container = Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            width: MediaQuery.of(context).size.width * 1.0,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: AsyncWidgets.asyncWaiting(),
+              ),
+            ),
+          );
+        }
+
+        return new Scaffold(
+          appBar: AppBar(
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            title: Text(userID),
+            backgroundColor: CustomColors.mfinBlue,
+          ),
+          body: container,
+        );
+      },
+    );
   }
 }

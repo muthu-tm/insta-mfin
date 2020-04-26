@@ -178,7 +178,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Updating your Branch!");
+      CustomDialogs.actionWaiting(context, "Updating Branch ${widget.branch.branchName}!");
       BranchController _branchController = BranchController();
       updatedBranch['address'] = updatedAddress.toJson();
       var result = await _branchController.updateBranch(
@@ -188,16 +188,12 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to update Branch: " + result['message']);
+        print("Unable to update branch ${widget.branch.branchName}: " + result['message']);
       } else {
         Navigator.pop(context);
         Navigator.pop(context);
-        print("Branch updated successfully");
+        print("${widget.branch.branchName} branch updated successfully");
         Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FinanceSetting()),
-        );
       }
     } else {
       print("Invalid form submitted");
