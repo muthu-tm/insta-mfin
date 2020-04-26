@@ -137,35 +137,41 @@ class FinanceProfileWidget extends StatelessWidget {
             child: new Column(
               children: <Widget>[
                 ListTile(
-                    leading: Icon(
-                      Icons.account_balance,
+                  leading: Icon(
+                    Icons.account_balance,
+                    size: 35.0,
+                    color: CustomColors.mfinButtonGreen,
+                  ),
+                  title: new Text(
+                    "Finance Details",
+                    style: TextStyle(
+                      color: CustomColors.mfinBlue,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.edit,
                       size: 35.0,
-                      color: CustomColors.mfinButtonGreen,
+                      color: CustomColors.mfinBlue,
                     ),
-                    title: new Text(
-                      "Finance Details",
-                      style: TextStyle(color: CustomColors.mfinBlue),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        size: 35.0,
-                        color: CustomColors.mfinBlue,
-                      ),
-                      onPressed: () {
-                        if (snapshot.hasData) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    EditFinanceProfile(snapshot.data)),
-                          );
-                        } else {
-                          Scaffold.of(context).showSnackBar(
-                              CustomSnackBar.errorSnackBar("Unable to open Editor! Finance not loaded correctly!", 3));
-                        }
-                      },
-                    )),
+                    onPressed: () {
+                      if (snapshot.hasData) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  EditFinanceProfile(snapshot.data)),
+                        );
+                      } else {
+                        Scaffold.of(context).showSnackBar(
+                            CustomSnackBar.errorSnackBar(
+                                "Unable to open Editor! Finance not loaded correctly!",
+                                3));
+                      }
+                    },
+                  ),
+                ),
                 new Divider(
                   color: CustomColors.mfinBlue,
                   thickness: 1,

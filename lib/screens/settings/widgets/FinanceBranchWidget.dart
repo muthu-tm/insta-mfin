@@ -100,7 +100,10 @@ class FinanceBranchWidget extends StatelessWidget {
                     ),
                     title: new Text(
                       "Branch Details",
-                      style: TextStyle(color: CustomColors.mfinBlue),
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                        fontSize: 18.0,
+                      ),
                     ),
                     trailing: IconButton(
                       icon: Icon(

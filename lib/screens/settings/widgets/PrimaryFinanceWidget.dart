@@ -160,16 +160,20 @@ class PrimaryFinanceWidget extends StatelessWidget {
                 ListTile(
                     leading: Icon(
                       Icons.work,
-                      size: 30,
+                      size: 35.0,
                       color: CustomColors.mfinFadedButtonGreen,
                     ),
                     title: new Text(
                       title,
-                      style: TextStyle(color: CustomColors.mfinBlue),
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                        fontSize: 18.0,
+                      ),
                     ),
                     trailing: IconButton(
                       icon: Icon(
                         Icons.edit,
+                        size: 35.0,
                         color: CustomColors.mfinBlue,
                       ),
                       onPressed: () {

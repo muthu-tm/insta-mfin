@@ -19,6 +19,10 @@ class UserController {
     return _userService.cachedUser;
   }
 
+  int getCurrentUserID() {
+    return _userService.cachedUser.mobileNumber;
+  }
+
   Future<User> getUserByID(String number) async {
     try {
       if (number != null && number.trim() != "") {

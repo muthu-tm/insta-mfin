@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
+import 'package:instamfin/screens/settings/SubBranchSetting.dart';
 import 'package:instamfin/screens/settings/add/AddNewSubBranch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -50,6 +51,18 @@ class SubBranchesWidget extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                           ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SubBranchSetting(
+                                  financeID,
+                                  branch,
+                                  snapshot.data[index],
+                                ),
+                              ),
+                            );
+                          },
                           trailing: IconButton(
                             icon: Icon(
                               Icons.remove_circle,
@@ -81,7 +94,10 @@ class SubBranchesWidget extends StatelessWidget {
                     ),
                     title: new Text(
                       "Sub Branch Details",
-                      style: TextStyle(color: CustomColors.mfinBlue),
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                        fontSize: 18.0,
+                      ),
                     ),
                     trailing: IconButton(
                       icon: Icon(
@@ -90,10 +106,11 @@ class SubBranchesWidget extends StatelessWidget {
                         color: CustomColors.mfinBlue,
                       ),
                       onPressed: () {
-                                                Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AddSubBranch(financeID,branch.branchName,9578632283)),
+                              builder: (context) =>
+                                  AddSubBranch(financeID, branch.branchName)),
                         );
                       },
                     )),

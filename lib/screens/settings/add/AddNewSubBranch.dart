@@ -12,11 +12,10 @@ import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 
 class AddSubBranch extends StatefulWidget {
-    AddSubBranch(this.financeID, this.branchName, this.userID);
+  AddSubBranch(this.financeID, this.branchName);
 
   final String financeID;
   final String branchName;
-  final int userID;
 
   @override
   _AddSubBranchState createState() => _AddSubBranchState();
@@ -87,7 +86,7 @@ class _AddSubBranchState extends State<AddSubBranch> {
                 ListTile(
                   title: new TextFormField(
                     controller: _date,
-                    initialValue: DateTime.now().toString(),
+                    // initialValue: DateTime.now().toString(),
                     decoration: InputDecoration(
                       hintText: DateUtils.getCurrentFormattedDate(),
                       fillColor: CustomColors.mfinWhite,
@@ -98,8 +97,6 @@ class _AddSubBranchState extends State<AddSubBranch> {
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
                     ),
-                    autofocus: false,
-                    enabled: false,
                     onTap: () => _selectDate(context),
                   ),
                 ),
@@ -192,7 +189,14 @@ class _AddSubBranchState extends State<AddSubBranch> {
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Sub Branch for YOU!");
       SubBranchController _subBranchController = SubBranchController();
-      var result = await _subBranchController.addSubBranch(widget.financeID, widget.branchName, subBranchName, emailID, address, DateTime.now(), widget.userID);
+      var result = await _subBranchController.addSubBranch(
+          widget.financeID,
+          widget.branchName,
+          subBranchName,
+          contactNumber,
+          emailID,
+          address,
+          registeredDate);
 
       if (!result['is_success']) {
         Navigator.pop(context);

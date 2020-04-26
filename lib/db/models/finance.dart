@@ -78,9 +78,8 @@ class Finance extends Model {
     }
   }
 
-  setDOR(DateTime date) {
-    var formatter = new DateFormat('dd-MM-yyyy');
-    this.dateOfRegistration = formatter.format(date);
+  setDOR(String date) {
+    this.dateOfRegistration = date;
   }
 
   setDisplayProfilePath(String profilePath) {

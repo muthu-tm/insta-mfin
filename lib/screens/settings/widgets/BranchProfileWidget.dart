@@ -15,29 +15,36 @@ class BranchProfileWidget extends StatelessWidget {
       child: new Column(
         children: <Widget>[
           ListTile(
-              leading: Icon(
-                Icons.view_stream,
+            leading: Icon(
+              Icons.view_stream,
+              size: 35.0,
+              color: CustomColors.mfinButtonGreen,
+            ),
+            title: new Text(
+              "Branch Details",
+              style: TextStyle(
+                color: CustomColors.mfinBlue,
+                fontSize: 18.0,
+              ),
+            ),
+            trailing: IconButton(
+              icon: Icon(
+                Icons.edit,
                 size: 35.0,
-                color: CustomColors.mfinButtonGreen,
+                color: CustomColors.mfinBlue,
               ),
-              title: new Text(
-                "Branch Details",
-                style: TextStyle(color: CustomColors.mfinBlue),
-              ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.edit,
-                  size: 35.0,
-                  color: CustomColors.mfinBlue,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditBranchProfile()),
-                  );
-                },
-              )),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EditBranchProfile()),
+                );
+              },
+            ),
+          ),
+          new Divider(
+            color: CustomColors.mfinBlue,
+            thickness: 1,
+          ),
           ListTile(
             title: TextFormField(
               keyboardType: TextInputType.text,
@@ -110,7 +117,7 @@ class BranchProfileWidget extends StatelessWidget {
             title: TextFormField(
               keyboardType: TextInputType.text,
               initialValue: branch.address.toString(),
-              maxLines: 3,
+              maxLines: 4,
               decoration: InputDecoration(
                 hintText: 'Address',
                 contentPadding:

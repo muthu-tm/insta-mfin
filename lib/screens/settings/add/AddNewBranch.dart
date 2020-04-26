@@ -188,8 +188,8 @@ class _AddBranchState extends State<AddBranch> {
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Branch for YOU!");
       BranchController _branchController = BranchController();
-      var result = await _branchController.addBranch(
-          widget.financeID, branchName, emailID, address, DateTime.now());
+      var result = await _branchController.addBranch(widget.financeID,
+          branchName, contactNumber, emailID, address, registeredDate);
 
       if (!result['is_success']) {
         Navigator.pop(context);

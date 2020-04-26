@@ -12,13 +12,14 @@ class FinanceController {
       String email, Address address, String dateOfRegistration) async {
     try {
       UserController _userController = UserController();
-      int addedBy = _userController.getCurrentUser().mobileNumber;
+      int addedBy = _userController.getCurrentUserID();
 
       Finance financeCompany = Finance();
       financeCompany.setFianceName(name);
       financeCompany.setRegistrationID(registeredID);
       financeCompany.setAddress(address);
       financeCompany.setContactNumber(contactNumber);
+      financeCompany.setDOR(dateOfRegistration);
       financeCompany.setEmail(email);
       financeCompany.addAdmins([addedBy]);
       financeCompany.addUsers([addedBy]);
@@ -136,7 +137,8 @@ class FinanceController {
     }
   }
 
-  Future updateFinance(Map<String, dynamic> financeJson, String financeID) async {
+  Future updateFinance(
+      Map<String, dynamic> financeJson, String financeID) async {
     try {
       Finance finance = Finance();
       var result = await finance.updateByID(financeJson, financeID);

@@ -18,28 +18,37 @@ class SubBranchProfileWidget extends StatelessWidget {
       child: new Column(
         children: <Widget>[
           ListTile(
-              leading: Icon(
-                Icons.view_list,
-                size: 30,
-                color: CustomColors.mfinButtonGreen,
+            leading: Icon(
+              Icons.view_headline,
+              size: 35.0,
+              color: CustomColors.mfinButtonGreen,
+            ),
+            title: new Text(
+              "Sub Branch Details",
+              style: TextStyle(
+                color: CustomColors.mfinBlue,
+                fontSize: 18.0,
               ),
-              title: new Text(
-                "Sub Branch Details",
-                style: TextStyle(color: CustomColors.mfinBlue),
+            ),
+            trailing: IconButton(
+              icon: Icon(
+                Icons.edit,
+                size: 35.0,
+                color: CustomColors.mfinBlue,
               ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.edit,
-                  color: CustomColors.mfinBlue,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditSubBranchProfile()),
-                  );
-                },
-              )),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditSubBranchProfile()),
+                );
+              },
+            ),
+          ),
+          new Divider(
+            color: CustomColors.mfinBlue,
+            thickness: 1,
+          ),
           ListTile(
             title: TextFormField(
               keyboardType: TextInputType.text,
@@ -112,7 +121,7 @@ class SubBranchProfileWidget extends StatelessWidget {
             title: TextFormField(
               keyboardType: TextInputType.text,
               initialValue: subBranch.address.toString(),
-              maxLines: 3,
+              maxLines: 4,
               decoration: InputDecoration(
                 hintText: 'SubBranch Address',
                 contentPadding:

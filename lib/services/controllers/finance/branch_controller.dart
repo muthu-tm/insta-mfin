@@ -9,26 +9,25 @@ import 'package:instamfin/services/utils/response_utils.dart';
 class BranchController {
   SubBranchController _subBranchController = SubBranchController();
 
-  Future addBranch(String financeID, String branchName, String email,
-      Address address, DateTime dateOfRegistration) async {
+  Future addBranch(String financeID, String branchName, String contactNumber,
+      String email, Address address, String dateOfRegistration) async {
     try {
-       UserController _userController = UserController();
-      int addedBy = _userController.getCurrentUser().mobileNumber;
-
       Branch newBranch = Branch();
-      FinanceController _financeController = FinanceController();
-      newBranch.setBranchName(branchName);
-      newBranch.setDOR(dateOfRegistration);
-      newBranch.setAddress(address);
-      newBranch.setEmail(email);
-
       if (await newBranch.isExist(financeID, branchName)) {
         return CustomResponse.getFailureReponse(
             "Branch Name must be unique! A branch exists with the given Branch Name.");
       }
-      
-      List<int> admins = await _financeController.getAllAdmins(financeID);
+      UserController _userController = UserController();
+      int addedBy = _userController.getCurrentUserID();
 
+      FinanceController _financeController = FinanceController();
+      newBranch.setBranchName(branchName);
+      newBranch.setDOR(dateOfRegistration);
+      newBranch.setEmail(email);
+      newBranch.setContactNumber(contactNumber);
+      newBranch.setAddress(address);
+
+      List<int> admins = await _financeController.getAllAdmins(financeID);
       newBranch.addAdmins(admins);
       newBranch.setAddedBy(addedBy);
 
