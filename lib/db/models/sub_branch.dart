@@ -20,8 +20,6 @@ class SubBranch {
   String contactNumber;
   @JsonKey(name: 'admins', nullable: true)
   List<int> admins;
-  @JsonKey(name: 'users', nullable: true)
-  List<int> users;
   @JsonKey(name: 'display_profile_path', nullable: true)
   String displayProfilePath;
   @JsonKey(name: 'date_of_registration', nullable: true)
@@ -52,14 +50,6 @@ class SubBranch {
       this.admins = admins;
     } else {
       this.admins.addAll(admins);
-    }
-  }
-
-  addUsers(List<int> users) {
-    if (this.users == null) {
-      this.users = users;
-    } else {
-      this.users.addAll(users);
     }
   }
 
@@ -182,10 +172,10 @@ class SubBranch {
   }
 
   Future<List<SubBranch>> getSubBranchByUserID(
-      String financeID, String branchName, String userID) async {
+      String financeID, String branchName, int userID) async {
     List<DocumentSnapshot> docSnapshot =
         (await getSubBranchCollectionRef(financeID, branchName)
-                .where('users', arrayContains: userID)
+                .where('admins', arrayContains: userID)
                 .getDocuments())
             .documents;
 
@@ -193,7 +183,7 @@ class SubBranch {
       return null;
     }
 
-    List<SubBranch> subBranches;
+    List<SubBranch> subBranches = [];
 
     for (var doc in docSnapshot) {
       SubBranch subBranch = SubBranch.fromJson(doc.data);

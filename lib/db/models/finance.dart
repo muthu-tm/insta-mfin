@@ -117,7 +117,7 @@ class Finance extends Model {
     return await getCollectionRef().document(financeID).get();
   }
 
-  Future<List<Finance>> getFinanceByUserID(String userID) async {
+  Future<List<Finance>> getFinanceByUserID(int userID) async {
     List<DocumentSnapshot> docSnapshot = (await getCollectionRef()
             .where('users', arrayContains: userID)
             .getDocuments())
@@ -127,7 +127,7 @@ class Finance extends Model {
       return null;
     }
 
-    List<Finance> finances;
+    List<Finance> finances = [];
 
     for (var doc in docSnapshot) {
       Finance finance = Finance.fromJson(doc.data);

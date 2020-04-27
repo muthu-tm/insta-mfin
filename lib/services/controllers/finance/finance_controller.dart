@@ -35,7 +35,7 @@ class FinanceController {
     }
   }
 
-  Future<List<Finance>> getFinanceByUserID(String userID) async {
+  Future<List<Finance>> getFinanceByUserID(int userID) async {
     try {
       Finance finance = Finance();
       List<Finance> finances = await finance.getFinanceByUserID(userID);
@@ -46,7 +46,8 @@ class FinanceController {
 
       return finances;
     } catch (err) {
-      print("Error while retrieving finace for an user: " + userID);
+      print(
+          "Error while retrieving finace for user $userID: " + err.toString());
       return null;
     }
   }
@@ -133,6 +134,22 @@ class FinanceController {
       return finance.admins;
     } catch (err) {
       print("Error while retrieving braches for ID: " + financeID);
+      throw err;
+    }
+  }
+
+  Future<bool> isUserAdmin(
+      String financeID, int userID) async {
+    try {
+      List<int> admins = await getAllAdmins(financeID);
+
+      if (admins.contains(userID)) {
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      print("Error while validating Finance user $userID: " + err.toString());
       throw err;
     }
   }

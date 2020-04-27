@@ -111,7 +111,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => EditPrimaryFinance(
-                              _userController.getCurrentUserID().toString(),
+                              _userController.getCurrentUserID(),
                             ),
                           ),
                         );
@@ -186,7 +186,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => EditPrimaryFinance(
-                              _userController.getCurrentUserID().toString(),
+                              _userController.getCurrentUserID(),
                             ),
                           ),
                         );

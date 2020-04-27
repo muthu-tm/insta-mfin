@@ -69,23 +69,6 @@ class BranchController {
     }
   }
 
-  Future<List<Branch>> getBranchesForUserID(
-      String financeID, String userID) async {
-    try {
-      Branch branch = Branch();
-      List<Branch> branches = await branch.getBranchByUserID(financeID, userID);
-
-      if (branches == null) {
-        return [];
-      }
-
-      return branches;
-    } catch (err) {
-      print("Error while retrieving branches for an user: " + userID);
-      return null;
-    }
-  }
-
   Future<Branch> getBranchByID(String financeID, String branchID) async {
     try {
       Branch branch = Branch();
@@ -123,7 +106,7 @@ class BranchController {
     }
   }
 
-  Future<List<Branch>> getBranchByUserID(String financeID, String userID) async {
+  Future<List<Branch>> getBranchesForUserID(String financeID, int userID) async {
     try {
       Branch branch = Branch();
       List<Branch> branches = await branch.getBranchByUserID(financeID, userID);
@@ -134,7 +117,7 @@ class BranchController {
 
       return branches;
     } catch (err) {
-      print("Error while retrieving finace for an user: " + userID);
+      print("Error while retrieving branch for user $userID: " + err.toString());
       return null;
     }
   }
@@ -150,6 +133,21 @@ class BranchController {
       return branch.admins;
     } catch (err) {
       print("Error while retrieving data for Branch: " + branchName);
+      throw err;
+    }
+  }
+
+  Future<bool> isUserAdmin(String financeID, String branchName, int userID) async {
+    try {
+      List<int> admins = await getAllAdmins(financeID, branchName);
+
+      if (admins.contains(userID)) {
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      print("Error while validating Branch user $userID: " + err.toString());
       throw err;
     }
   }

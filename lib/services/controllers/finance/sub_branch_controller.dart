@@ -48,7 +48,7 @@ class SubBranchController {
       SubBranch subBranch = SubBranch();
       await subBranch.updateArrayField(
           isAdd,
-          {'admins': userList, 'users': userList},
+          {'admins': userList},
           financeID,
           branchName,
           subBranchName);
@@ -59,8 +59,8 @@ class SubBranchController {
     }
   }
 
-  Future getSubBranchesForUserID(
-      String financeID, String branchName, String userID) async {
+  Future<List<SubBranch>> getSubBranchesForUserID(
+      String financeID, String branchName, int userID) async {
     try {
       SubBranch subBranch = SubBranch();
       List<SubBranch> subBranches =
@@ -72,7 +72,7 @@ class SubBranchController {
 
       return subBranches;
     } catch (err) {
-      print("Error while retrieving Sub branches for an user: " + userID);
+      print("Error while retrieving Sub branches for an user $userID: " + err.toString());
       return null;
     }
   }

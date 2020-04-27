@@ -175,7 +175,7 @@ class Branch {
   }
 
   Future<List<Branch>> getBranchByUserID(
-      String financeID, String userID) async {
+      String financeID, int userID) async {
     List<DocumentSnapshot> docSnapshot =
         (await getBranchCollectionRef(financeID)
                 .where('users', arrayContains: userID)
@@ -186,7 +186,7 @@ class Branch {
       return null;
     }
 
-    List<Branch> branches;
+    List<Branch> branches = [];
 
     for (var doc in docSnapshot) {
       Branch branch = Branch.fromJson(doc.data);
