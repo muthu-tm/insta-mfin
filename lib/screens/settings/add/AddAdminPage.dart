@@ -141,6 +141,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
       if (apiResponse['is_success']) {
         setState(() {
           _userDetails = apiResponse['message'];
+          userList.add(_userDetails['mobile_number']);
           mobileNumberValid = true;
         });
         print(_userDetails.toString());
@@ -170,28 +171,45 @@ class _AddAdminPageState extends State<AddAdminPage> {
       String groupName = widget.groupName;
       CustomDialogs.actionWaiting(context, "Updating Admin for $groupName");
       var response;
-      if (widget.subBranchName != "") {
-        SubBranchController _subBranchController = SubBranchController();
-        response = await _subBranchController.updateSubBranchAdmins(
-            true,
-            userList,
-            widget.financeID,
-            widget.branchName,
-            widget.subBranchName);
-      } else if (widget.branchName != "") {
-        BranchController _branchController = BranchController();
-        response = await _branchController.updateBranchAdmins(
-            true, userList, widget.financeID, widget.branchName);
-      } else {
-        FinanceController _financeController = FinanceController();
-        response = await _financeController.updateFinanceAdmins(
-            true, userList, widget.financeID);
+
+      try {
+        if (widget.subBranchName != "") {
+          SubBranchController _subBranchController = SubBranchController();
+          response = await _subBranchController.updateSubBranchAdmins(
+              true,
+              userList,
+              widget.financeID,
+              widget.branchName,
+              widget.subBranchName);
+          BranchController _branchController = BranchController();
+          await _branchController.updateBranchUsers(
+              true, userList, widget.financeID, widget.branchName);
+        } else if (widget.branchName != "") {
+          BranchController _branchController = BranchController();
+          response = await _branchController.updateBranchAdmins(
+              true, userList, widget.financeID, widget.branchName);
+
+          FinanceController _financeController = FinanceController();
+          await _financeController.updateFinanceUsers(
+              true, userList, widget.financeID);
+        } else {
+          FinanceController _financeController = FinanceController();
+          response = await _financeController.updateFinanceAdmins(
+              true, userList, widget.financeID);
+        }
+      } catch (err) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Unable to update admins for $groupName! Please contact support',
+            5));
+        print('Unable to update admins for $groupName: ' + err.toString());
       }
 
       if (!response['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Unable to update admins for $groupName', 5));
+            'Unable to update admins for $groupName! Please contact support',
+            5));
         print('Unable to update admins for $groupName: ' + response['message']);
       } else {
         Navigator.pop(context);

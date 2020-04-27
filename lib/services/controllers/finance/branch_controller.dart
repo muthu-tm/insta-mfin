@@ -52,7 +52,25 @@ class BranchController {
 
       return CustomResponse.getSuccesReponse(branch.toJson());
     } catch (err) {
+      print("Error while updating Admins for Branch $branchName: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future updateBranchUsers(bool isAdd, List<int> userList, String financeID,
+      String branchName) async {
+    try {
+      Branch branch = Branch();
+      await branch.updateArrayField(
+          isAdd, {'users': userList}, financeID, branchName);
+
+      FinanceController _financeController = FinanceController();
+      await _financeController.updateFinanceUsers(isAdd, userList, financeID);
+
+      return CustomResponse.getSuccesReponse("Successfully updated Users list of Branch $branchName");
+    } catch (err) {
+      print("Error while updating Branch User for $branchName: " + err.toString());
+      throw err;
     }
   }
 
@@ -106,7 +124,8 @@ class BranchController {
     }
   }
 
-  Future<List<Branch>> getBranchesForUserID(String financeID, int userID) async {
+  Future<List<Branch>> getBranchesForUserID(
+      String financeID, int userID) async {
     try {
       Branch branch = Branch();
       List<Branch> branches = await branch.getBranchByUserID(financeID, userID);
@@ -117,7 +136,8 @@ class BranchController {
 
       return branches;
     } catch (err) {
-      print("Error while retrieving branch for user $userID: " + err.toString());
+      print(
+          "Error while retrieving branch for user $userID: " + err.toString());
       return null;
     }
   }
@@ -137,7 +157,8 @@ class BranchController {
     }
   }
 
-  Future<bool> isUserAdmin(String financeID, String branchName, int userID) async {
+  Future<bool> isUserAdmin(
+      String financeID, String branchName, int userID) async {
     try {
       List<int> admins = await getAllAdmins(financeID, branchName);
 
@@ -152,7 +173,8 @@ class BranchController {
     }
   }
 
-  Future updateBranch(String financeID, String branchName, Map<String, dynamic>  branchJSON) async {
+  Future updateBranch(String financeID, String branchName,
+      Map<String, dynamic> branchJSON) async {
     try {
       await Branch().update(financeID, branchName, branchJSON);
 

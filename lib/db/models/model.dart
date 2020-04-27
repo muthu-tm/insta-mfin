@@ -53,10 +53,11 @@ class Model {
       }
     });
 
-    String docId = this.getID();
-
+    String docId = "";
     if (documentID != null || documentID != "") {
       docId = documentID;
+    } else {
+      docId = this.getID();
     }
 
     await this.getDocumentRef(docId).updateData(fields);
@@ -72,9 +73,9 @@ class Model {
   Future<Map<String, dynamic>> getByID(String docID) async {
     String id;
     if (docID != null && docID != "") {
-      id =  docID;
+      id = docID;
     } else if (this.getID() != null && this.getID() != null) {
-      id =  this.getID();
+      id = this.getID();
     } else {
       return null;
     }

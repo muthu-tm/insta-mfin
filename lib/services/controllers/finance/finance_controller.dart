@@ -91,7 +91,22 @@ class FinanceController {
 
       return CustomResponse.getSuccesReponse(finance.toJson());
     } catch (err) {
+      print("Error while updating Admins for Finance $financeID: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future updateFinanceUsers(
+      bool isAdd, List<int> userList, String financeID) async {
+    try {
+      Finance finance = Finance();
+      await finance.updateArrayField(
+          isAdd, {'users': userList}, financeID);
+
+      return CustomResponse.getSuccesReponse("Successfully updated Users list of Finance $financeID");
+    } catch (err) {
+      print("Error while updating Finance User for $financeID: " + err.toString());
+      throw err;
     }
   }
 

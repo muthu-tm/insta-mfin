@@ -9,13 +9,14 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 
 class FinanceBranchWidget extends StatelessWidget {
   FinanceBranchWidget(this.financeID);
+  final Branch _branch = Branch();
 
   final String financeID;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Branch().getBranchCollectionRef(financeID).snapshots(),
+      stream: _branch.getBranchCollectionRef(financeID).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
@@ -79,25 +80,31 @@ class FinanceBranchWidget extends StatelessWidget {
             // No branches available
             children = [
               Container(
-                height: 60,
+                height: 90,
                 child: Column(
                   children: <Widget>[
+                    new Spacer(),
                     Text(
                       "No Branches yet!",
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    new Spacer(),
+                    new Spacer(
+                      flex: 2,
+                    ),
                     Text(
-                      "Expand you Finance by creating new Branch!",
+                      "Expand you Finance, by creating new Branch!",
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
-                    )
+                      textAlign: TextAlign.center,
+                    ),
+                    new Spacer(),
                   ],
                 ),
               ),

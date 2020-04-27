@@ -9,13 +9,14 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 
 class FinanceUsersWidget extends StatelessWidget {
   FinanceUsersWidget(this.financeID);
+  final Finance _finance = Finance();
 
   final String financeID;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-        stream: Finance().getCollectionRef().document(financeID).snapshots(),
+        stream: _finance.getCollectionRef().document(financeID).snapshots(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           List<Widget> children;

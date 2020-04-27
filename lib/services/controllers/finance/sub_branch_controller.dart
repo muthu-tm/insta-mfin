@@ -53,8 +53,9 @@ class SubBranchController {
           branchName,
           subBranchName);
 
-      return CustomResponse.getSuccesReponse(subBranch.toJson());
+      return CustomResponse.getSuccesReponse("Successfully updated Admin list of SubBranch $subBranchName");
     } catch (err) {
+      print("Error while updating Admins for SubBranch $subBranchName: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
