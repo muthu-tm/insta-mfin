@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/screens/settings/SubBranchSetting.dart';
@@ -5,11 +6,8 @@ import 'package:instamfin/screens/settings/add/AddNewSubBranch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
-import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 
 class SubBranchesWidget extends StatelessWidget {
-  final BranchController _branchController = BranchController();
-
   SubBranchesWidget(this.financeID, this.branchName);
 
   final String financeID;
@@ -17,23 +15,26 @@ class SubBranchesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<SubBranch>>(
-      future: _branchController.getAllSubBranches(financeID, branchName),
-      builder: (BuildContext context, AsyncSnapshot<List<SubBranch>> snapshot) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: SubBranch()
+          .getSubBranchCollectionRef(financeID, branchName)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          if (snapshot.data.length != 0) {
+          if (snapshot.data.documents.isNotEmpty) {
             children = <Widget>[
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     title: TextFormField(
                       keyboardType: TextInputType.text,
-                      initialValue: snapshot.data[index].subBranchName,
+                      initialValue: snapshot
+                          .data.documents[index].data['sub_branch_name'],
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
@@ -49,13 +50,15 @@ class SubBranchesWidget extends StatelessWidget {
                       autofocus: false,
                     ),
                     onTap: () {
+                      SubBranch subBranch = SubBranch.fromJson(
+                          snapshot.data.documents[index].data);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => SubBranchSetting(
                             financeID,
                             branchName,
-                            snapshot.data[index],
+                            subBranch,
                           ),
                         ),
                       );
@@ -73,7 +76,32 @@ class SubBranchesWidget extends StatelessWidget {
               ),
             ];
           } else {
-            // No sub branches for this branch
+            // No branches available
+            children = [
+              Container(
+                height: 60,
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "No Branches yet!",
+                      style: TextStyle(
+                        color: CustomColors.mfinAlertRed,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    new Spacer(),
+                    Text(
+                      "Expand you Finance by creating new Branch!",
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ];
           }
         } else if (snapshot.hasError) {
           children = AsyncWidgets.asyncError();

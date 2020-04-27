@@ -1,37 +1,39 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/screens/settings/FinanceViewUser.dart';
 import 'package:instamfin/screens/settings/add/AddAdminPage.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
-import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 
 class FinanceUsersWidget extends StatelessWidget {
-  final FinanceController _financeController = FinanceController();
-
   FinanceUsersWidget(this.financeID);
 
   final String financeID;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<int>>(
-        future: _financeController.getAllAdmins(financeID),
-        builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: Finance().getCollectionRef().document(financeID).snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           List<Widget> children;
 
           if (snapshot.hasData) {
-            if (snapshot.data.length != 0) {
+            if (snapshot.data.data['admins'] != null &&
+                snapshot.data.data['admins'].length > 0) {
               children = <Widget>[
                 ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: snapshot.data.length,
+                    itemCount: snapshot.data.data['admins'].length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
                           title: TextFormField(
                             keyboardType: TextInputType.text,
-                            initialValue: snapshot.data[index].toString(),
+                            initialValue:
+                                snapshot.data.data['admins'][index].toString(),
                             decoration: InputDecoration(
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
@@ -50,8 +52,9 @@ class FinanceUsersWidget extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => FinanceUser(
-                                    snapshot.data[index].toString()),
+                                builder: (context) => FinanceUser(snapshot
+                                    .data.data['admins'][index]
+                                    .toString()),
                               ),
                             );
                           },
@@ -67,7 +70,29 @@ class FinanceUsersWidget extends StatelessWidget {
               ];
             } else {
               children = <Widget>[
-                Text("No User"),
+                Container(
+                  height: 60,
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "No Branches yet!",
+                        style: TextStyle(
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                      ),
+                      new Spacer(),
+                      Text(
+                        "Expand you Finance by creating new Branch!",
+                        style: TextStyle(
+                          color: CustomColors.mfinBlue,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ];
             }
           } else if (snapshot.hasError) {
@@ -100,8 +125,7 @@ class FinanceUsersWidget extends StatelessWidget {
                         color: CustomColors.mfinBlue,
                       ),
                       onPressed: () async {
-                        String financeName =
-                            await _financeController.getFinanceName(financeID);
+                        String financeName = snapshot.data.data['finance_name'];
 
                         Navigator.push(
                           context,

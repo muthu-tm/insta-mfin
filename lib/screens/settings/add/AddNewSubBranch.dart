@@ -206,7 +206,6 @@ class _AddSubBranchState extends State<AddSubBranch> {
         Navigator.pop(context);
         print("New Sub Branch added successfully");
         Navigator.pop(context);
-        Navigator.pop(context);
       }
     } else {
       print("Invalid form submitted");

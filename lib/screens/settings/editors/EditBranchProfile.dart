@@ -192,7 +192,6 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
         Navigator.pop(context);
         Navigator.pop(context);
         print("${widget.branch.branchName} branch updated successfully");
-        Navigator.pop(context);
       }
     } else {
       print("Invalid form submitted");

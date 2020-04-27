@@ -199,7 +199,6 @@ class _AddBranchState extends State<AddBranch> {
         Navigator.pop(context);
         print("New Branch added successfully");
         Navigator.pop(context);
-        Navigator.pop(context);
       }
     } else {
       print("Invalid form submitted");

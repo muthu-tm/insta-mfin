@@ -197,11 +197,6 @@ class _AddAdminPageState extends State<AddAdminPage> {
         Navigator.pop(context);
         print('Admins added for $groupName successfully');
         Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FinanceSetting()),
-        );
       }
     }
   }
