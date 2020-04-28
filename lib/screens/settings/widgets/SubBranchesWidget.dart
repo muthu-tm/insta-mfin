@@ -8,12 +8,13 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
 class SubBranchesWidget extends StatelessWidget {
-  SubBranchesWidget(this.financeID, this.branchName);
+  SubBranchesWidget(this._scaffoldKey, this.financeID, this.branchName);
 
-  final SubBranch _subBranch = SubBranch();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey;
   final String financeID;
   final String branchName;
+
+  final SubBranch _subBranch = SubBranch();
 
   @override
   Widget build(BuildContext context) {

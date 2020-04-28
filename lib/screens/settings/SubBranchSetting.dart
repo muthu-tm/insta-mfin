@@ -7,6 +7,8 @@ import 'package:instamfin/screens/settings/widgets/SubBranchUsersWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class SubBranchSetting extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   SubBranchSetting(this.financeID, this.branchName, this.subBranch);
 
   final String financeID;
@@ -16,6 +18,7 @@ class SubBranchSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -29,8 +32,8 @@ class SubBranchSetting extends StatelessWidget {
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                SubBranchProfileWidget(financeID, branchName, subBranch),
-                SubBranchUsersWidget(financeID, branchName, subBranch),
+                SubBranchProfileWidget(_scaffoldKey, financeID, branchName, subBranch),
+                SubBranchUsersWidget(_scaffoldKey, financeID, branchName, subBranch),
               ],
             ),
           ),

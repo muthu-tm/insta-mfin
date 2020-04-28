@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -25,7 +24,7 @@ class AddAdminPage extends StatefulWidget {
 }
 
 class _AddAdminPageState extends State<AddAdminPage> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final UserController _userController = UserController();
 
   Map<String, dynamic> _userDetails;

@@ -87,11 +87,14 @@ class FinanceController {
           isAdd, {'admins': userList, 'users': userList}, financeID);
 
       List<Branch> branches = await getAllBranches(financeID);
-      await updateBranchAdmins(isAdd, branches, userList, financeID);
+      if (branches != null && branches.length > 0) {
+        await updateBranchAdmins(isAdd, branches, userList, financeID);
+      }
 
       return CustomResponse.getSuccesReponse(finance.toJson());
     } catch (err) {
-      print("Error while updating Admins for Finance $financeID: " + err.toString());
+      print("Error while updating Admins for Finance $financeID: " +
+          err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -100,12 +103,13 @@ class FinanceController {
       bool isAdd, List<int> userList, String financeID) async {
     try {
       Finance finance = Finance();
-      await finance.updateArrayField(
-          isAdd, {'users': userList}, financeID);
+      await finance.updateArrayField(isAdd, {'users': userList}, financeID);
 
-      return CustomResponse.getSuccesReponse("Successfully updated Users list of Finance $financeID");
+      return CustomResponse.getSuccesReponse(
+          "Successfully updated Users list of Finance $financeID");
     } catch (err) {
-      print("Error while updating Finance User for $financeID: " + err.toString());
+      print("Error while updating Finance User for $financeID: " +
+          err.toString());
       throw err;
     }
   }
@@ -153,8 +157,7 @@ class FinanceController {
     }
   }
 
-  Future<bool> isUserAdmin(
-      String financeID, int userID) async {
+  Future<bool> isUserAdmin(String financeID, int userID) async {
     try {
       List<int> admins = await getAllAdmins(financeID);
 

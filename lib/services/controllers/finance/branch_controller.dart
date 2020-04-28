@@ -47,12 +47,15 @@ class BranchController {
 
       List<SubBranch> subBranches =
           await getAllSubBranches(financeID, branchName);
-      await updateSubBranchAdmins(
-          isAdd, subBranches, userList, financeID, branchName);
+      if (subBranches != null && subBranches.length > 0) {
+        await updateSubBranchAdmins(
+            isAdd, subBranches, userList, financeID, branchName);
+      }
 
       return CustomResponse.getSuccesReponse(branch.toJson());
     } catch (err) {
-      print("Error while updating Admins for Branch $branchName: " + err.toString());
+      print("Error while updating Admins for Branch $branchName: " +
+          err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -67,9 +70,11 @@ class BranchController {
       FinanceController _financeController = FinanceController();
       await _financeController.updateFinanceUsers(isAdd, userList, financeID);
 
-      return CustomResponse.getSuccesReponse("Successfully updated Users list of Branch $branchName");
+      return CustomResponse.getSuccesReponse(
+          "Successfully updated Users list of Branch $branchName");
     } catch (err) {
-      print("Error while updating Branch User for $branchName: " + err.toString());
+      print("Error while updating Branch User for $branchName: " +
+          err.toString());
       throw err;
     }
   }
@@ -114,7 +119,7 @@ class BranchController {
           await SubBranch().getAllSubBranches(financeID, branchName);
 
       if (subBranches == null) {
-        throw 'No SubBranches for $branchName';
+        return [];
       }
 
       return subBranches;
