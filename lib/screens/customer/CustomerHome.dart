@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/customer/AddCustomer.dart';
+import 'package:instamfin/screens/customer/CustomerListWidget.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
@@ -36,7 +36,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AddCustomer()),
+                          builder: (context) => CustomerListWidget("New Customer")),
                     );
                   }, // button pressed
                   child: Column(
@@ -47,7 +47,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AddCustomer()),
+                              builder: (context) => CustomerListWidget("New Customer")),
                         );
                       }),
                       Padding(padding: EdgeInsets.all(05.0)),

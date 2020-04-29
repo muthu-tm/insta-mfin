@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/screens/customer/ViewCustomer.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -189,7 +190,8 @@ class _AddCustomerState extends State<AddCustomer> {
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating $name!");
       CustController _cc = CustController();
-      var result = await _cc.createCustomer(name, id, profession, number, address, age, guarantiedBy);
+      var result = await _cc.createCustomer(
+          name, id, profession, number, address, age, guarantiedBy);
 
       if (!result['is_success']) {
         Navigator.pop(context);
@@ -197,9 +199,12 @@ class _AddCustomerState extends State<AddCustomer> {
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
         print("Unable to Create Customer: " + result['message']);
       } else {
-        Navigator.pop(context);
         print("New Customer $name added successfully");
-        Navigator.pop(context);
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => ViewCustomer()),
+          (Route<dynamic> route) => false,
+        );
       }
     } else {
       print("Invalid form submitted");

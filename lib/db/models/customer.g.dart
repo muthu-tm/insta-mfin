@@ -57,6 +57,8 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
           ? instance.addedBy
           : instance.guarantiedBy,
       'added_by': instance.addedBy,
+      'customer_status':
+          instance.status == null ? CustomerStatus.New.name : instance.status,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

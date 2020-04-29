@@ -1,7 +1,9 @@
-import 'package:instamfin/db/enums/action_type.dart';
+import 'package:instamfin/db/enums/customer_status.dart';
 import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +12,8 @@ part 'customer.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Customer extends Model {
+  User user = UserController().getCurrentUser();
+
   static CollectionReference _customerCollRef =
       Model.db.collection("customers");
 
@@ -35,10 +39,12 @@ class Customer extends Model {
   String profession;
   @JsonKey(name: 'guarantied_by', nullable: true)
   int guarantiedBy;
-  @JsonKey(name: 'display_profile_path', defaultValue: "")
-  String displayProfilePath;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
+  @JsonKey(name: 'customer_status', nullable: true)
+  int status;
+  @JsonKey(name: 'display_profile_path', defaultValue: "")
+  String displayProfilePath;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -72,6 +78,10 @@ class Customer extends Model {
 
   setGuarantiedBy(int guarantiedBy) {
     this.guarantiedBy = guarantiedBy;
+  }
+
+  setCustomerStatus(int status) {
+    this.status = status;
   }
 
   setDisplayProfilePath(String profilePath) {
@@ -115,6 +125,15 @@ class Customer extends Model {
   String getID() {
     return getDocumentID(
         this.mobileNumber, this.financeID, this.branchName, this.subBranchName);
+  }
+
+  Stream<QuerySnapshot> getCustomerByStatus(int status) {
+    return getCollectionRef()
+        .where('finance_id', isEqualTo: user.primaryFinance)
+        .where('branch_name', isEqualTo: user.primaryBranch)
+        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('customer_status', isEqualTo: status)
+        .snapshots();
   }
 
   create() async {

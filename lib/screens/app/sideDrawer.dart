@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/customer/AddCustomer.dart';
+import 'package:instamfin/screens/customer/ViewCustomer.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
@@ -63,12 +65,20 @@ Widget openDrawer(BuildContext context) {
         new ListTile(
           title: new Text('Add a Customer'),
           trailing: new Icon(Icons.keyboard_arrow_right),
-          onTap: () => null,
+          onTap: () => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => AddCustomer()),
+            (Route<dynamic> route) => false,
+          ),
         ),
         new ListTile(
-          title: new Text('View all Customers'),
+          title: new Text('View Customers'),
           trailing: new Icon(Icons.keyboard_arrow_right),
-          onTap: () => null,
+          onTap: () => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => ViewCustomer()),
+            (Route<dynamic> route) => false,
+          ),
         ),
       ],
     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/customer/ViewCustomer.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/customer/CustomerHome.dart';
 import 'package:instamfin/screens/settings/SettingsScreen.dart';
@@ -19,7 +20,7 @@ Widget bottomBar(BuildContext context) {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CustomerScreen()),
+                  MaterialPageRoute(builder: (context) => ViewCustomer()),
                 );
               }, // button pressed
               child: Column(
@@ -29,7 +30,7 @@ Widget bottomBar(BuildContext context) {
                       CustomColors.mfinButtonGreen, () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CustomerScreen()),
+                      MaterialPageRoute(builder: (context) => ViewCustomer()),
                     );
                   }),
                   Text(
