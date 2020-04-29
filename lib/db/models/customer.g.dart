@@ -50,8 +50,8 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'age': instance.age == null ? 0 : instance.age,
       'customer_profession':
           instance.profession == null ? '' : instance.profession,
-      'branch_id': instance.branchName == null ? '' : instance.branchName,
-      'sub_branch_id':
+      'branch_name': instance.branchName == null ? '' : instance.branchName,
+      'sub_branch_name':
           instance.subBranchName == null ? '' : instance.subBranchName,
       'guarantied_by': instance.guarantiedBy == null
           ? instance.addedBy

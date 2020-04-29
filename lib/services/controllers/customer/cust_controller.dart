@@ -19,7 +19,11 @@ class CustController {
       cust.setAddress(address);
       cust.setAge(age);
       cust.setProfession(profession);
-      cust.setGuarantiedBy(guarantiedBy);
+      if (guarantiedBy == 0) {
+        cust.setGuarantiedBy(user.mobileNumber);
+      } else {
+        cust.setGuarantiedBy(guarantiedBy);
+      }
       cust.setFinanceID(user.primaryFinance);
       cust.setBranchName(user.primaryBranch);
       cust.setSubBranchName(user.primarySubBranch);

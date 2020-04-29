@@ -153,7 +153,6 @@ class _AddBranchState extends State<AddBranch> {
         ),
       ),
       bottomSheet: EditorsActionButtons(_submit, _close),
-      // bottomNavigationBar: bottomBar(context),
     );
   }
 
