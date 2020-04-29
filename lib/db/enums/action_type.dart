@@ -7,7 +7,8 @@ enum ActionType {
   PaymentDelete,
   CollectionAdd,
   CollectionEdit,
-  CollectionDelete
+  CollectionDelete,
+  ActionNotUpdated
 }
 
 extension ActionTypeExtension on ActionType {
@@ -39,6 +40,9 @@ extension ActionTypeExtension on ActionType {
         break;
       case ActionType.CollectionDelete:
         return "Collection Removed";
+        break;
+      case ActionType.ActionNotUpdated:
+        return "Action not Updated";
         break;
       default:
         return null;

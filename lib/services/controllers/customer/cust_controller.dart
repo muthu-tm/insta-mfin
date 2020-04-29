@@ -1,31 +1,29 @@
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class CustController {
-  Future createCustomer(String name, String customerID, String branchID, String subBranchID, int mobileNumber,
-      Address address, int age, int guarantiedBy, String displayProfilePath, int addedBy) async {
+  UserController uc = UserController();
+
+  Future createCustomer(String name, String customerID, String profession,
+      int mobileNumber, Address address, int age, int guarantiedBy) async {
     try {
-      String custDocumentId = "";
+      Customer cust = Customer();
+      User user = uc.getCurrentUser();
 
-      if (subBranchID != null || subBranchID != "") {
-        custDocumentId = custDocumentId + subBranchID;
-      } else {
-        custDocumentId += custDocumentId + branchID;
-      }
-
-      custDocumentId = custDocumentId + '_' + customerID;
-      Customer cust = Customer(custDocumentId);
-      
       cust.setName(name);
-      cust.setBranchID(branchID);
-      cust.setSubBranchID(subBranchID);
+      cust.setCustomerID(customerID);
       cust.setMobileNumber(mobileNumber);
       cust.setAddress(address);
       cust.setAge(age);
+      cust.setProfession(profession);
       cust.setGuarantiedBy(guarantiedBy);
-      cust.setDisplayProfilePath(displayProfilePath);
-      cust.setAddedBy(addedBy);
+      cust.setFinanceID(user.primaryFinance);
+      cust.setBranchName(user.primaryBranch);
+      cust.setSubBranchName(user.primarySubBranch);
+      cust.setAddedBy(user.mobileNumber);
 
       await cust.create();
 
@@ -35,7 +33,36 @@ class CustController {
     }
   }
 
-  Future updateCompany(Customer customer) async {
+  Future updateCustomer(
+      Map<String, dynamic> customerJson, int mobileNumber) async {
+    try {
+      Customer customer = Customer();
+      User user = uc.getCurrentUser();
+      String docID = customer.getDocumentID(mobileNumber, user.primaryFinance,
+          user.primaryBranch, user.primarySubBranch);
+      var result = await customer.updateByID(customerJson, docID);
+
+      return CustomResponse.getSuccesReponse(result);
+    } catch (err) {
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future removeCustomer(int mobileNumber) async {
+    try {
+      Customer customer = Customer();
+      User user = uc.getCurrentUser();
+      String docID = customer.getDocumentID(mobileNumber, user.primaryFinance,
+          user.primaryBranch, user.primarySubBranch);
+      await customer.delete(docID);
+
+      return CustomResponse.getSuccesReponse("Successfully removed customer!");
+    } catch (err) {
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future replaceCustomer(Customer customer) async {
     try {
       customer = await customer.replace();
 

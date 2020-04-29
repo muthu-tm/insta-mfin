@@ -7,26 +7,21 @@ part of 'customer.dart';
 // **************************************************************************
 
 Customer _$CustomerFromJson(Map<String, dynamic> json) {
-  return Customer(
-    json['customer_id'] as String,
-  )
+  return Customer()
+    ..customerID = json['customer_id'] as String
     ..mobileNumber = json['mobile_number'] as int
     ..name = json['customer_name'] as String
     ..gender = json['gender'] as String
     ..displayProfilePath = json['display_profile_path'] as String ?? ''
-    ..dateOfBirth = json['date_of_birth'] as String
+    ..financeID = json['finance_id'] as String
     ..address = json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
     ..age = json['age'] as int
-    ..branchID = json['branch_id'] as String
-    ..subBranchID = json['sub_branch_id'] as String
+    ..profession = json['customer_profession'] as String
+    ..branchName = json['branch_name'] as String
+    ..subBranchName = json['sub_branch_name'] as String
     ..guarantiedBy = json['guarantied_by'] as int
-    ..lastTransactionType = json['last_transaction_type'] as String ?? ''
-    ..lastTransactionTime = json['last_transaction_at'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(
-            json['last_transaction_at'] as Timestamp))
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
@@ -50,18 +45,17 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'display_profile_path': instance.displayProfilePath == null
           ? ''
           : instance.displayProfilePath,
-      'date_of_birth': instance.dateOfBirth == null ? '' : instance.dateOfBirth,
+      'finance_id': instance.financeID == null ? '' : instance.financeID,
       'address': instance.address?.toJson(),
-      'age': instance.age == null ? 00 : instance.age,
-      'branch_id': instance.branchID == null ? '' : instance.branchID,
-      'sub_branch_id': instance.subBranchID == null ? '' : instance.subBranchID,
+      'age': instance.age == null ? 0 : instance.age,
+      'customer_profession':
+          instance.profession == null ? '' : instance.profession,
+      'branch_id': instance.branchName == null ? '' : instance.branchName,
+      'sub_branch_id':
+          instance.subBranchName == null ? '' : instance.subBranchName,
       'guarantied_by': instance.guarantiedBy == null
           ? instance.addedBy
           : instance.guarantiedBy,
-      'last_transaction_type': instance.lastTransactionType == null
-          ? ''
-          : instance.lastTransactionType,
-      'last_transaction_at': instance.lastTransactionTime,
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
