@@ -132,12 +132,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 3.0, horizontal: 3.0),
                         border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                        suffixIcon: Icon(
-                          Icons.perm_contact_calendar,
-                          color: CustomColors.mfinBlue,
-                          size: 35.0,
+                          borderSide: BorderSide(color: CustomColors.mfinWhite),
                         ),
                       ),
                       validator: (val) {
@@ -217,7 +212,9 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                     ),
                   ),
                   AddressWidget(
-                      "Address", Address.fromJson(widget.customer['address']), updatedAddress),
+                      "Address",
+                      Address.fromJson(widget.customer['address']),
+                      updatedAddress),
                 ],
               ),
             ),

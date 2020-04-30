@@ -5,6 +5,7 @@ import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class CustomerListWidget extends StatelessWidget {
   CustomerListWidget(this.title, [this.userStatus = 0]);
@@ -74,35 +75,51 @@ class CustomerListWidget extends StatelessWidget {
                           thickness: 1,
                         ),
                         ListTile(
-                          leading: RaisedButton.icon(
-                            color: CustomColors.mfinWhite,
-                            highlightColor: CustomColors.mfinWhite,
-                            onPressed: null,
-                            icon: Icon(
-                              Icons.call,
-                              size: 35.0,
-                              color: CustomColors.mfinPositiveGreen,
-                            ),
-                            label: Text(
-                              "Phone",
-                              style: TextStyle(
-                                color: CustomColors.mfinBlue,
-                                fontSize: 18,
+                          leading: Container(
+                            height: 50,
+                            width: 130,
+                            child: RaisedButton.icon(
+                              color: CustomColors.mfinWhite,
+                              elevation: 5.0,
+                              onPressed: () => _makePhoneCall(
+                                snapshot.data.documents[index]
+                                    .data['mobile_number'],
+                              ),
+                              icon: Icon(
+                                Icons.call,
+                                size: 35.0,
+                                color: CustomColors.mfinPositiveGreen,
+                              ),
+                              label: Text(
+                                "Phone",
+                                style: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                  fontSize: 19,
+                                ),
                               ),
                             ),
                           ),
-                          title: RaisedButton.icon(
-                            onPressed: null,
-                            icon: Icon(
-                              Icons.message,
-                              size: 35.0,
-                              color: CustomColors.mfinGrey,
-                            ),
-                            label: Text(
-                              "Text",
-                              style: TextStyle(
-                                color: CustomColors.mfinBlue,
-                                fontSize: 18,
+                          title: Container(
+                            height: 50,
+                            width: 130,
+                            child: RaisedButton.icon(
+                              color: CustomColors.mfinWhite,
+                              elevation: 5.0,
+                              onPressed: () => _makeSMS(
+                                snapshot.data.documents[index]
+                                    .data['mobile_number'],
+                              ),
+                              icon: Icon(
+                                Icons.message,
+                                size: 40.0,
+                                color: CustomColors.mfinGrey,
+                              ),
+                              label: Text(
+                                "Text",
+                                style: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                  fontSize: 19,
+                                ),
                               ),
                             ),
                           ),
@@ -117,7 +134,6 @@ class CustomerListWidget extends StatelessWidget {
                           ),
                         ),
                         new Divider(
-                          // color: CustomColors.mfinBlue,
                           thickness: 2,
                         ),
                       ],
@@ -127,7 +143,7 @@ class CustomerListWidget extends StatelessWidget {
               ),
             ];
           } else {
-            // No branches available
+            // No cistomers available
             children = [
               Container(
                 height: 90,
@@ -184,14 +200,22 @@ class CustomerListWidget extends StatelessWidget {
                   ),
                 ),
                 trailing: RaisedButton.icon(
+                  color: CustomColors.mfinLightGrey,
+                  highlightColor: CustomColors.mfinLightGrey,
                   onPressed: null,
                   icon: customIconButton(
-                    Icons.menu,
+                    Icons.swap_vert,
                     35.0,
                     CustomColors.mfinBlue,
                     null,
                   ),
-                  label: Text("Sort by"),
+                  label: Text(
+                    "Sort by",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: CustomColors.mfinBlue,
+                    ),
+                  ),
                 ),
               ),
               new Divider(
@@ -210,5 +234,23 @@ class CustomerListWidget extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _makePhoneCall(int mobileNumber) async {
+    String callURL = 'tel:+91$mobileNumber';
+    if (await UrlLauncher.canLaunch(callURL)) {
+      await UrlLauncher.launch(callURL);
+    } else {
+      throw 'Could not make Phone to $mobileNumber';
+    }
+  }
+
+  Future<void> _makeSMS(int mobileNumber) async {
+    String callURL = 'sms:+91$mobileNumber';
+    if (await UrlLauncher.canLaunch(callURL)) {
+      await UrlLauncher.launch(callURL);
+    } else {
+      throw 'Could not send SMS to $mobileNumber';
+    }
   }
 }
