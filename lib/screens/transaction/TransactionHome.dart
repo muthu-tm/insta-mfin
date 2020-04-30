@@ -6,14 +6,7 @@ import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-class CustomerScreen extends StatefulWidget {
-  const CustomerScreen({Key key}) : super(key: key);
-
-  @override
-  _CustomerScreenState createState() => _CustomerScreenState();
-}
-
-class _CustomerScreenState extends State<CustomerScreen> {
+class TransactionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -36,26 +29,34 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => CustomerListWidget("New Customer")),
+                        builder: (context) =>
+                            CustomerListWidget("New Customer"),
+                      ),
                     );
                   }, // button pressed
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.person_add, 50.0, CustomColors.mfinBlue, () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CustomerListWidget("New Customer")),
-                        );
-                      }),
+                        Icons.arrow_upward,
+                        50.0,
+                        CustomColors.mfinAlertRed,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CustomerListWidget("New Customer"),
+                            ),
+                          );
+                        },
+                      ),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Add Customer",
+                        "Payments",
                         style: TextStyle(
                           fontSize: 17,
-                          color: CustomColors.mfinGrey,
+                          color: CustomColors.mfinAlertRed,
                           fontWeight: FontWeight.bold,
                         ),
                       ), // text
@@ -69,13 +70,21 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.group, 50.0, CustomColors.mfinBlue, () {print("Pressed All Customers");}),
-                      Padding(padding: EdgeInsets.all(05.0)),
+                        Icons.arrow_downward,
+                        50.0,
+                        CustomColors.mfinPositiveGreen,
+                        () {
+                          print("Pressed Collections");
+                        },
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(05.0),
+                      ),
                       Text(
-                        "All Customers",
+                        "Collections",
                         style: TextStyle(
                           fontSize: 17,
-                          color: CustomColors.mfinGrey,
+                          color: CustomColors.mfinPositiveGreen,
                           fontWeight: FontWeight.bold,
                         ),
                       ), // text
@@ -97,10 +106,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.group, 50.0, CustomColors.mfinPositiveGreen, () {print("Pressed All Customers");}),
+                        Icons.playlist_add,
+                        50.0,
+                        CustomColors.mfinPositiveGreen,
+                        () {
+                          print("Pressed Miscellaneous Expense");
+                        },
+                      ),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Active Customers",
+                        "Miscellaneous Expenses",
                         style: TextStyle(
                           fontSize: 17,
                           color: CustomColors.mfinPositiveGreen,
@@ -117,13 +132,19 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.group, 50.0, CustomColors.mfinAlertRed, () {print("Pressed All Customers");}),
+                        Icons.swap_horiz,
+                        50.0,
+                        CustomColors.mfinGrey,
+                        () {
+                          print("Pressed Journal Entry");
+                        },
+                      ),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Pending Customers",
+                        "Journal Entries",
                         style: TextStyle(
                           fontSize: 17,
-                          color: CustomColors.mfinAlertRed,
+                          color: CustomColors.mfinGrey,
                           fontWeight: FontWeight.bold,
                         ),
                       ), // text
@@ -139,18 +160,25 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
               children: <Widget>[
                 InkWell(
+                  splashColor: CustomColors.mfinButtonGreen, // splash color
                   onTap: () {}, // button pressed
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       customIconButton(
-                          Icons.group, 50.0, CustomColors.mfinGrey, () {print("Pressed All Customers");}),
+                        Icons.settings_applications,
+                        50.0,
+                        CustomColors.mfinBlue,
+                        () {
+                          print("Pressed Transaction Settings");
+                        },
+                      ),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
-                        "Closed Customers",
+                        "Transaction Settings",
                         style: TextStyle(
                           fontSize: 17,
-                          color: CustomColors.mfinGrey,
+                          color: CustomColors.mfinBlue,
                           fontWeight: FontWeight.bold,
                         ),
                       ), // text

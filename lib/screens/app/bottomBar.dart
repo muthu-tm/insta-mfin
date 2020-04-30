@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/customer/ViewCustomer.dart';
+import 'package:instamfin/screens/transaction/TransactionHome.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
-import 'package:instamfin/screens/customer/CustomerHome.dart';
 import 'package:instamfin/screens/settings/SettingsScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
@@ -18,23 +18,77 @@ Widget bottomBar(BuildContext context) {
             child: InkWell(
               splashColor: CustomColors.mfinFadedButtonGreen, // splash color
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => ViewCustomer()),
+                  MaterialPageRoute(
+                    builder: (context) => ViewCustomer(),
+                  ),
+                  (Route<dynamic> route) => false,
                 );
               }, // button pressed
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  customIconButton(Icons.supervisor_account, 40.0,
-                      CustomColors.mfinButtonGreen, () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ViewCustomer()),
-                    );
-                  }),
+                  customIconButton(
+                    Icons.supervisor_account,
+                    40.0,
+                    CustomColors.mfinButtonGreen,
+                    () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewCustomer(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
+                  ),
                   Text(
                     "Customers",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: CustomColors.mfinGrey,
+                    ),
+                  ), // text
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox.fromSize(
+          size: Size(screenWidth(context, dividedBy: 4), 100),
+          child: Material(
+            color: CustomColors.mfinBlue, // button color
+            child: InkWell(
+              splashColor: CustomColors.mfinButtonGreen, // splash color
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TransactionScreen(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              }, // button pressed
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  customIconButton(
+                    Icons.content_copy,
+                    35.0,
+                    CustomColors.mfinButtonGreen,
+                    () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TransactionScreen(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
+                  ),
+                  Text(
+                    "Transactions",
                     style: TextStyle(
                       fontSize: 12,
                       color: CustomColors.mfinGrey,
@@ -78,37 +132,13 @@ Widget bottomBar(BuildContext context) {
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
               splashColor: CustomColors.mfinButtonGreen, // splash color
-              onTap: () {}, // button pressed
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  customIconButton(
-                      Icons.content_copy, 35.0, CustomColors.mfinButtonGreen,
-                      () {
-                    print("Pressed Transactions");
-                  }),
-                  Text(
-                    "Transactions",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: CustomColors.mfinGrey,
-                    ),
-                  ), // text
-                ],
-              ),
-            ),
-          ),
-        ),
-        SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 4), 100),
-          child: Material(
-            color: CustomColors.mfinBlue, // button color
-            child: InkWell(
-              splashColor: CustomColors.mfinButtonGreen, // splash color
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => SettingsScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                  (Route<dynamic> route) => false,
                 );
               }, // button pressed
               child: Column(
@@ -116,9 +146,12 @@ Widget bottomBar(BuildContext context) {
                 children: <Widget>[
                   customIconButton(
                       Icons.settings, 35.0, CustomColors.mfinButtonGreen, () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => SettingsScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => SettingsScreen(),
+                      ),
+                      (Route<dynamic> route) => false,
                     );
                   }),
                   Text(
