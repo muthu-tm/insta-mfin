@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/address.dart';
-import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -14,7 +13,7 @@ import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 class EditCustomerProfile extends StatefulWidget {
   EditCustomerProfile(this.customer);
 
-  final Customer customer;
+  final Map<String, dynamic> customer;
 
   @override
   _EditCustomerProfileState createState() => _EditCustomerProfileState();
@@ -31,7 +30,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
 
   @override
   Widget build(BuildContext context) {
-    updatedCustomer['customer_number'] = widget.customer.mobileNumber;
+    updatedCustomer['mobile_number'] = widget.customer['mobile_number'];
 
     return new Scaffold(
       key: _scaffoldKey,
@@ -39,14 +38,14 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Edit - ${widget.customer.name}'),
+        title: Text('Edit - ${widget.customer['customer_name']}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: new Container(
-              height: MediaQuery.of(context).size.height * 1.16,
+              height: MediaQuery.of(context).size.height * 1.25,
               color: CustomColors.mfinLightGrey,
               child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -56,7 +55,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                   ListTile(
                     title: TextFormField(
                       keyboardType: TextInputType.text,
-                      initialValue: widget.customer.name,
+                      initialValue: widget.customer['customer_name'],
                       decoration: InputDecoration(
                         hintText: 'Customer Name',
                         fillColor: CustomColors.mfinWhite,
@@ -79,7 +78,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                   ListTile(
                     title: new TextFormField(
                         keyboardType: TextInputType.text,
-                        initialValue: widget.customer.customerID,
+                        initialValue: widget.customer['customer_id'],
                         decoration: InputDecoration(
                           hintText: 'Enter Customer ID',
                           fillColor: CustomColors.mfinWhite,
@@ -101,7 +100,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                   ListTile(
                     title: new TextFormField(
                       keyboardType: TextInputType.text,
-                      initialValue: widget.customer.age.toString(),
+                      initialValue: widget.customer['age'].toString(),
                       decoration: InputDecoration(
                         hintText: 'Enter Customer Age',
                         fillColor: CustomColors.mfinWhite,
@@ -125,7 +124,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                   RowHeaderText(textName: 'Profession'),
                   ListTile(
                     title: new TextFormField(
-                      initialValue: widget.customer.profession,
+                      initialValue: widget.customer['customer_profession'],
                       decoration: InputDecoration(
                         hintText: "Customer Profession",
                         fillColor: CustomColors.mfinWhite,
@@ -195,7 +194,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                   RowHeaderText(textName: 'Guarantied by'),
                   ListTile(
                     title: new TextFormField(
-                      initialValue: widget.customer.guarantiedBy.toString(),
+                      initialValue: widget.customer['guarantied_by'].toString(),
                       decoration: InputDecoration(
                         hintText: "Referred/Gurantied by",
                         fillColor: CustomColors.mfinWhite,
@@ -205,11 +204,6 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         border: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: CustomColors.mfinWhite)),
-                        suffixIcon: Icon(
-                          Icons.perm_contact_calendar,
-                          color: CustomColors.mfinBlue,
-                          size: 35.0,
-                        ),
                       ),
                       validator: (val) {
                         if (val.trim().isEmpty) {
@@ -223,7 +217,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                     ),
                   ),
                   AddressWidget(
-                      "Address", widget.customer.address, updatedAddress),
+                      "Address", Address.fromJson(widget.customer['address']), updatedAddress),
                 ],
               ),
             ),
@@ -258,7 +252,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
       CustController _cc = CustController();
       updatedCustomer['address'] = updatedAddress.toJson();
       var result = await _cc.updateCustomer(
-          updatedCustomer, widget.customer.mobileNumber);
+          updatedCustomer, widget.customer['mobile_number']);
 
       if (!result['is_success']) {
         Navigator.pop(context);
