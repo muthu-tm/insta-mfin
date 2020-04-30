@@ -136,6 +136,20 @@ class Customer extends Model {
         .snapshots();
   }
 
+  Future<dynamic> getPayments(int number) async {
+    String docID = getDocumentID(mobileNumber, user.primaryFinance,
+          user.primaryBranch, user.primarySubBranch);
+
+    var snap = await getCollectionRef().document(docID).collection('payments').getDocuments();
+
+    if(snap.documents.isEmpty) {
+      return null;
+    } else {
+      return snap.documents.first;
+    }
+    
+  }
+
   create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
@@ -148,5 +162,11 @@ class Customer extends Model {
     var user = await getByID("");
     dynamic result = await super.upsert(this.toJson(), user['created_at']);
     print(result);
+  }
+
+  remove(int number) async {
+    String docID = getDocumentID(number, user.primaryFinance,
+          user.primaryBranch, user.primarySubBranch);
+    await delete(docID);
   }
 }

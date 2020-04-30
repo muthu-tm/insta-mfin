@@ -52,16 +52,22 @@ class CustController {
     }
   }
 
-  Future removeCustomer(int mobileNumber) async {
+  Future removeCustomer(int mobileNumber, bool isForce) async {
     try {
       Customer customer = Customer();
-      User user = uc.getCurrentUser();
-      String docID = customer.getDocumentID(mobileNumber, user.primaryFinance,
-          user.primaryBranch, user.primarySubBranch);
-      await customer.delete(docID);
+      if (!isForce) {
+        var payments = await customer.getPayments(mobileNumber);
+
+        if (payments != null) {
+          return null;
+        }
+      }
+
+      await customer.remove(mobileNumber);
 
       return CustomResponse.getSuccesReponse("Successfully removed customer!");
     } catch (err) {
+      print("Error while removing customer $mobileNumber: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

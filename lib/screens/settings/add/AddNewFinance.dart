@@ -20,7 +20,6 @@ class _AddFinancePageState extends State<AddFinancePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FocusNode myFocusNode = FocusNode();
 
   DateTime selectedDate = DateTime.now();
   var dateFormatter = DateUtils.dateFormatter;

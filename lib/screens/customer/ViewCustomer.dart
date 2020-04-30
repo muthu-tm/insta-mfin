@@ -134,7 +134,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
                 ],
               ),
             ),
-            CustomerListWidget(title, status),
+            CustomerListWidget(widget._scaffoldKey, title, status),
           ],
         ),
       ),

@@ -26,13 +26,13 @@ class TransactionScreen extends StatelessWidget {
                 InkWell(
                   splashColor: CustomColors.mfinButtonGreen, // splash color
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            CustomerListWidget("New Customer"),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) =>
+                    //         CustomerListWidget("New Customer"),
+                    //   ),
+                    // );
                   }, // button pressed
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -42,13 +42,13 @@ class TransactionScreen extends StatelessWidget {
                         50.0,
                         CustomColors.mfinAlertRed,
                         () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CustomerListWidget("New Customer"),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) =>
+                          //         CustomerListWidget("New Customer"),
+                          //   ),
+                          // );
                         },
                       ),
                       Padding(padding: EdgeInsets.all(05.0)),

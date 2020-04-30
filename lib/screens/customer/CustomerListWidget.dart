@@ -4,15 +4,19 @@ import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class CustomerListWidget extends StatelessWidget {
-  CustomerListWidget(this.title, [this.userStatus = 0]);
+  CustomerListWidget(this._scaffoldKey, this.title, [this.userStatus = 0]);
   final Customer _cust = Customer();
 
   final int userStatus;
   final String title;
+  final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +134,21 @@ class CustomerListWidget extends StatelessWidget {
                               size: 35.0,
                               color: CustomColors.mfinAlertRed,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              CustomDialogs.confirm(
+                                context,
+                                "Confirm",
+                                "Are you sure to remove ${snapshot.data.documents[index].data['customer_name']} Customer",
+                                () {
+                                  Navigator.pop(context);
+                                },
+                                () {
+                                  Navigator.pop(context);
+                                },
+                              );
+                              _removeCustomer(snapshot
+                                  .data.documents[index].data['mobile_number']);
+                            },
                           ),
                         ),
                         new Divider(
@@ -251,6 +269,19 @@ class CustomerListWidget extends StatelessWidget {
       await UrlLauncher.launch(callURL);
     } else {
       throw 'Could not send SMS to $mobileNumber';
+    }
+  }
+
+  _removeCustomer(int mobileNumber) async {
+    CustController _cc = CustController();
+    var result = await _cc.removeCustomer(mobileNumber, false);
+    if (result == null) {
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          "There are few Payments available for this Customer. Please remove the Payments first!",
+          3));
+    } else {
+      _scaffoldKey.currentState.showSnackBar(
+          CustomSnackBar.errorSnackBar("Customer removed successfully", 2));
     }
   }
 }
