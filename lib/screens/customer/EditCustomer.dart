@@ -1,45 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/address.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/settings/UserSetting.dart';
+import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
-import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
-final UserService _userService = locator<UserService>();
+class EditCustomerProfile extends StatefulWidget {
+  EditCustomerProfile(this.customer);
 
-class EditUserProfile extends StatefulWidget {
+  final Customer customer;
+
   @override
-  _EditUserProfileState createState() => _EditUserProfileState();
+  _EditCustomerProfileState createState() => _EditCustomerProfileState();
 }
 
-class _EditUserProfileState extends State<EditUserProfile> {
-  final User user = _userService.cachedUser;
-  final Map<String, dynamic> updatedUser = new Map();
+class _EditCustomerProfileState extends State<EditCustomerProfile> {
+  final Map<String, dynamic> updatedCustomer = new Map();
   final Address updatedAddress = new Address();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final UserController _userController = UserController();
-  TextEditingController passwordController = TextEditingController();
-
-  DateTime selectedDate = DateTime.now();
-  var _passwordVisible = false;
-  var hidePassword = true;
   var groupValue = 0;
 
   @override
   Widget build(BuildContext context) {
-    updatedUser['mobile_number'] = user.mobileNumber;
+    updatedCustomer['customer_number'] = widget.customer.mobileNumber;
 
     return new Scaffold(
       key: _scaffoldKey,
@@ -47,7 +39,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Edit Profile'),
+        title: Text('Edit - ${widget.customer.name}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: Form(
@@ -64,9 +56,9 @@ class _EditUserProfileState extends State<EditUserProfile> {
                   ListTile(
                     title: TextFormField(
                       keyboardType: TextInputType.text,
-                      initialValue: user.name,
+                      initialValue: widget.customer.name,
                       decoration: InputDecoration(
-                        hintText: 'User Name',
+                        hintText: 'Customer Name',
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
                         contentPadding: new EdgeInsets.symmetric(
@@ -77,56 +69,19 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       ),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Enter your Name';
+                          return 'Enter Customer Name';
                         }
-                        updatedUser['user_name'] = value;
+                        updatedCustomer['customer_name'] = value;
                       },
                     ),
                   ),
-                  RowHeaderText(textName: 'Password'),
-                  ListTile(
-                    title: new TextFormField(
-                      keyboardType: TextInputType.text,
-                      obscureText: hidePassword,
-                      initialValue: user.password,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your new Password',
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            // Based on passwordVisible state choose the icon
-                            _passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: CustomColors.mfinBlue,
-                            size: 35.0,
-                          ),
-                          onPressed: () {
-                            // Update the state i.e. toogle the state of passwordVisible variable
-                            setState(() {
-                              _passwordVisible = !_passwordVisible;
-                              hidePassword = !hidePassword;
-                            });
-                          },
-                        ),
-                      ),
-                      validator: (passkey) =>
-                          FieldValidator.passwordValidator(passkey, setPassKey),
-                    ),
-                  ),
-                  RowHeaderText(textName: 'Email'),
+                  RowHeaderText(textName: 'Customer ID'),
                   ListTile(
                     title: new TextFormField(
                         keyboardType: TextInputType.text,
-                        initialValue: user.emailID,
+                        initialValue: widget.customer.customerID,
                         decoration: InputDecoration(
-                          hintText: 'Enter your EmailID',
+                          hintText: 'Enter Customer ID',
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
                           contentPadding: new EdgeInsets.symmetric(
@@ -135,21 +90,44 @@ class _EditUserProfileState extends State<EditUserProfile> {
                               borderSide:
                                   BorderSide(color: CustomColors.mfinWhite)),
                         ),
-                        validator: (email) {
-                          if (email.trim().isEmpty) {
-                            setEmailID("");
-                            return null;
-                          } else {
-                            return FieldValidator.emailValidator(
-                                email.trim(), setEmailID);
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Enter Customer ID';
                           }
+                          updatedCustomer['customer_id'] = value;
                         }),
                   ),
-                  RowHeaderText(textName: 'Date Of Birth'),
+                  RowHeaderText(textName: 'Age'),
                   ListTile(
                     title: new TextFormField(
+                      keyboardType: TextInputType.text,
+                      initialValue: widget.customer.age.toString(),
                       decoration: InputDecoration(
-                        hintText: DateUtils.formatDate(selectedDate),
+                        hintText: 'Enter Customer Age',
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 3.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
+                      ),
+                      validator: (val) {
+                        if (val.trim().isEmpty) {
+                          updatedCustomer['age'] = 0;
+                          return null;
+                        } else {
+                          updatedCustomer['age'] = val.trim();
+                        }
+                      },
+                    ),
+                  ),
+                  RowHeaderText(textName: 'Profession'),
+                  ListTile(
+                    title: new TextFormField(
+                      initialValue: widget.customer.profession,
+                      decoration: InputDecoration(
+                        hintText: "Customer Profession",
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
                         contentPadding: new EdgeInsets.symmetric(
@@ -163,9 +141,14 @@ class _EditUserProfileState extends State<EditUserProfile> {
                           size: 35.0,
                         ),
                       ),
-                      enabled: false,
-                      autofocus: false,
-                      onTap: () => _selectDate(context),
+                      validator: (val) {
+                        if (val.trim().isEmpty) {
+                          updatedCustomer['customer_profession'] = '';
+                          return null;
+                        } else {
+                          updatedCustomer['customer_profession'] = val.trim();
+                        }
+                      },
                     ),
                   ),
                   RowHeaderText(textName: 'Gender'),
@@ -209,7 +192,38 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       ),
                     ],
                   ),
-                  AddressWidget("Address", user.address, updatedAddress),
+                  RowHeaderText(textName: 'Guarantied by'),
+                  ListTile(
+                    title: new TextFormField(
+                      initialValue: widget.customer.guarantiedBy.toString(),
+                      decoration: InputDecoration(
+                        hintText: "Referred/Gurantied by",
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 3.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
+                        suffixIcon: Icon(
+                          Icons.perm_contact_calendar,
+                          color: CustomColors.mfinBlue,
+                          size: 35.0,
+                        ),
+                      ),
+                      validator: (val) {
+                        if (val.trim().isEmpty) {
+                          updatedCustomer['guarantied_by'] = '';
+                          return null;
+                        } else {
+                          return FieldValidator.mobileValidator(
+                              val.trim(), setGuarantiedBy);
+                        }
+                      },
+                    ),
+                  ),
+                  AddressWidget(
+                      "Address", widget.customer.address, updatedAddress),
                 ],
               ),
             ),
@@ -223,33 +237,16 @@ class _EditUserProfileState extends State<EditUserProfile> {
     );
   }
 
-  setPassKey(String passkey) {
-    updatedUser['password'] = passkey;
-  }
-
-  setEmailID(String emailID) {
-    updatedUser['emailID'] = emailID;
-  }
-
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1901, 1),
-        lastDate: DateTime(2100));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-        updatedUser['date_of_birth'] = DateUtils.formatDate(picked);
-      });
+  setGuarantiedBy(String guranteeNumber) {
+    updatedCustomer['guarantied_by'] = guranteeNumber;
   }
 
   setSelectedRadio(int val) {
     this.groupValue = val;
     if (val == 0) {
-      updatedUser['gender'] = Gender.Male.name;
+      updatedCustomer['gender'] = Gender.Male.name;
     } else {
-      updatedUser['gender'] = Gender.Female.name;
+      updatedCustomer['gender'] = Gender.Female.name;
     }
   }
 
@@ -258,23 +255,20 @@ class _EditUserProfileState extends State<EditUserProfile> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Updating Profile");
-      updatedUser['address'] = updatedAddress.toJson();
-      var result = await _userController.updateUser(updatedUser);
+      CustController _cc = CustController();
+      updatedCustomer['address'] = updatedAddress.toJson();
+      var result = await _cc.updateCustomer(
+          updatedCustomer, widget.customer.mobileNumber);
 
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
-        print("User profile update failed: " + result['message']);
+        print("Customer profile update failed: " + result['message']);
       } else {
         Navigator.pop(context);
-        print("Updated user profile data");
+        print("Updated Customer profile data");
         Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => UserSetting()),
-        );
       }
     } else {
       print('Form not valid');
