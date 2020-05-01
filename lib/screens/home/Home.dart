@@ -4,10 +4,9 @@ import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
-import 'package:instamfin/screens/settings/widgets/CashInHandWidget.dart';
-import 'package:instamfin/screens/settings/widgets/LastMonthStockWidget.dart';
+import 'package:instamfin/screens/home/HomePage.dart';
+import 'package:instamfin/screens/home/MonthlyStatistics.dart';
 import 'package:instamfin/screens/settings/widgets/PageViewWidget.dart';
-import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
@@ -27,16 +26,12 @@ class UserHomeScreen extends StatelessWidget {
       constraints: const BoxConstraints.expand(),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-        child: PrimaryFinanceWidget("Primary Finance"),
+        child: HomePage(),
       ),
     ),
     new ConstrainedBox(
       constraints: const BoxConstraints.expand(),
-      child: cashInHand(),
-    ),
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: lastMothStock(),
+      child: mothlyStatistics(),
     ),
   ];
 

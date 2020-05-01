@@ -32,33 +32,59 @@ class _ViewCustomerState extends State<ViewCustomer> {
   @override
   Widget build(BuildContext context) {
     _pages = <Widget>[
-      new ConstrainedBox(
-        constraints: const BoxConstraints.expand(),
-        child: Container(
-            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-            child: Column(children: <Widget>[
-              viewCustomerWidget(titles[0], CustomColors.mfinBlue),
-            ])),
-      ),
-      new ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
+      Container(
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+          decoration: new BoxDecoration(
+            color: CustomColors.mfinBlue,
+            borderRadius: new BorderRadius.circular(15.0),
+          ),
           child: Column(children: <Widget>[
-            viewCustomerWidget(titles[1], CustomColors.mfinPositiveGreen),
+            viewCustomerWidget(titles[0], CustomColors.mfinBlue,
+                "Customers with no Collection and payments", 0),
           ])),
-      new ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-          child: Column(children: <Widget>[
-            viewCustomerWidget(titles[2], CustomColors.mfinFadedButtonGreen),
+      Container(
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+          decoration: new BoxDecoration(
+            color: CustomColors.mfinPositiveGreen,
+            borderRadius: new BorderRadius.circular(15.0),
+          ),
+          child:Column(children: <Widget>[
+            viewCustomerWidget(titles[1], CustomColors.mfinPositiveGreen,
+                "Customers who has active Payments", 0),
           ])),
-      new ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-          child: Column(children: <Widget>[
-            viewCustomerWidget(titles[3], CustomColors.mfinGrey),
+       Container(
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+          decoration: new BoxDecoration(
+            color: CustomColors.mfinFadedButtonGreen,
+            borderRadius: new BorderRadius.circular(15.0),
+          ),
+          child:Column(children: <Widget>[
+            viewCustomerWidget(titles[2], CustomColors.mfinFadedButtonGreen,
+                "Customer who has not paid their collection and date", 0),
           ])),
-      new ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
+      Container(
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+          decoration: new BoxDecoration(
+            color: CustomColors.mfinGrey,
+            borderRadius: new BorderRadius.circular(15.0),
+          ),
           child: Column(children: <Widget>[
-            viewCustomerWidget(titles[4], CustomColors.mfinAlertRed),
+            viewCustomerWidget(
+              titles[3],
+              CustomColors.mfinGrey,
+              "Customers who has not settled their payments",
+              0,
+            ),
+          ])),
+      Container(
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+          decoration: new BoxDecoration(
+            color: CustomColors.mfinAlertRed,
+            borderRadius: new BorderRadius.circular(15.0),
+          ),
+          child:Column(children: <Widget>[
+            viewCustomerWidget(titles[4], CustomColors.mfinAlertRed,
+                "Customers who has ended their collection", 0),
           ])),
     ];
     return new Scaffold(
