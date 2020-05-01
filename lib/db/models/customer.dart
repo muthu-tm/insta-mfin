@@ -127,27 +127,37 @@ class Customer extends Model {
         this.mobileNumber, this.financeID, this.branchName, this.subBranchName);
   }
 
-  Stream<QuerySnapshot> getCustomerByStatus(int status) {
-    return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primaryFinance)
-        .where('branch_name', isEqualTo: user.primaryBranch)
-        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
-        .where('customer_status', isEqualTo: status)
-        .snapshots();
+  Stream<QuerySnapshot> getCustomerByStatus(int status, bool fetchAll) {
+    if (fetchAll) {
+      return getCollectionRef()
+          .where('finance_id', isEqualTo: user.primaryFinance)
+          .where('branch_name', isEqualTo: user.primaryBranch)
+          .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+          .snapshots();
+    } else {
+      return getCollectionRef()
+          .where('finance_id', isEqualTo: user.primaryFinance)
+          .where('branch_name', isEqualTo: user.primaryBranch)
+          .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+          .where('customer_status', isEqualTo: status)
+          .snapshots();
+    }
   }
 
   Future<dynamic> getPayments(int number) async {
     String docID = getDocumentID(mobileNumber, user.primaryFinance,
-          user.primaryBranch, user.primarySubBranch);
+        user.primaryBranch, user.primarySubBranch);
 
-    var snap = await getCollectionRef().document(docID).collection('payments').getDocuments();
+    var snap = await getCollectionRef()
+        .document(docID)
+        .collection('payments')
+        .getDocuments();
 
-    if(snap.documents.isEmpty) {
+    if (snap.documents.isEmpty) {
       return null;
     } else {
       return snap.documents.first;
     }
-    
   }
 
   create() async {
@@ -165,8 +175,8 @@ class Customer extends Model {
   }
 
   remove(int number) async {
-    String docID = getDocumentID(number, user.primaryFinance,
-          user.primaryBranch, user.primarySubBranch);
+    String docID = getDocumentID(
+        number, user.primaryFinance, user.primaryBranch, user.primarySubBranch);
     await delete(docID);
   }
 }
