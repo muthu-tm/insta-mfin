@@ -11,17 +11,18 @@ import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class CustomerListWidget extends StatelessWidget {
-  CustomerListWidget(this._scaffoldKey, this.title, [this.userStatus = 0]);
+  CustomerListWidget(this._scaffoldKey, this.title, [this.userStatus = 0, this.fetchAll = true]);
   final Customer _cust = Customer();
 
   final int userStatus;
+  final bool fetchAll;
   final String title;
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _cust.getCustomerByStatus(userStatus),
+      stream: _cust.getCustomerByStatus(userStatus, fetchAll),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
