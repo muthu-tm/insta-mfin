@@ -51,31 +51,31 @@ class _AddCustomerState extends State<AddCustomer> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ListTile(
+                  leading: new Text("Customer Name",
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      )),
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      labelText: "Customer Name",
                       labelStyle: TextStyle(
                         color: CustomColors.mfinBlue,
                       ),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                     ),
-                    validator: (name) {
-                      if (name.trim().isEmpty) {
-                        return 'Enter the Customer Name';
-                      }
-
-                      this.name = name.trim();
-                      return null;
-                    },
+                    validator: (name) => FieldValidator.customerNameValidator(
+                        name, setCustomerNameState),
                   ),
                 ),
                 ListTile(
+                  leading: new Text("Customer ID       ",
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      )),
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      labelText: "Customer ID",
                       labelStyle: TextStyle(
                         color: CustomColors.mfinBlue,
                       ),
@@ -94,10 +94,13 @@ class _AddCustomerState extends State<AddCustomer> {
                   ),
                 ),
                 ListTile(
+                  leading: new Text("Contact Number",
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      )),
                   title: new TextFormField(
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                        labelText: 'Contact Number',
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -110,10 +113,13 @@ class _AddCustomerState extends State<AddCustomer> {
                       }),
                 ),
                 ListTile(
+                  leading: new Text("Customer Profession",
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      )),
                   title: new TextFormField(
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        labelText: 'Customer Profession',
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -130,10 +136,13 @@ class _AddCustomerState extends State<AddCustomer> {
                       }),
                 ),
                 ListTile(
+                  leading: new Text("Customer Age     ",
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      )),
                   title: new TextFormField(
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                        labelText: 'Customer Age',
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -150,10 +159,13 @@ class _AddCustomerState extends State<AddCustomer> {
                       }),
                 ),
                 ListTile(
+                  leading: new Text("Guarantee by       ",
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      )),
                   title: new TextFormField(
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                        labelText: 'Guarantee by',
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -214,5 +226,11 @@ class _AddCustomerState extends State<AddCustomer> {
 
   _close() {
     Navigator.pop(context);
+  }
+
+  setCustomerNameState(name) {
+    setState(() {
+      this.name = name.trim();
+    });
   }
 }
