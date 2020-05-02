@@ -160,7 +160,8 @@ class PrimaryFinanceWidget extends StatelessWidget {
 
           return new Card(
             color: CustomColors.mfinLightGrey,
-            child: new Column(
+            child: SingleChildScrollView(
+            child:new Column(
               children: <Widget>[
                 ListTile(
                     leading: Icon(
@@ -204,6 +205,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
             ),
           );
         });

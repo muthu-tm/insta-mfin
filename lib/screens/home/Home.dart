@@ -68,7 +68,7 @@ class UserHomeScreen extends StatelessWidget {
                 right: 0.0,
                 child: new Container(
                   color: CustomColors.mfinLightGrey,
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: new Center(
                     child: new DotsIndicator(
                       controller: _controller,

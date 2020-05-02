@@ -118,21 +118,22 @@ class _ViewCustomerState extends State<ViewCustomer> {
       ),
     ];
     return new Scaffold(
-      resizeToAvoidBottomInset: false, // set it to false
       key: widget._scaffoldKey,
       appBar: topAppBar(context),
       drawer: openDrawer(context),
-      body: Column(
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              _buildPageView(),
-              _buildCircleIndicator(),
-            ],
-          ),
-          CustomerListWidget(
-              widget._scaffoldKey, title, status, allCustomerField),
-        ],
+      body: new SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                _buildPageView(),
+                _buildCircleIndicator(),
+              ],
+            ),
+            CustomerListWidget(
+                widget._scaffoldKey, title, status, allCustomerField),
+          ],
+        ),
       ),
       bottomSheet: bottomBar(context),
     );
