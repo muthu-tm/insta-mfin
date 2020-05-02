@@ -35,69 +35,87 @@ class _ViewCustomerState extends State<ViewCustomer> {
   Widget build(BuildContext context) {
     _pages = <Widget>[
       Container(
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-          decoration: new BoxDecoration(
-            color: CustomColors.mfinBlue,
-            borderRadius: new BorderRadius.circular(15.0),
-          ),
-          child: Column(children: <Widget>[
-            viewCustomerWidget(titles[0], CustomColors.mfinBlue,
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+        decoration: new BoxDecoration(
+          color: CustomColors.mfinGrey,
+          borderRadius: new BorderRadius.circular(15.0),
+        ),
+        child: Column(
+          children: <Widget>[
+            viewCustomerWidget(titles[0], CustomColors.mfinGrey,
                 "Customers with no Collection and payments", 0),
-          ])),
+          ],
+        ),
+      ),
       Container(
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-          decoration: new BoxDecoration(
-            color: CustomColors.mfinFadedButtonGreen,
-            borderRadius: new BorderRadius.circular(15.0),
-          ),
-          child: Column(children: <Widget>[
-            viewCustomerWidget(titles[1], CustomColors.mfinFadedButtonGreen,
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+        decoration: new BoxDecoration(
+          color: CustomColors.mfinBlue,
+          borderRadius: new BorderRadius.circular(15.0),
+        ),
+        child: Column(
+          children: <Widget>[
+            viewCustomerWidget(titles[1], CustomColors.mfinBlue,
                 "Customers with no Collection and payments", 0),
-          ])),
+          ],
+        ),
+      ),
       Container(
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-          decoration: new BoxDecoration(
-            color: CustomColors.mfinPositiveGreen,
-            borderRadius: new BorderRadius.circular(15.0),
-          ),
-          child: Column(children: <Widget>[
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+        decoration: new BoxDecoration(
+          color: CustomColors.mfinPositiveGreen,
+          borderRadius: new BorderRadius.circular(15.0),
+        ),
+        child: Column(
+          children: <Widget>[
             viewCustomerWidget(titles[2], CustomColors.mfinPositiveGreen,
                 "Customers who has active Payments", 0),
-          ])),
+          ],
+        ),
+      ),
       Container(
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-          decoration: new BoxDecoration(
-            color: CustomColors.mfinFadedButtonGreen,
-            borderRadius: new BorderRadius.circular(15.0),
-          ),
-          child: Column(children: <Widget>[
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+        decoration: new BoxDecoration(
+          color: CustomColors.mfinFadedButtonGreen,
+          borderRadius: new BorderRadius.circular(15.0),
+        ),
+        child: Column(
+          children: <Widget>[
             viewCustomerWidget(titles[3], CustomColors.mfinFadedButtonGreen,
                 "Customer who has not paid their collection and date", 0),
-          ])),
+          ],
+        ),
+      ),
       Container(
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-          decoration: new BoxDecoration(
-            color: CustomColors.mfinGrey,
-            borderRadius: new BorderRadius.circular(15.0),
-          ),
-          child: Column(children: <Widget>[
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+        decoration: new BoxDecoration(
+          color: CustomColors.mfinGrey,
+          borderRadius: new BorderRadius.circular(15.0),
+        ),
+        child: Column(
+          children: <Widget>[
             viewCustomerWidget(
               titles[4],
               CustomColors.mfinGrey,
               "Customers who has not settled their payments",
               0,
             ),
-          ])),
+          ],
+        ),
+      ),
       Container(
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-          decoration: new BoxDecoration(
-            color: CustomColors.mfinAlertRed,
-            borderRadius: new BorderRadius.circular(15.0),
-          ),
-          child: Column(children: <Widget>[
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+        decoration: new BoxDecoration(
+          color: CustomColors.mfinAlertRed,
+          borderRadius: new BorderRadius.circular(15.0),
+        ),
+        child: Column(
+          children: <Widget>[
             viewCustomerWidget(titles[5], CustomColors.mfinAlertRed,
-                "Customers who has ended their collection", 0),
-          ])),
+                "Customers who are all blocked due to unpaid payments", 0),
+          ],
+        ),
+      ),
     ];
     return new Scaffold(
       resizeToAvoidBottomInset: false, // set it to false
@@ -125,20 +143,23 @@ class _ViewCustomerState extends State<ViewCustomer> {
       height: 250,
       child: Card(
         child: PageView.builder(
-            itemCount: _pages.length,
-            controller: _pageController,
-            itemBuilder: (BuildContext context, int index) {
-              return Center(
-                child: _pages[index],
-              );
-            },
-            onPageChanged: (int index) {
-              _currentPageNotifier.value = index;
-              if (index > 0) {
-                allCustomerField = false;
-              }
-              setSelectedCard(index, titles[index], allCustomerField);
-            }),
+          itemCount: _pages.length,
+          controller: _pageController,
+          itemBuilder: (BuildContext context, int index) {
+            return Center(
+              child: _pages[index],
+            );
+          },
+          onPageChanged: (int index) {
+            _currentPageNotifier.value = index;
+            if (index > 0) {
+              allCustomerField = false;
+            } else {
+              allCustomerField = true;
+            }
+            setSelectedCard(index, titles[index], allCustomerField);
+          },
+        ),
       ),
     );
   }
@@ -151,6 +172,8 @@ class _ViewCustomerState extends State<ViewCustomer> {
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: CirclePageIndicator(
+          dotColor: CustomColors.mfinWhite,
+          selectedDotColor: CustomColors.mfinButtonGreen,
           itemCount: _pages.length,
           currentPageNotifier: _currentPageNotifier,
           selectedSize: 15,
@@ -160,10 +183,12 @@ class _ViewCustomerState extends State<ViewCustomer> {
   }
 
   setSelectedCard(int val, String title, bool allCustomer) {
-    setState(() {
-      this.status = val;
-      this.title = title;
-      this.allCustomerField = allCustomer;
-    });
+    setState(
+      () {
+        this.status = val;
+        this.title = title;
+        this.allCustomerField = allCustomer;
+      },
+    );
   }
 }
