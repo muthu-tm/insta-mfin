@@ -16,17 +16,17 @@ Widget homeContainerWidget(labelName, value) {
               fontFamily: 'Georgia',
               color: CustomColors.mfinBlue,
               fontWeight: FontWeight.bold,
-              fontSize: 22.0,
+              fontSize: 15.0,
             ),
           ),
           new Spacer(
             flex: 1,
           ),
           Container(
-            height: 40.0,
+            height: 25.0,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Text(
                   value,
@@ -34,7 +34,7 @@ Widget homeContainerWidget(labelName, value) {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
+                    fontSize: 15.0,
                     color: CustomColors.mfinBlue,
                   ),
                 ),

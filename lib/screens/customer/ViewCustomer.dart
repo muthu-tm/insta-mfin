@@ -16,12 +16,14 @@ class ViewCustomer extends StatefulWidget {
 
 class _ViewCustomerState extends State<ViewCustomer> {
   int status = 0;
-  String title = "New Customers";
+  String title = "All Customers";
   final _pageController = PageController();
   final _currentPageNotifier = ValueNotifier<int>(0);
   List<Widget> _pages;
+  bool allCustomerField = true;
 
   final titles = [
+    'All Customers',
     'New Customers',
     'Active Customers',
     'Pending Customers',
@@ -45,21 +47,31 @@ class _ViewCustomerState extends State<ViewCustomer> {
       Container(
           padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
           decoration: new BoxDecoration(
+            color: CustomColors.mfinFadedButtonGreen,
+            borderRadius: new BorderRadius.circular(15.0),
+          ),
+          child: Column(children: <Widget>[
+            viewCustomerWidget(titles[1], CustomColors.mfinFadedButtonGreen,
+                "Customers with no Collection and payments", 0),
+          ])),
+      Container(
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+          decoration: new BoxDecoration(
             color: CustomColors.mfinPositiveGreen,
             borderRadius: new BorderRadius.circular(15.0),
           ),
-          child:Column(children: <Widget>[
-            viewCustomerWidget(titles[1], CustomColors.mfinPositiveGreen,
+          child: Column(children: <Widget>[
+            viewCustomerWidget(titles[2], CustomColors.mfinPositiveGreen,
                 "Customers who has active Payments", 0),
           ])),
-       Container(
+      Container(
           padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
           decoration: new BoxDecoration(
             color: CustomColors.mfinFadedButtonGreen,
             borderRadius: new BorderRadius.circular(15.0),
           ),
-          child:Column(children: <Widget>[
-            viewCustomerWidget(titles[2], CustomColors.mfinFadedButtonGreen,
+          child: Column(children: <Widget>[
+            viewCustomerWidget(titles[3], CustomColors.mfinFadedButtonGreen,
                 "Customer who has not paid their collection and date", 0),
           ])),
       Container(
@@ -70,7 +82,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
           ),
           child: Column(children: <Widget>[
             viewCustomerWidget(
-              titles[3],
+              titles[4],
               CustomColors.mfinGrey,
               "Customers who has not settled their payments",
               0,
@@ -82,8 +94,8 @@ class _ViewCustomerState extends State<ViewCustomer> {
             color: CustomColors.mfinAlertRed,
             borderRadius: new BorderRadius.circular(15.0),
           ),
-          child:Column(children: <Widget>[
-            viewCustomerWidget(titles[4], CustomColors.mfinAlertRed,
+          child: Column(children: <Widget>[
+            viewCustomerWidget(titles[5], CustomColors.mfinAlertRed,
                 "Customers who has ended their collection", 0),
           ])),
     ];
@@ -100,7 +112,8 @@ class _ViewCustomerState extends State<ViewCustomer> {
               _buildCircleIndicator(),
             ],
           ),
-          CustomerListWidget(widget._scaffoldKey, title, status),
+          CustomerListWidget(
+              widget._scaffoldKey, title, status, allCustomerField),
         ],
       ),
       bottomSheet: bottomBar(context),
@@ -121,7 +134,10 @@ class _ViewCustomerState extends State<ViewCustomer> {
             },
             onPageChanged: (int index) {
               _currentPageNotifier.value = index;
-              setSelectedCard(index, titles[index]);
+              if (index > 0) {
+                allCustomerField = false;
+              }
+              setSelectedCard(index, titles[index], allCustomerField);
             }),
       ),
     );
@@ -137,15 +153,17 @@ class _ViewCustomerState extends State<ViewCustomer> {
         child: CirclePageIndicator(
           itemCount: _pages.length,
           currentPageNotifier: _currentPageNotifier,
+          selectedSize: 15,
         ),
       ),
     );
   }
 
-  setSelectedCard(int val, String title) {
+  setSelectedCard(int val, String title, bool allCustomer) {
     setState(() {
       this.status = val;
       this.title = title;
+      this.allCustomerField = allCustomer;
     });
   }
 }

@@ -8,7 +8,7 @@ import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class HomePage extends StatelessWidget {
-  final _controller = new PageController();
+  final _pageController = new PageController();
 
   static const _kDuration = const Duration(milliseconds: 300);
 
@@ -39,11 +39,11 @@ class HomePage extends StatelessWidget {
               new Stack(
                 children: <Widget>[
                   Container(
-                    height: 310,
+                    height: 240,
                     child: Card(
                       child: new PageView.builder(
                         physics: new AlwaysScrollableScrollPhysics(),
-                        controller: _controller,
+                        controller: _pageController,
                         itemBuilder: (BuildContext context, int index) {
                           return _pages[index % _pages.length];
                         },
@@ -56,13 +56,13 @@ class HomePage extends StatelessWidget {
                     right: 0.0,
                     child: new Container(
                       color: CustomColors.mfinLightGrey,
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: new Center(
                         child: new DotsIndicator(
-                          controller: _controller,
+                          controller: _pageController,
                           itemCount: _pages.length,
                           onPageSelected: (int page) {
-                            _controller.animateToPage(
+                            _pageController.animateToPage(
                               page,
                               duration: _kDuration,
                               curve: _kCurve,
