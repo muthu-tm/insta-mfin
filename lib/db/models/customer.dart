@@ -160,6 +160,21 @@ class Customer extends Model {
     }
   }
 
+  Future<Customer> getByMobileNumber(int number) async {
+    QuerySnapshot snap = await getCollectionRef()
+          .where('finance_id', isEqualTo: user.primaryFinance)
+          .where('branch_name', isEqualTo: user.primaryBranch)
+          .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+          .where('mobile_number', isEqualTo: number)
+          .getDocuments();
+    
+    if (snap.documents.isEmpty) {
+      return null;
+    }
+
+    return Customer.fromJson(snap.documents.first.data);
+  }
+
   create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();

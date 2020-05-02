@@ -13,6 +13,11 @@ class CustController {
       Customer cust = Customer();
       User user = uc.getCurrentUser();
 
+      Customer customer = await cust.getByMobileNumber(mobileNumber);
+      if (customer != null) {
+        throw 'Unable to create! Found an existing customer ${customer.name} with this contact number!';
+      }
+
       cust.setName(name);
       cust.setCustomerID(customerID);
       cust.setMobileNumber(mobileNumber);
