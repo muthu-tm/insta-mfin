@@ -1,6 +1,9 @@
 import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/branch.dart';
+import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -115,5 +118,15 @@ class User extends Model {
     await super.upsert(this.toJson(), user['created_at']);
     
     return this;
+  }
+
+  DocumentReference getFinanceDocReference() {
+    if (this.primarySubBranch != "") {
+     return SubBranch().getDocumentReference(this.primaryFinance, this.primaryBranch, this.primarySubBranch);
+    } else if (this.primaryBranch != "") {
+      return Branch().getDocumentReference(this.primaryFinance, this.primaryBranch);
+    } else {
+      return Finance().getDocumentRef(this.primaryFinance);
+    }
   }
 }

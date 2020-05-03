@@ -1,0 +1,62 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'payment.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Payment _$PaymentFromJson(Map<String, dynamic> json) {
+  return Payment()
+    ..cust = json['cust'] == null
+        ? null
+        : Customer.fromJson(json['cust'] as Map<String, dynamic>)
+    ..dateOfPayment = json['date_of_payment'] as String
+    ..totalAmount = json['total_amount'] as int
+    ..principalAmount = json['principal_amount'] as int
+    ..docCharge = json['doc_charge'] as int
+    ..surcharge = json['surcharge'] as int
+    ..totalPaid = json['total_paid'] as int
+    ..tenure = json['tenure'] as int
+    ..tenureType = json['tenure_type'] as int
+    ..interestRate = json['interest_rate'] as double
+    ..collectionAmount = json['collection_amount'] as int
+    ..givenBy = json['given_by'] as String
+    ..givenTo = json['given_to'] as String
+    ..status = json['payments_status'] as int
+    ..addedBy = json['added_by'] as int
+    ..createdAt = json['created_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
+    ..updatedAt = json['updated_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
+}
+
+int _getMillisecondsSinceEpoch(Timestamp ts) {
+  return ts.millisecondsSinceEpoch;
+}
+
+Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
+      'cust': instance.cust?.toJson(),
+      'date_of_payment':
+          instance.dateOfPayment == null ? '' : instance.dateOfPayment,
+      'total_amount': instance.totalAmount,
+      'principal_amount': instance.principalAmount,
+      'doc_charge': instance.docCharge == null ? 0 : instance.docCharge,
+      'surcharge': instance.surcharge == null ? 0 : instance.surcharge,
+      'total_paid': instance.totalPaid == null ? 0 : instance.totalPaid,
+      'tenure': instance.tenure,
+      'tenure_type': instance.tenureType,
+      'interest_rate':
+          instance.interestRate == null ? 0 : instance.interestRate,
+      'collection_amount': instance.collectionAmount,
+      'given_by': instance.givenBy == null ? '' : instance.givenBy,
+      'given_to': instance.givenTo == null ? '' : instance.givenTo,
+      'payments_status': instance.status,
+      'added_by': instance.addedBy,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+    };
