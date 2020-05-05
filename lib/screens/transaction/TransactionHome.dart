@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/transaction/TransactionSettings.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class TransactionScreen extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
+
     return new Scaffold(
       appBar: topAppBar(context),
       drawer: openDrawer(context),
@@ -170,6 +174,10 @@ class TransactionScreen extends StatelessWidget {
                         CustomColors.mfinBlue,
                         () {
                           print("Pressed Transaction Settings");
+                                              Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TransactionSetting()),
+                    );
                         },
                       ),
                       Padding(padding: EdgeInsets.all(05.0)),

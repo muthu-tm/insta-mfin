@@ -46,7 +46,6 @@ class _AddFinancePageState extends State<AddFinancePage> {
         key: _formKey,
         child: SingleChildScrollView(
           child: new Container(
-            height: MediaQuery.of(context).size.height * 1.16,
             color: CustomColors.mfinLightGrey,
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,

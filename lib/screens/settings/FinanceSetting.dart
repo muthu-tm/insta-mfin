@@ -24,7 +24,6 @@ class FinanceSetting extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: new Container(
-          height: MediaQuery.of(context).size.height * 1.30,
           child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -34,7 +33,7 @@ class FinanceSetting extends StatelessWidget {
               ]),
         ),
       ),
-      bottomSheet: bottomBar(context),
+      bottomNavigationBar: bottomBar(context),
     );
   }
 }

@@ -47,7 +47,6 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
         key: _formKey,
         child: SingleChildScrollView(
           child: new Container(
-            height: MediaQuery.of(context).size.height * 1.05,
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[

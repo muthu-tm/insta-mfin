@@ -25,7 +25,6 @@ class UserSetting extends StatelessWidget {
       body: new Center(
         child: SingleChildScrollView(
           child: new Container(
-            height: MediaQuery.of(context).size.height * 1.16,
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[

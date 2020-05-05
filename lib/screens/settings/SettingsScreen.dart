@@ -21,7 +21,6 @@ class SettingsScreen extends StatelessWidget {
       drawer: openDrawer(context),
       appBar: topAppBar(context),
       body: new Container(
-        height: MediaQuery.of(context).size.height * 0.80,
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
