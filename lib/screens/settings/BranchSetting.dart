@@ -31,7 +31,6 @@ class BranchSetting extends StatelessWidget {
           body = new Center(
             child: new SingleChildScrollView(
               child: new Container(
-                height: MediaQuery.of(context).size.height * 1.30,
                 child: new Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -78,7 +77,7 @@ class BranchSetting extends StatelessWidget {
             backgroundColor: CustomColors.mfinBlue,
           ),
           body: body,
-          bottomSheet: bottomBar(context),
+          bottomNavigationBar: bottomBar(context),
         );
       },
     );

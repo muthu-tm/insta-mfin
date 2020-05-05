@@ -28,7 +28,6 @@ class SubBranchSetting extends StatelessWidget {
       body: new Center(
         child: new SingleChildScrollView(
           child: new Container(
-            height: MediaQuery.of(context).size.height * 1.30,
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -39,7 +38,7 @@ class SubBranchSetting extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: bottomBar(context),
+      bottomNavigationBar: bottomBar(context),
     );
   }
 }
