@@ -112,20 +112,20 @@ class UserController {
     }
   }
 
-  Future updatePrimaryFinance(int userNumber, String financeID, String branchID,
-      String subBranchID) async {
+  Future updatePrimaryFinance(int userNumber, String financeID, String branchName,
+      String subBranchName) async {
     try {
       User user = User(userNumber);
 
       await user.update({
         'primary_finance': financeID,
-        'primary_branch': branchID,
-        'primary_sub_branch': subBranchID
+        'primary_branch': branchName,
+        'primary_sub_branch': subBranchName
       });
 
       _userService.cachedUser.primaryFinance = financeID;
-      _userService.cachedUser.primaryBranch = branchID;
-      _userService.cachedUser.primarySubBranch = subBranchID;
+      _userService.cachedUser.primaryBranch = branchName;
+      _userService.cachedUser.primarySubBranch = subBranchName;
     } catch (err) {
       print('Error while updating Primary Finance for $userNumber.! ' +
           err.toString());

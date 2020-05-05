@@ -266,8 +266,8 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
         _updatePrimary(
             widget.userID,
             _selectedFinance,
-            Branch().getDocumentID(_selectedFinance, _selectedBranch),
-            SubBranch().getDocumentID(_selectedBranch, _selectedSubBranch));
+            _selectedBranch,
+            _selectedSubBranch);
       } else if (_selectedBranch != "0") {
         BranchController _bc = BranchController();
         bool isAdmin = await _bc.isUserAdmin(
@@ -279,7 +279,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
               3));
         } else {
           _updatePrimary(widget.userID, _selectedFinance,
-              Branch().getDocumentID(_selectedFinance, _selectedBranch), "");
+              _selectedBranch, "");
         }
       } else {
         bool isAdmin = await financeController.isUserAdmin(
@@ -297,11 +297,11 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
   }
 
   _updatePrimary(
-      int userID, String financeID, String branchID, String subBranchID) async {
+      int userID, String financeID, String branchName, String subBranchName) async {
     Navigator.pop(context);
     CustomDialogs.actionWaiting(context, "Updating Primary Finance!");
     UserController _uc = UserController();
-    await _uc.updatePrimaryFinance(userID, financeID, branchID, subBranchID);
+    await _uc.updatePrimaryFinance(userID, financeID, branchName, subBranchName);
     Navigator.pop(context);
     Navigator.pop(context);
   }
