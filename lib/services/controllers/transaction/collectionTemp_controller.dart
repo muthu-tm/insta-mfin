@@ -2,7 +2,6 @@ import 'package:instamfin/db/models/coll_template.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class CollectionTempController {
-
   Future createTemplate(
       String name,
       int tAmount,
@@ -39,15 +38,15 @@ class CollectionTempController {
       CollectionTemp temp = CollectionTemp();
       return await temp.getTemplateByID(tempID);
     } catch (err) {
-      print("Error while retrieving Collection template for ID $tempID: " + err.toString());
+      print("Error while retrieving Collection template for ID $tempID: " +
+          err.toString());
       return null;
     }
   }
 
   Future<List<CollectionTemp>> getAllTemplates() async {
     try {
-      List<CollectionTemp> temps =
-          await CollectionTemp().getAllTemplates();
+      List<CollectionTemp> temps = await CollectionTemp().getAllTemplates();
 
       if (temps == null) {
         return [];
@@ -60,14 +59,27 @@ class CollectionTempController {
     }
   }
 
-  Future updateTemp(String tempID,
-      Map<String, dynamic> tempJSON) async {
+  Future updateTemp(String tempID, Map<String, dynamic> tempJSON) async {
     try {
       await CollectionTemp().update(tempID, tempJSON);
 
-      return CustomResponse.getSuccesReponse("Updated Collection template $tempID");
+      return CustomResponse.getSuccesReponse(
+          "Updated Collection template $tempID");
     } catch (err) {
-      print("Error while updating Collection template with ID $tempID: " + err.toString());
+      print("Error while updating Collection template with ID $tempID: " +
+          err.toString());
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future removeTemp(String tempID) async {
+    try {
+      await CollectionTemp().remove(tempID);
+      return CustomResponse.getSuccesReponse(
+          "removed Collection template $tempID");
+    } catch (err) {
+      print("Error while removing Collection template with ID $tempID: " +
+          err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

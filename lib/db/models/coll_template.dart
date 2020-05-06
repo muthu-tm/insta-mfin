@@ -113,6 +113,10 @@ class CollectionTemp {
         .setData(this.toJson());
   }
 
+  Stream<QuerySnapshot> streamTemplates() {
+    return getCollectionRef().snapshots();
+  }
+
   Future<List<CollectionTemp>> getAllTemplates() async {
     var tempDocs = await getCollectionRef().getDocuments();
 
@@ -146,5 +150,9 @@ class CollectionTemp {
     tempJSON['updated_at'] = DateTime.now();
 
     await getDocumentReference().updateData(tempJSON);
+  }
+
+  Future remove(String tempID) async {
+    await getCollectionRef().document(tempID).delete();
   }
 }
