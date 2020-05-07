@@ -36,159 +36,271 @@ class ViewCustomerProfile extends StatelessWidget {
                 ),
               ),
               new Divider(
-                color: CustomColors.mfinBlue,
-                thickness: 1,
+                color: CustomColors.mfinButtonGreen,
               ),
               ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "NAME",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
                 title: TextFormField(
                   initialValue: customer['customer_name'],
                   decoration: InputDecoration(
-                    labelText: 'Customer Name',
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
                         vertical: 3.0, horizontal: 3.0),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                      color: CustomColors.mfinGrey,
-                    )),
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
                   ),
                   enabled: false,
                   autofocus: false,
                 ),
               ),
               ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "ID",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
                 title: TextFormField(
                   initialValue: customer['customer_id'],
                   decoration: InputDecoration(
-                    labelText: 'Customer ID',
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
                         vertical: 3.0, horizontal: 3.0),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                      color: CustomColors.mfinGrey,
-                    )),
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
                   ),
                   enabled: false,
                   autofocus: false,
                 ),
               ),
               ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "CONTACT",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
                 title: TextFormField(
                   initialValue: customer['mobile_number'].toString(),
                   decoration: InputDecoration(
-                    labelText: 'Customer Mobile Number',
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 1.0),
+                        vertical: 3.0, horizontal: 3.0),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
                   ),
                   enabled: false,
                   autofocus: false,
                 ),
               ),
               ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "PROFESSION",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
                 title: TextFormField(
                   initialValue: customer['customer_profession'],
                   decoration: InputDecoration(
-                    labelText: 'Profession',
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 1.0),
+                        vertical: 3.0, horizontal: 3.0),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
                   ),
                   enabled: false,
                   autofocus: false,
                 ),
               ),
               ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "GENDER",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
                 title: TextFormField(
                   initialValue: customer['gender'],
                   decoration: InputDecoration(
-                    labelText: 'Gender',
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 1.0),
+                        vertical: 3.0, horizontal: 3.0),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
                   ),
                   enabled: false,
                   autofocus: false,
                 ),
               ),
               ListTile(
-                title: new TextFormField(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "AGE",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
+                title: TextFormField(
                   initialValue: customer['age'].toString(),
                   decoration: InputDecoration(
-                    labelText: "Customer's Age",
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 1.0),
+                        vertical: 3.0, horizontal: 3.0),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: CustomColors.mfinWhite)),
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
                   ),
                   enabled: false,
                   autofocus: false,
                 ),
               ),
               ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "GUARANTY",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
                 title: TextFormField(
                   initialValue: customer['guarantied_by'].toString(),
                   decoration: InputDecoration(
-                    labelText: 'Gurantied by',
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 1.0),
+                        vertical: 3.0, horizontal: 3.0),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
                   ),
                   enabled: false,
                   autofocus: false,
                 ),
               ),
               ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "ADDED BY",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
                 title: TextFormField(
                   initialValue: customer['added_by'].toString(),
                   decoration: InputDecoration(
-                    labelText: 'Customer Added by',
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 1.0),
+                        vertical: 3.0, horizontal: 3.0),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
                   ),
                   enabled: false,
                   autofocus: false,
                 ),
               ),
               ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "ADDRESS",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
                 title: TextFormField(
                   initialValue:
                       Address.fromJson(customer['address']).toString(),
-                  maxLines: 6,
+                  maxLines: 5,
                   decoration: InputDecoration(
-                    labelText: 'Customer Address',
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 1.0),
+                        vertical: 3.0, horizontal: 3.0),
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
                   ),
                   enabled: false,
                   autofocus: false,
                 ),
-              )
+              ),
             ],
           ),
         ),

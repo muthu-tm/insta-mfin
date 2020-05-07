@@ -51,12 +51,24 @@ class UserProfileWidget extends StatelessWidget {
               },
             ),
           ),
+          new Divider(
+            color: CustomColors.mfinButtonGreen,
+          ),
           ListTile(
+            leading: SizedBox(
+              width: 90,
+              child: Text(
+                "NAME",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinGrey),
+              ),
+            ),
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: user.name,
               decoration: InputDecoration(
-                hintText: 'User Name',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -71,11 +83,20 @@ class UserProfileWidget extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: SizedBox(
+              width: 90,
+              child: Text(
+                "CONTACT",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinGrey),
+              ),
+            ),
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: user.mobileNumber.toString(),
               decoration: InputDecoration(
-                hintText: 'Mobile Number',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -88,12 +109,21 @@ class UserProfileWidget extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: SizedBox(
+              width: 90,
+              child: Text(
+                "PASSWORD",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinGrey),
+              ),
+            ),
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: user.password,
               obscureText: true,
               decoration: InputDecoration(
-                hintText: 'Password',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -106,11 +136,20 @@ class UserProfileWidget extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: SizedBox(
+              width: 90,
+              child: Text(
+                "GENDER",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinGrey),
+              ),
+            ),
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: user.gender,
               decoration: InputDecoration(
-                hintText: 'Gender',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -123,11 +162,20 @@ class UserProfileWidget extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: SizedBox(
+              width: 90,
+              child: Text(
+                "EMAILID",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinGrey),
+              ),
+            ),
             title: new TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: user.emailID,
               decoration: InputDecoration(
-                hintText: 'Enter your EmailID',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -140,11 +188,20 @@ class UserProfileWidget extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: SizedBox(
+              width: 90,
+              child: Text(
+                "DOB",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinGrey),
+              ),
+            ),
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: user.dateOfBirth,
               decoration: InputDecoration(
-                hintText: 'Date Of Birth',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -157,12 +214,21 @@ class UserProfileWidget extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: SizedBox(
+              width: 90,
+              child: Text(
+                "ADDRESS",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinGrey),
+              ),
+            ),
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: user.address.toString(),
               maxLines: 5,
               decoration: InputDecoration(
-                hintText: 'Address',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
