@@ -24,9 +24,11 @@ class _AddressWidgetState extends State<AddressWidget> {
             leading: new Text(
               widget.addreesTitle,
               style: TextStyle(
-                  color: CustomColors.mfinGrey,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17),
+                fontFamily: "Georgia",
+                color: CustomColors.mfinGrey,
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+              ),
             ),
           ),
           ListTile(

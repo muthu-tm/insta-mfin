@@ -65,10 +65,9 @@ Widget openDrawer(BuildContext context) {
         new ListTile(
           title: new Text('Add a Customer'),
           trailing: new Icon(Icons.keyboard_arrow_right),
-          onTap: () => Navigator.pushAndRemoveUntil(
+          onTap: () => Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddCustomer()),
-            (Route<dynamic> route) => false,
           ),
         ),
         new ListTile(

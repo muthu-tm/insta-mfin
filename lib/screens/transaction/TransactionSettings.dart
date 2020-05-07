@@ -75,6 +75,21 @@ class _TransactionSettingState extends State<TransactionSetting> {
                                 color: Colors.black38,
                               ),
                             ),
+                            Radio(
+                              value: 2,
+                              groupValue: paymentGroupValue,
+                              activeColor: CustomColors.mfinBlue,
+                              onChanged: (val) {
+                                setPayment(val);
+                              },
+                            ),
+                            Text(
+                              "Year",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black38,
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -111,6 +126,21 @@ class _TransactionSettingState extends State<TransactionSetting> {
                             ),
                             Text(
                               "Month",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black38,
+                              ),
+                            ),
+                            Radio(
+                              value: 2,
+                              groupValue: transctionGroupValue,
+                              activeColor: CustomColors.mfinBlue,
+                              onChanged: (val) {
+                                setTransaction(val);
+                              },
+                            ),
+                            Text(
+                              "Year",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black38,

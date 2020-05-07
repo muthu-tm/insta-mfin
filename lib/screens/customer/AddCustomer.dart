@@ -18,7 +18,6 @@ class _AddCustomerState extends State<AddCustomer> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FocusNode myFocusNode = FocusNode();
 
   String name = "";
   String id = "";
@@ -44,17 +43,23 @@ class _AddCustomerState extends State<AddCustomer> {
         key: _formKey,
         child: SingleChildScrollView(
           child: new Container(
-            height: MediaQuery.of(context).size.height * 1.16,
             color: CustomColors.mfinLightGrey,
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ListTile(
-                  leading: new Text("Customer Name",
+                  leading: SizedBox(
+                    width: 85,
+                    child: Text(
+                      "NAME",
                       style: TextStyle(
-                        color: CustomColors.mfinBlue,
-                      )),
+                          fontSize: 13,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinGrey),
+                    ),
+                  ),
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
@@ -69,10 +74,17 @@ class _AddCustomerState extends State<AddCustomer> {
                   ),
                 ),
                 ListTile(
-                  leading: new Text("Customer ID       ",
+                  leading: SizedBox(
+                    width: 85,
+                    child: Text(
+                      "ID",
                       style: TextStyle(
-                        color: CustomColors.mfinBlue,
-                      )),
+                          fontSize: 13,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinGrey),
+                    ),
+                  ),
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
@@ -94,92 +106,124 @@ class _AddCustomerState extends State<AddCustomer> {
                   ),
                 ),
                 ListTile(
-                  leading: new Text("Contact Number",
+                  leading: SizedBox(
+                    width: 85,
+                    child: Text(
+                      "CONTACT",
                       style: TextStyle(
-                        color: CustomColors.mfinBlue,
-                      )),
+                          fontSize: 13,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinGrey),
+                    ),
+                  ),
                   title: new TextFormField(
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: CustomColors.mfinBlue,
-                        ),
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
                       ),
-                      validator: (number) {
-                        return FieldValidator.mobileValidator(
-                            number.trim(), setContactNumber);
-                      }),
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                    ),
+                    validator: (number) {
+                      return FieldValidator.mobileValidator(
+                          number.trim(), setContactNumber);
+                    },
+                  ),
                 ),
                 ListTile(
-                  leading: new Text("Customer Profession",
+                  leading: SizedBox(
+                    width: 85,
+                    child: Text(
+                      "PROFESSION",
                       style: TextStyle(
-                        color: CustomColors.mfinBlue,
-                      )),
+                          fontSize: 13,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinGrey),
+                    ),
+                  ),
                   title: new TextFormField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: CustomColors.mfinBlue,
-                        ),
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
                       ),
-                      validator: (val) {
-                        if (val.trim().isNotEmpty) {
-                          this.profession = val;
-                        } else {
-                          this.profession = "";
-                        }
-                        return null;
-                      }),
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                    ),
+                    validator: (val) {
+                      if (val.trim().isNotEmpty) {
+                        this.profession = val;
+                      } else {
+                        this.profession = "";
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 ListTile(
-                  leading: new Text("Customer Age     ",
+                  leading: SizedBox(
+                    width: 85,
+                    child: Text(
+                      "AGE",
                       style: TextStyle(
-                        color: CustomColors.mfinBlue,
-                      )),
+                          fontSize: 13,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinGrey),
+                    ),
+                  ),
                   title: new TextFormField(
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: CustomColors.mfinBlue,
-                        ),
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
                       ),
-                      validator: (val) {
-                        if (val.trim().isNotEmpty) {
-                          this.age = int.parse(val);
-                        } else {
-                          this.age = 0;
-                        }
-                        return null;
-                      }),
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                    ),
+                    validator: (val) {
+                      if (val.trim().isNotEmpty) {
+                        this.age = int.parse(val);
+                      } else {
+                        this.age = 0;
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 ListTile(
-                  leading: new Text("Guarantee by       ",
+                  leading: SizedBox(
+                    width: 85,
+                    child: Text(
+                      "GUARANTY BY",
                       style: TextStyle(
-                        color: CustomColors.mfinBlue,
-                      )),
+                          fontSize: 13,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinGrey),
+                    ),
+                  ),
                   title: new TextFormField(
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(
-                          color: CustomColors.mfinBlue,
-                        ),
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
                       ),
-                      validator: (val) {
-                        if (val.trim().isNotEmpty) {
-                          this.guarantiedBy = int.parse(val);
-                        } else {
-                          this.guarantiedBy = 0;
-                        }
-                        return null;
-                      }),
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                    ),
+                    validator: (val) {
+                      if (val.trim().isNotEmpty) {
+                        this.guarantiedBy = int.parse(val);
+                      } else {
+                        this.guarantiedBy = 0;
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 AddressWidget("Customer Address", new Address(), address),
               ],
@@ -187,7 +231,7 @@ class _AddCustomerState extends State<AddCustomer> {
           ),
         ),
       ),
-      bottomSheet: EditorsActionButtons(_submit, _close),
+      bottomNavigationBar: EditorsActionButtons(_submit, _close),
     );
   }
 
