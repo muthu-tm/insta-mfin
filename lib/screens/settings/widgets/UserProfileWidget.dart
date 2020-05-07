@@ -16,8 +16,9 @@ class UserProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: CustomColors.mfinLightGrey,
-        child: new Column(children: <Widget>[
+      color: CustomColors.mfinLightGrey,
+      child: new Column(
+        children: <Widget>[
           ListTile(
             leading: Icon(
               Icons.assignment_ind,
@@ -55,7 +56,7 @@ class UserProfileWidget extends StatelessWidget {
               keyboardType: TextInputType.text,
               initialValue: user.name,
               decoration: InputDecoration(
-                hintText: 'User_name',
+                hintText: 'User Name',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -74,7 +75,7 @@ class UserProfileWidget extends StatelessWidget {
               keyboardType: TextInputType.text,
               initialValue: user.mobileNumber.toString(),
               decoration: InputDecoration(
-                hintText: 'Mobile_Number',
+                hintText: 'Mobile Number',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -143,7 +144,7 @@ class UserProfileWidget extends StatelessWidget {
               keyboardType: TextInputType.text,
               initialValue: user.dateOfBirth,
               decoration: InputDecoration(
-                hintText: 'Date_Of_Birth',
+                hintText: 'Date Of Birth',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -173,6 +174,8 @@ class UserProfileWidget extends StatelessWidget {
               autofocus: false,
             ),
           )
-        ]));
+        ],
+      ),
+    );
   }
 }

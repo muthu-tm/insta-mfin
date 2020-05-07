@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
+import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -65,7 +66,13 @@ class ViewCustomer extends StatelessWidget {
                           flex: 2,
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ViewCustomerProfile(customer),
+                            ),
+                          ),
                           child: Container(
                             color: CustomColors.mfinButtonGreen,
                             width: MediaQuery.of(context).size.width * 0.18,
