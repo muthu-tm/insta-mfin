@@ -1,195 +1,243 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/customer/CustomerListWidget.dart';
-import 'package:instamfin/screens/settings/widgets/ViewCustomerWidgets.dart';
-import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:page_view_indicators/circle_page_indicator.dart';
-import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/customer/EditCustomer.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/screens/utils/url_launcher_utils.dart';
+import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
-class ViewCustomer extends StatefulWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class ViewCustomer extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  @override
-  _ViewCustomerState createState() => _ViewCustomerState();
-}
+  ViewCustomer(this.customer);
 
-class _ViewCustomerState extends State<ViewCustomer> {
-  int status = 0;
-  String title = "All Customers";
-  final _pageController = PageController();
-  final _currentPageNotifier = ValueNotifier<int>(0);
-  List<Widget> _pages;
-  bool allCustomerField = true;
-
-  final titles = [
-    'All Customers',
-    'New Customers',
-    'Active Customers',
-    'Pending Customers',
-    'Closed Customers',
-    'Blocked Customers'
-  ];
+  final Map<String, dynamic> customer;
 
   @override
   Widget build(BuildContext context) {
-    _pages = <Widget>[
-      Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-        decoration: new BoxDecoration(
-          color: CustomColors.mfinGrey,
-          borderRadius: new BorderRadius.circular(15.0),
-        ),
-        child: Column(
-          children: <Widget>[
-            viewCustomerWidget(titles[0], CustomColors.mfinGrey,
-                "Customers with no Collection and payments", 0),
-          ],
-        ),
-      ),
-      Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-        decoration: new BoxDecoration(
-          color: CustomColors.mfinBlue,
-          borderRadius: new BorderRadius.circular(15.0),
-        ),
-        child: Column(
-          children: <Widget>[
-            viewCustomerWidget(titles[1], CustomColors.mfinBlue,
-                "Customers with no Collection and payments", 0),
-          ],
-        ),
-      ),
-      Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-        decoration: new BoxDecoration(
-          color: CustomColors.mfinPositiveGreen,
-          borderRadius: new BorderRadius.circular(15.0),
-        ),
-        child: Column(
-          children: <Widget>[
-            viewCustomerWidget(titles[2], CustomColors.mfinPositiveGreen,
-                "Customers who has active Payments", 0),
-          ],
-        ),
-      ),
-      Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-        decoration: new BoxDecoration(
-          color: CustomColors.mfinFadedButtonGreen,
-          borderRadius: new BorderRadius.circular(15.0),
-        ),
-        child: Column(
-          children: <Widget>[
-            viewCustomerWidget(titles[3], CustomColors.mfinFadedButtonGreen,
-                "Customer who has not paid their collection and date", 0),
-          ],
-        ),
-      ),
-      Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-        decoration: new BoxDecoration(
-          color: CustomColors.mfinGrey,
-          borderRadius: new BorderRadius.circular(15.0),
-        ),
-        child: Column(
-          children: <Widget>[
-            viewCustomerWidget(
-              titles[4],
-              CustomColors.mfinGrey,
-              "Customers who has not settled their payments",
-              0,
-            ),
-          ],
-        ),
-      ),
-      Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-        decoration: new BoxDecoration(
-          color: CustomColors.mfinAlertRed,
-          borderRadius: new BorderRadius.circular(15.0),
-        ),
-        child: Column(
-          children: <Widget>[
-            viewCustomerWidget(titles[5], CustomColors.mfinAlertRed,
-                "Customers who are all blocked due to unpaid payments", 0),
-          ],
-        ),
-      ),
-    ];
     return new Scaffold(
-      key: widget._scaffoldKey,
-      appBar: topAppBar(context),
-      drawer: openDrawer(context),
-      body: new SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                _buildPageView(),
-                _buildCircleIndicator(),
-              ],
-            ),
-            CustomerListWidget(
-                widget._scaffoldKey, title, status, allCustomerField),
-          ],
+      key: _scaffoldKey,
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(customer['customer_name']),
+        backgroundColor: CustomColors.mfinBlue,
+      ),
+      body: SingleChildScrollView(
+        child: new Container(
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(
+                        Icons.account_box,
+                        size: 45.0,
+                        color: CustomColors.mfinButtonGreen,
+                      ),
+                      title: Text(
+                        customer['customer_name'],
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: CustomColors.mfinBlue,
+                        ),
+                      ),
+                      trailing: Text(
+                        customer['mobile_number'].toString(),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: CustomColors.mfinBlue,
+                        ),
+                      ),
+                    ),
+                    new Divider(
+                      indent: 20,
+                      endIndent: 20,
+                      color: CustomColors.mfinBlue,
+                      thickness: 1,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        new Spacer(
+                          flex: 2,
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            color: CustomColors.mfinButtonGreen,
+                            width: MediaQuery.of(context).size.width * 0.18,
+                            height: 60,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.contacts,
+                                  size: 25.0,
+                                  color: CustomColors.mfinBlack,
+                                ),
+                                Text(
+                                  "View",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: CustomColors.mfinBlack,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EditCustomerProfile(customer),
+                            ),
+                          ),
+                          child: Container(
+                            color: CustomColors.mfinBlue,
+                            width: MediaQuery.of(context).size.width * 0.18,
+                            height: 60,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.edit,
+                                  size: 25.0,
+                                  color: CustomColors.mfinLightGrey,
+                                ),
+                                Text(
+                                  "Edit",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: CustomColors.mfinLightGrey,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            CustomDialogs.confirm(
+                              context,
+                              "Confirm",
+                              "Are you sure to remove ${customer['customer_name']} Customer?",
+                              () async {
+                                Navigator.pop(context);
+                                CustomDialogs.actionWaiting(
+                                    context, "Removing Customer");
+                                CustController _cc = CustController();
+                                var result = await _cc.removeCustomer(
+                                    customer['mobile_number'], false);
+                                if (result == null) {
+                                  Navigator.pop(context);
+                                  _scaffoldKey.currentState.showSnackBar(
+                                      CustomSnackBar.errorSnackBar(
+                                          "There are few Payments available for this Customer. Please remove the Payments first!",
+                                          3));
+                                } else {
+                                  Navigator.pop(context);
+                                  print("Customer removed successfully");
+                                  Navigator.pop(context);
+                                }
+                              },
+                              () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                          child: Container(
+                            color: CustomColors.mfinAlertRed,
+                            width: MediaQuery.of(context).size.width * 0.18,
+                            height: 60,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.delete_forever,
+                                  size: 25.0,
+                                  color: CustomColors.mfinLightGrey,
+                                ),
+                                Text(
+                                  "Remove",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: CustomColors.mfinLightGrey,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => UrlLauncherUtils.makePhoneCall(
+                              customer['mobile_number']),
+                          child: Container(
+                            color: CustomColors.mfinPositiveGreen,
+                            width: MediaQuery.of(context).size.width * 0.18,
+                            height: 60,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.phone,
+                                  size: 25.0,
+                                  color: CustomColors.mfinLightGrey,
+                                ),
+                                Text(
+                                  "Phone",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: CustomColors.mfinLightGrey,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => UrlLauncherUtils.makeSMS(
+                              customer['mobile_number']),
+                          child: Container(
+                            color: CustomColors.mfinGrey,
+                            width: MediaQuery.of(context).size.width * 0.18,
+                            height: 60,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.message,
+                                  size: 25.0,
+                                  color: CustomColors.mfinBlack,
+                                ),
+                                Text(
+                                  "Text",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: CustomColors.mfinBlack,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        new Spacer(
+                          flex: 2,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
-      bottomSheet: bottomBar(context),
-    );
-  }
-
-  _buildPageView() {
-    return Container(
-      height: 250,
-      child: Card(
-        child: PageView.builder(
-          itemCount: _pages.length,
-          controller: _pageController,
-          itemBuilder: (BuildContext context, int index) {
-            return Center(
-              child: _pages[index],
-            );
-          },
-          onPageChanged: (int index) {
-            _currentPageNotifier.value = index;
-            if (index > 0) {
-              allCustomerField = false;
-            } else {
-              allCustomerField = true;
-            }
-            setSelectedCard(index, titles[index], allCustomerField);
-          },
-        ),
-      ),
-    );
-  }
-
-  _buildCircleIndicator() {
-    return Positioned(
-      left: 0.0,
-      right: 0.0,
-      bottom: 0.0,
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: CirclePageIndicator(
-          dotColor: CustomColors.mfinWhite,
-          selectedDotColor: CustomColors.mfinButtonGreen,
-          itemCount: _pages.length,
-          currentPageNotifier: _currentPageNotifier,
-          selectedSize: 15,
-        ),
-      ),
-    );
-  }
-
-  setSelectedCard(int val, String title, bool allCustomer) {
-    setState(
-      () {
-        this.status = val;
-        this.title = title;
-        this.allCustomerField = allCustomer;
-      },
+      bottomNavigationBar: bottomBar(context),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
-import 'package:instamfin/screens/customer/ViewCustomer.dart';
+import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
@@ -76,7 +76,7 @@ Widget openDrawer(BuildContext context) {
           trailing: new Icon(Icons.keyboard_arrow_right),
           onTap: () => Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => ViewCustomer()),
+            MaterialPageRoute(builder: (context) => CustomersFilteredView()),
             (Route<dynamic> route) => false,
           ),
         ),

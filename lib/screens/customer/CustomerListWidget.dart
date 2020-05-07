@@ -2,13 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
+import 'package:instamfin/screens/customer/ViewCustomer.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CustomerListWidget extends StatelessWidget {
@@ -46,14 +47,14 @@ class CustomerListWidget extends StatelessWidget {
                         caption: 'Phone',
                         color: CustomColors.mfinPositiveGreen,
                         icon: Icons.call,
-                        onTap: () => _makePhoneCall(snapshot
+                        onTap: () => UrlLauncherUtils.makePhoneCall(snapshot
                             .data.documents[index].data['mobile_number']),
                       ),
                       IconSlideAction(
                         caption: 'Message',
                         color: CustomColors.mfinGrey,
                         icon: Icons.message,
-                        onTap: () => _makeSMS(snapshot
+                        onTap: () => UrlLauncherUtils.makeSMS(snapshot
                             .data.documents[index].data['mobile_number']),
                       ),
                     ],
@@ -104,21 +105,45 @@ class CustomerListWidget extends StatelessWidget {
                                     onPressed: () => Navigator.pop(context),
                                   ),
                                   FlatButton(
-                                      color: CustomColors.mfinAlertRed,
-                                      child: Text(
-                                        "YES",
-                                        style: TextStyle(
-                                            color: CustomColors.mfinLightGrey,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                      onPressed: () {
+                                    color: CustomColors.mfinAlertRed,
+                                    child: Text(
+                                      "YES",
+                                      style: TextStyle(
+                                          color: CustomColors.mfinLightGrey,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                    onPressed: () async {
+                                      CustController _cc = CustController();
+                                      var result = await _cc.removeCustomer(
+                                        snapshot.data.documents[index]
+                                            .data['mobile_number'],
+                                        false,
+                                      );
+                                      if (result == null) {
                                         Navigator.pop(context);
-                                        _removeCustomer(
-                                            snapshot.data.documents[index]
-                                                .data['mobile_number']);
-                                      }),
+                                        _scaffoldKey.currentState.showSnackBar(
+                                          CustomSnackBar.errorSnackBar(
+                                            "There are few Payments available for this Customer. Please remove the Payments first!",
+                                            3,
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.pop(context);
+                                        print("Customer removed successfully");
+                                        _scaffoldKey.currentState.showSnackBar(
+                                          CustomSnackBar.errorSnackBar(
+                                              "Customer removed successfully",
+                                              2),
+                                        );
+                                      }
+                                      // _removeCustomer(snapshot
+                                      //     .data
+                                      //     .documents[index]
+                                      //     .data['mobile_number']);
+                                    },
+                                  ),
                                 ],
                               );
                             },
@@ -154,7 +179,15 @@ class CustomerListWidget extends StatelessWidget {
                                 fontSize: 18,
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ViewCustomer(
+                                      snapshot.data.documents[index].data),
+                                ),
+                              );
+                            },
                           ),
                           new Divider(
                             thickness: 2,
@@ -258,24 +291,6 @@ class CustomerListWidget extends StatelessWidget {
         );
       },
     );
-  }
-
-  Future<void> _makePhoneCall(int mobileNumber) async {
-    String callURL = 'tel:+91$mobileNumber';
-    if (await UrlLauncher.canLaunch(callURL)) {
-      await UrlLauncher.launch(callURL);
-    } else {
-      throw 'Could not make Phone to $mobileNumber';
-    }
-  }
-
-  Future<void> _makeSMS(int mobileNumber) async {
-    String callURL = 'sms:+91$mobileNumber';
-    if (await UrlLauncher.canLaunch(callURL)) {
-      await UrlLauncher.launch(callURL);
-    } else {
-      throw 'Could not send SMS to $mobileNumber';
-    }
   }
 
   _removeCustomer(int mobileNumber) async {

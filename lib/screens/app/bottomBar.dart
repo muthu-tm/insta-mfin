@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/customer/ViewCustomer.dart';
+import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
 import 'package:instamfin/screens/transaction/TransactionHome.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/SettingsScreen.dart';
@@ -21,7 +21,7 @@ Widget bottomBar(BuildContext context) {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ViewCustomer(),
+                    builder: (context) => CustomersFilteredView(),
                   ),
                   (Route<dynamic> route) => false,
                 );
@@ -37,7 +37,7 @@ Widget bottomBar(BuildContext context) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ViewCustomer(),
+                          builder: (context) => CustomersFilteredView(),
                         ),
                         (Route<dynamic> route) => false,
                       );
