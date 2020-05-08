@@ -61,7 +61,7 @@ class CustomerListWidget extends StatelessWidget {
                     secondaryActions: <Widget>[
                       IconSlideAction(
                         caption: 'Edit',
-                        color: CustomColors.mfinPositiveGreen,
+                        color: CustomColors.mfinBlue,
                         icon: Icons.edit,
                         onTap: () => Navigator.push(
                           context,
@@ -138,10 +138,6 @@ class CustomerListWidget extends StatelessWidget {
                                               2),
                                         );
                                       }
-                                      // _removeCustomer(snapshot
-                                      //     .data
-                                      //     .documents[index]
-                                      //     .data['mobile_number']);
                                     },
                                   ),
                                 ],
@@ -291,21 +287,5 @@ class CustomerListWidget extends StatelessWidget {
         );
       },
     );
-  }
-
-  _removeCustomer(int mobileNumber) async {
-    // CustomDialogs.actionWaiting(context, "Removing Customer");
-    CustController _cc = CustController();
-    var result = await _cc.removeCustomer(mobileNumber, false);
-    if (result == null) {
-      // Navigator.pop(context);
-      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          "There are few Payments available for this Customer. Please remove the Payments first!",
-          3));
-    } else {
-      // Navigator.pop(context);
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Customer removed successfully", 2));
-    }
   }
 }

@@ -46,9 +46,7 @@ class CustController {
       Map<String, dynamic> customerJson, int mobileNumber) async {
     try {
       Customer customer = Customer();
-      User user = uc.getCurrentUser();
-      String docID = customer.getDocumentID(mobileNumber, user.primaryFinance,
-          user.primaryBranch, user.primarySubBranch);
+      String docID = customer.getDocumentID(mobileNumber);
       var result = await customer.updateByID(customerJson, docID);
 
       return CustomResponse.getSuccesReponse(result);

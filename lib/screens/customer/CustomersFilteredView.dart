@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/customer/CustomerListWidget.dart';
+import 'package:instamfin/screens/customer/widgets/CustomerListWidget.dart';
 import 'package:instamfin/screens/settings/widgets/ViewCustomerWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';

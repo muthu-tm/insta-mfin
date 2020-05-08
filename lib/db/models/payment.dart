@@ -107,13 +107,14 @@ class Payment {
     this.updatedAt = updatedAt;
   }
 
-  factory Payment.fromJson(Map<String, dynamic> json) => _$PaymentFromJson(json);
+  factory Payment.fromJson(Map<String, dynamic> json) =>
+      _$PaymentFromJson(json);
   Map<String, dynamic> toJson() => _$PaymentToJson(this);
 
-  CollectionReference getPaymentCollectionRef(String custID) {
+  CollectionReference getPaymentCollectionRef(int number) {
     return cust
         .getCollectionRef()
-        .document(custID)
+        .document(cust.getDocumentID(number))
         .collection("payments");
   }
 
@@ -121,33 +122,34 @@ class Payment {
     return createdAt.millisecondsSinceEpoch.toString();
   }
 
-  DocumentReference getDocumentReference(custID, DateTime createdAt) {
-    return getPaymentCollectionRef(custID)
-        .document(getDocumentID(createdAt));
+  DocumentReference getDocumentReference(int number, DateTime createdAt) {
+    return getPaymentCollectionRef(number).document(getDocumentID(createdAt));
   }
 
-  Future<Payment> create(String custID) async {
+  Future<Payment> create(int number) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
 
-    await getDocumentReference(custID, this.createdAt)
-        .setData(this.toJson());
+    await getDocumentReference(number, this.createdAt).setData(this.toJson());
 
     return this;
   }
 
-  Future<bool> isExist(String custID, DateTime createdAt) async {
-    var snap = await getDocumentReference(custID, createdAt).get();
+  Future<bool> isExist(int number, DateTime createdAt) async {
+    var snap = await getDocumentReference(number, createdAt).get();
 
     return snap.exists;
   }
 
+  Stream<QuerySnapshot> streamPayments(int number) {
+    return getPaymentCollectionRef(number).snapshots();
+  }
 
-  Future<List<Payment>> getAllPayments(String custID) async {
-    var paymentDocs = await getPaymentCollectionRef(custID).getDocuments();
+  Future<List<Payment>> getAllPayments(int number) async {
+    var paymentDocs = await getPaymentCollectionRef(number).getDocuments();
 
     if (paymentDocs.documents.isEmpty) {
-      throw 'No Payments found for $custID';
+      throw 'No Payments found for $number';
     }
 
     List<Payment> payments = [];
@@ -159,11 +161,11 @@ class Payment {
     return payments;
   }
 
-  Future<Payment> getBranchByName(String custID, DateTime createdAt) async {
+  Future<Payment> getPaymentByName(int number, DateTime createdAt) async {
     String docId = getDocumentID(createdAt);
 
     var paymentSnap =
-        await getPaymentCollectionRef(custID).document(docId).get();
+        await getPaymentCollectionRef(number).document(docId).get();
     if (!paymentSnap.exists) {
       return null;
     }
@@ -171,10 +173,9 @@ class Payment {
     return Payment.fromJson(paymentSnap.data);
   }
 
-
-  Future<Payment> getPaymentByID(String custID, String docID) async {
+  Future<Payment> getPaymentByID(int number, String docID) async {
     DocumentSnapshot snapshot =
-        await getPaymentCollectionRef(custID).document(docID).get();
+        await getPaymentCollectionRef(number).document(docID).get();
 
     if (snapshot.exists) {
       return Payment.fromJson(snapshot.data);
@@ -183,10 +184,12 @@ class Payment {
     }
   }
 
-  Future<void> update(String custID, String docID,
-      Map<String, dynamic> paymentJSON) async {
+  Future<void> update(
+      int number, String docID, Map<String, dynamic> paymentJSON) async {
     paymentJSON['updated_at'] = DateTime.now();
 
-    await getPaymentCollectionRef(custID).document(docID).updateData(paymentJSON);
+    await getPaymentCollectionRef(number)
+        .document(docID)
+        .updateData(paymentJSON);
   }
 }

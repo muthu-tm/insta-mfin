@@ -4,7 +4,7 @@ import 'package:instamfin/services/utils/response_utils.dart';
 
 class PaymentController {
   Future createPayment(
-    String custID,
+    int custNumber,
     int tAmount,
     int pAmount,
     int tenure,
@@ -35,20 +35,20 @@ class PaymentController {
       payment.setSurcharge(surcharge);
       payment.setInterestRate(iRate);
 
-      await payment.create(custID);
+      await payment.create(custNumber);
 
       return CustomResponse.getSuccesReponse(
           "Created new Payment successfully");
     } catch (err) {
-      print("Error while creating payment for $custID: " + err.toString());
+      print("Error while creating payment for $custNumber: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
-  Future<Payment> getPaymentByID(String custID, String paymentID) async {
+  Future<Payment> getPaymentByID(int custNumber, String paymentID) async {
     try {
       Payment payment = Payment();
-      return await payment.getPaymentByID(custID, paymentID);
+      return await payment.getPaymentByID(custNumber, paymentID);
     } catch (err) {
       print("Error while retrieving Payment for ID $paymentID: " +
           err.toString());
@@ -56,9 +56,9 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getAllPayments(String custID) async {
+  Future<List<Payment>> getAllPayments(int custNumber) async {
     try {
-      List<Payment> payments = await Payment().getAllPayments(custID);
+      List<Payment> payments = await Payment().getAllPayments(custNumber);
 
       if (payments == null) {
         return [];
@@ -66,16 +66,16 @@ class PaymentController {
 
       return payments;
     } catch (err) {
-      print("Error while retrieving payments for custID $custID:" +
+      print("Error while retrieving payments for customer $custNumber:" +
           err.toString());
       throw err;
     }
   }
 
-  Future updatePayment(
-      String custID, String paymentID, Map<String, dynamic> paymentJSON) async {
+  Future updatePayment(int custNumber, String paymentID,
+      Map<String, dynamic> paymentJSON) async {
     try {
-      await Payment().update(custID, paymentID, paymentJSON);
+      await Payment().update(custNumber, paymentID, paymentJSON);
 
       return CustomResponse.getSuccesReponse("Updated Payment $paymentID");
     } catch (err) {

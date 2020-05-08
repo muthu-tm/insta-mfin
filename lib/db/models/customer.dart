@@ -116,15 +116,14 @@ class Customer extends Model {
     return _customerCollRef;
   }
 
-  String getDocumentID(int mobileNumber, String financeID, String branchName,
-      String subBranchName) {
+  String getDocumentID(int mobileNumber) {
     return HashGenerator.hmacGenerator(
-        financeID + branchName + subBranchName, mobileNumber.toString());
+        user.primaryFinance + user.primaryBranch + user.primarySubBranch,
+        mobileNumber.toString());
   }
 
   String getID() {
-    return getDocumentID(
-        this.mobileNumber, this.financeID, this.branchName, this.subBranchName);
+    return getDocumentID(this.mobileNumber);
   }
 
   Stream<QuerySnapshot> getCustomerByStatus(int status, bool fetchAll) {
@@ -145,8 +144,7 @@ class Customer extends Model {
   }
 
   Future<dynamic> getPayments(int number) async {
-    String docID = getDocumentID(mobileNumber, user.primaryFinance,
-        user.primaryBranch, user.primarySubBranch);
+    String docID = getDocumentID(mobileNumber);
 
     var snap = await getCollectionRef()
         .document(docID)
@@ -162,12 +160,12 @@ class Customer extends Model {
 
   Future<Customer> getByMobileNumber(int number) async {
     QuerySnapshot snap = await getCollectionRef()
-          .where('finance_id', isEqualTo: user.primaryFinance)
-          .where('branch_name', isEqualTo: user.primaryBranch)
-          .where('sub_branch_name', isEqualTo: user.primarySubBranch)
-          .where('mobile_number', isEqualTo: number)
-          .getDocuments();
-    
+        .where('finance_id', isEqualTo: user.primaryFinance)
+        .where('branch_name', isEqualTo: user.primaryBranch)
+        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('mobile_number', isEqualTo: number)
+        .getDocuments();
+
     if (snap.documents.isEmpty) {
       return null;
     }
@@ -190,8 +188,7 @@ class Customer extends Model {
   }
 
   remove(int number) async {
-    String docID = getDocumentID(
-        number, user.primaryFinance, user.primaryBranch, user.primarySubBranch);
+    String docID = getDocumentID(number);
     await delete(docID);
   }
 }

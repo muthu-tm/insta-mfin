@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
+import 'package:instamfin/screens/customer/widgets/CustomerPaymentsWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -55,10 +56,7 @@ class ViewCustomer extends StatelessWidget {
                       ),
                     ),
                     new Divider(
-                      indent: 20,
-                      endIndent: 20,
-                      color: CustomColors.mfinBlue,
-                      thickness: 1,
+                      color: CustomColors.mfinButtonGreen,
                     ),
                     Row(
                       children: <Widget>[
@@ -96,6 +94,7 @@ class ViewCustomer extends StatelessWidget {
                             ),
                           ),
                         ),
+                        new Spacer(),
                         InkWell(
                           onTap: () => Navigator.push(
                             context,
@@ -127,6 +126,7 @@ class ViewCustomer extends StatelessWidget {
                             ),
                           ),
                         ),
+                        new Spacer(),
                         InkWell(
                           onTap: () async {
                             CustomDialogs.confirm(
@@ -180,6 +180,7 @@ class ViewCustomer extends StatelessWidget {
                             ),
                           ),
                         ),
+                        new Spacer(),
                         InkWell(
                           onTap: () => UrlLauncherUtils.makePhoneCall(
                               customer['mobile_number']),
@@ -206,6 +207,7 @@ class ViewCustomer extends StatelessWidget {
                             ),
                           ),
                         ),
+                        new Spacer(),
                         InkWell(
                           onTap: () => UrlLauncherUtils.makeSMS(
                               customer['mobile_number']),
@@ -237,9 +239,13 @@ class ViewCustomer extends StatelessWidget {
                         ),
                       ],
                     ),
+                    new Divider(
+                      color: CustomColors.mfinButtonGreen,
+                    )
                   ],
                 ),
-              )
+              ),
+              CustomerPaymentsWidget(customer['mobile_number']),
             ],
           ),
         ),
