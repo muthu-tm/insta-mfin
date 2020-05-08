@@ -7,7 +7,7 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 
 class CustomerPaymentsWidget extends StatelessWidget {
   CustomerPaymentsWidget(this.number);
-  
+
   final int number;
 
   @override
@@ -25,8 +25,10 @@ class CustomerPaymentsWidget extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
-                  
-                }
+                  Payment payment =
+                      Payment.fromJson(snapshot.data.documents[index].data);
+                  return Container();
+                },
               )
             ];
           } else {
@@ -68,23 +70,32 @@ class CustomerPaymentsWidget extends StatelessWidget {
         } else {
           children = AsyncWidgets.asyncWaiting();
         }
-                
 
         return Card(
           color: CustomColors.mfinLightGrey,
           child: new Column(
             children: <Widget>[
               ListTile(
-                leading: Icon(
-                  Icons.payment,
-                  size: 35.0,
-                  color: CustomColors.mfinButtonGreen,
-                ),
-                title: new Text(
-                  "Payments",
-                  style: TextStyle(
-                    color: CustomColors.mfinBlue,
-                    fontSize: 18.0,
+                leading: RichText(
+                  text: TextSpan(
+                    text: "Total: ",
+                    style: TextStyle(
+                      fontFamily: "Georgia",
+                      fontWeight: FontWeight.bold,
+                      color: CustomColors.mfinGrey,
+                      fontSize: 18.0,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: snapshot.hasData
+                              ? snapshot.data.documents.length.toString()
+                              : "00",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinGrey,
+                            fontSize: 18.0,
+                          )),
+                    ],
                   ),
                 ),
                 trailing: RaisedButton.icon(
@@ -108,7 +119,6 @@ class CustomerPaymentsWidget extends StatelessWidget {
               ),
               new Divider(
                 color: CustomColors.mfinBlue,
-                thickness: 1,
               ),
               Center(
                 child: Column(

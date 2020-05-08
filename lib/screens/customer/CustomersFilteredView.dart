@@ -135,7 +135,7 @@ class _CustomersFilteredViewState extends State<CustomersFilteredView> {
           ],
         ),
       ),
-      bottomSheet: bottomBar(context),
+      bottomNavigationBar: bottomBar(context),
     );
   }
 

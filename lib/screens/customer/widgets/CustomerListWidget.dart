@@ -2,10 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
-import 'package:instamfin/screens/customer/ViewCustomer.dart';
+import 'package:instamfin/screens/customer/widgets/CustomerListTile.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/utils/url_launcher_utils.dart';
@@ -151,46 +150,8 @@ class CustomerListWidget extends StatelessWidget {
                         },
                       ),
                     ],
-                    child: Container(
-                      color: CustomColors.mfinWhite,
-                      height: 75,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          ListTile(
-                            leading: Text(
-                              snapshot
-                                  .data.documents[index].data['customer_name'],
-                              style: TextStyle(
-                                color: CustomColors.mfinBlue,
-                                fontSize: 18,
-                              ),
-                            ),
-                            trailing: Text(
-                              snapshot
-                                  .data.documents[index].data['mobile_number']
-                                  .toString(),
-                              style: TextStyle(
-                                color: CustomColors.mfinBlue,
-                                fontSize: 18,
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ViewCustomer(
-                                      snapshot.data.documents[index].data),
-                                ),
-                              );
-                            },
-                          ),
-                          new Divider(
-                            thickness: 2,
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: customerListTile(
+                        context, index, snapshot.data.documents[index].data),
                   );
                 },
               ),
