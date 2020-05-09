@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/db/models/model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'payment.g.dart';
@@ -115,7 +116,11 @@ class Payment {
     return cust
         .getCollectionRef()
         .document(cust.getDocumentID(number))
-        .collection("payments");
+        .collection("customer_payments");
+  }
+
+  Query getGroupQuery() {
+    return Model.db.collectionGroup('customer_payments');
   }
 
   String getDocumentID(DateTime createdAt) {
@@ -145,17 +150,42 @@ class Payment {
     return getPaymentCollectionRef(number).snapshots();
   }
 
-  Future<List<Payment>> getAllPayments(int number) async {
+  Future<List<Payment>> getAllPaymentsForCustomer(int number) async {
     var paymentDocs = await getPaymentCollectionRef(number).getDocuments();
 
-    if (paymentDocs.documents.isEmpty) {
-      throw 'No Payments found for $number';
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
     }
 
-    List<Payment> payments = [];
+    return payments;
+  }
 
-    for (var doc in paymentDocs.documents) {
-      payments.add(Payment.fromJson(doc.data));
+  Future<List<Payment>> getAllPayments() async {
+    var paymentDocs = await getGroupQuery().getDocuments();
+
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
+    }
+
+    return payments;
+  }
+
+  Future<List<Payment>> getAllPaymentsByStatus(int status) async {
+    var paymentDocs = await getGroupQuery()
+        .where('payments_status', isEqualTo: status)
+        .getDocuments();
+
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
     }
 
     return payments;

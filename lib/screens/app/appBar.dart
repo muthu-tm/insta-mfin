@@ -9,7 +9,7 @@ Widget topAppBar(BuildContext context) {
     backgroundColor: CustomColors.mfinBlue,
     leading: Builder(
       builder: (context) => IconButton(
-        icon: new Icon(Icons.account_circle,
+        icon: new Icon(Icons.account_box,
             size: 45.0, color: CustomColors.mfinWhite),
         onPressed: () => Scaffold.of(context).openDrawer(),
       ),
@@ -19,7 +19,7 @@ Widget topAppBar(BuildContext context) {
         print("Pressed Customers search");
       }),
       customIconButton(Icons.notifications, 35.0, CustomColors.mfinWhite, () {
-        print("Pressed Customers search");
+        print("Pressed Notifications");
       }),
     ],
   );

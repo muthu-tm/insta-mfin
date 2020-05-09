@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/screens/settings/widgets/CollectionTemplateWidget.dart';
+import 'package:instamfin/screens/transaction/settings/CollectionTemplateWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
@@ -26,6 +26,7 @@ class _TransactionSettingState extends State<TransactionSetting> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
+        title: Text("Transaction Settings"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: new SingleChildScrollView(
