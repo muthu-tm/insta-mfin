@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'miscellaneous_expense.dart';
+part of 'journal_entry.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MiscellaneousExpense _$MiscellaneousExpenseFromJson(Map<String, dynamic> json) {
-  return MiscellaneousExpense()
+JournalEntry _$JournalEntryFromJson(Map<String, dynamic> json) {
+  return JournalEntry()
     ..user = json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>)
@@ -16,9 +16,9 @@ MiscellaneousExpense _$MiscellaneousExpenseFromJson(Map<String, dynamic> json) {
     ..subBranchName = json['sub_branch_name'] as String
     ..category = json['category'] == null
         ? null
-        : MiscellaneousCategory.fromJson(
-            json['category'] as Map<String, dynamic>)
+        : JournalCategory.fromJson(json['category'] as Map<String, dynamic>)
     ..amount = json['amount'] as int
+    ..isExpense = json['is_expense'] as bool ?? false
     ..addedBy = json['added_by'] as int
     ..notes = json['notes'] as String ?? ''
     ..createdAt = json['created_at'] == null
@@ -35,8 +35,7 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
   return ts.millisecondsSinceEpoch;
 }
 
-Map<String, dynamic> _$MiscellaneousExpenseToJson(
-        MiscellaneousExpense instance) =>
+Map<String, dynamic> _$JournalEntryToJson(JournalEntry instance) =>
     <String, dynamic>{
       'user': instance.user?.toJson(),
       'finance_id': instance.financeID,
@@ -44,8 +43,9 @@ Map<String, dynamic> _$MiscellaneousExpenseToJson(
       'sub_branch_name': instance.subBranchName,
       'category': instance.category?.toJson(),
       'amount': instance.amount,
+      'is_expense': instance.isExpense,
       'added_by': instance.addedBy,
-      'notes': instance.notes == null ? '' : instance.notes,
+      'notes': instance.notes,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };
