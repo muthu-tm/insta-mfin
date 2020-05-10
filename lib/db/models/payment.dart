@@ -196,9 +196,13 @@ class Payment extends Model {
     return snap.exists;
   }
 
-  Stream<QuerySnapshot> streamPayments(int number) {
+  Stream<QuerySnapshot> streamPayments(
+      String financeId, String branchName, String subBranchName, int number) {
     return getCollectionRef()
-        .where('cusomterNumber', isEqualTo: number)
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('cusomter_number', isEqualTo: number)
         .snapshots();
   }
 
@@ -208,7 +212,7 @@ class Payment extends Model {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('cusomterNumber', isEqualTo: number)
+        .where('cusomter_number', isEqualTo: number)
         .getDocuments();
 
     List<Payment> payments = [];

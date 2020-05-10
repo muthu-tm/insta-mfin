@@ -1,32 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'collection.dart';
+part of 'miscellaneous_expense.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Collection _$CollectionFromJson(Map<String, dynamic> json) {
-  return Collection()
-    ..payment = json['payment'] == null
+MiscellaneousExpense _$MiscellaneousExpenseFromJson(Map<String, dynamic> json) {
+  return MiscellaneousExpense()
+    ..user = json['user'] == null
         ? null
-        : Payment.fromJson(json['payment'] as Map<String, dynamic>)
+        : User.fromJson(json['user'] as Map<String, dynamic>)
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
-    ..cusomterNumber = json['customer_number'] as int
-    ..collectionDate = json['collection_date'] == null
+    ..category = json['category'] == null
         ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['collection_date'] as Timestamp))
-    ..collectionAmount = json['collection_amount'] as int
-    ..collections = (json['collections'] as List)
-        ?.map((e) => e == null
-            ? null
-            : CollectionDetails.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..status = json['status'] as int ?? 0
+        : MiscellaneousCategory.fromJson(
+            json['category'] as Map<String, dynamic>)
+    ..amount = json['amount'] as int
     ..addedBy = json['added_by'] as int
+    ..notes = json['notes'] as String
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -41,18 +35,17 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
   return ts.millisecondsSinceEpoch;
 }
 
-Map<String, dynamic> _$CollectionToJson(Collection instance) =>
+Map<String, dynamic> _$MiscellaneousExpenseToJson(
+        MiscellaneousExpense instance) =>
     <String, dynamic>{
-      'payment': instance.payment?.toJson(),
+      'user': instance.user?.toJson(),
       'finance_id': instance.financeID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
-      'customer_number': instance.cusomterNumber,
-      'collection_date': instance.collectionDate,
-      'collection_amount': instance.collectionAmount,
-      'collections': instance.collections?.map((e) => e?.toJson())?.toList(),
-      'status': instance.status,
+      'category': instance.category?.toJson(),
+      'amount': instance.amount,
       'added_by': instance.addedBy,
+      'notes': instance.notes == null ? '' : instance.notes,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };
