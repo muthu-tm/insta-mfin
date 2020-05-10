@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'payment.g.dart';
@@ -9,6 +10,12 @@ part 'payment.g.dart';
 class Payment {
   Customer cust = Customer();
 
+  @JsonKey(name: 'finance_id', nullable: true)
+  String financeID;
+  @JsonKey(name: 'branch_name', nullable: true)
+  String branchName;
+  @JsonKey(name: 'sub_branch_name', nullable: true)
+  String subBranchName;
   @JsonKey(name: 'date_of_payment', nullable: true)
   String dateOfPayment;
   @JsonKey(name: 'total_amount', nullable: true)
@@ -29,12 +36,14 @@ class Payment {
   double interestRate;
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;
+  @JsonKey(name: 'status', nullable: true)
+  int status;
   @JsonKey(name: 'given_by', nullable: true)
   String givenBy;
   @JsonKey(name: 'given_to', nullable: true)
   String givenTo;
-  @JsonKey(name: 'payments_status', nullable: true)
-  int status;
+  @JsonKey(name: 'notes', defaultValue: '')
+  String notes;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
@@ -43,6 +52,18 @@ class Payment {
   DateTime updatedAt;
 
   Payment();
+
+  setFinanceID(String financeID) {
+    this.financeID = financeID;
+  }
+
+  setBranchName(String branchName) {
+    this.branchName = branchName;
+  }
+
+  setSubBranchName(String subBranchName) {
+    this.subBranchName = subBranchName;
+  }
 
   setTotalAmount(int amount) {
     this.totalAmount = amount;
@@ -119,6 +140,10 @@ class Payment {
         .collection("customer_payments");
   }
 
+  User getUser() {
+    return cust.user;
+  }
+
   Query getGroupQuery() {
     return Model.db.collectionGroup('customer_payments');
   }
@@ -127,21 +152,24 @@ class Payment {
     return createdAt.millisecondsSinceEpoch.toString();
   }
 
-  DocumentReference getDocumentReference(int number, DateTime createdAt) {
-    return getPaymentCollectionRef(number).document(getDocumentID(createdAt));
+  DocumentReference getDocumentReference(int number, String paymentID) {
+    return getPaymentCollectionRef(number).document(paymentID);
   }
 
   Future<Payment> create(int number) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
+    this.financeID = getUser().primaryFinance;
+    this.branchName = getUser().primaryBranch;
+    this.subBranchName = getUser().primarySubBranch;
 
-    await getDocumentReference(number, this.createdAt).setData(this.toJson());
+    await getDocumentReference(number, getDocumentID(this.createdAt)).setData(this.toJson());
 
     return this;
   }
 
-  Future<bool> isExist(int number, DateTime createdAt) async {
-    var snap = await getDocumentReference(number, createdAt).get();
+  Future<bool> isExist(int number, String paymentID) async {
+    var snap = await getDocumentReference(number, paymentID).get();
 
     return snap.exists;
   }
@@ -178,7 +206,7 @@ class Payment {
 
   Future<List<Payment>> getAllPaymentsByStatus(int status) async {
     var paymentDocs = await getGroupQuery()
-        .where('payments_status', isEqualTo: status)
+        .where('status', isEqualTo: status)
         .getDocuments();
 
     List<Payment> payments = [];

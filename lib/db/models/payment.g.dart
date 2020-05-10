@@ -11,6 +11,9 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..cust = json['cust'] == null
         ? null
         : Customer.fromJson(json['cust'] as Map<String, dynamic>)
+    ..financeID = json['finance_id'] as String
+    ..branchName = json['branch_name'] as String
+    ..subBranchName = json['sub_branch_name'] as String
     ..dateOfPayment = json['date_of_payment'] as String
     ..totalAmount = json['total_amount'] as int
     ..principalAmount = json['principal_amount'] as int
@@ -19,11 +22,11 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..totalPaid = json['total_paid'] as int
     ..tenure = json['tenure'] as int
     ..tenureType = json['tenure_type'] as int
-    ..interestRate = json['interest_rate'] as double
+    ..interestRate = (json['interest_rate'] as num)?.toDouble()
     ..collectionAmount = json['collection_amount'] as int
     ..givenBy = json['given_by'] as String
     ..givenTo = json['given_to'] as String
-    ..status = json['payments_status'] as int
+    ..status = json['status'] as int
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
@@ -55,7 +58,7 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'collection_amount': instance.collectionAmount,
       'given_by': instance.givenBy == null ? '' : instance.givenBy,
       'given_to': instance.givenTo == null ? '' : instance.givenTo,
-      'payments_status': instance.status,
+      'status': instance.status,
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,

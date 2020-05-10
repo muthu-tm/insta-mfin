@@ -8,12 +8,15 @@ part of 'branch.dart';
 
 Branch _$BranchFromJson(Map<String, dynamic> json) {
   return Branch()
+    ..finance = json['finance'] == null
+        ? null
+        : Finance.fromJson(json['finance'] as Map<String, dynamic>)
     ..branchName = json['branch_name'] as String
     ..address = json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
-    ..contactNumber = json['contact_number'] as String
     ..emailID = json['email'] as String
+    ..contactNumber = json['contact_number'] as String
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
     ..users = (json['users'] as List)?.map((e) => e as int)?.toList()
     ..displayProfilePath = json['display_profile_path'] as String
@@ -34,6 +37,7 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
+      'finance': instance.finance?.toJson(),
       'branch_name': instance.branchName == null ? '' : instance.branchName,
       'address': instance.address?.toJson(),
       'contact_number': instance.contactNumber == null ? '' : instance.contactNumber,
