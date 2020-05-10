@@ -8,21 +8,25 @@ part of 'customer.dart';
 
 Customer _$CustomerFromJson(Map<String, dynamic> json) {
   return Customer()
+    ..user = json['user'] == null
+        ? null
+        : User.fromJson(json['user'] as Map<String, dynamic>)
     ..customerID = json['customer_id'] as String
     ..mobileNumber = json['mobile_number'] as int
     ..name = json['customer_name'] as String
     ..gender = json['gender'] as String
-    ..displayProfilePath = json['display_profile_path'] as String ?? ''
-    ..financeID = json['finance_id'] as String
     ..address = json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
     ..age = json['age'] as int
-    ..profession = json['customer_profession'] as String
+    ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
+    ..profession = json['customer_profession'] as String ?? ''
     ..guarantiedBy = json['guarantied_by'] as int
     ..addedBy = json['added_by'] as int
+    ..status = json['customer_status'] as int
+    ..displayProfilePath = json['display_profile_path'] as String ?? ''
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -38,6 +42,7 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
+      'user': instance.user?.toJson(),
       'customer_id': instance.customerID == null ? '' : instance.customerID,
       'mobile_number': instance.mobileNumber,
       'customer_name': instance.name == null ? '' : instance.name,

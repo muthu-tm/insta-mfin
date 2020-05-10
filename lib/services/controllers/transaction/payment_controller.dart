@@ -6,6 +6,7 @@ import 'package:instamfin/services/utils/response_utils.dart';
 class PaymentController {
   Future createPayment(
     int custNumber,
+    DateTime dateOfPay,
     int tAmount,
     int pAmount,
     int tenure,
@@ -22,6 +23,7 @@ class PaymentController {
     try {
       UserController _uc = UserController();
       Payment payment = Payment();
+      payment.setDOP(dateOfPay);
       payment.setGivenTo(givenTo);
       payment.setGivenBy(givenBy);
       payment.setPaymentStatus(status);

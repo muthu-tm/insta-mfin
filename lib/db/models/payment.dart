@@ -17,7 +17,7 @@ class Payment {
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
   @JsonKey(name: 'date_of_payment', nullable: true)
-  String dateOfPayment;
+  DateTime dateOfPayment;
   @JsonKey(name: 'total_amount', nullable: true)
   int totalAmount;
   @JsonKey(name: 'principal_amount', nullable: true)
@@ -101,7 +101,7 @@ class Payment {
     this.addedBy = mobileNumber;
   }
 
-  setDOP(String date) {
+  setDOP(DateTime date) {
     this.dateOfPayment = date;
   }
 
@@ -217,18 +217,6 @@ class Payment {
     }
 
     return payments;
-  }
-
-  Future<Payment> getPaymentByName(int number, DateTime createdAt) async {
-    String docId = getDocumentID(createdAt);
-
-    var paymentSnap =
-        await getPaymentCollectionRef(number).document(docId).get();
-    if (!paymentSnap.exists) {
-      return null;
-    }
-
-    return Payment.fromJson(paymentSnap.data);
   }
 
   Future<Payment> getPaymentByID(int number, String docID) async {
