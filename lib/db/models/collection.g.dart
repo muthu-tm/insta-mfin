@@ -8,8 +8,11 @@ part of 'collection.dart';
 
 Collection _$CollectionFromJson(Map<String, dynamic> json) {
   return Collection()
-    ..date = json['date'] as String ?? ''
-    ..amount = json['amount'] as int ?? ''
+    ..collectionDate = json['collection_date'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
+    ..collectionAmount = json['collection_amount'] as int ?? ''
     ..status = json['status'] as int ?? ''
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
@@ -28,8 +31,8 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 
 Map<String, dynamic> _$CollectionToJson(Collection instance) =>
     <String, dynamic>{
-      'date': instance.date,
-      'amount': instance.amount,
+      'collection_date': instance.collectionDate,
+      'collection_amount': instance.collectionAmount,
       'status': instance.status,
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,

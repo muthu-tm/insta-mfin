@@ -7,7 +7,7 @@ part 'finance.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Finance extends Model {
-  static CollectionReference _companyCollRef =
+  static CollectionReference _financeCollRef =
       Model.db.collection("finance_companies");
 
   @JsonKey(name: 'registration_id', nullable: true)
@@ -106,7 +106,7 @@ class Finance extends Model {
   Map<String, dynamic> toJson() => _$FinanceToJson(this);
 
   CollectionReference getCollectionRef() {
-    return _companyCollRef;
+    return _financeCollRef;
   }
 
   String getID() {

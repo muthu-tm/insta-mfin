@@ -48,21 +48,23 @@ class PaymentController {
     }
   }
 
-  Future<Payment> getPaymentByID(int custNumber, String paymentID) async {
+  Future<Payment> getPaymentByID(String financeId, String branchName,
+      String subBranchName, int custNumber, DateTime createdAt) async {
     try {
       Payment payment = Payment();
-      return await payment.getPaymentByID(custNumber, paymentID);
+      return await payment.getPaymentByID(financeId, branchName, subBranchName, custNumber, createdAt);
     } catch (err) {
-      print("Error while retrieving Payment for ID $paymentID: " +
+      print("Error while retrieving $custNumber customer's Payment createdAt ${createdAt.toString()}: " +
           err.toString());
       return null;
     }
   }
 
-  Future<List<Payment>> getAllPaymentsForCustomer(int custNumber) async {
+  Future<List<Payment>> getAllPaymentsForCustomer(String financeId, String branchName,
+      String subBranchName, int custNumber) async {
     try {
       List<Payment> payments =
-          await Payment().getAllPaymentsForCustomer(custNumber);
+          await Payment().getAllPaymentsForCustomer(financeId, branchName, subBranchName, custNumber);
 
       if (payments == null) {
         return [];
@@ -76,9 +78,10 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getAllPaymentsByStatus(int status) async {
+  Future<List<Payment>> getAllPaymentsByStatus(String financeId, String branchName,
+      String subBranchName, int status) async {
     try {
-      List<Payment> payments = await Payment().getAllPaymentsByStatus(status);
+      List<Payment> payments = await Payment().getAllPaymentsByStatus(financeId, branchName, subBranchName, status);
 
       if (payments == null) {
         return [];
@@ -92,9 +95,10 @@ class PaymentController {
     }
   }
 
-  Future<int> getPaymentsAmountByStatus(int status) async {
+  Future<int> getPaymentsAmountByStatus(String financeId, String branchName,
+      String subBranchName, int status) async {
     try {
-      List<Payment> payments = await getAllPaymentsByStatus(status);
+      List<Payment> payments = await getAllPaymentsByStatus(financeId, branchName, subBranchName, status);
 
       int tAmount = 0;
       if (payments == null) {
@@ -113,23 +117,24 @@ class PaymentController {
     }
   }
 
-  Future<Map<String, int>> getPaymentsCountByStatus() async {
+  Future<Map<String, int>> getPaymentsCountByStatus(String financeId, String branchName,
+      String subBranchName) async {
     try {
       Map<String, int> paymentsCount = Map();
 
-      List<Payment> totalPayments = await Payment().getAllPayments();
+      List<Payment> totalPayments = await Payment().getAllPayments(financeId, branchName, subBranchName, );
       paymentsCount['total_payments'] = totalPayments.length;
 
       List<Payment> activePayments =
-          await getAllPaymentsByStatus(PaymentStatus.Active.name);
+          await getAllPaymentsByStatus(financeId, branchName, subBranchName, PaymentStatus.Active.name);
       paymentsCount['active_payments'] = activePayments.length;
       
       List<Payment> pendingPayments =
-          await getAllPaymentsByStatus(PaymentStatus.Pending.name);
+          await getAllPaymentsByStatus(financeId, branchName, subBranchName, PaymentStatus.Pending.name);
       paymentsCount['pending_payments'] = pendingPayments.length;
       
       List<Payment> closedPayments =
-          await getAllPaymentsByStatus(PaymentStatus.Closed.name);
+          await getAllPaymentsByStatus(financeId, branchName, subBranchName, PaymentStatus.Closed.name);
       paymentsCount['closed_payments'] = closedPayments.length;
 
       return paymentsCount;
@@ -139,15 +144,16 @@ class PaymentController {
     }
   }
 
-  Future updatePayment(int custNumber, String paymentID,
+  Future updatePayment(String financeId, String branchName,
+      String subBranchName, int custNumber, DateTime createdAt,
       Map<String, dynamic> paymentJSON) async {
     try {
-      await Payment().update(custNumber, paymentID, paymentJSON);
+      await Payment().updatePayment(financeId, branchName, subBranchName, custNumber, createdAt, paymentJSON);
 
-      return CustomResponse.getSuccesReponse("Updated Payment $paymentID");
+      return CustomResponse.getSuccesReponse("Updated $custNumber customer's Payment createdAt ${createdAt.toString()}");
     } catch (err) {
       print(
-          "Error while updating Payment with ID $paymentID: " + err.toString());
+          "Error while updating $custNumber customer's Payment createdAt ${createdAt.toString()}: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

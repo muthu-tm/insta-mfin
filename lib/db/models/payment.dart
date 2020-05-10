@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'payment.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Payment {
-  Customer cust = Customer();
+class Payment extends Model {
+  User user = UserController().getCurrentUser();
+
+  static CollectionReference _paymentCollRef =
+      Model.db.collection("customer_payments");
 
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
@@ -16,6 +20,8 @@ class Payment {
   String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
+  @JsonKey(name: 'customer_number', nullable: true)
+  int cusomterNumber;
   @JsonKey(name: 'date_of_payment', nullable: true)
   DateTime dateOfPayment;
   @JsonKey(name: 'total_amount', nullable: true)
@@ -63,6 +69,10 @@ class Payment {
 
   setSubBranchName(String subBranchName) {
     this.subBranchName = subBranchName;
+  }
+
+  setCustomerNumber(int number) {
+    this.cusomterNumber = number;
   }
 
   setTotalAmount(int amount) {
@@ -133,53 +143,73 @@ class Payment {
       _$PaymentFromJson(json);
   Map<String, dynamic> toJson() => _$PaymentToJson(this);
 
-  CollectionReference getPaymentCollectionRef(int number) {
-    return cust
-        .getCollectionRef()
-        .document(cust.getDocumentID(number))
-        .collection("customer_payments");
+  CollectionReference getCollectionRef() {
+    return _paymentCollRef;
   }
 
-  User getUser() {
-    return cust.user;
+  String getID() {
+    String value = this.financeID +
+        this.branchName +
+        this.subBranchName +
+        this.cusomterNumber.toString();
+
+    return HashGenerator.hmacGenerator(
+        value, this.createdAt.millisecondsSinceEpoch.toString());
   }
 
   Query getGroupQuery() {
     return Model.db.collectionGroup('customer_payments');
   }
 
-  String getDocumentID(DateTime createdAt) {
-    return createdAt.millisecondsSinceEpoch.toString();
+  String getDocumentID(String financeId, String branchName,
+      String subBranchName, int custNumber, DateTime createdAt) {
+    String value =
+        financeID + branchName + subBranchName + custNumber.toString();
+    return HashGenerator.hmacGenerator(
+        value, createdAt.millisecondsSinceEpoch.toString());
   }
 
-  DocumentReference getDocumentReference(int number, String paymentID) {
-    return getPaymentCollectionRef(number).document(paymentID);
+  DocumentReference getDocumentReference(String financeId, String branchName,
+      String subBranchName, int number, DateTime createdAt) {
+    return getCollectionRef().document(
+        getDocumentID(financeId, branchName, subBranchName, number, createdAt));
   }
 
   Future<Payment> create(int number) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = getUser().primaryFinance;
-    this.branchName = getUser().primaryBranch;
-    this.subBranchName = getUser().primarySubBranch;
+    this.financeID = user.primaryFinance;
+    this.branchName = user.primaryBranch;
+    this.subBranchName = user.primarySubBranch;
 
-    await getDocumentReference(number, getDocumentID(this.createdAt)).setData(this.toJson());
+    await super.add(this.toJson());
 
     return this;
   }
 
-  Future<bool> isExist(int number, String paymentID) async {
-    var snap = await getDocumentReference(number, paymentID).get();
+  Future<bool> isExist(String financeId, String branchName,
+      String subBranchName, int number, DateTime createdAt) async {
+    var snap = await getDocumentReference(
+            financeId, branchName, subBranchName, number, createdAt)
+        .get();
 
     return snap.exists;
   }
 
   Stream<QuerySnapshot> streamPayments(int number) {
-    return getPaymentCollectionRef(number).snapshots();
+    return getCollectionRef()
+        .where('cusomterNumber', isEqualTo: number)
+        .snapshots();
   }
 
-  Future<List<Payment>> getAllPaymentsForCustomer(int number) async {
-    var paymentDocs = await getPaymentCollectionRef(number).getDocuments();
+  Future<List<Payment>> getAllPaymentsForCustomer(String financeId,
+      String branchName, String subBranchName, int number) async {
+    var paymentDocs = await getCollectionRef()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('cusomterNumber', isEqualTo: number)
+        .getDocuments();
 
     List<Payment> payments = [];
     if (paymentDocs.documents.isNotEmpty) {
@@ -191,21 +221,30 @@ class Payment {
     return payments;
   }
 
-  Future<List<Payment>> getAllPayments() async {
-    var paymentDocs = await getGroupQuery().getDocuments();
-
-    List<Payment> payments = [];
-    if (paymentDocs.documents.isNotEmpty) {
-      for (var doc in paymentDocs.documents) {
-        payments.add(Payment.fromJson(doc.data));
-      }
-    }
-
-    return payments;
-  }
-
-  Future<List<Payment>> getAllPaymentsByStatus(int status) async {
+  Future<List<Payment>> getAllPayments(
+      String financeId, String branchName, String subBranchName) async {
     var paymentDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .getDocuments();
+
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
+    }
+
+    return payments;
+  }
+
+  Future<List<Payment>> getAllPaymentsByStatus(String financeId,
+      String branchName, String subBranchName, int status) async {
+    var paymentDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
         .where('status', isEqualTo: status)
         .getDocuments();
 
@@ -219,23 +258,30 @@ class Payment {
     return payments;
   }
 
-  Future<Payment> getPaymentByID(int number, String docID) async {
-    DocumentSnapshot snapshot =
-        await getPaymentCollectionRef(number).document(docID).get();
+  Future<Payment> getPaymentByID(String financeId, String branchName,
+      String subBranchName, int number, DateTime createdAt) async {
+    Map<String, dynamic> payment = await getByID(
+        getDocumentID(financeId, branchName, subBranchName, number, createdAt));
 
-    if (snapshot.exists) {
-      return Payment.fromJson(snapshot.data);
+    if (payment != null) {
+      return Payment.fromJson(payment);
     } else {
       return null;
     }
   }
 
-  Future<void> update(
-      int number, String docID, Map<String, dynamic> paymentJSON) async {
+  Future<void> updatePayment(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      Map<String, dynamic> paymentJSON) async {
     paymentJSON['updated_at'] = DateTime.now();
 
-    await getPaymentCollectionRef(number)
-        .document(docID)
+    await getCollectionRef()
+        .document(getDocumentID(
+            financeId, branchName, subBranchName, number, createdAt))
         .updateData(paymentJSON);
   }
 }

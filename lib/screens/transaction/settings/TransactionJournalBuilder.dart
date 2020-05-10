@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class TransactionJournalBuilder extends StatelessWidget {
   final PaymentController _pc = PaymentController();
+  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, int>>(
-      future: _pc.getPaymentsCountByStatus(),
+      future: _pc.getPaymentsCountByStatus(
+          _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
       builder:
           (BuildContext context, AsyncSnapshot<Map<String, int>> snapshot) {
         Widget widget;

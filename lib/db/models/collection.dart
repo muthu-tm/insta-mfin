@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'collection.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Collection {
   Payment payment = Payment();
 
@@ -15,22 +16,16 @@ class Collection {
   String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
+  @JsonKey(name: 'customer_number', nullable: true)
+  int cusomterNumber;
   @JsonKey(name: 'collection_date', defaultValue: '')
   DateTime collectionDate;
-  @JsonKey(name: 'paid_date', defaultValue: '')
-  DateTime paidDate;
-  @JsonKey(name: 'is_paid_late', defaultValue: false)
-  bool isPaidLate;
-  @JsonKey(name: 'amount')
-  int amount;
+  @JsonKey(name: 'collection_amount')
+  int collectionAmount;
+  @JsonKey(name: 'collections')
+  List<CollectionDetails> collections;
   @JsonKey(name: 'status', defaultValue: 0)
   int status;
-  @JsonKey(name: 'paid_by', defaultValue: '')
-  String paidBy;
-  @JsonKey(name: 'paid_to', defaultValue: '')
-  String paidTo;
-  @JsonKey(name: 'notes', defaultValue: '')
-  String notes;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
@@ -52,46 +47,48 @@ class Collection {
     this.subBranchName = subBranchName;
   }
 
+  setCustomerNumber(int number) {
+    this.cusomterNumber = number;
+  }
+
   setCollectionDate(DateTime collectionDate) {
     this.collectionDate = collectionDate;
   }
 
-  setAmount(int amount) {
-    this.amount = amount;
+  setCollectionAmount(int amount) {
+    this.collectionAmount = amount;
   }
 
   setStatus(int status) {
     this.status = status;
   }
 
-  setPaidBy(String paidBy) {
-    this.paidBy = paidBy;
-  }
-
-  setPaidTo(String paidTo) {
-    this.paidTo = paidTo;
-  }
-
-  setNotes(String notes) {
-    this.notes = notes;
+  addCollections(List<CollectionDetails> collections) {
+    if (this.collections == null) {
+      this.collections = collections;
+    } else {
+      this.collections.addAll(collections);
+    }
   }
 
   factory Collection.fromJson(Map<String, dynamic> json) =>
       _$CollectionFromJson(json);
   Map<String, dynamic> toJson() => _$CollectionToJson(this);
 
-  CollectionReference getCollectionRef(int number, String paymentID) {
+  CollectionReference getCollectionRef(String financeId, String branchName,
+      String subBranchName, int number, DateTime createdAt) {
     return payment
-        .getDocumentReference(number, paymentID)
+        .getDocumentReference(
+            financeId, branchName, subBranchName, number, createdAt)
         .collection("customer_collections");
   }
 
   User getUser() {
-    return payment.getUser();
+    return payment.user;
   }
 
   Query getGroupQuery() {
-    return Model.db.collectionGroup('customer_collection');
+    return Model.db.collectionGroup('customer_collections');
   }
 
   String getDocumentID(DateTime collectionDate) {
@@ -99,40 +96,80 @@ class Collection {
   }
 
   DocumentReference getDocumentReference(
-      int number, String paymentID, DateTime collectionDate) {
-    return getCollectionRef(number, paymentID)
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      DateTime collectionDate) {
+    return getCollectionRef(
+            financeId, branchName, subBranchName, number, createdAt)
         .document(getDocumentID(collectionDate));
   }
 
-  Future<Collection> create(int number, String paymentID) async {
+  Future<Collection> create(int number, DateTime createdAt) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.financeID = getUser().primaryFinance;
     this.branchName = getUser().primaryBranch;
     this.subBranchName = getUser().primarySubBranch;
 
-    await getDocumentReference(number, paymentID, this.collectionDate)
+    await getDocumentReference(this.financeID, this.branchName,
+            this.subBranchName, number, createdAt, this.collectionDate)
         .setData(this.toJson());
 
     return this;
   }
 
   Future<bool> isExist(
-      int number, String paymentID, DateTime collectionDate) async {
-    var snap =
-        await getDocumentReference(number, paymentID, collectionDate).get();
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      DateTime collectionDate) async {
+    var snap = await getDocumentReference(financeId, branchName, subBranchName,
+            number, createdAt, collectionDate)
+        .get();
 
     return snap.exists;
   }
 
-  Stream<QuerySnapshot> streamCollections(int number, String paymentID) {
-    return getCollectionRef(number, paymentID).snapshots();
+  Stream<QuerySnapshot> streamCollections(String financeId, String branchName,
+      String subBranchName, int number, DateTime createdAt) {
+    return getCollectionRef(
+            financeId, branchName, subBranchName, number, createdAt)
+        .snapshots();
+  }
+
+  Future<List<Collection>> getAllCollectionsForCustomer(String financeId,
+      String branchName, String subBranchName, int custNumber) async {
+    var collectionDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('customer_number', isEqualTo: custNumber)
+        .getDocuments();
+
+    List<Collection> coll = [];
+    if (collectionDocs.documents.isNotEmpty) {
+      for (var doc in collectionDocs.documents) {
+        coll.add(Collection.fromJson(doc.data));
+      }
+    }
+
+    return coll;
   }
 
   Future<List<Collection>> getAllCollectionsForCustomerPayment(
-      int number, String paymentID) async {
-    var collectionDocs =
-        await getCollectionRef(number, paymentID).getDocuments();
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt) async {
+    var collectionDocs = await getCollectionRef(
+            financeId, branchName, subBranchName, number, createdAt)
+        .getDocuments();
 
     List<Collection> coll = [];
     if (collectionDocs.documents.isNotEmpty) {
@@ -157,9 +194,60 @@ class Collection {
     return payments;
   }
 
-  Future<List<Collection>> getAllCollectionsByStatus(int status) async {
-    var collectionDocs =
-        await getGroupQuery().where('status', isEqualTo: status).getDocuments();
+  Future<List<Collection>> getAllCollectionsByStatus(String financeId,
+      String branchName, String subBranchName, int status) async {
+    var collectionDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('status', isEqualTo: status)
+        .getDocuments();
+
+    List<Collection> collections = [];
+    if (collectionDocs.documents.isNotEmpty) {
+      for (var doc in collectionDocs.documents) {
+        collections.add(Collection.fromJson(doc.data));
+      }
+    }
+
+    return collections;
+  }
+
+  Future<List<Collection>> getAllCollectionsForCustomerByStatus(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int custNumber,
+      int status) async {
+    var collectionDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('customer_number', isEqualTo: custNumber)
+        .where('status', isEqualTo: status)
+        .getDocuments();
+
+    List<Collection> collections = [];
+    if (collectionDocs.documents.isNotEmpty) {
+      for (var doc in collectionDocs.documents) {
+        collections.add(Collection.fromJson(doc.data));
+      }
+    }
+
+    return collections;
+  }
+
+  Future<List<Collection>> getAllCollectionsForPaymentByStatus(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int custNumber,
+      DateTime createdAt,
+      int status) async {
+    var collectionDocs = await getCollectionRef(
+            financeId, branchName, subBranchName, custNumber, createdAt)
+        .where('status', isEqualTo: status)
+        .getDocuments();
 
     List<Collection> collections = [];
     if (collectionDocs.documents.isNotEmpty) {
@@ -172,9 +260,16 @@ class Collection {
   }
 
   Future<Collection> getCollectionByID(
-      int number, String paymentID, String docID) async {
-    DocumentSnapshot snapshot =
-        await getCollectionRef(number, paymentID).document(docID).get();
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      String docID) async {
+    DocumentSnapshot snapshot = await getCollectionRef(
+            financeId, branchName, subBranchName, number, createdAt)
+        .document(docID)
+        .get();
 
     if (snapshot.exists) {
       return Collection.fromJson(snapshot.data);
@@ -183,11 +278,18 @@ class Collection {
     }
   }
 
-  Future<void> update(int number, String paymentID, String docID,
+  Future<void> update(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      String docID,
       Map<String, dynamic> paymentJSON) async {
     paymentJSON['updated_at'] = DateTime.now();
 
-    await getCollectionRef(number, paymentID)
+    await getCollectionRef(
+            financeId, branchName, subBranchName, number, createdAt)
         .document(docID)
         .updateData(paymentJSON);
   }
