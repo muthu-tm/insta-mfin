@@ -1,9 +1,6 @@
 import 'package:instamfin/db/enums/collection_status.dart';
-import 'package:instamfin/db/enums/payment_status.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/collection_details.dart';
-import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class PaymentController {

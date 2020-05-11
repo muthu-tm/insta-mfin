@@ -21,10 +21,14 @@ class MiscellaneousExpense extends Model {
   String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
+  @JsonKey(name: 'expense_name')
+  String expenseName;
   @JsonKey(name: 'category', nullable: true)
   MiscellaneousCategory category;
   @JsonKey(name: 'amount', nullable: true)
   int amount;
+   @JsonKey(name: 'expense_date')
+  DateTime expenseDate;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'notes', defaultValue: '')
@@ -48,12 +52,20 @@ class MiscellaneousExpense extends Model {
     this.subBranchName = subBranchName;
   }
 
+  setExpenseName(String name) {
+    this.expenseName = name;
+  }
+
   setCategory(MiscellaneousCategory category) {
     this.category = category;
   }
 
   setAmount(int amount) {
     this.amount = amount;
+  }
+
+  setExpenseDate(DateTime expenseDate) {
+    this.expenseDate = expenseDate;
   }
 
   setAddedBy(int mobileNumber) {
@@ -101,6 +113,7 @@ class MiscellaneousExpense extends Model {
     this.financeID = user.primaryFinance;
     this.branchName = user.primaryBranch;
     this.subBranchName = user.primarySubBranch;
+    this.addedBy = user.mobileNumber;
 
     await super.add(this.toJson());
 
@@ -116,13 +129,13 @@ class MiscellaneousExpense extends Model {
         .snapshots();
   }
 
-  Future<List<MiscellaneousExpense>> getAllExpensesByAddedUser(
-      String financeId, String branchName, String subBranchName, int addedBy) async {
+  Future<List<MiscellaneousExpense>> getAllExpenses(
+      String financeId, String branchName, String subBranchName) async {
     QuerySnapshot snapDocs = await getCollectionRef()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('added_by', isEqualTo: addedBy).getDocuments();
+        .getDocuments();
 
     if (snapDocs.documents.isEmpty) {
       return [];

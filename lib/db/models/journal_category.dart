@@ -93,6 +93,7 @@ class JournalCategory extends Model {
     this.financeID = user.primaryFinance;
     this.branchName = user.primaryBranch;
     this.subBranchName = user.primarySubBranch;
+    this.addedBy = user.mobileNumber;
 
     await super.add(this.toJson());
 

@@ -14,6 +14,7 @@ MiscellaneousExpense _$MiscellaneousExpenseFromJson(Map<String, dynamic> json) {
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
+    ..expenseName = json['expense_name'] as String
     ..category = json['category'] == null
         ? null
         : MiscellaneousCategory.fromJson(
@@ -21,6 +22,10 @@ MiscellaneousExpense _$MiscellaneousExpenseFromJson(Map<String, dynamic> json) {
     ..amount = json['amount'] as int
     ..addedBy = json['added_by'] as int
     ..notes = json['notes'] as String ?? ''
+    ..expenseDate = json['expense_date'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['expense_date'] as Timestamp))
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -42,7 +47,9 @@ Map<String, dynamic> _$MiscellaneousExpenseToJson(
       'finance_id': instance.financeID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
+      'expense_name': instance.expenseName,
       'category': instance.category?.toJson(),
+      'expense_date': instance.expenseDate,
       'amount': instance.amount,
       'added_by': instance.addedBy,
       'notes': instance.notes == null ? '' : instance.notes,

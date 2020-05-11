@@ -21,10 +21,14 @@ class JournalEntry extends Model {
   String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
+  @JsonKey(name: 'journal_name')
+  String journalName;
   @JsonKey(name: 'category', nullable: true)
   JournalCategory category;
   @JsonKey(name: 'amount', nullable: true)
   int amount;
+  @JsonKey(name: 'journal_date')
+  DateTime journalDate;
   @JsonKey(name: 'is_expense', defaultValue: false)
   bool isExpense;
   @JsonKey(name: 'added_by', nullable: true)
@@ -50,12 +54,20 @@ class JournalEntry extends Model {
     this.subBranchName = subBranchName;
   }
 
+  setJournalName(String name) {
+    this.journalName = name;
+  }
+
   setCategory(JournalCategory category) {
     this.category = category;
   }
 
   setAmount(int amount) {
     this.amount = amount;
+  }
+
+  setJournalDate(DateTime journalDate) {
+    this.journalDate = journalDate;
   }
 
   setIsExpense(bool isExpense) {
@@ -107,13 +119,14 @@ class JournalEntry extends Model {
     this.financeID = user.primaryFinance;
     this.branchName = user.primaryBranch;
     this.subBranchName = user.primarySubBranch;
+    this.addedBy = user.mobileNumber;
 
     await super.add(this.toJson());
 
     return this;
   }
 
-  Stream<QuerySnapshot> streamExpenses(
+  Stream<QuerySnapshot> streamJournals(
       String financeId, String branchName, String subBranchName) {
     return getCollectionRef()
         .where('finance_id', isEqualTo: financeId)
@@ -122,13 +135,13 @@ class JournalEntry extends Model {
         .snapshots();
   }
 
-  Future<List<JournalEntry>> getAllExpensesByAddedUser(
-      String financeId, String branchName, String subBranchName, int addedBy) async {
+  Future<List<JournalEntry>> getAllJournals(
+      String financeId, String branchName, String subBranchName) async {
     QuerySnapshot snapDocs = await getCollectionRef()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('added_by', isEqualTo: addedBy).getDocuments();
+        .getDocuments();
 
     if (snapDocs.documents.isEmpty) {
       return [];
