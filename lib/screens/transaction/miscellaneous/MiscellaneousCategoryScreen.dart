@@ -90,8 +90,11 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
               } else {
                 // No Categories added yet
                 widget = Container(
+                  alignment: Alignment.center,
                   height: 90,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       new Spacer(),
                       Text(
@@ -248,7 +251,7 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
               leading: Text(
                 data['category_name'],
                 style: TextStyle(
-                    color: textColor,
+                    color: CustomColors.mfinWhite,
                     fontFamily: 'Georgia',
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold),
@@ -262,8 +265,8 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
                 child: Text(
                   "View",
                 ),
-                textColor: CustomColors.mfinBlack,
-                color: CustomColors.mfinFadedButtonGreen,
+                textColor: CustomColors.mfinWhite,
+                color: CustomColors.mfinButtonGreen,
                 splashColor: Colors.white.withOpacity(0.5),
               ),
             ),
@@ -312,8 +315,8 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
               child: Text(
                 "Close",
               ),
-              textColor: Colors.white,
-              color: CustomColors.mfinBlue,
+              textColor: CustomColors.mfinWhite,
+              color: CustomColors.mfinButtonGreen,
               splashColor: Colors.white.withOpacity(0.5),
             ),
           ),

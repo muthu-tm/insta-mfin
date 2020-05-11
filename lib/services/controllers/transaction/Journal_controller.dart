@@ -2,8 +2,8 @@ import 'package:instamfin/db/models/journal_category.dart';
 import 'package:instamfin/db/models/journal_entry.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
-class JounalController {
-  Future createJournalCategory(
+class JournalController {
+  Future createNewJournal(
       String name,
       int amount,
       JournalCategory category,

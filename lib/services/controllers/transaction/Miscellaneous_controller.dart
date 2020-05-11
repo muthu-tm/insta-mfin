@@ -3,11 +3,10 @@ import 'package:instamfin/db/models/miscellaneous_expense.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class MiscellaneousController {
-  Future createJournalCategory(
+  Future createNewExpense(
       String name,
       int amount,
       MiscellaneousCategory category,
-      bool isExpense,
       DateTime date,
       String notes) async {
     try {

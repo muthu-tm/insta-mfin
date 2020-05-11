@@ -24,7 +24,6 @@ class _AddBranchState extends State<AddBranch> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FocusNode myFocusNode = FocusNode();
 
   final Branch branch = new Branch();
   DateTime selectedDate = DateTime.now();

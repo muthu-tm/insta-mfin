@@ -88,37 +88,36 @@ class JournalCategoryScreen extends StatelessWidget {
                 );
               } else {
                 // No Category available
-                widget = Center(
-                  child: Container(
-                    height: 90,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        new Spacer(),
-                        Text(
-                          "No Categories!",
-                          style: TextStyle(
-                            color: CustomColors.mfinAlertRed,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                widget = Container(
+                  alignment: Alignment.center,
+                  height: 90,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      new Spacer(),
+                      Text(
+                        "No Categories!",
+                        style: TextStyle(
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                        new Spacer(
-                          flex: 2,
+                      ),
+                      new Spacer(
+                        flex: 2,
+                      ),
+                      Text(
+                        "Add your Categories!",
+                        style: TextStyle(
+                          color: CustomColors.mfinBlue,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Text(
-                          "Add your Categories!",
-                          style: TextStyle(
-                            color: CustomColors.mfinBlue,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        new Spacer(),
-                      ],
-                    ),
+                        textAlign: TextAlign.center,
+                      ),
+                      new Spacer(),
+                    ],
                   ),
                 );
               }
@@ -251,7 +250,7 @@ class JournalCategoryScreen extends StatelessWidget {
               leading: Text(
                 data['category_name'],
                 style: TextStyle(
-                    color: textColor,
+                    color: CustomColors.mfinWhite,
                     fontFamily: 'Georgia',
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold),
@@ -265,8 +264,8 @@ class JournalCategoryScreen extends StatelessWidget {
                 child: Text(
                   "View",
                 ),
-                textColor: CustomColors.mfinBlack,
-                color: CustomColors.mfinFadedButtonGreen,
+                textColor: CustomColors.mfinWhite,
+                color: CustomColors.mfinButtonGreen,
                 splashColor: Colors.white.withOpacity(0.5),
               ),
             ),
@@ -315,8 +314,8 @@ class JournalCategoryScreen extends StatelessWidget {
               child: Text(
                 "Close",
               ),
-              textColor: Colors.white,
-              color: CustomColors.mfinBlue,
+              textColor: CustomColors.mfinWhite,
+              color: CustomColors.mfinButtonGreen,
               splashColor: Colors.white.withOpacity(0.5),
             ),
           ),
