@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/transaction/JournalEntryHome.dart';
+import 'package:instamfin/screens/transaction/MiscellaneousExpenseHome.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionCollectionBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionJournalBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionMiscellaneousBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionSettings.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -78,7 +79,12 @@ class TransactionScreen extends StatelessWidget {
               padding: EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
               child: InkWell(
                 onTap: () {
-                  print("Pressed Miscellaneous Expenses");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MiscellaneousExpenseHome(),
+                    ),
+                  );
                 },
                 child: Row(
                   children: <Widget>[
@@ -132,7 +138,10 @@ class TransactionScreen extends StatelessWidget {
               padding: EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
               child: InkWell(
                 onTap: () {
-                  print("Pressed Journal Entries");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => JournalEntryHome()),
+                  );
                 },
                 child: Row(
                   children: <Widget>[
@@ -192,9 +201,11 @@ class TransactionScreen extends StatelessWidget {
                   splashColor: CustomColors.mfinButtonGreen,
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TransactionSetting()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TransactionSetting(),
+                      ),
+                    );
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.90,

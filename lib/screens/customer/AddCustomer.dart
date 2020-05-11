@@ -39,6 +39,25 @@ class _AddCustomerState extends State<AddCustomer> {
         title: Text('New Customer'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _submit();
+        },
+        label: Text(
+          "Save",
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: "Georgia",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(
+          Icons.check,
+          size: 35,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
+      ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -231,7 +250,6 @@ class _AddCustomerState extends State<AddCustomer> {
           ),
         ),
       ),
-      bottomNavigationBar: EditorsActionButtons(_submit, _close),
     );
   }
 
@@ -266,10 +284,6 @@ class _AddCustomerState extends State<AddCustomer> {
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
-  }
-
-  _close() {
-    Navigator.pop(context);
   }
 
   setCustomerNameState(name) {
