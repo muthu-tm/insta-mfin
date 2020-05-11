@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/services/controllers/transaction/collectionTemp_controller.dart';
 
 class AddCollectionTemplate extends StatefulWidget {
-
   @override
   _AddCollectionTemplateState createState() => _AddCollectionTemplateState();
 }
@@ -27,7 +25,6 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
   double intrestRate;
   int collectionAmount;
 
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -38,6 +35,25 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
         // the App.build method, and use it to set our appbar title.
         title: Text('Add Template'),
         backgroundColor: CustomColors.mfinBlue,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _submit();
+        },
+        label: Text(
+          "Save",
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: "Georgia",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(
+          Icons.check,
+          size: 35,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -89,7 +105,6 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
                       validator: (amount) {
                         if (amount.trim().isNotEmpty) {
                           this.totalAmount = int.parse(amount);
-
                         } else {
                           this.totalAmount = 0;
                           return null;
@@ -142,7 +157,8 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
                       return null;
                     },
                   ),
-                ),RowHeaderText(textName: "Surcharge"),
+                ),
+                RowHeaderText(textName: "Surcharge"),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
@@ -165,7 +181,8 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
                       return null;
                     },
                   ),
-                ),RowHeaderText(textName: "Number of payments"),
+                ),
+                RowHeaderText(textName: "Number of payments"),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
@@ -188,7 +205,8 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
                       return null;
                     },
                   ),
-                ),RowHeaderText(textName: "Interest Rate"),
+                ),
+                RowHeaderText(textName: "Interest Rate"),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
@@ -211,7 +229,8 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
                       return null;
                     },
                   ),
-                ),RowHeaderText(textName: "Collection Amount"),
+                ),
+                RowHeaderText(textName: "Collection Amount"),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
@@ -240,7 +259,6 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
           ),
         ),
       ),
-      bottomNavigationBar: EditorsActionButtons(_submit, _close),
     );
   }
 
@@ -249,9 +267,18 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Template for YOU!");
-      CollectionTempController _collectionController = CollectionTempController();
-      var result = await _collectionController.createTemplate(templateName, totalAmount, givenAmount, noOfPayments, collectionAmount, 
-      1, documentCharge, surChargeAmount, intrestRate);
+      CollectionTempController _collectionController =
+          CollectionTempController();
+      var result = await _collectionController.createTemplate(
+          templateName,
+          totalAmount,
+          givenAmount,
+          noOfPayments,
+          collectionAmount,
+          1,
+          documentCharge,
+          surChargeAmount,
+          intrestRate);
 
       if (!result['is_success']) {
         Navigator.pop(context);
@@ -268,13 +295,5 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
-  }
-
-  _close() {
-    Navigator.pop(context);
-  }
-
-  void stringConverter(int val){
-
   }
 }

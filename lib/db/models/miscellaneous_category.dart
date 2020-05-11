@@ -74,7 +74,7 @@ class MiscellaneousCategory extends Model {
     return Model.db.collectionGroup('miscellaneous_categories');
   }
 
-  String getDocumentID(String financeId, String branchName,
+  String getDocumentID(String financeID, String branchName,
       String subBranchName, DateTime createdAt) {
     String value = financeID + branchName + subBranchName;
     return HashGenerator.hmacGenerator(
