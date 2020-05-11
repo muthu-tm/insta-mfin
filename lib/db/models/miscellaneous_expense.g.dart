@@ -8,9 +8,6 @@ part of 'miscellaneous_expense.dart';
 
 MiscellaneousExpense _$MiscellaneousExpenseFromJson(Map<String, dynamic> json) {
   return MiscellaneousExpense()
-    ..user = json['user'] == null
-        ? null
-        : User.fromJson(json['user'] as Map<String, dynamic>)
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
@@ -43,7 +40,6 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 Map<String, dynamic> _$MiscellaneousExpenseToJson(
         MiscellaneousExpense instance) =>
     <String, dynamic>{
-      'user': instance.user?.toJson(),
       'finance_id': instance.financeID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
