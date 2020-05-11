@@ -67,25 +67,24 @@ class JournalCategory extends Model {
 
   String getID() {
     String value = this.financeID + this.branchName + this.subBranchName;
-    return HashGenerator.hmacGenerator(
-        value, this.categoryName);
+    return HashGenerator.hmacGenerator(value, this.createdAt.millisecondsSinceEpoch.toString());
   }
 
   Query getGroupQuery() {
-    return Model.db.collectionGroup('miscellaneous_category');
+    return Model.db.collectionGroup('journal_categories');
   }
 
   String getDocumentID(String financeId, String branchName,
-      String subBranchName, String name) {
+      String subBranchName, DateTime createdAt) {
     String value = financeID + branchName + subBranchName;
     return HashGenerator.hmacGenerator(
-        value, name);
+        value, createdAt.millisecondsSinceEpoch.toString());
   }
 
   DocumentReference getDocumentReference(String financeId, String branchName,
-      String subBranchName, String name) {
-    return getCollectionRef().document(
-        getDocumentID(financeId, branchName, subBranchName, name));
+      String subBranchName, DateTime createdAt) {
+    return getCollectionRef().document(getDocumentID(financeId, branchName,
+        subBranchName, createdAt));
   }
 
   Future<JournalCategory> create() async {
@@ -100,7 +99,7 @@ class JournalCategory extends Model {
     return this;
   }
 
-  Stream<QuerySnapshot> streamExpenses(
+  Stream<QuerySnapshot> streamCategories(
       String financeId, String branchName, String subBranchName) {
     return getCollectionRef()
         .where('finance_id', isEqualTo: financeId)
@@ -109,23 +108,23 @@ class JournalCategory extends Model {
         .snapshots();
   }
 
-  Future<List<JournalCategory>> getAllExpensesByAddedUser(
-      String financeId, String branchName, String subBranchName, int addedBy) async {
+  Future<List<JournalCategory>> getAllCategories(
+      String financeId, String branchName, String subBranchName) async {
     QuerySnapshot snapDocs = await getCollectionRef()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('added_by', isEqualTo: addedBy).getDocuments();
+        .getDocuments();
 
     if (snapDocs.documents.isEmpty) {
       return [];
     }
 
-    List<JournalCategory> expenses = [];
-    snapDocs.documents.forEach((e) {
-      expenses.add(JournalCategory.fromJson(e.data));
+    List<JournalCategory> categories = [];
+    snapDocs.documents.forEach((c) {
+      categories.add(JournalCategory.fromJson(c.data));
     });
 
-    return expenses;
+    return categories;
   }
 }
