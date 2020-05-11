@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/transaction/JournalEntryHome.dart';
-import 'package:instamfin/screens/transaction/MiscellaneousExpenseHome.dart';
+import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
+import 'package:instamfin/screens/transaction/miscellaneous/MiscellaneousExpenseHome.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionCollectionBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionJournalBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionMiscellaneousBuilder.dart';

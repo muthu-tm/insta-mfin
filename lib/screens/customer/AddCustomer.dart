@@ -5,7 +5,6 @@ import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
@@ -114,12 +113,7 @@ class _AddCustomerState extends State<AddCustomer> {
                       filled: true,
                     ),
                     validator: (id) {
-                      if (id.trim().isEmpty) {
-                        this.id = id.trim();
-                      } else {
-                        this.id = id.trim();
-                      }
-
+                      this.id = id.trim();
                       return null;
                     },
                   ),

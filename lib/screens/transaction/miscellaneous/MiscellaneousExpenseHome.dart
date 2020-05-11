@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/transaction/miscellaneous/MiscellaneousCategoryScreen.dart';
 import 'package:instamfin/screens/transaction/widgets/MiscellaneousAppBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
@@ -9,7 +10,12 @@ class MiscellaneousExpenseHome extends StatelessWidget {
       appBar: miscellaneousAppBar(context),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MiscellaneousCategoryScreen(),
+            ),
+          );
         },
         label: Text(
           'Add',

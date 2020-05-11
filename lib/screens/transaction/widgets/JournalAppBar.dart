@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/transaction/journal/JournalCategoryScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 Widget journalAppBar(BuildContext context) {
@@ -7,15 +8,21 @@ Widget journalAppBar(BuildContext context) {
     backgroundColor: CustomColors.mfinBlue,
     actions: <Widget>[
       IconButton(
-          alignment: Alignment.centerLeft,
-          iconSize: 40,
-          highlightColor: CustomColors.mfinWhite,
-          color: CustomColors.mfinFadedButtonGreen,
-          splashColor: CustomColors.mfinWhite,
-          icon: Icon(Icons.category),
-          onPressed: () {
-            print("View Journal Categories");
-          })
+        alignment: Alignment.centerLeft,
+        iconSize: 40,
+        highlightColor: CustomColors.mfinWhite,
+        color: CustomColors.mfinFadedButtonGreen,
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(Icons.category),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => JournalCategoryScreen(),
+            ),
+          );
+        },
+      )
     ],
   );
 }

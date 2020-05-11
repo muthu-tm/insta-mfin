@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/transaction/journal/JournalCategoryScreen.dart';
 import 'package:instamfin/screens/transaction/widgets/JournalAppBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
@@ -9,7 +10,12 @@ class JournalEntryHome extends StatelessWidget {
       appBar: journalAppBar(context),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => JournalCategoryScreen(),
+            ),
+          );
         },
         label: Text(
           'Add',
