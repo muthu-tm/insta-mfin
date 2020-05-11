@@ -48,8 +48,30 @@ class CustomDialogs {
     AlertDialog alert = AlertDialog(
       content: new Row(
         children: [
-          CircularProgressIndicator(
-            backgroundColor: CustomColors.mfinButtonGreen,
+          Stack(
+            children: <Widget>[
+              Container(
+                width: 45,
+                height: 45,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('images/icons/action_icon.png'),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 45,
+                height: 45,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  backgroundColor: CustomColors.mfinButtonGreen,
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(CustomColors.mfinBlue),
+                ),
+              ),
+            ],
           ),
           Container(margin: EdgeInsets.only(left: 5), child: Text(actionName)),
         ],
