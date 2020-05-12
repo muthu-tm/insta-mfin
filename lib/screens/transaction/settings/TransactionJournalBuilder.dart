@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
+import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class TransactionJournalBuilder extends StatelessWidget {
-  final PaymentController _pc = PaymentController();
+  final JournalController _jc = JournalController();
+
   final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, int>>(
-      future: _pc.getPaymentsCountByStatus(
+    return FutureBuilder<List<int>>(
+      future: _jc.getTotalJournalAmount(
           _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
-      builder:
-          (BuildContext context, AsyncSnapshot<Map<String, int>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
         Widget widget;
 
         if (snapshot.hasData) {
@@ -35,7 +35,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    snapshot.data['total_payments'].toString(),
+                    snapshot.data[0].toString(),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinPositiveGreen,
@@ -56,7 +56,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    snapshot.data['active_payments'].toString(),
+                    snapshot.data[1].toString(),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinAlertRed,

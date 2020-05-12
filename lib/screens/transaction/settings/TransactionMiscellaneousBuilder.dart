@@ -2,27 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
+import 'package:instamfin/services/controllers/transaction/Miscellaneous_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class TransactionMiscellaneousBuilder extends StatelessWidget {
-  final PaymentController _pc = PaymentController();
+  final MiscellaneousController _mc = MiscellaneousController();
   final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, int>>(
-      future: _pc.getPaymentsCountByStatus(
+    return FutureBuilder<int>(
+      future: _mc.getTotalExpenseAmount(
           _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
-      builder:
-          (BuildContext context, AsyncSnapshot<Map<String, int>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
           children = <Widget>[
             ListTile(
               leading: Text(
-                "Total Amount: ",
+                "Total Expense:",
                 style: TextStyle(
                   fontSize: 17,
                   color: CustomColors.mfinBlue,
@@ -30,10 +29,10 @@ class TransactionMiscellaneousBuilder extends StatelessWidget {
                 ),
               ),
               trailing: Text(
-                snapshot.data['total_payments'].toString(),
+                snapshot.data.toString(),
                 style: TextStyle(
                   fontSize: 17,
-                  color: CustomColors.mfinBlue,
+                  color: CustomColors.mfinAlertRed,
                   fontWeight: FontWeight.bold,
                 ),
               ),

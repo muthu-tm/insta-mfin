@@ -3,13 +3,8 @@ import 'package:instamfin/db/models/journal_entry.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class JournalController {
-  Future createNewJournal(
-      String name,
-      int amount,
-      JournalCategory category,
-      bool isExpense,
-      DateTime date,
-      String notes) async {
+  Future createNewJournal(String name, int amount, JournalCategory category,
+      bool isExpense, DateTime date, String notes) async {
     try {
       JournalEntry _je = JournalEntry();
       _je.setJournalName(name);
@@ -36,6 +31,32 @@ class JournalController {
       return _je.getAllJournals(financeId, branchName, subBranchName);
     } catch (err) {
       print("Error while retrieving Journal Entries: " + err.toString());
+      throw err;
+    }
+  }
+
+  Future<List<int>> getTotalJournalAmount(
+      String financeId, String branchName, String subBranchName) async {
+    try {
+      List<JournalEntry> journals =
+          await getAllJournalEntries(financeId, branchName, subBranchName);
+
+      int inTotal = 0;
+      int outTotal = 0;
+      journals.forEach(
+        (journal) {
+          if (journal.isExpense) {
+            outTotal += journal.amount;
+          } else {
+            inTotal += journal.amount;
+          }
+        },
+      );
+
+      return [inTotal, outTotal];
+    } catch (err) {
+      print("Error while retrieving Total Miscellaneous Expense amount: " +
+          err.toString());
       throw err;
     }
   }

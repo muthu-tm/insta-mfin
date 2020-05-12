@@ -11,7 +11,8 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddMiscellaneousExpense extends StatefulWidget {
   @override
-  _AddMiscellaneousExpenseState createState() => _AddMiscellaneousExpenseState();
+  _AddMiscellaneousExpenseState createState() =>
+      _AddMiscellaneousExpenseState();
 }
 
 class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
@@ -290,8 +291,12 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Adding Expense!");
       MiscellaneousController _mc = MiscellaneousController();
-      var result = await _mc.createNewExpense(name, amount,
-          categoryList[int.parse(_selectedCategory) - 1], selectedDate, notes);
+      MiscellaneousCategory _category;
+      if (categoryList != null && _selectedCategory != "0") {
+        _category = categoryList[int.parse(_selectedCategory) - 1];
+      }
+      var result = await _mc.createNewExpense(
+          name, amount, _category, selectedDate, notes);
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState

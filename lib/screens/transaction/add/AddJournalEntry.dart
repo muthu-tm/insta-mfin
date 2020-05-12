@@ -289,13 +289,13 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Adding Journal!");
       JournalController _jc = JournalController();
+      JournalCategory _category;
+      if (categoryList != null && _selectedCategory != "0") {
+        _category = categoryList[int.parse(_selectedCategory) - 1];
+      }
+
       var result = await _jc.createNewJournal(
-          name,
-          amount,
-          categoryList[int.parse(_selectedCategory) - 1],
-          false,
-          selectedDate,
-          notes);
+          name, amount, _category, false, selectedDate, notes);
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState

@@ -46,8 +46,7 @@ class MiscellaneousExpenseHome extends StatelessWidget {
         ),
         // backgroundColor: CustomColors.mfinBlue,
       ),
-      body: SingleChildScrollView(
-        child: StreamBuilder<QuerySnapshot>(
+      body: StreamBuilder<QuerySnapshot>(
           stream: MiscellaneousExpense().streamExpenses(_user.primaryFinance,
               _user.primaryBranch, _user.primarySubBranch),
           builder:
@@ -61,6 +60,14 @@ class MiscellaneousExpenseHome extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (BuildContext context, int index) {
+                    String categoryName = "";
+
+                    if (snapshot.data.documents[index].data['category'] !=
+                        null) {
+                      categoryName = snapshot.data.documents[index]
+                          .data['category']['category_name'];
+                    }
+
                     Color cardColor = CustomColors.mfinGrey;
                     Color textColor = CustomColors.mfinBlue;
                     if (index % 2 == 0) {
@@ -79,10 +86,11 @@ class MiscellaneousExpenseHome extends StatelessWidget {
                         innerBottomWidget: _buildInnerBottomWidget(
                             snapshot.data.documents[index].data['notes'],
                             snapshot.data.documents[index].data['expense_date']
-                                .toDate()),
+                                .toDate(),
+                            categoryName),
                         cellSize: Size(MediaQuery.of(context).size.width, 170),
                         padding:
-                            EdgeInsets.only(left: 15.0, top: 15.0, right: 15.0),
+                            EdgeInsets.only(left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
                         animationDuration: Duration(milliseconds: 300),
                         borderRadius: 10,
                         onOpen: () => print('$index cell opened'),
@@ -145,7 +153,6 @@ class MiscellaneousExpenseHome extends StatelessWidget {
             return widget;
           },
         ),
-      ),
     );
   }
 
@@ -310,7 +317,8 @@ class MiscellaneousExpenseHome extends StatelessWidget {
     );
   }
 
-  Widget _buildInnerBottomWidget(String notes, DateTime expenseDate) {
+  Widget _buildInnerBottomWidget(
+      String notes, DateTime expenseDate, String category) {
     return Container(
       color: CustomColors.mfinBlue,
       alignment: Alignment.center,
@@ -327,6 +335,24 @@ class MiscellaneousExpenseHome extends StatelessWidget {
             ),
             trailing: Text(
               DateUtils.formatDate(expenseDate),
+              style: TextStyle(
+                  color: CustomColors.mfinWhite,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          ListTile(
+            leading: Text(
+              'Category',
+              style: TextStyle(
+                  color: CustomColors.mfinGrey,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            trailing: Text(
+              category,
               style: TextStyle(
                   color: CustomColors.mfinWhite,
                   fontFamily: 'Georgia',

@@ -45,105 +45,110 @@ class JournalEntryHome extends StatelessWidget {
         ),
         // backgroundColor: CustomColors.mfinBlue,
       ),
-      body: SingleChildScrollView(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: JournalEntry().streamJournals(_user.primaryFinance,
-              _user.primaryBranch, _user.primarySubBranch),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            Widget widget;
+      body: StreamBuilder<QuerySnapshot>(
+        stream: JournalEntry().streamJournals(
+            _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          Widget widget;
 
-            if (snapshot.hasData) {
-              if (snapshot.data.documents.isNotEmpty) {
-                widget = ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Color cardColor = CustomColors.mfinGrey;
-                    Color textColor = CustomColors.mfinBlue;
-                    if (index % 2 == 0) {
-                      cardColor = CustomColors.mfinBlue;
-                      textColor = CustomColors.mfinGrey;
-                    }
-                    return SimpleFoldingCell(
-                        frontWidget: _buildFrontWidget(
-                            context,
-                            snapshot.data.documents[index].data,
-                            cardColor,
-                            textColor),
-                        innerTopWidget: _buildInnerTopWidget(
-                            snapshot.data.documents[index].data['journal_name'],
-                            snapshot.data.documents[index].data['amount']),
-                        innerBottomWidget: _buildInnerBottomWidget(
-                            snapshot.data.documents[index].data['notes'],
-                            snapshot.data.documents[index].data['journal_date']
-                                .toDate()),
-                        cellSize: Size(MediaQuery.of(context).size.width, 170),
-                        padding:
-                            EdgeInsets.only(left: 15.0, top: 15.0, right: 15.0),
-                        animationDuration: Duration(milliseconds: 300),
-                        borderRadius: 10,
-                        onOpen: () => print('$index cell opened'),
-                        onClose: () => print('$index cell closed'));
-                  },
-                );
-              } else {
-                // No Journal Entry added yet
-                widget = Container(
-                  alignment: Alignment.center,
-                  height: 90,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      new Spacer(),
-                      Text(
-                        "No Adjustments Entries so far!",
-                        style: TextStyle(
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      new Spacer(
-                        flex: 2,
-                      ),
-                      Text(
-                        "Add and Manage your Adjustments here!",
-                        style: TextStyle(
-                          color: CustomColors.mfinBlue,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      new Spacer(),
-                    ],
-                  ),
-                );
-              }
-            } else if (snapshot.hasError) {
-              widget = Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: AsyncWidgets.asyncError(),
-                ),
+          if (snapshot.hasData) {
+            if (snapshot.data.documents.isNotEmpty) {
+              widget = ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  String categoryName = "";
+
+                  if (snapshot.data.documents[index].data['category'] != null) {
+                    categoryName = snapshot.data.documents[index]
+                        .data['category']['category_name'];
+                  }
+                  Color cardColor = CustomColors.mfinGrey;
+                  Color textColor = CustomColors.mfinBlue;
+                  if (index % 2 == 0) {
+                    cardColor = CustomColors.mfinBlue;
+                    textColor = CustomColors.mfinGrey;
+                  }
+                  return SimpleFoldingCell(
+                      frontWidget: _buildFrontWidget(
+                          context,
+                          snapshot.data.documents[index].data,
+                          cardColor,
+                          textColor),
+                      innerTopWidget: _buildInnerTopWidget(
+                          snapshot.data.documents[index].data['journal_name'],
+                          snapshot.data.documents[index].data['amount']),
+                      innerBottomWidget: _buildInnerBottomWidget(
+                          context,
+                          snapshot.data.documents[index].data['notes'],
+                          snapshot.data.documents[index].data['journal_date']
+                              .toDate(),
+                          categoryName),
+                      cellSize: Size(MediaQuery.of(context).size.width, 170),
+                      padding: EdgeInsets.only(
+                          left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
+                      animationDuration: Duration(milliseconds: 300),
+                      borderRadius: 10,
+                      onOpen: () => print('$index cell opened'),
+                      onClose: () => print('$index cell closed'));
+                },
               );
             } else {
-              widget = Center(
+              // No Journal Entry added yet
+              widget = Container(
+                alignment: Alignment.center,
+                height: 90,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: AsyncWidgets.asyncWaiting(),
+                  children: <Widget>[
+                    new Spacer(),
+                    Text(
+                      "No Adjustments Entries so far!",
+                      style: TextStyle(
+                        color: CustomColors.mfinAlertRed,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    new Spacer(
+                      flex: 2,
+                    ),
+                    Text(
+                      "Add and Manage your Adjustments here!",
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    new Spacer(),
+                  ],
                 ),
               );
             }
+          } else if (snapshot.hasError) {
+            widget = Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: AsyncWidgets.asyncError(),
+              ),
+            );
+          } else {
+            widget = Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: AsyncWidgets.asyncWaiting(),
+              ),
+            );
+          }
 
-            return widget;
-          },
-        ),
+          return widget;
+        },
       ),
     );
   }
@@ -309,7 +314,8 @@ class JournalEntryHome extends StatelessWidget {
     );
   }
 
-  Widget _buildInnerBottomWidget(String notes, DateTime expenseDate) {
+  Widget _buildInnerBottomWidget(BuildContext context, String notes,
+      DateTime expenseDate, String category) {
     return Container(
       color: CustomColors.mfinBlue,
       alignment: Alignment.center,
@@ -335,7 +341,7 @@ class JournalEntryHome extends StatelessWidget {
           ),
           ListTile(
             leading: Text(
-              'Notes',
+              'Category',
               style: TextStyle(
                   color: CustomColors.mfinGrey,
                   fontFamily: 'Georgia',
@@ -343,7 +349,7 @@ class JournalEntryHome extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             trailing: Text(
-              notes,
+              category,
               style: TextStyle(
                   color: CustomColors.mfinWhite,
                   fontFamily: 'Georgia',
@@ -351,6 +357,27 @@ class JournalEntryHome extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
           ),
+          ListTile(
+              leading: Text(
+                'Notes',
+                style: TextStyle(
+                    color: CustomColors.mfinGrey,
+                    fontFamily: 'Georgia',
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              trailing: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.65,
+                child: Text(
+                  notes,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                      color: CustomColors.mfinWhite,
+                      fontFamily: 'Georgia',
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
+                ),
+              )),
         ],
       ),
     );
