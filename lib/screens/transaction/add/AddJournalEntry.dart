@@ -269,8 +269,8 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(1901, 1),
-      lastDate: DateTime(2100),
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now(),
     );
     if (picked != null && picked != selectedDate)
       setState(
