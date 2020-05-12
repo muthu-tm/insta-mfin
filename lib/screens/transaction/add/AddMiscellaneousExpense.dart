@@ -259,7 +259,10 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
       }
-      categoryList = categories;
+      setState(() {
+        categoryList = categories;
+      });
+      print("Add Miscellaneous: Loaded Miscellaneous categories!");
     } catch (err) {
       print("Unable to load miscellaneous categories!");
     }

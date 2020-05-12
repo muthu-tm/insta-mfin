@@ -299,9 +299,12 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
       }
-      categoryList = categories;
+      setState(() {
+        categoryList = categories;
+      });
+      print("Add Journal: Loaded Journal categories!");
     } catch (err) {
-      print("Unable to load miscellaneous categories!");
+      print("Unable to load Journal categories!");
     }
   }
 
