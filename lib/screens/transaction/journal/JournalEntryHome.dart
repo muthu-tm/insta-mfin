@@ -59,10 +59,15 @@ class JournalEntryHome extends StatelessWidget {
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
                   String categoryName = "";
+                  String journalText = "INCOME";
 
                   if (snapshot.data.documents[index].data['category'] != null) {
                     categoryName = snapshot.data.documents[index]
                         .data['category']['category_name'];
+                  }
+
+                  if (snapshot.data.documents[index].data['is_expense']) {
+                    journalText = "EXPENSE";
                   }
                   Color cardColor = CustomColors.mfinGrey;
                   Color textColor = CustomColors.mfinBlue;
@@ -74,11 +79,13 @@ class JournalEntryHome extends StatelessWidget {
                       frontWidget: _buildFrontWidget(
                           context,
                           snapshot.data.documents[index].data,
+                          journalText,
                           cardColor,
                           textColor),
                       innerTopWidget: _buildInnerTopWidget(
                           snapshot.data.documents[index].data['journal_name'],
-                          snapshot.data.documents[index].data['amount']),
+                          snapshot.data.documents[index].data['amount'],
+                          journalText),
                       innerBottomWidget: _buildInnerBottomWidget(
                           context,
                           snapshot.data.documents[index].data['notes'],
@@ -154,7 +161,7 @@ class JournalEntryHome extends StatelessWidget {
   }
 
   Widget _buildFrontWidget(BuildContext context, Map<String, dynamic> data,
-      Color cardColor, Color textColor) {
+      String journalText, Color cardColor, Color textColor) {
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.30,
@@ -277,7 +284,7 @@ class JournalEntryHome extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Text(
-                    'AMOUNT',
+                    journalText,
                     style: TextStyle(
                         color: textColor,
                         fontFamily: 'Georgia',
@@ -287,7 +294,9 @@ class JournalEntryHome extends StatelessWidget {
                   trailing: Text(
                     data['amount'].toString(),
                     style: TextStyle(
-                        color: CustomColors.mfinAlertRed,
+                        color: (journalText == "INCOME")
+                            ? CustomColors.mfinFadedButtonGreen
+                            : CustomColors.mfinAlertRed,
                         fontFamily: 'Georgia',
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold),
@@ -383,7 +392,7 @@ class JournalEntryHome extends StatelessWidget {
     );
   }
 
-  Widget _buildInnerTopWidget(String name, int amount) {
+  Widget _buildInnerTopWidget(String name, int amount, String journalText) {
     return Builder(
       builder: (context) {
         return Container(
@@ -411,7 +420,7 @@ class JournalEntryHome extends StatelessWidget {
               ),
               ListTile(
                 leading: Text(
-                  'AMOUNT',
+                  journalText,
                   style: TextStyle(
                       color: CustomColors.mfinBlue,
                       fontFamily: 'Georgia',
@@ -421,7 +430,9 @@ class JournalEntryHome extends StatelessWidget {
                 trailing: Text(
                   amount.toString(),
                   style: TextStyle(
-                      color: CustomColors.mfinAlertRed,
+                      color: (journalText == "INCOME")
+                          ? CustomColors.mfinFadedButtonGreen
+                          : CustomColors.mfinAlertRed,
                       fontFamily: 'Georgia',
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold),
