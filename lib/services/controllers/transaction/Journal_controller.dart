@@ -100,8 +100,7 @@ class JournalController {
     try {
       JournalEntry _je = JournalEntry();
 
-      await _je.delete(
-          _je.getDocumentID(financeId, branchName, subBranchName, createdAt));
+      await _je.removeJournal(financeId, branchName, subBranchName, createdAt);
 
       return CustomResponse.getSuccesReponse(
           "Removed the Journal Entry successfully");

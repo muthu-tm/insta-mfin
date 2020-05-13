@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/journal_category.dart';
 import 'package:instamfin/db/models/model.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +8,6 @@ part 'journal_entry.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class JournalEntry extends Model {
-  User user = UserController().getCurrentUser();
 
   static CollectionReference _miscellaneousCollRef =
       Model.db.collection("journal_entries");
@@ -113,7 +110,7 @@ class JournalEntry extends Model {
         getDocumentID(financeId, branchName, subBranchName, createdAt));
   }
 
-  Future<JournalEntry> create() async {
+  Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.financeID = user.primaryFinance;
@@ -121,9 +118,43 @@ class JournalEntry extends Model {
     this.subBranchName = user.primarySubBranch;
     this.addedBy = user.mobileNumber;
 
-    await super.add(this.toJson());
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
 
-    return this;
+      await Model.db.runTransaction(
+        (tx) async {
+          return tx.get(finDocRef).then(
+            (doc) {
+              int inHandAmount = doc.data['cash_in_hand'];
+              int journalIn = doc.data['journal_in'];
+              int journalOut = doc.data['journal_out'];
+
+              Map<String, dynamic> data = Map();
+
+              if (this.isExpense) {
+                data['cash_in_hand'] = inHandAmount - this.amount;
+                data['journal_out'] = journalOut + this.amount;
+                data['journal_in'] = journalIn;
+              } else {
+                data['cash_in_hand'] = inHandAmount + this.amount;
+                data['journal_in'] = journalIn + this.amount;
+              }
+
+              txUpdate(tx, finDocRef, data);
+              txCreate(
+                tx,
+                this.getDocumentReference(
+                    financeID, branchName, subBranchName, createdAt),
+                this.toJson(),
+              );
+            },
+          );
+        },
+      );
+      print('Transaction success!');
+    } catch (err) {
+      print('Transaction failure:' + err.toString());
+    }
   }
 
   Stream<QuerySnapshot> streamJournals(
@@ -153,5 +184,55 @@ class JournalEntry extends Model {
     });
 
     return expenses;
+  }
+
+  Future removeJournal(String financeID, String branchName,
+      String subBranchName, DateTime createdAt) async {
+    DocumentReference docRef = this
+        .getDocumentReference(financeID, branchName, subBranchName, createdAt);
+
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              int inHandAmount = doc.data['cash_in_hand'];
+              int journalIn = doc.data['journal_in'];
+              int journalOut = doc.data['journal_out'];
+
+              Map<String, dynamic> data = Map();
+
+              DocumentSnapshot snap = await tx.get(docRef);
+
+              if (!snap.exists) {
+                throw 'No Journal document found';
+              }
+
+              JournalEntry journal = JournalEntry.fromJson(snap.data);
+
+              if (journal.isExpense) {
+                data['cash_in_hand'] = inHandAmount + journal.amount;
+                data['journal_out'] = journalOut - journal.amount;
+              } else {
+                data['cash_in_hand'] = inHandAmount - journal.amount;
+                data['journal_in'] = journalIn - journal.amount;
+              }
+
+              // Update finance details
+              txUpdate(tx, finDocRef, data);
+              // Remove Journal
+              txDelete(
+                  tx,
+                  this.getDocumentReference(
+                      financeID, branchName, subBranchName, createdAt));
+            },
+          );
+        },
+      );
+      print('Transaction success!');
+    } catch (err) {
+      print('Transaction failure:' + err.toString());
+    }
   }
 }

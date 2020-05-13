@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -12,10 +14,9 @@ class TransactionJournalBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<int>>(
-      future: _jc.getTotalJournalAmount(
-          _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
-      builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: _user.getFinanceDocReference().get().asStream(),
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         Widget widget;
 
         if (snapshot.hasData) {
@@ -35,7 +36,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    snapshot.data[0].toString(),
+                    snapshot.data.data['journal_in'].toString(),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinPositiveGreen,
@@ -56,7 +57,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    snapshot.data[1].toString(),
+                    snapshot.data.data['journal_out'].toString(),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinAlertRed,

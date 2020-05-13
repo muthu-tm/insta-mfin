@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class Model {
   static final Firestore db = Firestore.instance;
+  User user = UserController().getCurrentUser();
 
   CollectionReference getCollectionRef() {
     throw new Exception("Should be implemented by subclass");
@@ -86,5 +89,23 @@ class Model {
     }
 
     return null;
+  }
+
+  Future txCreate(Transaction tx, txDocRef, Map<String, dynamic> data) async {
+    tx.set(txDocRef, data);
+    return data;
+  }
+
+  Future txUpdate(Transaction tx, DocumentReference txDocRef,
+      Map<String, dynamic> data) async {
+    data['updated_at'] = DateTime.now();
+
+    tx.update(txDocRef, data);
+
+    return data;
+  }
+
+  txDelete(Transaction tx, DocumentReference txDocRef) async {
+    tx.delete(txDocRef);
   }
 }
