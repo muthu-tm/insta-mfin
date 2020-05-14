@@ -22,6 +22,7 @@ class FinanceController {
       financeCompany.setDOR(dateOfRegistration);
       financeCompany.setEmail(email);
       financeCompany.addAdmins([addedBy]);
+      financeCompany.setAddedBy(addedBy);
       financeCompany.addUsers([addedBy]);
 
       financeCompany = await financeCompany.create();
@@ -54,6 +55,8 @@ class FinanceController {
 
   Future<Finance> getFinanceByID(String financeID) async {
     try {
+      // TODO: throw error if financeID in empty ""
+
       Finance finance = Finance();
       var financeData = await finance.getByID(financeID);
       if (financeData == null) {

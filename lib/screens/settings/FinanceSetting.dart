@@ -27,6 +27,8 @@ class FinanceSetting extends StatelessWidget {
           child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
+                // TODO: if the user has empty financeID, alert him/her to select finance
+
                 FinanceProfileWidget(_user.primaryFinance),
                 FinanceBranchWidget(_user.primaryFinance),
                 FinanceUsersWidget(_user.primaryFinance)

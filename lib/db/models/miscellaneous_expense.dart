@@ -123,8 +123,8 @@ class MiscellaneousExpense extends Model {
                   AccountsData.fromJson(doc.data['accounts_data']);
 
               accData.cashInHand -= this.amount;
-              accData.journalOutAmount += this.amount;
-              accData.journalOut += 1;
+              accData.miscellaneousExpenseAmount += this.amount;
+              accData.miscellaneousExpense += 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
@@ -198,8 +198,8 @@ class MiscellaneousExpense extends Model {
                   MiscellaneousExpense.fromJson(snap.data);
 
               accData.cashInHand += expense.amount;
-              accData.journalOutAmount -= expense.amount;
-              accData.journalOut -= 1;
+              accData.miscellaneousExpenseAmount -= expense.amount;
+              accData.miscellaneousExpense -= 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               // Update finance details
