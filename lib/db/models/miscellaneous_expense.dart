@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/miscellaneous_category.dart';
 import 'package:instamfin/db/models/model.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,8 +9,6 @@ part 'miscellaneous_expense.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class MiscellaneousExpense extends Model {
-  User user = UserController().getCurrentUser();
-
   static CollectionReference _miscellaneousCollRef =
       Model.db.collection("miscellaneous_expenses");
 
@@ -27,7 +24,7 @@ class MiscellaneousExpense extends Model {
   MiscellaneousCategory category;
   @JsonKey(name: 'amount', nullable: true)
   int amount;
-   @JsonKey(name: 'expense_date')
+  @JsonKey(name: 'expense_date')
   DateTime expenseDate;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
@@ -107,7 +104,7 @@ class MiscellaneousExpense extends Model {
         getDocumentID(financeId, branchName, subBranchName, createdAt));
   }
 
-  Future<MiscellaneousExpense> create() async {
+  Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.financeID = user.primaryFinance;
@@ -115,9 +112,37 @@ class MiscellaneousExpense extends Model {
     this.subBranchName = user.primarySubBranch;
     this.addedBy = user.mobileNumber;
 
-    await super.add(this.toJson());
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
 
-    return this;
+      await Model.db.runTransaction(
+        (tx) async {
+          return tx.get(finDocRef).then(
+            (doc) {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              accData.cashInHand -= this.amount;
+              accData.journalOutAmount += this.amount;
+              accData.journalOut += 1;
+
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+              txUpdate(tx, finDocRef, data);
+
+              txCreate(
+                tx,
+                this.getDocumentReference(
+                    financeID, branchName, subBranchName, createdAt),
+                this.toJson(),
+              );
+            },
+          );
+        },
+      );
+      print('Miscellaneous CREATE Transaction success!');
+    } catch (err) {
+      print('Miscellaneous CREATE Transaction failure:' + err.toString());
+    }
   }
 
   Stream<QuerySnapshot> streamExpenses(
@@ -147,5 +172,52 @@ class MiscellaneousExpense extends Model {
     });
 
     return expenses;
+  }
+
+  Future removeExpense(String financeID, String branchName,
+      String subBranchName, DateTime createdAt) async {
+    DocumentReference docRef = this
+        .getDocumentReference(financeID, branchName, subBranchName, createdAt);
+
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              DocumentSnapshot snap = await tx.get(docRef);
+
+              if (!snap.exists) {
+                throw 'No Miscellaneous Expense document found';
+              }
+
+              MiscellaneousExpense expense =
+                  MiscellaneousExpense.fromJson(snap.data);
+
+              accData.cashInHand += expense.amount;
+              accData.journalOutAmount -= expense.amount;
+              accData.journalOut -= 1;
+
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+              // Update finance details
+              txUpdate(tx, finDocRef, data);
+
+              // Remove Expense
+              txDelete(
+                  tx,
+                  this.getDocumentReference(
+                      financeID, branchName, subBranchName, createdAt));
+            },
+          );
+        },
+      );
+      print('Miscellaneous Expense DELETE Transaction success!');
+    } catch (err) {
+      print(
+          'Miscellaneous Expense DELETE Transaction failure:' + err.toString());
+    }
   }
 }

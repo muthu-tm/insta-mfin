@@ -16,7 +16,7 @@ CollectionTemp _$CollectionTempFromJson(Map<String, dynamic> json) {
     ..tenure = json['tenure'] as int
     ..tenureType = json['tenure_type'] as int
     ..collectionAmount = json['collection_amount'] as int
-    ..interestRate = json['interest_rate'] as double
+    ..interestRate = (json['interest_rate'] as num)?.toDouble()
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null

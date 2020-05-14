@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/model.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -9,7 +7,6 @@ part 'miscellaneous_category.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class MiscellaneousCategory extends Model {
-  User user = UserController().getCurrentUser();
 
   static CollectionReference _miscellaneousCollRef =
       Model.db.collection("miscellaneous_categories");

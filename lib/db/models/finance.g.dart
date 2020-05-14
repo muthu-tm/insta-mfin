@@ -24,6 +24,9 @@ Finance _$FinanceFromJson(Map<String, dynamic> json) {
     ..allocatedUsersCount = json['allocated_users_count'] as int
     ..availableUsersCount = json['available_users_count'] as int
     ..addedBy = json['added_by'] as int
+    ..accountsData = json['accounts_data'] == null
+        ? new AccountsData()
+        : AccountsData.fromJson(json['accounts_data'] as Map<String, dynamic>)
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -65,6 +68,7 @@ Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
       'available_users_count': instance.availableUsersCount == null
           ? 1
           : instance.availableUsersCount,
+      'accounts_data': instance.accountsData?.toJson(),
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,

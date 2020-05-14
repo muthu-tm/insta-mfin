@@ -10,7 +10,8 @@ CollectionDetails _$CollectionDetailsFromJson(Map<String, dynamic> json) {
   return CollectionDetails()
     ..paidDate = json['paid_date'] == null
         ? null
-        : DateTime.parse(json['paid_date'] as String)
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['paid_date'] as Timestamp))
     ..isPaidLate = json['is_paid_late'] as bool ?? false
     ..amount = json['amount'] as int
     ..status = json['status'] as int ?? 0

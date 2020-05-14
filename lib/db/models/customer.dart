@@ -2,8 +2,6 @@ import 'package:instamfin/db/enums/customer_status.dart';
 import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/address.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,8 +10,6 @@ part 'customer.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Customer extends Model {
-  User user = UserController().getCurrentUser();
-
   static CollectionReference _customerCollRef =
       Model.db.collection("customers");
 

@@ -92,8 +92,7 @@ class MiscellaneousController {
     try {
       MiscellaneousExpense _me = MiscellaneousExpense();
 
-      await _me.delete(
-          _me.getDocumentID(financeId, branchName, subBranchName, createdAt));
+      await _me.removeExpense(financeId, branchName, subBranchName, createdAt);
 
       return CustomResponse.getSuccesReponse(
           "Removed the Miscellaneous Expense successfully");

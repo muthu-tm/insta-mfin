@@ -1,5 +1,6 @@
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,6 +27,8 @@ class Finance extends Model {
   String displayProfilePath;
   @JsonKey(name: 'address', nullable: true)
   Address address;
+  @JsonKey(name: 'accounts_data', nullable: true)
+  AccountsData accountsData;
   @JsonKey(name: 'date_of_registration', nullable: true)
   String dateOfRegistration;
   @JsonKey(name: 'allocated_branch_count', nullable: true)
@@ -89,6 +92,10 @@ class Finance extends Model {
     this.address = address;
   }
 
+  setAccountsData(AccountsData accountsData) {
+    this.accountsData = accountsData;
+  }
+
   setAllocatedBranchCount(int allocBranchCount) {
     this.allocatedBranchCount = allocBranchCount;
   }
@@ -140,6 +147,7 @@ class Finance extends Model {
   Future<Finance> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
+    this.accountsData = new AccountsData();
 
     dynamic result = await super.add(this.toJson());
     print(result);

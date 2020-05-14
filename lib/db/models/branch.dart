@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/accounts_data.dart';
 
 part 'branch.g.dart';
 
@@ -14,6 +15,8 @@ class Branch {
   String branchName;
   @JsonKey(name: 'address', nullable: true)
   Address address;
+  @JsonKey(name: 'accounts_data', nullable: true)
+  AccountsData accountsData;
   @JsonKey(name: 'email', nullable: true)
   String emailID;
   @JsonKey(name: 'contact_number', nullable: true)
@@ -75,6 +78,10 @@ class Branch {
     this.address = address;
   }
 
+  setAccountsData(AccountsData accountsData) {
+    this.accountsData = accountsData;
+  }
+
   setAddedBy(int mobileNumber) {
     this.addedBy = mobileNumber;
   }
@@ -109,6 +116,7 @@ class Branch {
   Future<Branch> create(String financeID) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
+    this.accountsData = new AccountsData();
 
     await getDocumentReference(financeID, this.branchName)
         .setData(this.toJson());

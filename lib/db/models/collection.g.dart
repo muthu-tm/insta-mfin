@@ -8,9 +8,6 @@ part of 'collection.dart';
 
 Collection _$CollectionFromJson(Map<String, dynamic> json) {
   return Collection()
-    ..payment = json['payment'] == null
-        ? null
-        : Payment.fromJson(json['payment'] as Map<String, dynamic>)
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
@@ -43,7 +40,6 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 
 Map<String, dynamic> _$CollectionToJson(Collection instance) =>
     <String, dynamic>{
-      'payment': instance.payment?.toJson(),
       'finance_id': instance.financeID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,

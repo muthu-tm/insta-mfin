@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/journal_category.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
@@ -8,7 +9,6 @@ part 'journal_entry.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class JournalEntry extends Model {
-
   static CollectionReference _miscellaneousCollRef =
       Model.db.collection("journal_entries");
 
@@ -125,22 +125,22 @@ class JournalEntry extends Model {
         (tx) async {
           return tx.get(finDocRef).then(
             (doc) {
-              int inHandAmount = doc.data['cash_in_hand'];
-              int journalIn = doc.data['journal_in'];
-              int journalOut = doc.data['journal_out'];
-
-              Map<String, dynamic> data = Map();
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
 
               if (this.isExpense) {
-                data['cash_in_hand'] = inHandAmount - this.amount;
-                data['journal_out'] = journalOut + this.amount;
-                data['journal_in'] = journalIn;
+                accData.cashInHand -= this.amount;
+                accData.journalOutAmount += this.amount;
+                accData.journalOut += 1;
               } else {
-                data['cash_in_hand'] = inHandAmount + this.amount;
-                data['journal_in'] = journalIn + this.amount;
+                accData.cashInHand += this.amount;
+                accData.journalInAmount += this.amount;
+                accData.journalIn += 1;
               }
 
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
+
               txCreate(
                 tx,
                 this.getDocumentReference(
@@ -151,9 +151,9 @@ class JournalEntry extends Model {
           );
         },
       );
-      print('Transaction success!');
+      print('Journal CREATE Transaction success!');
     } catch (err) {
-      print('Transaction failure:' + err.toString());
+      print('Journal CREATE Transaction failure:' + err.toString());
     }
   }
 
@@ -197,11 +197,8 @@ class JournalEntry extends Model {
         (tx) {
           return tx.get(finDocRef).then(
             (doc) async {
-              int inHandAmount = doc.data['cash_in_hand'];
-              int journalIn = doc.data['journal_in'];
-              int journalOut = doc.data['journal_out'];
-
-              Map<String, dynamic> data = Map();
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
 
               DocumentSnapshot snap = await tx.get(docRef);
 
@@ -212,15 +209,19 @@ class JournalEntry extends Model {
               JournalEntry journal = JournalEntry.fromJson(snap.data);
 
               if (journal.isExpense) {
-                data['cash_in_hand'] = inHandAmount + journal.amount;
-                data['journal_out'] = journalOut - journal.amount;
+                accData.cashInHand += journal.amount;
+                accData.journalOutAmount -= journal.amount;
+                accData.journalOut -= 1;
               } else {
-                data['cash_in_hand'] = inHandAmount - journal.amount;
-                data['journal_in'] = journalIn - journal.amount;
+                accData.cashInHand -= journal.amount;
+                accData.journalInAmount -= journal.amount;
+                accData.journalIn -= 1;
               }
 
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               // Update finance details
               txUpdate(tx, finDocRef, data);
+
               // Remove Journal
               txDelete(
                   tx,
@@ -230,9 +231,10 @@ class JournalEntry extends Model {
           );
         },
       );
-      print('Transaction success!');
+      
+      print('Journal DELETE Transaction success!');
     } catch (err) {
-      print('Transaction failure:' + err.toString());
+      print('Journal DELETE Transaction failure:' + err.toString());
     }
   }
 }
