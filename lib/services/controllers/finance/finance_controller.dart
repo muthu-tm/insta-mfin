@@ -55,7 +55,9 @@ class FinanceController {
 
   Future<Finance> getFinanceByID(String financeID) async {
     try {
-      // TODO: throw error if financeID in empty ""
+      if (financeID == "") {
+        throw 'Please set a valid Finance as Primary!';
+      }
 
       Finance finance = Finance();
       var financeData = await finance.getByID(financeID);
