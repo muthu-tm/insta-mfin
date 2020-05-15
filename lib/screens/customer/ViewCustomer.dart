@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsWidget.dart';
+import 'package:instamfin/screens/transaction/add/AddPayment.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -14,7 +16,7 @@ class ViewCustomer extends StatelessWidget {
 
   ViewCustomer(this.customer);
 
-  final Map<String, dynamic> customer;
+  final Customer customer;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +25,31 @@ class ViewCustomer extends StatelessWidget {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(customer['customer_name']),
+        title: Text(customer.name),
         backgroundColor: CustomColors.mfinBlue,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddPayment(customer),
+          ),
+        ),
+        label: Text(
+          "Add Payment",
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: "Georgia",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(
+          Icons.money_off,
+          size: 35,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
       ),
       body: SingleChildScrollView(
         child: new Container(
@@ -41,14 +66,14 @@ class ViewCustomer extends StatelessWidget {
                         color: CustomColors.mfinButtonGreen,
                       ),
                       title: Text(
-                        customer['customer_name'],
+                        customer.name,
                         style: TextStyle(
                           fontSize: 18,
                           color: CustomColors.mfinBlue,
                         ),
                       ),
                       trailing: Text(
-                        customer['mobile_number'].toString(),
+                        customer.mobileNumber.toString(),
                         style: TextStyle(
                           fontSize: 18,
                           color: CustomColors.mfinBlue,
@@ -68,7 +93,7 @@ class ViewCustomer extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  ViewCustomerProfile(customer),
+                                  ViewCustomerProfile(customer.toJson()),
                             ),
                           ),
                           child: Container(
@@ -100,7 +125,7 @@ class ViewCustomer extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  EditCustomerProfile(customer),
+                                  EditCustomerProfile(customer.toJson()),
                             ),
                           ),
                           child: Container(
@@ -132,14 +157,14 @@ class ViewCustomer extends StatelessWidget {
                             CustomDialogs.confirm(
                               context,
                               "Confirm",
-                              "Are you sure to remove ${customer['customer_name']} Customer?",
+                              "Are you sure to remove ${customer.name} Customer?",
                               () async {
                                 Navigator.pop(context);
                                 CustomDialogs.actionWaiting(
                                     context, "Removing Customer");
                                 CustController _cc = CustController();
                                 var result = await _cc.removeCustomer(
-                                    customer['mobile_number'], false);
+                                    customer.mobileNumber, false);
                                 if (result == null) {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
@@ -183,7 +208,7 @@ class ViewCustomer extends StatelessWidget {
                         new Spacer(),
                         InkWell(
                           onTap: () => UrlLauncherUtils.makePhoneCall(
-                              customer['mobile_number']),
+                              customer.mobileNumber),
                           child: Container(
                             color: CustomColors.mfinPositiveGreen,
                             width: MediaQuery.of(context).size.width * 0.18,
@@ -209,8 +234,8 @@ class ViewCustomer extends StatelessWidget {
                         ),
                         new Spacer(),
                         InkWell(
-                          onTap: () => UrlLauncherUtils.makeSMS(
-                              customer['mobile_number']),
+                          onTap: () =>
+                              UrlLauncherUtils.makeSMS(customer.mobileNumber),
                           child: Container(
                             color: CustomColors.mfinGrey,
                             width: MediaQuery.of(context).size.width * 0.18,
@@ -245,7 +270,7 @@ class ViewCustomer extends StatelessWidget {
                   ],
                 ),
               ),
-              CustomerPaymentsWidget(customer['mobile_number']),
+              CustomerPaymentsWidget(customer.mobileNumber),
             ],
           ),
         ),

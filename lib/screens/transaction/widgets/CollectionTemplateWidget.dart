@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/coll_template.dart';
-import 'package:instamfin/screens/transaction/settings/AddTemplate.dart';
+import 'package:instamfin/screens/transaction/add/AddTemplate.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';

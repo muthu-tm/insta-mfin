@@ -5,21 +5,21 @@ import 'package:instamfin/services/utils/response_utils.dart';
 
 class PaymentController {
   Future createPayment(
-    int custNumber,
-    DateTime dateOfPay,
-    int tAmount,
-    int pAmount,
-    int tenure,
-    int amountPerColl,
-    int tenureType,
-    int docCharge,
-    int surcharge,
-    double iRate,
-    String givenTo,
-    String givenBy,
-    int status,
-    int totalPaid,
-  ) async {
+      int custNumber,
+      DateTime dateOfPay,
+      int tAmount,
+      int pAmount,
+      int tenure,
+      int amountPerColl,
+      int tenureType,
+      int docCharge,
+      int surcharge,
+      double iRate,
+      String givenTo,
+      String givenBy,
+      int status,
+      int totalPaid,
+      String notes) async {
     try {
       UserController _uc = UserController();
       Payment payment = Payment();
@@ -37,6 +37,7 @@ class PaymentController {
       payment.setDocumentCharge(docCharge);
       payment.setSurcharge(surcharge);
       payment.setInterestRate(iRate);
+      payment.setNotes(notes);
 
       await payment.create(custNumber);
 
@@ -52,19 +53,21 @@ class PaymentController {
       String subBranchName, int custNumber, DateTime createdAt) async {
     try {
       Payment payment = Payment();
-      return await payment.getPaymentByID(financeId, branchName, subBranchName, custNumber, createdAt);
+      return await payment.getPaymentByID(
+          financeId, branchName, subBranchName, custNumber, createdAt);
     } catch (err) {
-      print("Error while retrieving $custNumber customer's Payment createdAt ${createdAt.toString()}: " +
-          err.toString());
+      print(
+          "Error while retrieving $custNumber customer's Payment createdAt ${createdAt.toString()}: " +
+              err.toString());
       return null;
     }
   }
 
-  Future<List<Payment>> getAllPaymentsForCustomer(String financeId, String branchName,
-      String subBranchName, int custNumber) async {
+  Future<List<Payment>> getAllPaymentsForCustomer(String financeId,
+      String branchName, String subBranchName, int custNumber) async {
     try {
-      List<Payment> payments =
-          await Payment().getAllPaymentsForCustomer(financeId, branchName, subBranchName, custNumber);
+      List<Payment> payments = await Payment().getAllPaymentsForCustomer(
+          financeId, branchName, subBranchName, custNumber);
 
       if (payments == null) {
         return [];
@@ -78,10 +81,11 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getAllPaymentsByStatus(String financeId, String branchName,
-      String subBranchName, int status) async {
+  Future<List<Payment>> getAllPaymentsByStatus(String financeId,
+      String branchName, String subBranchName, int status) async {
     try {
-      List<Payment> payments = await Payment().getAllPaymentsByStatus(financeId, branchName, subBranchName, status);
+      List<Payment> payments = await Payment()
+          .getAllPaymentsByStatus(financeId, branchName, subBranchName, status);
 
       if (payments == null) {
         return [];
@@ -98,7 +102,8 @@ class PaymentController {
   Future<int> getPaymentsAmountByStatus(String financeId, String branchName,
       String subBranchName, int status) async {
     try {
-      List<Payment> payments = await getAllPaymentsByStatus(financeId, branchName, subBranchName, status);
+      List<Payment> payments = await getAllPaymentsByStatus(
+          financeId, branchName, subBranchName, status);
 
       int tAmount = 0;
       if (payments == null) {
@@ -117,24 +122,28 @@ class PaymentController {
     }
   }
 
-  Future<Map<String, int>> getPaymentsCountByStatus(String financeId, String branchName,
-      String subBranchName) async {
+  Future<Map<String, int>> getPaymentsCountByStatus(
+      String financeId, String branchName, String subBranchName) async {
     try {
       Map<String, int> paymentsCount = Map();
 
-      List<Payment> totalPayments = await Payment().getAllPayments(financeId, branchName, subBranchName, );
+      List<Payment> totalPayments = await Payment().getAllPayments(
+        financeId,
+        branchName,
+        subBranchName,
+      );
       paymentsCount['total_payments'] = totalPayments.length;
 
-      List<Payment> activePayments =
-          await getAllPaymentsByStatus(financeId, branchName, subBranchName, PaymentStatus.Active.name);
+      List<Payment> activePayments = await getAllPaymentsByStatus(
+          financeId, branchName, subBranchName, PaymentStatus.Active.name);
       paymentsCount['active_payments'] = activePayments.length;
-      
-      List<Payment> pendingPayments =
-          await getAllPaymentsByStatus(financeId, branchName, subBranchName, PaymentStatus.Pending.name);
+
+      List<Payment> pendingPayments = await getAllPaymentsByStatus(
+          financeId, branchName, subBranchName, PaymentStatus.Pending.name);
       paymentsCount['pending_payments'] = pendingPayments.length;
-      
-      List<Payment> closedPayments =
-          await getAllPaymentsByStatus(financeId, branchName, subBranchName, PaymentStatus.Closed.name);
+
+      List<Payment> closedPayments = await getAllPaymentsByStatus(
+          financeId, branchName, subBranchName, PaymentStatus.Closed.name);
       paymentsCount['closed_payments'] = closedPayments.length;
 
       return paymentsCount;
@@ -144,16 +153,23 @@ class PaymentController {
     }
   }
 
-  Future updatePayment(String financeId, String branchName,
-      String subBranchName, int custNumber, DateTime createdAt,
+  Future updatePayment(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int custNumber,
+      DateTime createdAt,
       Map<String, dynamic> paymentJSON) async {
     try {
-      await Payment().updatePayment(financeId, branchName, subBranchName, custNumber, createdAt, paymentJSON);
+      await Payment().updatePayment(financeId, branchName, subBranchName,
+          custNumber, createdAt, paymentJSON);
 
-      return CustomResponse.getSuccesReponse("Updated $custNumber customer's Payment createdAt ${createdAt.toString()}");
+      return CustomResponse.getSuccesReponse(
+          "Updated $custNumber customer's Payment createdAt ${createdAt.toString()}");
     } catch (err) {
       print(
-          "Error while updating $custNumber customer's Payment createdAt ${createdAt.toString()}: " + err.toString());
+          "Error while updating $custNumber customer's Payment createdAt ${createdAt.toString()}: " +
+              err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

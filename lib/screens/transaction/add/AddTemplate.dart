@@ -14,7 +14,6 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FocusNode myFocusNode = FocusNode();
 
   String templateName;
   int totalAmount;

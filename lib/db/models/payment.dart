@@ -128,6 +128,10 @@ class Payment extends Model {
     this.status = status;
   }
 
+  setNotes(String notes) {
+    this.notes = notes;
+  }
+
   setCreatedAt(DateTime createdAt) {
     this.createdAt = createdAt;
   }
