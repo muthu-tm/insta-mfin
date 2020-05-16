@@ -33,13 +33,13 @@ class _AddPaymentState extends State<AddPayment> {
   CollectionTemp selectedTemp;
 
   DateTime selectedDate = DateTime.now();
-  int totalAmount;
-  int principalAmount;
-  int docCharge;
-  int surCharge;
-  int tenure;
-  double intrestRate;
-  int collectionAmount;
+  int totalAmount = 0;
+  int principalAmount = 0;
+  int docCharge = 0;
+  int surCharge = 0;
+  int tenure = 0;
+  double intrestRate = 0.0;
+  int collectionAmount = 0;
   String givenTo = '';
   String givenBy = '';
   String notes = '';
@@ -50,6 +50,8 @@ class _AddPaymentState extends State<AddPayment> {
     this.getCollectionTemp();
     givenTo = widget.customer.name;
     givenBy = _user.name;
+
+    _tAmountController.addListener(_tAmountListener);
   }
 
   @override
@@ -138,11 +140,16 @@ class _AddPaymentState extends State<AddPayment> {
                         controller: _date,
                         keyboardType: TextInputType.datetime,
                         decoration: InputDecoration(
-                          hintText: 'Adjustment on',
+                          hintText: 'Date of Payment',
                           labelStyle: TextStyle(
                             color: CustomColors.mfinBlue,
                           ),
-                          fillColor: CustomColors.mfinLightGrey,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                          fillColor: CustomColors.mfinWhite,
                           filled: true,
                           suffixIcon: Icon(
                             Icons.date_range,
@@ -168,7 +175,7 @@ class _AddPaymentState extends State<AddPayment> {
                     ),
                   ),
                   title: DropdownButton<String>(
-                    dropdownColor: CustomColors.mfinLightGrey,
+                    dropdownColor: CustomColors.mfinWhite,
                     isExpanded: true,
                     items: _tempMap.entries.map(
                       (f) {
@@ -179,10 +186,7 @@ class _AddPaymentState extends State<AddPayment> {
                       },
                     ).toList(),
                     onChanged: (newVal) {
-                      setState(() {
-                        _selectedTempID = newVal;
-                      });
-                      _setSelectedTemp();
+                      _setSelectedTemp(newVal);
                     },
                     value: _selectedTempID,
                   ),
@@ -201,10 +205,10 @@ class _AddPaymentState extends State<AddPayment> {
                     ),
                   ),
                   title: new TextFormField(
+                    // controller: _tAmountController,
                     textAlign: TextAlign.end,
-                    initialValue: _selectedTempID != "0"
-                        ? selectedTemp.totalAmount.toString()
-                        : 0.toString(),
+                    keyboardType: TextInputType.number,
+                    initialValue: totalAmount.toString(),
                     decoration: InputDecoration(
                       hintText: 'Total Amount',
                       fillColor: CustomColors.mfinWhite,
@@ -240,9 +244,8 @@ class _AddPaymentState extends State<AddPayment> {
                   ),
                   title: new TextFormField(
                     textAlign: TextAlign.end,
-                    initialValue: _selectedTempID != "0"
-                        ? selectedTemp.principalAmount.toString()
-                        : 0.toString(),
+                    keyboardType: TextInputType.number,
+                    initialValue: principalAmount.toString(),
                     decoration: InputDecoration(
                       hintText: 'Principal amount given',
                       fillColor: CustomColors.mfinWhite,
@@ -278,9 +281,7 @@ class _AddPaymentState extends State<AddPayment> {
                   ),
                   title: TextFormField(
                     textAlign: TextAlign.end,
-                    initialValue: _selectedTempID != "0"
-                        ? selectedTemp.docCharge.toString()
-                        : 0.toString(),
+                    initialValue: docCharge.toString(),
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: 'Document Charge',
@@ -317,9 +318,7 @@ class _AddPaymentState extends State<AddPayment> {
                   ),
                   title: TextFormField(
                     textAlign: TextAlign.end,
-                    initialValue: _selectedTempID != "0"
-                        ? selectedTemp.surcharge.toString()
-                        : 0.toString(),
+                    initialValue: surCharge.toString(),
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: 'Service charge if any',
@@ -357,9 +356,7 @@ class _AddPaymentState extends State<AddPayment> {
                   title: TextFormField(
                     textAlign: TextAlign.end,
                     keyboardType: TextInputType.number,
-                    initialValue: _selectedTempID != "0"
-                        ? selectedTemp.tenure.toString()
-                        : 0.toString(),
+                    initialValue: tenure.toString(),
                     decoration: InputDecoration(
                       hintText: 'Number of Collections',
                       fillColor: CustomColors.mfinWhite,
@@ -396,9 +393,7 @@ class _AddPaymentState extends State<AddPayment> {
                   title: TextFormField(
                     textAlign: TextAlign.end,
                     keyboardType: TextInputType.number,
-                    initialValue: _selectedTempID != "0"
-                        ? selectedTemp.interestRate.toString()
-                        : "0.00",
+                    initialValue: intrestRate.toString(),
                     decoration: InputDecoration(
                       hintText: 'Rate in 0.00%',
                       fillColor: CustomColors.mfinWhite,
@@ -436,9 +431,7 @@ class _AddPaymentState extends State<AddPayment> {
                   title: TextFormField(
                     textAlign: TextAlign.end,
                     keyboardType: TextInputType.number,
-                    initialValue: _selectedTempID != "0"
-                        ? selectedTemp.collectionAmount.toString()
-                        : 0.toString(),
+                    initialValue: collectionAmount.toString(),
                     decoration: InputDecoration(
                       hintText: 'Each Collection Amount',
                       fillColor: CustomColors.mfinWhite,
@@ -579,20 +572,29 @@ class _AddPaymentState extends State<AddPayment> {
     );
   }
 
-  _setSelectedTemp() {
-    if (tempList != null && _selectedTempID != "0") {
-      selectedTemp = tempList[int.parse(_selectedTempID) - 1];
+  final _tAmountController = TextEditingController();
+  void _tAmountListener() {
+    setState(() {
+      _tAmountController.text = this.totalAmount.toString();
+    });
+  }
 
-      setState(() {
-        totalAmount = selectedTemp.totalAmount;
-        principalAmount = selectedTemp.principalAmount;
-        docCharge = selectedTemp.docCharge;
-        surCharge = selectedTemp.surcharge;
-        tenure = selectedTemp.tenure;
-        intrestRate = selectedTemp.interestRate;
-        collectionAmount = selectedTemp.collectionAmount;
-      });
+  _setSelectedTemp(String newVal) {
+    if (tempList != null && newVal != "0") {
+      selectedTemp = tempList[int.parse(newVal) - 1];
+
+      this.totalAmount = selectedTemp.totalAmount;
+      this.principalAmount = selectedTemp.principalAmount;
+      this.docCharge = selectedTemp.docCharge;
+      this.surCharge = selectedTemp.surcharge;
+      this.tenure = selectedTemp.tenure;
+      this.intrestRate = selectedTemp.interestRate;
+      this.collectionAmount = selectedTemp.collectionAmount;
     }
+
+    setState(() {
+      _selectedTempID = newVal;
+    });
   }
 
   Future getCollectionTemp() async {
