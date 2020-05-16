@@ -1,17 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CustomerPaymentsWidget extends StatelessWidget {
-  CustomerPaymentsWidget(this.number);
+  CustomerPaymentsWidget(this.number, this._scaffoldKey);
   final User _user = UserController().getCurrentUser();
 
   final int number;
+  final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +34,354 @@ class CustomerPaymentsWidget extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
+                  Color cardColor = CustomColors.mfinGrey;
+                  Color textColor = CustomColors.mfinBlue;
+                  if (index % 2 == 0) {
+                    cardColor = CustomColors.mfinBlue;
+                    textColor = CustomColors.mfinGrey;
+                  }
+
                   Payment payment =
                       Payment.fromJson(snapshot.data.documents[index].data);
-                  return Container();
+
+                  return Slidable(
+                    actionPane: SlidableDrawerActionPane(),
+                    actionExtentRatio: 0.25,
+                    closeOnScroll: true,
+                    direction: Axis.horizontal,
+                    actions: <Widget>[
+                      IconSlideAction(
+                        caption: 'Remove',
+                        color: CustomColors.mfinAlertRed,
+                        icon: Icons.delete_forever,
+                        onTap: () async {
+                          var state = Slidable.of(context);
+                          var dismiss = await showDialog<bool>(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: new Text(
+                                  "Confirm!",
+                                  style: TextStyle(
+                                      color: CustomColors.mfinAlertRed,
+                                      fontSize: 25.0,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.start,
+                                ),
+                                content: Text(
+                                    'Are you sure to remove this Payment?'),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    color: CustomColors.mfinButtonGreen,
+                                    child: Text(
+                                      "NO",
+                                      style: TextStyle(
+                                          color: CustomColors.mfinBlue,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                  FlatButton(
+                                    color: CustomColors.mfinAlertRed,
+                                    child: Text(
+                                      "YES",
+                                      style: TextStyle(
+                                          color: CustomColors.mfinLightGrey,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                    onPressed: () async {
+                                      PaymentController _pc =
+                                          PaymentController();
+                                      var result = await _pc
+                                          .removePayment(payment.getID());
+                                      if (!result['is_success']) {
+                                        Navigator.pop(context);
+                                        _scaffoldKey.currentState.showSnackBar(
+                                          CustomSnackBar.errorSnackBar(
+                                            "Unable to remove the Payment!",
+                                            3,
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.pop(context);
+                                        print(
+                                            "Payment of ${payment.cusomterNumber} customer removed successfully");
+                                        _scaffoldKey.currentState.showSnackBar(
+                                          CustomSnackBar.errorSnackBar(
+                                              "Payment removed successfully",
+                                              2),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                          if (dismiss != null && dismiss && state != null) {
+                            state.dismiss();
+                          }
+                        },
+                      ),
+                    ],
+                    secondaryActions: <Widget>[
+                      IconSlideAction(
+                        caption: 'Edit',
+                        color: textColor,
+                        icon: Icons.edit,
+                        onTap: () {},
+                      ),
+                    ],
+                    child: Builder(
+                      builder: (BuildContext context) {
+                        return Padding(
+                          padding:
+                              EdgeInsets.only(left: 2.0, top: 2.5, right: 2.0, bottom: 2.5,),
+                          child: InkWell(
+                            onTap: () {
+                              print("Pressed Collection Book");
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Material(
+                                  color: CustomColors.mfinBlue,
+                                  elevation: 10.0,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.36,
+                                    height: 120,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Spacer(
+                                          flex: 3,
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                          child: Text(
+                                            DateUtils.formatDate(
+                                                payment.dateOfPayment),
+                                            style: TextStyle(
+                                                color: textColor,
+                                                fontFamily: 'Georgia',
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        new Divider(
+                                          color: CustomColors.mfinButtonGreen,
+                                        ),
+                                        Spacer(
+                                          flex: 1,
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                          child: Text(
+                                            payment.totalAmount.toString(),
+                                            style: TextStyle(
+                                                color:
+                                                    CustomColors.mfinAlertRed,
+                                                fontFamily: 'Georgia',
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Spacer(
+                                          flex: 1,
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              text: '${payment.tenure}',
+                                              style: TextStyle(
+                                                color: CustomColors.mfinGrey,
+                                                fontFamily: 'Georgia',
+                                                fontSize: 18.0,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                  text: ' x ',
+                                                  style: TextStyle(
+                                                    color:
+                                                        CustomColors.mfinBlack,
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      '${payment.collectionAmount}',
+                                                  style: TextStyle(
+                                                    color: CustomColors
+                                                        .mfinFadedButtonGreen,
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Spacer(
+                                          flex: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Material(
+                                  color: CustomColors.mfinLightGrey,
+                                  elevation: 10.0,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.60,
+                                    height: 120,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          height: 30,
+                                          child: ListTile(
+                                            leading: Text(
+                                              "PAID: ",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: CustomColors.mfinBlue,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            trailing: Text(
+                                              payment.totalPaid.toString(),
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: CustomColors.mfinPositiveGreen,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                          child: ListTile(
+                                            leading: Text(
+                                              'PENDING:',
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: CustomColors
+                                                    .mfinBlue,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            trailing: Text(
+                                              '${payment.totalAmount - payment.totalPaid}',
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: CustomColors.mfinAlertRed,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                          child: ListTile(
+                                            leading: Text(
+                                              'UPCOMING:',
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: CustomColors
+                                                    .mfinBlue,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            trailing: Text(
+                                              '${payment.totalAmount - payment.totalPaid}',
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: CustomColors.mfinGrey,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+
+                        // return Container(
+                        //   color: cardColor,
+                        //   alignment: Alignment.center,
+                        //   child: Column(
+                        //     children: <Widget>[
+                        //       ListTile(
+                        //         leading: Text(
+                        //           payment.totalAmount.toString(),
+                        //           style: TextStyle(
+                        //               color: CustomColors.mfinAlertRed,
+                        //               fontFamily: 'Georgia',
+                        //               fontSize: 18.0,
+                        //               fontWeight: FontWeight.bold),
+                        //         ),
+                        //         title: Text(
+                        //           payment.tenure.toString(),
+                        //           style: TextStyle(
+                        //               color: textColor,
+                        //               fontFamily: 'Georgia',
+                        //               fontSize: 18.0,
+                        //               fontWeight: FontWeight.bold),
+                        //         ),
+                        //         trailing: Text(
+                        //           payment.collectionAmount.toString(),
+                        //           style: TextStyle(
+                        //               color: CustomColors.mfinButtonGreen,
+                        //               fontFamily: 'Georgia',
+                        //               fontSize: 18.0,
+                        //               fontWeight: FontWeight.bold),
+                        //         ),
+                        //       ),
+                        //       ListTile(
+                        //         leading: Text(
+                        //           DateUtils.formatDate(payment.dateOfPayment),
+                        //           style: TextStyle(
+                        //               color: textColor,
+                        //               fontFamily: 'Georgia',
+                        //               fontSize: 18.0,
+                        //               fontWeight: FontWeight.bold),
+                        //         ),
+                        //         trailing: Text(
+                        //           payment.totalPaid.toString(),
+                        //           style: TextStyle(
+                        //               color: CustomColors.mfinPositiveGreen,
+                        //               fontFamily: 'Georgia',
+                        //               fontSize: 18.0,
+                        //               fontWeight: FontWeight.bold),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // );
+                      },
+                    ),
+                  );
                 },
               )
             ];

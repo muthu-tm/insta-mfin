@@ -203,7 +203,7 @@ class Payment extends Model {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('cusomter_number', isEqualTo: number)
+        .where('customer_number', isEqualTo: number)
         .snapshots();
   }
 
@@ -213,7 +213,7 @@ class Payment extends Model {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('cusomter_number', isEqualTo: number)
+        .where('customer_number', isEqualTo: number)
         .getDocuments();
 
     List<Payment> payments = [];
@@ -288,5 +288,9 @@ class Payment extends Model {
         .document(getDocumentID(
             financeId, branchName, subBranchName, number, createdAt))
         .updateData(paymentJSON);
+  }
+
+  Future removePayment(String id) async {
+    await delete(id);
   }
 }

@@ -270,7 +270,7 @@ class ViewCustomer extends StatelessWidget {
                   ],
                 ),
               ),
-              CustomerPaymentsWidget(customer.mobileNumber),
+              CustomerPaymentsWidget(customer.mobileNumber, _scaffoldKey),
             ],
           ),
         ),

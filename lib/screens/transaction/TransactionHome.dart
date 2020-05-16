@@ -36,7 +36,7 @@ class TransactionScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.33,
-                        height: 150,
+                        height: 140,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,7 +67,7 @@ class TransactionScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.57,
-                        height: 150,
+                        height: 140,
                         child: TransactionCollectionBuilder(),
                       ),
                     ),
@@ -151,7 +151,7 @@ class TransactionScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.33,
-                        height: 120,
+                        height: 140,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -183,7 +183,7 @@ class TransactionScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.57,
-                        height: 120,
+                        height: 140,
                         child: TransactionJournalBuilder(),
                       ),
                     ),

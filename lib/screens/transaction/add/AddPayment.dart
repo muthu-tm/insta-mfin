@@ -48,6 +48,7 @@ class _AddPaymentState extends State<AddPayment> {
   void initState() {
     super.initState();
     this.getCollectionTemp();
+    givenTo = widget.customer.name;
     givenBy = _user.name;
   }
 
@@ -190,6 +191,44 @@ class _AddPaymentState extends State<AddPayment> {
                   leading: SizedBox(
                     width: 100,
                     child: Text(
+                      "TOTAL AMOUNT:",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                      ),
+                    ),
+                  ),
+                  title: new TextFormField(
+                    textAlign: TextAlign.end,
+                    initialValue: _selectedTempID != "0"
+                        ? selectedTemp.totalAmount.toString()
+                        : 0.toString(),
+                    decoration: InputDecoration(
+                      hintText: 'Total Amount',
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 3.0, horizontal: 3.0),
+                      border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
+                    ),
+                    validator: (amount) {
+                      if (amount.trim().isEmpty || amount.trim() == "0") {
+                        return "Total Amount should not be empty!";
+                      } else {
+                        this.totalAmount = int.parse(amount.trim());
+                        return null;
+                      }
+                    },
+                  ),
+                ),
+                ListTile(
+                  leading: SizedBox(
+                    width: 100,
+                    child: Text(
                       "PRINCIPAL:",
                       style: TextStyle(
                         fontSize: 13,
@@ -215,7 +254,7 @@ class _AddPaymentState extends State<AddPayment> {
                               BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (amount) {
-                      if (amount.trim().isEmpty) {
+                      if (amount.trim().isEmpty || amount.trim() == "0") {
                         return "Principal Amount should not be empty!";
                       } else {
                         this.principalAmount = int.parse(amount.trim());
@@ -255,10 +294,10 @@ class _AddPaymentState extends State<AddPayment> {
                     ),
                     validator: (charge) {
                       if (charge.trim().isEmpty) {
-                        return 'Enter the Document Charge';
+                        this.docCharge = 0;
+                      } else {
+                        this.docCharge = int.parse(charge);
                       }
-
-                      this.docCharge = int.parse(charge);
                       return null;
                     },
                   ),
@@ -294,10 +333,10 @@ class _AddPaymentState extends State<AddPayment> {
                     ),
                     validator: (surcharge) {
                       if (surcharge.trim().isEmpty) {
-                        return 'Enter the Surcharge';
+                        this.surCharge = 0;
+                      } else {
+                        this.surCharge = int.parse(surcharge);
                       }
-
-                      this.surCharge = int.parse(surcharge);
                       return null;
                     },
                   ),
@@ -417,7 +456,6 @@ class _AddPaymentState extends State<AddPayment> {
                       }
 
                       this.collectionAmount = int.parse(collAmount.trim());
-
                       return null;
                     },
                   ),
@@ -449,14 +487,12 @@ class _AddPaymentState extends State<AddPayment> {
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
                     ),
-                    validator: (collAmount) {
-                      if (collAmount.trim().isEmpty ||
-                          collAmount.trim() == '0') {
-                        return "Collection amount should not be empty pr Zero";
+                    validator: (givenTo) {
+                      if (givenTo.trim().isEmpty) {
+                        return "Fill the person name who received the amount";
                       }
 
-                      this.collectionAmount = int.parse(collAmount.trim());
-
+                      this.givenTo = givenTo.trim();
                       return null;
                     },
                   ),
@@ -528,9 +564,9 @@ class _AddPaymentState extends State<AddPayment> {
                     validator: (notes) {
                       if (notes.trim().isEmpty) {
                         this.notes = "";
+                      } else {
+                        this.notes = notes.trim();
                       }
-
-                      this.notes = notes.trim();
                       return null;
                     },
                   ),
@@ -599,7 +635,7 @@ class _AddPaymentState extends State<AddPayment> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Creating Template for YOU!");
+      CustomDialogs.actionWaiting(context, " Adding Payment");
       PaymentController _pc = PaymentController();
       var result = await _pc.createPayment(
           widget.customer.mobileNumber,

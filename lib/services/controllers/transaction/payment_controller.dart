@@ -23,6 +23,7 @@ class PaymentController {
     try {
       UserController _uc = UserController();
       Payment payment = Payment();
+      payment.setCustomerNumber(custNumber);
       payment.setDOP(dateOfPay);
       payment.setGivenTo(givenTo);
       payment.setGivenBy(givenBy);
@@ -170,6 +171,18 @@ class PaymentController {
       print(
           "Error while updating $custNumber customer's Payment createdAt ${createdAt.toString()}: " +
               err.toString());
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future removePayment(String id) async {
+    try {
+      await Payment().removePayment(id);
+      return CustomResponse.getSuccesReponse(
+          "Removed customer's Payment with ID $id");
+    } catch (err) {
+      print(
+          "Error while removing customer's Payment id $id: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
