@@ -140,8 +140,12 @@ class CustomerPaymentsWidget extends StatelessWidget {
                     child: Builder(
                       builder: (BuildContext context) {
                         return Padding(
-                          padding:
-                              EdgeInsets.only(left: 2.0, top: 2.5, right: 2.0, bottom: 2.5,),
+                          padding: EdgeInsets.only(
+                            left: 2.0,
+                            top: 2.5,
+                            right: 2.0,
+                            bottom: 2.5,
+                          ),
                           child: InkWell(
                             onTap: () {
                               print("Pressed Collection Book");
@@ -268,7 +272,8 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                               payment.totalPaid.toString(),
                                               style: TextStyle(
                                                 fontSize: 17,
-                                                color: CustomColors.mfinPositiveGreen,
+                                                color: CustomColors
+                                                    .mfinPositiveGreen,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -281,8 +286,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                               'PENDING:',
                                               style: TextStyle(
                                                 fontSize: 17,
-                                                color: CustomColors
-                                                    .mfinBlue,
+                                                color: CustomColors.mfinBlue,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -290,7 +294,8 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                               '${payment.totalAmount - payment.totalPaid}',
                                               style: TextStyle(
                                                 fontSize: 17,
-                                                color: CustomColors.mfinAlertRed,
+                                                color:
+                                                    CustomColors.mfinAlertRed,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -303,8 +308,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                               'UPCOMING:',
                                               style: TextStyle(
                                                 fontSize: 17,
-                                                color: CustomColors
-                                                    .mfinBlue,
+                                                color: CustomColors.mfinBlue,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -326,59 +330,6 @@ class CustomerPaymentsWidget extends StatelessWidget {
                             ),
                           ),
                         );
-
-                        // return Container(
-                        //   color: cardColor,
-                        //   alignment: Alignment.center,
-                        //   child: Column(
-                        //     children: <Widget>[
-                        //       ListTile(
-                        //         leading: Text(
-                        //           payment.totalAmount.toString(),
-                        //           style: TextStyle(
-                        //               color: CustomColors.mfinAlertRed,
-                        //               fontFamily: 'Georgia',
-                        //               fontSize: 18.0,
-                        //               fontWeight: FontWeight.bold),
-                        //         ),
-                        //         title: Text(
-                        //           payment.tenure.toString(),
-                        //           style: TextStyle(
-                        //               color: textColor,
-                        //               fontFamily: 'Georgia',
-                        //               fontSize: 18.0,
-                        //               fontWeight: FontWeight.bold),
-                        //         ),
-                        //         trailing: Text(
-                        //           payment.collectionAmount.toString(),
-                        //           style: TextStyle(
-                        //               color: CustomColors.mfinButtonGreen,
-                        //               fontFamily: 'Georgia',
-                        //               fontSize: 18.0,
-                        //               fontWeight: FontWeight.bold),
-                        //         ),
-                        //       ),
-                        //       ListTile(
-                        //         leading: Text(
-                        //           DateUtils.formatDate(payment.dateOfPayment),
-                        //           style: TextStyle(
-                        //               color: textColor,
-                        //               fontFamily: 'Georgia',
-                        //               fontSize: 18.0,
-                        //               fontWeight: FontWeight.bold),
-                        //         ),
-                        //         trailing: Text(
-                        //           payment.totalPaid.toString(),
-                        //           style: TextStyle(
-                        //               color: CustomColors.mfinPositiveGreen,
-                        //               fontFamily: 'Georgia',
-                        //               fontSize: 18.0,
-                        //               fontWeight: FontWeight.bold),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // );
                       },
                     ),
                   );

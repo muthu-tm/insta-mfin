@@ -87,485 +87,540 @@ class _AddPaymentState extends State<AddPayment> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Container(
-            color: CustomColors.mfinLightGrey,
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "CUSTOMER:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new Card(
+                color: CustomColors.mfinLightGrey,
+                elevation: 5.0,
+                margin: EdgeInsets.only(top: 5.0),
+                shadowColor: CustomColors.mfinLightBlue,
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 40,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "General Info",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlue,
+                        ),
                       ),
                     ),
-                  ),
-                  title: TextFormField(
-                    enabled: false,
-                    autofocus: false,
-                    initialValue: widget.customer.name,
-                    decoration: InputDecoration(
-                      hintText: "Customer Name",
-                      labelStyle: TextStyle(
-                        color: CustomColors.mfinBlue,
-                      ),
-                      fillColor: CustomColors.mfinLightGrey,
-                      filled: true,
+                    Divider(
+                      color: CustomColors.mfinBlue,
                     ),
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "DATE:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "CUSTOMER:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  title: GestureDetector(
-                    onTap: () => _selectDate(context),
-                    child: AbsorbPointer(
-                      child: TextFormField(
-                        controller: _date,
-                        keyboardType: TextInputType.datetime,
+                      title: TextFormField(
+                        enabled: false,
+                        autofocus: false,
+                        initialValue: widget.customer.name,
+                        textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          hintText: 'Date of Payment',
                           labelStyle: TextStyle(
                             color: CustomColors.mfinBlue,
                           ),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "DATE:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: GestureDetector(
+                        onTap: () => _selectDate(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            controller: _date,
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              hintText: 'Date of Payment',
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 3.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              suffixIcon: Icon(
+                                Icons.date_range,
+                                size: 35,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "GIVEN TO:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.text,
+                        initialValue: givenTo,
+                        decoration: InputDecoration(
+                          hintText: 'Amount Given To',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
                           contentPadding: new EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 3.0),
                           border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: CustomColors.mfinWhite)),
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          suffixIcon: Icon(
-                            Icons.date_range,
-                            size: 35,
+                        ),
+                        validator: (givenTo) {
+                          if (givenTo.trim().isEmpty) {
+                            return "Fill the person name who received the amount";
+                          }
+
+                          this.givenTo = givenTo.trim();
+                          return null;
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "GIVEN BY:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
                             color: CustomColors.mfinBlue,
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "TYPE:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
-                      ),
-                    ),
-                  ),
-                  title: DropdownButton<String>(
-                    dropdownColor: CustomColors.mfinWhite,
-                    isExpanded: true,
-                    items: _tempMap.entries.map(
-                      (f) {
-                        return DropdownMenuItem<String>(
-                          value: f.key,
-                          child: Text(f.value),
-                        );
-                      },
-                    ).toList(),
-                    onChanged: (newVal) {
-                      _setSelectedTemp(newVal);
-                    },
-                    value: _selectedTempID,
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "TOTAL AMOUNT:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
-                      ),
-                    ),
-                  ),
-                  title: new TextFormField(
-                    // controller: _tAmountController,
-                    textAlign: TextAlign.end,
-                    keyboardType: TextInputType.number,
-                    initialValue: totalAmount.toString(),
-                    decoration: InputDecoration(
-                      hintText: 'Total Amount',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (amount) {
-                      if (amount.trim().isEmpty || amount.trim() == "0") {
-                        return "Total Amount should not be empty!";
-                      } else {
-                        this.totalAmount = int.parse(amount.trim());
-                        return null;
-                      }
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "PRINCIPAL:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
-                      ),
-                    ),
-                  ),
-                  title: new TextFormField(
-                    textAlign: TextAlign.end,
-                    keyboardType: TextInputType.number,
-                    initialValue: principalAmount.toString(),
-                    decoration: InputDecoration(
-                      hintText: 'Principal amount given',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (amount) {
-                      if (amount.trim().isEmpty || amount.trim() == "0") {
-                        return "Principal Amount should not be empty!";
-                      } else {
-                        this.principalAmount = int.parse(amount.trim());
-                        return null;
-                      }
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "DOC CHARGE:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
-                      ),
-                    ),
-                  ),
-                  title: TextFormField(
-                    textAlign: TextAlign.end,
-                    initialValue: docCharge.toString(),
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: 'Document Charge',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (charge) {
-                      if (charge.trim().isEmpty) {
-                        this.docCharge = 0;
-                      } else {
-                        this.docCharge = int.parse(charge);
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "SUR CHARGE:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
-                      ),
-                    ),
-                  ),
-                  title: TextFormField(
-                    textAlign: TextAlign.end,
-                    initialValue: surCharge.toString(),
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: 'Service charge if any',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (surcharge) {
-                      if (surcharge.trim().isEmpty) {
-                        this.surCharge = 0;
-                      } else {
-                        this.surCharge = int.parse(surcharge);
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "TENURE:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
-                      ),
-                    ),
-                  ),
-                  title: TextFormField(
-                    textAlign: TextAlign.end,
-                    keyboardType: TextInputType.number,
-                    initialValue: tenure.toString(),
-                    decoration: InputDecoration(
-                      hintText: 'Number of Collections',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (tenure) {
-                      if (tenure.trim().isEmpty) {
-                        return 'Enter the Number of Collections';
-                      }
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.text,
+                        initialValue: givenBy,
+                        decoration: InputDecoration(
+                          hintText: 'Amount Given by',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (givenby) {
+                          if (givenby.trim().isEmpty) {
+                            return "Please fill the person name who gave the amount";
+                          }
 
-                      this.tenure = int.parse(tenure);
-                      return null;
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "INTEREST:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
+                          this.givenBy = givenby.trim();
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  title: TextFormField(
-                    textAlign: TextAlign.end,
-                    keyboardType: TextInputType.number,
-                    initialValue: intrestRate.toString(),
-                    decoration: InputDecoration(
-                      hintText: 'Rate in 0.00%',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "NOTES:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.text,
+                        initialValue: notes,
+                        decoration: InputDecoration(
+                          hintText: 'Notes',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (notes) {
+                          if (notes.trim().isEmpty) {
+                            this.notes = "";
+                          } else {
+                            this.notes = notes.trim();
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                    validator: (tenure) {
-                      if (tenure.trim().isEmpty) {
-                        this.intrestRate = double.parse('0');
-                      } else {
-                        this.intrestRate = double.parse(tenure);
-                      }
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "TYPE:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: DropdownButton<String>(
+                        dropdownColor: CustomColors.mfinWhite,
+                        isExpanded: true,
+                        items: _tempMap.entries.map(
+                          (f) {
+                            return DropdownMenuItem<String>(
+                              value: f.key,
+                              child: Text(f.value),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (newVal) {
+                          _setSelectedTemp(newVal);
+                        },
+                        value: _selectedTempID,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              new Card(
+                shadowColor: CustomColors.mfinAlertRed,
+                color: CustomColors.mfinLightGrey,
+                elevation: 15.0,
+                margin: EdgeInsets.only(top: 5.0),
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 40,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Payment Info",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlue,
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      color: CustomColors.mfinBlue,
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "TOTAL AMOUNT:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: new TextFormField(
+                        // controller: _tAmountController,
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.number,
+                        initialValue: totalAmount.toString(),
+                        decoration: InputDecoration(
+                          hintText: 'Total Amount',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (amount) {
+                          if (amount.trim().isEmpty || amount.trim() == "0") {
+                            return "Total Amount should not be empty!";
+                          } else {
+                            this.totalAmount = int.parse(amount.trim());
+                            return null;
+                          }
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "PRINCIPAL:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: new TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.number,
+                        initialValue: principalAmount.toString(),
+                        decoration: InputDecoration(
+                          hintText: 'Principal amount given',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (amount) {
+                          if (amount.trim().isEmpty || amount.trim() == "0") {
+                            return "Principal Amount should not be empty!";
+                          } else {
+                            this.principalAmount = int.parse(amount.trim());
+                            return null;
+                          }
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "DOC CHARGE:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        initialValue: docCharge.toString(),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Document Charge',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (charge) {
+                          if (charge.trim().isEmpty) {
+                            this.docCharge = 0;
+                          } else {
+                            this.docCharge = int.parse(charge);
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "SUR CHARGE:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        initialValue: surCharge.toString(),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Service charge if any',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (surcharge) {
+                          if (surcharge.trim().isEmpty) {
+                            this.surCharge = 0;
+                          } else {
+                            this.surCharge = int.parse(surcharge);
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "TENURE:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.number,
+                        initialValue: tenure.toString(),
+                        decoration: InputDecoration(
+                          hintText: 'Number of Collections',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (tenure) {
+                          if (tenure.trim().isEmpty) {
+                            return 'Enter the Number of Collections';
+                          }
 
-                      return null;
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "COLLECTION AMOUNT:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
+                          this.tenure = int.parse(tenure);
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  title: TextFormField(
-                    textAlign: TextAlign.end,
-                    keyboardType: TextInputType.number,
-                    initialValue: collectionAmount.toString(),
-                    decoration: InputDecoration(
-                      hintText: 'Each Collection Amount',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (collAmount) {
-                      if (collAmount.trim().isEmpty ||
-                          collAmount.trim() == '0') {
-                        return "Collection amount should not be empty pr Zero";
-                      }
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "INTEREST:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.number,
+                        initialValue: intrestRate.toString(),
+                        decoration: InputDecoration(
+                          hintText: 'Rate in 0.00%',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (tenure) {
+                          if (tenure.trim().isEmpty) {
+                            this.intrestRate = double.parse('0');
+                          } else {
+                            this.intrestRate = double.parse(tenure);
+                          }
 
-                      this.collectionAmount = int.parse(collAmount.trim());
-                      return null;
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "GIVEN TO:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  title: TextFormField(
-                    textAlign: TextAlign.end,
-                    keyboardType: TextInputType.text,
-                    initialValue: givenTo,
-                    decoration: InputDecoration(
-                      hintText: 'Amount Given To',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (givenTo) {
-                      if (givenTo.trim().isEmpty) {
-                        return "Fill the person name who received the amount";
-                      }
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "COLLECTION AMOUNT:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.number,
+                        initialValue: collectionAmount.toString(),
+                        decoration: InputDecoration(
+                          hintText: 'Each Collection Amount',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (collAmount) {
+                          if (collAmount.trim().isEmpty ||
+                              collAmount.trim() == '0') {
+                            return "Collection amount should not be empty pr Zero";
+                          }
 
-                      this.givenTo = givenTo.trim();
-                      return null;
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "GIVEN BY:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
+                          this.collectionAmount = int.parse(collAmount.trim());
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  title: TextFormField(
-                    textAlign: TextAlign.end,
-                    keyboardType: TextInputType.text,
-                    initialValue: givenBy,
-                    decoration: InputDecoration(
-                      hintText: 'Amount Given by',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (givenby) {
-                      if (givenby.trim().isEmpty) {
-                        return "Please fill the person name who gave the amount";
-                      }
-
-                      this.givenBy = givenby.trim();
-                      return null;
-                    },
-                  ),
+                  ],
                 ),
-                ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    child: Text(
-                      "NOTES:",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinBlue,
-                      ),
-                    ),
-                  ),
-                  title: TextFormField(
-                    textAlign: TextAlign.end,
-                    keyboardType: TextInputType.text,
-                    initialValue: notes,
-                    decoration: InputDecoration(
-                      hintText: 'Notes',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (notes) {
-                      if (notes.trim().isEmpty) {
-                        this.notes = "";
-                      } else {
-                        this.notes = notes.trim();
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
