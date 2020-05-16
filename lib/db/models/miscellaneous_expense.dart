@@ -142,6 +142,7 @@ class MiscellaneousExpense extends Model {
       print('Miscellaneous CREATE Transaction success!');
     } catch (err) {
       print('Miscellaneous CREATE Transaction failure:' + err.toString());
+      throw err;
     }
   }
 
@@ -206,10 +207,7 @@ class MiscellaneousExpense extends Model {
               txUpdate(tx, finDocRef, data);
 
               // Remove Expense
-              txDelete(
-                  tx,
-                  this.getDocumentReference(
-                      financeID, branchName, subBranchName, createdAt));
+              txDelete(tx, docRef);
             },
           );
         },
@@ -218,6 +216,7 @@ class MiscellaneousExpense extends Model {
     } catch (err) {
       print(
           'Miscellaneous Expense DELETE Transaction failure:' + err.toString());
+      throw err;
     }
   }
 }

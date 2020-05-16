@@ -154,6 +154,7 @@ class JournalEntry extends Model {
       print('Journal CREATE Transaction success!');
     } catch (err) {
       print('Journal CREATE Transaction failure:' + err.toString());
+      throw err;
     }
   }
 
@@ -223,18 +224,16 @@ class JournalEntry extends Model {
               txUpdate(tx, finDocRef, data);
 
               // Remove Journal
-              txDelete(
-                  tx,
-                  this.getDocumentReference(
-                      financeID, branchName, subBranchName, createdAt));
+              txDelete(tx, docRef);
             },
           );
         },
       );
-      
+
       print('Journal DELETE Transaction success!');
     } catch (err) {
       print('Journal DELETE Transaction failure:' + err.toString());
+      throw err;
     }
   }
 }

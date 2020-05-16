@@ -1,4 +1,5 @@
 import 'package:instamfin/db/enums/payment_status.dart';
+import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
@@ -175,14 +176,31 @@ class PaymentController {
     }
   }
 
-  Future removePayment(String id) async {
+  Future removePayment(
+    String financeId,
+    String branchName,
+    String subBranchName,
+    int custNumber,
+    DateTime createdAt,
+  ) async {
     try {
-      await Payment().removePayment(id);
+      List<Collection> colls = await Collection()
+          .getAllCollectionsForCustomerPayment(
+              financeId, branchName, subBranchName, custNumber, createdAt);
+
+      if (colls.length != 0) {
+        return CustomResponse.getFailureReponse(
+            "Unable to Remove Payment. It has valid Collections! Remove this Payment's collections first.");
+      }
+
+      await Payment().removePayment(
+          financeId, branchName, subBranchName, custNumber, createdAt);
       return CustomResponse.getSuccesReponse(
-          "Removed customer's Payment with ID $id");
+          "Removed customer's Payment for customer $custNumber");
     } catch (err) {
       print(
-          "Error while removing customer's Payment id $id: " + err.toString());
+          "Error while removing customer's Payment for customer $custNumber: " +
+              err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

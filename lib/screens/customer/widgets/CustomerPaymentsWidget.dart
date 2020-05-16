@@ -96,20 +96,24 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                     onPressed: () async {
                                       PaymentController _pc =
                                           PaymentController();
-                                      var result = await _pc
-                                          .removePayment(payment.getID());
+                                      var result = await _pc.removePayment(
+                                          payment.financeID,
+                                          payment.branchName,
+                                          payment.subBranchName,
+                                          payment.customerNumber,
+                                          payment.createdAt);
                                       if (!result['is_success']) {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
-                                            "Unable to remove the Payment!",
+                                            "Unable to remove the Payment! ${result['message']}",
                                             3,
                                           ),
                                         );
                                       } else {
                                         Navigator.pop(context);
                                         print(
-                                            "Payment of ${payment.cusomterNumber} customer removed successfully");
+                                            "Payment of ${payment.customerNumber} customer removed successfully");
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
                                               "Payment removed successfully",

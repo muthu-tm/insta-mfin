@@ -11,7 +11,7 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
-    ..cusomterNumber = json['customer_number'] as int
+    ..customerNumber = json['customer_number'] as int
     ..dateOfPayment = json['date_of_payment'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -48,7 +48,7 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'finance_id': instance.financeID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
-      'customer_number': instance.cusomterNumber,
+      'customer_number': instance.customerNumber,
       'date_of_payment': instance.dateOfPayment,
       'total_amount': instance.totalAmount,
       'principal_amount': instance.principalAmount,

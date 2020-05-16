@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -7,7 +8,6 @@ part 'payment.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Payment extends Model {
-
   static CollectionReference _paymentCollRef =
       Model.db.collection("customer_payments");
 
@@ -18,7 +18,7 @@ class Payment extends Model {
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
   @JsonKey(name: 'customer_number', nullable: true)
-  int cusomterNumber;
+  int customerNumber;
   @JsonKey(name: 'date_of_payment', nullable: true)
   DateTime dateOfPayment;
   @JsonKey(name: 'total_amount', nullable: true)
@@ -69,7 +69,7 @@ class Payment extends Model {
   }
 
   setCustomerNumber(int number) {
-    this.cusomterNumber = number;
+    this.customerNumber = number;
   }
 
   setTotalAmount(int amount) {
@@ -152,7 +152,7 @@ class Payment extends Model {
     String value = this.financeID +
         this.branchName +
         this.subBranchName +
-        this.cusomterNumber.toString();
+        this.customerNumber.toString();
 
     return HashGenerator.hmacGenerator(
         value, this.createdAt.millisecondsSinceEpoch.toString());
@@ -165,7 +165,7 @@ class Payment extends Model {
   String getDocumentID(String financeId, String branchName,
       String subBranchName, int custNumber, DateTime createdAt) {
     String value =
-        financeID + branchName + subBranchName + custNumber.toString();
+        financeId + branchName + subBranchName + custNumber.toString();
     return HashGenerator.hmacGenerator(
         value, createdAt.millisecondsSinceEpoch.toString());
   }
@@ -176,16 +176,62 @@ class Payment extends Model {
         getDocumentID(financeId, branchName, subBranchName, number, createdAt));
   }
 
-  Future<Payment> create(int number) async {
+  Future create(int number) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.financeID = user.primaryFinance;
     this.branchName = user.primaryBranch;
     this.subBranchName = user.primarySubBranch;
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
+      DocumentSnapshot doc = await finDocRef.get();
+      if (doc.exists) {
+        AccountsData accData = AccountsData.fromJson(doc.data['accounts_data']);
 
-    await super.add(this.toJson());
+        accData.cashInHand -= this.principalAmount;
 
-    return this;
+        if (accData.cashInHand < 0) {
+          throw 'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!';
+        }
+      } else {
+        throw 'Unable to find your finance details!';
+      }
+
+      await Model.db.runTransaction(
+        (tx) async {
+          return tx.get(finDocRef).then(
+            (doc) {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              accData.cashInHand -= this.principalAmount;
+
+              if (accData.cashInHand < 0) {
+                return Future.error(
+                    'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!');
+              } else {
+                accData.paymentsAmount += this.totalAmount;
+                accData.totalPayments += 1;
+
+                Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+                txUpdate(tx, finDocRef, data);
+
+                return txCreate(
+                  tx,
+                  this.getDocumentReference(this.financeID, this.branchName,
+                      this.subBranchName, this.customerNumber, this.createdAt),
+                  this.toJson(),
+                );
+              }
+            },
+          );
+        },
+      );
+      print('Payment CREATE Transaction success!');
+    } catch (err) {
+      print('Payment CREATE Transaction failure:' + err.toString());
+      throw err;
+    }
   }
 
   Future<bool> isExist(String financeId, String branchName,
@@ -290,7 +336,47 @@ class Payment extends Model {
         .updateData(paymentJSON);
   }
 
-  Future removePayment(String id) async {
-    await delete(id);
+  Future removePayment(String financeId, String branchName,
+      String subBranchName, int number, DateTime createdAt) async {
+    DocumentReference docRef = getDocumentReference(
+        financeId, branchName, subBranchName, number, createdAt);
+
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              DocumentSnapshot snap = await tx.get(docRef);
+
+              if (!snap.exists) {
+                Future.error('No Payment document found to Remove');
+              }
+
+              Payment payment = Payment.fromJson(snap.data);
+
+              accData.cashInHand += payment.principalAmount;
+              accData.paymentsAmount -= payment.totalAmount;
+              accData.totalPayments -= 1;
+
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+              // Update finance details
+              txUpdate(tx, finDocRef, data);
+
+              // Remove Payment
+              txDelete(tx, docRef);
+            },
+          );
+        },
+      );
+
+      print('Payment DELETE Transaction success!');
+    } catch (err) {
+      print('Payment DELETE Transaction failure:' + err.toString());
+      throw err;
+    }
   }
 }

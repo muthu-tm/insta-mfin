@@ -276,6 +276,7 @@ class _AddPaymentState extends State<AddPayment> {
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.text,
                         initialValue: notes,
+                        maxLines: 3,
                         decoration: InputDecoration(
                           hintText: 'Notes',
                           fillColor: CustomColors.mfinWhite,
