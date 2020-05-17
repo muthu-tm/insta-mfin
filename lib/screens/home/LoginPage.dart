@@ -6,16 +6,17 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
-class LoginController extends StatefulWidget {
-  const LoginController({this.toggleView});
+class LoginPage extends StatefulWidget {
+  const LoginPage({this.toggleView, this.mobileNumber});
 
   final Function toggleView;
+  final String mobileNumber;
 
   @override
-  _LoginControllerState createState() => _LoginControllerState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginControllerState extends State<LoginController> {
+class _LoginPageState extends State<LoginPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -27,6 +28,13 @@ class _LoginControllerState extends State<LoginController> {
   String password;
   bool _passwordVisible = false;
   bool hidePassword = true;
+  
+  @override
+  void initState() {
+    super.initState();
+
+    mobileNumber = (widget.mobileNumber == null) ? "" : widget.mobileNumber;
+  }
 
   @override
   Widget build(BuildContext context) {

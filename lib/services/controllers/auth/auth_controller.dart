@@ -1,5 +1,6 @@
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/fcm/user_token.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 import './../../authenticate/auth.dart';
 
@@ -18,6 +19,13 @@ class AuthController {
         return CustomResponse.getFailureReponse(
             "Found an existing user for this mobile number");
       }
+      var platformData = await UserFCM().getPlatformDetails();
+
+      if (platformData != null) {
+        user.updatePlatformDetails({"platform_data": platformData});
+      } else {
+        print("Unable to update User's platform details");
+      }
 
       user.update({'last_signed_in_at': DateTime.now()});
       user.setLastSignInTime(DateTime.now());
@@ -35,6 +43,14 @@ class AuthController {
     try {
       User user =
           await _authService.signInWithMobileNumber(mobileNumber, passkey);
+
+      var platformData = await UserFCM().getPlatformDetails();
+
+      if (platformData != null) {
+        user.updatePlatformDetails({"platform_data": platformData});
+      } else {
+        print("Unable to update User's platform details");
+      }
 
       // update cloud firestore "users" collection
       user.update({'last_signed_in_at': DateTime.now()});

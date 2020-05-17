@@ -65,6 +65,7 @@ class _AddPaymentState extends State<AddPayment> {
         title: Text('Add Payment'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           _submit();

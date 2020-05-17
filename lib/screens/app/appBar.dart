@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/app/notification_icon.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
@@ -18,9 +19,7 @@ Widget topAppBar(BuildContext context) {
       customIconButton(Icons.search, 35.0, CustomColors.mfinWhite, () {
         print("Pressed Customers search");
       }),
-      customIconButton(Icons.notifications, 35.0, CustomColors.mfinWhite, () {
-        print("Pressed Notifications");
-      }),
+      PushNotification(),
     ],
   );
 }

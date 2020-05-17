@@ -129,4 +129,8 @@ class User extends Model {
       return Finance().getDocumentRef(this.primaryFinance);
     }
   }
+
+  Future updatePlatformDetails(Map<String, dynamic> data) async {
+    this.update(data);
+  }
 }
