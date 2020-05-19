@@ -24,7 +24,6 @@ class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AuthController _authController = AuthController();
 
-  String emailID;
   String password;
   String name;
   String mobileNumber;
@@ -107,22 +106,6 @@ class _RegisterFormState extends State<RegisterForm> {
                               validator: (mobileNumber) =>
                                   FieldValidator.mobileValidator(
                                       mobileNumber.trim(), setMobileNumber))),
-                      // new ListTile(
-                      //     title: TextFormField(
-                      //         keyboardType: TextInputType.emailAddress,
-                      //         decoration: InputDecoration(
-                      //           hintText: 'Email',
-                      //           fillColor: CustomColors.mfinWhite,
-                      //           filled: true,
-                      //           suffixIcon: Icon(
-                      //             Icons.mail,
-                      //             color: CustomColors.mfinFadedButtonGreen,
-                      //             size: 35.0,
-                      //           ),
-                      //         ),
-                      //         validator: (emailID) =>
-                      //             FieldValidator.emailValidator(
-                      //                 emailID.trim(), setEmailID))),
                       new ListTile(
                           title: TextFormField(
                               obscureText: showPassword,
@@ -233,12 +216,6 @@ class _RegisterFormState extends State<RegisterForm> {
     });
   }
 
-  setEmailID(String emailID) {
-    setState(() {
-      this.emailID = emailID.trim();
-    });
-  }
-
   setPassKey(String passkey) {
     setState(() {
       this.password = passkey;
@@ -269,7 +246,8 @@ class _RegisterFormState extends State<RegisterForm> {
           int.parse(mobileNumber), password, name);
       if (!result['is_success']) {
         Navigator.pop(context);
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+        _scaffoldKey.currentState
+            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
         print("Unable to register USER: " + result['message']);
       } else {
         Navigator.pop(context);
@@ -277,32 +255,43 @@ class _RegisterFormState extends State<RegisterForm> {
         if (_imageFile != null) {
           print("UPLOADING image file: " + _imageFile.toString());
           // await Uploader.copyToAppDirectory(_imageFile, emailID);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar("Uploading profile Image", 3));
+          _scaffoldKey.currentState.showSnackBar(
+              CustomSnackBar.successSnackBar("Uploading profile Image", 3));
           Uploader.uploadImage(
               "users_profile",
               _imageFile.path,
               int.parse(mobileNumber),
               (downloadURL) => Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => UserHomeScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => UserHomeScreen(),
+                      settings: RouteSettings(name: 'HomePage'),
+                    ),
                     (Route<dynamic> route) => false,
                   ),
               () => Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => UserHomeScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => UserHomeScreen(),
+                      settings: RouteSettings(name: 'HomePage'),
+                    ),
                     (Route<dynamic> route) => false,
                   ));
         } else {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => UserHomeScreen()),
+            MaterialPageRoute(
+              builder: (context) => UserHomeScreen(),
+              settings: RouteSettings(name: 'HomePage'),
+            ),
             (Route<dynamic> route) => false,
           );
         }
       }
     } else {
       print("Invalid form values");
-      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(
+          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
   }
 }

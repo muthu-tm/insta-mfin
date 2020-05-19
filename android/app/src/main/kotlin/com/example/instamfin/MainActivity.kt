@@ -1,4 +1,4 @@
-package com.example.instamfin
+package com.mfin.insta_mfin
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

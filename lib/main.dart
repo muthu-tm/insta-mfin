@@ -1,6 +1,9 @@
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
+import 'package:instamfin/services/analytics/user_analytics.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,9 +11,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    UserAnalytics.setupAnalytics(analytics, observer);
     return MaterialApp(
       title: 'InstamFIN',
       theme: ThemeData(
@@ -27,6 +35,7 @@ class MyApp extends StatelessWidget {
               fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
         ),
       ),
+      navigatorObservers: <NavigatorObserver>[observer],
       home: Authenticate(),
     );
   }

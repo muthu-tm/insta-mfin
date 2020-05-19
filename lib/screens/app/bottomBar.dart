@@ -22,6 +22,7 @@ Widget bottomBar(BuildContext context) {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomersFilteredView(),
+                    settings: RouteSettings(name: 'CustomersHomePage'),
                   ),
                   (Route<dynamic> route) => false,
                 );
@@ -38,6 +39,7 @@ Widget bottomBar(BuildContext context) {
                         context,
                         MaterialPageRoute(
                           builder: (context) => CustomersFilteredView(),
+                          settings: RouteSettings(name: 'CustomersHomePage'),
                         ),
                         (Route<dynamic> route) => false,
                       );
@@ -66,6 +68,7 @@ Widget bottomBar(BuildContext context) {
                   context,
                   MaterialPageRoute(
                     builder: (context) => TransactionScreen(),
+                    settings: RouteSettings(name: 'TransactionHomePage'),
                   ),
                   (Route<dynamic> route) => false,
                 );
@@ -82,6 +85,7 @@ Widget bottomBar(BuildContext context) {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TransactionScreen(),
+                          settings: RouteSettings(name: 'TransactionHomePage'),
                         ),
                         (Route<dynamic> route) => false,
                       );
@@ -137,6 +141,7 @@ Widget bottomBar(BuildContext context) {
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsScreen(),
+                    settings: RouteSettings(name: 'SettingsHomePage'),
                   ),
                   (Route<dynamic> route) => false,
                 );
@@ -150,6 +155,7 @@ Widget bottomBar(BuildContext context) {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SettingsScreen(),
+                        settings: RouteSettings(name: 'SettingsHomePage'),
                       ),
                       (Route<dynamic> route) => false,
                     );

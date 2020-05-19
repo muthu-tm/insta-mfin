@@ -68,7 +68,10 @@ Widget openDrawer(BuildContext context) {
           title: new Text('Home'),
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UserHomeScreen()),
+            MaterialPageRoute(
+              builder: (context) => UserHomeScreen(),
+              settings: RouteSettings(name: 'HomePage'),
+            ),
           ),
         ),
         new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
@@ -99,7 +102,10 @@ Widget openDrawer(BuildContext context) {
               trailing: new Icon(Icons.keyboard_arrow_right),
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddCustomer()),
+                MaterialPageRoute(
+                  builder: (context) => AddCustomer(),
+                  settings: RouteSettings(name: 'AddCustomerPage'),
+                ),
               ),
             ),
             new ListTile(
@@ -108,7 +114,9 @@ Widget openDrawer(BuildContext context) {
               onTap: () => Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => CustomersFilteredView()),
+                  builder: (context) => CustomersFilteredView(),
+                  settings: RouteSettings(name: 'CustomersHomePage'),
+                ),
                 (Route<dynamic> route) => false,
               ),
             ),
@@ -146,7 +154,10 @@ Widget openDrawer(BuildContext context) {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => FinanceSetting()),
+              MaterialPageRoute(
+                builder: (context) => FinanceSetting(),
+                settings: RouteSettings(name: 'FinanceSettingsPage'),
+              ),
             );
           },
         ),
@@ -157,7 +168,10 @@ Widget openDrawer(BuildContext context) {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => UserSetting()),
+              MaterialPageRoute(
+                builder: (context) => UserSetting(),
+                settings: RouteSettings(name: 'UserProfileSettingsPage'),
+              ),
             );
           },
         ),
@@ -176,7 +190,10 @@ Widget openDrawer(BuildContext context) {
             await _authController.signOut();
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => Authenticate()),
+              MaterialPageRoute(
+                builder: (context) => Authenticate(),
+                settings: RouteSettings(name: 'AuthenticatePage'),
+              ),
               (Route<dynamic> route) => false,
             );
           }, () => Navigator.pop(context, false)),
