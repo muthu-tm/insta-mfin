@@ -3,7 +3,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
-import 'package:instamfin/services/controllers/transaction/collectionTemp_controller.dart';
+import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 
 class AddCollectionTemplate extends StatefulWidget {
   @override
@@ -266,8 +266,8 @@ class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Template for YOU!");
-      CollectionTempController _collectionController =
-          CollectionTempController();
+      PaymentTemplateController _collectionController =
+          PaymentTemplateController();
       var result = await _collectionController.createTemplate(
           templateName,
           totalAmount,

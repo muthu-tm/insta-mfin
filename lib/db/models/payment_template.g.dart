@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'coll_template.dart';
+part of 'payment_template.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CollectionTemp _$CollectionTempFromJson(Map<String, dynamic> json) {
-  return CollectionTemp()
+PaymentTemplate _$PaymentTemplateFromJson(Map<String, dynamic> json) {
+  return PaymentTemplate()
     ..name = json['template_name'] as String
     ..totalAmount = json['total_amount'] as int
     ..principalAmount = json['principal_amount'] as int
@@ -32,7 +32,7 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
   return ts.millisecondsSinceEpoch;
 }
 
-Map<String, dynamic> _$CollectionTempToJson(CollectionTemp instance) =>
+Map<String, dynamic> _$PaymentTemplateToJson(PaymentTemplate instance) =>
     <String, dynamic>{
       'template_name': instance.name,
       'total_amount': instance.totalAmount == null ? 0 : instance.totalAmount,

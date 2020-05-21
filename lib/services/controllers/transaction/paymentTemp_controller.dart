@@ -1,7 +1,7 @@
-import 'package:instamfin/db/models/coll_template.dart';
+import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
-class CollectionTempController {
+class PaymentTemplateController {
   Future createTemplate(
       String name,
       int tAmount,
@@ -13,7 +13,7 @@ class CollectionTempController {
       int surcharge,
       double iRate) async {
     try {
-      CollectionTemp temp = CollectionTemp();
+      PaymentTemplate temp = PaymentTemplate();
       temp.setTempName(name);
       temp.setTotalAmount(tAmount);
       temp.setPrincipalAmount(pAmount);
@@ -26,27 +26,27 @@ class CollectionTempController {
 
       await temp.createTemplate();
 
-      return CustomResponse.getSuccesReponse("Created new collection template");
+      return CustomResponse.getSuccesReponse("Created new Payment template");
     } catch (err) {
       print("Error while creating $name template: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
-  Future<CollectionTemp> getTempByID(String tempID) async {
+  Future<PaymentTemplate> getTempByID(String tempID) async {
     try {
-      CollectionTemp temp = CollectionTemp();
+      PaymentTemplate temp = PaymentTemplate();
       return await temp.getTemplateByID(tempID);
     } catch (err) {
-      print("Error while retrieving Collection template for ID $tempID: " +
+      print("Error while retrieving Payment template for ID $tempID: " +
           err.toString());
       return null;
     }
   }
 
-  Future<List<CollectionTemp>> getAllTemplates() async {
+  Future<List<PaymentTemplate>> getAllTemplates() async {
     try {
-      List<CollectionTemp> temps = await CollectionTemp().getAllTemplates();
+      List<PaymentTemplate> temps = await PaymentTemplate().getAllTemplates();
 
       if (temps == null) {
         return [];
@@ -54,19 +54,19 @@ class CollectionTempController {
 
       return temps;
     } catch (err) {
-      print("Error while retrieving collection templates:" + err.toString());
+      print("Error while retrieving Payment templates:" + err.toString());
       throw err;
     }
   }
 
   Future updateTemp(String tempID, Map<String, dynamic> tempJSON) async {
     try {
-      await CollectionTemp().update(tempID, tempJSON);
+      await PaymentTemplate().update(tempID, tempJSON);
 
       return CustomResponse.getSuccesReponse(
-          "Updated Collection template $tempID");
+          "Updated Payment template $tempID");
     } catch (err) {
-      print("Error while updating Collection template with ID $tempID: " +
+      print("Error while updating Payment template with ID $tempID: " +
           err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -74,11 +74,11 @@ class CollectionTempController {
 
   Future removeTemp(String tempID) async {
     try {
-      await CollectionTemp().remove(tempID);
+      await PaymentTemplate().remove(tempID);
       return CustomResponse.getSuccesReponse(
-          "removed Collection template $tempID");
+          "removed Payment template $tempID");
     } catch (err) {
-      print("Error while removing Collection template with ID $tempID: " +
+      print("Error while removing Payment template with ID $tempID: " +
           err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }

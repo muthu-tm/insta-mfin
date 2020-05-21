@@ -34,13 +34,6 @@ class CustomerPaymentsWidget extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
-                  Color cardColor = CustomColors.mfinGrey;
-                  Color textColor = CustomColors.mfinBlue;
-                  if (index % 2 == 0) {
-                    cardColor = CustomColors.mfinBlue;
-                    textColor = CustomColors.mfinGrey;
-                  }
-
                   Payment payment =
                       Payment.fromJson(snapshot.data.documents[index].data);
 
@@ -136,7 +129,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                     secondaryActions: <Widget>[
                       IconSlideAction(
                         caption: 'Edit',
-                        color: textColor,
+                        color: CustomColors.mfinGrey,
                         icon: Icons.edit,
                         onTap: () {},
                       ),
@@ -179,7 +172,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                             DateUtils.formatDate(
                                                 payment.dateOfPayment),
                                             style: TextStyle(
-                                                color: textColor,
+                                                color: CustomColors.mfinGrey,
                                                 fontFamily: 'Georgia',
                                                 fontSize: 18.0,
                                                 fontWeight: FontWeight.bold),

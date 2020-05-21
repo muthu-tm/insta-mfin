@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/coll_template.dart';
+import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/screens/transaction/add/AddTemplate.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
-import 'package:instamfin/services/controllers/transaction/collectionTemp_controller.dart';
+import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 
-class CollectionTemplateWidget extends StatelessWidget {
-  CollectionTemplateWidget(this._scaffoldKey);
+class PaymentTemplateWidget extends StatelessWidget {
+  PaymentTemplateWidget(this._scaffoldKey);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: CollectionTemp().streamTemplates(),
+      stream: PaymentTemplate().streamTemplates(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
@@ -65,9 +65,9 @@ class CollectionTemplateWidget extends StatelessWidget {
                             _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
                                     "Removing a template", 2));
-                            CollectionTempController _ctc =
-                                CollectionTempController();
-                            CollectionTemp temp = CollectionTemp.fromJson(
+                            PaymentTemplateController _ctc =
+                                PaymentTemplateController();
+                            PaymentTemplate temp = PaymentTemplate.fromJson(
                                 snapshot.data.documents[index].data);
                             var result =
                                 await _ctc.removeTemp(temp.getDocumentID());

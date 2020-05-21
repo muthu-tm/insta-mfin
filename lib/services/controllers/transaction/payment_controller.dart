@@ -40,6 +40,10 @@ class PaymentController {
       payment.setSurcharge(surcharge);
       payment.setInterestRate(iRate);
       payment.setNotes(notes);
+      
+      // Hardcoded values for CF testing
+      payment.setCSF(DateTime.now());
+      payment.setCollectionDay(1);
 
       await payment.create(custNumber);
 

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/enums/payment_status.dart';
 import 'package:instamfin/db/enums/tenure_type.dart';
-import 'package:instamfin/db/models/coll_template.dart';
+import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/transaction/collectionTemp_controller.dart';
+import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
@@ -28,9 +28,9 @@ class _AddPaymentState extends State<AddPayment> {
 
   String _selectedTempID = "0";
   Map<String, String> _tempMap = {"0": "Choose Type.."};
-  List<CollectionTemp> templates = new List<CollectionTemp>();
-  List<CollectionTemp> tempList;
-  CollectionTemp selectedTemp;
+  List<PaymentTemplate> templates = new List<PaymentTemplate>();
+  List<PaymentTemplate> tempList;
+  PaymentTemplate selectedTemp;
 
   DateTime selectedDate = DateTime.now();
   int totalAmount = 0;
@@ -656,8 +656,8 @@ class _AddPaymentState extends State<AddPayment> {
 
   Future getCollectionTemp() async {
     try {
-      CollectionTempController _ctc = CollectionTempController();
-      List<CollectionTemp> templates = await _ctc.getAllTemplates();
+      PaymentTemplateController _ctc = PaymentTemplateController();
+      List<PaymentTemplate> templates = await _ctc.getAllTemplates();
       for (int index = 0; index < templates.length; index++) {
         _tempMap[(index + 1).toString()] = templates[index].name;
       }

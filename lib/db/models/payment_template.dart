@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'coll_template.g.dart';
+part 'payment_template.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class CollectionTemp {
+class PaymentTemplate {
   UserController _uc = UserController();
 
   @JsonKey(name: 'template_name', nullable: true)
@@ -33,7 +33,7 @@ class CollectionTemp {
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
 
-  CollectionTemp();
+  PaymentTemplate();
 
   setTempName(String name) {
     this.name = name;
@@ -83,16 +83,16 @@ class CollectionTemp {
     this.updatedAt = updatedAt;
   }
 
-  factory CollectionTemp.fromJson(Map<String, dynamic> json) =>
-      _$CollectionTempFromJson(json);
-  Map<String, dynamic> toJson() => _$CollectionTempToJson(this);
+  factory PaymentTemplate.fromJson(Map<String, dynamic> json) =>
+      _$PaymentTemplateFromJson(json);
+  Map<String, dynamic> toJson() => _$PaymentTemplateToJson(this);
 
   DocumentReference getCurrentFinanceRef() {
     return _uc.getCurrentUser().getFinanceDocReference();
   }
 
   CollectionReference getCollectionRef() {
-    return getCurrentFinanceRef().collection("collection_templates");
+    return getCurrentFinanceRef().collection("payment_templates");
   }
 
   DocumentReference getDocumentReference() {
@@ -117,29 +117,29 @@ class CollectionTemp {
     return getCollectionRef().snapshots();
   }
 
-  Future<List<CollectionTemp>> getAllTemplates() async {
+  Future<List<PaymentTemplate>> getAllTemplates() async {
     var tempDocs = await getCollectionRef().getDocuments();
 
     if (tempDocs.documents.isEmpty) {
       throw 'No Templates found!';
     }
 
-    List<CollectionTemp> temps = [];
+    List<PaymentTemplate> temps = [];
 
     for (var doc in tempDocs.documents) {
-      var temp = CollectionTemp.fromJson(doc.data);
+      var temp = PaymentTemplate.fromJson(doc.data);
       temps.add(temp);
     }
 
     return temps;
   }
 
-  Future<CollectionTemp> getTemplateByID(String tempID) async {
+  Future<PaymentTemplate> getTemplateByID(String tempID) async {
     DocumentSnapshot snapshot =
         await getCollectionRef().document(tempID).get();
 
     if (snapshot.exists) {
-      return CollectionTemp.fromJson(snapshot.data);
+      return PaymentTemplate.fromJson(snapshot.data);
     } else {
       return null;
     }

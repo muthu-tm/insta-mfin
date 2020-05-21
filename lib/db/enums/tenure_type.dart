@@ -1,4 +1,4 @@
-enum TenureType { Daily, Weekly, Monthly, Yearly }
+enum TenureType { Daily, Weekly, Monthly, OnWeekDays, OnWeekEnds }
 
 extension TenureTypeExtension on TenureType {
   int get name {
@@ -12,8 +12,11 @@ extension TenureTypeExtension on TenureType {
       case TenureType.Monthly:
         return 2;
         break;
-      case TenureType.Yearly:
-        return 3;
+      case TenureType.OnWeekDays:
+        return 4;
+        break;
+      case TenureType.OnWeekEnds:
+        return 5;
         break;
       default:
         return 0;

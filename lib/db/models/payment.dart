@@ -35,10 +35,14 @@ class Payment extends Model {
   int tenure;
   @JsonKey(name: 'tenure_type', nullable: true)
   int tenureType;
+  @JsonKey(name: 'collection_day', nullable: true)
+  int collectionDay;
   @JsonKey(name: 'interest_rate', nullable: true)
   double interestRate;
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;
+  @JsonKey(name: 'collection_starts_from', nullable: true)
+  DateTime collectionStartsFrom;
   @JsonKey(name: 'status', nullable: true)
   int status;
   @JsonKey(name: 'given_by', nullable: true)
@@ -96,6 +100,10 @@ class Payment extends Model {
     this.tenureType = tenureType;
   }
 
+  setCollectionDay(int weekDay) {
+    this.collectionDay = weekDay;
+  }
+  
   setCollectionAmount(int amount) {
     this.collectionAmount = amount;
   }
@@ -110,6 +118,10 @@ class Payment extends Model {
 
   setDOP(DateTime date) {
     this.dateOfPayment = date;
+  }
+
+  setCSF(DateTime date) {
+    this.collectionStartsFrom = date;
   }
 
   setTotalPaid(int paid) {

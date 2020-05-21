@@ -26,8 +26,8 @@ class Collection {
   List<CollectionDetails> collections;
   @JsonKey(name: 'status', defaultValue: 0)
   int status;
-  @JsonKey(name: 'added_by', nullable: true)
-  int addedBy;
+  @JsonKey(name: 'type', nullable: true)
+  int type;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -61,6 +61,10 @@ class Collection {
 
   setStatus(int status) {
     this.status = status;
+  }
+
+  setType(int type) {
+    this.type = type;
   }
 
   addCollections(List<CollectionDetails> collections) {

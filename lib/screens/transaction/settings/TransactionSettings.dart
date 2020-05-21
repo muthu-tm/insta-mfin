@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/screens/transaction/widgets/CollectionTemplateWidget.dart';
+import 'package:instamfin/screens/transaction/widgets/PaymentTemplateWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
@@ -34,7 +34,7 @@ class _TransactionSettingState extends State<TransactionSetting> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              CollectionTemplateWidget(_scaffoldKey),
+              PaymentTemplateWidget(_scaffoldKey),
               Card(
                 color: CustomColors.mfinLightGrey,
                 child: new Column(
