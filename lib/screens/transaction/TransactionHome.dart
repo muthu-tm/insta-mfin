@@ -83,6 +83,8 @@ class TransactionScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => MiscellaneousExpenseHome(),
+                      settings:
+                          RouteSettings(name: '/transactions/miscellaneous'),
                     ),
                   );
                 },
@@ -140,7 +142,10 @@ class TransactionScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => JournalEntryHome()),
+                    MaterialPageRoute(
+                      builder: (context) => JournalEntryHome(),
+                      settings: RouteSettings(name: '/transactions/journal'),
+                    ),
                   );
                 },
                 child: Row(
@@ -204,6 +209,7 @@ class TransactionScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => TransactionSetting(),
+                        settings: RouteSettings(name: '/transactions/settings'),
                       ),
                     );
                   },

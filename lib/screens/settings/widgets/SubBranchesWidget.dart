@@ -63,6 +63,8 @@ class SubBranchesWidget extends StatelessWidget {
                             branchName,
                             subBranch,
                           ),
+                          settings: RouteSettings(
+                              name: '/settings/finance/branch/subbranch'),
                         ),
                       );
                     },
@@ -145,8 +147,11 @@ class SubBranchesWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              AddSubBranch(financeID, branchName)),
+                        builder: (context) =>
+                            AddSubBranch(financeID, branchName),
+                        settings: RouteSettings(
+                            name: '/settings/finance/branch/subbranch/add'),
+                      ),
                     );
                   },
                 ),

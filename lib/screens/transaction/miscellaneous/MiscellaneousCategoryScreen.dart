@@ -30,6 +30,7 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => AddMiscellaneousCategory(),
+              settings: RouteSettings(name: '/transactions/miscellaneous/categories/add'),
             ),
           );
         },

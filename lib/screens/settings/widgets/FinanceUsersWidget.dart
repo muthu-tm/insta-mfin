@@ -58,6 +58,8 @@ class FinanceUsersWidget extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => FinanceUser(
                               snapshot.data.data['admins'][index].toString()),
+                          settings:
+                              RouteSettings(name: '/settings/finance/admin'),
                         ),
                       );
                     },

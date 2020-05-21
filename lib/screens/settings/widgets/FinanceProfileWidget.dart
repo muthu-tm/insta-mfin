@@ -160,8 +160,11 @@ class FinanceProfileWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  EditFinanceProfile(snapshot.data)),
+                            builder: (context) =>
+                                EditFinanceProfile(snapshot.data),
+                            settings:
+                                RouteSettings(name: '/settings/finance/edit'),
+                          ),
                         );
                       } else {
                         Scaffold.of(context).showSnackBar(

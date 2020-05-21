@@ -43,7 +43,10 @@ class UserHomeScreen extends StatelessWidget {
         await _authController.signOut();
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => Authenticate()),
+          MaterialPageRoute(
+            builder: (context) => Authenticate(),
+            settings: RouteSettings(name: '/logout'),
+          ),
           (Route<dynamic> route) => false,
         );
       }, () => Navigator.pop(context, false)),

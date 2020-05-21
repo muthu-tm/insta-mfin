@@ -26,6 +26,7 @@ Widget customerListTile(
             context,
             MaterialPageRoute(
               builder: (context) => ViewCustomer(Customer.fromJson(customer)),
+              settings: RouteSettings(name: '/customers/view'),
             ),
           );
         },

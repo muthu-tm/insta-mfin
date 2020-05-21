@@ -4,7 +4,8 @@ import 'package:instamfin/screens/settings/editors/EditSubBranchProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class SubBranchProfileWidget extends StatelessWidget {
-  SubBranchProfileWidget( this._scaffoldKey, this.financeID, this.branchName, this.subBranch);
+  SubBranchProfileWidget(
+      this._scaffoldKey, this.financeID, this.branchName, this.subBranch);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final String financeID;
@@ -42,6 +43,8 @@ class SubBranchProfileWidget extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) =>
                         EditSubBranchProfile(financeID, branchName, subBranch),
+                    settings: RouteSettings(
+                        name: '/settings/finance/branch/subbranch/edit'),
                   ),
                 );
               },

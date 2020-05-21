@@ -199,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Loggin in");
+      CustomDialogs.actionWaiting(context, "Logging In");
       var result = await _authController.signInWithMobileNumber(
           int.parse(mobileNumber), password);
 
@@ -215,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
           MaterialPageRoute(
             builder: (context) => UserHomeScreen(),
-            settings: RouteSettings(name: 'HomePage'),
+            settings: RouteSettings(name: '/home'),
           ),
           (Route<dynamic> route) => false,
         );

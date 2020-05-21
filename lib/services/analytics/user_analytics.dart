@@ -16,7 +16,6 @@ class UserAnalytics {
       name: name,
       parameters: data,
     );
-    print('updated $name analytics');
   }
 
   static Future loginEvent(String userID) async {

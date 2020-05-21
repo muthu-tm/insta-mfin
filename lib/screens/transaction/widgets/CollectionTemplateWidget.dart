@@ -159,6 +159,7 @@ class CollectionTemplateWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddCollectionTemplate(),
+                        settings: RouteSettings(name: '/transactions/payment/template/add'),
                       ),
                     );
                   },

@@ -67,6 +67,8 @@ class CustomerListWidget extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => EditCustomerProfile(
                                 snapshot.data.documents[index].data),
+                            settings:
+                                RouteSettings(name: '/customers/profile/edit'),
                           ),
                         ),
                       ),

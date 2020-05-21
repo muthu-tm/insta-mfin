@@ -36,7 +36,10 @@ class SettingsScreen extends StatelessWidget {
                     // _financeSetting(user, context), // button pressed
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FinanceSetting()),
+                      MaterialPageRoute(
+                        builder: (context) => FinanceSetting(),
+                        settings: RouteSettings(name: '/settings/finance'),
+                      ),
                     );
                   },
                   child: Column(
@@ -61,7 +64,10 @@ class SettingsScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => UserSetting()),
+                      MaterialPageRoute(
+                        builder: (context) => UserSetting(),
+                        settings: RouteSettings(name: '/settings/user'),
+                      ),
                     );
                   }, // button pressed
                   child: Column(
@@ -72,7 +78,9 @@ class SettingsScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => UserSetting()),
+                            builder: (context) => UserSetting(),
+                            settings: RouteSettings(name: '/settings/user'),
+                          ),
                         );
                       }),
                       Padding(padding: EdgeInsets.all(05.0)),

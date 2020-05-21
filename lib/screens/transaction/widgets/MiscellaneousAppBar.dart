@@ -19,6 +19,7 @@ Widget miscellaneousAppBar(BuildContext context) {
             context,
             MaterialPageRoute(
               builder: (context) => MiscellaneousCategoryScreen(),
+              settings: RouteSettings(name: '/transactions/miscellaneous/categories'),
             ),
           );
         },

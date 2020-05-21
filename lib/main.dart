@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/analytics/user_analytics.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     UserAnalytics.setupAnalytics(analytics, observer);
     return MaterialApp(
-      title: 'InstamFIN',
+      title: 'iFIN',
       theme: ThemeData(
         // Define the default brightness and colors.
         brightness: Brightness.light,
@@ -32,7 +33,10 @@ class MyApp extends StatelessWidget {
           headline5: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
           bodyText2: TextStyle(
-              fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
+            fontSize: 14.0,
+            fontFamily: 'Hind',
+            color: CustomColors.mfinWhite,
+          ),
         ),
       ),
       navigatorObservers: <NavigatorObserver>[observer],

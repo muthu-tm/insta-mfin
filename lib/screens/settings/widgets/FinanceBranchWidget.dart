@@ -61,6 +61,8 @@ class FinanceBranchWidget extends StatelessWidget {
                             financeID,
                             snapshot.data.documents[index].data['branch_name'],
                           ),
+                          settings:
+                              RouteSettings(name: '/settings/finance/branch'),
                         ),
                       );
                     },
@@ -144,6 +146,8 @@ class FinanceBranchWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddBranch(financeID),
+                        settings:
+                            RouteSettings(name: '/settings/finance/branch/add'),
                       ),
                     );
                   },

@@ -52,6 +52,7 @@ class _PushNotificationState extends State<PushNotification> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => NotificationHome(message),
+                    settings: RouteSettings(name: '/notifications'),
                   ),
                 ),
               ),

@@ -19,6 +19,7 @@ Widget journalAppBar(BuildContext context) {
             context,
             MaterialPageRoute(
               builder: (context) => JournalCategoryScreen(),
+              settings: RouteSettings(name: '/transactions/journal/categories'),
             ),
           );
         },

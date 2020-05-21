@@ -29,7 +29,10 @@ class AddFinanceWidget extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddFinancePage()),
+                MaterialPageRoute(
+                  builder: (context) => AddFinancePage(),
+                  settings: RouteSettings(name: '/settings/finance/add'),
+                ),
               );
             }, // button pressed
             child: Container(
@@ -40,7 +43,10 @@ class AddFinanceWidget extends StatelessWidget {
                     () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AddFinancePage()),
+                    MaterialPageRoute(
+                      builder: (context) => AddFinancePage(),
+                      settings: RouteSettings(name: '/settings/finance/add'),
+                    ),
                   );
                 }),
                 new Text(

@@ -28,6 +28,7 @@ class JournalEntryHome extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => AddJournalEntry(),
+              settings: RouteSettings(name: '/transactions/journal/add'),
             ),
           );
         },

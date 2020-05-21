@@ -29,6 +29,7 @@ class MiscellaneousExpenseHome extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => AddMiscellaneousExpense(),
+              settings: RouteSettings(name: '/transactions/miscellaneous/add'),
             ),
           );
         },

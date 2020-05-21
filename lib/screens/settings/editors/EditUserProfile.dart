@@ -272,7 +272,10 @@ class _EditUserProfileState extends State<EditUserProfile> {
         Navigator.pop(context);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserSetting()),
+          MaterialPageRoute(
+            builder: (context) => UserSetting(),
+            settings: RouteSettings(name: '/settings/user'),
+          ),
         );
       }
     } else {

@@ -265,7 +265,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => UserHomeScreen(),
-                      settings: RouteSettings(name: 'HomePage'),
+                      settings: RouteSettings(name: '/home'),
                     ),
                     (Route<dynamic> route) => false,
                   ),
@@ -273,7 +273,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => UserHomeScreen(),
-                      settings: RouteSettings(name: 'HomePage'),
+                      settings: RouteSettings(name: '/home'),
                     ),
                     (Route<dynamic> route) => false,
                   ));
@@ -282,7 +282,7 @@ class _RegisterFormState extends State<RegisterForm> {
             context,
             MaterialPageRoute(
               builder: (context) => UserHomeScreen(),
-              settings: RouteSettings(name: 'HomePage'),
+              settings: RouteSettings(name: '/home'),
             ),
             (Route<dynamic> route) => false,
           );

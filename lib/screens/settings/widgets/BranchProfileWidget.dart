@@ -37,7 +37,11 @@ class BranchProfileWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EditBranchProfile(financeID, branch)),
+                  MaterialPageRoute(
+                    builder: (context) => EditBranchProfile(financeID, branch),
+                    settings:
+                        RouteSettings(name: '/settings/finance/branch/edit'),
+                  ),
                 );
               },
             ),

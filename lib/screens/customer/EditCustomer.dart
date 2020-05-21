@@ -70,6 +70,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           return 'Enter Customer Name';
                         }
                         updatedCustomer['customer_name'] = value;
+                        return null;
                       },
                     ),
                   ),
@@ -93,6 +94,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                             return 'Enter Customer ID';
                           }
                           updatedCustomer['customer_id'] = value;
+                          return null;
                         }),
                   ),
                   RowHeaderText(textName: 'Age'),
@@ -113,10 +115,10 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                       validator: (val) {
                         if (val.trim().isEmpty) {
                           updatedCustomer['age'] = 0;
-                          return null;
                         } else {
                           updatedCustomer['age'] = val.trim();
                         }
+                          return null;
                       },
                     ),
                   ),
@@ -137,10 +139,10 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                       validator: (val) {
                         if (val.trim().isEmpty) {
                           updatedCustomer['customer_profession'] = '';
-                          return null;
                         } else {
                           updatedCustomer['customer_profession'] = val.trim();
                         }
+                          return null;
                       },
                     ),
                   ),

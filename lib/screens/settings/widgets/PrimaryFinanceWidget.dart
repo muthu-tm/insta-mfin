@@ -113,6 +113,8 @@ class PrimaryFinanceWidget extends StatelessWidget {
                             builder: (context) => EditPrimaryFinance(
                               _userController.getCurrentUserID(),
                             ),
+                            settings: RouteSettings(
+                                name: '/settings/user/primary/edit'),
                           ),
                         );
                       }, // button pressed
@@ -125,7 +127,10 @@ class PrimaryFinanceWidget extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddFinancePage()),
+                                builder: (context) => AddFinancePage(),
+                                settings: RouteSettings(
+                                    name: '/settings/finance/add'),
+                              ),
                             );
                           }),
                           new Text(
@@ -161,51 +166,53 @@ class PrimaryFinanceWidget extends StatelessWidget {
           return new Card(
             color: CustomColors.mfinLightGrey,
             child: SingleChildScrollView(
-            child:new Column(
-              children: <Widget>[
-                ListTile(
-                    leading: Icon(
-                      Icons.work,
-                      size: 35.0,
-                      color: CustomColors.mfinFadedButtonGreen,
-                    ),
-                    title: new Text(
-                      title,
-                      style: TextStyle(
-                        color: CustomColors.mfinBlue,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.edit,
+              child: new Column(
+                children: <Widget>[
+                  ListTile(
+                      leading: Icon(
+                        Icons.work,
                         size: 35.0,
-                        color: CustomColors.mfinBlue,
+                        color: CustomColors.mfinFadedButtonGreen,
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditPrimaryFinance(
-                              _userController.getCurrentUserID(),
+                      title: new Text(
+                        title,
+                        style: TextStyle(
+                          color: CustomColors.mfinBlue,
+                          fontSize: 18.0,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.edit,
+                          size: 35.0,
+                          color: CustomColors.mfinBlue,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPrimaryFinance(
+                                _userController.getCurrentUserID(),
+                              ),
+                              settings: RouteSettings(
+                                  name: '/settings/user/primary/edit'),
                             ),
-                          ),
-                        );
-                      },
-                    )),
-                new Divider(
-                  color: CustomColors.mfinBlue,
-                  thickness: 1,
-                ),
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: children,
+                          );
+                        },
+                      )),
+                  new Divider(
+                    color: CustomColors.mfinBlue,
+                    thickness: 1,
                   ),
-                ),
-              ],
-            ),
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: children,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         });

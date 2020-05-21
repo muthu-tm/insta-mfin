@@ -29,6 +29,7 @@ class JournalCategoryScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => AddJournalCategory(),
+              settings: RouteSettings(name: '/transactions/journal/categories/add'),
             ),
           );
         },

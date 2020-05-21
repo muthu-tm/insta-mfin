@@ -45,7 +45,10 @@ class UserProfileWidget extends StatelessWidget {
                 } else {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => EditUserProfile()),
+                    MaterialPageRoute(
+                      builder: (context) => EditUserProfile(),
+                      settings: RouteSettings(name: '/settings/user/edit'),
+                    ),
                   );
                 }
               },

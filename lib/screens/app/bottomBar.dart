@@ -16,13 +16,13 @@ Widget bottomBar(BuildContext context) {
           child: Material(
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
-              splashColor: CustomColors.mfinFadedButtonGreen, // splash color
+              // splashColor: CustomColors.mfinFadedButtonGreen, // splash color
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => CustomersFilteredView(),
-                    settings: RouteSettings(name: 'CustomersHomePage'),
+                    settings: RouteSettings(name: '/customers'),
                   ),
                   (Route<dynamic> route) => false,
                 );
@@ -39,7 +39,7 @@ Widget bottomBar(BuildContext context) {
                         context,
                         MaterialPageRoute(
                           builder: (context) => CustomersFilteredView(),
-                          settings: RouteSettings(name: 'CustomersHomePage'),
+                          settings: RouteSettings(name: '/customers'),
                         ),
                         (Route<dynamic> route) => false,
                       );
@@ -62,13 +62,13 @@ Widget bottomBar(BuildContext context) {
           child: Material(
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
-              splashColor: CustomColors.mfinButtonGreen, // splash color
+              // splashColor: CustomColors.mfinButtonGreen, // splash color
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => TransactionScreen(),
-                    settings: RouteSettings(name: 'TransactionHomePage'),
+                    settings: RouteSettings(name: '/transactions'),
                   ),
                   (Route<dynamic> route) => false,
                 );
@@ -85,7 +85,7 @@ Widget bottomBar(BuildContext context) {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TransactionScreen(),
-                          settings: RouteSettings(name: 'TransactionHomePage'),
+                          settings: RouteSettings(name: '/transactions'),
                         ),
                         (Route<dynamic> route) => false,
                       );
@@ -109,7 +109,7 @@ Widget bottomBar(BuildContext context) {
           child: Material(
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
-              splashColor: CustomColors.mfinButtonGreen, // splash color
+              // splashColor: CustomColors.mfinButtonGreen, // splash color
               onTap: () {}, // button pressed
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -135,13 +135,13 @@ Widget bottomBar(BuildContext context) {
           child: Material(
             color: CustomColors.mfinBlue, // button color
             child: InkWell(
-              splashColor: CustomColors.mfinButtonGreen, // splash color
+              // splashColor: CustomColors.mfinButtonGreen, // splash color
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsScreen(),
-                    settings: RouteSettings(name: 'SettingsHomePage'),
+                    settings: RouteSettings(name: '/settings'),
                   ),
                   (Route<dynamic> route) => false,
                 );
@@ -155,7 +155,7 @@ Widget bottomBar(BuildContext context) {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SettingsScreen(),
-                        settings: RouteSettings(name: 'SettingsHomePage'),
+                        settings: RouteSettings(name: '/settings'),
                       ),
                       (Route<dynamic> route) => false,
                     );

@@ -269,7 +269,10 @@ class _AddCustomerState extends State<AddCustomer> {
         print("New Customer $name added successfully");
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => CustomersFilteredView()),
+          MaterialPageRoute(
+            builder: (context) => CustomersFilteredView(),
+            settings: RouteSettings(name: '/customers'),
+          ),
           (Route<dynamic> route) => false,
         );
       }

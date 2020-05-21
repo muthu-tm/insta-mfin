@@ -51,6 +51,8 @@ class BranchUsersWidget extends StatelessWidget {
                         branch.branchName,
                         financeID,
                         branch.branchName),
+                    settings: RouteSettings(
+                        name: '/settings/finance/branch/admin/add'),
                   ),
                 );
               },
@@ -94,6 +96,8 @@ class BranchUsersWidget extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) =>
                                 FinanceUser(branch.admins[index].toString()),
+                            settings: RouteSettings(
+                                name: '/settings/finance/branch/admin'),
                           ),
                         );
                       },

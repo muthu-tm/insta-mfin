@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
 import 'package:instamfin/screens/home/Authenticate.dart';
@@ -70,7 +71,7 @@ Widget openDrawer(BuildContext context) {
             context,
             MaterialPageRoute(
               builder: (context) => UserHomeScreen(),
-              settings: RouteSettings(name: 'HomePage'),
+              settings: RouteSettings(name: '/home'),
             ),
           ),
         ),
@@ -104,7 +105,7 @@ Widget openDrawer(BuildContext context) {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AddCustomer(),
-                  settings: RouteSettings(name: 'AddCustomerPage'),
+                  settings: RouteSettings(name: '/customers/add'),
                 ),
               ),
             ),
@@ -115,7 +116,7 @@ Widget openDrawer(BuildContext context) {
                 context,
                 MaterialPageRoute(
                   builder: (context) => CustomersFilteredView(),
-                  settings: RouteSettings(name: 'CustomersHomePage'),
+                  settings: RouteSettings(name: '/customers'),
                 ),
                 (Route<dynamic> route) => false,
               ),
@@ -144,7 +145,15 @@ Widget openDrawer(BuildContext context) {
           leading: new Icon(Icons.notifications_active,
               color: CustomColors.mfinButtonGreen),
           title: new Text('Notifications'),
-          onTap: () => null,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NotificationHome({'notification': {}}),
+                settings: RouteSettings(name: '/notifications'),
+              ),
+            );
+          },
         ),
         new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
         new ListTile(
@@ -156,7 +165,7 @@ Widget openDrawer(BuildContext context) {
               context,
               MaterialPageRoute(
                 builder: (context) => FinanceSetting(),
-                settings: RouteSettings(name: 'FinanceSettingsPage'),
+                settings: RouteSettings(name: '/settings/finance'),
               ),
             );
           },
@@ -170,7 +179,7 @@ Widget openDrawer(BuildContext context) {
               context,
               MaterialPageRoute(
                 builder: (context) => UserSetting(),
-                settings: RouteSettings(name: 'UserProfileSettingsPage'),
+                settings: RouteSettings(name: '/settings/user'),
               ),
             );
           },
@@ -192,7 +201,7 @@ Widget openDrawer(BuildContext context) {
               context,
               MaterialPageRoute(
                 builder: (context) => Authenticate(),
-                settings: RouteSettings(name: 'AuthenticatePage'),
+                settings: RouteSettings(name: '/logout'),
               ),
               (Route<dynamic> route) => false,
             );
