@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/enums/payment_status.dart';
-import 'package:instamfin/db/enums/tenure_type.dart';
+import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/payment_template.dart';
-import 'package:instamfin/db/models/customer.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class AddPayment extends StatefulWidget {
-  AddPayment(this.customer);
+class EditPayment extends StatefulWidget {
+  EditPayment(this.payment);
 
-  final Customer customer;
+  final Payment payment;
 
   @override
-  _AddPaymentState createState() => _AddPaymentState();
+  _EditPaymentState createState() => _EditPaymentState();
 }
 
-class _AddPaymentState extends State<AddPayment> {
+class _EditPaymentState extends State<EditPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final User _user = UserController().getCurrentUser();
 
   String _selectedTempID = "0";
   Map<String, String> _tempMap = {"0": "Choose Type.."};
@@ -32,26 +27,16 @@ class _AddPaymentState extends State<AddPayment> {
   List<PaymentTemplate> tempList;
   PaymentTemplate selectedTemp;
 
-  DateTime selectedDate = DateTime.now();
-  int totalAmount = 0;
-  int principalAmount = 0;
-  int docCharge = 0;
-  int surCharge = 0;
-  int tenure = 0;
-  double intrestRate = 0.0;
-  int collectionAmount = 0;
-  String givenTo = '';
-  String givenBy = '';
-  String notes = '';
+  Map<String, dynamic> updatedPayment = new Map();
 
   @override
   void initState() {
     super.initState();
     this.getCollectionTemp();
-    givenTo = widget.customer.name;
-    givenBy = _user.name;
 
-    _tAmountController.addListener(_tAmountListener);
+    _date.value = TextEditingValue(
+      text: DateUtils.formatDate(widget.payment.dateOfPayment),
+    );
   }
 
   @override
@@ -62,7 +47,7 @@ class _AddPaymentState extends State<AddPayment> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Add Payment'),
+        title: Text('Edit Payment'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -122,33 +107,6 @@ class _AddPaymentState extends State<AddPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "CUSTOMER:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        enabled: false,
-                        autofocus: false,
-                        initialValue: widget.customer.name,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
-                          ),
-                          fillColor: CustomColors.mfinLightGrey,
-                          filled: true,
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
                           "DATE:",
                           style: TextStyle(
                             fontSize: 13,
@@ -202,7 +160,7 @@ class _AddPaymentState extends State<AddPayment> {
                       title: TextFormField(
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.text,
-                        initialValue: givenTo,
+                        initialValue: widget.payment.givenTo,
                         decoration: InputDecoration(
                           hintText: 'Amount Given To',
                           fillColor: CustomColors.mfinWhite,
@@ -216,9 +174,10 @@ class _AddPaymentState extends State<AddPayment> {
                         validator: (givenTo) {
                           if (givenTo.trim().isEmpty) {
                             return "Fill the person name who received the amount";
+                          } else if (givenTo.trim() != widget.payment.givenTo) {
+                            updatedPayment['given_to'] = givenTo.trim();
                           }
 
-                          this.givenTo = givenTo.trim();
                           return null;
                         },
                       ),
@@ -239,7 +198,7 @@ class _AddPaymentState extends State<AddPayment> {
                       title: TextFormField(
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.text,
-                        initialValue: givenBy,
+                        initialValue: widget.payment.givenBy,
                         decoration: InputDecoration(
                           hintText: 'Amount Given by',
                           fillColor: CustomColors.mfinWhite,
@@ -253,9 +212,10 @@ class _AddPaymentState extends State<AddPayment> {
                         validator: (givenby) {
                           if (givenby.trim().isEmpty) {
                             return "Please fill the person name who gave the amount";
+                          } else if (givenby.trim() != widget.payment.givenBy) {
+                            updatedPayment['given_by'] = givenby.trim();
                           }
 
-                          this.givenBy = givenby.trim();
                           return null;
                         },
                       ),
@@ -276,7 +236,7 @@ class _AddPaymentState extends State<AddPayment> {
                       title: TextFormField(
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.text,
-                        initialValue: notes,
+                        initialValue: widget.payment.notes,
                         maxLines: 3,
                         decoration: InputDecoration(
                           hintText: 'Notes',
@@ -289,10 +249,8 @@ class _AddPaymentState extends State<AddPayment> {
                                   BorderSide(color: CustomColors.mfinWhite)),
                         ),
                         validator: (notes) {
-                          if (notes.trim().isEmpty) {
-                            this.notes = "";
-                          } else {
-                            this.notes = notes.trim();
+                          if (notes.trim() != widget.payment.notes) {
+                            updatedPayment['notes'] = notes.trim();
                           }
                           return null;
                         },
@@ -374,7 +332,7 @@ class _AddPaymentState extends State<AddPayment> {
                         // controller: _tAmountController,
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.number,
-                        initialValue: totalAmount.toString(),
+                        initialValue: widget.payment.totalAmount.toString(),
                         decoration: InputDecoration(
                           hintText: 'Total Amount',
                           fillColor: CustomColors.mfinWhite,
@@ -388,10 +346,12 @@ class _AddPaymentState extends State<AddPayment> {
                         validator: (amount) {
                           if (amount.trim().isEmpty || amount.trim() == "0") {
                             return "Total Amount should not be empty!";
-                          } else {
-                            this.totalAmount = int.parse(amount.trim());
-                            return null;
+                          } else if (amount.trim() !=
+                              widget.payment.totalAmount.toString()) {
+                            updatedPayment['total_amount'] =
+                                int.parse(amount.trim());
                           }
+                          return null;
                         },
                       ),
                     ),
@@ -411,7 +371,7 @@ class _AddPaymentState extends State<AddPayment> {
                       title: new TextFormField(
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.number,
-                        initialValue: principalAmount.toString(),
+                        initialValue: widget.payment.principalAmount.toString(),
                         decoration: InputDecoration(
                           hintText: 'Principal amount given',
                           fillColor: CustomColors.mfinWhite,
@@ -425,10 +385,12 @@ class _AddPaymentState extends State<AddPayment> {
                         validator: (amount) {
                           if (amount.trim().isEmpty || amount.trim() == "0") {
                             return "Principal Amount should not be empty!";
-                          } else {
-                            this.principalAmount = int.parse(amount.trim());
-                            return null;
+                          } else if (amount.trim() !=
+                              widget.payment.principalAmount.toString()) {
+                            updatedPayment['principal_amount'] =
+                                int.parse(amount.trim());
                           }
+                          return null;
                         },
                       ),
                     ),
@@ -447,7 +409,7 @@ class _AddPaymentState extends State<AddPayment> {
                       ),
                       title: TextFormField(
                         textAlign: TextAlign.end,
-                        initialValue: docCharge.toString(),
+                        initialValue: widget.payment.docCharge.toString(),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: 'Document Charge',
@@ -460,10 +422,14 @@ class _AddPaymentState extends State<AddPayment> {
                                   BorderSide(color: CustomColors.mfinWhite)),
                         ),
                         validator: (charge) {
-                          if (charge.trim().isEmpty) {
-                            this.docCharge = 0;
-                          } else {
-                            this.docCharge = int.parse(charge);
+                          if (charge.trim() !=
+                              widget.payment.docCharge.toString()) {
+                            if (charge.trim().isEmpty) {
+                              updatedPayment['doc_charge'] = 0;
+                            } else {
+                              updatedPayment['doc_charge'] =
+                                  int.parse(charge.trim());
+                            }
                           }
                           return null;
                         },
@@ -484,7 +450,7 @@ class _AddPaymentState extends State<AddPayment> {
                       ),
                       title: TextFormField(
                         textAlign: TextAlign.end,
-                        initialValue: surCharge.toString(),
+                        initialValue: widget.payment.surcharge.toString(),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: 'Service charge if any',
@@ -496,11 +462,15 @@ class _AddPaymentState extends State<AddPayment> {
                               borderSide:
                                   BorderSide(color: CustomColors.mfinWhite)),
                         ),
-                        validator: (surcharge) {
-                          if (surcharge.trim().isEmpty) {
-                            this.surCharge = 0;
-                          } else {
-                            this.surCharge = int.parse(surcharge);
+                        validator: (charge) {
+                          if (charge.trim() !=
+                              widget.payment.surcharge.toString()) {
+                            if (charge.trim().isEmpty) {
+                              updatedPayment['surcharge'] = 0;
+                            } else {
+                              updatedPayment['surcharge'] =
+                                  int.parse(charge.trim());
+                            }
                           }
                           return null;
                         },
@@ -522,7 +492,7 @@ class _AddPaymentState extends State<AddPayment> {
                       title: TextFormField(
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.number,
-                        initialValue: tenure.toString(),
+                        initialValue: widget.payment.tenure.toString(),
                         decoration: InputDecoration(
                           hintText: 'Number of Collections',
                           fillColor: CustomColors.mfinWhite,
@@ -536,9 +506,10 @@ class _AddPaymentState extends State<AddPayment> {
                         validator: (tenure) {
                           if (tenure.trim().isEmpty) {
                             return 'Enter the Number of Collections';
+                          } else if (tenure.trim() !=
+                              widget.payment.tenure.toString()) {
+                            updatedPayment['tenure'] = int.parse(tenure.trim());
                           }
-
-                          this.tenure = int.parse(tenure);
                           return null;
                         },
                       ),
@@ -559,7 +530,7 @@ class _AddPaymentState extends State<AddPayment> {
                       title: TextFormField(
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.number,
-                        initialValue: intrestRate.toString(),
+                        initialValue: widget.payment.interestRate.toString(),
                         decoration: InputDecoration(
                           hintText: 'Rate in 0.00%',
                           fillColor: CustomColors.mfinWhite,
@@ -570,11 +541,16 @@ class _AddPaymentState extends State<AddPayment> {
                               borderSide:
                                   BorderSide(color: CustomColors.mfinWhite)),
                         ),
-                        validator: (tenure) {
-                          if (tenure.trim().isEmpty) {
-                            this.intrestRate = double.parse('0');
-                          } else {
-                            this.intrestRate = double.parse(tenure);
+                        validator: (iRate) {
+                          if (iRate.trim() !=
+                              widget.payment.interestRate.toString()) {
+                            if (iRate.trim().isEmpty) {
+                              updatedPayment['interest_rate'] =
+                                  double.parse('0');
+                            } else {
+                              updatedPayment['interest_rate'] =
+                                  double.parse(iRate.trim());
+                            }
                           }
 
                           return null;
@@ -597,7 +573,8 @@ class _AddPaymentState extends State<AddPayment> {
                       title: TextFormField(
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.number,
-                        initialValue: collectionAmount.toString(),
+                        initialValue:
+                            widget.payment.collectionAmount.toString(),
                         decoration: InputDecoration(
                           hintText: 'Each Collection Amount',
                           fillColor: CustomColors.mfinWhite,
@@ -612,9 +589,12 @@ class _AddPaymentState extends State<AddPayment> {
                           if (collAmount.trim().isEmpty ||
                               collAmount.trim() == '0') {
                             return "Collection amount should not be empty pr Zero";
+                          } else if (collAmount.trim() !=
+                              widget.payment.collectionAmount.toString()) {
+                            updatedPayment['collection_amount'] =
+                                int.parse(collAmount.trim());
                           }
 
-                          this.collectionAmount = int.parse(collAmount.trim());
                           return null;
                         },
                       ),
@@ -629,24 +609,9 @@ class _AddPaymentState extends State<AddPayment> {
     );
   }
 
-  final _tAmountController = TextEditingController();
-  void _tAmountListener() {
-    setState(() {
-      _tAmountController.text = this.totalAmount.toString();
-    });
-  }
-
   _setSelectedTemp(String newVal) {
     if (tempList != null && newVal != "0") {
       selectedTemp = tempList[int.parse(newVal) - 1];
-
-      this.totalAmount = selectedTemp.totalAmount;
-      this.principalAmount = selectedTemp.principalAmount;
-      this.docCharge = selectedTemp.docCharge;
-      this.surCharge = selectedTemp.surcharge;
-      this.tenure = selectedTemp.tenure;
-      this.intrestRate = selectedTemp.interestRate;
-      this.collectionAmount = selectedTemp.collectionAmount;
     }
 
     setState(() {
@@ -664,9 +629,8 @@ class _AddPaymentState extends State<AddPayment> {
       setState(() {
         tempList = templates;
       });
-      print("Add Payment: Loaded Collections templates!");
     } catch (err) {
-      print("Unable to load Collections templates!");
+      print("Unable to load Payment templates for Payment EDIT!");
     }
   }
 
@@ -675,14 +639,14 @@ class _AddPaymentState extends State<AddPayment> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: widget.payment.dateOfPayment,
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != widget.payment.dateOfPayment)
       setState(
         () {
-          selectedDate = picked;
+          updatedPayment['date_of_payment'] = picked;
           _date.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
@@ -694,34 +658,31 @@ class _AddPaymentState extends State<AddPayment> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, " Adding Payment");
-      PaymentController _pc = PaymentController();
-      var result = await _pc.createPayment(
-          widget.customer.mobileNumber,
-          selectedDate,
-          totalAmount,
-          principalAmount,
-          tenure,
-          collectionAmount,
-          TenureType.Daily.name,
-          docCharge,
-          surCharge,
-          intrestRate,
-          givenTo,
-          givenBy,
-          PaymentStatus.Active.name,
-          0,
-          notes);
-
-      if (!result['is_success']) {
+      if (updatedPayment.length == 0) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No changes detected, Skipping update!", 1));
         Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Payment: " + result['message']);
       } else {
-        Navigator.pop(context);
-        print("New Payment added successfully for ${widget.customer.name}");
-        Navigator.pop(context);
+        CustomDialogs.actionWaiting(context, " Editing Payment");
+        PaymentController _pc = PaymentController();
+        var result = await _pc.updatePayment(
+            widget.payment.financeID,
+            widget.payment.branchName,
+            widget.payment.subBranchName,
+            widget.payment.customerNumber,
+            widget.payment.createdAt,
+            updatedPayment);
+
+        if (!result['is_success']) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+          print("Unable to Edit Payment: " + result['message']);
+        } else {
+          Navigator.pop(context);
+          print("Payment edited successfully");
+          Navigator.pop(context);
+        }
       }
     } else {
       print("Invalid form submitted");

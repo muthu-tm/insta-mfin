@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/screens/transaction/add/AddTemplate.dart';
+import 'package:instamfin/screens/transaction/collection/ViewPaymentTemplate.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -48,7 +49,18 @@ class PaymentTemplateWidget extends StatelessWidget {
                       enabled: false,
                       autofocus: false,
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewPaymentTemplate(
+                              PaymentTemplate.fromJson(
+                                  snapshot.data.documents[index].data)),
+                          settings: RouteSettings(
+                              name: '/transactions/payment/template/view'),
+                        ),
+                      );
+                    },
                     trailing: IconButton(
                       icon: Icon(
                         Icons.remove_circle,
@@ -159,7 +171,8 @@ class PaymentTemplateWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddCollectionTemplate(),
-                        settings: RouteSettings(name: '/transactions/payment/template/add'),
+                        settings: RouteSettings(
+                            name: '/transactions/payment/template/add'),
                       ),
                     );
                   },

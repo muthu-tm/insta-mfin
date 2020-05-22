@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -131,7 +132,18 @@ class CustomerPaymentsWidget extends StatelessWidget {
                         caption: 'Edit',
                         color: CustomColors.mfinGrey,
                         icon: Icons.edit,
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPayment(
+                                  Payment.fromJson(
+                                      snapshot.data.documents[index].data)),
+                              settings: RouteSettings(
+                                  name: '/customers/payments/edit'),
+                            ),
+                          );
+                        },
                       ),
                     ],
                     child: Builder(

@@ -100,7 +100,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                   RowHeaderText(textName: 'Age'),
                   ListTile(
                     title: new TextFormField(
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       initialValue: widget.customer['age'].toString(),
                       decoration: InputDecoration(
                         hintText: 'Enter Customer Age',
@@ -116,7 +116,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         if (val.trim().isEmpty) {
                           updatedCustomer['age'] = 0;
                         } else {
-                          updatedCustomer['age'] = val.trim();
+                          updatedCustomer['age'] = int.parse(val.trim());
                         }
                           return null;
                       },
@@ -191,6 +191,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                   ListTile(
                     title: new TextFormField(
                       initialValue: widget.customer['guarantied_by'].toString(),
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: "Referred/Gurantied by",
                         fillColor: CustomColors.mfinWhite,
@@ -230,7 +231,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
   }
 
   setGuarantiedBy(String guranteeNumber) {
-    updatedCustomer['guarantied_by'] = guranteeNumber;
+    updatedCustomer['guarantied_by'] = int.parse(guranteeNumber);
   }
 
   setSelectedRadio(int val) {

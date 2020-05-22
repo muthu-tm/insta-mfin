@@ -4,7 +4,7 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsWidget.dart';
-import 'package:instamfin/screens/transaction/add/AddPayment.dart';
+import 'package:instamfin/screens/customer/AddPayment.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
