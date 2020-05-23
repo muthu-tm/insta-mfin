@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/transaction/journal/JournalCategoryScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-Widget journalAppBar(BuildContext context) {
+Widget journalAppBar(BuildContext context, title, routes, screen) {
   return AppBar(
-    title: Text("Journal Entries"),
+    title: Text(title),
     backgroundColor: CustomColors.mfinBlue,
     actions: <Widget>[
       IconButton(
@@ -18,8 +17,8 @@ Widget journalAppBar(BuildContext context) {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => JournalCategoryScreen(),
-              settings: RouteSettings(name: '/transactions/journal/categories'),
+              builder: (context) => screen,
+              settings: RouteSettings(name: routes),
             ),
           );
         },

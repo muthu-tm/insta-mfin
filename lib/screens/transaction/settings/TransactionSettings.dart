@@ -34,7 +34,6 @@ class _TransactionSettingState extends State<TransactionSetting> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              PaymentTemplateWidget(_scaffoldKey),
               Card(
                 color: CustomColors.mfinLightGrey,
                 child: new Column(
