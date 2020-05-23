@@ -152,9 +152,9 @@ class CustomerPaymentsWidget extends StatelessWidget {
                         return Padding(
                           padding: EdgeInsets.only(
                             left: 2.0,
-                            top: 2.5,
+                            top: 5,
                             right: 2.0,
-                            bottom: 2.5,
+                            bottom: 5,
                           ),
                           child: InkWell(
                             onTap: () {
