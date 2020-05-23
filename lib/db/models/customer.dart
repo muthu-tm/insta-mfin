@@ -2,6 +2,7 @@ import 'package:instamfin/db/enums/customer_status.dart';
 import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -140,17 +141,13 @@ class Customer extends Model {
   }
 
   Future<dynamic> getPayments(int number) async {
-    String docID = getDocumentID(mobileNumber);
+    var snap = await Payment().getAllPaymentsForCustomer(
+        user.primaryFinance, user.primaryBranch, user.primarySubBranch, number);
 
-    var snap = await getCollectionRef()
-        .document(docID)
-        .collection('payments')
-        .getDocuments();
-
-    if (snap.documents.isEmpty) {
+    if (snap.length == 0) {
       return null;
     } else {
-      return snap.documents.first;
+      return snap;
     }
   }
 
@@ -167,6 +164,25 @@ class Customer extends Model {
     }
 
     return Customer.fromJson(snap.documents.first.data);
+  }
+
+  Future<List<Customer>> getByRange(int minNumber, int maxNumber) async {
+    QuerySnapshot snap = await getCollectionRef()
+        .where('finance_id', isEqualTo: user.primaryFinance)
+        .where('branch_name', isEqualTo: user.primaryBranch)
+        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('mobile_number', isGreaterThanOrEqualTo: minNumber)
+        .where('mobile_number', isLessThanOrEqualTo: maxNumber)
+        .getDocuments();
+      
+    List<Customer> custList = [];
+    if (snap.documents.isNotEmpty) {
+      snap.documents.forEach((cust) {
+        custList.add(Customer.fromJson(cust.data));
+      });
+    }
+
+    return custList;
   }
 
   create() async {
