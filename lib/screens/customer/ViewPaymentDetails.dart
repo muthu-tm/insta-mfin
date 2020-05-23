@@ -14,7 +14,7 @@ class ViewPaymentDetails extends StatelessWidget {
       child: new ListView(
         children: <Widget>[
           Container(
-            height: 60.0,
+            height: 100.0,
             child: DrawerHeader(
               decoration: BoxDecoration(
                 color: CustomColors.mfinBlue,
@@ -70,7 +70,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 70,
                             child: Text(
                               "DATE:",
                               style: TextStyle(
@@ -82,32 +82,30 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                           title: GestureDetector(
-                            child: AbsorbPointer(
-                              child: TextFormField(
-                                initialValue:
-                                    DateUtils.formatDate(payment.dateOfPayment),
-                                decoration: InputDecoration(
-                                  hintText: 'Date of Payment',
-                                  labelStyle: TextStyle(
-                                    color: CustomColors.mfinBlue,
-                                  ),
-                                  contentPadding: new EdgeInsets.symmetric(
-                                      vertical: 3.0, horizontal: 3.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors.mfinWhite)),
-                                  fillColor: CustomColors.mfinWhite,
-                                  filled: true,
+                            child: TextFormField(
+                              textAlign: TextAlign.end,
+                              initialValue:
+                                  DateUtils.formatDate(payment.dateOfPayment),
+                              decoration: InputDecoration(
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
                                 ),
-                                enabled: false,
-                                autofocus: false,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 3.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
                               ),
+                              enabled: false,
+                              autofocus: false,
                             ),
                           ),
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 70,
                             child: Text(
                               "GIVEN TO:",
                               style: TextStyle(
@@ -137,7 +135,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 70,
                             child: Text(
                               "GIVEN BY:",
                               style: TextStyle(
@@ -167,7 +165,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 70,
                             child: Text(
                               "NOTES:",
                               style: TextStyle(
@@ -227,7 +225,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 90,
                             child: Text(
                               "TOTAL AMOUNT:",
                               style: TextStyle(
@@ -257,7 +255,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 90,
                             child: Text(
                               "PRINCIPAL:",
                               style: TextStyle(
@@ -287,7 +285,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 90,
                             child: Text(
                               "DOC CHARGE:",
                               style: TextStyle(
@@ -317,7 +315,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 90,
                             child: Text(
                               "SUR CHARGE:",
                               style: TextStyle(
@@ -347,7 +345,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 90,
                             child: Text(
                               "TENURE:",
                               style: TextStyle(
@@ -377,7 +375,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 90,
                             child: Text(
                               "INTEREST:",
                               style: TextStyle(
@@ -407,7 +405,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         ListTile(
                           leading: SizedBox(
-                            width: 100,
+                            width: 90,
                             child: Text(
                               "COLLECTION AMOUNT:",
                               style: TextStyle(
