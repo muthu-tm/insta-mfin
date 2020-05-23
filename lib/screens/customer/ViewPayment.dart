@@ -27,7 +27,7 @@ class _ViewPaymentState extends State<ViewPayment> {
 
   String title = "ALL";
   String emptyText = "No Collections available for this Payment!";
-  Color cardColor = CustomColors.mfinBlue;
+  Color textColor = CustomColors.mfinBlue;
   bool fetchAll = true;
   List<int> collStatus = [];
 
@@ -261,7 +261,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       title = "ALL";
                       emptyText = "No Collections available for this Payment!";
                       fetchAll = true;
-                      cardColor = CustomColors.mfinBlue;
+                      textColor = CustomColors.mfinBlue;
                     },
                     child: new CollectionStatusRadioItem(collStatusList[0],
                         CustomColors.mfinLightBlue, CustomColors.mfinLightBlue),
@@ -281,7 +281,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       emptyText =
                           "No PAID collection available for this Payment!";
                       fetchAll = false;
-                      cardColor = CustomColors.mfinPositiveGreen;
+                      textColor = CustomColors.mfinPositiveGreen;
                       collStatus = [1, 2]; //Paid and PaidLate
                     },
                     child: new CollectionStatusRadioItem(
@@ -303,7 +303,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       title = "PENDING";
                       emptyText = "Great! No PENDING collection!";
                       fetchAll = false;
-                      cardColor = CustomColors.mfinAlertRed;
+                      textColor = CustomColors.mfinAlertRed;
                       collStatus = [4]; // Pending
                     },
                     child: new CollectionStatusRadioItem(collStatusList[2],
@@ -323,7 +323,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       title = "TODAY";
                       emptyText = "No Collection for TODAY";
                       fetchAll = false;
-                      cardColor = CustomColors.mfinLightBlue;
+                      textColor = CustomColors.mfinLightBlue;
                       collStatus = [3]; // Current
                     },
                     child: new CollectionStatusRadioItem(collStatusList[3],
@@ -343,7 +343,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       title = "UPCOMING";
                       emptyText = "No UPCOMING collection available!";
                       fetchAll = false;
-                      cardColor = CustomColors.mfinGrey;
+                      textColor = CustomColors.mfinGrey;
                       collStatus = [0]; // Upcoming
                     },
                     child: new CollectionStatusRadioItem(collStatusList[4],
@@ -352,7 +352,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                 ],
               ),
               PaymentCollectionWidget(widget.payment, title, emptyText,
-                  cardColor, fetchAll, collStatus),
+                  textColor, fetchAll, collStatus),
             ],
           ),
         ),

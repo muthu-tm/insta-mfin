@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/screens/customer/EditPayment.dart';
-import 'package:instamfin/screens/customer/ViewPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
@@ -44,6 +42,7 @@ class PaymentCollectionWidget extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     Collection collection = Collection.fromJson(
                         snapshot.data.documents[index].data);
+                    List<String> textValue = setCardValue(collection);
 
                     return Slidable(
                       actionPane: SlidableDrawerActionPane(),
@@ -56,16 +55,16 @@ class PaymentCollectionWidget extends StatelessWidget {
                           color: CustomColors.mfinGrey,
                           icon: Icons.edit,
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditPayment(
-                                    Payment.fromJson(
-                                        snapshot.data.documents[index].data)),
-                                settings: RouteSettings(
-                                    name: '/customers/payment/edit'),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => EditPayment(
+                            //         Payment.fromJson(
+                            //             snapshot.data.documents[index].data)),
+                            //     settings: RouteSettings(
+                            //         name: '/customers/payment/edit'),
+                            //   ),
+                            // );
                           },
                         ),
                       ],
@@ -160,15 +159,13 @@ class PaymentCollectionWidget extends StatelessWidget {
                                       height: 80,
                                       child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
-                                          SizedBox(
-                                            height: 30,
-                                            child: ListTile(
+                                          ListTile(
                                               leading: Text(
-                                                "PAID: ",
+                                                textValue[0],
                                                 style: TextStyle(
                                                   fontSize: 18,
                                                   color: CustomColors.mfinBlue,
@@ -176,19 +173,14 @@ class PaymentCollectionWidget extends StatelessWidget {
                                                 ),
                                               ),
                                               trailing: Text(
-                                                collection.totalPaid == null
-                                                    ? '0.00'
-                                                    : collection.totalPaid
-                                                        .toString(),
+                                                textValue[1],
                                                 style: TextStyle(
                                                   fontSize: 17,
-                                                  color: CustomColors
-                                                      .mfinPositiveGreen,
+                                                  color: textColor,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                             ),
-                                          ),
                                         ],
                                       ),
                                     ),
@@ -284,22 +276,24 @@ class PaymentCollectionWidget extends StatelessWidget {
     );
   }
 
-  String getConfirmText(int type) {
-    switch (type) {
+  List<String> setCardValue(Collection coll) {
+    switch (coll.status) {
       case 0:
-        return "Are you sure to remove this Collection?";
+        return ["AMOUNT", coll.collectionAmount.toString()];
         break;
       case 1:
-        return "Removing this DocCharge will set Payment's Doccharge as 'Rs.0.00'";
-        break;
       case 2:
-        return "Removing this SurCharge will set Payment's SurCharge as 'Rs.0.00'";
+        return ["RECEIVED", coll.totalPaid.toString()];
         break;
       case 3:
-        return "Are you sure to remove this Closing?";
+        return ["AMOUNT", coll.collectionAmount.toString()];
+        break;
+      case 4:
+        int pending = coll.collectionAmount - coll.totalPaid;
+        return ["PENDING", pending.toString()];
         break;
       default:
-        return "Are you sure to remove this Collection?";
+        return ["AMOUNT", coll.collectionAmount.toString()];
         break;
     }
   }
