@@ -326,28 +326,43 @@ class PaymentTemplateScreen extends StatelessWidget {
   }
 
   Widget _buildInnerBottomWidget(BuildContext context, PaymentTemplate temp) {
-    return InkWell(
-      onTap: () {
-        SimpleFoldingCellState foldingCellState =
-            context.findAncestorStateOfType();
-        foldingCellState?.toggleFold();
-      },
-      child: Container(
-        color: CustomColors.mfinBlue,
-        alignment: Alignment.center,
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: Text(
-                'PRINCIPAL',
-                style: TextStyle(
-                    color: CustomColors.mfinGrey,
-                    fontFamily: 'Georgia',
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              trailing: Text(
-                temp.principalAmount.toString(),
+    return Container(
+      color: CustomColors.mfinBlue,
+      alignment: Alignment.center,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Text(
+              'PRINCIPAL',
+              style: TextStyle(
+                  color: CustomColors.mfinGrey,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            trailing: Text(
+              temp.principalAmount.toString(),
+              style: TextStyle(
+                  color: CustomColors.mfinWhite,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          ListTile(
+            leading: Text(
+              'Notes',
+              style: TextStyle(
+                  color: CustomColors.mfinGrey,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            trailing: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.65,
+              child: Text(
+                temp.tenureType.toString(),
+                textAlign: TextAlign.end,
                 style: TextStyle(
                     color: CustomColors.mfinWhite,
                     fontFamily: 'Georgia',
@@ -355,29 +370,8 @@ class PaymentTemplateScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            ListTile(
-                leading: Text(
-                  'Notes',
-                  style: TextStyle(
-                      color: CustomColors.mfinGrey,
-                      fontFamily: 'Georgia',
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                trailing: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.65,
-                  child: Text(
-                    temp.tenureType.toString(),
-                    textAlign: TextAlign.end,
-                    style: TextStyle(
-                        color: CustomColors.mfinWhite,
-                        fontFamily: 'Georgia',
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

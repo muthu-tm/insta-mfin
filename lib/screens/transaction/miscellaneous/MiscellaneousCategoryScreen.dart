@@ -30,7 +30,8 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => AddMiscellaneousCategory(),
-              settings: RouteSettings(name: '/transactions/miscellaneous/categories/add'),
+              settings: RouteSettings(
+                  name: '/transactions/miscellaneous/categories/add'),
             ),
           );
         },
@@ -46,7 +47,6 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
           size: 40,
           color: CustomColors.mfinFadedButtonGreen,
         ),
-        // backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
         child: StreamBuilder<QuerySnapshot>(
@@ -245,30 +245,32 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
       ],
       child: Builder(
         builder: (BuildContext context) {
-          return Container(
-            color: cardColor,
-            alignment: Alignment.center,
-            child: ListTile(
-              leading: Text(
-                data['category_name'],
-                style: TextStyle(
-                    color: CustomColors.mfinWhite,
-                    fontFamily: 'Georgia',
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              trailing: FlatButton(
-                onPressed: () {
-                  SimpleFoldingCellState foldingCellState =
-                      context.findAncestorStateOfType();
-                  foldingCellState?.toggleFold();
-                },
-                child: Text(
-                  "View",
+          return InkWell(
+            onTap: () {
+              SimpleFoldingCellState foldingCellState =
+                  context.findAncestorStateOfType();
+              foldingCellState?.toggleFold();
+            },
+            child: Container(
+              color: cardColor,
+              alignment: Alignment.center,
+              child: ListTile(
+                leading: Text(
+                  "NAME",
+                  style: TextStyle(
+                      color: CustomColors.mfinWhite,
+                      fontFamily: 'Georgia',
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
                 ),
-                textColor: CustomColors.mfinWhite,
-                color: CustomColors.mfinButtonGreen,
-                splashColor: Colors.white.withOpacity(0.5),
+                trailing: Text(
+                  data['category_name'],
+                  style: TextStyle(
+                      color: CustomColors.mfinWhite,
+                      fontFamily: 'Georgia',
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           );
@@ -295,30 +297,32 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
   Widget _buildInnerTopWidget(String name) {
     return Builder(
       builder: (context) {
-        return Container(
-          color: CustomColors.mfinGrey,
-          alignment: Alignment.center,
-          child: ListTile(
-            leading: Text(
-              name,
-              style: TextStyle(
-                  color: CustomColors.mfinWhite,
-                  fontFamily: 'Georgia',
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            trailing: FlatButton(
-              onPressed: () {
-                SimpleFoldingCellState foldingCellState =
-                    context.findAncestorStateOfType();
-                foldingCellState?.toggleFold();
-              },
-              child: Text(
-                "Close",
+        return InkWell(
+          onTap: () {
+            SimpleFoldingCellState foldingCellState =
+                context.findAncestorStateOfType();
+            foldingCellState?.toggleFold();
+          },
+          child: Container(
+            color: CustomColors.mfinGrey,
+            alignment: Alignment.center,
+            child: ListTile(
+              leading: Text(
+                "NAME",
+                style: TextStyle(
+                    color: CustomColors.mfinWhite,
+                    fontFamily: 'Georgia',
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
               ),
-              textColor: CustomColors.mfinWhite,
-              color: CustomColors.mfinButtonGreen,
-              splashColor: Colors.white.withOpacity(0.5),
+              trailing: Text(
+                name,
+                style: TextStyle(
+                    color: CustomColors.mfinWhite,
+                    fontFamily: 'Georgia',
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         );
