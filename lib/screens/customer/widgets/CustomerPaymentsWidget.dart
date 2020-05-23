@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
+import 'package:instamfin/screens/customer/ViewPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -140,7 +141,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                   Payment.fromJson(
                                       snapshot.data.documents[index].data)),
                               settings: RouteSettings(
-                                  name: '/customers/payments/edit'),
+                                  name: '/customers/payment/edit'),
                             ),
                           );
                         },
@@ -157,7 +158,16 @@ class CustomerPaymentsWidget extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
-                              print("Pressed Collection Book");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ViewPayment(
+                                      Payment.fromJson(
+                                          snapshot.data.documents[index].data)),
+                                  settings:
+                                      RouteSettings(name: '/customers/payment'),
+                                ),
+                              );
                             },
                             child: Row(
                               children: <Widget>[

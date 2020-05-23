@@ -43,6 +43,8 @@ class Payment extends Model {
   int collectionAmount;
   @JsonKey(name: 'collection_starts_from', nullable: true)
   DateTime collectionStartsFrom;
+  @JsonKey(name: 'closing_date', nullable: true)
+  DateTime closingDate;
   @JsonKey(name: 'status', nullable: true)
   int status;
   @JsonKey(name: 'given_by', nullable: true)
@@ -122,6 +124,10 @@ class Payment extends Model {
 
   setCSF(DateTime date) {
     this.collectionStartsFrom = date;
+  }
+  
+  setPCD(DateTime closingDate) {
+    this.closingDate = closingDate;
   }
 
   setTotalPaid(int paid) {
