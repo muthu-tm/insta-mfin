@@ -155,10 +155,11 @@ class _CustomersFilteredViewState extends State<CustomersFilteredView> {
             _currentPageNotifier.value = index;
             if (index > 0) {
               allCustomerField = false;
+              status = index - 1;
             } else {
               allCustomerField = true;
             }
-            setSelectedCard(index, titles[index], allCustomerField);
+            setSelectedCard(titles[index], allCustomerField);
           },
         ),
       ),
@@ -183,10 +184,9 @@ class _CustomersFilteredViewState extends State<CustomersFilteredView> {
     );
   }
 
-  setSelectedCard(int val, String title, bool allCustomer) {
+  setSelectedCard(String title, bool allCustomer) {
     setState(
       () {
-        this.status = val;
         this.title = title;
         this.allCustomerField = allCustomer;
       },
