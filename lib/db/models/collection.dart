@@ -17,13 +17,17 @@ class Collection {
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
   @JsonKey(name: 'customer_number', nullable: true)
-  int cusomterNumber;
+  int customerNumber;
+  @JsonKey(name: 'collection_number', nullable: true)
+  int collectionNumber;
   @JsonKey(name: 'collection_date', defaultValue: '')
   DateTime collectionDate;
   @JsonKey(name: 'collection_amount')
   int collectionAmount;
   @JsonKey(name: 'collections')
   List<CollectionDetails> collections;
+  @JsonKey(name: 'total_paid', defaultValue: 0)
+  int totalPaid;
   @JsonKey(name: 'status', defaultValue: 0)
   int status;
   @JsonKey(name: 'type', nullable: true)
@@ -48,7 +52,11 @@ class Collection {
   }
 
   setCustomerNumber(int number) {
-    this.cusomterNumber = number;
+    this.customerNumber = number;
+  }
+
+  setcollectionNumber(int number) {
+    this.collectionNumber = number;
   }
 
   setCollectionDate(DateTime collectionDate) {
@@ -57,6 +65,10 @@ class Collection {
 
   setCollectionAmount(int amount) {
     this.collectionAmount = amount;
+  }
+
+  setTotalPaid(int paid) {
+    this.totalPaid = paid;
   }
 
   setStatus(int status) {
@@ -144,6 +156,26 @@ class Collection {
     return getCollectionRef(
             financeId, branchName, subBranchName, number, createdAt)
         .snapshots();
+  }
+
+  Stream<QuerySnapshot> streamCollectionsByStatus(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      List<int> status,
+      bool fetchAll) {
+    if (fetchAll) {
+      return getCollectionRef(
+              financeId, branchName, subBranchName, number, createdAt)
+          .snapshots();
+    } else {
+      return getCollectionRef(
+              financeId, branchName, subBranchName, number, createdAt)
+          .where('status', whereIn: status)
+          .snapshots();
+    }
   }
 
   Future<List<Collection>> getAllCollectionsForCustomer(String financeId,
@@ -296,5 +328,32 @@ class Collection {
             financeId, branchName, subBranchName, number, createdAt)
         .document(docID)
         .updateData(paymentJSON);
+  }
+
+  Future updateArrayField(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      DateTime collectionDate,
+      bool isAdd,
+      Map<String, dynamic> data) async {
+    Map<String, dynamic> fields = Map();
+    fields['updated_at'] = DateTime.now();
+
+    data.forEach((key, value) {
+      if (isAdd) {
+        fields[key] = FieldValue.arrayUnion(value);
+      } else {
+        fields[key] = FieldValue.arrayRemove(value);
+      }
+    });
+
+    await this
+        .getDocumentReference(financeId, branchName, subBranchName, number,
+            createdAt, collectionDate)
+        .updateData(fields);
+    return data;
   }
 }

@@ -3,28 +3,53 @@ import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/customer/ViewPaymentDetails.dart';
+import 'package:instamfin/screens/customer/widgets/CollectionStatusRadioItem.dart';
+import 'package:instamfin/screens/customer/widgets/PaymentCollectionWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomRadioModel.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 
-class ViewPayment extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+class ViewPayment extends StatefulWidget {
   ViewPayment(this.payment);
 
   final Payment payment;
 
   @override
+  _ViewPaymentState createState() => _ViewPaymentState();
+}
+
+class _ViewPaymentState extends State<ViewPayment> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  List<CustomRadioModel> collStatusList = new List<CustomRadioModel>();
+
+  String title = "ALL";
+  String emptyText = "No Collections available for this Payment!";
+  Color cardColor = CustomColors.mfinBlue;
+  bool fetchAll = true;
+  List<int> collStatus = [];
+
+  @override
+  void initState() {
+    super.initState();
+    collStatusList.add(new CustomRadioModel(true, '', ''));
+    collStatusList.add(new CustomRadioModel(false, '', ''));
+    collStatusList.add(new CustomRadioModel(false, '', ''));
+    collStatusList.add(new CustomRadioModel(false, '', ''));
+    collStatusList.add(new CustomRadioModel(false, '', ''));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
-      endDrawer: ViewPaymentDetails(payment),
+      endDrawer: ViewPaymentDetails(widget.payment),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Payment - ${payment.customerNumber}'),
+        title: Text('Payment - ${widget.payment.customerNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -63,7 +88,7 @@ class ViewPayment extends StatelessWidget {
                   children: <Widget>[
                     ListTile(
                       leading: Text(
-                        DateUtils.formatDate(payment.dateOfPayment),
+                        DateUtils.formatDate(widget.payment.dateOfPayment),
                         style: TextStyle(
                           fontSize: 18,
                           color: CustomColors.mfinAlertRed,
@@ -73,7 +98,7 @@ class ViewPayment extends StatelessWidget {
                       title: RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: '${payment.tenure}',
+                          text: '${widget.payment.tenure}',
                           style: TextStyle(
                             color: CustomColors.mfinGrey,
                             fontFamily: 'Georgia',
@@ -89,7 +114,7 @@ class ViewPayment extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: '${payment.collectionAmount}',
+                              text: '${widget.payment.collectionAmount}',
                               style: TextStyle(
                                 color: CustomColors.mfinPositiveGreen,
                                 fontSize: 18.0,
@@ -100,9 +125,9 @@ class ViewPayment extends StatelessWidget {
                         ),
                       ),
                       trailing: Text(
-                        payment.closingDate == null
+                        widget.payment.closingDate == null
                             ? ''
-                            : DateUtils.formatDate(payment.closingDate),
+                            : DateUtils.formatDate(widget.payment.closingDate),
                         style: TextStyle(
                           fontSize: 18,
                           color: CustomColors.mfinGrey,
@@ -139,7 +164,7 @@ class ViewPayment extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditPayment(payment),
+                              builder: (context) => EditPayment(widget.payment),
                               settings: RouteSettings(
                                   name: '/customers/payment/edit'),
                             ),
@@ -169,11 +194,11 @@ class ViewPayment extends StatelessWidget {
                             () async {
                               PaymentController _pc = PaymentController();
                               var result = await _pc.removePayment(
-                                  payment.financeID,
-                                  payment.branchName,
-                                  payment.subBranchName,
-                                  payment.customerNumber,
-                                  payment.createdAt);
+                                  widget.payment.financeID,
+                                  widget.payment.branchName,
+                                  widget.payment.subBranchName,
+                                  widget.payment.customerNumber,
+                                  widget.payment.createdAt);
                               if (!result['is_success']) {
                                 Navigator.pop(context);
                                 _scaffoldKey.currentState.showSnackBar(
@@ -185,7 +210,7 @@ class ViewPayment extends StatelessWidget {
                               } else {
                                 Navigator.pop(context);
                                 print(
-                                    "Payment of ${payment.customerNumber} customer removed successfully");
+                                    "Payment of ${widget.payment.customerNumber} customer removed successfully");
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
                                       "Payment removed successfully", 2),
@@ -219,7 +244,115 @@ class ViewPayment extends StatelessWidget {
                   ],
                 ),
               ),
-              // CustomerPaymentsWidget(customer.mobileNumber, _scaffoldKey),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      setState(
+                        () {
+                          collStatusList[0].isSelected = true;
+                          collStatusList[1].isSelected = false;
+                          collStatusList[2].isSelected = false;
+                          collStatusList[3].isSelected = false;
+                          collStatusList[4].isSelected = false;
+                        },
+                      );
+                      title = "ALL";
+                      emptyText = "No Collections available for this Payment!";
+                      fetchAll = true;
+                      cardColor = CustomColors.mfinBlue;
+                    },
+                    child: new CollectionStatusRadioItem(collStatusList[0],
+                        CustomColors.mfinLightBlue, CustomColors.mfinLightBlue),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(
+                        () {
+                          collStatusList[0].isSelected = false;
+                          collStatusList[1].isSelected = true;
+                          collStatusList[2].isSelected = false;
+                          collStatusList[3].isSelected = false;
+                          collStatusList[4].isSelected = false;
+                        },
+                      );
+                      title = "PAID";
+                      emptyText =
+                          "No PAID collection available for this Payment!";
+                      fetchAll = false;
+                      cardColor = CustomColors.mfinPositiveGreen;
+                      collStatus = [1, 2]; //Paid and PaidLate
+                    },
+                    child: new CollectionStatusRadioItem(
+                        collStatusList[1],
+                        CustomColors.mfinPositiveGreen,
+                        CustomColors.mfinPositiveGreen),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(
+                        () {
+                          collStatusList[0].isSelected = false;
+                          collStatusList[1].isSelected = false;
+                          collStatusList[2].isSelected = true;
+                          collStatusList[3].isSelected = false;
+                          collStatusList[4].isSelected = false;
+                        },
+                      );
+                      title = "PENDING";
+                      emptyText = "Great! No PENDING collection!";
+                      fetchAll = false;
+                      cardColor = CustomColors.mfinAlertRed;
+                      collStatus = [4]; // Pending
+                    },
+                    child: new CollectionStatusRadioItem(collStatusList[2],
+                        CustomColors.mfinAlertRed, CustomColors.mfinAlertRed),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(
+                        () {
+                          collStatusList[0].isSelected = false;
+                          collStatusList[1].isSelected = false;
+                          collStatusList[2].isSelected = false;
+                          collStatusList[3].isSelected = true;
+                          collStatusList[4].isSelected = false;
+                        },
+                      );
+                      title = "TODAY";
+                      emptyText = "No Collection for TODAY";
+                      fetchAll = false;
+                      cardColor = CustomColors.mfinLightBlue;
+                      collStatus = [3]; // Current
+                    },
+                    child: new CollectionStatusRadioItem(collStatusList[3],
+                        CustomColors.mfinBlue, CustomColors.mfinBlue),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(
+                        () {
+                          collStatusList[0].isSelected = false;
+                          collStatusList[1].isSelected = false;
+                          collStatusList[2].isSelected = false;
+                          collStatusList[3].isSelected = false;
+                          collStatusList[4].isSelected = true;
+                        },
+                      );
+                      title = "UPCOMING";
+                      emptyText = "No UPCOMING collection available!";
+                      fetchAll = false;
+                      cardColor = CustomColors.mfinGrey;
+                      collStatus = [0]; // Upcoming
+                    },
+                    child: new CollectionStatusRadioItem(collStatusList[4],
+                        CustomColors.mfinGrey, CustomColors.mfinGrey),
+                  ),
+                ],
+              ),
+              PaymentCollectionWidget(widget.payment, title, emptyText,
+                  cardColor, fetchAll, collStatus),
             ],
           ),
         ),

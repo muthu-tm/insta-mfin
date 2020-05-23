@@ -11,7 +11,8 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
-    ..cusomterNumber = json['customer_number'] as int
+    ..customerNumber = json['customer_number'] as int
+    ..collectionNumber = json['collection_number'] as int
     ..collectionDate = json['collection_date'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -22,6 +23,7 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
             ? null
             : CollectionDetails.fromJson(e as Map<String, dynamic>))
         ?.toList()
+    ..totalPaid = json['total_paid'] as int ?? 0
     ..status = json['status'] as int ?? 0
     ..type = json['type'] as int
     ..createdAt = json['created_at'] == null
@@ -43,10 +45,12 @@ Map<String, dynamic> _$CollectionToJson(Collection instance) =>
       'finance_id': instance.financeID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
-      'customer_number': instance.cusomterNumber,
+      'customer_number': instance.customerNumber,
+      'collection_number': instance.collectionNumber,
       'collection_date': instance.collectionDate,
       'collection_amount': instance.collectionAmount,
       'collections': instance.collections?.map((e) => e?.toJson())?.toList(),
+      'total_paid': instance.totalPaid,
       'status': instance.status,
       'type': instance.type,
       'created_at': instance.createdAt,

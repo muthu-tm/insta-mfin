@@ -3,7 +3,7 @@ import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
-class PaymentController {
+class CollectionController {
   Future createCollection(
     int custNumber,
     DateTime createdAt,
@@ -176,19 +176,47 @@ class PaymentController {
     }
   }
 
-  Future updateCollection(String financeId,
+  Future updateCollection(
+      String financeId,
       String branchName,
-      String subBranchName, int custNumber, DateTime paymentCreatedAt, String collID,
+      String subBranchName,
+      int custNumber,
+      DateTime paymentCreatedAt,
+      String collID,
       Map<String, dynamic> collectionJSON) async {
     try {
-      await Collection().update(financeId,
-          branchName,
-          subBranchName, custNumber, paymentCreatedAt, collID, collectionJSON);
+      await Collection().update(financeId, branchName, subBranchName,
+          custNumber, paymentCreatedAt, collID, collectionJSON);
 
-      return CustomResponse.getSuccesReponse("Updated $custNumber customer's collection $collID");
+      return CustomResponse.getSuccesReponse(
+          "Updated $custNumber customer's collection $collID");
     } catch (err) {
       print(
-          "Error while updating $custNumber customer's collection with ID $collID: " + err.toString());
+          "Error while updating $custNumber customer's collection with ID $collID: " +
+              err.toString());
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future updateCollectionDetails(
+    String financeId,
+    String branchName,
+    String subBranchName,
+    int custNumber,
+    DateTime createdAt,
+    DateTime collDate,
+    bool isAdd,
+    CollectionDetails collectionDetails,
+  ) async {
+    try {
+      await Collection().updateArrayField(financeId, branchName, subBranchName,
+          custNumber, createdAt, collDate, isAdd, collectionDetails.toJson());
+      return CustomResponse.getSuccesReponse(
+          "Payment's Collection updated for customer $custNumber");
+    } catch (err) {
+      print(
+          "Error while updating Payment's Collection updated for customer $custNumber: " +
+              err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

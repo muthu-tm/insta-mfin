@@ -1,4 +1,4 @@
-enum CollectionStatus { Upcoming, Paid, PaidLate, Pending }
+enum CollectionStatus { Upcoming, Paid, PaidLate, Current, Pending }
 
 extension CollectionStatusExtension on CollectionStatus {
   int get name {
@@ -12,8 +12,11 @@ extension CollectionStatusExtension on CollectionStatus {
       case CollectionStatus.PaidLate:
         return 2;
         break;
-      case CollectionStatus.Pending:
+      case CollectionStatus.Current:
         return 3;
+        break;
+      case CollectionStatus.Pending:
+        return 4;
         break;
       default:
         return 0;
