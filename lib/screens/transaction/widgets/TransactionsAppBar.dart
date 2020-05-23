@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-Widget journalAppBar(BuildContext context, title, routes, screen) {
+Widget transactionsAppBar(BuildContext context, title, routes, screen) {
   return AppBar(
     title: Text(title),
     backgroundColor: CustomColors.mfinBlue,

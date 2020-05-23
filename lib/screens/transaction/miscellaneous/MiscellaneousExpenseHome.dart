@@ -5,7 +5,8 @@ import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/miscellaneous_expense.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/add/AddMiscellaneousExpense.dart';
-import 'package:instamfin/screens/transaction/widgets/MiscellaneousAppBar.dart';
+import 'package:instamfin/screens/transaction/miscellaneous/MiscellaneousCategoryScreen.dart';
+import 'package:instamfin/screens/transaction/widgets/TransactionsAppBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -22,7 +23,11 @@ class MiscellaneousExpenseHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: miscellaneousAppBar(context),
+      appBar: transactionsAppBar(
+          context,
+          "Miscellaneous Expenses",
+          '/transactions/miscellaneous/categories',
+          MiscellaneousCategoryScreen()),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
@@ -48,112 +53,110 @@ class MiscellaneousExpenseHome extends StatelessWidget {
         // backgroundColor: CustomColors.mfinBlue,
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: MiscellaneousExpense().streamExpenses(_user.primaryFinance,
-              _user.primaryBranch, _user.primarySubBranch),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            Widget widget;
+        stream: MiscellaneousExpense().streamExpenses(
+            _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          Widget widget;
 
-            if (snapshot.hasData) {
-              if (snapshot.data.documents.isNotEmpty) {
-                widget = ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    String categoryName = "";
+          if (snapshot.hasData) {
+            if (snapshot.data.documents.isNotEmpty) {
+              widget = ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  String categoryName = "";
 
-                    if (snapshot.data.documents[index].data['category'] !=
-                        null) {
-                      categoryName = snapshot.data.documents[index]
-                          .data['category']['category_name'];
-                    }
+                  if (snapshot.data.documents[index].data['category'] != null) {
+                    categoryName = snapshot.data.documents[index]
+                        .data['category']['category_name'];
+                  }
 
-                    Color cardColor = CustomColors.mfinGrey;
-                    Color textColor = CustomColors.mfinBlue;
-                    if (index % 2 == 0) {
-                      cardColor = CustomColors.mfinBlue;
-                      textColor = CustomColors.mfinGrey;
-                    }
-                    return SimpleFoldingCell(
-                        frontWidget: _buildFrontWidget(
-                            context,
-                            snapshot.data.documents[index].data,
-                            cardColor,
-                            textColor),
-                        innerTopWidget: _buildInnerTopWidget(
-                            snapshot.data.documents[index].data['expense_name'],
-                            snapshot.data.documents[index].data['amount']),
-                        innerBottomWidget: _buildInnerBottomWidget(
-                            snapshot.data.documents[index].data['notes'],
-                            snapshot.data.documents[index].data['expense_date']
-                                .toDate(),
-                            categoryName),
-                        cellSize: Size(MediaQuery.of(context).size.width, 170),
-                        padding:
-                            EdgeInsets.only(left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
-                        animationDuration: Duration(milliseconds: 300),
-                        borderRadius: 10,
-                        onOpen: () => print('$index cell opened'),
-                        onClose: () => print('$index cell closed'));
-                  },
-                );
-              } else {
-                // No Expenses added yet
-                widget = Container(
-                  alignment: Alignment.center,
-                  height: 90,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      new Spacer(),
-                      Text(
-                        "No Expenses so far!",
-                        style: TextStyle(
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      new Spacer(
-                        flex: 2,
-                      ),
-                      Text(
-                        "Add and Manage your expenses here!",
-                        style: TextStyle(
-                          color: CustomColors.mfinBlue,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      new Spacer(),
-                    ],
-                  ),
-                );
-              }
-            } else if (snapshot.hasError) {
-              widget = Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: AsyncWidgets.asyncError(),
-                ),
+                  Color cardColor = CustomColors.mfinGrey;
+                  Color textColor = CustomColors.mfinBlue;
+                  if (index % 2 == 0) {
+                    cardColor = CustomColors.mfinBlue;
+                    textColor = CustomColors.mfinGrey;
+                  }
+                  return SimpleFoldingCell(
+                      frontWidget: _buildFrontWidget(
+                          context,
+                          snapshot.data.documents[index].data,
+                          cardColor,
+                          textColor),
+                      innerTopWidget: _buildInnerTopWidget(
+                          snapshot.data.documents[index].data['expense_name'],
+                          snapshot.data.documents[index].data['amount']),
+                      innerBottomWidget: _buildInnerBottomWidget(
+                          snapshot.data.documents[index].data['notes'],
+                          snapshot.data.documents[index].data['expense_date']
+                              .toDate(),
+                          categoryName),
+                      cellSize: Size(MediaQuery.of(context).size.width, 170),
+                      padding: EdgeInsets.only(
+                          left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
+                      animationDuration: Duration(milliseconds: 300),
+                      borderRadius: 10,
+                      onOpen: () => print('$index cell opened'),
+                      onClose: () => print('$index cell closed'));
+                },
               );
             } else {
-              widget = Center(
+              // No Expenses added yet
+              widget = Container(
+                alignment: Alignment.center,
+                height: 90,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: AsyncWidgets.asyncWaiting(),
+                  children: <Widget>[
+                    new Spacer(),
+                    Text(
+                      "No Expenses so far!",
+                      style: TextStyle(
+                        color: CustomColors.mfinAlertRed,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    new Spacer(
+                      flex: 2,
+                    ),
+                    Text(
+                      "Add and Manage your expenses here!",
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    new Spacer(),
+                  ],
                 ),
               );
             }
+          } else if (snapshot.hasError) {
+            widget = Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: AsyncWidgets.asyncError(),
+              ),
+            );
+          } else {
+            widget = Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: AsyncWidgets.asyncWaiting(),
+              ),
+            );
+          }
 
-            return widget;
-          },
-        ),
+          return widget;
+        },
+      ),
     );
   }
 

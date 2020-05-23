@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/transaction/collection/CollectionEntryHome.dart';
+import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
 import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
 import 'package:instamfin/screens/transaction/miscellaneous/MiscellaneousExpenseHome.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionCollectionBuilder.dart';
@@ -9,7 +9,6 @@ import 'package:instamfin/screens/transaction/settings/TransactionMiscellaneousB
 import 'package:instamfin/screens/transaction/settings/TransactionSettings.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/screens/transaction/widgets/PaymentTemplateWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class TransactionScreen extends StatelessWidget {
@@ -28,11 +27,12 @@ class TransactionScreen extends StatelessWidget {
               padding: EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
               child: InkWell(
                 onTap: () {
-                  print("Pressed Collection Book");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CollectionEntryHome(),
+                      builder: (context) => CollectionBookHome(),
+                      settings:
+                          RouteSettings(name: "/transactions/collectionbook"),
                     ),
                   );
                 },

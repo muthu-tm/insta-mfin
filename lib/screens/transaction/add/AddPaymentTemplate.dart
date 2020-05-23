@@ -5,12 +5,12 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 
-class AddCollectionTemplate extends StatefulWidget {
+class AddPaymentTemplate extends StatefulWidget {
   @override
-  _AddCollectionTemplateState createState() => _AddCollectionTemplateState();
+  _AddPaymentTemplateState createState() => _AddPaymentTemplateState();
 }
 
-class _AddCollectionTemplateState extends State<AddCollectionTemplate> {
+class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

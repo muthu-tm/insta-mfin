@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
+import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
@@ -43,6 +44,7 @@ class PaymentCollectionWidget extends StatelessWidget {
                   Collection collection =
                       Collection.fromJson(snapshot.data.documents[index].data);
                   List<String> textValue = setCardValue(collection);
+                  Color cardColor = getCardColor(collection.status);
 
                   return Slidable(
                     actionPane: SlidableDrawerActionPane(),
@@ -79,21 +81,21 @@ class PaymentCollectionWidget extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => ViewPayment(
-                              //         Payment.fromJson(snapshot
-                              //             .data.documents[index].data)),
-                              //     settings: RouteSettings(
-                              //         name: '/customers/payment'),
-                              //   ),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ViewCollection(
+                                      Collection.fromJson(
+                                          snapshot.data.documents[index].data), cardColor),
+                                  settings: RouteSettings(
+                                      name: '/customers/payment/colection'),
+                                ),
+                              );
                             },
                             child: Row(
                               children: <Widget>[
                                 Material(
-                                  color: getCardColor(collection.status),
+                                  color: cardColor,
                                   elevation: 10.0,
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: Container(
@@ -188,7 +190,7 @@ class PaymentCollectionWidget extends StatelessWidget {
                                           height: 35,
                                           child: ListTile(
                                             leading: Text(
-                                              "TYPE",
+                                              "TYPE: ",
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 color: CustomColors.mfinBlue,
@@ -303,21 +305,21 @@ class PaymentCollectionWidget extends StatelessWidget {
   List<String> setCardValue(Collection coll) {
     switch (coll.status) {
       case 0:
-        return ["AMOUNT", coll.collectionAmount.toString()];
+        return ["AMOUNT: ", coll.collectionAmount.toString()];
         break;
       case 1:
       case 2:
-        return ["RECEIVED", coll.totalPaid.toString()];
+        return ["RECEIVED: ", coll.totalPaid.toString()];
         break;
       case 3:
-        return ["AMOUNT", coll.collectionAmount.toString()];
+        return ["AMOUNT: ", coll.collectionAmount.toString()];
         break;
       case 4:
         int pending = coll.collectionAmount - coll.totalPaid;
-        return ["PENDING", pending.toString()];
+        return ["PENDING: ", pending.toString()];
         break;
       default:
-        return ["AMOUNT", coll.collectionAmount.toString()];
+        return ["AMOUNT: ", coll.collectionAmount.toString()];
         break;
     }
   }

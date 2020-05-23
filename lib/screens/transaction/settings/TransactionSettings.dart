@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
-import 'package:instamfin/screens/transaction/widgets/PaymentTemplateWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class TransactionSetting extends StatefulWidget {
   @override
@@ -13,7 +11,6 @@ class TransactionSetting extends StatefulWidget {
 
 class _TransactionSettingState extends State<TransactionSetting> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final UserService _userService = locator<UserService>();
 
   var paymentGroupValue = 0;
 

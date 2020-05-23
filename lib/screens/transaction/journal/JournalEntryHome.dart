@@ -6,7 +6,7 @@ import 'package:instamfin/db/models/journal_entry.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/add/AddJournalEntry.dart';
 import 'package:instamfin/screens/transaction/journal/JournalCategoryScreen.dart';
-import 'package:instamfin/screens/transaction/widgets/JournalAppBar.dart';
+import 'package:instamfin/screens/transaction/widgets/TransactionsAppBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -22,7 +22,8 @@ class JournalEntryHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: journalAppBar(context,"Journal Entries",'/transactions/journal/categories',JournalCategoryScreen()),
+      appBar: transactionsAppBar(context, "Journal Entries",
+          '/transactions/journal/categories', JournalCategoryScreen()),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
