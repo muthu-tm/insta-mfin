@@ -15,7 +15,7 @@ Widget customerListTile(
     custIcon = Icons.person;
   }
   return Padding(
-    padding: EdgeInsets.only(left: 12.0, top: 5.0, right: 12.0),
+    padding: EdgeInsets.only(left: 12.0, top: 10.0, right: 12.0),
     child: Material(
       color: tileColor,
       elevation: 5.0,

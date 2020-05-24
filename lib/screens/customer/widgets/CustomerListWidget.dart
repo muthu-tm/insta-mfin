@@ -34,6 +34,7 @@ class CustomerListWidget extends StatelessWidget {
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
+                primary: false,
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Slidable(

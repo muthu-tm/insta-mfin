@@ -81,17 +81,30 @@ class _SearchAppBarState extends State<SearchAppBar> {
                 ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
+                    primary: false,
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext context, int index) {
                       return customerListTile(
                           context, index, snapshot.data.documents[index].data);
-                    })
+                    },
+                ),
               ];
             } else {
               // No customers found
               children = <Widget>[
                 Text(
-                  "No Cusomters Found",
+                  "No Cusomters Found!",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                    color: CustomColors.mfinAlertRed,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                new Divider(),
+                Text(
+                  "Please, Try with different Mobile Number.",
+                  textAlign: TextAlign.center,
                   style: new TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18,
@@ -106,11 +119,13 @@ class _SearchAppBarState extends State<SearchAppBar> {
             children = AsyncWidgets.asyncWaiting();
           }
 
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: children,
+          return SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: children,
+              ),
             ),
           );
         },
