@@ -5,6 +5,7 @@ import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/journal_entry.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/add/AddJournalEntry.dart';
+import 'package:instamfin/screens/transaction/edit/EditJournalEntry.dart';
 import 'package:instamfin/screens/transaction/journal/JournalCategoryScreen.dart';
 import 'package:instamfin/screens/transaction/widgets/TransactionsAppBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
@@ -46,7 +47,6 @@ class JournalEntryHome extends StatelessWidget {
           size: 40,
           color: CustomColors.mfinFadedButtonGreen,
         ),
-        // backgroundColor: CustomColors.mfinBlue,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: JournalEntry().streamJournals(
@@ -257,7 +257,16 @@ class JournalEntryHome extends StatelessWidget {
           caption: 'Edit',
           color: textColor,
           icon: Icons.edit,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    EditJournalEntry(JournalEntry.fromJson(data)),
+                settings: RouteSettings(name: '/transactions/journal/edit'),
+              ),
+            );
+          },
         ),
       ],
       child: Builder(

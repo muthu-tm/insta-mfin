@@ -5,6 +5,7 @@ import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/journal_category.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/add/AddJournalCategory.dart';
+import 'package:instamfin/screens/transaction/edit/EditJournalCategory.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -239,7 +240,17 @@ class JournalCategoryScreen extends StatelessWidget {
           caption: 'Edit',
           color: textColor,
           icon: Icons.edit,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    EditJournalCategory(JournalCategory.fromJson(data)),
+                settings: RouteSettings(
+                    name: '/transactions/journal/categories/edit'),
+              ),
+            );
+          },
         ),
       ],
       child: Builder(

@@ -75,12 +75,12 @@ class JournalController {
     }
   }
 
-  Future editJournalEntry(
+  Future updateJournalEntry(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime createdAt,
-      Map<String, String> jeData) async {
+      Map<String, dynamic> jeData) async {
     try {
       JournalEntry _je = JournalEntry();
 

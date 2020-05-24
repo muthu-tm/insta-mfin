@@ -5,6 +5,7 @@ import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/miscellaneous_category.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/add/AddMiscellaneousCategory.dart';
+import 'package:instamfin/screens/transaction/edit/EditMiscellaneousCategory.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -240,7 +241,17 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
           caption: 'Edit',
           color: textColor,
           icon: Icons.edit,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditMiscellaneousCategory(
+                    MiscellaneousCategory.fromJson(data)),
+                settings: RouteSettings(
+                    name: '/transactions/miscellaneous/categories/edit'),
+              ),
+            );
+          },
         ),
       ],
       child: Builder(

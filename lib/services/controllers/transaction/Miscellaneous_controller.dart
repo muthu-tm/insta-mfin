@@ -67,12 +67,12 @@ class MiscellaneousController {
     }
   }
 
-  Future editJournalEntry(
+  Future updateExpense(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime createdAt,
-      Map<String, String> meData) async {
+      Map<String, dynamic> meData) async {
     try {
       MiscellaneousExpense _me = MiscellaneousExpense();
 

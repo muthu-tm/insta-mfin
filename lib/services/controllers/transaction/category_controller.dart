@@ -99,12 +99,12 @@ class CategoryController {
     }
   }
 
-  Future editJournalCategory(
+  Future updateJournalCategory(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime createdAt,
-      Map<String, String> jcData) async {
+      Map<String, dynamic> jcData) async {
     try {
       JournalCategory _jc = JournalCategory();
 
@@ -119,12 +119,12 @@ class CategoryController {
     }
   }
 
-  Future editMiscellaneousCategory(
+  Future updateMiscellaneousCategory(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime createdAt,
-      Map<String, String> mcData) async {
+      Map<String, dynamic> mcData) async {
     try {
       MiscellaneousCategory _mc = MiscellaneousCategory();
 

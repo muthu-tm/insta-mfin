@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/journal_category.dart';
+import 'package:instamfin/db/models/journal_entry.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/widgets/InOutCustomRadioButtons.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -11,34 +12,40 @@ import 'package:instamfin/services/controllers/transaction/Journal_controller.da
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class AddJournalEntry extends StatefulWidget {
+class EditJournalEntry extends StatefulWidget {
+  EditJournalEntry(this.journal);
+
+  final JournalEntry journal;
+
   @override
-  _AddJournalEntryState createState() => _AddJournalEntryState();
+  _EditJournalEntryState createState() => _EditJournalEntryState();
 }
 
-class _AddJournalEntryState extends State<AddJournalEntry> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+class _EditJournalEntryState extends State<EditJournalEntry> {
   final User _user = UserController().getCurrentUser();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {"0": "Choose Category"};
   List<CustomRadioModel> inOutList = new List<CustomRadioModel>();
   List<JournalCategory> categoryList;
 
+  Map<String, dynamic> updatedJournal = new Map();
   DateTime selectedDate = DateTime.now();
-  String name = "";
-  String notes = "";
-  int amount = 0;
-  bool isExpense = false;
+
+  bool isExpense;
 
   @override
   void initState() {
     super.initState();
     this.getCategoryData();
-    inOutList.add(new CustomRadioModel(true, 'Income', ''));
-    inOutList.add(new CustomRadioModel(false, 'Expense', ''));
+    isExpense = widget.journal.isExpense;
+    inOutList
+        .add(new CustomRadioModel(!widget.journal.isExpense, 'Income', ''));
+    inOutList
+        .add(new CustomRadioModel(widget.journal.isExpense, 'Expense', ''));
   }
 
   @override
@@ -49,7 +56,7 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('New Journal Entry'),
+        title: Text('Edit Journal - ${widget.journal.journalName}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -93,7 +100,6 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
                           inOutList[1].isSelected = false;
                         },
                       );
-
                       isExpense = false;
                     },
                     child: new InOutRadioItem(
@@ -107,7 +113,6 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
                           inOutList[1].isSelected = true;
                         },
                       );
-
                       isExpense = true;
                     },
                     child: new InOutRadioItem(
@@ -129,6 +134,7 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
                   ),
                   title: TextFormField(
                     keyboardType: TextInputType.text,
+                    initialValue: widget.journal.journalName,
                     decoration: InputDecoration(
                       hintText: "Journal Entry Name",
                       labelStyle: TextStyle(
@@ -140,10 +146,10 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
                     validator: (name) {
                       if (name.trim().isEmpty) {
                         return "Name should not be empty";
-                      } else {
-                        this.name = name.trim();
-                        return null;
+                      } else if (name.trim() != widget.journal.journalName) {
+                        updatedJournal['journal_name'] = name.trim();
                       }
+                      return null;
                     },
                   ),
                 ),
@@ -162,6 +168,7 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
                   ),
                   title: new TextFormField(
                     keyboardType: TextInputType.number,
+                    initialValue: widget.journal.amount.toString(),
                     decoration: InputDecoration(
                       hintText: "Journal Amount",
                       labelStyle: TextStyle(
@@ -173,10 +180,11 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
                     validator: (amount) {
                       if (amount.trim().isEmpty) {
                         return "Amount should not be empty!";
-                      } else {
-                        this.amount = int.parse(amount.trim());
-                        return null;
+                      } else if (amount.trim() !=
+                          widget.journal.amount.toString()) {
+                        updatedJournal['amount'] = int.parse(amount.trim());
                       }
+                      return null;
                     },
                   ),
                 ),
@@ -262,6 +270,7 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
                     ),
                   ),
                   title: new TextFormField(
+                    initialValue: widget.journal.notes,
                     keyboardType: TextInputType.text,
                     maxLines: 3,
                     decoration: InputDecoration(
@@ -272,11 +281,9 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
                       fillColor: CustomColors.mfinLightGrey,
                       filled: true,
                     ),
-                    validator: (note) {
-                      if (note.trim().isEmpty) {
-                        this.notes = "";
-                      } else {
-                        this.notes = note.trim();
+                    validator: (notes) {
+                      if (notes.trim() != widget.journal.notes) {
+                        updatedJournal['notes'] = notes.trim();
                       }
 
                       return null;
@@ -298,12 +305,16 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
           _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
+        if (widget.journal.category != null &&
+            categories[index].createdAt == widget.journal.category.createdAt) {
+          _selectedCategory = (index + 1).toString();
+        }
       }
       setState(() {
         categoryList = categories;
       });
     } catch (err) {
-      print("Unable to load Journal categories for ADD!");
+      print("Unable to load Journal categories for EDIT!");
     }
   }
 
@@ -312,14 +323,14 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: widget.journal.journalDate,
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != updatedJournal['journal_date'])
       setState(
         () {
-          selectedDate = picked;
+          updatedJournal['journal_date'] = picked;
           _date.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
@@ -331,24 +342,44 @@ class _AddJournalEntryState extends State<AddJournalEntry> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Adding Journal!");
-      JournalController _jc = JournalController();
-      JournalCategory _category;
       if (categoryList != null && _selectedCategory != "0") {
-        _category = categoryList[int.parse(_selectedCategory) - 1];
+        JournalCategory _cat = categoryList[int.parse(_selectedCategory) - 1];
+        if (widget.journal.category == null ||
+            _cat.createdAt != widget.journal.category.createdAt) {
+          updatedJournal['category'] = _cat.toJson();
+        }
       }
 
-      var result = await _jc.createNewJournal(
-          name, amount, _category, isExpense, selectedDate, notes);
-      if (!result['is_success']) {
+      if (isExpense != widget.journal.isExpense) {
+        updatedJournal['is_expense'] = isExpense;
+      }
+
+      if (updatedJournal.length == 0) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No changes detected, Skipping update!", 1));
+        print("No changes detected, Skipping update!");
         Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Journal Entry: " + result['message']);
       } else {
-        print("New Journal Entry $name added successfully");
-        Navigator.pop(context);
-        Navigator.pop(context);
+        CustomDialogs.actionWaiting(context, "Updating Journal!");
+        JournalController _jc = JournalController();
+
+        var result = await _jc.updateJournalEntry(
+            widget.journal.financeID,
+            widget.journal.branchName,
+            widget.journal.subBranchName,
+            widget.journal.createdAt,
+            updatedJournal);
+        if (!result['is_success']) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+          print("Unable to Update Journal Entry: " + result['message']);
+        } else {
+          print(
+              "Journal Entry ${widget.journal.journalName} updated successfully");
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
       }
     } else {
       print("Invalid form submitted");

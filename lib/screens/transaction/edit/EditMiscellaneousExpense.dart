@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/miscellaneous_category.dart';
+import 'package:instamfin/db/models/miscellaneous_expense.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -9,13 +10,17 @@ import 'package:instamfin/services/controllers/transaction/Miscellaneous_control
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class AddMiscellaneousExpense extends StatefulWidget {
+class EditMiscellaneousExpense extends StatefulWidget {
+  EditMiscellaneousExpense(this.expense);
+
+  final MiscellaneousExpense expense;
+
   @override
-  _AddMiscellaneousExpenseState createState() =>
-      _AddMiscellaneousExpenseState();
+  _EditMiscellaneousExpenseState createState() =>
+      _EditMiscellaneousExpenseState();
 }
 
-class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
+class _EditMiscellaneousExpenseState extends State<EditMiscellaneousExpense> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -25,10 +30,8 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
   Map<String, String> _categoriesMap = {"0": "Choose Category"};
   List<MiscellaneousCategory> categoryList;
 
+  Map<String, dynamic> updatedExpense = new Map();
   DateTime selectedDate = DateTime.now();
-  String name = "";
-  String notes = "";
-  int amount = 0;
 
   @override
   void initState() {
@@ -44,7 +47,7 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('New Miscellaneous Expense'),
+        title: Text('Edit Expense - ${widget.expense.expenseName}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -90,6 +93,7 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
                 ),
                 title: TextFormField(
                   keyboardType: TextInputType.text,
+                  initialValue: widget.expense.expenseName,
                   decoration: InputDecoration(
                     hintText: "Expense Name",
                     labelStyle: TextStyle(
@@ -101,10 +105,10 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
                   validator: (name) {
                     if (name.trim().isEmpty) {
                       return "Name should not be empty";
-                    } else {
-                      this.name = name.trim();
-                      return null;
+                    } else if (name.trim() != widget.expense.expenseName) {
+                      updatedExpense['expense_name'] = name.trim();
                     }
+                    return null;
                   },
                 ),
               ),
@@ -123,6 +127,7 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
                 ),
                 title: new TextFormField(
                   keyboardType: TextInputType.number,
+                  initialValue: widget.expense.amount.toString(),
                   decoration: InputDecoration(
                     hintText: "Expense Amount",
                     labelStyle: TextStyle(
@@ -134,10 +139,11 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
                   validator: (amount) {
                     if (amount.trim().isEmpty) {
                       return "Amount should not be empty!";
-                    } else {
-                      this.amount = int.parse(amount.trim());
-                      return null;
+                    } else if (amount.trim() !=
+                        widget.expense.amount.toString()) {
+                      updatedExpense['amount'] = int.parse(amount.trim());
                     }
+                    return null;
                   },
                 ),
               ),
@@ -223,6 +229,7 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
                 ),
                 title: new TextFormField(
                   keyboardType: TextInputType.text,
+                  initialValue: widget.expense.notes,
                   maxLines: 3,
                   decoration: InputDecoration(
                     hintText: "Short notes about this expense",
@@ -232,11 +239,9 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
                     fillColor: CustomColors.mfinLightGrey,
                     filled: true,
                   ),
-                  validator: (note) {
-                    if (note.trim().isEmpty) {
-                      this.notes = "";
-                    } else {
-                      this.notes = note.trim();
+                  validator: (notes) {
+                    if (notes.trim() != widget.expense.notes) {
+                      updatedExpense['notes'] = notes.trim();
                     }
 
                     return null;
@@ -258,12 +263,16 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
               _user.primaryBranch, _user.primarySubBranch);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
+        if (widget.expense.category != null &&
+            categories[index].createdAt == widget.expense.category.createdAt) {
+          _selectedCategory = (index + 1).toString();
+        }
       }
       setState(() {
         categoryList = categories;
       });
     } catch (err) {
-      print("Unable to load miscellaneous categories for ADD!");
+      print("Unable to load miscellaneous categories for EDIT!");
     }
   }
 
@@ -272,14 +281,14 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: widget.expense.expenseDate,
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != widget.expense.expenseDate)
       setState(
         () {
-          selectedDate = picked;
+          updatedExpense['expense_date'] = picked;
           _date.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
@@ -291,23 +300,39 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Adding Expense!");
-      MiscellaneousController _mc = MiscellaneousController();
-      MiscellaneousCategory _category;
       if (categoryList != null && _selectedCategory != "0") {
-        _category = categoryList[int.parse(_selectedCategory) - 1];
+        MiscellaneousCategory _cat =
+            categoryList[int.parse(_selectedCategory) - 1];
+        if (widget.expense.category == null ||
+            _cat.createdAt != widget.expense.category.createdAt) {
+          updatedExpense['category'] = _cat.toJson();
+        }
       }
-      var result = await _mc.createNewExpense(
-          name, amount, _category, selectedDate, notes);
-      if (!result['is_success']) {
+
+      if (updatedExpense.length == 0) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No changes detected, Skipping update!", 1));
+        print("No changes detected, Skipping update!");
         Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Miscellaneous Expense: " + result['message']);
       } else {
-        print("New Miscellaneous Expense $name added successfully");
-        Navigator.pop(context);
-        Navigator.pop(context);
+        CustomDialogs.actionWaiting(context, "Updating Expense!");
+        MiscellaneousController _mc = MiscellaneousController();
+        var result = await _mc.updateExpense(
+            widget.expense.financeID,
+            widget.expense.branchName,
+            widget.expense.subBranchName,
+            widget.expense.createdAt,
+            updatedExpense);
+        if (!result['is_success']) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+          print("Unable to Edit Expense: " + result['message']);
+        } else {
+          print("Expense ${widget.expense.expenseName} edited successfully");
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
       }
     } else {
       print("Invalid form submitted");

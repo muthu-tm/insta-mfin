@@ -5,6 +5,7 @@ import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/miscellaneous_expense.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/add/AddMiscellaneousExpense.dart';
+import 'package:instamfin/screens/transaction/edit/EditMiscellaneousExpense.dart';
 import 'package:instamfin/screens/transaction/miscellaneous/MiscellaneousCategoryScreen.dart';
 import 'package:instamfin/screens/transaction/widgets/TransactionsAppBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
@@ -254,7 +255,16 @@ class MiscellaneousExpenseHome extends StatelessWidget {
           caption: 'Edit',
           color: textColor,
           icon: Icons.edit,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    EditMiscellaneousExpense(MiscellaneousExpense.fromJson(data)),
+                settings: RouteSettings(name: '/transactions/miscellaneous/edit'),
+              ),
+            );
+          },
         ),
       ],
       child: Builder(
