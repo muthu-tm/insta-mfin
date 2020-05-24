@@ -13,10 +13,10 @@ extension TenureTypeExtension on TenureType {
         return 2;
         break;
       case TenureType.OnWeekDays:
-        return 4;
+        return 3;
         break;
       case TenureType.OnWeekEnds:
-        return 5;
+        return 4;
         break;
       default:
         return 0;
