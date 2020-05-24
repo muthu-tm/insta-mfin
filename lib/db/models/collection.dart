@@ -151,10 +151,20 @@ class Collection {
     return snap.exists;
   }
 
-  Stream<QuerySnapshot> streamCollections(String financeId, String branchName,
+  Stream<QuerySnapshot> streamCollectionsForCustomer(String financeId, String branchName,
       String subBranchName, int number, DateTime createdAt) {
     return getCollectionRef(
             financeId, branchName, subBranchName, number, createdAt)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> streamCollections(String financeId, String branchName,
+      String subBranchName, List<int> status) {
+    return getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('status', whereIn: status)
         .snapshots();
   }
 

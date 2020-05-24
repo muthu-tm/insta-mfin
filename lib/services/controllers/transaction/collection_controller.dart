@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/enums/collection_status.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/collection_details.dart';
@@ -69,6 +70,19 @@ class CollectionController {
     } catch (err) {
       print(
           "Error while retrieving collection of $custNumber customer's payment createdAt ${createdAt.toString()}: " +
+              err.toString());
+      throw err;
+    }
+  }
+
+  Stream<QuerySnapshot> streamAllCollectionByStatus(String financeId,
+      String branchName,
+      String subBranchName, List<int> status) {
+    try {
+      return Collection().streamCollections(financeId, branchName, subBranchName, status);
+    } catch (err) {
+      print(
+          "Error while retrieving collections with status $status:" +
               err.toString());
       throw err;
     }
