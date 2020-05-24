@@ -351,7 +351,25 @@ class PaymentTemplateScreen extends StatelessWidget {
           ),
           ListTile(
             leading: Text(
-              'Notes',
+              'DOC CHARGE',
+              style: TextStyle(
+                  color: CustomColors.mfinGrey,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            trailing: Text(
+              temp.docCharge.toString(),
+              style: TextStyle(
+                  color: CustomColors.mfinWhite,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          ListTile(
+            leading: Text(
+              'COLLECTION ON',
               style: TextStyle(
                   color: CustomColors.mfinGrey,
                   fontFamily: 'Georgia',
@@ -361,7 +379,7 @@ class PaymentTemplateScreen extends StatelessWidget {
             trailing: SizedBox(
               width: MediaQuery.of(context).size.width * 0.65,
               child: Text(
-                temp.tenureType.toString(),
+                getType(temp.tenureType),
                 textAlign: TextAlign.end,
                 style: TextStyle(
                     color: CustomColors.mfinWhite,
@@ -470,5 +488,28 @@ class PaymentTemplateScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  String getType(int type) {
+    switch (type) {
+      case 0:
+        return "DAILY";
+        break;
+      case 1:
+        return "WEEKLY";
+        break;
+      case 2:
+        return "MONTHLY";
+        break;
+      case 3:
+        return "WEEK DAYS";
+        break;
+      case 4:
+        return "WEEK ENDS";
+        break;
+      default:
+        return "DAILY";
+        break;
+    }
   }
 }
