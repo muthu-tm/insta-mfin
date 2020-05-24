@@ -105,7 +105,7 @@ class Payment extends Model {
   setCollectionDay(int weekDay) {
     this.collectionDay = weekDay;
   }
-  
+
   setCollectionAmount(int amount) {
     this.collectionAmount = amount;
   }
@@ -125,7 +125,7 @@ class Payment extends Model {
   setCSF(DateTime date) {
     this.collectionStartsFrom = date;
   }
-  
+
   setPCD(DateTime closingDate) {
     this.closingDate = closingDate;
   }
@@ -296,6 +296,30 @@ class Payment extends Model {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
+        .getDocuments();
+
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
+    }
+
+    return payments;
+  }
+
+  Future<List<Payment>> getAllPaymentsByDateRage(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      DateTime start,
+      DateTime end) async {
+    var paymentDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('date_of_payment', isGreaterThanOrEqualTo: start)
+        .where('date_of_payment', isLessThan: end)
         .getDocuments();
 
     List<Payment> payments = [];

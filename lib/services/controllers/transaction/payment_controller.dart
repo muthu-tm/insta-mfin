@@ -89,6 +89,24 @@ class PaymentController {
     }
   }
 
+  Future<List<Payment>> getAllPaymentsByDateRage(String financeId,
+      String branchName, String subBranchName, DateTime startDate, DateTime endDate) async {
+    try {
+      List<Payment> payments = await Payment().getAllPaymentsByDateRage(
+          financeId, branchName, subBranchName, startDate, endDate);
+
+      if (payments == null) {
+        return [];
+      }
+
+      return payments;
+    } catch (err) {
+      print("Error while retrieving payments with Date Range: " +
+          err.toString());
+      throw err;
+    }
+  }
+
   Future<List<Payment>> getAllPaymentsByStatus(String financeId,
       String branchName, String subBranchName, int status) async {
     try {
