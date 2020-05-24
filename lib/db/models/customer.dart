@@ -185,6 +185,16 @@ class Customer extends Model {
     return custList;
   }
 
+  Stream<QuerySnapshot> streamCustomersByRange(int minNumber, int maxNumber) {
+    return getCollectionRef()
+        .where('finance_id', isEqualTo: user.primaryFinance)
+        .where('branch_name', isEqualTo: user.primaryBranch)
+        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('mobile_number', isGreaterThanOrEqualTo: minNumber)
+        .where('mobile_number', isLessThanOrEqualTo: maxNumber)
+        .snapshots();
+  }
+
   create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();

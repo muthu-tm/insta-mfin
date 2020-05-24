@@ -49,7 +49,7 @@ class CustController {
       int maxValue = number;
       if (number.toString().length < 10) {
         minValue = int.parse(minValue.toString().padRight(10, '0'));
-        maxValue += int.parse(number.toString().padRight(10, '9'));
+        maxValue = int.parse(number.toString().padRight(10, '9'));
       } else if (number.toString().length == 10) {
         Customer cust = await customer.getByMobileNumber(number);
         if (cust == null) {
