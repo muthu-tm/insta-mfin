@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListWidget.dart';
 import 'package:instamfin/screens/settings/widgets/ViewCustomerWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -121,6 +122,29 @@ class _CustomersFilteredViewState extends State<CustomersFilteredView> {
       key: widget._scaffoldKey,
       appBar: topAppBar(context),
       drawer: openDrawer(context),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddCustomer(),
+              settings: RouteSettings(name: '/customers/add'),
+            ),
+          );
+        },
+        label: Text(
+          'Add Customer',
+          style: TextStyle(
+            color: CustomColors.mfinWhite,
+            fontSize: 16,
+          ),
+        ),
+        icon: Icon(
+          Icons.add,
+          size: 40,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
+      ),
       body: new SingleChildScrollView(
         child: Column(
           children: <Widget>[
