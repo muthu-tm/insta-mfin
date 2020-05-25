@@ -76,14 +76,13 @@ class CollectionController {
   }
 
   Stream<QuerySnapshot> streamAllCollectionByStatus(String financeId,
-      String branchName,
-      String subBranchName, List<int> status) {
+      String branchName, String subBranchName, List<int> status) {
     try {
-      return Collection().streamCollections(financeId, branchName, subBranchName, status);
+      return Collection()
+          .streamCollections(financeId, branchName, subBranchName, status);
     } catch (err) {
-      print(
-          "Error while retrieving collections with status $status:" +
-              err.toString());
+      print("Error while retrieving collections with status $status:" +
+          err.toString());
       throw err;
     }
   }
@@ -108,6 +107,29 @@ class CollectionController {
       print(
           "Error while retrieving collections for $custNumber customer with status $status:" +
               err.toString());
+      throw err;
+    }
+  }
+
+  Future<List<Collection>> getAllCollectionByDateRage(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      DateTime startDate,
+      DateTime endDate) async {
+    try {
+      List<Collection> collections = await Collection()
+          .getAllCollectionsByDateRage(
+              financeId, branchName, subBranchName, startDate, endDate);
+
+      if (collections == null) {
+        return [];
+      }
+
+      return collections;
+    } catch (err) {
+      print("Error while retrieving collections with Date Range: " +
+          err.toString());
       throw err;
     }
   }

@@ -6,8 +6,8 @@ part 'collection_details.g.dart';
 @JsonSerializable(explicitToJson: true)
 class CollectionDetails {
 
-  @JsonKey(name: 'paid_date')
-  DateTime paidDate;
+  @JsonKey(name: 'collected_on')
+  DateTime collectedOn;
   @JsonKey(name: 'is_paid_late', defaultValue: false)
   bool isPaidLate;
   @JsonKey(name: 'amount')
@@ -29,8 +29,8 @@ class CollectionDetails {
 
   CollectionDetails();
 
-  setPaidDate(DateTime date) {
-    this.paidDate = date;
+  setCollectedOn(DateTime date) {
+    this.collectedOn = date;
   }
 
   setIsPaidLate(bool isPaidLate) {

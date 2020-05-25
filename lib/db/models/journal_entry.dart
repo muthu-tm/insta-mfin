@@ -94,7 +94,7 @@ class JournalEntry extends Model {
   }
 
   Query getGroupQuery() {
-    return Model.db.collectionGroup('miscellaneous_expenses');
+    return Model.db.collectionGroup('journal_entries');
   }
 
   String getDocumentID(String financeID, String branchName,
@@ -185,6 +185,30 @@ class JournalEntry extends Model {
     });
 
     return expenses;
+  }
+
+  Future<List<JournalEntry>> getAllJournalsByDateRage(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      DateTime start,
+      DateTime end) async {
+    var journalDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('journal_date', isGreaterThanOrEqualTo: start)
+        .where('journal_date', isLessThan: end)
+        .getDocuments();
+
+    List<JournalEntry> journals = [];
+    if (journalDocs.documents.isNotEmpty) {
+      for (var doc in journalDocs.documents) {
+        journals.add(JournalEntry.fromJson(doc.data));
+      }
+    }
+
+    return journals;
   }
 
   Future removeJournal(String financeID, String branchName,

@@ -22,6 +22,8 @@ class Collection {
   int collectionNumber;
   @JsonKey(name: 'collection_date', defaultValue: '')
   DateTime collectionDate;
+  @JsonKey(name: 'collected_on', defaultValue: '')
+  List<DateTime> collectedOn;
   @JsonKey(name: 'collection_amount')
   int collectionAmount;
   @JsonKey(name: 'collections')
@@ -61,6 +63,14 @@ class Collection {
 
   setCollectionDate(DateTime collectionDate) {
     this.collectionDate = collectionDate;
+  }
+
+  setcollectedOn(List<DateTime> collectedOn) {
+    if (this.collectedOn == null) {
+      this.collectedOn = collectedOn;
+    } else {
+      this.collectedOn.addAll(collectedOn);
+    }
   }
 
   setCollectionAmount(int amount) {
@@ -151,8 +161,8 @@ class Collection {
     return snap.exists;
   }
 
-  Stream<QuerySnapshot> streamCollectionsForCustomer(String financeId, String branchName,
-      String subBranchName, int number, DateTime createdAt) {
+  Stream<QuerySnapshot> streamCollectionsForCustomer(String financeId,
+      String branchName, String subBranchName, int number, DateTime createdAt) {
     return getCollectionRef(
             financeId, branchName, subBranchName, number, createdAt)
         .snapshots();
@@ -166,6 +176,30 @@ class Collection {
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('status', whereIn: status)
         .snapshots();
+  }
+
+  Future<List<Collection>> getAllCollectionsByDateRage(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      DateTime start,
+      DateTime end) async {
+    var collectionDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('collections', arrayContains: {
+      'collected_on',
+    }).where('collections', arrayContains: {'collected_on'}).getDocuments();
+
+    List<Collection> collections = [];
+    if (collectionDocs.documents.isNotEmpty) {
+      for (var doc in collectionDocs.documents) {
+        collections.add(Collection.fromJson(doc.data));
+      }
+    }
+
+    return collections;
   }
 
   Stream<QuerySnapshot> streamCollectionsByStatus(

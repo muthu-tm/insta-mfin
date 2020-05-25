@@ -35,6 +35,29 @@ class MiscellaneousController {
     }
   }
 
+  Future<List<MiscellaneousExpense>> getAllExpenseByDateRage(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      DateTime startDate,
+      DateTime endDate) async {
+    try {
+      List<MiscellaneousExpense> expenses = await MiscellaneousExpense()
+          .getAllExpensesByDateRage(
+              financeId, branchName, subBranchName, startDate, endDate);
+
+      if (expenses == null) {
+        return [];
+      }
+
+      return expenses;
+    } catch (err) {
+      print(
+          "Error while retrieving expenses with Date Range: " + err.toString());
+      throw err;
+    }
+  }
+
   Future<int> getTotalExpenseAmount(
       String financeId, String branchName, String subBranchName) async {
     try {

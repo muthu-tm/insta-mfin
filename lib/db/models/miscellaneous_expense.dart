@@ -175,6 +175,30 @@ class MiscellaneousExpense extends Model {
     return expenses;
   }
 
+  Future<List<MiscellaneousExpense>> getAllExpensesByDateRage(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      DateTime start,
+      DateTime end) async {
+    var expenseDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('expense_date', isGreaterThanOrEqualTo: start)
+        .where('expense_date', isLessThan: end)
+        .getDocuments();
+
+    List<MiscellaneousExpense> expenses = [];
+    if (expenseDocs.documents.isNotEmpty) {
+      for (var doc in expenseDocs.documents) {
+        expenses.add(MiscellaneousExpense.fromJson(doc.data));
+      }
+    }
+
+    return expenses;
+  }
+
   Future removeExpense(String financeID, String branchName,
       String subBranchName, DateTime createdAt) async {
     DocumentReference docRef = this

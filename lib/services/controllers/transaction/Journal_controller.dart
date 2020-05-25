@@ -35,6 +35,29 @@ class JournalController {
     }
   }
 
+  Future<List<JournalEntry>> getAllJournalByDateRage(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      DateTime startDate,
+      DateTime endDate) async {
+    try {
+      List<JournalEntry> journals = await JournalEntry()
+          .getAllJournalsByDateRage(
+              financeId, branchName, subBranchName, startDate, endDate);
+
+      if (journals == null) {
+        return [];
+      }
+
+      return journals;
+    } catch (err) {
+      print(
+          "Error while retrieving journals with Date Range: " + err.toString());
+      throw err;
+    }
+  }
+
   Future<List<int>> getTotalJournalAmount(
       String financeId, String branchName, String subBranchName) async {
     try {
