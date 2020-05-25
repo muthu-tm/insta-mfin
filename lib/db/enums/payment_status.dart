@@ -17,6 +17,7 @@ extension PaymentStatusExtension on PaymentStatus {
         break;
       default:
         return 0;
+        break;
     }
   }
 }

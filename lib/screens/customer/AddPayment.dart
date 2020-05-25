@@ -702,7 +702,7 @@ class _AddPaymentState extends State<AddPayment> {
           principalAmount,
           tenure,
           collectionAmount,
-          TenureType.Monthly.name,
+          TenureType.Daily.name,
           docCharge,
           surCharge,
           intrestRate,

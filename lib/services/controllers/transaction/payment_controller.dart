@@ -1,6 +1,7 @@
 import 'package:instamfin/db/enums/payment_status.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
+import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -211,14 +212,45 @@ class PaymentController {
       List<Collection> colls = await Collection()
           .getAllCollectionsForCustomerPayment(
               financeId, branchName, subBranchName, custNumber, createdAt);
-
-      if (colls.length != 0) {
+      bool isNewPayment = true;
+      for (int i=0; i< colls.length; i++){
+        Collection coll = colls[i];
+        // check for paid collections
+        if (coll.status == 1) {
+          isNewPayment = false;
+        }
+      }
+      if (!isNewPayment) {
         return CustomResponse.getFailureReponse(
-            "Unable to Remove Payment. It has valid Collections! Remove this Payment's collections first.");
+            "Unable to Remove Payment. It has PAID Collections! Remove this Payment's collections first.");
       }
 
+      // Remove payment
       await Payment().removePayment(
           financeId, branchName, subBranchName, custNumber, createdAt);
+
+      // Update customer status
+      try {
+        int custStatus = 0;
+        List<Payment> payments = await getAllPaymentsForCustomer(financeId, branchName, subBranchName, custNumber);
+        for (int index = 0; index < payments.length; index++ ) {
+          Payment payment = payments[index];
+          if (payment.status == 2) {
+            custStatus = 2;
+            break;
+          } else if (payment.status == 3) {
+            custStatus = 3;
+          } else if (payment.status == 1) {
+            custStatus = 1;
+          }
+        }
+
+        await CustController().updateCustomer({'customer_status': custStatus}, custNumber);
+      } catch (err) {
+        throw 'Remove Payment, but unable to update customer status; Edit Customer status manually';
+      }
+
+      // Return success response
       return CustomResponse.getSuccesReponse(
           "Removed customer's Payment for customer $custNumber");
     } catch (err) {
