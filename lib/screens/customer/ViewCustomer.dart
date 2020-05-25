@@ -22,6 +22,7 @@ class ViewCustomer extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
+      endDrawer: ViewCustomerProfile(customer),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -91,16 +92,9 @@ class ViewCustomer extends StatelessWidget {
                           flex: 2,
                         ),
                         InkWell(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ViewCustomerProfile(customer.toJson()),
-                              settings: RouteSettings(
-                                  name:
-                                      '/customers/profile'),
-                            ),
-                          ),
+                          onTap: () {
+                            _scaffoldKey.currentState.openEndDrawer();
+                          },
                           child: Container(
                             color: CustomColors.mfinButtonGreen,
                             width: MediaQuery.of(context).size.width * 0.18,
