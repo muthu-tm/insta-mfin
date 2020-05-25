@@ -178,19 +178,14 @@ class Collection {
         .snapshots();
   }
 
-  Future<List<Collection>> getAllCollectionsByDateRage(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      DateTime start,
-      DateTime end) async {
+  Future<List<Collection>> getAllCollectionsByDateRage(String financeId,
+      String branchName, String subBranchName, List<DateTime> dates) async {
     var collectionDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('collections', arrayContains: {
-      'collected_on',
-    }).where('collections', arrayContains: {'collected_on'}).getDocuments();
+        .where('collected_on', arrayContainsAny: dates)
+        .getDocuments();
 
     List<Collection> collections = [];
     if (collectionDocs.documents.isNotEmpty) {
