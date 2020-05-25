@@ -408,6 +408,16 @@ class Payment extends Model {
               // Update finance details
               txUpdate(tx, finDocRef, data);
 
+              QuerySnapshot snapshot = await docRef
+                  .collection('customer_collections')
+                  .getDocuments();
+                  
+              // Remove Payment's collection
+              for (DocumentSnapshot ds in snapshot.documents) {
+                // ds.reference.delete();
+                txDelete(tx, ds.reference);
+              }
+
               // Remove Payment
               txDelete(tx, docRef);
             },
