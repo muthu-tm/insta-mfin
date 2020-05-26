@@ -318,10 +318,7 @@ class _EditMiscellaneousExpenseState extends State<EditMiscellaneousExpense> {
         CustomDialogs.actionWaiting(context, "Updating Expense!");
         MiscellaneousController _mc = MiscellaneousController();
         var result = await _mc.updateExpense(
-            widget.expense.financeID,
-            widget.expense.branchName,
-            widget.expense.subBranchName,
-            widget.expense.createdAt,
+            widget.expense,
             updatedExpense);
         if (!result['is_success']) {
           Navigator.pop(context);

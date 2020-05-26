@@ -99,19 +99,15 @@ class JournalController {
   }
 
   Future updateJournalEntry(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      DateTime createdAt,
+      JournalEntry journal,
       Map<String, dynamic> jeData) async {
     try {
       JournalEntry _je = JournalEntry();
 
-      await _je.updateByID(jeData,
-          _je.getDocumentID(financeId, branchName, subBranchName, createdAt));
+      await _je.updateJournal(journal, jeData);
 
       return CustomResponse.getSuccesReponse(
-          "Edited the Journal Entry successfully");
+          "Updated Journal Entry successfully");
     } catch (err) {
       print("Error while editing Journal Entry: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());

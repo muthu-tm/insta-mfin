@@ -199,6 +199,49 @@ class MiscellaneousExpense extends Model {
     return expenses;
   }
 
+  Future<void> updateExpense(
+      MiscellaneousExpense expense, Map<String, dynamic> expenseJSON) async {
+    expenseJSON['updated_at'] = DateTime.now();
+
+    DocumentReference docRef = getDocumentReference(expense.financeID,
+        expense.branchName, expense.subBranchName, expense.createdAt);
+
+    int amount = 0;
+    int expenseAmount = 0;
+
+    if (expenseJSON.containsKey('amount')) {
+      amount = expense.amount - expenseJSON['amount'];
+      expenseAmount = expenseJSON['amount'] - expense.amount;
+    }
+
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              accData.cashInHand += amount;
+              accData.miscellaneousExpenseAmount += expenseAmount;
+
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+              // Update finance details
+              txUpdate(tx, finDocRef, data);
+
+              // Remove Payment
+              txUpdate(tx, docRef, expenseJSON);
+            },
+          );
+        },
+      );
+    } catch (err) {
+      print('Expense UPDATE Transaction failure:' + err.toString());
+      throw err;
+    }
+  }
+
   Future removeExpense(String financeID, String branchName,
       String subBranchName, DateTime createdAt) async {
     DocumentReference docRef = this

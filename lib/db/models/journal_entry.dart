@@ -211,6 +211,75 @@ class JournalEntry extends Model {
     return journals;
   }
 
+  Future<void> updateJournal(
+      JournalEntry journal, Map<String, dynamic> journalJSON) async {
+    journalJSON['updated_at'] = DateTime.now();
+
+    DocumentReference docRef = getDocumentReference(journal.financeID,
+        journal.branchName, journal.subBranchName, journal.createdAt);
+
+    int amount = 0;
+    int journalInAmount = 0;
+    int journalOutAmount = 0;
+    if (journalJSON.containsKey('is_expense') && journal.isExpense) {
+      // journal type change from Expense to Income
+      if (journalJSON.containsKey('amount')) {
+        amount = journalJSON['amount'] + journal.amount;
+        journalInAmount = journalJSON['amount'];
+      } else {
+        amount = journal.amount * 2;
+        journalInAmount = journal.amount;
+      }
+      journalOutAmount -= journal.amount;
+    } else if (journalJSON.containsKey('is_expense') && !journal.isExpense) {
+      // journal type change from Income to Expense
+      if (journalJSON.containsKey('amount')) {
+        amount -= (journalJSON['amount'] + journal.amount);
+        journalOutAmount = journalJSON['amount'];
+      } else {
+        amount -= (journal.amount * 2);
+        journalOutAmount = journal.amount;
+      }
+      journalInAmount -= journal.amount;
+    } else if (journalJSON.containsKey('amount') && journal.isExpense) {
+      // Out amount change
+      amount = journal.amount - journalJSON['amount'];
+      journalOutAmount = journalJSON['amount'] - journal.amount;
+    } else if (journalJSON.containsKey('amount') && !journal.isExpense) {
+      // IN amount change
+      amount = journalJSON['amount'] - journal.amount;
+      journalInAmount = journalJSON['amount'] - journal.amount;
+    }
+
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              accData.cashInHand += amount;
+              accData.journalOutAmount += journalOutAmount;
+              accData.journalInAmount += journalInAmount;
+
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+              // Update finance details
+              txUpdate(tx, finDocRef, data);
+
+              // Remove Payment
+              txUpdate(tx, docRef, journalJSON);
+            },
+          );
+        },
+      );
+    } catch (err) {
+      print('Journal UPDATE Transaction failure:' + err.toString());
+      throw err;
+    }
+  }
+
   Future removeJournal(String financeID, String branchName,
       String subBranchName, DateTime createdAt) async {
     DocumentReference docRef = this

@@ -363,12 +363,8 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
         CustomDialogs.actionWaiting(context, "Updating Journal!");
         JournalController _jc = JournalController();
 
-        var result = await _jc.updateJournalEntry(
-            widget.journal.financeID,
-            widget.journal.branchName,
-            widget.journal.subBranchName,
-            widget.journal.createdAt,
-            updatedJournal);
+        var result =
+            await _jc.updateJournalEntry(widget.journal, updatedJournal);
         if (!result['is_success']) {
           Navigator.pop(context);
           _scaffoldKey.currentState

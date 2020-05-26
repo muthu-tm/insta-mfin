@@ -666,11 +666,7 @@ class _EditPaymentState extends State<EditPayment> {
         CustomDialogs.actionWaiting(context, " Editing Payment");
         PaymentController _pc = PaymentController();
         var result = await _pc.updatePayment(
-            widget.payment.financeID,
-            widget.payment.branchName,
-            widget.payment.subBranchName,
-            widget.payment.customerNumber,
-            widget.payment.createdAt,
+            widget.payment,
             updatedPayment);
 
         if (!result['is_success']) {

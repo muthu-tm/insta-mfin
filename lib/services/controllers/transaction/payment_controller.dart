@@ -181,21 +181,16 @@ class PaymentController {
   }
 
   Future updatePayment(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int custNumber,
-      DateTime createdAt,
+      Payment payment,
       Map<String, dynamic> paymentJSON) async {
     try {
-      await Payment().updatePayment(financeId, branchName, subBranchName,
-          custNumber, createdAt, paymentJSON);
+      await Payment().updatePayment(payment, paymentJSON);
 
       return CustomResponse.getSuccesReponse(
-          "Updated $custNumber customer's Payment createdAt ${createdAt.toString()}");
+          "Updated ${payment.customerNumber} customer's Payment");
     } catch (err) {
       print(
-          "Error while updating $custNumber customer's Payment createdAt ${createdAt.toString()}: " +
+          "Error while updating ${payment.customerNumber}customer's Payment: " +
               err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }

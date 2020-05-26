@@ -245,7 +245,6 @@ class Payment extends Model {
           );
         },
       );
-      print('Payment CREATE Transaction success!');
     } catch (err) {
       print('Payment CREATE Transaction failure:' + err.toString());
       throw err;
@@ -364,18 +363,53 @@ class Payment extends Model {
   }
 
   Future<void> updatePayment(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int number,
-      DateTime createdAt,
-      Map<String, dynamic> paymentJSON) async {
+      Payment payment, Map<String, dynamic> paymentJSON) async {
     paymentJSON['updated_at'] = DateTime.now();
 
-    await getCollectionRef()
-        .document(getDocumentID(
-            financeId, branchName, subBranchName, number, createdAt))
-        .updateData(paymentJSON);
+    DocumentReference docRef = getDocumentReference(
+        payment.financeID,
+        payment.branchName,
+        payment.subBranchName,
+        payment.customerNumber,
+        payment.createdAt);
+
+    int amount = 0;
+    int totalAmount = 0;
+
+    if (paymentJSON.containsKey('principal_amount')) {
+      amount = paymentJSON['principal_amount'] - payment.principalAmount;
+    }
+
+    if (paymentJSON.containsKey('total_amount')) {
+      totalAmount = paymentJSON['total_amount'] - payment.principalAmount;
+    }
+
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              accData.cashInHand += amount;
+              accData.paymentsAmount += totalAmount;
+
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+              // Update finance details
+              txUpdate(tx, finDocRef, data);
+
+              // Remove Payment
+              txUpdate(tx, docRef, paymentJSON);
+            },
+          );
+        },
+      );
+    } catch (err) {
+      print('Payment UPDATE Transaction failure:' + err.toString());
+      throw err;
+    }
   }
 
   Future removePayment(String financeId, String branchName,
@@ -411,7 +445,7 @@ class Payment extends Model {
               QuerySnapshot snapshot = await docRef
                   .collection('customer_collections')
                   .getDocuments();
-                  
+
               // Remove Payment's collection
               for (DocumentSnapshot ds in snapshot.documents) {
                 // ds.reference.delete();
@@ -424,8 +458,6 @@ class Payment extends Model {
           );
         },
       );
-
-      print('Payment DELETE Transaction success!');
     } catch (err) {
       print('Payment DELETE Transaction failure:' + err.toString());
       throw err;

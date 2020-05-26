@@ -91,19 +91,14 @@ class MiscellaneousController {
   }
 
   Future updateExpense(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      DateTime createdAt,
-      Map<String, dynamic> meData) async {
+      MiscellaneousExpense expense, Map<String, dynamic> meData) async {
     try {
       MiscellaneousExpense _me = MiscellaneousExpense();
 
-      await _me.updateByID(meData,
-          _me.getDocumentID(financeId, branchName, subBranchName, createdAt));
+      await _me.updateExpense(expense, meData);
 
       return CustomResponse.getSuccesReponse(
-          "Edited the Miscellaneous Expense successfully");
+          "Updated Miscellaneous Expense successfully");
     } catch (err) {
       print("Error while editing Miscellaneous Expense: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
