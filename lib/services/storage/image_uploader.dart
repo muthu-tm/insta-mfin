@@ -1,21 +1,9 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 
 class Uploader {
-
-  // static Future<void> copyToAppDirectory(File image, String emailID) async {
-  //   try {
-  //     // getting a directory path for saving
-  //     final String path = (await getApplicationDocumentsDirectory()).path;
-
-  //     File file = await image.copy('$path/$emailID.png');
-  //   print("Local User Profile Image Path: " + file.path);
-  //   } catch (err) {
-  //     print("Error while copying image file: " + err.toString());
-  //   }
-  // }
-
   static void uploadImage(String fileDir, String originalFile, int mobileNumber,
       Function onUploaded, Function onFailed) async {
     File fileToUpload = new File(originalFile);
@@ -30,7 +18,11 @@ class Uploader {
       updateUserData(mobileNumber, profilePathUrl);
       onUploaded();
     }).catchError((err) {
-      print("Error while uploading image file: " + err.toString());
+      Analytics.reportError({
+        "type": 'image_upload_error',
+        'user_id': mobileNumber,
+        'error': err.toString()
+      });
       onFailed();
     });
   }
@@ -38,13 +30,14 @@ class Uploader {
   static void updateUserData(int mobileNumber, String profilePathUrl) {
     try {
       User user = User(mobileNumber);
-      user.update({
-        'display_profile_path': profilePathUrl
-      });
+      user.update({'display_profile_path': profilePathUrl});
     } catch (err) {
-      print(
-          "Error occurred while updting user data with display profile Image path: " +
-              err.toString());
+      Analytics.reportError({
+        "type": 'image_url_update_error',
+        'user_id': mobileNumber,
+        'path': profilePathUrl,
+        'error': err.toString()
+      });
     }
   }
 }

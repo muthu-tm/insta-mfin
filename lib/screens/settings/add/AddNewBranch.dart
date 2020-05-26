@@ -5,7 +5,6 @@ import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -41,16 +40,32 @@ class _AddBranchState extends State<AddBranch> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Add Branch'),
         backgroundColor: CustomColors.mfinBlue,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _submit();
+        },
+        label: Text(
+          "Save",
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: "Georgia",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(
+          Icons.check,
+          size: 35,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
       ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: new Container(
-            height: MediaQuery.of(context).size.height * 1.16,
             color: CustomColors.mfinLightGrey,
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -151,7 +166,6 @@ class _AddBranchState extends State<AddBranch> {
           ),
         ),
       ),
-      bottomSheet: EditorsActionButtons(_submit, _close),
     );
   }
 
@@ -167,10 +181,11 @@ class _AddBranchState extends State<AddBranch> {
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1901, 1),
-        lastDate: DateTime(2100));
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1900, 1),
+      lastDate: DateTime.now(),
+    );
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
@@ -203,9 +218,5 @@ class _AddBranchState extends State<AddBranch> {
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
-  }
-
-  _close() {
-    Navigator.pop(context);
   }
 }

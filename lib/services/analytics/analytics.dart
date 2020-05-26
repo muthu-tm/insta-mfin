@@ -1,14 +1,14 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
-class UserAnalytics {
+class Analytics {
   static FirebaseAnalytics analytics;
   static FirebaseAnalyticsObserver observer;
 
   static setupAnalytics(
       FirebaseAnalytics analytics, FirebaseAnalyticsObserver observer) {
-    UserAnalytics.analytics = analytics;
-    UserAnalytics.observer = observer;
+    Analytics.analytics = analytics;
+    Analytics.observer = observer;
   }
 
   static Future<void> sendAnalyticsEvent(String name, Map<String, dynamic> data) async {
@@ -20,7 +20,7 @@ class UserAnalytics {
 
   static Future loginEvent(String userID) async {
     await analytics.setUserId(userID);
-    await analytics.logLogin(loginMethod: 'mobile');
+    await analytics.logLogin(loginMethod: 'Mobile');
   }
 
   static Future signupEvent(String userId) async {
@@ -31,25 +31,13 @@ class UserAnalytics {
   static Future reportError(Map<String, dynamic> data) async {
     await analytics.logEvent(name: 'Error', parameters: data);
   }
-  
-  // static Future<void> setUserId(String userID) async {
-  //   await analytics.setUserId(userID);
-  // }
 
-  static Future<void> setCurrentScreen() async {
-    await analytics.setCurrentScreen(
-      screenName: 'Analytics Demo',
-      screenClassOverride: 'AnalyticsDemo',
-    );
+  static Future<void> setAnalyticsCollectionEnabled(bool isEnabled) async {
+    await analytics.setAnalyticsCollectionEnabled(isEnabled);
   }
 
-  static Future<void> setAnalyticsCollectionEnabled() async {
-    await analytics.setAnalyticsCollectionEnabled(false);
-    await analytics.setAnalyticsCollectionEnabled(true);
-  }
-
-  static Future<void> setUserProperty() async {
-    await analytics.setUserProperty(name: 'regular', value: 'indeed');
+  static Future<void> setUserProperty(String name, String value) async {
+    await analytics.setUserProperty(name: name, value: value);
   }
 
 }

@@ -3,7 +3,6 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
@@ -44,14 +43,31 @@ class _AddAdminPageState extends State<AddAdminPage> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Add Admin'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _submit();
+        },
+        label: Text(
+          "Save",
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: "Georgia",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(
+          Icons.check,
+          size: 35,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
+      ),
       body: SingleChildScrollView(
         child: new Container(
-          // height: MediaQuery.of(context).size.height * 0.80,
           color: CustomColors.mfinLightGrey,
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -81,7 +97,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
                   decoration: InputDecoration(
                     fillColor: CustomColors.mfinGrey,
                     filled: true,
-                    hintText: "Search user by mobile number",
+                    hintText: "Type USER's mobile number...",
                     errorText: !mobileNumberValid
                         ? 'Enter the valid 10 digit MobileNumber'
                         : null,
@@ -125,11 +141,6 @@ class _AddAdminPageState extends State<AddAdminPage> {
           ),
         ),
       ),
-      bottomSheet: EditorsActionButtons(() {
-        _submit();
-      }, () {
-        _close();
-      }),
     );
   }
 
@@ -168,7 +179,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
       Navigator.pop(context);
     } else {
       String groupName = widget.groupName;
-      CustomDialogs.actionWaiting(context, "Updating Admin for $groupName");
+      CustomDialogs.actionWaiting(context, "Updating Admin!");
       var response;
 
       try {
@@ -216,9 +227,5 @@ class _AddAdminPageState extends State<AddAdminPage> {
         Navigator.pop(context);
       }
     }
-  }
-
-  _close() {
-    Navigator.pop(context);
   }
 }

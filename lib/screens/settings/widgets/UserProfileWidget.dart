@@ -8,7 +8,7 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 class UserProfileWidget extends StatelessWidget {
   final UserController _uc = UserController();
 
-  UserProfileWidget(this.user, [this.title = "Profile Settings"]);
+  UserProfileWidget(this.user, [this.title = "Profile Details"]);
 
   final User user;
   final String title;

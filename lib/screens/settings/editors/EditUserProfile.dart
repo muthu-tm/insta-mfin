@@ -7,7 +7,6 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -45,180 +44,191 @@ class _EditUserProfileState extends State<EditUserProfile> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Edit Profile'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _submit();
+        },
+        label: Text(
+          "Save",
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: "Georgia",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(
+          Icons.check,
+          size: 35,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
+      ),
       body: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: new Container(
-              color: CustomColors.mfinLightGrey,
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  RowHeaderText(textName: 'Name'),
-                  ListTile(
-                    title: TextFormField(
-                      keyboardType: TextInputType.text,
-                      initialValue: user.name,
-                      decoration: InputDecoration(
-                        hintText: 'User Name',
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Enter your Name';
-                        }
-                        updatedUser['user_name'] = value;
-                      },
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: new Container(
+            color: CustomColors.mfinLightGrey,
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                RowHeaderText(textName: 'Name'),
+                ListTile(
+                  title: TextFormField(
+                    keyboardType: TextInputType.text,
+                    initialValue: user.name,
+                    decoration: InputDecoration(
+                      hintText: 'User Name',
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 3.0, horizontal: 3.0),
+                      border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
                     ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Enter your Name';
+                      }
+                      updatedUser['user_name'] = value;
+                      return null;
+                    },
                   ),
-                  RowHeaderText(textName: 'Password'),
-                  ListTile(
-                    title: new TextFormField(
-                      keyboardType: TextInputType.text,
-                      obscureText: hidePassword,
-                      initialValue: user.password,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your new Password',
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            // Based on passwordVisible state choose the icon
-                            _passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: CustomColors.mfinBlue,
-                            size: 35.0,
-                          ),
-                          onPressed: () {
-                            // Update the state i.e. toogle the state of passwordVisible variable
-                            setState(() {
-                              _passwordVisible = !_passwordVisible;
-                              hidePassword = !hidePassword;
-                            });
-                          },
-                        ),
-                      ),
-                      validator: (passkey) =>
-                          FieldValidator.passwordValidator(passkey, setPassKey),
-                    ),
-                  ),
-                  RowHeaderText(textName: 'Email'),
-                  ListTile(
-                    title: new TextFormField(
-                        keyboardType: TextInputType.text,
-                        initialValue: user.emailID,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your EmailID',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (email) {
-                          if (email.trim().isEmpty) {
-                            setEmailID("");
-                            return null;
-                          } else {
-                            return FieldValidator.emailValidator(
-                                email.trim(), setEmailID);
-                          }
-                        }),
-                  ),
-                  RowHeaderText(textName: 'Date Of Birth'),
-                  ListTile(
-                    title: new TextFormField(
-                      decoration: InputDecoration(
-                        hintText: DateUtils.formatDate(selectedDate),
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                        suffixIcon: Icon(
-                          Icons.perm_contact_calendar,
+                ),
+                RowHeaderText(textName: 'Password'),
+                ListTile(
+                  title: new TextFormField(
+                    keyboardType: TextInputType.text,
+                    obscureText: hidePassword,
+                    initialValue: user.password,
+                    decoration: InputDecoration(
+                      hintText: 'Enter your new Password',
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 3.0, horizontal: 3.0),
+                      border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: CustomColors.mfinBlue,
                           size: 35.0,
                         ),
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                            hidePassword = !hidePassword;
+                          });
+                        },
                       ),
-                      enabled: false,
-                      autofocus: false,
-                      onTap: () => _selectDate(context),
                     ),
+                    validator: (passkey) =>
+                        FieldValidator.passwordValidator(passkey, setPassKey),
                   ),
-                  RowHeaderText(textName: 'Gender'),
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      ButtonBar(
-                        alignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Radio(
-                            value: 0,
-                            groupValue: groupValue,
-                            activeColor: CustomColors.mfinBlue,
-                            onChanged: (val) {
-                              setSelectedRadio(val);
-                            },
-                          ),
-                          Text(
-                            "Male",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
-                          Radio(
-                            value: 1,
-                            groupValue: groupValue,
-                            activeColor: CustomColors.mfinBlue,
-                            onChanged: (val) {
-                              setSelectedRadio(val);
-                            },
-                          ),
-                          Text(
-                            "Female",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
-                        ],
+                ),
+                RowHeaderText(textName: 'Email'),
+                ListTile(
+                  title: new TextFormField(
+                      keyboardType: TextInputType.text,
+                      initialValue: user.emailID,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your EmailID',
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 3.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
                       ),
-                    ],
+                      validator: (email) {
+                        if (email.trim().isEmpty) {
+                          setEmailID("");
+                          return null;
+                        } else {
+                          return FieldValidator.emailValidator(
+                              email.trim(), setEmailID);
+                        }
+                      }),
+                ),
+                RowHeaderText(textName: 'Date Of Birth'),
+                ListTile(
+                  title: new TextFormField(
+                    decoration: InputDecoration(
+                      hintText: DateUtils.formatDate(selectedDate),
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 3.0, horizontal: 3.0),
+                      border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
+                      suffixIcon: Icon(
+                        Icons.perm_contact_calendar,
+                        color: CustomColors.mfinBlue,
+                        size: 35.0,
+                      ),
+                    ),
+                    enabled: false,
+                    autofocus: false,
+                    onTap: () => _selectDate(context),
                   ),
-                  AddressWidget("Address", user.address, updatedAddress),
-                ],
-              ),
+                ),
+                RowHeaderText(textName: 'Gender'),
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    ButtonBar(
+                      alignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Radio(
+                          value: 0,
+                          groupValue: groupValue,
+                          activeColor: CustomColors.mfinBlue,
+                          onChanged: (val) {
+                            setSelectedRadio(val);
+                          },
+                        ),
+                        Text(
+                          "Male",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black38,
+                          ),
+                        ),
+                        Radio(
+                          value: 1,
+                          groupValue: groupValue,
+                          activeColor: CustomColors.mfinBlue,
+                          onChanged: (val) {
+                            setSelectedRadio(val);
+                          },
+                        ),
+                        Text(
+                          "Female",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black38,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                AddressWidget("Address", user.address, updatedAddress),
+              ],
             ),
-          )),
-      bottomSheet: EditorsActionButtons(() {
-        _submit();
-      }, () {
-        Navigator.pop(context);
-      }),
-      // bottomNavigationBar: bottomBar(context),
+          ),
+        ),
+      ),
     );
   }
 
@@ -232,10 +242,11 @@ class _EditUserProfileState extends State<EditUserProfile> {
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1901, 1),
-        lastDate: DateTime(2100));
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1900, 1),
+      lastDate: DateTime.now(),
+    );
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;

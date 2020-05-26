@@ -1,6 +1,7 @@
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -38,6 +39,12 @@ class CustController {
 
       return CustomResponse.getSuccesReponse(cust.toJson());
     } catch (err) {
+      Analytics.reportError({
+        "type": 'customer_create_error',
+        "cust_number": mobileNumber,
+        'name': name,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -65,7 +72,11 @@ class CustController {
 
       return custList;
     } catch (err) {
-      print("Error while serching Customer with Range: " + number.toString());
+      Analytics.reportError({
+        "type": 'customer_search_error',
+        "cust_number": number,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -79,6 +90,11 @@ class CustController {
 
       return CustomResponse.getSuccesReponse(result);
     } catch (err) {
+      Analytics.reportError({
+        "type": 'customer_update_error',
+        "cust_number": mobileNumber,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -98,7 +114,11 @@ class CustController {
 
       return CustomResponse.getSuccesReponse("Successfully removed customer!");
     } catch (err) {
-      print("Error while removing customer $mobileNumber: " + err.toString());
+      Analytics.reportError({
+        "type": 'customer_remove_error',
+        "cust_number": mobileNumber,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -109,6 +129,11 @@ class CustController {
 
       return CustomResponse.getFailureReponse(customer.toJson());
     } catch (err) {
+      Analytics.reportError({
+        "type": 'customer_replace_error',
+        "cust_number": customer.mobileNumber,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

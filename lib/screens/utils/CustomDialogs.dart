@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/GradientText.dart';
 
 class CustomDialogs {
   static information(BuildContext context, String title, String description) {
@@ -47,6 +48,7 @@ class CustomDialogs {
   static actionWaiting(BuildContext context, String actionName) {
     AlertDialog alert = AlertDialog(
       content: new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Stack(
             children: <Widget>[
@@ -73,7 +75,18 @@ class CustomDialogs {
               ),
             ],
           ),
-          Container(margin: EdgeInsets.only(left: 5), child: Text(actionName)),
+          Container(
+            margin: EdgeInsets.only(left: 5),
+            child: GradientText(
+              actionName,
+              gradient: LinearGradient(
+                colors: [
+                  CustomColors.mfinBlue,
+                  CustomColors.mfinButtonGreen,
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

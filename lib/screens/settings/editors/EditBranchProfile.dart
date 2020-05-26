@@ -6,7 +6,6 @@ import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -37,10 +36,27 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Edit Branch Profile'),
         backgroundColor: CustomColors.mfinBlue,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _submit();
+        },
+        label: Text(
+          "Save",
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: "Georgia",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(
+          Icons.check,
+          size: 35,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -147,7 +163,6 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
           ),
         ),
       ),
-      bottomSheet: EditorsActionButtons(_submit, _close),
     );
   }
 
@@ -161,10 +176,11 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1901, 1),
-        lastDate: DateTime(2100));
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1900, 1),
+      lastDate: DateTime.now(),
+    );
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
@@ -176,7 +192,8 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Updating Branch ${widget.branch.branchName}!");
+      CustomDialogs.actionWaiting(
+          context, "Updating ${widget.branch.branchName}!");
       BranchController _branchController = BranchController();
       updatedBranch['address'] = updatedAddress.toJson();
       var result = await _branchController.updateBranch(
@@ -186,7 +203,8 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to update branch ${widget.branch.branchName}: " + result['message']);
+        print("Unable to update branch ${widget.branch.branchName}: " +
+            result['message']);
       } else {
         Navigator.pop(context);
         Navigator.pop(context);
@@ -197,9 +215,5 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 5));
     }
-  }
-
-  _close() {
-    Navigator.pop(context);
   }
 }

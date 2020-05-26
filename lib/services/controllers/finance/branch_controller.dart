@@ -1,6 +1,7 @@
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -12,13 +13,20 @@ class BranchController {
   Future addBranch(String financeID, String branchName, String contactNumber,
       String email, Address address, String dateOfRegistration) async {
     try {
+      int addedBy = UserController().getCurrentUserID();
+
       Branch newBranch = Branch();
       if (await newBranch.isExist(financeID, branchName)) {
+        Analytics.reportError({
+          "type": 'branch_create_error',
+          "finance_id": financeID,
+          'branach_name': branchName,
+          'error':
+              "Branch Name must be unique! A branch exists with the given Branch Name."
+        });
         return CustomResponse.getFailureReponse(
             "Branch Name must be unique! A branch exists with the given Branch Name.");
       }
-      UserController _userController = UserController();
-      int addedBy = _userController.getCurrentUserID();
 
       FinanceController _financeController = FinanceController();
       newBranch.setBranchName(branchName);
@@ -34,6 +42,12 @@ class BranchController {
       Branch branch = await newBranch.create(financeID);
       return CustomResponse.getSuccesReponse(branch.toJson());
     } catch (err) {
+      Analytics.reportError({
+        "type": 'branch_create_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -54,8 +68,13 @@ class BranchController {
 
       return CustomResponse.getSuccesReponse(branch.toJson());
     } catch (err) {
-      print("Error while updating Admins for Branch $branchName: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'branch_admin_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        "is_add": isAdd,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -73,8 +92,13 @@ class BranchController {
       return CustomResponse.getSuccesReponse(
           "Successfully updated Users list of Branch $branchName");
     } catch (err) {
-      print("Error while updating Branch User for $branchName: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'branch_user_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        "is_add": isAdd,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -97,7 +121,12 @@ class BranchController {
       Branch branch = Branch();
       return await branch.getBranchByID(financeID, branchID);
     } catch (err) {
-      print("Error while retrieving branch for BranchID: " + branchID);
+      Analytics.reportError({
+        "type": 'branch_get_error',
+        "finance_id": financeID,
+        'branach_id': branchID,
+        'error': err.toString()
+      });
       return null;
     }
   }
@@ -107,7 +136,12 @@ class BranchController {
       Branch branch = Branch();
       return await branch.getBranchByName(financeID, branchName);
     } catch (err) {
-      print("Error while retrieving branch for Branch: " + branchName);
+      Analytics.reportError({
+        "type": 'branch_get_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -124,7 +158,12 @@ class BranchController {
 
       return subBranches;
     } catch (err) {
-      print("Error while retrieving sub braches for Branch: " + branchName);
+      Analytics.reportError({
+        "type": 'branch_subbranch_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -141,8 +180,12 @@ class BranchController {
 
       return branches;
     } catch (err) {
-      print(
-          "Error while retrieving branch for user $userID: " + err.toString());
+      Analytics.reportError({
+        "type": 'branch_for_user_error',
+        "finance_id": financeID,
+        'user_id': userID,
+        'error': err.toString()
+      });
       return null;
     }
   }
@@ -157,7 +200,12 @@ class BranchController {
 
       return branch.admins;
     } catch (err) {
-      print("Error while retrieving data for Branch: " + branchName);
+      Analytics.reportError({
+        "type": 'branch_get_admin_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -173,7 +221,12 @@ class BranchController {
 
       return false;
     } catch (err) {
-      print("Error while validating Branch user $userID: " + err.toString());
+      Analytics.reportError({
+        "type": 'branch_check_admin_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -185,6 +238,12 @@ class BranchController {
 
       return CustomResponse.getSuccesReponse("Updated Branch $branchName");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'branch_update_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

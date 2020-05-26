@@ -1,8 +1,9 @@
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/fcm/user_token.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
-import './../../authenticate/auth.dart';
+import 'package:instamfin/services/authenticate/auth.dart';
 
 UserService _userService = locator<UserService>();
 
@@ -24,7 +25,12 @@ class AuthController {
       if (platformData != null) {
         user.updatePlatformDetails({"platform_data": platformData});
       } else {
-        print("Unable to update User's platform details");
+        Analytics.reportError({
+          "type": 'platform_update_error',
+          "user_id": mobileNumber,
+          'name': userName,
+          'error': "Unable to update User's platform details"
+        });
       }
 
       user.update({'last_signed_in_at': DateTime.now()});
@@ -49,7 +55,11 @@ class AuthController {
       if (platformData != null) {
         user.updatePlatformDetails({"platform_data": platformData});
       } else {
-        print("Unable to update User's platform details");
+        Analytics.reportError({
+          "type": 'platform_update_error',
+          "user_id": mobileNumber,
+          'error': "Unable to update User's platform details"
+        });
       }
 
       // update cloud firestore "users" collection

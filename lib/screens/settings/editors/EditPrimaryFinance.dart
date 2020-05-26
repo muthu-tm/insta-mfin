@@ -7,7 +7,6 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
@@ -178,15 +177,31 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
           key: _scaffoldKey,
           backgroundColor: CustomColors.mfinLightGrey,
           appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
             title: Text('Edit Primary Finance'),
             backgroundColor: CustomColors.mfinBlue,
           ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              _submit();
+            },
+            label: Text(
+              "Save",
+              style: TextStyle(
+                fontSize: 17,
+                fontFamily: "Georgia",
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            splashColor: CustomColors.mfinWhite,
+            icon: Icon(
+              Icons.check,
+              size: 35,
+              color: CustomColors.mfinFadedButtonGreen,
+            ),
+          ),
           body: container,
-          bottomSheet: EditorsActionButtons(() {
-            _submit();
-          }, _close),
         );
       },
     );
@@ -263,10 +278,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
     } else {
       CustomDialogs.actionWaiting(context, "Validating your Details!");
       if (_selectedSubBranch != "0") {
-        _updatePrimary(
-            widget.userID,
-            _selectedFinance,
-            _selectedBranch,
+        _updatePrimary(widget.userID, _selectedFinance, _selectedBranch,
             _selectedSubBranch);
       } else if (_selectedBranch != "0") {
         BranchController _bc = BranchController();
@@ -278,8 +290,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
               "You cannot set $_selectedBranch as Primary; Because you are not an Admin of $_selectedBranch!",
               3));
         } else {
-          _updatePrimary(widget.userID, _selectedFinance,
-              _selectedBranch, "");
+          _updatePrimary(widget.userID, _selectedFinance, _selectedBranch, "");
         }
       } else {
         bool isAdmin = await financeController.isUserAdmin(
@@ -296,17 +307,14 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
     }
   }
 
-  _updatePrimary(
-      int userID, String financeID, String branchName, String subBranchName) async {
+  _updatePrimary(int userID, String financeID, String branchName,
+      String subBranchName) async {
     Navigator.pop(context);
     CustomDialogs.actionWaiting(context, "Updating Primary Finance!");
     UserController _uc = UserController();
-    await _uc.updatePrimaryFinance(userID, financeID, branchName, subBranchName);
+    await _uc.updatePrimaryFinance(
+        userID, financeID, branchName, subBranchName);
     Navigator.pop(context);
-    Navigator.pop(context);
-  }
-
-  _close() {
     Navigator.pop(context);
   }
 }

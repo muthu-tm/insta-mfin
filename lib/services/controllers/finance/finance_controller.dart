@@ -1,6 +1,7 @@
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
@@ -32,6 +33,11 @@ class FinanceController {
 
       return CustomResponse.getSuccesReponse(financeCompany.toJson());
     } catch (err) {
+      Analytics.reportError({
+        "type": 'finance_create_error',
+        "finance_name": name,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -47,8 +53,11 @@ class FinanceController {
 
       return finances;
     } catch (err) {
-      print(
-          "Error while retrieving finace for user $userID: " + err.toString());
+      Analytics.reportError({
+        "type": 'finance_get_error',
+        "user_id": userID,
+        'error': err.toString()
+      });
       return null;
     }
   }
@@ -66,7 +75,11 @@ class FinanceController {
       }
       return Finance.fromJson(financeData);
     } catch (err) {
-      print("Error while fetching Finance using financeID: " + err.toString());
+      Analytics.reportError({
+        "type": 'finance_get_error',
+        "finance_id": financeID,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -79,7 +92,11 @@ class FinanceController {
       }
       return financeData['finance_name'];
     } catch (err) {
-      print("Error while fetching Finance using financeID: " + err.toString());
+      Analytics.reportError({
+        "type": 'finance_get_error',
+        "user_id": financeID,
+        'error': err.toString()
+      });
       return "";
     }
   }
@@ -98,8 +115,12 @@ class FinanceController {
 
       return CustomResponse.getSuccesReponse(finance.toJson());
     } catch (err) {
-      print("Error while updating Admins for Finance $financeID: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'finance_admin_error',
+        "is_add": isAdd,
+        "finance_id": financeID,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -113,8 +134,12 @@ class FinanceController {
       return CustomResponse.getSuccesReponse(
           "Successfully updated Users list of Finance $financeID");
     } catch (err) {
-      print("Error while updating Finance User for $financeID: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'finance_user_error',
+        "is_add": isAdd,
+        "finance_id": financeID,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -142,7 +167,11 @@ class FinanceController {
 
       return branches;
     } catch (err) {
-      print("Error while retrieving braches for ID: " + financeID);
+      Analytics.reportError({
+        "type": 'finance_branch_error',
+        "finance_id": financeID,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -157,7 +186,11 @@ class FinanceController {
 
       return finance.admins;
     } catch (err) {
-      print("Error while retrieving braches for ID: " + financeID);
+      Analytics.reportError({
+        "type": 'finance_admin_error',
+        "finance_id": financeID,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -172,7 +205,11 @@ class FinanceController {
 
       return false;
     } catch (err) {
-      print("Error while validating Finance user $userID: " + err.toString());
+      Analytics.reportError({
+        "type": 'finance_check_admin_error',
+        "finance_id": financeID,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -185,16 +222,11 @@ class FinanceController {
 
       return CustomResponse.getSuccesReponse(result);
     } catch (err) {
-      return CustomResponse.getFailureReponse(err.toString());
-    }
-  }
-
-  Future replaceFinanceData(Finance finance) async {
-    try {
-      finance = await finance.replace();
-
-      return CustomResponse.getSuccesReponse(finance.toJson());
-    } catch (err) {
+      Analytics.reportError({
+        "type": 'finance_update_error',
+        "finance_id": financeID,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

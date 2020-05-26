@@ -202,9 +202,9 @@ class SubBranch {
   }
 
   Future<SubBranch> getSubBranchByID(
-      String financeID, String branchID, String subBranchID) async {
+      String financeID, String branchName, String subBranchID) async {
     DocumentSnapshot snapshot =
-        await getSubBranchCollectionRef(financeID, branchID)
+        await getSubBranchCollectionRef(financeID, branchName)
             .document(subBranchID)
             .get();
 

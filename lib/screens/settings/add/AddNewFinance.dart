@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
-import 'package:instamfin/screens/settings/SettingsScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -37,10 +35,27 @@ class _AddFinancePageState extends State<AddFinancePage> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Add Finance'),
         backgroundColor: CustomColors.mfinBlue,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _submit();
+        },
+        label: Text(
+          "Save",
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: "Georgia",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(
+          Icons.check,
+          size: 35,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -118,44 +133,48 @@ class _AddFinancePageState extends State<AddFinancePage> {
                 RowHeaderText(textName: "Contact Number"),
                 ListTile(
                   title: new TextFormField(
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        hintText: 'Finance Contact Number',
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                      ),
-                      validator: (number) {
-                        if (number.trim().isNotEmpty) {
-                          return FieldValidator.mobileValidator(
-                              number.trim(), setContactNumber);
-                        }
-                      }),
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      hintText: 'Finance Contact Number',
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 3.0, horizontal: 3.0),
+                      border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
+                    ),
+                    validator: (number) {
+                      if (number.trim().isNotEmpty) {
+                        return FieldValidator.mobileValidator(
+                            number.trim(), setContactNumber);
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 RowHeaderText(textName: "Finance EmailID"),
                 ListTile(
                   title: new TextFormField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        hintText: 'Finance EmailID',
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                      ),
-                      validator: (email) {
-                        if (email.trim().isNotEmpty) {
-                          return FieldValidator.emailValidator(
-                              email.trim(), setEmailID);
-                        }
-                      }),
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: 'Finance EmailID',
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 3.0, horizontal: 3.0),
+                      border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
+                    ),
+                    validator: (email) {
+                      if (email.trim().isNotEmpty) {
+                        return FieldValidator.emailValidator(
+                            email.trim(), setEmailID);
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 AddressWidget("Office Address", new Address(), address),
               ],
@@ -163,8 +182,6 @@ class _AddFinancePageState extends State<AddFinancePage> {
           ),
         ),
       ),
-      bottomSheet: EditorsActionButtons(_submit, _close),
-      // bottomNavigationBar: bottomBar(context),
     );
   }
 
@@ -180,10 +197,11 @@ class _AddFinancePageState extends State<AddFinancePage> {
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1901, 1),
-        lastDate: DateTime(2100));
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1900, 1),
+      lastDate: DateTime.now(),
+    );
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
@@ -209,19 +227,12 @@ class _AddFinancePageState extends State<AddFinancePage> {
       } else {
         Navigator.pop(context);
         print("New Finance created successfully");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SettingsScreen()),
-        );
+        Navigator.pop(context);
       }
     } else {
       print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
-  }
-
-  _close() {
-    Navigator.pop(context);
   }
 }

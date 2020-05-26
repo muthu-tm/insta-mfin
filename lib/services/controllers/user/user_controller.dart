@@ -2,6 +2,7 @@ import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
@@ -26,7 +27,8 @@ class UserController {
   Future<User> getUserByID(String number) async {
     try {
       if (number != null && number.trim() != "") {
-        var userJSON = await User(int.parse(number)).getByID(number);
+        var userJSON =
+            await User(int.parse(number.trim())).getByID(number.trim());
         if (userJSON != null) {
           User user = User.fromJson(userJSON);
           return user;
@@ -37,20 +39,12 @@ class UserController {
         throw 'Invalid UserID passed $number';
       }
     } catch (err) {
+      Analytics.reportError({
+        "type": 'user_get_error',
+        "user_id": number,
+        'error': err.toString()
+      });
       throw err;
-    }
-  }
-
-  Future replaceUser(User user) async {
-    try {
-      var result = await user.replace();
-
-      _userService.setCachedUser(
-          User.fromJson(await user.getByID(user.mobileNumber.toString())));
-
-      return CustomResponse.getSuccesReponse(result);
-    } catch (err) {
-      return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
@@ -64,6 +58,11 @@ class UserController {
 
       return CustomResponse.getSuccesReponse(result);
     } catch (err) {
+      Analytics.reportError({
+        "type": 'user_update_error',
+        "user_id": userJson['mobile_number'],
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -108,12 +107,14 @@ class UserController {
 
       return result;
     } catch (err) {
+      Analytics.reportError(
+          {"type": 'get_primary_error', 'error': err.toString()});
       throw err;
     }
   }
 
-  Future updatePrimaryFinance(int userNumber, String financeID, String branchName,
-      String subBranchName) async {
+  Future updatePrimaryFinance(int userNumber, String financeID,
+      String branchName, String subBranchName) async {
     try {
       User user = User(userNumber);
 
@@ -127,8 +128,14 @@ class UserController {
       _userService.cachedUser.primaryBranch = branchName;
       _userService.cachedUser.primarySubBranch = subBranchName;
     } catch (err) {
-      print('Error while updating Primary Finance for $userNumber.! ' +
-          err.toString());
+      Analytics.reportError({
+        "type": 'update_primary_error',
+        'user_id': userNumber,
+        "finance_id": financeID,
+        'branach_name': branchName,
+        "sub_branch_name": subBranchName,
+        'error': err.toString()
+      });
       throw err;
     }
   }
@@ -138,12 +145,22 @@ class UserController {
       User user = User(mobileNumber);
       var userJson = await user.getByID(mobileNumber.toString());
       if (userJson == null) {
+        Analytics.reportError({
+        "type": 'user_get_error',
+        'user_id': mobileNumber,
+        'error': "No user found for this mobile number!"
+      });
         return CustomResponse.getFailureReponse(
             "No user found for this mobile number!");
       }
 
       return CustomResponse.getSuccesReponse(userJson);
     } catch (err) {
+      Analytics.reportError({
+        "type": 'user_get_error',
+        'user_id': mobileNumber,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

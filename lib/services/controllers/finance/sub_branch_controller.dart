@@ -1,5 +1,6 @@
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
@@ -16,6 +17,14 @@ class SubBranchController {
     try {
       SubBranch newSubBranch = SubBranch();
       if (await newSubBranch.isExist(financeID, branchName, subBranchName)) {
+        Analytics.reportError({
+          "type": 'finance_create_error',
+          "finance_id": financeID,
+          "branch_name": branchName,
+          "sub_branch_name": subBranchName,
+          'error':
+              "Branch Name must be unique! A subBranch exists with the given Branch Name."
+        });
         return CustomResponse.getFailureReponse(
             "Branch Name must be unique! A subBranch exists with the given Branch Name.");
       }
@@ -38,6 +47,13 @@ class SubBranchController {
       SubBranch subBranch = await newSubBranch.create(financeID, branchName);
       return CustomResponse.getSuccesReponse(subBranch.toJson());
     } catch (err) {
+      Analytics.reportError({
+        "type": 'sub_branch_create_error',
+        "finance_id": financeID,
+        "branch_name": branchName,
+        "sub_branch_name": subBranchName,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -47,15 +63,19 @@ class SubBranchController {
     try {
       SubBranch subBranch = SubBranch();
       await subBranch.updateArrayField(
-          isAdd,
-          {'admins': userList},
-          financeID,
-          branchName,
-          subBranchName);
+          isAdd, {'admins': userList}, financeID, branchName, subBranchName);
 
-      return CustomResponse.getSuccesReponse("Successfully updated Admin list of SubBranch $subBranchName");
+      return CustomResponse.getSuccesReponse(
+          "Successfully updated Admin list of SubBranch $subBranchName");
     } catch (err) {
-      print("Error while updating Admins for SubBranch $subBranchName: " + err.toString());
+      Analytics.reportError({
+        "type": 'sub_branch_admin_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        "sub_branch_name": subBranchName,
+        "is_add": isAdd,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -73,30 +93,50 @@ class SubBranchController {
 
       return subBranches;
     } catch (err) {
-      print("Error while retrieving Sub branches for an user $userID: " + err.toString());
+      Analytics.reportError({
+        "type": 'branch_get_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        "user_id": userID,
+        'error': err.toString()
+      });
       return null;
     }
   }
 
   Future<SubBranch> getSubBranchByID(
-      String financeID, String branchID, String subBranchID) async {
+      String financeID, String branchName, String subBranchID) async {
     try {
-      SubBranch subBranch = SubBranch();
-      return await subBranch.getSubBranchByID(financeID, branchID, subBranchID);
+      return await SubBranch()
+          .getSubBranchByID(financeID, branchName, subBranchID);
     } catch (err) {
-      print(
-          "Error while retrieving Sub Branch for Sub_BranchID: " + subBranchID);
+      Analytics.reportError({
+        "type": 'branch_get_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        "sub_branch_id": subBranchID,
+        'error': err.toString()
+      });
       return null;
     }
   }
 
-  Future updateSubBranch(
-      String financeID, String branchName, String subBranchName, Map<String, dynamic> subBranchJSON) async {
+  Future updateSubBranch(String financeID, String branchName,
+      String subBranchName, Map<String, dynamic> subBranchJSON) async {
     try {
-      await SubBranch().update(financeID, branchName, subBranchName, subBranchJSON);
+      await SubBranch()
+          .update(financeID, branchName, subBranchName, subBranchJSON);
 
-      return CustomResponse.getSuccesReponse("Successfully updated the subBranch $subBranchName");
+      return CustomResponse.getSuccesReponse(
+          "Successfully updated the subBranch $subBranchName");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'branch_update_error',
+        "finance_id": financeID,
+        'branach_name': branchName,
+        "sub_branch_name": subBranchName,
+        'error': err.toString()
+      });
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
