@@ -4,6 +4,7 @@ import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
+import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,6 +31,8 @@ class User extends Model {
   String dateOfBirth;
   @JsonKey(name: 'address', nullable: true)
   Address address;
+  @JsonKey(name: 'preferences')
+  UserPreferences preferences;
   @JsonKey(name: 'primary_finance', defaultValue: "")
   String primaryFinance;
   @JsonKey(name: 'primary_branch', defaultValue: "")
@@ -91,6 +94,10 @@ class User extends Model {
 
   setAddress(Address address) {
     this.address = address;
+  }
+
+  setPreferences(UserPreferences preferences) {
+    this.preferences = preferences;
   }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

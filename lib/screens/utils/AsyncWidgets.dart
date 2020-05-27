@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/GradientText.dart';
 
 class AsyncWidgets {
   static asyncWaiting() {
@@ -28,12 +29,14 @@ class AsyncWidgets {
           ),
         ],
       ),
-      Text(
+      GradientText(
         'Awaiting result...',
-        style: TextStyle(
-            fontSize: 17.0,
-            fontWeight: FontWeight.bold,
-            color: CustomColors.mfinGrey),
+        gradient: LinearGradient(
+          colors: [
+            CustomColors.mfinBlue,
+            CustomColors.mfinButtonGreen,
+          ],
+        ),
       ),
     ];
   }

@@ -2,6 +2,7 @@ import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
@@ -146,10 +147,10 @@ class UserController {
       var userJson = await user.getByID(mobileNumber.toString());
       if (userJson == null) {
         Analytics.reportError({
-        "type": 'user_get_error',
-        'user_id': mobileNumber,
-        'error': "No user found for this mobile number!"
-      });
+          "type": 'user_get_error',
+          'user_id': mobileNumber,
+          'error': "No user found for this mobile number!"
+        });
         return CustomResponse.getFailureReponse(
             "No user found for this mobile number!");
       }
@@ -159,6 +160,24 @@ class UserController {
       Analytics.reportError({
         "type": 'user_get_error',
         'user_id': mobileNumber,
+        'error': err.toString()
+      });
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future updateTransactionSettings(Map<String, dynamic> settingsJSON) async {
+    try {
+      User user = User(getCurrentUserID());
+      await user.update({'preferences': settingsJSON});
+
+      _userService.cachedUser.preferences = UserPreferences.fromJson(settingsJSON);
+
+      return CustomResponse.getSuccesReponse("Successfully updated preferences");
+    } catch (err) {
+      Analytics.reportError({
+        "type": 'user_transaction_error',
+        'user_id': getCurrentUserID(),
         'error': err.toString()
       });
       return CustomResponse.getFailureReponse(err.toString());

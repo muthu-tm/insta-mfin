@@ -19,6 +19,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..address = json['address'] == null
         ? new Address()
         : Address.fromJson(json['address'] as Map<String, dynamic>)
+    ..preferences = json['preferences'] == null
+        ? new UserPreferences()
+        : UserPreferences.fromJson(json['preferences'] as Map<String, dynamic>)
     ..primaryFinance = json['primary_finance'] as String ?? ''
     ..primaryBranch = json['primary_branch'] as String ?? ''
     ..primarySubBranch = json['primary_sub_branch'] as String ?? ''
@@ -51,6 +54,9 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
           : instance.displayProfilePath,
       'date_of_birth': instance.dateOfBirth == null ? '' : instance.dateOfBirth,
       'address': instance.address?.toJson(),
+      'preferences': instance.preferences == null
+          ? UserPreferences().toJson()
+          : instance.preferences,
       'primary_finance':
           instance.primaryFinance == null ? '' : instance.primaryFinance,
       'primary_branch':
