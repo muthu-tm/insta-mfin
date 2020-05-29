@@ -1,54 +1,39 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
+import 'package:instamfin/screens/customer/widgets/PaymentsCollectionWidget.dart';
+import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
 class ViewCollection extends StatelessWidget {
-  ViewCollection(this.collection, this.iconColor);
+  ViewCollection(this._collection, this.createdAt, this.iconColor);
 
-  final Collection collection;
+  final Collection _collection;
+  final DateTime createdAt;
   final Color iconColor;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text('Collection - ${collection.customerNumber}'),
-        backgroundColor: CustomColors.mfinBlue,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => AddPayment(customer),
-          //     settings: RouteSettings(name: '/customers/payments/add'),
-          //   ),
-          // );
-        },
-        label: Text(
-          "Edit",
-          style: TextStyle(
-            fontSize: 17,
-            fontFamily: "Georgia",
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        splashColor: CustomColors.mfinWhite,
-        icon: Icon(
-          Icons.edit,
-          size: 35,
-          color: CustomColors.mfinFadedButtonGreen,
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: new Container(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
+    return StreamBuilder(
+      stream: Collection().streamCollectionByID(
+          _collection.financeID,
+          _collection.branchName,
+          _collection.subBranchName,
+          _collection.customerNumber,
+          createdAt,
+          _collection.collectionDate),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        List<Widget> children;
+
+        if (snapshot.hasData) {
+          if (snapshot.data.exists) {
+            Collection collection = Collection.fromJson(snapshot.data.data);
+
+            children = <Widget>[
               ListTile(
                 leading: Icon(
                   Icons.drafts,
@@ -217,13 +202,81 @@ class ViewCollection extends StatelessWidget {
                         autofocus: false,
                       ),
                     ),
+                    PaymentsCollectionWidget(
+                        _scaffoldKey, collection, createdAt),
                   ],
                 ),
               ),
-            ],
+            ];
+          } else {
+            // No Collections available for this filterred view
+            children = [
+              Container(
+                height: 90,
+                child: Column(
+                  children: <Widget>[
+                    new Spacer(),
+                    Text(
+                      "Unable to find the collection Details",
+                      style: TextStyle(
+                        color: CustomColors.mfinAlertRed,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    new Spacer(),
+                  ],
+                ),
+              ),
+            ];
+          }
+        } else if (snapshot.hasError) {
+          children = AsyncWidgets.asyncError();
+        } else {
+          children = AsyncWidgets.asyncWaiting();
+        }
+
+        return new Scaffold(
+          appBar: AppBar(
+            title: Text('Collection - ${_collection.customerNumber}'),
+            backgroundColor: CustomColors.mfinBlue,
           ),
-        ),
-      ),
+          key: _scaffoldKey,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => AddPayment(customer),
+              //     settings: RouteSettings(name: '/customers/payments/add'),
+              //   ),
+              // );
+            },
+            label: Text(
+              "Edit",
+              style: TextStyle(
+                fontSize: 17,
+                fontFamily: "Georgia",
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            splashColor: CustomColors.mfinWhite,
+            icon: Icon(
+              Icons.edit,
+              size: 35,
+              color: CustomColors.mfinFadedButtonGreen,
+            ),
+          ),
+          body: SingleChildScrollView(
+            child: new Container(
+              child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: children),
+            ),
+          ),
+        );
+      },
     );
   }
 

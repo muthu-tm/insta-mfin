@@ -8,8 +8,8 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
-class PaymentCollectionWidget extends StatelessWidget {
-  PaymentCollectionWidget(this._payment, this.title, this.emptyText,
+class PaymentCollectionListWidget extends StatelessWidget {
+  PaymentCollectionListWidget(this._payment, this.title, this.emptyText,
       this.textColor, this.fetchAll, this.status);
 
   final Payment _payment;
@@ -87,7 +87,9 @@ class PaymentCollectionWidget extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) => ViewCollection(
                                       Collection.fromJson(
-                                          snapshot.data.documents[index].data), cardColor),
+                                          snapshot.data.documents[index].data),
+                                      _payment.createdAt,
+                                      cardColor),
                                   settings: RouteSettings(
                                       name: '/customers/payment/colection'),
                                 ),

@@ -353,6 +353,19 @@ class Collection {
     }
   }
 
+  Stream<DocumentSnapshot> streamCollectionByID(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      DateTime collectionDate) {
+    return getCollectionRef(
+            financeId, branchName, subBranchName, number, createdAt)
+        .document(getDocumentID(collectionDate))
+        .snapshots();
+  }
+
   Future<void> update(
       String financeId,
       String branchName,

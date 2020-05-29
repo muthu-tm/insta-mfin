@@ -4,7 +4,7 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/customer/ViewPaymentDetails.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionStatusRadioItem.dart';
-import 'package:instamfin/screens/customer/widgets/PaymentCollectionWidget.dart';
+import 'package:instamfin/screens/customer/widgets/PaymentCollectionListWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomRadioModel.dart';
@@ -351,7 +351,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                   ),
                 ],
               ),
-              PaymentCollectionWidget(widget.payment, title, emptyText,
+              PaymentCollectionListWidget(widget.payment, title, emptyText,
                   textColor, fetchAll, collStatus),
             ],
           ),
