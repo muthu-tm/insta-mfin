@@ -152,7 +152,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         label: Text(
                           "View",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: CustomColors.mfinBlack,
                             fontWeight: FontWeight.bold,
                           ),
@@ -178,7 +178,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         label: Text(
                           "Edit",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: CustomColors.mfinWhite,
                             fontWeight: FontWeight.bold,
                           ),
@@ -231,7 +231,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         label: Text(
                           "Remove",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: CustomColors.mfinWhite,
                             fontWeight: FontWeight.bold,
                           ),

@@ -64,23 +64,6 @@ class ViewCollection extends StatelessWidget {
               Card(
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      height: 40,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "GENERAL INFO",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Georgia",
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinBlue,
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      color: CustomColors.mfinBlue,
-                    ),
                     ListTile(
                       leading: SizedBox(
                         width: 100,

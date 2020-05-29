@@ -12,10 +12,8 @@ class CollectionDetails {
   bool isPaidLate;
   @JsonKey(name: 'amount')
   int amount;
-  @JsonKey(name: 'status', defaultValue: 0)
-  int status;
-  @JsonKey(name: 'paid_by', defaultValue: '')
-  String paidBy;
+  @JsonKey(name: 'collected_from', defaultValue: '')
+  String collectedFrom;
   @JsonKey(name: 'collected_by', defaultValue: '')
   String collectedBy;
   @JsonKey(name: 'notes', defaultValue: '')
@@ -41,12 +39,8 @@ class CollectionDetails {
     this.amount = amount;
   }
 
-  setStatus(int status) {
-    this.status = status;
-  }
-
-  setPaidBy(String paidBy) {
-    this.paidBy = paidBy;
+  setPaidBy(String collectedFrom) {
+    this.collectedFrom = collectedFrom;
   }
 
   setCollectedBy(String collectedBy) {

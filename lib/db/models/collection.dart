@@ -22,6 +22,8 @@ class Collection {
   int collectionNumber;
   @JsonKey(name: 'collection_date', defaultValue: '')
   DateTime collectionDate;
+  @JsonKey(name: 'notify_at', defaultValue: '')
+  DateTime notifyAt;
   @JsonKey(name: 'collected_on', defaultValue: '')
   List<DateTime> collectedOn;
   @JsonKey(name: 'collection_amount')
@@ -63,6 +65,10 @@ class Collection {
 
   setCollectionDate(DateTime collectionDate) {
     this.collectionDate = collectionDate;
+  }
+
+  setNotifyAt(DateTime notifyAt) {
+    this.notifyAt = notifyAt;
   }
 
   setcollectedOn(List<DateTime> collectedOn) {

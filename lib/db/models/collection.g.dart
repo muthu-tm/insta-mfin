@@ -17,6 +17,10 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
             _getMillisecondsSinceEpoch(json['collection_date'] as Timestamp))
+    ..notifyAt = json['notify_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['notify_at'] as Timestamp))
     ..collectionDate = json['collection_date'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -57,6 +61,7 @@ Map<String, dynamic> _$CollectionToJson(Collection instance) =>
       'customer_number': instance.customerNumber,
       'collection_number': instance.collectionNumber,
       'collection_date': instance.collectionDate,
+      'notify_at': instance.notifyAt,
       'collected_on': instance.collectedOn == null ? [] : instance.collectedOn,
       'collection_amount': instance.collectionAmount,
       'collections': instance.collections?.map((e) => e?.toJson())?.toList(),

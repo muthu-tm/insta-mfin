@@ -14,8 +14,7 @@ CollectionDetails _$CollectionDetailsFromJson(Map<String, dynamic> json) {
             _getMillisecondsSinceEpoch(json['collected_on'] as Timestamp))
     ..isPaidLate = json['is_paid_late'] as bool ?? false
     ..amount = json['amount'] as int
-    ..status = json['status'] as int ?? 0
-    ..paidBy = json['paid_by'] as String ?? ''
+    ..collectedFrom = json['collected_from'] as String ?? ''
     ..collectedBy = json['collected_by'] as String ?? ''
     ..notes = json['notes'] as String ?? ''
     ..addedBy = json['added_by'] as int
@@ -38,8 +37,7 @@ Map<String, dynamic> _$CollectionDetailsToJson(CollectionDetails instance) =>
       'collected_on': instance.collectedOn,
       'is_paid_late': instance.isPaidLate == null ? false : instance.isPaidLate,
       'amount': instance.amount,
-      'status': instance.status,
-      'paid_by': instance.paidBy == null ? '' : instance.paidBy,
+      'collected_from': instance.collectedFrom == null ? '' : instance.collectedFrom,
       'collected_by': instance.collectedBy == null ? '' : instance.collectedBy,
       'notes': instance.notes == null ? '' : instance.notes,
       'added_by': instance.addedBy,

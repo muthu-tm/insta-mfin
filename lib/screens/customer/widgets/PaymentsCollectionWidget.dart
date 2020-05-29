@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/collection_details.dart';
+import 'package:instamfin/screens/customer/AddCollectionDetails.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
@@ -18,6 +19,66 @@ class PaymentsCollectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> widget;
+    if (_collection.collections == null ||
+        _collection.collections.length == 0) {
+      widget = <Widget>[
+        Text(
+          "No Collection received yet!",
+          style: TextStyle(
+            color: CustomColors.mfinAlertRed,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
+          child: Text(
+            "Add collection using '+' button",
+            style: TextStyle(
+              color: CustomColors.mfinBlue,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        )
+      ];
+    } else {
+      widget = <Widget>[
+        ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: _collection.collections == null
+              ? 0
+              : _collection.collections.length,
+          itemBuilder: (BuildContext context, int index) {
+            CollectionDetails _collectionDetails =
+                _collection.collections[index];
+
+            Color cardColor = CustomColors.mfinGrey;
+            Color textColor = CustomColors.mfinBlue;
+            if (index % 2 == 0) {
+              cardColor = CustomColors.mfinBlue;
+              textColor = CustomColors.mfinGrey;
+            }
+            return SimpleFoldingCell(
+                frontWidget: _buildFrontWidget(
+                    context, _collectionDetails, cardColor, textColor),
+                innerTopWidget: _buildInnerTopWidget(_collectionDetails),
+                innerBottomWidget:
+                    _buildInnerBottomWidget(context, _collectionDetails),
+                cellSize: Size(MediaQuery.of(context).size.width, 170),
+                padding: EdgeInsets.only(
+                    left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
+                animationDuration: Duration(milliseconds: 300),
+                borderRadius: 10,
+                onOpen: () => print('$index cell opened'),
+                onClose: () => print('$index cell closed'));
+          },
+        ),
+      ];
+    }
+
     return Card(
       color: CustomColors.mfinLightGrey,
       child: new Column(
@@ -42,18 +103,16 @@ class PaymentsCollectionWidget extends StatelessWidget {
                 color: CustomColors.mfinBlue,
               ),
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => AddAdminPage(
-                //         'Add Admin - ${branch.branchName}',
-                //         branch.branchName,
-                //         financeID,
-                //         branch.branchName),
-                //     settings: RouteSettings(
-                //         name: '/settings/finance/branch/admin/add'),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        AddCollectionDetails(_collection, _createdAt),
+                    settings: RouteSettings(
+                        name:
+                            '/customers/payments/collections/collectiondetails/add'),
+                  ),
+                );
               },
             ),
           ),
@@ -65,40 +124,7 @@ class PaymentsCollectionWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: _collection.collections == null
-                      ? 0
-                      : _collection.collections.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    CollectionDetails _collectionDetails =
-                        _collection.collections[index];
-
-                    Color cardColor = CustomColors.mfinGrey;
-                    Color textColor = CustomColors.mfinBlue;
-                    if (index % 2 == 0) {
-                      cardColor = CustomColors.mfinBlue;
-                      textColor = CustomColors.mfinGrey;
-                    }
-                    return SimpleFoldingCell(
-                        frontWidget: _buildFrontWidget(
-                            context, _collectionDetails, cardColor, textColor),
-                        innerTopWidget:
-                            _buildInnerTopWidget(_collectionDetails),
-                        innerBottomWidget: _buildInnerBottomWidget(
-                            context, _collectionDetails),
-                        cellSize: Size(MediaQuery.of(context).size.width, 170),
-                        padding: EdgeInsets.only(
-                            left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
-                        animationDuration: Duration(milliseconds: 300),
-                        borderRadius: 10,
-                        onOpen: () => print('$index cell opened'),
-                        onClose: () => print('$index cell closed'));
-                  },
-                ),
-              ],
+              children: widget,
             ),
           ),
         ],
@@ -199,8 +225,7 @@ class PaymentsCollectionWidget extends StatelessWidget {
           caption: 'Edit',
           color: textColor,
           icon: Icons.edit,
-          onTap: () {
-          },
+          onTap: () {},
         ),
       ],
       child: Builder(
@@ -284,7 +309,7 @@ class PaymentsCollectionWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             trailing: Text(
-              _collectionDetails.paidBy,
+              _collectionDetails.collectedFrom,
               style: TextStyle(
                   color: CustomColors.mfinWhite,
                   fontFamily: 'Georgia',
