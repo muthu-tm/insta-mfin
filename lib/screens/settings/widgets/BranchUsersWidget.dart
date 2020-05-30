@@ -111,7 +111,10 @@ class BranchUsersWidget extends StatelessWidget {
                           int userID = branch.admins[index];
                           UserController _uc = UserController();
                           if (userID == _uc.getCurrentUserID()) {
-                            CustomDialogs.information(context, "Warning",
+                            CustomDialogs.information(
+                                context,
+                                "Warning",
+                                CustomColors.mfinAlertRed,
                                 "You cannot remove yourself");
                           } else {
                             CustomDialogs.confirm(

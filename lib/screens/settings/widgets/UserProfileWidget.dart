@@ -40,7 +40,10 @@ class UserProfileWidget extends StatelessWidget {
               ),
               onPressed: () {
                 if (user.mobileNumber != _uc.getCurrentUser().mobileNumber) {
-                  CustomDialogs.information(context, "Warning",
+                  CustomDialogs.information(
+                      context,
+                      "Warning",
+                      CustomColors.mfinAlertRed,
                       "You are not allowed to edit this user data!");
                 } else {
                   Navigator.push(

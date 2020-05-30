@@ -38,7 +38,6 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
             ? null
             : CollectionDetails.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..totalPaid = json['total_paid'] as int ?? 0
     ..status = json['status'] as int ?? 0
     ..type = json['type'] as int
     ..createdAt = json['created_at'] == null
@@ -65,7 +64,6 @@ Map<String, dynamic> _$CollectionToJson(Collection instance) =>
       'collected_on': instance.collectedOn == null ? [] : instance.collectedOn,
       'collection_amount': instance.collectionAmount,
       'collections': instance.collections?.map((e) => e?.toJson())?.toList(),
-      'total_paid': instance.totalPaid,
       'status': instance.status,
       'type': instance.type,
       'created_at': instance.createdAt,

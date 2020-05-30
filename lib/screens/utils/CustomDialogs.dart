@@ -3,14 +3,22 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/GradientText.dart';
 
 class CustomDialogs {
-  static information(BuildContext context, String title, String description) {
+  static information(BuildContext context, String title, Color titleColor,
+      String description) {
     return showDialog(
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
             elevation: 10.0,
-            title: Text(title),
+            title: Text(
+              title,
+              style: TextStyle(
+                  color: titleColor,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.start,
+            ),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[Text(description)],

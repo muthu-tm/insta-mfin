@@ -13,9 +13,10 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 
 class ViewPayment extends StatefulWidget {
-  ViewPayment(this.payment);
+  ViewPayment(this.payment, this.custName);
 
   final Payment payment;
+  final String custName;
 
   @override
   _ViewPaymentState createState() => _ViewPaymentState();
@@ -47,8 +48,6 @@ class _ViewPaymentState extends State<ViewPayment> {
       key: _scaffoldKey,
       endDrawer: ViewPaymentDetails(widget.payment),
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Payment - ${widget.payment.customerNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
@@ -351,8 +350,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                   ),
                 ],
               ),
-              PaymentCollectionListWidget(widget.payment, title, emptyText,
-                  textColor, fetchAll, collStatus),
+              PaymentCollectionListWidget(widget.payment, widget.custName,
+                  title, emptyText, textColor, fetchAll, collStatus),
             ],
           ),
         ),

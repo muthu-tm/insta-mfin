@@ -8,6 +8,16 @@ class DateUtils {
   }
 
   static String formatDate(DateTime dateTime) {
+    if (dateTime == null) {
+      return "";
+    }
+
     return dateFormatter.format(dateTime);
+  }
+
+  static DateTime getCurrentDate() {
+    DateTime thisInstant = DateTime.now();
+    return DateTime(
+        thisInstant.year, thisInstant.month, thisInstant.day, 5, 30, 0, 0, 0);
   }
 }

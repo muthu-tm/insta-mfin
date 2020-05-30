@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
-import 'package:instamfin/db/models/collection_details.dart';
-import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -11,9 +9,10 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddCollectionDetails extends StatefulWidget {
-  AddCollectionDetails(this.collection, this.payCreatedAt);
+  AddCollectionDetails(this.collection, this.custName, this.payCreatedAt);
 
   final Collection collection;
+  final String custName;
   final DateTime payCreatedAt;
 
   @override
@@ -25,23 +24,28 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final User _user = UserController().getCurrentUser();
 
-  Map<String, dynamic> collDetails = new Map();
+  Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
 
-  DateTime selectedDate = DateTime.now();
   int totalAmount = 0;
   int status = 0;
   String collectedBy = '';
   String receivedFrom = '';
   String notes = '';
-  String custName = '';
+  bool isLatePay = false;
 
   @override
   void initState() {
     super.initState();
-    this.getCustomrName(widget.collection.customerNumber);
-    collectedBy = _user.name;
-    totalAmount =
-        widget.collection.collectionAmount - widget.collection.totalPaid;
+    this.receivedFrom = widget.custName;
+    this.collectedBy = _user.name;
+    this.totalAmount =
+        widget.collection.collectionAmount - widget.collection.getTotalPaid();
+
+    if (widget.collection.collectionDate.isBefore(DateUtils.getCurrentDate())) {
+      setState(() {
+        isLatePay = true;
+      });
+    }
   }
 
   @override
@@ -83,10 +87,10 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               new Card(
-                color: CustomColors.mfinLightGrey,
-                elevation: 5.0,
-                margin: EdgeInsets.only(top: 5.0),
-                shadowColor: CustomColors.mfinLightBlue,
+                elevation: 10.0,
+                margin: EdgeInsets.only(
+                    top: 10.0, bottom: 10.0, left: 5.0, right: 5.0),
+                shadowColor: CustomColors.mfinPositiveGreen,
                 child: new Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,7 +102,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                         leading: Text(
                           widget.collection.collectionNumber.toString(),
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 17,
                             fontFamily: "Georgia",
                             fontWeight: FontWeight.bold,
                             color: CustomColors.mfinBlue,
@@ -107,17 +111,18 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                         title: Text(
                           DateUtils.formatDate(
                               widget.collection.collectionDate),
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 17,
                             fontFamily: "Georgia",
                             fontWeight: FontWeight.bold,
                             color: CustomColors.mfinBlue,
                           ),
                         ),
                         trailing: Text(
-                          widget.collection.totalPaid.toString(),
+                          widget.collection.getTotalPaid().toString(),
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 17,
                             fontFamily: "Georgia",
                             fontWeight: FontWeight.bold,
                             color: CustomColors.mfinBlue,
@@ -142,9 +147,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                         ),
                       ),
                       title: TextFormField(
-                        enabled: false,
-                        autofocus: false,
-                        initialValue: custName,
+                        initialValue: widget.custName,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(
@@ -153,6 +156,8 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                           fillColor: CustomColors.mfinLightGrey,
                           filled: true,
                         ),
+                        enabled: false,
+                        autofocus: false,
                       ),
                     ),
                     ListTile(
@@ -194,6 +199,43 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                             ),
                           ),
                         ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "COLLECTED AMOUNT:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: new TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.number,
+                        initialValue: totalAmount.toString(),
+                        decoration: InputDecoration(
+                          hintText: 'Collected Amount',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (amount) {
+                          if (amount.trim().isEmpty || amount.trim() == "0") {
+                            return "Collected Amount should not be empty!";
+                          } else {
+                            collDetails['amount'] = int.parse(amount.trim());
+                            return null;
+                          }
+                        },
                       ),
                     ),
                     ListTile(
@@ -311,6 +353,39 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Material(
+                  elevation: 10.0,
+                  shadowColor: CustomColors.mfinAlertRed,
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    height: 50,
+                    child: CheckboxListTile(
+                      value: isLatePay,
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          isLatePay = newValue;
+                        });
+                        collDetails['is_paid_late'] = newValue;
+                      },
+                      title: Text(
+                        "Is Collected Late? ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlue,
+                        ),
+                      ),
+                      controlAffinity: ListTileControlAffinity.trailing,
+                      activeColor: CustomColors.mfinAlertRed,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -318,32 +393,29 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
     );
   }
 
-  Future getCustomrName(int number) async {
-    try {
-      Customer cust = await Customer().getByMobileNumber(number);
-      setState(() {
-        receivedFrom = cust.name;
-      });
-      custName = cust.name;
-    } catch (err) {}
-  }
-
   TextEditingController _date = new TextEditingController();
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.now(),
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != DateTime.now())
       setState(
         () {
-          selectedDate = picked;
+          collDetails['collected_on'] = picked;
           _date.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
+
+          if (widget.collection.collectionDate
+              .isBefore(collDetails['collected_on'])) {
+            isLatePay = true;
+          } else {
+            isLatePay = false;
+          }
         },
       );
   }
@@ -352,26 +424,37 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Updating Collection");
-      CollectionController _pc = CollectionController();
-      var result = await _pc.updateCollectionDetails(
-          widget.collection.financeID,
-          widget.collection.branchName,
-          widget.collection.subBranchName,
-          widget.collection.customerNumber,
-          widget.payCreatedAt,
-          widget.collection.collectionDate,
-          true,
-          CollectionDetails.fromJson(collDetails));
-
-      if (!result['is_success']) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Add Collection details: " + result['message']);
+      if (collDetails['amount'] >
+          (widget.collection.collectionAmount -
+              widget.collection.getTotalPaid())) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "Collected AMOUNT must be equal or lesser than Balance Amount", 3));
       } else {
-        Navigator.pop(context);
-        Navigator.pop(context);
+        CustomDialogs.actionWaiting(context, "Updating Collection");
+        CollectionController _cc = CollectionController();
+
+        collDetails['created_at'] = DateTime.now();
+        collDetails['added_by'] = _user.mobileNumber;
+        collDetails['is_paid_late'] = isLatePay;
+        var result = await _cc.updateCollectionDetails(
+            widget.collection.financeID,
+            widget.collection.branchName,
+            widget.collection.subBranchName,
+            widget.collection.customerNumber,
+            widget.payCreatedAt,
+            widget.collection.collectionDate,
+            true,
+            collDetails);
+
+        if (!result['is_success']) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+          print("Unable to Add Collection details: " + result['message']);
+        } else {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
       }
     } else {
       print("Invalid form submitted");

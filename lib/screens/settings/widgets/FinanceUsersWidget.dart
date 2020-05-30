@@ -74,7 +74,10 @@ class FinanceUsersWidget extends StatelessWidget {
                         UserController _uc = UserController();
                         if (userID == _uc.getCurrentUserID()) {
                           CustomDialogs.information(
-                              context, "Warning", "You cannot remove yourself");
+                              context,
+                              "Warning",
+                              CustomColors.mfinAlertRed,
+                              "You cannot remove yourself");
                         } else {
                           String financeName =
                               snapshot.data.data['finance_name'];

@@ -4,13 +4,18 @@ import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/screens/customer/widgets/PaymentsCollectionWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 
 class ViewCollection extends StatelessWidget {
-  ViewCollection(this._collection, this.createdAt, this.iconColor);
+  ViewCollection(
+      this._collection, this.custName, this.payCreatedAt, this.iconColor);
 
   final Collection _collection;
-  final DateTime createdAt;
+  final String custName;
+  final DateTime payCreatedAt;
   final Color iconColor;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -23,7 +28,7 @@ class ViewCollection extends StatelessWidget {
           _collection.branchName,
           _collection.subBranchName,
           _collection.customerNumber,
-          createdAt,
+          payCreatedAt,
           _collection.collectionDate),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -50,7 +55,7 @@ class ViewCollection extends StatelessWidget {
                   ),
                 ),
                 trailing: Text(
-                  collection.totalPaid.toString(),
+                  collection.getTotalPaid().toString(),
                   style: TextStyle(
                     fontSize: 18,
                     color: CustomColors.mfinPositiveGreen,
@@ -64,6 +69,33 @@ class ViewCollection extends StatelessWidget {
               Card(
                 child: Column(
                   children: <Widget>[
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "CUSTOMER",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinGrey,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        initialValue: custName,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                        ),
+                        enabled: false,
+                        autofocus: false,
+                      ),
+                    ),
                     ListTile(
                       leading: SizedBox(
                         width: 100,
@@ -138,7 +170,7 @@ class ViewCollection extends StatelessWidget {
                       ),
                       title: TextFormField(
                         textAlign: TextAlign.end,
-                        initialValue: collection.totalPaid.toString(),
+                        initialValue: collection.getTotalPaid().toString(),
                         decoration: InputDecoration(
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
@@ -185,8 +217,48 @@ class ViewCollection extends StatelessWidget {
                         autofocus: false,
                       ),
                     ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "NOTIFY AT",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: "Georgia",
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.mfinGrey),
+                        ),
+                      ),
+                      title: GestureDetector(
+                        onTap: () => _selectDate(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            controller: _date,
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              hintText: 'Date of Payment',
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 3.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              suffixIcon: Icon(
+                                Icons.date_range,
+                                size: 35,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                     PaymentsCollectionWidget(
-                        _scaffoldKey, collection, createdAt),
+                        _scaffoldKey, collection, custName, payCreatedAt),
                   ],
                 ),
               ),
@@ -225,19 +297,14 @@ class ViewCollection extends StatelessWidget {
             backgroundColor: CustomColors.mfinBlue,
           ),
           key: _scaffoldKey,
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => AddPayment(customer),
-              //     settings: RouteSettings(name: '/customers/payments/add'),
-              //   ),
-              // );
+              _submit(context);
             },
             label: Text(
-              "Edit",
+              "Update",
               style: TextStyle(
                 fontSize: 17,
                 fontFamily: "Georgia",
@@ -261,6 +328,44 @@ class ViewCollection extends StatelessWidget {
         );
       },
     );
+  }
+
+  TextEditingController _date = new TextEditingController();
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: _collection.notifyAt,
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now().add(Duration(days: 10)),
+    );
+    if (picked != null && picked != _collection.notifyAt)
+      _collection.notifyAt = picked;
+    _date.value = TextEditingValue(
+      text: DateUtils.formatDate(picked),
+    );
+  }
+
+  Future<void> _submit(BuildContext context) async {
+    CustomDialogs.actionWaiting(context, "Updating Profile");
+    CollectionController _cc = CollectionController();
+    var result = await _cc.updateCollection(
+        _collection.financeID,
+        _collection.branchName,
+        _collection.subBranchName,
+        _collection.customerNumber,
+        payCreatedAt,
+        _collection.getDocumentID(_collection.collectionDate),
+        {'notify_at': _collection.notifyAt});
+
+    if (!result['is_success']) {
+      Navigator.pop(context);
+      _scaffoldKey.currentState
+          .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
+    } else {
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }
   }
 
   String getType(int type) {

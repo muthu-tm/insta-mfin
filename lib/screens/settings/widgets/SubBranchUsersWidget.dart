@@ -115,7 +115,10 @@ class SubBranchUsersWidget extends StatelessWidget {
                           int userID = subBranch.admins[index];
                           UserController _uc = UserController();
                           if (userID == _uc.getCurrentUserID()) {
-                            CustomDialogs.information(context, "Warning",
+                            CustomDialogs.information(
+                                context,
+                                "Warning",
+                                CustomColors.mfinAlertRed,
                                 "You cannot remove yourself");
                           } else {
                             String subBranchName = subBranch.subBranchName;
