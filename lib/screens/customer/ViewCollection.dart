@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
+import 'package:instamfin/screens/customer/EditCollection.dart';
 import 'package:instamfin/screens/customer/widgets/PaymentsCollectionWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 
 class ViewCollection extends StatelessWidget {
   ViewCollection(
@@ -226,22 +230,32 @@ class ViewCollection extends StatelessWidget {
                               color: CustomColors.mfinGrey),
                         ),
                       ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        initialValue: DateUtils.formatDate(collection.notifyAt),
-                        decoration: InputDecoration(
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: CustomColors.mfinGrey,
+                      title: GestureDetector(
+                        onTap: () => _selectDate(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            controller: _date,
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              hintText: 'Date of Payment',
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 3.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              suffixIcon: Icon(
+                                Icons.date_range,
+                                size: 35,
+                                color: CustomColors.mfinBlue,
+                              ),
                             ),
                           ),
                         ),
-                        enabled: false,
-                        autofocus: false,
                       ),
                     ),
                     PaymentsCollectionWidget(
@@ -284,19 +298,14 @@ class ViewCollection extends StatelessWidget {
             backgroundColor: CustomColors.mfinBlue,
           ),
           key: _scaffoldKey,
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => AddPayment(customer),
-              //     settings: RouteSettings(name: '/customers/payments/add'),
-              //   ),
-              // );
+              _submit(context);
             },
             label: Text(
-              "Edit",
+              "Update",
               style: TextStyle(
                 fontSize: 17,
                 fontFamily: "Georgia",
@@ -320,6 +329,44 @@ class ViewCollection extends StatelessWidget {
         );
       },
     );
+  }
+
+  TextEditingController _date = new TextEditingController();
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: _collection.notifyAt,
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now().add(Duration(days: 10)),
+    );
+    if (picked != null && picked != _collection.notifyAt)
+      _collection.notifyAt = picked;
+    _date.value = TextEditingValue(
+      text: DateUtils.formatDate(picked),
+    );
+  }
+
+  Future<void> _submit(BuildContext context) async {
+    CustomDialogs.actionWaiting(context, "Updating Profile");
+    CollectionController _cc = CollectionController();
+    var result = await _cc.updateCollection(
+        _collection.financeID,
+        _collection.branchName,
+        _collection.subBranchName,
+        _collection.customerNumber,
+        payCreatedAt,
+        _collection.getDocumentID(_collection.collectionDate),
+        {'notify_at': _collection.notifyAt});
+
+    if (!result['is_success']) {
+      Navigator.pop(context);
+      _scaffoldKey.currentState
+          .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
+    } else {
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }
   }
 
   String getType(int type) {

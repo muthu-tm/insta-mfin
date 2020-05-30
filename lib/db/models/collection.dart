@@ -384,13 +384,13 @@ class Collection {
       int number,
       DateTime createdAt,
       String docID,
-      Map<String, dynamic> paymentJSON) async {
-    paymentJSON['updated_at'] = DateTime.now();
+      Map<String, dynamic> collJSON) async {
+    collJSON['updated_at'] = DateTime.now();
 
     await getCollectionRef(
             financeId, branchName, subBranchName, number, createdAt)
         .document(docID)
-        .updateData(paymentJSON);
+        .updateData(collJSON);
   }
 
   Future updateCollectionDetails(
