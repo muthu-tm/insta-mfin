@@ -11,10 +11,11 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 
 class PaymentsCollectionWidget extends StatelessWidget {
   PaymentsCollectionWidget(
-      this._scaffoldKey, this._collection, this._createdAt);
+      this._scaffoldKey, this._collection, this.custName, this._createdAt);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final Collection _collection;
+  final String custName;
   final DateTime _createdAt;
 
   @override
@@ -103,16 +104,22 @@ class PaymentsCollectionWidget extends StatelessWidget {
                 color: CustomColors.mfinBlue,
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        AddCollectionDetails(_collection, _createdAt),
-                    settings: RouteSettings(
-                        name:
-                            '/customers/payments/collections/collectiondetails/add'),
-                  ),
-                );
+                if (_collection.getTotalPaid() < _collection.collectionAmount) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddCollectionDetails(
+                          _collection, custName, _createdAt),
+                      settings: RouteSettings(
+                          name:
+                              '/customers/payments/collections/collectiondetails/add'),
+                    ),
+                  );
+                } else {
+                  _scaffoldKey.currentState.showSnackBar(
+                      CustomSnackBar.errorSnackBar(
+                          "Collection AMOUNT already collected Fully", 3));
+                }
               },
             ),
           ),
@@ -194,7 +201,7 @@ class PaymentsCollectionWidget extends StatelessWidget {
                             _createdAt,
                             _collection.collectionDate,
                             false,
-                            _collectionDetails);
+                            _collectionDetails.toJson());
                         if (!result['is_success']) {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
@@ -220,18 +227,169 @@ class PaymentsCollectionWidget extends StatelessWidget {
           },
         ),
       ],
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Edit',
-          color: textColor,
-          icon: Icons.edit,
-          onTap: () {},
-        ),
-      ],
       child: Builder(
         builder: (BuildContext context) {
-          return Container(
-            color: cardColor,
+          return InkWell(
+            onTap: () {
+              SimpleFoldingCellState foldingCellState =
+                  context.findAncestorStateOfType();
+              foldingCellState?.toggleFold();
+            },
+            child: Container(
+              color: cardColor,
+              alignment: Alignment.center,
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: Text(
+                      'Date',
+                      style: TextStyle(
+                          color: textColor,
+                          fontFamily: 'Georgia',
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    trailing: Text(
+                      DateUtils.formatDate(_collectionDetails.collectedOn),
+                      style: TextStyle(
+                          color: CustomColors.mfinWhite,
+                          fontFamily: 'Georgia',
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Text(
+                      "AMOUNT",
+                      style: TextStyle(
+                          color: textColor,
+                          fontFamily: 'Georgia',
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    trailing: Text(
+                      _collectionDetails.amount.toString(),
+                      style: TextStyle(
+                          color: CustomColors.mfinPositiveGreen,
+                          fontFamily: 'Georgia',
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Text(
+                      "FROM",
+                      style: TextStyle(
+                          color: textColor,
+                          fontFamily: 'Georgia',
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    trailing: Text(
+                      _collectionDetails.collectedFrom,
+                      style: TextStyle(
+                          color: CustomColors.mfinWhite,
+                          fontFamily: 'Georgia',
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildInnerBottomWidget(
+      BuildContext context, CollectionDetails _collectionDetails) {
+    return Container(
+      color: CustomColors.mfinBlue,
+      alignment: Alignment.center,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Text(
+              'By',
+              style: TextStyle(
+                  color: CustomColors.mfinGrey,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            trailing: Text(
+              _collectionDetails.collectedBy,
+              style: TextStyle(
+                  color: CustomColors.mfinWhite,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          ListTile(
+            leading: Text(
+              'NOTES',
+              style: TextStyle(
+                  color: CustomColors.mfinGrey,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            trailing: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.65,
+              child: Text(
+                _collectionDetails.notes,
+                textAlign: TextAlign.end,
+                style: TextStyle(
+                    color: CustomColors.mfinWhite,
+                    fontFamily: 'Georgia',
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Text(
+              'PAID LATE?',
+              style: TextStyle(
+                  color: CustomColors.mfinGrey,
+                  fontFamily: 'Georgia',
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            trailing: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.65,
+              child: Text(
+                _collectionDetails.isPaidLate ? "YES" : "NO",
+                textAlign: TextAlign.end,
+                style: TextStyle(
+                    color: _collectionDetails.isPaidLate
+                        ? CustomColors.mfinAlertRed
+                        : CustomColors.mfinPositiveGreen,
+                    fontFamily: 'Georgia',
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInnerTopWidget(CollectionDetails _collectionDetails) {
+    return Builder(
+      builder: (context) {
+        return InkWell(
+          onTap: () {
+            SimpleFoldingCellState foldingCellState =
+                context.findAncestorStateOfType();
+            foldingCellState?.toggleFold();
+          },
+          child: Container(
+            color: CustomColors.mfinGrey,
             alignment: Alignment.center,
             child: Column(
               children: <Widget>[
@@ -239,7 +397,7 @@ class PaymentsCollectionWidget extends StatelessWidget {
                   leading: Text(
                     'Date',
                     style: TextStyle(
-                        color: CustomColors.mfinGrey,
+                        color: CustomColors.mfinBlue,
                         fontFamily: 'Georgia',
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold),
@@ -257,7 +415,7 @@ class PaymentsCollectionWidget extends StatelessWidget {
                   leading: Text(
                     "AMOUNT",
                     style: TextStyle(
-                        color: textColor,
+                        color: CustomColors.mfinBlue,
                         fontFamily: 'Georgia',
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold),
@@ -271,136 +429,26 @@ class PaymentsCollectionWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                FlatButton(
-                  onPressed: () {
-                    SimpleFoldingCellState foldingCellState =
-                        context.findAncestorStateOfType();
-                    foldingCellState?.toggleFold();
-                  },
-                  child: Text(
-                    "View",
+                ListTile(
+                  leading: Text(
+                    "FROM",
+                    style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                        fontFamily: 'Georgia',
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
                   ),
-                  textColor: CustomColors.mfinWhite,
-                  color: CustomColors.mfinButtonGreen,
-                  splashColor: Colors.white.withOpacity(0.5),
+                  trailing: Text(
+                    _collectionDetails.collectedFrom,
+                    style: TextStyle(
+                        color: CustomColors.mfinWhite,
+                        fontFamily: 'Georgia',
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildInnerBottomWidget(
-      BuildContext context, CollectionDetails _collectionDetails) {
-    return Container(
-      color: CustomColors.mfinBlue,
-      alignment: Alignment.center,
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: Text(
-              'FROM',
-              style: TextStyle(
-                  color: CustomColors.mfinGrey,
-                  fontFamily: 'Georgia',
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            trailing: Text(
-              _collectionDetails.collectedFrom,
-              style: TextStyle(
-                  color: CustomColors.mfinWhite,
-                  fontFamily: 'Georgia',
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          ListTile(
-              leading: Text(
-                'Notes',
-                style: TextStyle(
-                    color: CustomColors.mfinGrey,
-                    fontFamily: 'Georgia',
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              trailing: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.65,
-                child: Text(
-                  _collectionDetails.notes,
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                      color: CustomColors.mfinWhite,
-                      fontFamily: 'Georgia',
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              )),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInnerTopWidget(CollectionDetails _collectionDetails) {
-    return Builder(
-      builder: (context) {
-        return Container(
-          color: CustomColors.mfinGrey,
-          alignment: Alignment.center,
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                leading: Text(
-                  'Date',
-                  style: TextStyle(
-                      color: CustomColors.mfinBlue,
-                      fontFamily: 'Georgia',
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                trailing: Text(
-                  DateUtils.formatDate(_collectionDetails.collectedOn),
-                  style: TextStyle(
-                      color: CustomColors.mfinWhite,
-                      fontFamily: 'Georgia',
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              ListTile(
-                leading: Text(
-                  "AMOUNT",
-                  style: TextStyle(
-                      color: CustomColors.mfinBlue,
-                      fontFamily: 'Georgia',
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                trailing: Text(
-                  _collectionDetails.amount.toString(),
-                  style: TextStyle(
-                      color: CustomColors.mfinPositiveGreen,
-                      fontFamily: 'Georgia',
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              FlatButton(
-                onPressed: () {
-                  SimpleFoldingCellState foldingCellState =
-                      context.findAncestorStateOfType();
-                  foldingCellState?.toggleFold();
-                },
-                child: Text(
-                  "Close",
-                ),
-                textColor: CustomColors.mfinWhite,
-                color: CustomColors.mfinButtonGreen,
-                splashColor: Colors.white.withOpacity(0.5),
-              ),
-            ],
           ),
         );
       },

@@ -7,10 +7,12 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
 class ViewCollection extends StatelessWidget {
-  ViewCollection(this._collection, this.createdAt, this.iconColor);
+  ViewCollection(
+      this._collection, this.custName, this.payCreatedAt, this.iconColor);
 
   final Collection _collection;
-  final DateTime createdAt;
+  final String custName;
+  final DateTime payCreatedAt;
   final Color iconColor;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -23,7 +25,7 @@ class ViewCollection extends StatelessWidget {
           _collection.branchName,
           _collection.subBranchName,
           _collection.customerNumber,
-          createdAt,
+          payCreatedAt,
           _collection.collectionDate),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -50,7 +52,7 @@ class ViewCollection extends StatelessWidget {
                   ),
                 ),
                 trailing: Text(
-                  collection.totalPaid.toString(),
+                  collection.getTotalPaid().toString(),
                   style: TextStyle(
                     fontSize: 18,
                     color: CustomColors.mfinPositiveGreen,
@@ -64,6 +66,33 @@ class ViewCollection extends StatelessWidget {
               Card(
                 child: Column(
                   children: <Widget>[
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "CUSTOMER",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinGrey,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        initialValue: custName,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                        ),
+                        enabled: false,
+                        autofocus: false,
+                      ),
+                    ),
                     ListTile(
                       leading: SizedBox(
                         width: 100,
@@ -138,7 +167,7 @@ class ViewCollection extends StatelessWidget {
                       ),
                       title: TextFormField(
                         textAlign: TextAlign.end,
-                        initialValue: collection.totalPaid.toString(),
+                        initialValue: collection.getTotalPaid().toString(),
                         decoration: InputDecoration(
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
@@ -185,8 +214,38 @@ class ViewCollection extends StatelessWidget {
                         autofocus: false,
                       ),
                     ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "NOTIFY AT",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: "Georgia",
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.mfinGrey),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        initialValue: DateUtils.formatDate(collection.notifyAt),
+                        decoration: InputDecoration(
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: CustomColors.mfinGrey,
+                            ),
+                          ),
+                        ),
+                        enabled: false,
+                        autofocus: false,
+                      ),
+                    ),
                     PaymentsCollectionWidget(
-                        _scaffoldKey, collection, createdAt),
+                        _scaffoldKey, collection, custName, payCreatedAt),
                   ],
                 ),
               ),

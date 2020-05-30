@@ -35,8 +35,7 @@ class ViewCustomer extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => AddPayment(customer),
-            settings: RouteSettings(
-                name: '/customers/payments/add'),
+            settings: RouteSettings(name: '/customers/payments/add'),
           ),
         ),
         label: Text(
@@ -126,8 +125,7 @@ class ViewCustomer extends StatelessWidget {
                               builder: (context) =>
                                   EditCustomerProfile(customer.toJson()),
                               settings: RouteSettings(
-                                  name:
-                                      '/customers/profile/edit'),
+                                  name: '/customers/profile/edit'),
                             ),
                           ),
                           child: Container(
@@ -272,7 +270,8 @@ class ViewCustomer extends StatelessWidget {
                   ],
                 ),
               ),
-              CustomerPaymentsWidget(customer.mobileNumber, _scaffoldKey),
+              CustomerPaymentsWidget(
+                  customer.mobileNumber, customer.name, _scaffoldKey),
             ],
           ),
         ),

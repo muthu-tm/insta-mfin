@@ -22,8 +22,6 @@ class CollectionDetails {
   int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
-  @JsonKey(name: 'updated_at', nullable: true)
-  DateTime updatedAt;
 
   CollectionDetails();
 

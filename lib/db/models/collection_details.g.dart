@@ -21,11 +21,7 @@ CollectionDetails _$CollectionDetailsFromJson(Map<String, dynamic> json) {
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
-    ..updatedAt = json['updated_at'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
+            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp));
 }
 
 int _getMillisecondsSinceEpoch(Timestamp ts) {
@@ -42,5 +38,4 @@ Map<String, dynamic> _$CollectionDetailsToJson(CollectionDetails instance) =>
       'notes': instance.notes == null ? '' : instance.notes,
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
     };

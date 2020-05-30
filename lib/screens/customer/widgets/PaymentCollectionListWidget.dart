@@ -9,10 +9,11 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
 class PaymentCollectionListWidget extends StatelessWidget {
-  PaymentCollectionListWidget(this._payment, this.title, this.emptyText,
-      this.textColor, this.fetchAll, this.status);
+  PaymentCollectionListWidget(this._payment, this.custName, this.title,
+      this.emptyText, this.textColor, this.fetchAll, this.status);
 
   final Payment _payment;
+  final String custName;
   final String title;
   final String emptyText;
   final Color textColor;
@@ -88,6 +89,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
                                   builder: (context) => ViewCollection(
                                       Collection.fromJson(
                                           snapshot.data.documents[index].data),
+                                      custName,
                                       _payment.createdAt,
                                       cardColor),
                                   settings: RouteSettings(
@@ -312,13 +314,13 @@ class PaymentCollectionListWidget extends StatelessWidget {
         break;
       case 1:
       case 2:
-        return ["RECEIVED: ", coll.totalPaid.toString()];
+        return ["RECEIVED: ", coll.getTotalPaid().toString()];
         break;
       case 3:
         return ["AMOUNT: ", coll.collectionAmount.toString()];
         break;
       case 4:
-        int pending = coll.collectionAmount - coll.totalPaid;
+        int pending = coll.collectionAmount - coll.getTotalPaid();
         return ["PENDING: ", pending.toString()];
         break;
       default:

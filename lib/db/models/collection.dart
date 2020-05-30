@@ -30,8 +30,6 @@ class Collection {
   int collectionAmount;
   @JsonKey(name: 'collections')
   List<CollectionDetails> collections;
-  @JsonKey(name: 'total_paid', defaultValue: 0)
-  int totalPaid;
   @JsonKey(name: 'status', defaultValue: 0)
   int status;
   @JsonKey(name: 'type', nullable: true)
@@ -83,10 +81,6 @@ class Collection {
     this.collectionAmount = amount;
   }
 
-  setTotalPaid(int paid) {
-    this.totalPaid = paid;
-  }
-
   setStatus(int status) {
     this.status = status;
   }
@@ -101,6 +95,17 @@ class Collection {
     } else {
       this.collections.addAll(collections);
     }
+  }
+
+  int getTotalPaid() {
+    int totalPaid = 0;
+    if (this.collections != null) {
+      this.collections.forEach((coll) {
+        totalPaid += coll.amount;
+      });
+    }
+
+    return totalPaid;
   }
 
   factory Collection.fromJson(Map<String, dynamic> json) =>
@@ -388,7 +393,7 @@ class Collection {
         .updateData(paymentJSON);
   }
 
-  Future updateArrayField(
+  Future updateCollectionDetails(
       String financeId,
       String branchName,
       String subBranchName,
@@ -398,20 +403,40 @@ class Collection {
       bool isAdd,
       Map<String, dynamic> data) async {
     Map<String, dynamic> fields = Map();
-    fields['updated_at'] = DateTime.now();
 
-    data.forEach((key, value) {
-      if (isAdd) {
-        fields[key] = FieldValue.arrayUnion(value);
-      } else {
-        fields[key] = FieldValue.arrayRemove(value);
+    if (isAdd) {
+      fields['updated_at'] = DateTime.now();
+      fields['collections'] = FieldValue.arrayUnion([data]);
+      await this
+          .getDocumentReference(financeId, branchName, subBranchName, number,
+              createdAt, collectionDate)
+          .updateData(fields);
+    } else {
+      DocumentSnapshot snap = await this
+          .getDocumentReference(financeId, branchName, subBranchName, number,
+              createdAt, collectionDate)
+          .get();
+          
+      List<dynamic> colls = snap.data['collections'];
+      int index = 0;
+      for (index = 0; index < colls.length; index++) {
+        Map<String, dynamic> collDetail = colls[index];
+        CollectionDetails collDetails = CollectionDetails.fromJson(collDetail);
+        if (collDetails.createdAt == data['created_at']) {
+          break;
+        }
       }
-    });
+
+      colls.removeAt(index);
+      fields['collections'] = colls;
+      fields['updated_at'] = DateTime.now();
+    }
 
     await this
         .getDocumentReference(financeId, branchName, subBranchName, number,
             createdAt, collectionDate)
         .updateData(fields);
+
     return data;
   }
 }

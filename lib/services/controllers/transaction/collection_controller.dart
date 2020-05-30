@@ -244,11 +244,18 @@ class CollectionController {
     DateTime createdAt,
     DateTime collDate,
     bool isAdd,
-    CollectionDetails collectionDetails,
+    Map<String, dynamic> collectionDetails,
   ) async {
     try {
-      await Collection().updateArrayField(financeId, branchName, subBranchName,
-          custNumber, createdAt, collDate, isAdd, collectionDetails.toJson());
+      await Collection().updateCollectionDetails(
+          financeId,
+          branchName,
+          subBranchName,
+          custNumber,
+          createdAt,
+          collDate,
+          isAdd,
+          collectionDetails);
       return CustomResponse.getSuccesReponse(
           "Payment's Collection updated for customer $custNumber");
     } catch (err) {

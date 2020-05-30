@@ -14,10 +14,11 @@ import 'package:instamfin/services/controllers/transaction/payment_controller.da
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CustomerPaymentsWidget extends StatelessWidget {
-  CustomerPaymentsWidget(this.number, this._scaffoldKey);
+  CustomerPaymentsWidget(this.number, this.custName, this._scaffoldKey);
   final User _user = UserController().getCurrentUser();
 
   final int number;
+  final String custName;
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
@@ -164,7 +165,8 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) => ViewPayment(
                                       Payment.fromJson(
-                                          snapshot.data.documents[index].data)),
+                                          snapshot.data.documents[index].data),
+                                      custName),
                                   settings:
                                       RouteSettings(name: '/customers/payment'),
                                 ),
