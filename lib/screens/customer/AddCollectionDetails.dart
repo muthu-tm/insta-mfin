@@ -431,11 +431,12 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
             "Collected AMOUNT must be equal or lesser than Balance Amount", 3));
       } else {
         CustomDialogs.actionWaiting(context, "Updating Collection");
-        CollectionController _pc = CollectionController();
+        CollectionController _cc = CollectionController();
 
         collDetails['created_at'] = DateTime.now();
         collDetails['added_by'] = _user.mobileNumber;
-        var result = await _pc.updateCollectionDetails(
+        collDetails['is_paid_late'] = isLatePay;
+        var result = await _cc.updateCollectionDetails(
             widget.collection.financeID,
             widget.collection.branchName,
             widget.collection.subBranchName,

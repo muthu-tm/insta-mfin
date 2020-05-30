@@ -3,14 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class PaymentCollectionListWidget extends StatelessWidget {
   PaymentCollectionListWidget(this._payment, this.custName, this.title,
       this.emptyText, this.textColor, this.fetchAll, this.status);
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final Payment _payment;
   final String custName;
@@ -50,25 +57,16 @@ class PaymentCollectionListWidget extends StatelessWidget {
 
                   return Slidable(
                     actionPane: SlidableDrawerActionPane(),
-                    actionExtentRatio: 0.25,
+                    actionExtentRatio: 0.40,
                     closeOnScroll: true,
                     direction: Axis.horizontal,
-                    secondaryActions: <Widget>[
+                    actions: <Widget>[
                       IconSlideAction(
-                        caption: 'Edit',
-                        color: CustomColors.mfinGrey,
-                        icon: Icons.edit,
+                        caption: 'Mark As Collected',
+                        color: CustomColors.mfinPositiveGreen,
+                        icon: Icons.check_box,
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => EditPayment(
-                          //         Payment.fromJson(
-                          //             snapshot.data.documents[index].data)),
-                          //     settings: RouteSettings(
-                          //         name: '/customers/payment/edit'),
-                          //   ),
-                          // );
+                          markAsCollected(collection, context);
                         },
                       ),
                     ],
@@ -367,6 +365,51 @@ class PaymentCollectionListWidget extends StatelessWidget {
       default:
         return CustomColors.mfinBlue;
         break;
+    }
+  }
+
+  Future markAsCollected(Collection collection, BuildContext context) async {
+    if (collection.collectionAmount >= collection.getTotalPaid()) {
+      CustomDialogs.information(
+          context,
+          "Alert!",
+          CustomColors.mfinPositiveGreen,
+          "Collection amount ${collection.collectionAmount} already collected fully!");
+    } else {
+      CustomDialogs.actionWaiting(context, "Updating Collection");
+      CollectionController _cc = CollectionController();
+      User _user = UserController().getCurrentUser();
+      Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
+      collDetails['amount'] =
+          collection.collectionAmount - collection.getTotalPaid();
+      collDetails['notes'] = "";
+      collDetails['collected_by'] = _user.name;
+      collDetails['collected_from'] = custName;
+      collDetails['created_at'] = DateTime.now();
+      collDetails['added_by'] = _user.mobileNumber;
+      if (collection.collectionDate.isBefore(DateUtils.getCurrentDate()))
+        collDetails['is_paid_late'] = true;
+      else
+        collDetails['is_paid_late'] = false;
+
+      var result = await _cc.updateCollectionDetails(
+          collection.financeID,
+          collection.branchName,
+          collection.subBranchName,
+          collection.customerNumber,
+          _payment.createdAt,
+          collection.collectionDate,
+          true,
+          collDetails);
+
+      if (!result['is_success']) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState
+            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+        print("Unable to Mark as Collectied: " + result['message']);
+      } else {
+        Navigator.pop(context);
+      }
     }
   }
 }
