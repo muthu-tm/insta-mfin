@@ -104,7 +104,7 @@ class PaymentsCollectionWidget extends StatelessWidget {
                 color: CustomColors.mfinBlue,
               ),
               onPressed: () {
-                if (_collection.getTotalPaid() < _collection.collectionAmount) {
+                if (_collection.getAmountPaid() < _collection.collectionAmount) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/collection.dart';
@@ -30,7 +29,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: Collection().streamCollectionsByStatus(
+      stream: CollectionController().streamCollectionsByStatus(
           _payment.financeID,
           _payment.branchName,
           _payment.subBranchName,
@@ -38,22 +37,22 @@ class PaymentCollectionListWidget extends StatelessWidget {
           _payment.createdAt,
           status,
           fetchAll),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          if (snapshot.data.documents.isNotEmpty) {
+          if (snapshot.data != null) {
             children = <Widget>[
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 primary: false,
-                itemCount: snapshot.data.documents.length,
+                itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  Collection collection =
-                      Collection.fromJson(snapshot.data.documents[index].data);
+                  Collection collection = snapshot.data[index];
                   List<String> textValue = setCardValue(collection);
-                  Color cardColor = getCardColor(collection.status);
+                  Color cardColor = getCardColor(collection.getStatus());
 
                   return Slidable(
                     actionPane: SlidableDrawerActionPane(),
@@ -85,8 +84,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ViewCollection(
-                                      Collection.fromJson(
-                                          snapshot.data.documents[index].data),
+                                      collection,
                                       custName,
                                       _payment.createdAt,
                                       cardColor),
@@ -269,7 +267,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
                     children: <TextSpan>[
                       TextSpan(
                           text: snapshot.hasData
-                              ? snapshot.data.documents.length.toString()
+                              ? snapshot.data.length.toString()
                               : "00",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -306,19 +304,19 @@ class PaymentCollectionListWidget extends StatelessWidget {
   }
 
   List<String> setCardValue(Collection coll) {
-    switch (coll.status) {
+    switch (coll.getStatus()) {
       case 0:
         return ["AMOUNT: ", coll.collectionAmount.toString()];
         break;
       case 1:
       case 2:
-        return ["RECEIVED: ", coll.getTotalPaid().toString()];
+        return ["RECEIVED: ", coll.getAmountPaid().toString()];
         break;
       case 3:
         return ["AMOUNT: ", coll.collectionAmount.toString()];
         break;
       case 4:
-        int pending = coll.collectionAmount - coll.getTotalPaid();
+        int pending = coll.collectionAmount - coll.getAmountPaid();
         return ["PENDING: ", pending.toString()];
         break;
       default:
@@ -369,7 +367,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
   }
 
   Future markAsCollected(Collection collection, BuildContext context) async {
-    if (collection.collectionAmount >= collection.getTotalPaid()) {
+    if (collection.getPendingAmount() == 0) {
       CustomDialogs.information(
           context,
           "Alert!",
@@ -381,7 +379,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
       User _user = UserController().getCurrentUser();
       Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
       collDetails['amount'] =
-          collection.collectionAmount - collection.getTotalPaid();
+          collection.collectionAmount - collection.getAmountPaid();
       collDetails['notes'] = "";
       collDetails['collected_by'] = _user.name;
       collDetails['collected_from'] = custName;

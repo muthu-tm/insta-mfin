@@ -40,7 +40,6 @@ class CustomerPaymentsWidget extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   Payment payment =
                       Payment.fromJson(snapshot.data.documents[index].data);
-
                   return Slidable(
                     actionPane: SlidableDrawerActionPane(),
                     actionExtentRatio: 0.25,
@@ -265,89 +264,8 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Material(
-                                  color: CustomColors.mfinLightGrey,
-                                  elevation: 10.0,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.60,
-                                    height: 120,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height: 30,
-                                          child: ListTile(
-                                            leading: Text(
-                                              "PAID: ",
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                color: CustomColors.mfinBlue,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            trailing: Text(
-                                              payment.totalPaid.toString(),
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                color: CustomColors
-                                                    .mfinPositiveGreen,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 30,
-                                          child: ListTile(
-                                            leading: Text(
-                                              'PENDING:',
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                color: CustomColors.mfinBlue,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            trailing: Text(
-                                              '${payment.totalAmount - payment.totalPaid}',
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                color:
-                                                    CustomColors.mfinAlertRed,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 30,
-                                          child: ListTile(
-                                            leading: Text(
-                                              'UPCOMING:',
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                color: CustomColors.mfinBlue,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            trailing: Text(
-                                              '${payment.totalAmount - payment.totalPaid}',
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                color: CustomColors.mfinGrey,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                // Payment Details widget
+                                getPaymentsDetails(payment),
                               ],
                             ),
                           ),
@@ -456,6 +374,109 @@ class CustomerPaymentsWidget extends StatelessWidget {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  Widget getPaymentsDetails(Payment payment) {
+    return FutureBuilder(
+      future: payment.getAmountDetails(),
+      builder: (BuildContext context, AsyncSnapshot<List<int>> paidSnap) {
+        Widget child;
+
+        if (paidSnap.hasData) {
+          if (paidSnap.data != null) {
+            child = Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 30,
+                  child: ListTile(
+                    leading: Text(
+                      "PAID: ",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    trailing: Text(
+                      paidSnap.data[0].toString(),
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: CustomColors.mfinPositiveGreen,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                  child: ListTile(
+                    leading: Text(
+                      'PENDING:',
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    trailing: Text(
+                      '${paidSnap.data[1]}',
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: CustomColors.mfinAlertRed,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                  child: ListTile(
+                    leading: Text(
+                      'UPCOMING:',
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    trailing: Text(
+                      '${payment.totalAmount - paidSnap.data[3]}',
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: CustomColors.mfinGrey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        } else if (paidSnap.hasError) {
+          child = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncError());
+        } else {
+          child = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncWaiting());
+        }
+
+        return Material(
+          color: CustomColors.mfinLightGrey,
+          elevation: 10.0,
+          borderRadius: BorderRadius.circular(10.0),
+          child: Container(
+              width: MediaQuery.of(context).size.width * 0.60,
+              height: 120,
+              child: child),
         );
       },
     );

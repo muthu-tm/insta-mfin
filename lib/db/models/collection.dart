@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/enums/collection_status.dart';
 import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'collection.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Collection {
-  Payment payment = Payment();
-
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
   @JsonKey(name: 'branch_name', nullable: true)
@@ -30,8 +29,6 @@ class Collection {
   int collectionAmount;
   @JsonKey(name: 'collections')
   List<CollectionDetails> collections;
-  @JsonKey(name: 'status', defaultValue: 0)
-  int status;
   @JsonKey(name: 'type', nullable: true)
   int type;
   @JsonKey(name: 'created_at', nullable: true)
@@ -81,10 +78,6 @@ class Collection {
     this.collectionAmount = amount;
   }
 
-  setStatus(int status) {
-    this.status = status;
-  }
-
   setType(int type) {
     this.type = type;
   }
@@ -97,7 +90,7 @@ class Collection {
     }
   }
 
-  int getTotalPaid() {
+  int getAmountPaid() {
     int totalPaid = 0;
     if (this.collections != null) {
       this.collections.forEach((coll) {
@@ -108,20 +101,68 @@ class Collection {
     return totalPaid;
   }
 
+  int getAmountPaidLate() {
+    int paidLate = 0;
+    if (this.collections != null) {
+      this.collections.forEach((coll) {
+        if (coll.isPaidLate) {
+          paidLate += coll.amount;
+        }
+      });
+    }
+
+    return paidLate;
+  }
+
+  int getPendingAmount() {
+    if (this.collectionDate.isBefore(DateUtils.getCurrentDate())) {
+      return collectionAmount - getAmountPaid();
+    }
+
+    return 0;
+  }
+
+  int getCurrentAmount() {
+    if (this.collectionDate.isAtSameMomentAs(DateUtils.getCurrentDate())) {
+      return collectionAmount - getAmountPaid();
+    }
+
+    return 0;
+  }
+
+  int getUpcomingAmount() {
+    if (this.collectionDate.isAfter(DateUtils.getCurrentDate())) {
+      return collectionAmount - getAmountPaid();
+    }
+
+    return 0;
+  }
+
+  int getStatus() {
+    if (this.collectionDate.isBefore(DateUtils.getCurrentDate())) {
+      if (getPendingAmount() == 0 && getAmountPaidLate() == 0)
+        return CollectionStatus.Paid.name;
+      else if (getPendingAmount() == 0 && getAmountPaidLate() >= 0)
+        return CollectionStatus.PaidLate.name;
+      else
+        return CollectionStatus.Pending.name;
+    } else if (this.collectionDate.isAfter(DateUtils.getCurrentDate())) {
+      return CollectionStatus.Upcoming.name;
+    } else {
+      return CollectionStatus.Current.name;
+    }
+  }
+
   factory Collection.fromJson(Map<String, dynamic> json) =>
       _$CollectionFromJson(json);
   Map<String, dynamic> toJson() => _$CollectionToJson(this);
 
   CollectionReference getCollectionRef(String financeId, String branchName,
       String subBranchName, int number, DateTime createdAt) {
-    return payment
+    return Payment()
         .getDocumentReference(
             financeId, branchName, subBranchName, number, createdAt)
         .collection("customer_collections");
-  }
-
-  User getUser() {
-    return payment.user;
   }
 
   Query getGroupQuery() {
@@ -144,12 +185,13 @@ class Collection {
         .document(getDocumentID(collectionDate));
   }
 
-  Future<Collection> create(int number, DateTime createdAt) async {
+  Future<Collection> create(String financeId, String branchName,
+      String subBranchName, int number, DateTime createdAt) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = getUser().primaryFinance;
-    this.branchName = getUser().primaryBranch;
-    this.subBranchName = getUser().primarySubBranch;
+    this.financeID = financeId;
+    this.branchName = branchName;
+    this.subBranchName = subBranchName;
 
     await getDocumentReference(this.financeID, this.branchName,
             this.subBranchName, number, createdAt, this.collectionDate)
@@ -179,16 +221,6 @@ class Collection {
         .snapshots();
   }
 
-  Stream<QuerySnapshot> streamCollections(String financeId, String branchName,
-      String subBranchName, List<int> status) {
-    return getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('status', whereIn: status)
-        .snapshots();
-  }
-
   Future<List<Collection>> getAllCollectionsByDateRage(String financeId,
       String branchName, String subBranchName, List<DateTime> dates) async {
     var collectionDocs = await getGroupQuery()
@@ -213,19 +245,10 @@ class Collection {
       String branchName,
       String subBranchName,
       int number,
-      DateTime createdAt,
-      List<int> status,
-      bool fetchAll) {
-    if (fetchAll) {
-      return getCollectionRef(
-              financeId, branchName, subBranchName, number, createdAt)
-          .snapshots();
-    } else {
-      return getCollectionRef(
-              financeId, branchName, subBranchName, number, createdAt)
-          .where('status', whereIn: status)
-          .snapshots();
-    }
+      DateTime createdAt) {
+    return getCollectionRef(
+            financeId, branchName, subBranchName, number, createdAt)
+        .snapshots();
   }
 
   Future<List<Collection>> getAllCollectionsForCustomer(String financeId,
@@ -286,52 +309,6 @@ class Collection {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('status', isEqualTo: status)
-        .getDocuments();
-
-    List<Collection> collections = [];
-    if (collectionDocs.documents.isNotEmpty) {
-      for (var doc in collectionDocs.documents) {
-        collections.add(Collection.fromJson(doc.data));
-      }
-    }
-
-    return collections;
-  }
-
-  Future<List<Collection>> getAllCollectionsForCustomerByStatus(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int custNumber,
-      int status) async {
-    var collectionDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('customer_number', isEqualTo: custNumber)
-        .where('status', isEqualTo: status)
-        .getDocuments();
-
-    List<Collection> collections = [];
-    if (collectionDocs.documents.isNotEmpty) {
-      for (var doc in collectionDocs.documents) {
-        collections.add(Collection.fromJson(doc.data));
-      }
-    }
-
-    return collections;
-  }
-
-  Future<List<Collection>> getAllCollectionsForPaymentByStatus(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int custNumber,
-      DateTime createdAt,
-      int status) async {
-    var collectionDocs = await getCollectionRef(
-            financeId, branchName, subBranchName, custNumber, createdAt)
         .where('status', isEqualTo: status)
         .getDocuments();
 
@@ -416,7 +393,7 @@ class Collection {
           .getDocumentReference(financeId, branchName, subBranchName, number,
               createdAt, collectionDate)
           .get();
-          
+
       List<dynamic> colls = snap.data['collections'];
       int index = 0;
       for (index = 0; index < colls.length; index++) {

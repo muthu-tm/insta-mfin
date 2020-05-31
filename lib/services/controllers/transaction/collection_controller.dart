@@ -2,26 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/enums/collection_status.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/collection_details.dart';
+import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/services/utils/date_utils.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class CollectionController {
   Future createCollection(
+    String financeId,
+    String branchName,
+    String subBranchName,
     int custNumber,
     DateTime createdAt,
     int collAmount,
     DateTime collDate,
-    int status,
     List<CollectionDetails> collections,
   ) async {
     try {
       Collection coll = Collection();
       coll.addCollections(collections);
       coll.setCollectionAmount(collAmount);
-      coll.setStatus(status);
       coll.setCollectionDate(collDate);
 
-      await coll.create(custNumber, createdAt);
+      await coll.create(
+          financeId, branchName, subBranchName, custNumber, createdAt);
 
       return CustomResponse.getSuccesReponse(
           "Added new Collection successfully for $custNumber customer's payment ${createdAt.toString()}");
@@ -76,14 +79,42 @@ class CollectionController {
     }
   }
 
-  Stream<QuerySnapshot> streamAllCollectionByStatus(String financeId,
-      String branchName, String subBranchName, List<int> status) {
+  Stream<List<Collection>> streamCollectionsByStatus(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      List<int> status,
+      bool fetchAll) async* {
     try {
-      return Collection()
-          .streamCollections(financeId, branchName, subBranchName, status);
+      Collection coll = new Collection();
+      Stream<QuerySnapshot> stream = coll.streamCollectionsByStatus(
+          financeId, branchName, subBranchName, number, createdAt);
+
+      if (await stream.isEmpty) {
+        yield [];
+      }
+
+      List<Collection> colls = [];
+
+      if (fetchAll) {
+        await for (var event in stream) {
+          for (var doc in event.documents) {
+            colls.add(Collection.fromJson(doc.data));
+          }
+          yield colls;
+        }
+      } else {
+        await for (var event in stream) {
+          for (var doc in event.documents) {
+            Collection coll = Collection.fromJson(doc.data);
+            if (status.contains(coll.getStatus())) colls.add(coll);
+          }
+          yield colls;
+        }
+      }
     } catch (err) {
-      print("Error while retrieving collections with status $status:" +
-          err.toString());
       throw err;
     }
   }

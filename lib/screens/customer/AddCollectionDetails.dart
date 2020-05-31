@@ -39,7 +39,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
     this.receivedFrom = widget.custName;
     this.collectedBy = _user.name;
     this.totalAmount =
-        widget.collection.collectionAmount - widget.collection.getTotalPaid();
+        widget.collection.collectionAmount - widget.collection.getAmountPaid();
 
     if (widget.collection.collectionDate.isBefore(DateUtils.getCurrentDate())) {
       setState(() {
@@ -120,7 +120,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                           ),
                         ),
                         trailing: Text(
-                          widget.collection.getTotalPaid().toString(),
+                          widget.collection.getAmountPaid().toString(),
                           style: TextStyle(
                             fontSize: 17,
                             fontFamily: "Georgia",
@@ -426,7 +426,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
     if (form.validate()) {
       if (collDetails['amount'] >
           (widget.collection.collectionAmount -
-              widget.collection.getTotalPaid())) {
+              widget.collection.getAmountPaid())) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "Collected AMOUNT must be equal or lesser than Balance Amount", 3));
       } else {
