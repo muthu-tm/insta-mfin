@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/enums/collection_type.dart';
 import 'package:instamfin/db/models/accounts_data.dart';
+import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -29,8 +31,6 @@ class Payment extends Model {
   int docCharge;
   @JsonKey(name: 'surcharge', nullable: true)
   int surcharge;
-  @JsonKey(name: 'total_paid', nullable: true)
-  int totalPaid;
   @JsonKey(name: 'tenure', nullable: true)
   int tenure;
   @JsonKey(name: 'collection_mode', nullable: true)
@@ -130,10 +130,6 @@ class Payment extends Model {
     this.closingDate = closingDate;
   }
 
-  setTotalPaid(int paid) {
-    this.totalPaid = paid;
-  }
-
   setGivenBy(String givenBy) {
     this.givenBy = givenBy;
   }
@@ -156,6 +152,71 @@ class Payment extends Model {
 
   setUpdatedAt(DateTime updatedAt) {
     this.updatedAt = updatedAt;
+  }
+
+  Future<int> getTotalPaid() async {
+    try {
+      List<Collection> collList = await Collection()
+          .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
+              this.subBranchName, this.customerNumber, this.createdAt);
+      int totalPaid = 0;
+      collList.forEach((coll) {
+        if (coll.type != CollectionType.DocCharge.name &&
+            coll.type != CollectionType.Surcharge.name)
+          totalPaid += coll.getAmountPaid();
+      });
+
+      return totalPaid;
+    } catch (err) {
+      print("Unable to get Payment's Total Paid amount!" + err.toString());
+      return null;
+    }
+  }
+
+  Future<int> getTotalPending() async {
+    try {
+      List<Collection> collList = await Collection()
+          .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
+              this.subBranchName, this.customerNumber, this.createdAt);
+      int pending = 0;
+      collList.forEach((coll) {
+        if (coll.type != CollectionType.DocCharge.name &&
+            coll.type != CollectionType.Surcharge.name)
+          pending += coll.getPendingAmount();
+      });
+
+      return pending;
+    } catch (err) {
+      print("Unable to get Payment's Total Paid amount!" + err.toString());
+      return 0;
+    }
+  }
+
+  Future<List<int>> getAmountDetails() async {
+    try {
+      List<Collection> collList = await Collection()
+          .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
+              this.subBranchName, this.customerNumber, this.createdAt);
+
+      int totalPaid = 0;
+      int pending = 0;
+      int current = 0;
+      int upcoming = 0;
+      collList.forEach((coll) {
+        if (coll.type != CollectionType.DocCharge.name &&
+            coll.type != CollectionType.Surcharge.name) {
+          totalPaid += coll.getAmountPaid();
+          pending += coll.getPendingAmount();
+          current += coll.getCurrentAmount();
+          upcoming += coll.getUpcomingAmount();
+        }
+      });
+
+      return [totalPaid, pending, current, upcoming];
+    } catch (err) {
+      print("Unable to get Payment's amount details!" + err.toString());
+      return null;
+    }
   }
 
   factory Payment.fromJson(Map<String, dynamic> json) =>

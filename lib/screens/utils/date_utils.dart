@@ -20,4 +20,9 @@ class DateUtils {
     return DateTime(
         thisInstant.year, thisInstant.month, thisInstant.day, 5, 30, 0, 0, 0);
   }
+
+  static DateTime getFormattedCurrentDate(DateTime dateTime) {
+    return DateTime(
+        dateTime.year, dateTime.month, dateTime.day, 5, 30, 0, 0, 0);
+  }
 }

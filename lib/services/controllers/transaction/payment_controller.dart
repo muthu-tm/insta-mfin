@@ -1,5 +1,4 @@
 import 'package:instamfin/db/enums/payment_status.dart';
-import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -22,7 +21,6 @@ class PaymentController {
       String givenTo,
       String givenBy,
       int status,
-      int totalPaid,
       String notes) async {
     try {
       UserController _uc = UserController();
@@ -32,7 +30,6 @@ class PaymentController {
       payment.setGivenTo(givenTo);
       payment.setGivenBy(givenBy);
       payment.setPaymentStatus(status);
-      payment.setTotalPaid(totalPaid);
       payment.setAddedBy(_uc.getCurrentUserID());
       payment.setTotalAmount(tAmount);
       payment.setPrincipalAmount(pAmount);
@@ -47,7 +44,7 @@ class PaymentController {
       payment.setCollectionDay(collectionDay);
 
       await payment.create(custNumber);
-
+      
       return CustomResponse.getSuccesReponse(
           "Created new Payment successfully");
     } catch (err) {
@@ -88,8 +85,12 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getAllPaymentsByDateRage(String financeId,
-      String branchName, String subBranchName, DateTime startDate, DateTime endDate) async {
+  Future<List<Payment>> getAllPaymentsByDateRage(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      DateTime startDate,
+      DateTime endDate) async {
     try {
       List<Payment> payments = await Payment().getAllPaymentsByDateRage(
           financeId, branchName, subBranchName, startDate, endDate);
@@ -100,8 +101,8 @@ class PaymentController {
 
       return payments;
     } catch (err) {
-      print("Error while retrieving payments with Date Range: " +
-          err.toString());
+      print(
+          "Error while retrieving payments with Date Range: " + err.toString());
       throw err;
     }
   }
@@ -179,8 +180,7 @@ class PaymentController {
   }
 
   Future updatePayment(
-      Payment payment,
-      Map<String, dynamic> paymentJSON) async {
+      Payment payment, Map<String, dynamic> paymentJSON) async {
     try {
       await Payment().updatePayment(payment, paymentJSON);
 
@@ -202,21 +202,16 @@ class PaymentController {
     DateTime createdAt,
   ) async {
     try {
-      List<Collection> colls = await Collection()
-          .getAllCollectionsForCustomerPayment(
-              financeId, branchName, subBranchName, custNumber, createdAt);
-      bool isNewPayment = true;
-      for (int i=0; i< colls.length; i++){
-        Collection coll = colls[i];
-        // check for paid collections
-        if (coll.status == 1) {
-          isNewPayment = false;
-        }
-      }
-      if (!isNewPayment) {
+      Payment pay = await Payment().getPaymentByID(
+          financeId, branchName, subBranchName, custNumber, createdAt);
+      int paid = await pay.getTotalPaid();
+      if (paid == null)
+        return CustomResponse.getFailureReponse(
+            "Error while Removing Payment. Unable to get TotalPaid amount!");
+
+      if (paid > 0)
         return CustomResponse.getFailureReponse(
             "Unable to Remove Payment. It has PAID Collections! Remove this Payment's collections first.");
-      }
 
       // Remove payment
       await Payment().removePayment(
@@ -225,8 +220,9 @@ class PaymentController {
       // Update customer status
       try {
         int custStatus = 0;
-        List<Payment> payments = await getAllPaymentsForCustomer(financeId, branchName, subBranchName, custNumber);
-        for (int index = 0; index < payments.length; index++ ) {
+        List<Payment> payments = await getAllPaymentsForCustomer(
+            financeId, branchName, subBranchName, custNumber);
+        for (int index = 0; index < payments.length; index++) {
           Payment payment = payments[index];
           if (payment.status == 2) {
             custStatus = 2;
@@ -238,7 +234,8 @@ class PaymentController {
           }
         }
 
-        await CustController().updateCustomer({'customer_status': custStatus}, custNumber);
+        await CustController()
+            .updateCustomer({'customer_status': custStatus}, custNumber);
       } catch (err) {
         throw 'Remove Payment, but unable to update customer status; Edit Customer status manually';
       }

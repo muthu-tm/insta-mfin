@@ -952,7 +952,6 @@ class _AddPaymentState extends State<AddPayment> {
           givenTo,
           givenBy,
           PaymentStatus.Active.name,
-          0,
           notes);
 
       if (!result['is_success']) {

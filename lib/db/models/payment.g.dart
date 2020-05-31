@@ -28,7 +28,6 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..principalAmount = json['principal_amount'] as int
     ..docCharge = json['doc_charge'] as int
     ..surcharge = json['surcharge'] as int
-    ..totalPaid = json['total_paid'] as int
     ..tenure = json['tenure'] as int
     ..collectionMode = json['collection_mode'] as int
     ..collectionDay = json['collection_day'] as int
@@ -65,7 +64,6 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'principal_amount': instance.principalAmount,
       'doc_charge': instance.docCharge == null ? 0 : instance.docCharge,
       'surcharge': instance.surcharge == null ? 0 : instance.surcharge,
-      'total_paid': instance.totalPaid == null ? 0 : instance.totalPaid,
       'tenure': instance.tenure,
       'collection_mode': instance.collectionMode,
       'collection_day': instance.collectionDay,
