@@ -27,22 +27,22 @@ class _AddPaymentState extends State<AddPayment> {
   final User _user = UserController().getCurrentUser();
 
   String _selectedTempID = "0";
-  String _selectedCollectionModeID = "1";
-  String _selectedCollectionDayID = "1";
+  String _selectedCollectionModeID = "0";
+  String _selectedCollectionDayID = "0";
   Map<String, String> _tempMap = {"0": "Choose Type.."};
   Map<String, String> _tempCollectionMode = {
-    "1": "Daily",
-    "2": "Weekly",
-    "3": "Monthly"
+    "0": "Daily",
+    "1": "Weekly",
+    "2": "Monthly"
   };
   Map<String, String> _tempCollectionDays = {
-    "1": "Sunday",
-    "2": "Monday",
-    "3": "Tuesday",
-    "4": "Wednesday",
-    "5": "Thursday",
-    "6": "Friday",
-    "7": "Saturday",
+    "0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday",
   };
   List<PaymentTemplate> templates = new List<PaymentTemplate>();
   List<PaymentTemplate> tempList;
