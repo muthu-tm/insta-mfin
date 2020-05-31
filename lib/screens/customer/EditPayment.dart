@@ -22,10 +22,29 @@ class _EditPaymentState extends State<EditPayment> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _selectedTempID = "0";
+  String selectedCollectionModeID = "0";
+  String selectedCollectionDayID = "0";
   Map<String, String> _tempMap = {"0": "Choose Type.."};
+  Map<String, String> _tempCollectionMode = {
+    "0": "Daily",
+    "1": "Weekly",
+    "2": "Monthly"
+  };
+  Map<String, String> _tempCollectionDays = {
+    "0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday",
+  };
   List<PaymentTemplate> templates = new List<PaymentTemplate>();
   List<PaymentTemplate> tempList;
   PaymentTemplate selectedTemp;
+
+  TextEditingController _date = new TextEditingController();
+  TextEditingController _collectionDate = new TextEditingController();
 
   Map<String, dynamic> updatedPayment = new Map();
 
@@ -34,9 +53,17 @@ class _EditPaymentState extends State<EditPayment> {
     super.initState();
     this.getCollectionTemp();
 
+    selectedCollectionDayID = widget.payment.collectionDay.toString();
+    selectedCollectionModeID = widget.payment.collectionMode.toString();
+
     _date.value = TextEditingValue(
       text: DateUtils.formatDate(widget.payment.dateOfPayment),
     );
+
+    _collectionDate.value = TextEditingValue(
+      text: DateUtils.formatDate(widget.payment.collectionDate)
+    );
+
   }
 
   @override
@@ -286,6 +313,200 @@ class _EditPaymentState extends State<EditPayment> {
                         value: _selectedTempID,
                       ),
                     ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "MODE:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: DropdownButton<String>(
+                        dropdownColor: CustomColors.mfinWhite,
+                        isExpanded: true,
+                        items: _tempCollectionMode.entries.map(
+                              (f) {
+                            return DropdownMenuItem<String>(
+                              value: f.key,
+                              child: Text(f.value),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (newVal) {
+                          _setSelectedCollectionMode(newVal);
+                        },
+                        value: selectedCollectionModeID,
+                      ),
+                    ),
+                    int.parse(selectedCollectionModeID) == 0
+                        ? ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "COLLECTION DATE:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: GestureDetector(
+                        onTap: () => _selectCollectionDate(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            controller: _collectionDate,
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              hintText: 'Date of Collection',
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 3.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              suffixIcon: Icon(
+                                Icons.date_range,
+                                size: 35,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                        : Container(),
+                    int.parse(selectedCollectionModeID) == 1
+                        ? Column(
+                      children: <Widget>[
+                        ListTile(
+                          leading: SizedBox(
+                            width: 100,
+                            child: Text(
+                              "COLLECTION DATE:",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                          title: GestureDetector(
+                            onTap: () => _selectCollectionDate(context),
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                controller: _collectionDate,
+                                keyboardType: TextInputType.datetime,
+                                decoration: InputDecoration(
+                                  hintText: 'Date of Collection',
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding:
+                                  new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 3.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors.mfinWhite)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  suffixIcon: Icon(
+                                    Icons.date_range,
+                                    size: 35,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          leading: SizedBox(
+                            width: 100,
+                            child: Text(
+                              "DAY:",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                          title: DropdownButton<String>(
+                            dropdownColor: CustomColors.mfinWhite,
+                            isExpanded: true,
+                            items: _tempCollectionDays.entries.map(
+                                  (f) {
+                                return DropdownMenuItem<String>(
+                                  value: f.key,
+                                  child: Text(f.value),
+                                );
+                              },
+                            ).toList(),
+                            onChanged: (newVal) {
+                              _setSelectedCollectionDay(newVal);
+                            },
+                            value: selectedCollectionDayID,
+                          ),
+                        ),
+                      ],
+                    )
+                        : Container(),
+                    int.parse(selectedCollectionModeID) == 2
+                        ? ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "COLLECTION DATE:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: GestureDetector(
+                        onTap: () => _selectCollectionDate(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            controller: _collectionDate,
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              hintText: 'Date of Collection',
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 3.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              suffixIcon: Icon(
+                                Icons.date_range,
+                                size: 35,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                        : Container(),
                   ],
                 ),
               ),
@@ -609,6 +830,13 @@ class _EditPaymentState extends State<EditPayment> {
     );
   }
 
+  _setSelectedCollectionMode(String newVal) {
+    setState(() {
+      updatedPayment['collection_mode'] = int.parse(newVal);
+      selectedCollectionModeID = newVal;
+    });
+  }
+
   _setSelectedTemp(String newVal) {
     if (tempList != null && newVal != "0") {
       selectedTemp = tempList[int.parse(newVal) - 1];
@@ -634,7 +862,30 @@ class _EditPaymentState extends State<EditPayment> {
     }
   }
 
-  TextEditingController _date = new TextEditingController();
+  void _setSelectedCollectionDay(String newVal) {
+    setState(() {
+      updatedPayment['collection_day'] = int.parse(newVal);
+      selectedCollectionDayID = newVal;
+    });
+  }
+
+  Future<Null> _selectCollectionDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: widget.payment.collectionDate,
+      firstDate: DateTime.now().add(Duration(days: 1)),
+      lastDate: DateTime.now().add(Duration(days: 365 * 5)),
+    );
+    if (picked != null && picked != widget.payment.collectionDate)
+      setState(
+            () {
+              updatedPayment['collection_date'] = picked;
+          _collectionDate.value = TextEditingValue(
+            text: DateUtils.formatDate(picked),
+          );
+        },
+      );
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -687,3 +938,4 @@ class _EditPaymentState extends State<EditPayment> {
     }
   }
 }
+

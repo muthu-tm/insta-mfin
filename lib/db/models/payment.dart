@@ -33,16 +33,16 @@ class Payment extends Model {
   int totalPaid;
   @JsonKey(name: 'tenure', nullable: true)
   int tenure;
-  @JsonKey(name: 'tenure_type', nullable: true)
-  int tenureType;
+  @JsonKey(name: 'collection_mode', nullable: true)
+  int collectionMode;
   @JsonKey(name: 'collection_day', nullable: true)
   int collectionDay;
   @JsonKey(name: 'interest_rate', nullable: true)
   double interestRate;
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;
-  @JsonKey(name: 'collection_starts_from', nullable: true)
-  DateTime collectionStartsFrom;
+  @JsonKey(name: 'collection_date', nullable: true)
+  DateTime collectionDate;
   @JsonKey(name: 'closing_date', nullable: true)
   DateTime closingDate;
   @JsonKey(name: 'status', nullable: true)
@@ -98,12 +98,12 @@ class Payment extends Model {
     this.tenure = tenure;
   }
 
-  setTenureType(int tenureType) {
-    this.tenureType = tenureType;
+  setCollectionMode(int collectionMode) {
+    this.collectionMode = collectionMode;
   }
 
-  setCollectionDay(int weekDay) {
-    this.collectionDay = weekDay;
+  setCollectionDay(int collectionDay) {
+    this.collectionDay = collectionDay;
   }
 
   setCollectionAmount(int amount) {
@@ -122,8 +122,8 @@ class Payment extends Model {
     this.dateOfPayment = date;
   }
 
-  setCSF(DateTime date) {
-    this.collectionStartsFrom = date;
+  setCollectionDate(DateTime date) {
+    this.collectionDate = date;
   }
 
   setPCD(DateTime closingDate) {

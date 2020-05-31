@@ -8,8 +8,27 @@ class ViewPaymentDetails extends StatelessWidget {
 
   final Payment payment;
 
+  final List<String> _tempCollectionMode = [
+    "Daily",
+    "Weekly",
+    "Monthly"
+  ];
+
+  final List<String> _tempCollectionDays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
   @override
   Widget build(BuildContext context) {
+    int selectedCollectionModeID = payment.collectionMode;
+    int selectedCollectionDayID = payment.collectionDay;
+
     return new Drawer(
       child: new ListView(
         children: <Widget>[
@@ -194,6 +213,195 @@ class ViewPaymentDetails extends StatelessWidget {
                             autofocus: false,
                           ),
                         ),
+                        ListTile(
+                          leading: SizedBox(
+                            width: 100,
+                            child: Text(
+                              "MODE:",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                          title: TextFormField(
+                            textAlign: TextAlign.end,
+                            initialValue: _tempCollectionMode[selectedCollectionModeID],
+                            decoration: InputDecoration(
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 3.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                            ),
+                            enabled: false,
+                            autofocus: false,
+                          ),
+                        ),
+                        selectedCollectionModeID == 0
+                            ? ListTile(
+                          leading: SizedBox(
+                            width: 100,
+                            child: Text(
+                              "COLLECTION DATE:",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                          title: GestureDetector(
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                keyboardType: TextInputType.datetime,
+                                initialValue: DateUtils.formatDate(payment.collectionDate),
+                                decoration: InputDecoration(
+                                  hintText: 'Date of Collection',
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 3.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors.mfinWhite)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  suffixIcon: Icon(
+                                    Icons.date_range,
+                                    size: 35,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                            : Container(),
+                        selectedCollectionModeID == 1
+                            ? Column(
+                          children: <Widget>[
+                            ListTile(
+                              leading: SizedBox(
+                                width: 100,
+                                child: Text(
+                                  "COLLECTION DATE:",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontFamily: "Georgia",
+                                    fontWeight: FontWeight.bold,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                              ),
+                              title: GestureDetector(
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.datetime,
+                                    initialValue: DateUtils.formatDate(payment.collectionDate),
+                                    decoration: InputDecoration(
+                                      hintText: 'Date of Collection',
+                                      labelStyle: TextStyle(
+                                        color: CustomColors.mfinBlue,
+                                      ),
+                                      contentPadding:
+                                      new EdgeInsets.symmetric(
+                                          vertical: 3.0, horizontal: 3.0),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: CustomColors.mfinWhite)),
+                                      fillColor: CustomColors.mfinWhite,
+                                      filled: true,
+                                      suffixIcon: Icon(
+                                        Icons.date_range,
+                                        size: 35,
+                                        color: CustomColors.mfinBlue,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: SizedBox(
+                                width: 100,
+                                child: Text(
+                                  "DAY:",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontFamily: "Georgia",
+                                    fontWeight: FontWeight.bold,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                              ),
+                              title: TextFormField(
+                                textAlign: TextAlign.end,
+                                initialValue: _tempCollectionDays[selectedCollectionDayID],
+                                decoration: InputDecoration(
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 3.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors.mfinWhite)),
+                                ),
+                                enabled: false,
+                                autofocus: false,
+                              ),
+                            ),
+                          ],
+                        )
+                            : Container(),
+                        selectedCollectionModeID == 2
+                            ? ListTile(
+                          leading: SizedBox(
+                            width: 100,
+                            child: Text(
+                              "COLLECTION DATE:",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                          title: GestureDetector(
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                keyboardType: TextInputType.datetime,
+                                initialValue: DateUtils.formatDate(payment.collectionDate),
+                                decoration: InputDecoration(
+                                  hintText: 'Date of Collection',
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 3.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors.mfinWhite)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  suffixIcon: Icon(
+                                    Icons.date_range,
+                                    size: 35,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                            : Container(),
                       ],
                     ),
                   ),

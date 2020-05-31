@@ -14,7 +14,7 @@ PaymentTemplate _$PaymentTemplateFromJson(Map<String, dynamic> json) {
     ..docCharge = json['doc_charge'] as int
     ..surcharge = json['surcharge'] as int
     ..tenure = json['tenure'] as int
-    ..tenureType = json['tenure_type'] as int
+    ..tenureType = json['collection_mode'] as int
     ..collectionAmount = json['collection_amount'] as int
     ..interestRate = (json['interest_rate'] as num)?.toDouble()
     ..addedBy = json['added_by'] as int
@@ -41,7 +41,7 @@ Map<String, dynamic> _$PaymentTemplateToJson(PaymentTemplate instance) =>
       'doc_charge': instance.docCharge == null ? 0 : instance.docCharge,
       'surcharge': instance.surcharge == null ? 0 : instance.surcharge,
       'tenure': instance.tenure == null ? 0 : instance.tenure,
-      'tenure_type': instance.tenureType == null ? 0 : instance.tenureType,
+      'collection_mode': instance.tenureType == null ? 0 : instance.tenureType,
       'collection_amount':
           instance.collectionAmount == null ? 0 : instance.collectionAmount,
       'interest_rate':

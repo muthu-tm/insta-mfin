@@ -20,7 +20,7 @@ class PaymentTemplate {
   int surcharge;
   @JsonKey(name: 'tenure', nullable: true)
   int tenure;
-  @JsonKey(name: 'tenure_type', nullable: true)
+  @JsonKey(name: 'collection_mode', nullable: true)
   int tenureType;
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;

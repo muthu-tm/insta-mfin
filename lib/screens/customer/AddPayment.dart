@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/enums/payment_status.dart';
-import 'package:instamfin/db/enums/tenure_type.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/user.dart';
@@ -27,8 +26,8 @@ class _AddPaymentState extends State<AddPayment> {
   final User _user = UserController().getCurrentUser();
 
   String _selectedTempID = "0";
-  String _selectedCollectionModeID = "0";
-  String _selectedCollectionDayID = "0";
+  String selectedCollectionModeID = "0";
+  String selectedCollectionDayID = "0";
   Map<String, String> _tempMap = {"0": "Choose Type.."};
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
@@ -375,10 +374,10 @@ class _AddPaymentState extends State<AddPayment> {
                         onChanged: (newVal) {
                           _setSelectedCollectionMode(newVal);
                         },
-                        value: _selectedCollectionModeID,
+                        value: selectedCollectionModeID,
                       ),
                     ),
-                    int.parse(_selectedCollectionModeID) == 1
+                    int.parse(selectedCollectionModeID) == 0
                         ? ListTile(
                             leading: SizedBox(
                               width: 100,
@@ -421,7 +420,7 @@ class _AddPaymentState extends State<AddPayment> {
                             ),
                           )
                         : Container(),
-                    int.parse(_selectedCollectionModeID) == 2
+                    int.parse(selectedCollectionModeID) == 1
                         ? Column(
                             children: <Widget>[
                               ListTile(
@@ -493,13 +492,13 @@ class _AddPaymentState extends State<AddPayment> {
                                   onChanged: (newVal) {
                                     _setSelectedCollectionDay(newVal);
                                   },
-                                  value: _selectedCollectionDayID,
+                                  value: selectedCollectionDayID,
                                 ),
                               ),
                             ],
                           )
                         : Container(),
-                    int.parse(_selectedCollectionModeID) == 3
+                    int.parse(selectedCollectionModeID) == 2
                         ? ListTile(
                       leading: SizedBox(
                         width: 100,
@@ -870,13 +869,13 @@ class _AddPaymentState extends State<AddPayment> {
 
   _setSelectedCollectionMode(String newVal) {
     setState(() {
-      _selectedCollectionModeID = newVal;
+      selectedCollectionModeID = newVal;
     });
   }
 
   _setSelectedCollectionDay(String newVal) {
     setState(() {
-      _selectedCollectionDayID = newVal;
+      selectedCollectionDayID = newVal;
     });
   }
 
@@ -944,7 +943,9 @@ class _AddPaymentState extends State<AddPayment> {
           principalAmount,
           tenure,
           collectionAmount,
-          TenureType.Daily.name,
+          int.parse(selectedCollectionModeID),
+          collectionDate,
+          int.parse(selectedCollectionDayID),
           docCharge,
           surCharge,
           intrestRate,

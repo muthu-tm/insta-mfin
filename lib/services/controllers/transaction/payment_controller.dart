@@ -13,7 +13,9 @@ class PaymentController {
       int pAmount,
       int tenure,
       int amountPerColl,
-      int tenureType,
+      int collectionMode,
+      DateTime collectionDate,
+      int collectionDay,
       int docCharge,
       int surcharge,
       double iRate,
@@ -36,17 +38,13 @@ class PaymentController {
       payment.setPrincipalAmount(pAmount);
       payment.setTenure(tenure);
       payment.setCollectionAmount(amountPerColl);
-      payment.setTenureType(tenureType);
+      payment.setCollectionMode(collectionMode);
       payment.setDocumentCharge(docCharge);
       payment.setSurcharge(surcharge);
       payment.setInterestRate(iRate);
       payment.setNotes(notes);
-
-      // Hardcoded values for CF testing
-      var thisInstant = DateTime.now();
-      payment.setCSF(DateTime(
-          thisInstant.year, thisInstant.month, thisInstant.day, 5, 30, 0, 0, 0));
-      payment.setCollectionDay(1);
+      payment.setCollectionDate(collectionDate);
+      payment.setCollectionDay(collectionDay);
 
       await payment.create(custNumber);
 

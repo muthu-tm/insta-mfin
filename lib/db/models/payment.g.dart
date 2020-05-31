@@ -16,10 +16,10 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
             _getMillisecondsSinceEpoch(json['date_of_payment'] as Timestamp))
-    ..collectionStartsFrom = json['collection_starts_from'] == null
+    ..collectionDate = json['collection_date'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['collection_starts_from'] as Timestamp))
+            _getMillisecondsSinceEpoch(json['collection_date'] as Timestamp))
     ..closingDate = json['closing_date'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -30,7 +30,7 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..surcharge = json['surcharge'] as int
     ..totalPaid = json['total_paid'] as int
     ..tenure = json['tenure'] as int
-    ..tenureType = json['tenure_type'] as int
+    ..collectionMode = json['collection_mode'] as int
     ..collectionDay = json['collection_day'] as int
     ..interestRate = (json['interest_rate'] as num)?.toDouble()
     ..collectionAmount = json['collection_amount'] as int
@@ -59,7 +59,7 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'sub_branch_name': instance.subBranchName,
       'customer_number': instance.customerNumber,
       'date_of_payment': instance.dateOfPayment,
-      'collection_starts_from': instance.collectionStartsFrom,
+      'collection_date': instance.collectionDate,
       'closing_date': instance.closingDate,
       'total_amount': instance.totalAmount,
       'principal_amount': instance.principalAmount,
@@ -67,7 +67,7 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'surcharge': instance.surcharge == null ? 0 : instance.surcharge,
       'total_paid': instance.totalPaid == null ? 0 : instance.totalPaid,
       'tenure': instance.tenure,
-      'tenure_type': instance.tenureType,
+      'collection_mode': instance.collectionMode,
       'collection_day': instance.collectionDay,
       'interest_rate':
           instance.interestRate == null ? 0 : instance.interestRate,
