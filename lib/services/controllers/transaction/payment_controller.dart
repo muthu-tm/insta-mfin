@@ -1,7 +1,4 @@
-import 'package:instamfin/db/enums/payment_status.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -21,30 +18,29 @@ class PaymentController {
       double iRate,
       String givenTo,
       String givenBy,
-      int status,
       String notes) async {
     try {
       UserController _uc = UserController();
-      Payment payment = Payment();
-      payment.setCustomerNumber(custNumber);
-      payment.setDOP(dateOfPay);
-      payment.setGivenTo(givenTo);
-      payment.setGivenBy(givenBy);
-      payment.setPaymentStatus(status);
-      payment.setAddedBy(_uc.getCurrentUserID());
-      payment.setTotalAmount(tAmount);
-      payment.setPrincipalAmount(pAmount);
-      payment.setTenure(tenure);
-      payment.setCollectionAmount(amountPerColl);
-      payment.setCollectionMode(collectionMode);
-      payment.setDocumentCharge(docCharge);
-      payment.setSurcharge(surcharge);
-      payment.setInterestRate(iRate);
-      payment.setNotes(notes);
-      payment.setCSF(collectionDate);
-      payment.setCollectionDay(collectionDay);
+      Payment pay = Payment();
+      pay.setCustomerNumber(custNumber);
+      pay.setDOP(dateOfPay);
+      pay.setGivenTo(givenTo);
+      pay.setGivenBy(givenBy);
+      pay.setAddedBy(_uc.getCurrentUserID());
+      pay.setTotalAmount(tAmount);
+      pay.setPrincipalAmount(pAmount);
+      pay.setTenure(tenure);
+      pay.setCollectionAmount(amountPerColl);
+      pay.setCollectionMode(collectionMode);
+      pay.setDocumentCharge(docCharge);
+      pay.setSurcharge(surcharge);
+      pay.setInterestRate(iRate);
+      pay.setNotes(notes);
+      pay.setIsActive(true);
+      pay.setCSF(collectionDate);
+      pay.setCollectionDay(collectionDay);
 
-      await payment.create(custNumber);
+      await pay.create(custNumber);
 
       return CustomResponse.getSuccesReponse(
           "Created new Payment successfully");
@@ -108,78 +104,6 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getAllPaymentsByStatus(String financeId,
-      String branchName, String subBranchName, int status) async {
-    try {
-      List<Payment> payments = await Payment()
-          .getAllPaymentsByStatus(financeId, branchName, subBranchName, status);
-
-      if (payments == null) {
-        return [];
-      }
-
-      return payments;
-    } catch (err) {
-      print("Error while retrieving payments with status $status:" +
-          err.toString());
-      throw err;
-    }
-  }
-
-  Future<int> getPaymentsAmountByStatus(String financeId, String branchName,
-      String subBranchName, int status) async {
-    try {
-      List<Payment> payments = await getAllPaymentsByStatus(
-          financeId, branchName, subBranchName, status);
-
-      int tAmount = 0;
-      if (payments == null) {
-        return tAmount;
-      }
-
-      payments.forEach((payment) {
-        tAmount += payment.totalAmount;
-      });
-
-      return tAmount;
-    } catch (err) {
-      print("Error while retrieving payments with status $status:" +
-          err.toString());
-      throw err;
-    }
-  }
-
-  Future<Map<String, int>> getPaymentsCountByStatus(
-      String financeId, String branchName, String subBranchName) async {
-    try {
-      Map<String, int> paymentsCount = Map();
-
-      List<Payment> totalPayments = await Payment().getAllPayments(
-        financeId,
-        branchName,
-        subBranchName,
-      );
-      paymentsCount['total_payments'] = totalPayments.length;
-
-      List<Payment> activePayments = await getAllPaymentsByStatus(
-          financeId, branchName, subBranchName, PaymentStatus.Active.name);
-      paymentsCount['active_payments'] = activePayments.length;
-
-      List<Payment> pendingPayments = await getAllPaymentsByStatus(
-          financeId, branchName, subBranchName, PaymentStatus.Pending.name);
-      paymentsCount['pending_payments'] = pendingPayments.length;
-
-      List<Payment> closedPayments = await getAllPaymentsByStatus(
-          financeId, branchName, subBranchName, PaymentStatus.Closed.name);
-      paymentsCount['closed_payments'] = closedPayments.length;
-
-      return paymentsCount;
-    } catch (err) {
-      print("Error while retrieving payments count:" + err.toString());
-      throw err;
-    }
-  }
-
   Future updatePayment(
       Payment payment, Map<String, dynamic> paymentJSON) async {
     try {
@@ -203,34 +127,9 @@ class PaymentController {
     DateTime createdAt,
   ) async {
     try {
-      // Remove payment
       await Payment().removePayment(
           financeId, branchName, subBranchName, custNumber, createdAt);
 
-      // Update customer status
-      try {
-        int custStatus = 0;
-        List<Payment> payments = await getAllPaymentsForCustomer(
-            financeId, branchName, subBranchName, custNumber);
-        for (int index = 0; index < payments.length; index++) {
-          Payment payment = payments[index];
-          if (payment.status == 2) {
-            custStatus = 2;
-            break;
-          } else if (payment.status == 3) {
-            custStatus = 3;
-          } else if (payment.status == 1) {
-            custStatus = 1;
-          }
-        }
-
-        await CustController()
-            .updateCustomer({'customer_status': custStatus}, custNumber);
-      } catch (err) {
-        throw 'Remove Payment, but unable to update customer status; Edit Customer status manually';
-      }
-
-      // Return success response
       return CustomResponse.getSuccesReponse(
           "Removed customer's Payment for customer $custNumber");
     } catch (err) {

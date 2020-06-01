@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/enums/payment_status.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/user.dart';
@@ -951,7 +950,6 @@ class _AddPaymentState extends State<AddPayment> {
           intrestRate,
           givenTo,
           givenBy,
-          PaymentStatus.Active.name,
           notes);
 
       if (!result['is_success']) {

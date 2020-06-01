@@ -29,7 +29,7 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..collectionDay = json['collection_day'] as int
     ..interestRate = (json['interest_rate'] as num)?.toDouble()
     ..collectionAmount = json['collection_amount'] as int
-    ..status = json['status'] as int
+    ..isActive = json['is_active'] as bool
     ..givenBy = json['given_by'] as String
     ..givenTo = json['given_to'] as String
     ..notes = json['notes'] as String ?? ''
@@ -65,9 +65,9 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'interest_rate':
           instance.interestRate == null ? 0 : instance.interestRate,
       'collection_amount': instance.collectionAmount,
+      'is_active': instance.isActive,
       'given_by': instance.givenBy == null ? '' : instance.givenBy,
       'given_to': instance.givenTo == null ? '' : instance.givenTo,
-      'status': instance.status,
       'notes': instance.notes == null ? '' : instance.notes,
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,

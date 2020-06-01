@@ -1,4 +1,3 @@
-import 'package:instamfin/db/enums/customer_status.dart';
 import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/address.dart';
@@ -38,8 +37,6 @@ class Customer extends Model {
   int guarantiedBy;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
-  @JsonKey(name: 'customer_status', nullable: true)
-  int status;
   @JsonKey(name: 'display_profile_path', defaultValue: "")
   String displayProfilePath;
   @JsonKey(name: 'created_at', nullable: true)
@@ -75,10 +72,6 @@ class Customer extends Model {
 
   setGuarantiedBy(int guarantiedBy) {
     this.guarantiedBy = guarantiedBy;
-  }
-
-  setCustomerStatus(int status) {
-    this.status = status;
   }
 
   setDisplayProfilePath(String profilePath) {
@@ -123,20 +116,44 @@ class Customer extends Model {
     return getDocumentID(this.mobileNumber);
   }
 
-  Stream<QuerySnapshot> getCustomerByStatus(int status, bool fetchAll) {
-    if (fetchAll) {
-      return getCollectionRef()
+  Stream<QuerySnapshot> streamAllCustomers() {
+    return getCollectionRef()
+        .where('finance_id', isEqualTo: user.primaryFinance)
+        .where('branch_name', isEqualTo: user.primaryBranch)
+        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .snapshots();
+  }
+
+  Future<int> getStatus(int number) async {
+    try {
+      QuerySnapshot allSnap = await Payment()
+          .getGroupQuery()
           .where('finance_id', isEqualTo: user.primaryFinance)
           .where('branch_name', isEqualTo: user.primaryBranch)
           .where('sub_branch_name', isEqualTo: user.primarySubBranch)
-          .snapshots();
-    } else {
-      return getCollectionRef()
-          .where('finance_id', isEqualTo: user.primaryFinance)
-          .where('branch_name', isEqualTo: user.primaryBranch)
-          .where('sub_branch_name', isEqualTo: user.primarySubBranch)
-          .where('customer_status', isEqualTo: status)
-          .snapshots();
+          .where('customer_number', isEqualTo: number)
+          .getDocuments();
+
+      if (allSnap.documents.length == 0) return 0; //New
+      int status = 3; //Closed
+
+      for (var paysnap in allSnap.documents) {
+        Payment pay = Payment.fromJson(paysnap.data);
+        if (pay.isActive) {
+          List<int> aDetails = await pay.getAmountDetails();
+
+          if (aDetails[1] > 0) {
+            status = 2; //Pending
+            break;
+          } else if (aDetails[2] > 0 || aDetails[3] > 0) {
+            status = 1; //Active
+          }
+        }
+      }
+
+      return status;
+    } catch (err) {
+      throw err;
     }
   }
 
@@ -174,7 +191,7 @@ class Customer extends Model {
         .where('mobile_number', isGreaterThanOrEqualTo: minNumber)
         .where('mobile_number', isLessThanOrEqualTo: maxNumber)
         .getDocuments();
-      
+
     List<Customer> custList = [];
     if (snap.documents.isNotEmpty) {
       snap.documents.forEach((cust) {

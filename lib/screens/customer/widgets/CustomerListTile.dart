@@ -4,7 +4,7 @@ import 'package:instamfin/screens/customer/ViewCustomer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 Widget customerListTile(
-    BuildContext context, int index, Map<String, dynamic> customer) {
+    BuildContext context, int index, Customer customer) {
   Color tileColor = CustomColors.mfinBlue;
   Color textColor = CustomColors.mfinWhite;
   IconData custIcon = Icons.person_outline;
@@ -15,7 +15,7 @@ Widget customerListTile(
     custIcon = Icons.person;
   }
   return Padding(
-    padding: EdgeInsets.only(left: 12.0, top: 10.0, right: 12.0),
+    padding: EdgeInsets.only(left: 12.0, top: 5.0, right: 12.0, bottom: 5.0),
     child: Material(
       color: tileColor,
       elevation: 5.0,
@@ -25,7 +25,7 @@ Widget customerListTile(
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ViewCustomer(Customer.fromJson(customer)),
+              builder: (context) => ViewCustomer(customer),
               settings: RouteSettings(name: '/customers/view'),
             ),
           );
@@ -62,7 +62,7 @@ Widget customerListTile(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      customer['customer_name'],
+                      customer.name,
                       style: TextStyle(
                           fontFamily: 'Quicksand',
                           fontSize: 18.0,
@@ -70,7 +70,7 @@ Widget customerListTile(
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      customer['mobile_number'].toString(),
+                      customer.mobileNumber.toString(),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           fontFamily: 'Quicksand',

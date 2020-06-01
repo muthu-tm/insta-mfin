@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
@@ -14,7 +13,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class CustomerListWidget extends StatelessWidget {
   CustomerListWidget(this._scaffoldKey, this.title,
       [this.userStatus = 0, this.fetchAll = true]);
-  final Customer _cust = Customer();
 
   final int userStatus;
   final bool fetchAll;
@@ -23,19 +21,19 @@ class CustomerListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _cust.getCustomerByStatus(userStatus, fetchAll),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    return StreamBuilder<List<Customer>>(
+      stream: CustController().streamCustomersByStatus(userStatus, fetchAll),
+      builder: (BuildContext context, AsyncSnapshot<List<Customer>> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          if (snapshot.data.documents.isNotEmpty) {
+          if (snapshot.data.isNotEmpty) {
             children = <Widget>[
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 primary: false,
-                itemCount: snapshot.data.documents.length,
+                itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Slidable(
                     actionPane: SlidableDrawerActionPane(),
@@ -47,15 +45,15 @@ class CustomerListWidget extends StatelessWidget {
                         caption: 'Phone',
                         color: CustomColors.mfinPositiveGreen,
                         icon: Icons.call,
-                        onTap: () => UrlLauncherUtils.makePhoneCall(snapshot
-                            .data.documents[index].data['mobile_number']),
+                        onTap: () => UrlLauncherUtils.makePhoneCall(
+                            snapshot.data[index].mobileNumber),
                       ),
                       IconSlideAction(
                         caption: 'Message',
                         color: CustomColors.mfinGrey,
                         icon: Icons.message,
-                        onTap: () => UrlLauncherUtils.makeSMS(snapshot
-                            .data.documents[index].data['mobile_number']),
+                        onTap: () => UrlLauncherUtils.makeSMS(
+                            snapshot.data[index].mobileNumber),
                       ),
                     ],
                     secondaryActions: <Widget>[
@@ -67,7 +65,7 @@ class CustomerListWidget extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => EditCustomerProfile(
-                                snapshot.data.documents[index].data),
+                                snapshot.data[index].toJson()),
                             settings:
                                 RouteSettings(name: '/customers/profile/edit'),
                           ),
@@ -92,7 +90,7 @@ class CustomerListWidget extends StatelessWidget {
                                   textAlign: TextAlign.start,
                                 ),
                                 content: Text(
-                                    'Are you sure to remove ${snapshot.data.documents[index].data['customer_name']} Customer?'),
+                                    'Are you sure to remove ${snapshot.data[index].name} Customer?'),
                                 actions: <Widget>[
                                   FlatButton(
                                     color: CustomColors.mfinButtonGreen,
@@ -119,8 +117,7 @@ class CustomerListWidget extends StatelessWidget {
                                     onPressed: () async {
                                       CustController _cc = CustController();
                                       var result = await _cc.removeCustomer(
-                                        snapshot.data.documents[index]
-                                            .data['mobile_number'],
+                                        snapshot.data[index].mobileNumber,
                                         false,
                                       );
                                       if (result == null) {
@@ -154,7 +151,7 @@ class CustomerListWidget extends StatelessWidget {
                       ),
                     ],
                     child: customerListTile(
-                        context, index, snapshot.data.documents[index].data),
+                        context, index, snapshot.data[index]),
                   );
                 },
               ),

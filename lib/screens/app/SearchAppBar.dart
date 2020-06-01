@@ -79,14 +79,14 @@ class _SearchAppBarState extends State<SearchAppBar> {
             if (snapshot.data.documents.isNotEmpty) {
               children = <Widget>[
                 ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: snapshot.data.documents.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return customerListTile(
-                          context, index, snapshot.data.documents[index].data);
-                    },
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return customerListTile(context, index,
+                        Customer.fromJson(snapshot.data.documents[index].data));
+                  },
                 ),
               ];
             } else {

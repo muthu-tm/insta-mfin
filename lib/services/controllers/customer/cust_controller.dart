@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/user.dart';
@@ -77,6 +78,39 @@ class CustController {
         "cust_number": number,
         'error': err.toString()
       });
+      throw err;
+    }
+  }
+
+  Stream<List<Customer>> streamCustomersByStatus(
+      int status, bool fetchAll) async* {
+    try {
+      Stream<QuerySnapshot> stream = Customer().streamAllCustomers();
+
+      if (await stream.isEmpty) {
+        yield [];
+      }
+
+      List<Customer> customers = [];
+
+      if (fetchAll) {
+        await for (var event in stream) {
+          for (var doc in event.documents) {
+            customers.add(Customer.fromJson(doc.data));
+          }
+          yield customers;
+        }
+      } else {
+        await for (var event in stream) {
+          for (var doc in event.documents) {
+            Customer cust = Customer.fromJson(doc.data);
+            if (status == await cust.getStatus(cust.mobileNumber))
+              customers.add(cust);
+          }
+          yield customers;
+        }
+      }
+    } catch (err) {
       throw err;
     }
   }

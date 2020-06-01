@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:instamfin/db/enums/collection_status.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/collection_details.dart';
-import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/services/utils/date_utils.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -119,30 +117,6 @@ class CollectionController {
     }
   }
 
-  Future<List<Collection>> getAllCollectionsByStatus(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int custNumber,
-      int status) async {
-    try {
-      List<Collection> collections = await Collection()
-          .getAllCollectionsByStatus(
-              financeId, branchName, subBranchName, status);
-
-      if (collections == null) {
-        return [];
-      }
-
-      return collections;
-    } catch (err) {
-      print(
-          "Error while retrieving collections for $custNumber customer with status $status:" +
-              err.toString());
-      throw err;
-    }
-  }
-
   Future<List<Collection>> getAllCollectionByDateRage(
       String financeId,
       String branchName,
@@ -163,84 +137,6 @@ class CollectionController {
     } catch (err) {
       print("Error while retrieving collections with Date Range: " +
           err.toString());
-      throw err;
-    }
-  }
-
-  Future<int> getCollectionsAmountByStatus(String financeId, String branchName,
-      String subBranchName, int custNumber, int status) async {
-    try {
-      List<Collection> collections = await getAllCollectionsByStatus(
-          financeId, branchName, subBranchName, custNumber, status);
-
-      int tAmount = 0;
-      if (collections == null) {
-        return tAmount;
-      }
-
-      collections.forEach((coll) {
-        tAmount += coll.collectionAmount;
-      });
-
-      return tAmount;
-    } catch (err) {
-      print(
-          "Error while retrieving collections with status $status for $custNumber customer:" +
-              err.toString());
-      throw err;
-    }
-  }
-
-  Future<Map<String, int>> getCollectionsCountForCustomerByStatus(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int custNumber) async {
-    try {
-      Map<String, int> collectionsCount = Map();
-
-      List<Collection> totalCollections = await Collection()
-          .getAllCollectionsForCustomer(
-              financeId, branchName, subBranchName, custNumber);
-      collectionsCount['total_collections'] = totalCollections.length;
-
-      List<Collection> upcomingCollections = await getAllCollectionsByStatus(
-          financeId,
-          branchName,
-          subBranchName,
-          custNumber,
-          CollectionStatus.Upcoming.name);
-      collectionsCount['upcoming_collections'] = upcomingCollections.length;
-
-      List<Collection> paidCollections = await getAllCollectionsByStatus(
-          financeId,
-          branchName,
-          subBranchName,
-          custNumber,
-          CollectionStatus.Paid.name);
-      collectionsCount['paid_collections'] = paidCollections.length;
-
-      List<Collection> paidLateCollections = await getAllCollectionsByStatus(
-          financeId,
-          branchName,
-          subBranchName,
-          custNumber,
-          CollectionStatus.PaidLate.name);
-      collectionsCount['paid_late_collections'] = paidLateCollections.length;
-
-      List<Collection> pendingCollections = await getAllCollectionsByStatus(
-          financeId,
-          branchName,
-          subBranchName,
-          custNumber,
-          CollectionStatus.Pending.name);
-      collectionsCount['pending_collections'] = pendingCollections.length;
-
-      return collectionsCount;
-    } catch (err) {
-      print(
-          "Error while retrieving collections count for customer $custNumber:" +
-              err.toString());
       throw err;
     }
   }

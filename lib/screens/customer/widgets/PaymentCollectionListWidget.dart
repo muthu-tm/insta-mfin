@@ -42,7 +42,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          if (snapshot.data != null) {
+          if (snapshot.data.length > 0){
             children = <Widget>[
               ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -232,6 +232,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
                     new Spacer(),
                     Text(
                       emptyText,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,

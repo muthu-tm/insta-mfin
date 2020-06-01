@@ -74,10 +74,18 @@ class TransactionScreen extends StatelessWidget {
                       elevation: 10.0,
                       borderRadius: BorderRadius.circular(10.0),
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.57,
-                        height: 140,
-                        child: TransactionCollectionBuilder(),
-                      ),
+                          width: MediaQuery.of(context).size.width * 0.57,
+                          height: 140,
+                          child: Text(
+                            "TODO",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: CustomColors.mfinAlertRed,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                          //TransactionCollectionBuilder(),
+                          ),
                     ),
                   ],
                 ),

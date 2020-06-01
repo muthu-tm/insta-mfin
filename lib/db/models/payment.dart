@@ -43,8 +43,8 @@ class Payment extends Model {
   int collectionAmount;
   @JsonKey(name: 'collection_starts_from', nullable: true)
   DateTime collectionStartsFrom;
-  @JsonKey(name: 'status', nullable: true)
-  int status;
+  @JsonKey(name: 'is_active', nullable: true)
+  bool isActive;
   @JsonKey(name: 'given_by', nullable: true)
   String givenBy;
   @JsonKey(name: 'given_to', nullable: true)
@@ -123,6 +123,10 @@ class Payment extends Model {
   setCSF(DateTime date) {
     this.collectionStartsFrom = date;
   }
+  
+  setIsActive(bool isActive) {
+    this.isActive = isActive;
+  }
 
   setGivenBy(String givenBy) {
     this.givenBy = givenBy;
@@ -130,10 +134,6 @@ class Payment extends Model {
 
   setGivenTo(String givenTo) {
     this.givenTo = givenTo;
-  }
-
-  setPaymentStatus(int status) {
-    this.status = status;
   }
 
   setNotes(String notes) {
@@ -374,25 +374,6 @@ class Payment extends Model {
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('date_of_payment', isGreaterThanOrEqualTo: start)
         .where('date_of_payment', isLessThan: end)
-        .getDocuments();
-
-    List<Payment> payments = [];
-    if (paymentDocs.documents.isNotEmpty) {
-      for (var doc in paymentDocs.documents) {
-        payments.add(Payment.fromJson(doc.data));
-      }
-    }
-
-    return payments;
-  }
-
-  Future<List<Payment>> getAllPaymentsByStatus(String financeId,
-      String branchName, String subBranchName, int status) async {
-    var paymentDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('status', isEqualTo: status)
         .getDocuments();
 
     List<Payment> payments = [];

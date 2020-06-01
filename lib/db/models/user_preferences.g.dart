@@ -18,10 +18,10 @@ UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
     <String, dynamic>{
       'payment_group_by': instance.paymentGroupBy == null
-          ? GroupByType.Daily.name
+          ? 0
           : instance.paymentGroupBy,
       'transaction_group_by': instance.transactionGroupBy == null
-          ? GroupByType.Daily.name
+          ? 0
           : instance.transactionGroupBy,
       'collection_notification_at': instance.collectionNotificationAt == null
           ? "09:00"

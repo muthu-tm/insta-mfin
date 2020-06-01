@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:instamfin/db/enums/collection_status.dart';
 import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/payment.dart';
@@ -139,17 +138,20 @@ class Collection {
   }
 
   int getStatus() {
+    if(this.type == 1 || this.type == 2)
+      return 1;
+
     if (this.collectionDate.isBefore(DateUtils.getCurrentDate())) {
       if (getPending() == 0 && getPaidLate() == 0)
-        return CollectionStatus.Paid.name;
+        return 1; //PAID
       else if (getPending() == 0 && getPaidLate() >= 0)
-        return CollectionStatus.PaidLate.name;
+        return 2; //PAIDLATE
       else
-        return CollectionStatus.Pending.name;
+        return 4; //PENDING
     } else if (this.collectionDate.isAfter(DateUtils.getCurrentDate())) {
-      return CollectionStatus.Upcoming.name;
+      return 0; //UPCOMING
     } else {
-      return CollectionStatus.Current.name;
+      return 3; //CURRENT
     }
   }
 
@@ -301,25 +303,6 @@ class Collection {
     }
 
     return payments;
-  }
-
-  Future<List<Collection>> getAllCollectionsByStatus(String financeId,
-      String branchName, String subBranchName, int status) async {
-    var collectionDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('status', isEqualTo: status)
-        .getDocuments();
-
-    List<Collection> collections = [];
-    if (collectionDocs.documents.isNotEmpty) {
-      for (var doc in collectionDocs.documents) {
-        collections.add(Collection.fromJson(doc.data));
-      }
-    }
-
-    return collections;
   }
 
   Future<Collection> getCollectionByID(

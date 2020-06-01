@@ -88,6 +88,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                     ListTile(
                       leading: Text(
                         DateUtils.formatDate(widget.payment.dateOfPayment),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
                           color: CustomColors.mfinAlertRed,
@@ -102,6 +103,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                             color: CustomColors.mfinGrey,
                             fontFamily: 'Georgia',
                             fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
                           ),
                           children: <TextSpan>[
                             TextSpan(
@@ -123,16 +125,36 @@ class _ViewPaymentState extends State<ViewPayment> {
                           ],
                         ),
                       ),
-                      // trailing: Text(
-                      //   widget.payment.closingDate == null
-                      //       ? ''
-                      //       : DateUtils.formatDate(widget.payment.closingDate),
-                      //   style: TextStyle(
-                      //     fontSize: 18,
-                      //     color: CustomColors.mfinGrey,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
+                      trailing: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: '${widget.payment.totalAmount}',
+                          style: TextStyle(
+                            color: CustomColors.mfinPositiveGreen,
+                            fontFamily: 'Georgia',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: ' / ',
+                              style: TextStyle(
+                                color: CustomColors.mfinBlack,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${widget.payment.principalAmount}',
+                              style: TextStyle(
+                                color: CustomColors.mfinAlertRed,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     new Divider(
                       color: CustomColors.mfinButtonGreen,
@@ -318,7 +340,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       );
                       title = "PAID";
                       emptyText =
-                          "No PAID collection available for this Payment!";
+                          "No collection RECEIVED for this Payment!";
                       fetchAll = false;
                       textColor = CustomColors.mfinPositiveGreen;
                       collStatus = [1, 2]; //Paid and PaidLate
@@ -360,7 +382,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         },
                       );
                       title = "TODAY";
-                      emptyText = "No Collection for TODAY";
+                      emptyText = "No Collection to receive TODAY";
                       fetchAll = false;
                       textColor = CustomColors.mfinLightBlue;
                       collStatus = [3]; // Current

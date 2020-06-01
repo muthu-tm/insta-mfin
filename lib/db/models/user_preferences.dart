@@ -1,4 +1,3 @@
-import 'package:instamfin/db/enums/group_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_preferences.g.dart';
