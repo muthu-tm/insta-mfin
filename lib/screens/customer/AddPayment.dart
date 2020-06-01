@@ -916,8 +916,8 @@ class _AddPaymentState extends State<AddPayment> {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: collectionDate,
-      firstDate: DateTime.now().add(Duration(days: 1)),
-      lastDate: DateTime.now().add(Duration(days: 365 * 5)),
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now().add(Duration(days: 365)),
     );
     if (picked != null && picked != collectionDate)
       setState(
@@ -944,7 +944,7 @@ class _AddPaymentState extends State<AddPayment> {
           tenure,
           collectionAmount,
           int.parse(selectedCollectionModeID),
-          collectionDate,
+          DateUtils.getFormattedCurrentDate(collectionDate),
           int.parse(selectedCollectionDayID),
           docCharge,
           surCharge,

@@ -16,14 +16,10 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
             _getMillisecondsSinceEpoch(json['date_of_payment'] as Timestamp))
-    ..collectionDate = json['collection_date'] == null
+    ..collectionStartsFrom = json['collection_starts_from'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['collection_date'] as Timestamp))
-    ..closingDate = json['closing_date'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['closing_date'] as Timestamp))
+            _getMillisecondsSinceEpoch(json['collection_starts_from'] as Timestamp))
     ..totalAmount = json['total_amount'] as int
     ..principalAmount = json['principal_amount'] as int
     ..docCharge = json['doc_charge'] as int
@@ -58,8 +54,7 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'sub_branch_name': instance.subBranchName,
       'customer_number': instance.customerNumber,
       'date_of_payment': instance.dateOfPayment,
-      'collection_date': instance.collectionDate,
-      'closing_date': instance.closingDate,
+      'collection_starts_from': instance.collectionStartsFrom,
       'total_amount': instance.totalAmount,
       'principal_amount': instance.principalAmount,
       'doc_charge': instance.docCharge == null ? 0 : instance.docCharge,

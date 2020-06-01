@@ -41,10 +41,8 @@ class Payment extends Model {
   double interestRate;
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;
-  @JsonKey(name: 'collection_date', nullable: true)
-  DateTime collectionDate;
-  @JsonKey(name: 'closing_date', nullable: true)
-  DateTime closingDate;
+  @JsonKey(name: 'collection_starts_from', nullable: true)
+  DateTime collectionStartsFrom;
   @JsonKey(name: 'status', nullable: true)
   int status;
   @JsonKey(name: 'given_by', nullable: true)
@@ -122,12 +120,8 @@ class Payment extends Model {
     this.dateOfPayment = date;
   }
 
-  setCollectionDate(DateTime date) {
-    this.collectionDate = date;
-  }
-
-  setPCD(DateTime closingDate) {
-    this.closingDate = closingDate;
+  setCSF(DateTime date) {
+    this.collectionStartsFrom = date;
   }
 
   setGivenBy(String givenBy) {
@@ -154,19 +148,19 @@ class Payment extends Model {
     this.updatedAt = updatedAt;
   }
 
-  Future<int> getTotalPaid() async {
+  Future<int> getTotalReceived() async {
     try {
       List<Collection> collList = await Collection()
           .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
               this.subBranchName, this.customerNumber, this.createdAt);
-      int totalPaid = 0;
+      int received = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
             coll.type != CollectionType.Surcharge.name)
-          totalPaid += coll.getAmountPaid();
+          received += coll.getReceived();
       });
 
-      return totalPaid;
+      return received;
     } catch (err) {
       print("Unable to get Payment's Total Paid amount!" + err.toString());
       return null;
@@ -182,7 +176,7 @@ class Payment extends Model {
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
             coll.type != CollectionType.Surcharge.name)
-          pending += coll.getPendingAmount();
+          pending += coll.getPending();
       });
 
       return pending;
@@ -198,24 +192,24 @@ class Payment extends Model {
           .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
               this.subBranchName, this.customerNumber, this.createdAt);
 
-      int totalPaid = 0;
-      int pending = 0;
-      int current = 0;
-      int upcoming = 0;
+      int _r = 0;
+      int _p = 0;
+      int _c = 0;
+      int _u = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
             coll.type != CollectionType.Surcharge.name) {
-          totalPaid += coll.getAmountPaid();
-          pending += coll.getPendingAmount();
-          current += coll.getCurrentAmount();
-          upcoming += coll.getUpcomingAmount();
+          _r += coll.getReceived();
+          _p += coll.getPending();
+          _c += coll.getCurrent();
+          _u += coll.getUpcoming();
         }
       });
 
-      return [totalPaid, pending, current, upcoming];
+      return [_r, _p, _c, _u];
     } catch (err) {
       print("Unable to get Payment's amount details!" + err.toString());
-      return null;
+      return [];
     }
   }
 

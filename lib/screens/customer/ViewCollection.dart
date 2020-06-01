@@ -55,7 +55,7 @@ class ViewCollection extends StatelessWidget {
                   ),
                 ),
                 trailing: Text(
-                  collection.getAmountPaid().toString(),
+                  collection.getReceived().toString(),
                   style: TextStyle(
                     fontSize: 18,
                     color: CustomColors.mfinPositiveGreen,
@@ -170,7 +170,7 @@ class ViewCollection extends StatelessWidget {
                       ),
                       title: TextFormField(
                         textAlign: TextAlign.end,
-                        initialValue: collection.getAmountPaid().toString(),
+                        initialValue: collection.getReceived().toString(),
                         decoration: InputDecoration(
                           fillColor: CustomColors.mfinWhite,
                           filled: true,

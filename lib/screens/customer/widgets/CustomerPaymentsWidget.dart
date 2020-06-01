@@ -90,30 +90,54 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                       textAlign: TextAlign.start,
                                     ),
                                     onPressed: () async {
-                                      PaymentController _pc =
-                                          PaymentController();
-                                      var result = await _pc.removePayment(
-                                          payment.financeID,
-                                          payment.branchName,
-                                          payment.subBranchName,
-                                          payment.customerNumber,
-                                          payment.createdAt);
-                                      if (!result['is_success']) {
+                                      int totalReceived =
+                                          await payment.getTotalReceived();
+
+                                      if (totalReceived != null &&
+                                          totalReceived > 0) {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
-                                            "Unable to remove the Payment! ${result['message']}",
+                                            "You cannot Remove Payments which has already received COLLECTION!}",
                                             3,
                                           ),
                                         );
+                                      } else if (totalReceived != null) {
+                                        PaymentController _pc =
+                                            PaymentController();
+                                        var result = await _pc.removePayment(
+                                            payment.financeID,
+                                            payment.branchName,
+                                            payment.subBranchName,
+                                            payment.customerNumber,
+                                            payment.createdAt);
+                                        if (!result['is_success']) {
+                                          Navigator.pop(context);
+                                          _scaffoldKey.currentState
+                                              .showSnackBar(
+                                            CustomSnackBar.errorSnackBar(
+                                              "Unable to remove the Payment! ${result['message']}",
+                                              3,
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.pop(context);
+                                          print(
+                                              "Payment of ${payment.customerNumber} customer removed successfully");
+                                          _scaffoldKey.currentState
+                                              .showSnackBar(
+                                            CustomSnackBar.errorSnackBar(
+                                                "Payment removed successfully",
+                                                2),
+                                          );
+                                        }
                                       } else {
                                         Navigator.pop(context);
-                                        print(
-                                            "Payment of ${payment.customerNumber} customer removed successfully");
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
-                                              "Payment removed successfully",
-                                              2),
+                                            "Error, Please try again later!}",
+                                            3,
+                                          ),
                                         );
                                       }
                                     },
@@ -134,17 +158,32 @@ class CustomerPaymentsWidget extends StatelessWidget {
                         caption: 'Edit',
                         color: CustomColors.mfinGrey,
                         icon: Icons.edit,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditPayment(
-                                  Payment.fromJson(
-                                      snapshot.data.documents[index].data)),
-                              settings: RouteSettings(
-                                  name: '/customers/payment/edit'),
-                            ),
-                          );
+                        onTap: () async {
+                          int totalReceived = await payment.getTotalReceived();
+                          if (totalReceived != null && totalReceived > 0) {
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                "You cannot Edit Payments which has valid COLLECTION!}",
+                                3,
+                              ),
+                            );
+                          } else if (totalReceived != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditPayment(payment),
+                                settings: RouteSettings(
+                                    name: '/customers/payment/edit'),
+                              ),
+                            );
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                "Error, Please try again later!}",
+                                3,
+                              ),
+                            );
+                          }
                         },
                       ),
                     ],
@@ -386,7 +425,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
         Widget child;
 
         if (paidSnap.hasData) {
-          if (paidSnap.data != null) {
+          if (paidSnap.data.length > 0) {
             child = Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -445,7 +484,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                       ),
                     ),
                     trailing: Text(
-                      '${payment.totalAmount - paidSnap.data[3]}',
+                      '${paidSnap.data[3]}',
                       style: TextStyle(
                         fontSize: 17,
                         color: CustomColors.mfinGrey,

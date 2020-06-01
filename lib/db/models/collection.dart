@@ -90,18 +90,18 @@ class Collection {
     }
   }
 
-  int getAmountPaid() {
-    int totalPaid = 0;
+  int getReceived() {
+    int received = 0;
     if (this.collections != null) {
       this.collections.forEach((coll) {
-        totalPaid += coll.amount;
+        received += coll.amount;
       });
     }
 
-    return totalPaid;
+    return received;
   }
 
-  int getAmountPaidLate() {
+  int getPaidLate() {
     int paidLate = 0;
     if (this.collections != null) {
       this.collections.forEach((coll) {
@@ -114,25 +114,25 @@ class Collection {
     return paidLate;
   }
 
-  int getPendingAmount() {
+  int getPending() {
     if (this.collectionDate.isBefore(DateUtils.getCurrentDate())) {
-      return collectionAmount - getAmountPaid();
+      return collectionAmount - getReceived();
     }
 
     return 0;
   }
 
-  int getCurrentAmount() {
+  int getCurrent() {
     if (this.collectionDate.isAtSameMomentAs(DateUtils.getCurrentDate())) {
-      return collectionAmount - getAmountPaid();
+      return collectionAmount - getReceived();
     }
 
     return 0;
   }
 
-  int getUpcomingAmount() {
+  int getUpcoming() {
     if (this.collectionDate.isAfter(DateUtils.getCurrentDate())) {
-      return collectionAmount - getAmountPaid();
+      return collectionAmount - getReceived();
     }
 
     return 0;
@@ -140,9 +140,9 @@ class Collection {
 
   int getStatus() {
     if (this.collectionDate.isBefore(DateUtils.getCurrentDate())) {
-      if (getPendingAmount() == 0 && getAmountPaidLate() == 0)
+      if (getPending() == 0 && getPaidLate() == 0)
         return CollectionStatus.Paid.name;
-      else if (getPendingAmount() == 0 && getAmountPaidLate() >= 0)
+      else if (getPending() == 0 && getPaidLate() >= 0)
         return CollectionStatus.PaidLate.name;
       else
         return CollectionStatus.Pending.name;

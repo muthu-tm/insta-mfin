@@ -260,7 +260,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             child: AbsorbPointer(
                               child: TextFormField(
                                 keyboardType: TextInputType.datetime,
-                                initialValue: DateUtils.formatDate(payment.collectionDate),
+                                initialValue: DateUtils.formatDate(payment.collectionStartsFrom),
                                 decoration: InputDecoration(
                                   hintText: 'Date of Collection',
                                   labelStyle: TextStyle(
@@ -304,7 +304,7 @@ class ViewPaymentDetails extends StatelessWidget {
                                 child: AbsorbPointer(
                                   child: TextFormField(
                                     keyboardType: TextInputType.datetime,
-                                    initialValue: DateUtils.formatDate(payment.collectionDate),
+                                    initialValue: DateUtils.formatDate(payment.collectionStartsFrom),
                                     decoration: InputDecoration(
                                       hintText: 'Date of Collection',
                                       labelStyle: TextStyle(
@@ -378,7 +378,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             child: AbsorbPointer(
                               child: TextFormField(
                                 keyboardType: TextInputType.datetime,
-                                initialValue: DateUtils.formatDate(payment.collectionDate),
+                                initialValue: DateUtils.formatDate(payment.collectionStartsFrom),
                                 decoration: InputDecoration(
                                   hintText: 'Date of Collection',
                                   labelStyle: TextStyle(

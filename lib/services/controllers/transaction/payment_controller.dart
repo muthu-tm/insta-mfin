@@ -1,5 +1,6 @@
 import 'package:instamfin/db/enums/payment_status.dart';
 import 'package:instamfin/db/models/payment.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
@@ -40,11 +41,11 @@ class PaymentController {
       payment.setSurcharge(surcharge);
       payment.setInterestRate(iRate);
       payment.setNotes(notes);
-      payment.setCollectionDate(collectionDate);
+      payment.setCSF(collectionDate);
       payment.setCollectionDay(collectionDay);
 
       await payment.create(custNumber);
-      
+
       return CustomResponse.getSuccesReponse(
           "Created new Payment successfully");
     } catch (err) {
@@ -202,17 +203,6 @@ class PaymentController {
     DateTime createdAt,
   ) async {
     try {
-      Payment pay = await Payment().getPaymentByID(
-          financeId, branchName, subBranchName, custNumber, createdAt);
-      int paid = await pay.getTotalPaid();
-      if (paid == null)
-        return CustomResponse.getFailureReponse(
-            "Error while Removing Payment. Unable to get TotalPaid amount!");
-
-      if (paid > 0)
-        return CustomResponse.getFailureReponse(
-            "Unable to Remove Payment. It has PAID Collections! Remove this Payment's collections first.");
-
       // Remove payment
       await Payment().removePayment(
           financeId, branchName, subBranchName, custNumber, createdAt);

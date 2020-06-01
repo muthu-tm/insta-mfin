@@ -123,16 +123,16 @@ class _ViewPaymentState extends State<ViewPayment> {
                           ],
                         ),
                       ),
-                      trailing: Text(
-                        widget.payment.closingDate == null
-                            ? ''
-                            : DateUtils.formatDate(widget.payment.closingDate),
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: CustomColors.mfinGrey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      // trailing: Text(
+                      //   widget.payment.closingDate == null
+                      //       ? ''
+                      //       : DateUtils.formatDate(widget.payment.closingDate),
+                      //   style: TextStyle(
+                      //     fontSize: 18,
+                      //     color: CustomColors.mfinGrey,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
                     ),
                     new Divider(
                       color: CustomColors.mfinButtonGreen,
@@ -159,15 +159,34 @@ class _ViewPaymentState extends State<ViewPayment> {
                       ),
                       title: RaisedButton.icon(
                         color: CustomColors.mfinBlue,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditPayment(widget.payment),
-                              settings: RouteSettings(
-                                  name: '/customers/payment/edit'),
-                            ),
-                          );
+                        onPressed: () async {
+                          int totalReceived =
+                              await widget.payment.getTotalReceived();
+                          if (totalReceived != null && totalReceived > 0) {
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                "You cannot Edit Payments which has valid COLLECTION!}",
+                                3,
+                              ),
+                            );
+                          } else if (totalReceived != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    EditPayment(widget.payment),
+                                settings: RouteSettings(
+                                    name: '/customers/payment/edit'),
+                              ),
+                            );
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                "Error, Please try again later!}",
+                                3,
+                              ),
+                            );
+                          }
                         },
                         icon: Icon(
                           Icons.edit,
@@ -191,30 +210,51 @@ class _ViewPaymentState extends State<ViewPayment> {
                             "Confirm",
                             "Are you sure to remove this Payment?",
                             () async {
-                              PaymentController _pc = PaymentController();
-                              var result = await _pc.removePayment(
-                                  widget.payment.financeID,
-                                  widget.payment.branchName,
-                                  widget.payment.subBranchName,
-                                  widget.payment.customerNumber,
-                                  widget.payment.createdAt);
-                              if (!result['is_success']) {
+                              int totalReceived =
+                                  await widget.payment.getTotalReceived();
+
+                              if (totalReceived != null && totalReceived > 0) {
                                 Navigator.pop(context);
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                    "Unable to remove the Payment! ${result['message']}",
+                                    "You cannot Remove Payments which has already received COLLECTION!}",
                                     3,
                                   ),
                                 );
+                              } else if (totalReceived != null) {
+                                PaymentController _pc = PaymentController();
+                                var result = await _pc.removePayment(
+                                    widget.payment.financeID,
+                                    widget.payment.branchName,
+                                    widget.payment.subBranchName,
+                                    widget.payment.customerNumber,
+                                    widget.payment.createdAt);
+                                if (!result['is_success']) {
+                                  Navigator.pop(context);
+                                  _scaffoldKey.currentState.showSnackBar(
+                                    CustomSnackBar.errorSnackBar(
+                                      "Unable to remove the Payment! ${result['message']}",
+                                      3,
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.pop(context);
+                                  print(
+                                      "Payment of ${widget.payment.customerNumber} customer removed successfully");
+                                  _scaffoldKey.currentState.showSnackBar(
+                                    CustomSnackBar.errorSnackBar(
+                                        "Payment removed successfully", 2),
+                                  );
+                                  Navigator.pop(context);
+                                }
                               } else {
                                 Navigator.pop(context);
-                                print(
-                                    "Payment of ${widget.payment.customerNumber} customer removed successfully");
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                      "Payment removed successfully", 2),
+                                    "Error, Please try again later!}",
+                                    3,
+                                  ),
                                 );
-                                Navigator.pop(context);
                               }
                             },
                             () {

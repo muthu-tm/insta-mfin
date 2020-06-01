@@ -310,13 +310,13 @@ class PaymentCollectionListWidget extends StatelessWidget {
         break;
       case 1:
       case 2:
-        return ["RECEIVED: ", coll.getAmountPaid().toString()];
+        return ["RECEIVED: ", coll.getReceived().toString()];
         break;
       case 3:
         return ["AMOUNT: ", coll.collectionAmount.toString()];
         break;
       case 4:
-        int pending = coll.collectionAmount - coll.getAmountPaid();
+        int pending = coll.collectionAmount - coll.getReceived();
         return ["PENDING: ", pending.toString()];
         break;
       default:
@@ -367,7 +367,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
   }
 
   Future markAsCollected(Collection collection, BuildContext context) async {
-    if (collection.getPendingAmount() == 0) {
+    if (collection.getPending() == 0) {
       CustomDialogs.information(
           context,
           "Alert!",
@@ -379,7 +379,7 @@ class PaymentCollectionListWidget extends StatelessWidget {
       User _user = UserController().getCurrentUser();
       Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
       collDetails['amount'] =
-          collection.collectionAmount - collection.getAmountPaid();
+          collection.collectionAmount - collection.getReceived();
       collDetails['notes'] = "";
       collDetails['collected_by'] = _user.name;
       collDetails['collected_from'] = custName;

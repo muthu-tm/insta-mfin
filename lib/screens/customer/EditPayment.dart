@@ -61,7 +61,7 @@ class _EditPaymentState extends State<EditPayment> {
     );
 
     _collectionDate.value = TextEditingValue(
-      text: DateUtils.formatDate(widget.payment.collectionDate)
+      text: DateUtils.formatDate(widget.payment.collectionStartsFrom)
     );
 
   }
@@ -872,14 +872,14 @@ class _EditPaymentState extends State<EditPayment> {
   Future<Null> _selectCollectionDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: widget.payment.collectionDate,
-      firstDate: DateTime.now().add(Duration(days: 1)),
-      lastDate: DateTime.now().add(Duration(days: 365 * 5)),
+      initialDate: widget.payment.collectionStartsFrom,
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now().add(Duration(days: 365)),
     );
-    if (picked != null && picked != widget.payment.collectionDate)
+    if (picked != null && picked != widget.payment.collectionStartsFrom)
       setState(
             () {
-              updatedPayment['collection_date'] = picked;
+              updatedPayment['collection_starts_from'] = DateUtils.getFormattedCurrentDate(picked);
           _collectionDate.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
