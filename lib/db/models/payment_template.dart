@@ -21,7 +21,9 @@ class PaymentTemplate {
   @JsonKey(name: 'tenure', nullable: true)
   int tenure;
   @JsonKey(name: 'collection_mode', nullable: true)
-  int tenureType;
+  int collectionMode;
+  @JsonKey(name: 'collection_day', nullable: true)
+  int collectionDay;
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;
   @JsonKey(name: 'interest_rate', nullable: true)
@@ -59,12 +61,16 @@ class PaymentTemplate {
     this.tenure = tenure;
   }
 
-  setTenureType(int tenureType) {
-    this.tenureType = tenureType;
+  setCollectionMode(int collectionMode) {
+    this.collectionMode = collectionMode;
   }
 
   setCollectionAmount(int amount) {
     this.collectionAmount = amount;
+  }
+
+  void setCollectionDay(int collectionDay) {
+    this.collectionDay = collectionDay;
   }
 
   setInterestRate(double iRate) {
@@ -155,4 +161,5 @@ class PaymentTemplate {
   Future remove(String tempID) async {
     await getCollectionRef().document(tempID).delete();
   }
+
 }

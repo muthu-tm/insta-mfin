@@ -23,6 +23,23 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   int noOfPayments;
   double intrestRate;
   int collectionAmount;
+  String selectedCollectionModeID = "0";
+  String selectedCollectionDayID = "0";
+
+  Map<String, String> _tempCollectionMode = {
+    "0": "Daily",
+    "1": "Weekly",
+    "2": "Monthly"
+  };
+  Map<String, String> _tempCollectionDays = {
+    "0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday",
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -253,6 +270,48 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                     },
                   ),
                 ),
+                RowHeaderText(textName: "Collection Mode"),
+                ListTile(
+                  title: DropdownButton<String>(
+                    dropdownColor: CustomColors.mfinWhite,
+                    isExpanded: true,
+                    items: _tempCollectionMode.entries.map(
+                      (f) {
+                        return DropdownMenuItem<String>(
+                          value: f.key,
+                          child: Text(f.value),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (newVal) {
+                      _setSelectedCollectionMode(newVal);
+                    },
+                    value: selectedCollectionModeID,
+                  ),
+                ),
+                int.parse(selectedCollectionModeID) == 1
+                    ? Column(children: <Widget>[
+                        RowHeaderText(textName: "Day"),
+                        ListTile(
+                          title: DropdownButton<String>(
+                            dropdownColor: CustomColors.mfinWhite,
+                            isExpanded: true,
+                            items: _tempCollectionDays.entries.map(
+                              (f) {
+                                return DropdownMenuItem<String>(
+                                  value: f.key,
+                                  child: Text(f.value),
+                                );
+                              },
+                            ).toList(),
+                            onChanged: (newVal) {
+                              _setSelectedCollectionDay(newVal);
+                            },
+                            value: selectedCollectionDayID,
+                          ),
+                        ),
+                      ])
+                    : Container()
               ],
             ),
           ),
@@ -260,6 +319,14 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
       ),
     );
   }
+
+  void _setSelectedCollectionMode(String newVal) {
+    setState(() {
+      selectedCollectionModeID = newVal;
+    });
+  }
+
+  void _setSelectedCollectionDay(String newVal) {}
 
   _submit() async {
     final FormState form = _formKey.currentState;
@@ -274,7 +341,8 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
           givenAmount,
           noOfPayments,
           collectionAmount,
-          1,
+          int.parse(selectedCollectionModeID),
+          int.parse(selectedCollectionDayID),
           documentCharge,
           surChargeAmount,
           intrestRate);

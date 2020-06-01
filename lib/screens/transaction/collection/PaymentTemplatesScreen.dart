@@ -11,6 +11,11 @@ import 'package:instamfin/services/controllers/transaction/paymentTemp_controlle
 
 class PaymentTemplateScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final List<String> _collectionMode = [
+    "Daily",
+    "Weekly",
+    "Monthly"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -379,7 +384,7 @@ class PaymentTemplateScreen extends StatelessWidget {
             trailing: SizedBox(
               width: MediaQuery.of(context).size.width * 0.65,
               child: Text(
-                getType(temp.tenureType),
+                _collectionMode[temp.collectionMode],
                 textAlign: TextAlign.end,
                 style: TextStyle(
                     color: CustomColors.mfinWhite,
@@ -488,28 +493,5 @@ class PaymentTemplateScreen extends StatelessWidget {
         );
       },
     );
-  }
-
-  String getType(int type) {
-    switch (type) {
-      case 0:
-        return "DAILY";
-        break;
-      case 1:
-        return "WEEKLY";
-        break;
-      case 2:
-        return "MONTHLY";
-        break;
-      case 3:
-        return "WEEK DAYS";
-        break;
-      case 4:
-        return "WEEK ENDS";
-        break;
-      default:
-        return "DAILY";
-        break;
-    }
   }
 }

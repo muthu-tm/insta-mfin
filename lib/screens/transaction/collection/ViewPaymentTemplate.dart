@@ -6,6 +6,11 @@ class ViewPaymentTemplate extends StatelessWidget {
   ViewPaymentTemplate(this.payTemplate);
 
   final PaymentTemplate payTemplate;
+  final List<String> _collectionMode = [
+    "Daily",
+    "Weekly",
+    "Monthly"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +230,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                   ),
                 ),
                 title: TextFormField(
-                  initialValue: getTenureType(payTemplate.tenureType),
+                  initialValue: _collectionMode[payTemplate.collectionMode],
                   decoration: InputDecoration(
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
@@ -304,22 +309,5 @@ class ViewPaymentTemplate extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  getTenureType(int type) {
-    switch (type) {
-      case 0:
-        return "Daily";
-        break;
-      case 1:
-        return "Weekly";
-        break;
-      case 2:
-        return "Monthly";
-        break;
-      default:
-        return "Daily";
-        break;
-    }
   }
 }
