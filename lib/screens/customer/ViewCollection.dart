@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
-import 'package:instamfin/screens/customer/widgets/PaymentsCollectionWidget.dart';
+import 'package:instamfin/screens/customer/widgets/CollDetailsTableWidget.dart';
+import 'package:instamfin/screens/customer/widgets/CollectionDetailsWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class ViewCollection extends StatelessWidget {
   ViewCollection(
@@ -257,8 +259,11 @@ class ViewCollection extends StatelessWidget {
                         ),
                       ),
                     ),
-                    PaymentsCollectionWidget(
-                        _scaffoldKey, collection, custName, payCreatedAt),
+                    (UserController().getCurrentUser().preferences.tableView)
+                        ? CollDetailsTableWidget(
+                            _scaffoldKey, collection, custName, payCreatedAt)
+                        : CollectionDetailsWidget(
+                            _scaffoldKey, collection, custName, payCreatedAt),
                   ],
                 ),
               ),

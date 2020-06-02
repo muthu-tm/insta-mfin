@@ -3,14 +3,16 @@ import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/customer/ViewPaymentDetails.dart';
+import 'package:instamfin/screens/customer/widgets/CollectionListTableWidget.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionStatusRadioItem.dart';
-import 'package:instamfin/screens/customer/widgets/PaymentCollectionListWidget.dart';
+import 'package:instamfin/screens/customer/widgets/CollectionListWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomRadioModel.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class ViewPayment extends StatefulWidget {
   ViewPayment(this.payment, this.custName);
@@ -339,8 +341,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         },
                       );
                       title = "PAID";
-                      emptyText =
-                          "No collection RECEIVED for this Payment!";
+                      emptyText = "No collection RECEIVED for this Payment!";
                       fetchAll = false;
                       textColor = CustomColors.mfinPositiveGreen;
                       collStatus = [1, 2]; //Paid and PaidLate
@@ -412,8 +413,11 @@ class _ViewPaymentState extends State<ViewPayment> {
                   ),
                 ],
               ),
-              PaymentCollectionListWidget(widget.payment, widget.custName,
-                  title, emptyText, textColor, fetchAll, collStatus),
+              (UserController().getCurrentUser().preferences.tableView)
+                  ? CollectionListTableWidget(widget.payment, widget.custName,
+                      title, emptyText, textColor, fetchAll, collStatus)
+                  : CollectionListWidget(widget.payment, widget.custName, title,
+                      emptyText, textColor, fetchAll, collStatus),
             ],
           ),
         ),

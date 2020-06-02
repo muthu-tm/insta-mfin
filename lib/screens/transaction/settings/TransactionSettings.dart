@@ -19,31 +19,7 @@ class _TransactionSettingState extends State<TransactionSetting> {
 
   var paymentGroupValue = 0;
   var transctionGroupValue = 0;
-  String collectionNotificationAt = "08:00";
-  String collectionCheckAt = "08:00";
-
-  String _selectedCollNotification = "0";
-  Map<String, String> _collNotificationMap = {
-    "0": "00:00",
-    "1": "03:00",
-    "2": "06:00",
-    "3": "09:00",
-    "4": "12:00",
-    "5": "15:00",
-    "6": "18:00",
-    "7": "21:00"
-  };
-  String _selectedCollCheck = "0";
-  Map<String, String> _collCheckMap = {
-    "0": "00:00",
-    "1": "03:00",
-    "2": "06:00",
-    "3": "09:00",
-    "4": "12:00",
-    "5": "15:00",
-    "6": "18:00",
-    "7": "21:00"
-  };
+  bool isTableView = false;
 
   Map<String, dynamic> preferencesJSON = new Map();
 
@@ -52,17 +28,9 @@ class _TransactionSettingState extends State<TransactionSetting> {
     super.initState();
     this.paymentGroupValue = _preferences.paymentGroupBy;
     this.transctionGroupValue = _preferences.transactionGroupBy;
-    this.collectionNotificationAt = _preferences.collectionNotificationAt;
-    this.collectionCheckAt = _preferences.collectionCheckAt;
+    this.isTableView = (_preferences.tableView != null) ? _preferences.tableView : false;
 
     this.preferencesJSON = _preferences.toJson();
-
-    this._selectedCollNotification = _collNotificationMap.keys.firstWhere(
-        (k) => _collNotificationMap[k] == _preferences.collectionNotificationAt,
-        orElse: () => '0');
-    this._selectedCollCheck = _collCheckMap.keys.firstWhere(
-        (k) => _collCheckMap[k] == _preferences.collectionCheckAt,
-        orElse: () => '0');
   }
 
   @override
@@ -252,76 +220,40 @@ class _TransactionSettingState extends State<TransactionSetting> {
                         ),
                       ],
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 150,
-                        child: Text(
-                          "COLL CHECK AT:",
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      title: DropdownButton<String>(
-                        dropdownColor: CustomColors.mfinLightGrey,
-                        isExpanded: true,
-                        items: _collCheckMap.entries.map(
-                          (f) {
-                            return DropdownMenuItem<String>(
-                              value: f.key,
-                              child: Text(f.value),
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (newVal) {
-                          setState(() {
-                            _selectedCollCheck = newVal;
-                          });
-
-                          preferencesJSON['collection_check_at'] =
-                              _collNotificationMap[newVal];
-                        },
-                        value: _selectedCollCheck,
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 150,
-                        child: Text(
-                          "NOTIFY ME AT:",
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      title: DropdownButton<String>(
-                        dropdownColor: CustomColors.mfinLightGrey,
-                        isExpanded: true,
-                        items: _collNotificationMap.entries.map(
-                          (f) {
-                            return DropdownMenuItem<String>(
-                              value: f.key,
-                              child: Text(f.value),
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (newVal) {
-                          setState(() {
-                            _selectedCollNotification = newVal;
-                          });
-                          preferencesJSON['collection_notification_at'] =
-                              _collNotificationMap[newVal];
-                        },
-                        value: _selectedCollNotification,
-                      ),
-                    ),
                   ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Material(
+                  elevation: 10.0,
+                  shadowColor: CustomColors.mfinButtonGreen,
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    height: 50,
+                    child: CheckboxListTile(
+                      value: isTableView,
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          isTableView = newValue;
+                        });
+                        preferencesJSON['enable_table_view'] = newValue;
+                      },
+                      title: Text(
+                        "Enable | Table | View ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlue,
+                        ),
+                      ),
+                      controlAffinity: ListTileControlAffinity.trailing,
+                      activeColor: CustomColors.mfinBlue,
+                    ),
+                  ),
                 ),
               ),
             ],

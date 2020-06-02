@@ -9,8 +9,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 
-class PaymentsCollectionWidget extends StatelessWidget {
-  PaymentsCollectionWidget(
+class CollectionDetailsWidget extends StatelessWidget {
+  CollectionDetailsWidget(
       this._scaffoldKey, this._collection, this.custName, this._createdAt);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;

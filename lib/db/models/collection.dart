@@ -113,6 +113,19 @@ class Collection {
     return paidLate;
   }
 
+  int getPaidOnTime() {
+    int paid = 0;
+    if (this.collections != null) {
+      this.collections.forEach((coll) {
+        if (!coll.isPaidLate) {
+          paid += coll.amount;
+        }
+      });
+    }
+
+    return paid;
+  }
+
   int getPending() {
     if (this.collectionDate.isBefore(DateUtils.getCurrentDate())) {
       return collectionAmount - getReceived();
@@ -138,8 +151,7 @@ class Collection {
   }
 
   int getStatus() {
-    if(this.type == 1 || this.type == 2)
-      return 1;
+    if (this.type == 1 || this.type == 2) return 1;
 
     if (this.collectionDate.isBefore(DateUtils.getCurrentDate())) {
       if (getPending() == 0 && getPaidLate() == 0)
@@ -242,12 +254,8 @@ class Collection {
     return collections;
   }
 
-  Stream<QuerySnapshot> streamCollectionsByStatus(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int number,
-      DateTime createdAt) {
+  Stream<QuerySnapshot> streamCollectionsByStatus(String financeId,
+      String branchName, String subBranchName, int number, DateTime createdAt) {
     return getCollectionRef(
             financeId, branchName, subBranchName, number, createdAt)
         .snapshots();
