@@ -12,8 +12,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class PaymentCollectionListWidget extends StatelessWidget {
-  PaymentCollectionListWidget(this._payment, this.custName, this.title,
+class CollectionListWidget extends StatelessWidget {
+  CollectionListWidget(this._payment, this.custName, this.title,
       this.emptyText, this.textColor, this.fetchAll, this.status);
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
