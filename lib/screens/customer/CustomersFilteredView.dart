@@ -120,7 +120,7 @@ class _CustomersFilteredViewState extends State<CustomersFilteredView> {
     ];
     return new Scaffold(
       key: widget._scaffoldKey,
-      appBar: topAppBar(context),
+      appBar: topAppBar(widget._scaffoldKey, context),
       drawer: openDrawer(context),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

@@ -3,7 +3,6 @@ import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
 import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
 import 'package:instamfin/screens/transaction/miscellaneous/MiscellaneousExpenseHome.dart';
-import 'package:instamfin/screens/transaction/settings/TransactionCollectionBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionJournalBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionMiscellaneousBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionSettings.dart';
@@ -12,10 +11,13 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class TransactionScreen extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: topAppBar(context),
+      key: _scaffoldKey,
+      appBar: topAppBar(_scaffoldKey, context),
       drawer: openDrawer(context),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(10),

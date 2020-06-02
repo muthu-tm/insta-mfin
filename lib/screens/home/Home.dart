@@ -13,12 +13,12 @@ import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class UserHomeScreen extends StatelessWidget {
   final AuthController _authController = AuthController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final _controller = new PageController();
 
   static const _kDuration = const Duration(milliseconds: 300);
-
   static const _kCurve = Curves.ease;
-
   final _kArrowColor = CustomColors.mfinBlue.withOpacity(0.8);
 
   final List<Widget> _pages = <Widget>[
@@ -51,8 +51,8 @@ class UserHomeScreen extends StatelessWidget {
         );
       }, () => Navigator.pop(context, false)),
       child: Scaffold(
-        // backgroundColor: CustomColors.mfinBlue,
-        appBar: topAppBar(context),
+        key: _scaffoldKey,
+        appBar: topAppBar(_scaffoldKey, context),
         drawer: openDrawer(context),
         body: new IconTheme(
           data: new IconThemeData(color: _kArrowColor),
