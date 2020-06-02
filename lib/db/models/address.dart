@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'address.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Address {
   
   @JsonKey(name: 'street', defaultValue: '')

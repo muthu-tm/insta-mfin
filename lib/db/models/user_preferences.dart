@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'user_preferences.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class UserPreferences {
   
   @JsonKey(name: 'payment_group_by', defaultValue: 0)

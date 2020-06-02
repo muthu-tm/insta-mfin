@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
@@ -9,11 +10,10 @@ import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
-
-UserService _userService = locator<UserService>();
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 Widget openDrawer(BuildContext context) {
+  final User _user = UserController().getCurrentUser();
   final AuthController _authController = AuthController();
 
   return new Drawer(
@@ -26,27 +26,33 @@ Widget openDrawer(BuildContext context) {
           child: Column(
             children: <Widget>[
               Flexible(
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  margin: EdgeInsets.only(bottom: 5),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: CustomColors.mfinFadedButtonGreen,
-                        style: BorderStyle.solid,
-                        width: 2.0),
-                    // image:
-                  ),
-                  child: Icon(
-                    Icons.person,
-                    size: 45.0,
-                    color: CustomColors.mfinLightGrey,
-                  ),
-                ),
+                child: _user.getProfilePicPath() == ""
+                    ? Container(
+                        width: 80,
+                        height: 80,
+                        margin: EdgeInsets.only(bottom: 5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: CustomColors.mfinFadedButtonGreen,
+                              style: BorderStyle.solid,
+                              width: 2.0),
+                          // image:
+                        ),
+                        child: Icon(
+                          Icons.person,
+                          size: 45.0,
+                          color: CustomColors.mfinLightGrey,
+                        ),
+                      )
+                    : CircleAvatar(
+                        radius: 45.0,
+                        backgroundImage: NetworkImage(_user.getProfilePicPath()),
+                        backgroundColor: Colors.transparent,
+                      ),
               ),
               Text(
-                _userService.cachedUser.name,
+                _user.name,
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w500,
@@ -54,7 +60,7 @@ Widget openDrawer(BuildContext context) {
                 ),
               ),
               Text(
-                _userService.cachedUser.mobileNumber.toString(),
+                _user.mobileNumber.toString(),
                 style: TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w500,
