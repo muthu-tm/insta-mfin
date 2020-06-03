@@ -10,7 +10,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 part 'user.g.dart';
 
-
 @JsonSerializable(explicitToJson: true)
 class User extends Model {
   static CollectionReference _userCollRef = Model.db.collection("users");
@@ -25,8 +24,10 @@ class User extends Model {
   String password;
   @JsonKey(name: 'gender', defaultValue: "")
   String gender;
-  @JsonKey(name: 'display_profile_path', defaultValue: "")
-  String displayProfilePath;
+  @JsonKey(name: 'profile_path_org', defaultValue: "")
+  String profilePathOrg;
+  @JsonKey(name: 'profile_path', defaultValue: "")
+  String profilePath;
   @JsonKey(name: 'date_of_birth', defaultValue: "")
   String dateOfBirth;
   @JsonKey(name: 'address', nullable: true)
@@ -76,8 +77,8 @@ class User extends Model {
     this.lastSignInTime = dateTime;
   }
 
-  setDisplayProfilePath(String profilePath) {
-    this.displayProfilePath = profilePath;
+  setProfilePathOrg(String displayPath) {
+    this.profilePathOrg = displayPath;
   }
 
   setPrimaryFinance(String financeID) {
@@ -100,6 +101,15 @@ class User extends Model {
     this.preferences = preferences;
   }
 
+  String getProfilePicPath() {
+    if (this.profilePath != "")
+      return this.profilePath;
+    else if (this.profilePathOrg != "")
+      return this.profilePathOrg;
+    else
+      return "";
+  }
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
@@ -114,24 +124,26 @@ class User extends Model {
   create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    
+
     dynamic result = await super.add(this.toJson());
     print(result);
   }
 
   Future<User> replace() async {
     var user = await getByID("");
-    
+
     await super.upsert(this.toJson(), user['created_at']);
-    
+
     return this;
   }
 
   DocumentReference getFinanceDocReference() {
     if (this.primarySubBranch != "") {
-     return SubBranch().getDocumentReference(this.primaryFinance, this.primaryBranch, this.primarySubBranch);
+      return SubBranch().getDocumentReference(
+          this.primaryFinance, this.primaryBranch, this.primarySubBranch);
     } else if (this.primaryBranch != "") {
-      return Branch().getDocumentReference(this.primaryFinance, this.primaryBranch);
+      return Branch()
+          .getDocumentReference(this.primaryFinance, this.primaryBranch);
     } else {
       return Finance().getDocumentRef(this.primaryFinance);
     }

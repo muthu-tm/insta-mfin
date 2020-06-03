@@ -171,9 +171,11 @@ class UserController {
       User user = User(getCurrentUserID());
       await user.update({'preferences': settingsJSON});
 
-      _userService.cachedUser.preferences = UserPreferences.fromJson(settingsJSON);
+      _userService.cachedUser.preferences =
+          UserPreferences.fromJson(settingsJSON);
 
-      return CustomResponse.getSuccesReponse("Successfully updated preferences");
+      return CustomResponse.getSuccesReponse(
+          "Successfully updated preferences");
     } catch (err) {
       Analytics.reportError({
         "type": 'user_transaction_error',

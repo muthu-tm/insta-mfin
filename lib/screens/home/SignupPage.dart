@@ -28,6 +28,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String name;
   String mobileNumber;
   File _imageFile;
+  bool isPicAdd = false;
 
   bool _passwordVisible = false;
   bool showPassword = false;
@@ -54,20 +55,33 @@ class _RegisterFormState extends State<RegisterForm> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      new Container(
-                        height: 75.0,
-                        width: 100.0,
-                        padding: new EdgeInsets.only(top: 5.0),
-                        child: FloatingActionButton(
-                          onPressed: () => _pickImage(ImageSource.gallery),
-                          backgroundColor: CustomColors.mfinWhite,
-                          child: new Icon(
-                            Icons.file_upload,
-                            size: 50,
-                          ),
-                          foregroundColor: CustomColors.mfinFadedButtonGreen,
-                        ),
-                      ),
+                      !isPicAdd
+                          ? new Container(
+                              height: 75.0,
+                              width: 100.0,
+                              padding: new EdgeInsets.only(top: 5.0),
+                              child: FloatingActionButton(
+                                onPressed: () =>
+                                    _pickImage(ImageSource.gallery),
+                                backgroundColor: CustomColors.mfinWhite,
+                                child: new Icon(
+                                  Icons.file_upload,
+                                  size: 50,
+                                ),
+                                foregroundColor:
+                                    CustomColors.mfinFadedButtonGreen,
+                              ),
+                            )
+                          : Container(
+                              width: 100.0,
+                              height: 100.0,
+                              decoration: new BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: Image.file(_imageFile).image),
+                              ),
+                            ),
                       Padding(padding: EdgeInsets.all(10.0)),
                       new ListTile(
                           title: TextFormField(
@@ -228,12 +242,8 @@ class _RegisterFormState extends State<RegisterForm> {
 
     setState(() {
       _imageFile = selected;
+      isPicAdd = true;
     });
-  }
-
-  /// Remove image
-  void _clear() {
-    setState(() => _imageFile = null);
   }
 
   void _submit() async {
@@ -251,32 +261,23 @@ class _RegisterFormState extends State<RegisterForm> {
         print("Unable to register USER: " + result['message']);
       } else {
         Navigator.pop(context);
-        print("Successfully registered the user");
         if (_imageFile != null) {
-          print("UPLOADING image file: " + _imageFile.toString());
-          // await Uploader.copyToAppDirectory(_imageFile, emailID);
           _scaffoldKey.currentState.showSnackBar(
-              CustomSnackBar.successSnackBar("Uploading profile Image", 3));
+              CustomSnackBar.successSnackBar("$name added Successfully!", 1));
+          CustomDialogs.actionWaiting(context, "Uploading Picture!");
+          print("UPLOADING image file: " + _imageFile.toString());
           Uploader.uploadImage(
-              "users_profile",
-              _imageFile.path,
-              int.parse(mobileNumber),
-              (downloadURL) => Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserHomeScreen(),
-                      settings: RouteSettings(name: '/home'),
-                    ),
-                    (Route<dynamic> route) => false,
-                  ),
-              () => Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserHomeScreen(),
-                      settings: RouteSettings(name: '/home'),
-                    ),
-                    (Route<dynamic> route) => false,
-                  ));
+              "user_profile_org", _imageFile.path, int.parse(mobileNumber), () {
+            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserHomeScreen(),
+                settings: RouteSettings(name: '/home'),
+              ),
+              (Route<dynamic> route) => false,
+            );
+          });
         } else {
           Navigator.pushAndRemoveUntil(
             context,

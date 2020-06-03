@@ -41,8 +41,4 @@ class UserService {
     cachedUser = User.fromJson(doc.data);
     return cachedUser;
   }
-
-  CachedNetworkImageProvider getUserDisplayImage() {
-      return CachedNetworkImageProvider(cachedUser.displayProfilePath);
-  }
 }

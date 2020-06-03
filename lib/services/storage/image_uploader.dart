@@ -2,10 +2,11 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class Uploader {
   static void uploadImage(String fileDir, String originalFile, int mobileNumber,
-      Function onUploaded, Function onFailed) async {
+      Function onUploaded) async {
     File fileToUpload = new File(originalFile);
 
     String filePath = '$fileDir/$mobileNumber.png';
@@ -15,25 +16,46 @@ class Uploader {
 
     storageTaskSnapshot.ref.getDownloadURL().then((profilePathUrl) {
       print("Image uploaded; downloadURL - " + profilePathUrl);
-      updateUserData(mobileNumber, profilePathUrl);
-      onUploaded();
+      updateUserData('profile_path_org', mobileNumber, profilePathUrl);
+
+      UserController().getCurrentUser().profilePathOrg = profilePathUrl;
     }).catchError((err) {
       Analytics.reportError({
         "type": 'image_upload_error',
         'user_id': mobileNumber,
         'error': err.toString()
       });
-      onFailed();
     });
+    await Future.delayed(Duration(seconds: 3));
+
+    filePath = '${fileDir.replaceAll('_org', "")}/$mobileNumber.png';
+    reference = FirebaseStorage.instance.ref().child(filePath);
+
+    reference.getDownloadURL().then((profilePathUrl) {
+      print("Resized image downloadURL - " + profilePathUrl);
+      updateUserData('profile_path', mobileNumber, profilePathUrl);
+
+      UserController().getCurrentUser().profilePath = profilePathUrl;
+    }).catchError((err) {
+      print(err.toString());
+      Analytics.reportError({
+        "type": 'image_resize_error',
+        'user_id': mobileNumber,
+        'error': err.toString()
+      });
+    });
+
+    onUploaded();
   }
 
-  static void updateUserData(int mobileNumber, String profilePathUrl) {
+  static void updateUserData(
+      String field, int mobileNumber, String profilePathUrl) {
     try {
       User user = User(mobileNumber);
-      user.update({'display_profile_path': profilePathUrl});
+      user.update({field: profilePathUrl});
     } catch (err) {
       Analytics.reportError({
-        "type": 'image_url_update_error',
+        "type": 'url_update_error',
         'user_id': mobileNumber,
         'path': profilePathUrl,
         'error': err.toString()
