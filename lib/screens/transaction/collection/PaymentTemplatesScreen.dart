@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/screens/transaction/add/AddPaymentTemplate.dart';
+import 'package:instamfin/screens/transaction/edit/EditPaymentTemplate.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -231,7 +232,14 @@ class PaymentTemplateScreen extends StatelessWidget {
           caption: 'Edit',
           color: textColor,
           icon: Icons.edit,
-          onTap: () {},
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditPaymentTemplate(temp),
+      settings:
+              RouteSettings(name: '/transactions/collectionbook/template/edit'),
+            ),
+          ),
         ),
       ],
       child: Builder(
