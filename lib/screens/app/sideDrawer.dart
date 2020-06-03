@@ -47,7 +47,8 @@ Widget openDrawer(BuildContext context) {
                       )
                     : CircleAvatar(
                         radius: 45.0,
-                        backgroundImage: NetworkImage(_user.getProfilePicPath()),
+                        backgroundImage:
+                            NetworkImage(_user.getProfilePicPath()),
                         backgroundColor: Colors.transparent,
                       ),
               ),
@@ -213,27 +214,163 @@ Widget openDrawer(BuildContext context) {
             );
           }, () => Navigator.pop(context, false)),
         ),
-        new Container(
+        Container(
           color: CustomColors.mfinBlue,
-          child: new ListTile(
-            leading: new Text(
-              'iFIN',
-              style: TextStyle(
-                color: CustomColors.mfinButtonGreen,
-                fontFamily: "Georgia",
-                fontWeight: FontWeight.bold,
-                fontSize: 18.0,
+          child: AboutListTile(
+            dense: true,
+            applicationIcon: Container(
+              height: 80,
+              width: 50,
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Image.asset('images/icons/action_icon.png'),
+                ),
               ),
             ),
-            trailing: Text(
-              "v0.5.0 (beta)",
-              style: TextStyle(
-                fontFamily: "Georgia",
-                color: CustomColors.mfinButtonGreen,
-                fontSize: 15.0,
+            applicationName: 'iFIN',
+            applicationVersion: '0.5.0 (beta)',
+            applicationLegalese: '© 2020 iFIN Private Ltd.',
+            child: new ListTile(
+              leading: RichText(
+                textAlign: TextAlign.justify,
+                text: TextSpan(
+                  text: '',
+                  style: TextStyle(
+                    color: CustomColors.mfinLightBlue,
+                    fontFamily: 'Georgia',
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'i',
+                      style: TextStyle(
+                        shadows: [
+                          Shadow(
+                              // topRight
+                              offset: Offset(0.5, 0.5),
+                              color: CustomColors.mfinWhite),
+                          Shadow(
+                              // topLeft
+                              offset: Offset(-0.5, 0.5),
+                              color: CustomColors.mfinWhite),
+                        ],
+                        color: CustomColors.mfinBlue,
+                        fontFamily: 'Georgia',
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'FIN',
+                      style: TextStyle(
+                        color: CustomColors.mfinButtonGreen,
+                        fontFamily: 'Georgia',
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              trailing: RichText(
+                textAlign: TextAlign.justify,
+                text: TextSpan(
+                  text: 'v0.5.0',
+                  style: TextStyle(
+                    color: CustomColors.mfinButtonGreen,
+                    fontFamily: 'Georgia',
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: ' (Beta)',
+                      style: TextStyle(
+                        color: CustomColors.mfinGrey,
+                        fontSize: 13.0,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            onTap: () => null,
+            aboutBoxChildren: <Widget>[
+              SizedBox(
+                height: 20,
+              ),
+              Divider(),
+              ListTile(
+                leading: RichText(
+                  textAlign: TextAlign.justify,
+                  text: TextSpan(
+                    text: 'i',
+                    style: TextStyle(
+                      color: CustomColors.mfinBlue,
+                      fontFamily: 'Georgia',
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'FIN',
+                        style: TextStyle(
+                          color: CustomColors.mfinButtonGreen,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                title: RichText(
+                  text: TextSpan(
+                    text: 'Built For Micro Finance Industry Network ',
+                    style: TextStyle(
+                      color: CustomColors.mfinPositiveGreen,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '(MFIN)',
+                        style: TextStyle(
+                          color: CustomColors.mfinButtonGreen,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.info,
+                  color: CustomColors.mfinBlue,
+                  size: 35.0,
+                ),
+                title: Text(
+                  'Terms & Conditions',
+                  style: TextStyle(
+                    color: CustomColors.mfinLightBlue,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Divider(),
+            ],
           ),
         ),
       ],
