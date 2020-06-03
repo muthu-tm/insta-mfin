@@ -22,7 +22,8 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
     ..profession = json['customer_profession'] as String ?? ''
     ..guarantiedBy = json['guarantied_by'] as int
     ..addedBy = json['added_by'] as int
-    ..displayProfilePath = json['display_profile_path'] as String ?? ''
+    ..profilePathOrg = json['profile_path_org'] as String ?? ''
+    ..profilePath = json['profile_path'] as String ?? ''
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -42,9 +43,12 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'mobile_number': instance.mobileNumber,
       'customer_name': instance.name == null ? '' : instance.name,
       'gender': instance.gender == null ? '' : instance.gender,
-      'display_profile_path': instance.displayProfilePath == null
+      'profile_path_org': instance.profilePathOrg == null
           ? ''
-          : instance.displayProfilePath,
+          : instance.profilePathOrg,
+      'profile_path': instance.profilePath == null
+          ? ''
+          : instance.profilePath,
       'finance_id': instance.financeID == null ? '' : instance.financeID,
       'address': instance.address?.toJson(),
       'age': instance.age == null ? 0 : instance.age,

@@ -37,8 +37,10 @@ class Customer extends Model {
   int guarantiedBy;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
-  @JsonKey(name: 'display_profile_path', defaultValue: "")
-  String displayProfilePath;
+  @JsonKey(name: 'profile_path_org', defaultValue: "")
+  String profilePathOrg;
+  @JsonKey(name: 'profile_path', defaultValue: "")
+  String profilePath;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -74,8 +76,8 @@ class Customer extends Model {
     this.guarantiedBy = guarantiedBy;
   }
 
-  setDisplayProfilePath(String profilePath) {
-    this.displayProfilePath = profilePath;
+  setProfilePathOrg(String displayPath) {
+    this.profilePathOrg = displayPath;
   }
 
   setFinanceID(String financeID) {
@@ -96,6 +98,15 @@ class Customer extends Model {
 
   setAddedBy(int mobileNumber) {
     this.addedBy = mobileNumber;
+  }
+
+  String getProfilePicPath() {
+    if (this.profilePath != "")
+      return this.profilePath;
+    else if (this.profilePathOrg != "")
+      return this.profilePathOrg;
+    else
+      return "";
   }
 
   factory Customer.fromJson(Map<String, dynamic> json) =>

@@ -13,7 +13,6 @@ import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class UserHomeScreen extends StatelessWidget {
   final AuthController _authController = AuthController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _controller = new PageController();
 
@@ -51,8 +50,7 @@ class UserHomeScreen extends StatelessWidget {
         );
       }, () => Navigator.pop(context, false)),
       child: Scaffold(
-        key: _scaffoldKey,
-        appBar: topAppBar(_scaffoldKey, context),
+        appBar: topAppBar(context),
         drawer: openDrawer(context),
         body: new IconTheme(
           data: new IconThemeData(color: _kArrowColor),

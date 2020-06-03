@@ -11,13 +11,11 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class TransactionScreen extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      key: _scaffoldKey,
-      appBar: topAppBar(_scaffoldKey, context),
+      appBar: topAppBar(context),
       drawer: openDrawer(context),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(10),

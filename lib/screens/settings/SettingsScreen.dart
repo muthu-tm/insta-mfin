@@ -9,15 +9,13 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class SettingsScreen extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
 
     return new Scaffold(
-      key: _scaffoldKey,
       drawer: openDrawer(context),
-      appBar: topAppBar(_scaffoldKey, context),
+      appBar: topAppBar(context),
       body: new Container(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
