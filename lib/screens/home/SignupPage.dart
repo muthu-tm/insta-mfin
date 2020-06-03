@@ -253,7 +253,7 @@ class _RegisterFormState extends State<RegisterForm> {
       CustomDialogs.actionWaiting(context, "Registering User");
 
       dynamic result = await _authController.registerWithMobileNumber(
-          int.parse(mobileNumber), password, name);
+          int.parse(mobileNumber), password, name, "");
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState

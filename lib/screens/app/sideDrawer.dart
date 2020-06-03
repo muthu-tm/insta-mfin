@@ -3,8 +3,8 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
-import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/LoginPage.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -207,7 +207,7 @@ Widget openDrawer(BuildContext context) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => Authenticate(),
+                builder: (context) => LoginPage(),
                 settings: RouteSettings(name: '/logout'),
               ),
               (Route<dynamic> route) => false,
@@ -227,7 +227,7 @@ Widget openDrawer(BuildContext context) {
                 ),
                 child: Align(
                   alignment: Alignment.center,
-                  child: Image.asset('images/icons/action_icon.png'),
+                  child: Image.asset('images/icons/logo.png'),
                 ),
               ),
             ),

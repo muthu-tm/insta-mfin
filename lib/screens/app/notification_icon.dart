@@ -93,6 +93,6 @@ class _PushNotificationState extends State<PushNotification> {
     final dynamic data = message['data'] ?? message;
     final String user = data['user'];
 
-    LoginPage(mobileNumber: user);
+    LoginPage();
   }
 }

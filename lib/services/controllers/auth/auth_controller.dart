@@ -11,10 +11,10 @@ class AuthController {
   AuthService _authService = AuthService();
 
   dynamic registerWithMobileNumber(
-      int mobileNumber, String passkey, String userName) async {
+      int mobileNumber, String passkey, String userName, String uid) async {
     try {
       User user = await _authService.registerWithMobileNumber(
-          mobileNumber, passkey, userName);
+          mobileNumber, passkey, userName, uid);
 
       if (user == null) {
         return CustomResponse.getFailureReponse(

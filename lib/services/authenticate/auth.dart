@@ -6,22 +6,23 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<User> registerWithMobileNumber(
-      int mobileNumber, String password, String name) async {
+      int mobileNumber, String password, String name, String uid) async {
     try {
       User user = User(mobileNumber);
-      var data = await user.getByID(mobileNumber.toString());
-      if (data != null) {
-        Analytics.reportError({
-          "type": 'sign_up_error',
-          "user_id": mobileNumber,
-          'name': name,
-          'error': "Found an existing user for this mobile number"
-        });
-        return null;
-      }
+      // var data = await user.getByID(mobileNumber.toString());
+      // if (data != null) {
+      //   Analytics.reportError({
+      //     "type": 'sign_up_error',
+      //     "user_id": mobileNumber,
+      //     'name': name,
+      //     'error': "Found an existing user for this mobile number"
+      //   });
+      //   return null;
+      // }
 
       user.setPassword(password);
       user.setName(name);
+      user.setGuid(uid);
       await user.create();
 
       Analytics.signupEvent(mobileNumber.toString());

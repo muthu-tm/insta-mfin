@@ -67,7 +67,7 @@ class CustomDialogs {
                   shape: BoxShape.circle,
                   image: new DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage('images/icons/action_icon.png'),
+                    image: AssetImage('images/icons/logo.png'),
                   ),
                 ),
               ),
