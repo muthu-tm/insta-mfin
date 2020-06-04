@@ -440,7 +440,11 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
     });
   }
 
-  void _setSelectedCollectionDay(String newVal) {}
+  void _setSelectedCollectionDay(String newVal) {
+    setState(() {
+      selectedCollectionDayID = newVal;
+    });
+  }
 
   _submit() async {
     final FormState form = _formKey.currentState;
