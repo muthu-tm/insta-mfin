@@ -203,8 +203,9 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 child: const Text(
                   'Already have an account?',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     color: CustomColors.mfinPositiveGreen,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -214,7 +215,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 child: const Text(
                   'LOGIN',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinBlue,
                   ),

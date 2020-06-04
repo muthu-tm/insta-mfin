@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
@@ -196,7 +197,17 @@ Widget openDrawer(BuildContext context) {
           leading:
               new Icon(Icons.headset_mic, color: CustomColors.mfinButtonGreen),
           title: new Text('Help & Support'),
-          onTap: () => null,
+          onTap: () {
+            showDialog(
+              context: context,
+              routeSettings: RouteSettings(name: "/home/help"),
+              builder: (context) {
+                return Center(
+                  child: contactAndSupportDialog(),
+                );
+              },
+            );
+          },
         ),
         new ListTile(
           leading: new Icon(Icons.error, color: CustomColors.mfinAlertRed),

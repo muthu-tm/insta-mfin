@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/home/MobileSigninPage.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -80,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
+                    padding: EdgeInsets.only(top: 20, left: 5, right: 5, bottom: 10),
                     child: Card(
                       child: TextFormField(
                         textAlign: TextAlign.center,
@@ -173,13 +174,13 @@ class _LoginPageState extends State<LoginPage> {
                 Text(
                   "Don't have an account? ",
                   style: new TextStyle(
-                    fontSize: 22.0,
+                    fontSize: 16.0,
                     color: CustomColors.mfinAlertRed,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 FlatButton(
                   onPressed: () {
-                    print("PRESSED");
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) => MobileSignInPage(),
@@ -187,16 +188,47 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                   child: Text(
-                    ' SIGN UP',
+                    'SIGN UP',
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
                       color: CustomColors.mfinBlue,
-                      fontSize: 22.0,
+                      fontSize: 18.0,
                     ),
                   ),
                 ),
               ],
               mainAxisAlignment: MainAxisAlignment.end,
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Align(
+            alignment: FractionalOffset.bottomCenter,
+            child: FlatButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  routeSettings: RouteSettings(name: "/home/help"),
+                  builder: (context) {
+                    return Center(
+                      child: contactAndSupportDialog(),
+                    );
+                  },
+                );
+              },
+              icon: Icon(
+                Icons.info,
+                color: CustomColors.mfinBlue,
+              ),
+              label: Text(
+                ' Help & Support ',
+                style: new TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: CustomColors.mfinBlue,
+                  fontSize: 16.0,
+                ),
+              ),
             ),
           ),
         ],
@@ -264,7 +296,7 @@ class _LoginPageState extends State<LoginPage> {
 
     _smsVerificationCode = verificationId;
 
-     Navigator.of(context).push(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) =>
             PhoneAuthVerify(_user, _smsVerificationCode),
