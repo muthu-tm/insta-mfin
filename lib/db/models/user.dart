@@ -14,6 +14,8 @@ part 'user.g.dart';
 class User extends Model {
   static CollectionReference _userCollRef = Model.db.collection("users");
 
+  @JsonKey(name: 'guid', nullable: false)
+  String guid;
   @JsonKey(name: 'user_name', defaultValue: "")
   String name;
   @JsonKey(name: 'mobile_number', nullable: false)
@@ -50,6 +52,10 @@ class User extends Model {
   User(int mobileNumber) {
     this.mobileNumber = mobileNumber;
     this.address = new Address();
+  }
+
+  setGuid(String uid) {
+    this.guid = uid;
   }
 
   setPassword(String password) {

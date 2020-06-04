@@ -3,8 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/HomePage.dart';
+import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/home/MonthlyStatistics.dart';
 import 'package:instamfin/screens/settings/widgets/PageViewWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -43,7 +43,7 @@ class UserHomeScreen extends StatelessWidget {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => Authenticate(),
+            builder: (context) => AuthPage(),
             settings: RouteSettings(name: '/logout'),
           ),
           (Route<dynamic> route) => false,

@@ -18,4 +18,13 @@ class UrlLauncherUtils {
       throw 'Could not send SMS to $mobileNumber';
     }
   }
+  
+  static Future<void> sendEmail(String to, String subject, String body) async {
+    String mailURL = 'mailto:$to?subject=$subject&body=$body';
+    if (await UrlLauncher.canLaunch(mailURL)) {
+      await UrlLauncher.launch(mailURL);
+    } else {
+      throw 'Could not send Email to $to';
+    }
+  }
 }

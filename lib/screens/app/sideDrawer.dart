@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
-import 'package:instamfin/screens/home/Authenticate.dart';
 import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -196,7 +197,17 @@ Widget openDrawer(BuildContext context) {
           leading:
               new Icon(Icons.headset_mic, color: CustomColors.mfinButtonGreen),
           title: new Text('Help & Support'),
-          onTap: () => null,
+          onTap: () {
+            showDialog(
+              context: context,
+              routeSettings: RouteSettings(name: "/home/help"),
+              builder: (context) {
+                return Center(
+                  child: contactAndSupportDialog(),
+                );
+              },
+            );
+          },
         ),
         new ListTile(
           leading: new Icon(Icons.error, color: CustomColors.mfinAlertRed),
@@ -207,7 +218,7 @@ Widget openDrawer(BuildContext context) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => Authenticate(),
+                builder: (context) => AuthPage(),
                 settings: RouteSettings(name: '/logout'),
               ),
               (Route<dynamic> route) => false,
@@ -227,7 +238,7 @@ Widget openDrawer(BuildContext context) {
                 ),
                 child: Align(
                   alignment: Alignment.center,
-                  child: Image.asset('images/icons/action_icon.png'),
+                  child: Image.asset('images/icons/logo.png'),
                 ),
               ),
             ),

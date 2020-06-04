@@ -1,229 +1,315 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
+import 'package:instamfin/screens/home/MobileSigninPage.dart';
+import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({this.toggleView, this.mobileNumber});
+  LoginPage(this.isNewScaffold, this._scaffoldKey);
 
-  final Function toggleView;
-  final String mobileNumber;
+  final bool isNewScaffold;
+  final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _scaffoldKey;
+  TextEditingController _nController = TextEditingController();
+  AuthController _authController = AuthController();
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  final AuthController _authController = AuthController();
+  User _user;
 
-  String mobileNumber;
-  String password;
-  bool _passwordVisible = false;
-  bool hidePassword = true;
+  String number = "";
+  String _smsVerificationCode;
 
   @override
   void initState() {
     super.initState();
 
-    mobileNumber = (widget.mobileNumber == null) ? "" : widget.mobileNumber;
+    if (widget.isNewScaffold) {
+      _scaffoldKey = GlobalKey<ScaffoldState>();
+    } else {
+      _scaffoldKey = widget._scaffoldKey;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text('Login'),
-        backgroundColor: CustomColors.mfinBlue,
-      ),
-      body: new Center(
-        child: Container(
-          child: new SingleChildScrollView(
-            child: new Column(
-              children: <Widget>[
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      new Container(
-                        height: 100.0,
-                        width: 100.0,
-                        child: FloatingActionButton(
-                          onPressed: null,
-                          backgroundColor: CustomColors.mfinWhite,
-                          child: new Icon(
-                            Icons.person,
-                            size: 100,
+    return widget.isNewScaffold
+        ? Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: CustomColors.mfinLightGrey,
+            body: Center(
+              child: SingleChildScrollView(
+                child: _getBody(),
+              ),
+            ),
+          )
+        : Center(
+            child: SingleChildScrollView(
+              child: _getBody(),
+            ),
+          );
+  }
+
+  Widget _getBody() {
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          Card(
+            color: CustomColors.mfinBlue,
+            elevation: 2.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.5,
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Material(
+                      elevation: 10.0,
+                      child: Image.asset("images/icons/logo.png", height: 50),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20, left: 5, right: 5, bottom: 10),
+                    child: Card(
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: _nController,
+                        autofocus: false,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          hintText: 'Mobile Number',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.phone,
                             color: CustomColors.mfinFadedButtonGreen,
+                            size: 35.0,
                           ),
                         ),
                       ),
-                      Padding(padding: EdgeInsets.all(10.0)),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: TextFormField(
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              hintText: 'Mobile Number',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              suffixIcon: Icon(
-                                Icons.phone,
-                                color: CustomColors.mfinFadedButtonGreen,
-                                size: 35.0,
-                              ),
-                            ),
-                            validator: (mobileNumber) =>
-                                FieldValidator.mobileValidator(
-                                    mobileNumber.trim(), setMobileNumber)),
+                    ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(
+                        Icons.info,
+                        color: CustomColors.mfinWhite,
+                        size: 20.0,
                       ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: TextFormField(
-                            obscureText: hidePassword,
-                            controller: passwordController,
-                            decoration: InputDecoration(
-                              hintText: 'Password',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  // Based on passwordVisible state choose the icon
-                                  _passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: CustomColors.mfinFadedButtonGreen,
-                                  size: 35.0,
-                                ),
-                                onPressed: () {
-                                  // Update the state i.e. toogle the state of passwordVisible variable
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                    hidePassword = !hidePassword;
-                                  });
-                                },
+                      SizedBox(width: 10.0),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'We will send ',
+                                style: TextStyle(
+                                    color: CustomColors.mfinWhite,
+                                    fontWeight: FontWeight.w400),
                               ),
-                            ),
-                            validator: (passkey) =>
-                                FieldValidator.passwordValidator(
-                                    passkey, setPassKey)),
-                      ),
-                      Padding(padding: EdgeInsets.all(20.0)),
-                      new InkWell(
-                          onTap: _submit,
-                          child: new Container(
-                            width: 200.0,
-                            height: 50.0,
-                            decoration: new BoxDecoration(
-                              color: CustomColors.mfinBlue,
-                              borderRadius: new BorderRadius.circular(10.0),
-                            ),
-                            child: new Center(
-                              child: new Text(
-                                'LOGIN',
-                                style: new TextStyle(
-                                  fontSize: 20.0,
-                                  color: CustomColors.mfinButtonGreen,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              TextSpan(
+                                text: 'One Time Password',
+                                style: TextStyle(
+                                    color: CustomColors.mfinAlertRed,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w700),
                               ),
-                            ),
-                          )),
-                      Padding(padding: EdgeInsets.all(25.0)),
-                      Container(
-                          child: Row(
-                        children: <Widget>[
-                          FlatButton(
-                            onPressed: () => widget.toggleView(),
-                            child: new RichText(
-                              text: new TextSpan(
-                                // Note: Styles for TextSpans must be explicitly defined.
-                                // Child text spans will inherit styles from parent
-                                style: new TextStyle(
-                                  fontSize: 22.0,
-                                  color: CustomColors.mfinAlertRed,
-                                ),
-                                children: <TextSpan>[
-                                  new TextSpan(text: "Don't have an account? "),
-                                  new TextSpan(
-                                    text: ' SIGN UP',
-                                    style: new TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: CustomColors.mfinBlue,
-                                      fontSize: 22.0,
-                                    ),
-                                  ),
-                                ],
+                              TextSpan(
+                                text: ' to this mobile number',
+                                style: TextStyle(
+                                    color: CustomColors.mfinWhite,
+                                    fontWeight: FontWeight.w400),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.end,
-                      ))
+                        ),
+                      ),
                     ],
+                  ),
+                  Padding(padding: EdgeInsets.all(20.0)),
+                  new InkWell(
+                    onTap: () {
+                      _submit();
+                    },
+                    child: new Container(
+                      width: 150.0,
+                      height: 50.0,
+                      decoration: new BoxDecoration(
+                        color: CustomColors.mfinFadedButtonGreen,
+                        borderRadius: new BorderRadius.circular(10.0),
+                      ),
+                      child: new Center(
+                        child: new Text(
+                          'GET OTP',
+                          style: new TextStyle(
+                            fontSize: 20.0,
+                            color: CustomColors.mfinBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.all(25.0)),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Text(
+                  "Don't have an account? ",
+                  style: new TextStyle(
+                    fontSize: 16.0,
+                    color: CustomColors.mfinAlertRed,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => MobileSignInPage(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'SIGN UP',
+                    style: new TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: CustomColors.mfinBlue,
+                      fontSize: 18.0,
+                    ),
                   ),
                 ),
               ],
+              mainAxisAlignment: MainAxisAlignment.end,
             ),
           ),
-        ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Align(
+            alignment: FractionalOffset.bottomCenter,
+            child: FlatButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  routeSettings: RouteSettings(name: "/home/help"),
+                  builder: (context) {
+                    return Center(
+                      child: contactAndSupportDialog(),
+                    );
+                  },
+                );
+              },
+              icon: Icon(
+                Icons.info,
+                color: CustomColors.mfinBlue,
+              ),
+              label: Text(
+                ' Help & Support ',
+                style: new TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: CustomColors.mfinBlue,
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  setMobileNumber(String mobileNumber) {
-    setState(() {
-      this.mobileNumber = mobileNumber;
-    });
-  }
-
-  setPassKey(String passkey) {
-    setState(() {
-      this.password = passkey;
-    });
-  }
-
   void _submit() async {
-    final FormState form = _formKey.currentState;
-
-    if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Logging In");
-      var result = await _authController.signInWithMobileNumber(
-          int.parse(mobileNumber), password);
-
-      if (!result['is_success']) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Login: " + result['message']);
-      } else {
-        Navigator.pop(context);
-        print("User logged in successfully");
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => UserHomeScreen(),
-            settings: RouteSettings(name: '/home'),
-          ),
-          (Route<dynamic> route) => false,
-        );
-      }
-    } else {
-      print('Form not valid');
+    if (_nController.text.length != 10) {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+          CustomSnackBar.errorSnackBar("Enter valid Mobile Number", 2));
+      return;
+    } else {
+      number = _nController.text;
+      Map<String, dynamic> _uJSON =
+          await User(int.parse(number)).getByID(number);
+      if (_uJSON == null) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No USER found for this Number, please 'SIGN UP'", 2));
+        return;
+      } else {
+        this._user = User.fromJson(_uJSON);
+        dynamic result = await _authController.signInWithMobileNumber(_user);
+        if (!result['is_success']) {
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+          print("Unable to register USER: " + result['message']);
+        } else {
+          _verifyPhoneNumber();
+        }
+      }
     }
+  }
+
+  _verifyPhoneNumber() async {
+    String phoneNumber = "+91" + number;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: Duration(seconds: 5),
+        verificationCompleted: (authCredential) =>
+            _verificationComplete(authCredential, context),
+        verificationFailed: (authException) =>
+            _verificationFailed(authException, context),
+        codeAutoRetrievalTimeout: (verificationId) =>
+            _codeAutoRetrievalTimeout(verificationId),
+        codeSent: (verificationId, [code]) =>
+            _smsCodeSent(verificationId, [code]));
+  }
+
+  _verificationComplete(
+      AuthCredential authCredential, BuildContext context) async {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) =>
+            PhoneAuthVerify(_user, _smsVerificationCode),
+      ),
+    );
+  }
+
+  _smsCodeSent(String verificationId, List<int> code) {
+    print("SENT" + code.join());
+    _scaffoldKey.currentState
+        .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 2));
+
+    _smsVerificationCode = verificationId;
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) =>
+            PhoneAuthVerify(_user, _smsVerificationCode),
+      ),
+    );
+  }
+
+  _verificationFailed(AuthException authException, BuildContext context) {
+    _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+        "Verification Failed:" + authException.message.toString(), 2));
+  }
+
+  _codeAutoRetrievalTimeout(String verificationId) {
+    _smsVerificationCode = verificationId;
   }
 }

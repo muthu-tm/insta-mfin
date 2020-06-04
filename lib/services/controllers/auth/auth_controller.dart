@@ -20,6 +20,7 @@ class AuthController {
         return CustomResponse.getFailureReponse(
             "Found an existing user for this mobile number");
       }
+
       var platformData = await UserFCM().getPlatformDetails();
 
       if (platformData != null) {
@@ -35,21 +36,18 @@ class AuthController {
 
       user.update({'last_signed_in_at': DateTime.now()});
       user.setLastSignInTime(DateTime.now());
-      
+
       // cache the user data
       _userService.setCachedUser(user);
 
-      return CustomResponse.getSuccesReponse(user);
+      return CustomResponse.getSuccesReponse(user.toJson());
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
-  dynamic signInWithMobileNumber(int mobileNumber, String passkey) async {
+  dynamic signInWithMobileNumber(User user) async {
     try {
-      User user =
-          await _authService.signInWithMobileNumber(mobileNumber, passkey);
-
       var platformData = await UserFCM().getPlatformDetails();
 
       if (platformData != null) {
@@ -57,7 +55,7 @@ class AuthController {
       } else {
         Analytics.reportError({
           "type": 'platform_update_error',
-          "user_id": mobileNumber,
+          "user_id": user.mobileNumber,
           'error': "Unable to update User's platform details"
         });
       }
