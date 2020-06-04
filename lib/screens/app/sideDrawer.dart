@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
+import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
 import 'package:instamfin/screens/home/Home.dart';
@@ -27,31 +28,7 @@ Widget openDrawer(BuildContext context) {
           child: Column(
             children: <Widget>[
               Flexible(
-                child: _user.getProfilePicPath() == ""
-                    ? Container(
-                        width: 80,
-                        height: 80,
-                        margin: EdgeInsets.only(bottom: 5),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              color: CustomColors.mfinFadedButtonGreen,
-                              style: BorderStyle.solid,
-                              width: 2.0),
-                          // image:
-                        ),
-                        child: Icon(
-                          Icons.person,
-                          size: 45.0,
-                          color: CustomColors.mfinLightGrey,
-                        ),
-                      )
-                    : CircleAvatar(
-                        radius: 45.0,
-                        backgroundImage:
-                            NetworkImage(_user.getProfilePicPath()),
-                        backgroundColor: Colors.transparent,
-                      ),
+                child: ProfilePictureUpload(),
               ),
               Text(
                 _user.name,
