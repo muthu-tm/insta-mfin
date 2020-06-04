@@ -205,10 +205,10 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                                 amount.trim() !=
                                     widget.template.principalAmount
                                         .toString()) {
-                              updatedTemplate['principalAmount'] =
+                              updatedTemplate['principal_amount'] =
                                   int.parse(amount);
                             } else {
-                              updatedTemplate['principalAmount'] = 0;
+                              updatedTemplate['principal_amount'] = 0;
                               return null;
                             }
                             return null;
@@ -494,9 +494,6 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      
-      print(widget.template.toJson());
-
       if (updatedTemplate.length == 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "No changes detected, Skipping update!", 1));

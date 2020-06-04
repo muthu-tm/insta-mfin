@@ -155,7 +155,7 @@ class PaymentTemplate {
       Map<String, dynamic> tempJSON) async {
     tempJSON['updated_at'] = DateTime.now();
 
-    await getDocumentReference().updateData(tempJSON);
+    await getCollectionRef().document(tempID).updateData(tempJSON);
   }
 
   Future remove(String tempID) async {
