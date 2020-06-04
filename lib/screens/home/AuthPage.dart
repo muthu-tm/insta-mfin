@@ -54,7 +54,7 @@ class _AuthPageState extends State<AuthPage> {
                         User _user = User.fromJson(userSnapshot.data);
                         return _getBody(snapshot.data, _user);
                       } else if (userSnapshot.hasError) {
-                        return LoginPage(_scaffoldKey);
+                        return LoginPage(false, _scaffoldKey);
                       } else {
                         return Center(
                           child: Column(
@@ -67,10 +67,10 @@ class _AuthPageState extends State<AuthPage> {
                     },
                   );
                 } else {
-                  return LoginPage(_scaffoldKey);
+                  return LoginPage(false, _scaffoldKey);
                 }
               } else if (snapshot.hasError) {
-                return LoginPage(_scaffoldKey);
+                return LoginPage(false, _scaffoldKey);
               } else {
                 return Center(
                   child: Column(
@@ -169,7 +169,7 @@ class _AuthPageState extends State<AuthPage> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  MobileSignInPage(),
+                                  LoginPage(true, _scaffoldKey),
                             ),
                           );
                         },

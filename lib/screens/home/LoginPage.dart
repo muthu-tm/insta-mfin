@@ -8,16 +8,17 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class LoginPage extends StatefulWidget {
+  LoginPage(this.isNewScaffold, this._scaffoldKey);
 
-  LoginPage(this._scaffoldKey);
-
+  final bool isNewScaffold;
   final GlobalKey<ScaffoldState> _scaffoldKey;
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-
+  GlobalKey<ScaffoldState> _scaffoldKey;
   TextEditingController _nController = TextEditingController();
   AuthController _authController = AuthController();
 
@@ -29,25 +30,31 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.isNewScaffold) {
+      _scaffoldKey = GlobalKey<ScaffoldState>();
+    } else {
+      _scaffoldKey = widget._scaffoldKey;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Center(
-        child: SingleChildScrollView(
-          child: _getBody(),
-        ),
-      );
-    
-    // Scaffold(
-    //   key: _scaffoldKey,
-    //   backgroundColor: CustomColors.mfinLightGrey,
-    //   body: Center(
-    //     child: SingleChildScrollView(
-    //       child: _getBody(),
-    //     ),
-    //   ),
-    // );
+    return widget.isNewScaffold
+        ? Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: CustomColors.mfinLightGrey,
+            body: Center(
+              child: SingleChildScrollView(
+                child: _getBody(),
+              ),
+            ),
+          )
+        : Center(
+            child: SingleChildScrollView(
+              child: _getBody(),
+            ),
+          );
   }
 
   Widget _getBody() {
@@ -69,8 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.all(5),
                     child: Material(
                       elevation: 10.0,
-                      child: Image.asset("images/icons/logo.png",
-                          height:  50),
+                      child: Image.asset("images/icons/logo.png", height: 50),
                     ),
                   ),
                   Padding(
@@ -200,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _submit() async {
     if (_nController.text.length != 10) {
-      widget._scaffoldKey.currentState.showSnackBar(
+      _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Enter valid Mobile Number", 2));
       return;
     } else {
@@ -208,15 +214,14 @@ class _LoginPageState extends State<LoginPage> {
       Map<String, dynamic> _uJSON =
           await User(int.parse(number)).getByID(number);
       if (_uJSON == null) {
-        widget._scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "No USER found for this Number, please 'SIGN UP'", 2));
         return;
       } else {
         this._user = User.fromJson(_uJSON);
         dynamic result = await _authController.signInWithMobileNumber(_user);
         if (!result['is_success']) {
-          // Navigator.pop(context);
-          widget._scaffoldKey.currentState
+          _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
           print("Unable to register USER: " + result['message']);
         } else {
@@ -244,9 +249,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _verificationComplete(
       AuthCredential authCredential, BuildContext context) async {
-    print("VERIFY");
-
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) =>
             PhoneAuthVerify(_user, _smsVerificationCode),
@@ -256,22 +259,15 @@ class _LoginPageState extends State<LoginPage> {
 
   _smsCodeSent(String verificationId, List<int> code) {
     print("SENT" + code.join());
-    widget._scaffoldKey.currentState
+    _scaffoldKey.currentState
         .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 2));
 
     _smsVerificationCode = verificationId;
-
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (BuildContext context) =>
-            PhoneAuthVerify(_user, _smsVerificationCode),
-      ),
-    );
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
-    widget._scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-        "Exception!! message:" + authException.message.toString(), 2));
+    _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+        "Verification Failed:" + authException.message.toString(), 2));
   }
 
   _codeAutoRetrievalTimeout(String verificationId) {

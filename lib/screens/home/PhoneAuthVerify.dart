@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -169,6 +170,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar("Invalid OTP", 2));
     } else {
+      CustomDialogs.actionWaiting(context, "Verifying User");
       verifyOTPAndLogin(code.join());
     }
   }
@@ -184,6 +186,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
 
       await _success();
     }).catchError((error) {
+      Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
           "Something has gone wrong, please try later(signInWithPhoneNumber)",
           2));
@@ -195,7 +198,6 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
   _success() async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString("mobile_number", widget.user.mobileNumber.toString());
-
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (BuildContext context) => UserHomeScreen()),
       (Route<dynamic> route) => false,

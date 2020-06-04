@@ -274,9 +274,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
 
   _verificationComplete(
       AuthCredential authCredential, BuildContext context) async {
-    print("VERIFY");
-
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) =>
             PhoneAuthVerify(_user, _smsVerificationCode),
@@ -290,18 +288,11 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
         .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 2));
 
     _smsVerificationCode = verificationId;
-
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (BuildContext context) =>
-            PhoneAuthVerify(_user, _smsVerificationCode),
-      ),
-    );
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
     _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-        "Exception!! message:" + authException.message.toString(), 2));
+        "Verification Failed:" + authException.message.toString(), 2));
   }
 
   _codeAutoRetrievalTimeout(String verificationId) {
