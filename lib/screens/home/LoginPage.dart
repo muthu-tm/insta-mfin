@@ -263,6 +263,13 @@ class _LoginPageState extends State<LoginPage> {
         .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 2));
 
     _smsVerificationCode = verificationId;
+
+     Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) =>
+            PhoneAuthVerify(_user, _smsVerificationCode),
+      ),
+    );
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
