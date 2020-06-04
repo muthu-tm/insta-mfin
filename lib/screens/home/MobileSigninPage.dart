@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
 class MobileSignInPage extends StatefulWidget {
   @override
@@ -14,9 +16,12 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
   String number, _smsVerificationCode;
   bool _passwordVisible = false;
 
+  User _user;
+
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passKeyController = TextEditingController();
+  final AuthController _authController = AuthController();
 
   @override
   void initState() {
@@ -63,7 +68,6 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                   height: MediaQuery.of(context).size.height * 0.1),
             ),
           ),
-
           Padding(
             padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
             child: Card(
@@ -142,12 +146,12 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               ),
             ),
           ),
-
+          SizedBox(height:10),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               SizedBox(width: 5),
-              Icon(Icons.info, color: CustomColors.mfinWhite, size: 20.0),
+              Icon(Icons.info, color: CustomColors.mfinAlertRed, size: 20.0),
               SizedBox(width: 10.0),
               Expanded(
                 child: RichText(
@@ -164,7 +168,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                           fontSize: 16.0,
                           fontWeight: FontWeight.w700)),
                   TextSpan(
-                      text: ' to this mobile number',
+                      text: ' to this Mobile Number',
                       style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontWeight: FontWeight.w400)),
@@ -173,15 +177,14 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               SizedBox(width: 5),
             ],
           ),
-
-          SizedBox(height: 5 * 1.5),
+          SizedBox(height:10),
           RaisedButton(
             elevation: 16.0,
             onPressed: startPhoneAuth,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'SEND OTP',
+                'GET OTP',
                 style: TextStyle(
                   color: CustomColors.mfinButtonGreen,
                   fontSize: 18.0,
@@ -193,7 +196,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
-
+          SizedBox(height:10),
           Row(
             children: <Widget>[
               new Container(
@@ -238,7 +241,18 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
       return;
     } else {
       this.number = _phoneNumberController.text;
-      await _verifyPhoneNumber();
+
+      dynamic result = await _authController.registerWithMobileNumber(
+          int.parse(number), _passKeyController.text, _nameController.text);
+      if (!result['is_success']) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState
+            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+        print("Unable to register USER: " + result['message']);
+      } else {
+        this._user = User.fromJson(result.message);
+        await _verifyPhoneNumber();
+      }
     }
   }
 
@@ -264,16 +278,14 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-          builder: (BuildContext context) => PhoneAuthVerify(
-              number,
-              _smsVerificationCode,
-              _nameController.text,
-              _passKeyController.text)),
+        builder: (BuildContext context) =>
+            PhoneAuthVerify(_user, _smsVerificationCode),
+      ),
     );
   }
 
   _smsCodeSent(String verificationId, List<int> code) {
-    print("SENT");
+    print("SENT" + code.join());
     _scaffoldKey.currentState
         .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 2));
 
@@ -281,11 +293,9 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-          builder: (BuildContext context) => PhoneAuthVerify(
-              number,
-              _smsVerificationCode,
-              _nameController.text,
-              _passKeyController.text)),
+        builder: (BuildContext context) =>
+            PhoneAuthVerify(_user, _smsVerificationCode),
+      ),
     );
   }
 

@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
-import 'package:instamfin/screens/home/LoginPage.dart';
+import 'package:instamfin/screens/home/AuthPage.dart';
 
 class PushNotification extends StatefulWidget {
   @override
@@ -93,6 +93,6 @@ class _PushNotificationState extends State<PushNotification> {
     final dynamic data = message['data'] ?? message;
     final String user = data['user'];
 
-    LoginPage();
+    AuthPage();
   }
 }

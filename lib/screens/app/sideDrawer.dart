@@ -4,7 +4,7 @@ import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
 import 'package:instamfin/screens/home/Home.dart';
-import 'package:instamfin/screens/home/LoginPage.dart';
+import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -207,7 +207,7 @@ Widget openDrawer(BuildContext context) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => LoginPage(),
+                builder: (context) => AuthPage(),
                 settings: RouteSettings(name: '/logout'),
               ),
               (Route<dynamic> route) => false,

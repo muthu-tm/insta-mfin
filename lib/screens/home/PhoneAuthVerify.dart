@@ -1,18 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PhoneAuthVerify extends StatefulWidget {
-  PhoneAuthVerify(this.number, this.verificationID, this.name, this.passKey);
+  PhoneAuthVerify(this.user, this.verificationID);
 
-  final String number;
+  final User user;
   final String verificationID;
-  final String name;
-  final String passKey;
 
   @override
   _PhoneAuthVerifyState createState() => _PhoneAuthVerifyState();
@@ -21,7 +19,6 @@ class PhoneAuthVerify extends StatefulWidget {
 class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  AuthController _authController = AuthController();
   double _height, _width, _fixedPadding;
 
   FocusNode focusNode1 = FocusNode();
@@ -30,7 +27,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
   FocusNode focusNode4 = FocusNode();
   FocusNode focusNode5 = FocusNode();
   FocusNode focusNode6 = FocusNode();
-  String code = "";
+  List<String> code = [];
 
   @override
   void initState() {
@@ -77,8 +74,8 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
             padding: EdgeInsets.all(_fixedPadding),
             child: Material(
               elevation: 10.0,
-              child: Image.asset("images/icons/logo.png",
-                  height: _height * 0.1),
+              child:
+                  Image.asset("images/icons/logo.png", height: _height * 0.1),
             ),
           ),
 
@@ -172,7 +169,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar("Invalid OTP", 2));
     } else {
-      verifyOTPAndLogin(code);
+      verifyOTPAndLogin(code.join());
     }
   }
 
@@ -185,26 +182,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
         .then((AuthResult authResult) async {
       print("Success!!! UUID is: " + authResult.user.uid);
 
-      dynamic result = await _authController.registerWithMobileNumber(
-          int.parse(widget.number),
-          widget.passKey,
-          widget.name,
-          authResult.user.uid);
-      if (!result['is_success']) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to register USER: " + result['message']);
-      } else {
-        final SharedPreferences prefs = await _prefs;
-        prefs.setString("mobile_number", widget.number);
-
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (BuildContext context) => UserHomeScreen()),
-          (Route<dynamic> route) => false,
-        );
-      }
+      await _success();
     }).catchError((error) {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
           "Something has gone wrong, please try later(signInWithPhoneNumber)",
@@ -212,6 +190,16 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar("${error.toString()}", 2));
     });
+  }
+
+  _success() async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString("mobile_number", widget.user.mobileNumber.toString());
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => UserHomeScreen()),
+      (Route<dynamic> route) => false,
+    );
   }
 
   Widget getPinField({String key, FocusNode focusNode}) => SizedBox(
@@ -224,7 +212,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
           focusNode: focusNode,
           onChanged: (String value) {
             if (value.length == 1) {
-              code += value;
+              code.insert(int.parse(key) - 1, value);
               switch (code.length) {
                 case 1:
                   FocusScope.of(context).requestFocus(focusNode2);
@@ -245,6 +233,8 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
                   FocusScope.of(context).requestFocus(FocusNode());
                   break;
               }
+            } else {
+              code.removeAt(int.parse(key) - 1);
             }
           },
           maxLengthEnforced: false,

@@ -1,6 +1,6 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/home/LoginPage.dart';
+import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       navigatorObservers: <NavigatorObserver>[observer],
-      home: LoginPage(),
+      home: AuthPage(),
     );
   }
 }
