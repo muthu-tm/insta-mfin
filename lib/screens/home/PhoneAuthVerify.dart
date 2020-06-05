@@ -5,12 +5,17 @@ import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PhoneAuthVerify extends StatefulWidget {
-  PhoneAuthVerify(this.user, this.verificationID);
+  PhoneAuthVerify(this.isRegister, this.number, this.passKey, this.name,
+      this.verificationID);
 
-  final User user;
+  final bool isRegister;
+  final String number;
+  final String passKey;
+  final String name;
   final String verificationID;
 
   @override
@@ -19,6 +24,8 @@ class PhoneAuthVerify extends StatefulWidget {
 
 class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  final AuthController _authController = AuthController();
 
   double _height, _width, _fixedPadding;
 
@@ -184,7 +191,24 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
         .then((AuthResult authResult) async {
       print("Success!!! UUID is: " + authResult.user.uid);
 
-      await _success();
+      if (widget.isRegister) {
+        dynamic result = await _authController.registerWithMobileNumber(
+            int.parse(widget.number),
+            widget.passKey,
+            widget.name,
+            authResult.user.uid);
+        if (!result['is_success']) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+          print("Unable to register USER: " + result['message']);
+        } else {
+          User(int.parse(widget.number)).update({'guid': authResult.user.uid});
+          await _success();
+        }
+      } else {
+        await _success();
+      }
     }).catchError((error) {
       Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
@@ -197,7 +221,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
 
   _success() async {
     final SharedPreferences prefs = await _prefs;
-    prefs.setString("mobile_number", widget.user.mobileNumber.toString());
+    prefs.setString("mobile_number", widget.number.toString());
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (BuildContext context) => UserHomeScreen()),
       (Route<dynamic> route) => false,

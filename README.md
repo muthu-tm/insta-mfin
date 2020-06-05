@@ -34,7 +34,7 @@ Mobile application for Micro Financial industry.
 
 ## Build Runner
 
-> flutter pub run build_runner build
+> flutter pub run build_runner build --delete-conflicting-outputs
 
 ## Analytics DebugView
 

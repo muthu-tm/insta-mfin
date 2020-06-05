@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 
@@ -15,8 +16,6 @@ class MobileSignInPage extends StatefulWidget {
 class _MobileSignInPageState extends State<MobileSignInPage> {
   String number, _smsVerificationCode;
   bool _passwordVisible = false;
-
-  User _user;
 
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -146,7 +145,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               ),
             ),
           ),
-          SizedBox(height:10),
+          SizedBox(height: 10),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -177,7 +176,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               SizedBox(width: 5),
             ],
           ),
-          SizedBox(height:10),
+          SizedBox(height: 10),
           RaisedButton(
             elevation: 16.0,
             onPressed: startPhoneAuth,
@@ -196,7 +195,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
-          SizedBox(height:10),
+          SizedBox(height: 10),
           Row(
             children: <Widget>[
               new Container(
@@ -241,19 +240,10 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
           CustomSnackBar.errorSnackBar("Enter 4 or more digit Secret Key", 2));
       return;
     } else {
+      CustomDialogs.actionWaiting(context, "Checking User");
+      
       this.number = _phoneNumberController.text;
-
-      dynamic result = await _authController.registerWithMobileNumber(
-          int.parse(number), _passKeyController.text, _nameController.text);
-      if (!result['is_success']) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to register USER: " + result['message']);
-      } else {
-        this._user = User.fromJson(result.message);
-        await _verifyPhoneNumber();
-      }
+      await _verifyPhoneNumber();
     }
   }
 
@@ -275,30 +265,40 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
 
   _verificationComplete(
       AuthCredential authCredential, BuildContext context) async {
+    Navigator.pop(context);
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (BuildContext context) =>
-            PhoneAuthVerify(_user, _smsVerificationCode),
-      ),
+          builder: (BuildContext context) => PhoneAuthVerify(
+              true,
+              this.number,
+              _passKeyController.text,
+              _nameController.text,
+              _smsVerificationCode)),
     );
   }
 
   _smsCodeSent(String verificationId, List<int> code) {
-    print("SENT" + code.join());
+    print(" -- CODE SENT -- " + code.join());
+    
     _scaffoldKey.currentState
         .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 2));
 
     _smsVerificationCode = verificationId;
-
-     Navigator.of(context).push(
+    Navigator.pop(context);
+    Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (BuildContext context) =>
-            PhoneAuthVerify(_user, _smsVerificationCode),
+        builder: (BuildContext context) => PhoneAuthVerify(
+            true,
+            number,
+            _passKeyController.text,
+            _nameController.text,
+            _smsVerificationCode),
       ),
     );
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
+    Navigator.pop(context);
     _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
         "Verification Failed:" + authException.message.toString(), 2));
   }
