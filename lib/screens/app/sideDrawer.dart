@@ -157,7 +157,7 @@ Widget openDrawer(BuildContext context) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => NotificationHome({'notification': {}}),
+                builder: (context) => NotificationHome(),
                 settings: RouteSettings(name: '/notifications'),
               ),
             );

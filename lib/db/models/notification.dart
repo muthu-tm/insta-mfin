@@ -64,12 +64,16 @@ class Notification extends Model {
 
   create() async {
     this.createdAt = DateTime.now();
+    this.financeID = user.primaryFinance;
+    this.branchName = user.primaryBranch;
+    this.subBranchName = user.primarySubBranch;
+    
     await super.add(this.toJson());
   }
 
-  Stream<QuerySnapshot> streamAllByType(int type) {
+  Stream<QuerySnapshot> streamAllByType(List<int> type) {
     return getCollectionRef()
-        .where('type', isEqualTo: type)
+        .where('type', whereIn: type)
         .where('user_number', isEqualTo: super.user.mobileNumber)
         .snapshots();
   }
