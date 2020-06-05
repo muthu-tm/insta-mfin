@@ -189,8 +189,6 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
     FirebaseAuth.instance
         .signInWithCredential(_authCredential)
         .then((AuthResult authResult) async {
-      print("Success!!! UUID is: " + authResult.user.uid);
-
       if (widget.isRegister) {
         dynamic result = await _authController.registerWithMobileNumber(
             int.parse(widget.number),
@@ -203,10 +201,10 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
           print("Unable to register USER: " + result['message']);
         } else {
-          User(int.parse(widget.number)).update({'guid': authResult.user.uid});
           await _success();
         }
       } else {
+        User(int.parse(widget.number)).update({'guid': authResult.user.uid});
         await _success();
       }
     }).catchError((error) {

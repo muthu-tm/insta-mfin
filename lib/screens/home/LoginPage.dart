@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
+import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/home/MobileSigninPage.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage(this.isNewScaffold, this._scaffoldKey);
@@ -23,6 +25,8 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey<ScaffoldState> _scaffoldKey;
   TextEditingController _nController = TextEditingController();
   AuthController _authController = AuthController();
+
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   User _user;
 
@@ -244,9 +248,8 @@ class _LoginPageState extends State<LoginPage> {
           CustomSnackBar.errorSnackBar("Enter valid Mobile Number", 2));
       return;
     } else {
-
       CustomDialogs.actionWaiting(context, "Checking User");
-      
+
       number = _nController.text;
       Map<String, dynamic> _uJSON =
           await User(int.parse(number)).getByID(number);
@@ -288,43 +291,37 @@ class _LoginPageState extends State<LoginPage> {
 
   _verificationComplete(
       AuthCredential authCredential, BuildContext context) async {
+    FirebaseAuth.instance
+        .signInWithCredential(authCredential)
+        .then((AuthResult authResult) async {
+      final SharedPreferences prefs = await _prefs;
+      prefs.setString("mobile_number", number.toString());
 
-    Navigator.pop(context);
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) => PhoneAuthVerify(
-            false,
-            _user.mobileNumber.toString(),
-            _user.password,
-            _user.name,
-            _smsVerificationCode),
-      ),
-    );
+      Navigator.pop(context);
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) => UserHomeScreen()),
+        (Route<dynamic> route) => false,
+      );
+    }).catchError((error) {
+      Navigator.pop(context);
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          "Something has gone wrong, please try later(signInWithPhoneNumber)",
+          2));
+      _scaffoldKey.currentState
+          .showSnackBar(CustomSnackBar.errorSnackBar("${error.toString()}", 2));
+    });
   }
 
   _smsCodeSent(String verificationId, List<int> code) {
-    print(" -- CODE SENT -- " + code.join());
-    
     _scaffoldKey.currentState
-        .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 2));
+        .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 1));
 
     _smsVerificationCode = verificationId;
-
     Navigator.pop(context);
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) => PhoneAuthVerify(
-            false,
-            _user.mobileNumber.toString(),
-            _user.password,
-            _user.name,
-            _smsVerificationCode),
-      ),
-    );
+    CustomDialogs.actionWaiting(context, "Verifying User");
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
-    
     Navigator.pop(context);
     _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
         "Verification Failed:" + authException.message.toString(), 2));
@@ -332,5 +329,17 @@ class _LoginPageState extends State<LoginPage> {
 
   _codeAutoRetrievalTimeout(String verificationId) {
     _smsVerificationCode = verificationId;
+
+    Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) => PhoneAuthVerify(
+            true,
+            _user.mobileNumber.toString(),
+            _user.password,
+            _user.name,
+            _smsVerificationCode),
+      ),
+    );
   }
 }
