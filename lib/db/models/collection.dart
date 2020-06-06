@@ -161,7 +161,10 @@ class Collection {
       else
         return 4; //PENDING
     } else if (this.collectionDate.isAfter(DateUtils.getCurrentDate())) {
-      return 0; //UPCOMING
+      if (getPaidOnTime() > 0)
+        return 1; 
+      else
+        return 0; //UPCOMING
     } else {
       return 3; //CURRENT
     }
@@ -241,7 +244,7 @@ class Collection {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('collected_on', arrayContainsAny: dates)
+        .where('collections', arrayContainsAny: dates)
         .getDocuments();
 
     List<Collection> collections = [];
@@ -372,30 +375,38 @@ class Collection {
       Map<String, dynamic> data) async {
     Map<String, dynamic> fields = Map();
 
-    if (isAdd) {
-      fields['updated_at'] = DateTime.now();
-      fields['collections'] = FieldValue.arrayUnion([data]);
-      await this
-          .getDocumentReference(financeId, branchName, subBranchName, number,
-              createdAt, collectionDate)
-          .updateData(fields);
-    } else {
-      DocumentSnapshot snap = await this
-          .getDocumentReference(financeId, branchName, subBranchName, number,
-              createdAt, collectionDate)
-          .get();
-
-      List<dynamic> colls = snap.data['collections'];
-      int index = 0;
+    DocumentSnapshot snap = await this
+        .getDocumentReference(financeId, branchName, subBranchName, number,
+            createdAt, collectionDate)
+        .get();
+    List<dynamic> colls = snap.data['collections'];
+    int index = 0;
+    bool isMatched = false;
+    if (colls != null) {
       for (index = 0; index < colls.length; index++) {
         Map<String, dynamic> collDetail = colls[index];
         CollectionDetails collDetails = CollectionDetails.fromJson(collDetail);
         if (collDetails.createdAt == data['created_at']) {
+          isMatched = true;
           break;
         }
       }
+    }
 
-      colls.removeAt(index);
+    if (isAdd) {
+      if (isMatched) {
+        throw 'Found a Collection on this date. Edit that one, Please!';
+      } else {
+        fields['updated_at'] = DateTime.now();
+        fields['collected_on'] = FieldValue.arrayUnion([data['collected_on']]);
+        fields['collections'] = FieldValue.arrayUnion([data]);
+        await this
+            .getDocumentReference(financeId, branchName, subBranchName, number,
+                createdAt, collectionDate)
+            .updateData(fields);
+      }
+    } else {
+      if (isMatched) colls.removeAt(index);
       fields['collections'] = colls;
       fields['updated_at'] = DateTime.now();
     }

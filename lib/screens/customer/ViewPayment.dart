@@ -416,7 +416,7 @@ class _ViewPaymentState extends State<ViewPayment> {
               (UserController().getCurrentUser().preferences.tableView)
                   ? CollectionListTableWidget(widget.payment, widget.custName,
                       title, emptyText, textColor, fetchAll, collStatus)
-                  : CollectionListWidget(widget.payment, widget.custName, title,
+                  : CollectionListWidget(_scaffoldKey, widget.payment, widget.custName, title,
                       emptyText, textColor, fetchAll, collStatus),
             ],
           ),
