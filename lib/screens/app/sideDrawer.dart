@@ -8,6 +8,7 @@ import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
+import 'package:instamfin/screens/statistics/StatisticsHome.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
@@ -131,22 +132,16 @@ Widget openDrawer(BuildContext context) {
             ),
           ],
         ),
-        new ExpansionTile(
-          title: new Text("Statistics"),
-          leading:
-              new Icon(Icons.assessment, color: CustomColors.mfinButtonGreen),
-          children: <Widget>[
-            new ListTile(
-              title: new Text('Daily Statistics'),
-              trailing: new Icon(Icons.keyboard_arrow_right),
-              onTap: () => null,
+        new ListTile(
+          title: new Text('Statistics'),
+          trailing: new Icon(Icons.keyboard_arrow_right),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => StatisticsHome(),
+              settings: RouteSettings(name: '/statistics'),
             ),
-            new ListTile(
-              title: new Text('Monthly Statistics'),
-              trailing: new Icon(Icons.keyboard_arrow_right),
-              onTap: () => null,
-            )
-          ],
+          ),
         ),
         new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
         new ListTile(
