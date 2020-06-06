@@ -3,6 +3,7 @@ import 'package:instamfin/screens/app/NotificationListWidget.dart';
 import 'package:instamfin/screens/app/SearchAppBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomTabBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
 class NotificationHome extends StatelessWidget {
@@ -47,7 +48,7 @@ class NotificationHome extends StatelessWidget {
               },
             ),
           ],
-          bottom: ColoredTabBar(
+          bottom: CustomTabBar(
             CustomColors.mfinLightGrey,
             TabBar(
               isScrollable: true,
@@ -123,22 +124,4 @@ class NotificationHome extends StatelessWidget {
       ),
     );
   }
-}
-
-class ColoredTabBar extends Container implements PreferredSizeWidget {
-  ColoredTabBar(this.color, this.tabBar);
-
-  final Color color;
-  final TabBar tabBar;
-
-  @override
-  Size get preferredSize => tabBar.preferredSize;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        child: tabBar,
-        decoration: BoxDecoration(
-          color: color,
-        ),
-      );
 }

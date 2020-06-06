@@ -133,6 +133,8 @@ Widget openDrawer(BuildContext context) {
           ],
         ),
         new ListTile(
+          leading:
+              new Icon(Icons.assessment, color: CustomColors.mfinButtonGreen),
           title: new Text('Statistics'),
           trailing: new Icon(Icons.keyboard_arrow_right),
           onTap: () => Navigator.push(
