@@ -187,7 +187,7 @@ class CollectionController {
           "Payment's Collection updated for customer $custNumber");
     } catch (err) {
       print(
-          "Error while updating Payment's Collection updated for customer $custNumber: " +
+          "Error while updating Payment's Collection for customer $custNumber: " +
               err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }

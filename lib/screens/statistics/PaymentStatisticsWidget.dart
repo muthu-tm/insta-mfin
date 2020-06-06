@@ -8,10 +8,11 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PaymentStatisticsWidget extends StatelessWidget {
-  PaymentStatisticsWidget(this.mode, [this.fDate, this.tDate]);
+  PaymentStatisticsWidget(this.type, this.mode, [this.fDate, this.tDate]);
 
   final User user = UserController().getCurrentUser();
 
+  final int type;
   final int mode;
   final DateTime fDate;
   final DateTime tDate;
@@ -44,7 +45,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
                   title: ChartTitle(
                     text: 'PAYMENTS',
                     textStyle: ChartTextStyle(
-                      color: CustomColors.mfinBlue,
+                      color: CustomColors.mfinAlertRed,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -98,22 +99,58 @@ class PaymentStatisticsWidget extends StatelessWidget {
                       lineWidth: 2,
                       tooltipSettings:
                           InteractiveTooltip(format: 'point.x : point.y')),
-                  series: <ChartSeries>[
-                    AreaSeries<PayData, DateTime>(
-                      dataSource: pData,
-                      xValueMapper: (PayData pay, _) => pay.date,
-                      yValueMapper: (PayData pay, _) => pay.amount,
-                      dataLabelSettings: DataLabelSettings(isVisible: true),
-                      gradient: LinearGradient(
-                        colors: [
-                          CustomColors.mfinLightGrey,
-                          CustomColors.mfinLightBlue,
-                          CustomColors.mfinBlue
+                  series: type == 0
+                      ? <ChartSeries>[
+                          AreaSeries<PayData, DateTime>(
+                            dataSource: pData,
+                            xValueMapper: (PayData pay, _) => pay.date,
+                            yValueMapper: (PayData pay, _) => pay.amount,
+                            dataLabelSettings:
+                                DataLabelSettings(isVisible: true),
+                            gradient: LinearGradient(
+                              colors: [
+                                CustomColors.mfinLightGrey,
+                                CustomColors.mfinLightBlue,
+                                CustomColors.mfinBlue
+                              ],
+                              stops: <double>[0.0, 0.5, 1.0],
+                            ),
+                          ),
+                        ]
+                      : type == 1 ? <CartesianSeries>[
+                          BubbleSeries<PayData, DateTime>(
+                            dataSource: pData,
+                            xValueMapper: (PayData pay, _) => pay.date,
+                            yValueMapper: (PayData pay, _) => pay.amount,
+                            dataLabelSettings:
+                                DataLabelSettings(isVisible: true),
+                            sizeValueMapper:(PayData pay, _) => (pay.amount.toString().length * 0.5),
+                            gradient: LinearGradient(
+                              colors: [
+                                CustomColors.mfinLightGrey,
+                                CustomColors.mfinLightBlue,
+                                CustomColors.mfinBlue
+                              ],
+                              stops: <double>[0.0, 0.5, 1.0],
+                            ),
+                          ),
+                        ] : <ChartSeries>[
+                            ColumnSeries<PayData, DateTime>(
+                              dataSource: pData,
+                            xValueMapper: (PayData pay, _) => pay.date,
+                            yValueMapper: (PayData pay, _) => pay.amount,
+                            dataLabelSettings:
+                                DataLabelSettings(isVisible: true),
+                            gradient: LinearGradient(
+                              colors: [
+                                CustomColors.mfinLightGrey,
+                                CustomColors.mfinLightBlue,
+                                CustomColors.mfinBlue
+                              ],
+                              stops: <double>[0.0, 0.5, 1.0],
+                            ),
+                            )
                         ],
-                        stops: <double>[0.0, 0.5, 1.0],
-                      ),
-                    ),
-                  ],
                 ),
               );
             } else {

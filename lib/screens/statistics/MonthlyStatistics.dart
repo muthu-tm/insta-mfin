@@ -14,10 +14,10 @@ class MonthlyStatistics extends StatefulWidget {
 class _MonthlyStatisticsState extends State<MonthlyStatistics> {
   String _selectedChart = "0";
   String _selectedY = "0";
-  Map<String, String> _chartList = {"0": "Bar", "1": "Pie", "2": "Line"};
+  Map<String, String> _chartList = {"0": "Line", "1": "Bubble", "2": "Bar"};
   Map<String, String> _yList = {"0": "Amount", "1": "Count"};
 
-  DateTime selectedF = DateTime.now().subtract(Duration(days: 7));
+  DateTime selectedF = DateTime.now().subtract(Duration(days: 100));
   TextEditingController _fDate = new TextEditingController();
   DateTime selectedT = DateTime.now();
   TextEditingController _tDate = new TextEditingController();
@@ -207,10 +207,14 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
               ),
             ),
           ),
-          PaymentStatisticsWidget(2, DateTime.now().subtract(Duration(days: 100)), DateTime.now()),
-          CollectionStatisticsWidget(),
-          ExpenseStatisticsWidget(),
-          JournalStatisticsWidget(),
+          PaymentStatisticsWidget(
+              int.parse(_selectedChart), 2, selectedF, selectedT.add(Duration(days: 1))),
+          CollectionStatisticsWidget(
+              int.parse(_selectedChart), 2, selectedF, selectedT.add(Duration(days: 1))),
+          ExpenseStatisticsWidget(
+              int.parse(_selectedChart), 2, selectedF, selectedT.add(Duration(days: 1))),
+          JournalStatisticsWidget(
+              int.parse(_selectedChart), 2, selectedF, selectedT.add(Duration(days: 1))),
         ],
       ),
     );

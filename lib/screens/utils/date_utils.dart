@@ -39,8 +39,11 @@ class DateUtils {
       DateTime startDate, DateTime endDate) {
     List<DateTime> days = [];
 
-    for (int index = 0; index <= endDate.difference(startDate).inDays; index++) {
-      days.add(startDate.add(Duration(days: index)));
+    for (int index = 0;
+        index <= endDate.difference(startDate).inDays;
+        index++) {
+      days.add(DateTime(
+          startDate.year, startDate.month, startDate.day + 1, 5, 30, 0, 0, 0));
     }
     return days;
   }

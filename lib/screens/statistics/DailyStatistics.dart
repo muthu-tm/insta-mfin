@@ -14,7 +14,7 @@ class DailyStatistics extends StatefulWidget {
 class _DailyStatisticsState extends State<DailyStatistics> {
   String _selectedChart = "0";
   String _selectedY = "0";
-  Map<String, String> _chartList = {"0": "Bar", "1": "Pie", "2": "Line"};
+  Map<String, String> _chartList = {"0": "Line", "1": "Bubble", "2": "Bar"};
   Map<String, String> _yList = {"0": "Amount", "1": "Count"};
 
   DateTime selectedF = DateTime.now().subtract(Duration(days: 7));
@@ -207,10 +207,11 @@ class _DailyStatisticsState extends State<DailyStatistics> {
               ),
             ),
           ),
-          PaymentStatisticsWidget(0, DateUtils.getCurrentDate().subtract(Duration(days: 7)), DateUtils.getCurrentDate()),
-          CollectionStatisticsWidget(),
-          ExpenseStatisticsWidget(),
-          JournalStatisticsWidget(),
+          PaymentStatisticsWidget(
+              int.parse(_selectedChart), 0, selectedF, selectedT.add(Duration(days: 1))),
+          CollectionStatisticsWidget(int.parse(_selectedChart), 0, selectedF, selectedT.add(Duration(days: 1))),
+          ExpenseStatisticsWidget(int.parse(_selectedChart), 0, selectedF, selectedT.add(Duration(days: 1))),
+          JournalStatisticsWidget(int.parse(_selectedChart), 0, selectedF, selectedT.add(Duration(days: 1))),
         ],
       ),
     );
