@@ -2,6 +2,7 @@ import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
+import 'package:instamfin/services/controllers/notification/n_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -45,6 +46,10 @@ class SubBranchController {
       newSubBranch.setAddedBy(addedBy);
 
       SubBranch subBranch = await newSubBranch.create(financeID, branchName);
+
+      NUtils.financeNotify("", "NEW Branch",
+          "Woww! Your have grown your business. Our Best wishes to exapnd more! We are ready to provide more OFFERS, Please Contact Us");
+
       return CustomResponse.getSuccesReponse(subBranch.toJson());
     } catch (err) {
       Analytics.reportError({
@@ -64,6 +69,17 @@ class SubBranchController {
       SubBranch subBranch = SubBranch();
       await subBranch.updateArrayField(
           isAdd, {'admins': userList}, financeID, branchName, subBranchName);
+
+      NUtils.financeNotify("", "New SubBranch Admin",
+          "You have added new Admin for the SubBranch $subBranchName");
+
+      userList.forEach((u) {
+        NUtils.userNotify(
+            "",
+            "SubBranch Admin",
+            "You have added as a Admin for the SubBranch $subBranchName of Branch $branchName. Please change your primary finance to work with this SubBranch. Thanks!",
+            u);
+      });
 
       return CustomResponse.getSuccesReponse(
           "Successfully updated Admin list of SubBranch $subBranchName");

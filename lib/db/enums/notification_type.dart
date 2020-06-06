@@ -1,4 +1,4 @@
-enum NotificationType { IFIN, General, Promotion, Alert, Customer, Finance }
+enum NotificationType { IFIN, General, Promotion, Alert, Customer, Finance, User }
 
 extension NotificationTypeExtension on NotificationType {
   int get name {
@@ -20,6 +20,9 @@ extension NotificationTypeExtension on NotificationType {
         break;
       case NotificationType.Finance:
         return 5;
+        break;
+      case NotificationType.User:
+        return 6;
         break;
       default:
         return 1;

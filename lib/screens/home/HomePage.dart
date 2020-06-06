@@ -11,9 +11,7 @@ class HomePage extends StatelessWidget {
   final _pageController = new PageController();
 
   static const _kDuration = const Duration(milliseconds: 300);
-
   static const _kCurve = Curves.ease;
-
   final _kArrowColor = CustomColors.mfinBlue.withOpacity(0.8);
 
   final List<Widget> _pages = <Widget>[

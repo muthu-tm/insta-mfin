@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
+import 'package:instamfin/services/controllers/notification/n_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -30,6 +31,15 @@ class FinanceController {
 
       await _userController.updatePrimaryFinance(addedBy,
           financeCompany.createdAt.millisecondsSinceEpoch.toString(), "", "");
+
+      NUtils.financeNotify("", "NEW FINANCE",
+          "Hurray! Created a new Finance $name in iFIN. All the Best!");
+
+      NUtils.userNotify(
+          "",
+          "NEW FINANCE",
+          "Hurray! Your have created a Finance $name in iFIN. We wish 'All the Best' for your Business!",
+          addedBy);
 
       return CustomResponse.getSuccesReponse(financeCompany.toJson());
     } catch (err) {

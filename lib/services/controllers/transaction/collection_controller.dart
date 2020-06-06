@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/collection_details.dart';
-import 'package:instamfin/services/utils/date_utils.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class CollectionController {

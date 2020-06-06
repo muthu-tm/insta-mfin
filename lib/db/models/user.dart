@@ -156,11 +156,6 @@ class User extends Model {
     }
   }
 
-  String getFinanceDocID() {
-    return HashGenerator.hmacGenerator(
-        user.primaryBranch + user.primarySubBranch, user.primaryFinance);
-  }
-
   Future updatePlatformDetails(Map<String, dynamic> data) async {
     this.update(data);
   }

@@ -265,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-          print("Unable to register USER: " + result['message']);
+          print("Unable to Sign In: " + result['message']);
         } else {
           _verifyPhoneNumber();
         }

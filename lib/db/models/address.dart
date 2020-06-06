@@ -17,22 +17,6 @@ class Address {
 
   Address();
 
-  setStreet(String street) {
-    this.street = street;
-  }
-
-  setCity(String city) {
-    this.city = city;
-  }
-
-  setState(String state) {
-    this.state = state;
-  }
-
-  setPinCode(String pincode) {
-    this.pincode = pincode;
-  }
-
   factory Address.fromJson(Map<String, dynamic> json) => _$AddressFromJson(json);
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 

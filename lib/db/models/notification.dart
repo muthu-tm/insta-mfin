@@ -7,7 +7,7 @@ part 'notification.g.dart';
 @JsonSerializable()
 class Notification extends Model {
   static CollectionReference _notificationCollRef =
-      Model.db.collection("user_notifications");
+      Model.db.collection("notifications");
 
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
@@ -15,8 +15,12 @@ class Notification extends Model {
   String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
+  @JsonKey(name: 'created_by', nullable: true)
+  int createdBy;
   @JsonKey(name: 'user_number', nullable: true)
   int userNumber;
+  @JsonKey(name: 'cust_number', nullable: true)
+  int custNumber;
   @JsonKey(name: 'type', nullable: true)
   int type;
   @JsonKey(name: 'data', nullable: true)
@@ -29,8 +33,6 @@ class Notification extends Model {
   String logoPath;
   @JsonKey(name: 'ref_path', nullable: true)
   String refPath;
-  @JsonKey(name: 'notify_at', nullable: true)
-  DateTime notifyAt;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
 
@@ -41,9 +43,7 @@ class Notification extends Model {
   Map<String, dynamic> toJson() => _$NotificationToJson(this);
 
   CollectionReference getCollectionRef() {
-    return _notificationCollRef
-        .document(super.user.getFinanceDocID())
-        .collection('notification');
+    return _notificationCollRef;
   }
 
   String getID() {
@@ -67,6 +67,7 @@ class Notification extends Model {
     this.financeID = user.primaryFinance;
     this.branchName = user.primaryBranch;
     this.subBranchName = user.primarySubBranch;
+    this.createdBy = user.mobileNumber;
     
     await super.add(this.toJson());
   }
@@ -74,13 +75,13 @@ class Notification extends Model {
   Stream<QuerySnapshot> streamAllByType(List<int> type) {
     return getCollectionRef()
         .where('type', whereIn: type)
-        .where('user_number', isEqualTo: super.user.mobileNumber)
+        .where('created_by', isEqualTo: user.mobileNumber)
         .snapshots();
   }
 
   Stream<QuerySnapshot> streamAll() {
     return getCollectionRef()
-        .where('user_number', isEqualTo: super.user.mobileNumber)
+        .where('created_by', isEqualTo: user.mobileNumber)
         .snapshots();
   }
 }

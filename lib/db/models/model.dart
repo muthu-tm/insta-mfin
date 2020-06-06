@@ -4,7 +4,7 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class Model {
   static final Firestore db = Firestore.instance;
-  User user = UserController().getCurrentUser();
+  final User user = UserController().getCurrentUser();
 
   CollectionReference getCollectionRef() {
     throw new Exception("Should be implemented by subclass");

@@ -25,34 +25,6 @@ class CollectionDetails {
 
   CollectionDetails();
 
-  setCollectedOn(DateTime date) {
-    this.collectedOn = date;
-  }
-
-  setIsPaidLate(bool isPaidLate) {
-    this.isPaidLate = isPaidLate;
-  }
-
-  setAmount(int amount) {
-    this.amount = amount;
-  }
-
-  setPaidBy(String collectedFrom) {
-    this.collectedFrom = collectedFrom;
-  }
-
-  setCollectedBy(String collectedBy) {
-    this.collectedBy = collectedBy;
-  }
-
-  setNotes(String notes) {
-    this.notes = notes;
-  }
-
-  setAddedBy(int addedBy) {
-    this.addedBy = addedBy;
-  }
-
   factory CollectionDetails.fromJson(Map<String, dynamic> json) =>
       _$CollectionDetailsFromJson(json);
   Map<String, dynamic> toJson() => _$CollectionDetailsToJson(this);
