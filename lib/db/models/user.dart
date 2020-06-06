@@ -6,6 +6,7 @@ import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 part 'user.g.dart';

@@ -7,6 +7,7 @@ import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
+import 'package:instamfin/services/controllers/notification/n_utils.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -128,6 +129,9 @@ class UserController {
       _userService.cachedUser.primaryFinance = financeID;
       _userService.cachedUser.primaryBranch = branchName;
       _userService.cachedUser.primarySubBranch = subBranchName;
+
+      NUtils.alertNotify("", "PRIMARY FINANCE CHANGED", "Your Primary Finance modified...!");
+
     } catch (err) {
       Analytics.reportError({
         "type": 'update_primary_error',

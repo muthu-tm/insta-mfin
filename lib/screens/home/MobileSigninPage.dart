@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MobileSignInPage extends StatefulWidget {
   @override
@@ -15,8 +17,7 @@ class MobileSignInPage extends StatefulWidget {
 class _MobileSignInPageState extends State<MobileSignInPage> {
   String number, _smsVerificationCode;
   bool _passwordVisible = false;
-
-  User _user;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -146,7 +147,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               ),
             ),
           ),
-          SizedBox(height:10),
+          SizedBox(height: 10),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -177,7 +178,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               SizedBox(width: 5),
             ],
           ),
-          SizedBox(height:10),
+          SizedBox(height: 10),
           RaisedButton(
             elevation: 16.0,
             onPressed: startPhoneAuth,
@@ -196,7 +197,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
-          SizedBox(height:10),
+          SizedBox(height: 10),
           Row(
             children: <Widget>[
               new Container(
@@ -241,19 +242,10 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
           CustomSnackBar.errorSnackBar("Enter 4 or more digit Secret Key", 2));
       return;
     } else {
+      CustomDialogs.actionWaiting(context, "Checking User");
+      
       this.number = _phoneNumberController.text;
-
-      dynamic result = await _authController.registerWithMobileNumber(
-          int.parse(number), _passKeyController.text, _nameController.text);
-      if (!result['is_success']) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to register USER: " + result['message']);
-      } else {
-        this._user = User.fromJson(result.message);
-        await _verifyPhoneNumber();
-      }
+      await _verifyPhoneNumber();
     }
   }
 
@@ -275,35 +267,69 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
 
   _verificationComplete(
       AuthCredential authCredential, BuildContext context) async {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) =>
-            PhoneAuthVerify(_user, _smsVerificationCode),
-      ),
-    );
+    FirebaseAuth.instance
+        .signInWithCredential(authCredential)
+        .then((AuthResult authResult) async {
+
+      dynamic result = await _authController.registerWithMobileNumber(
+          int.parse(number),
+          _passKeyController.text,
+          _nameController.text,
+          authResult.user.uid);
+      if (!result['is_success']) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState
+            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+        print("Unable to register USER: " + result['message']);
+      } else {
+        final SharedPreferences prefs = await _prefs;
+        prefs.setString("mobile_number", number.toString());
+
+        Navigator.pop(context);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => UserHomeScreen()),
+          (Route<dynamic> route) => false,
+        );
+      }
+    }).catchError((error) {
+      Navigator.pop(context);
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          "Something has gone wrong, please try later(signInWithPhoneNumber)",
+          2));
+      _scaffoldKey.currentState
+          .showSnackBar(CustomSnackBar.errorSnackBar("${error.toString()}", 2));
+    });
   }
 
   _smsCodeSent(String verificationId, List<int> code) {
-    print("SENT" + code.join());
     _scaffoldKey.currentState
-        .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 2));
+        .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 1));
 
     _smsVerificationCode = verificationId;
-
-     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) =>
-            PhoneAuthVerify(_user, _smsVerificationCode),
-      ),
-    );
+    Navigator.pop(context);
+    CustomDialogs.actionWaiting(context, "Verifying User");
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
+    Navigator.pop(context);
     _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
         "Verification Failed:" + authException.message.toString(), 2));
   }
 
   _codeAutoRetrievalTimeout(String verificationId) {
     _smsVerificationCode = verificationId;
+
+    Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) => PhoneAuthVerify(
+            true,
+            number,
+            _passKeyController.text,
+            _nameController.text,
+            _smsVerificationCode),
+      ),
+    );
   }
 }

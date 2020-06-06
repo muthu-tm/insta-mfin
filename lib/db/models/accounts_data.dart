@@ -36,66 +36,6 @@ class AccountsData {
 
   AccountsData();
 
-  setCashInHand(int cashInHand) {
-    this.cashInHand = cashInHand;
-  }
-
-  setJournalIn(int journalIn) {
-    this.journalIn = journalIn;
-  }
-
-  setJournalInAmount(int journalInAmount) {
-    this.journalInAmount = journalInAmount;
-  }
-
-  setJournalOut(int journalOut) {
-    this.journalOut = journalOut;
-  }
-
-  setJournalOutAmount(int journalOutAmount) {
-    this.journalOutAmount = journalOutAmount;
-  }
-
-  setMiscellaneousExpense(int miscellaneousExpense) {
-    this.miscellaneousExpense = miscellaneousExpense;
-  }
-
-  setMiscellaneousExpenseAmount(int miscellaneousExpenseAmount) {
-    this.miscellaneousExpenseAmount = miscellaneousExpenseAmount;
-  }
-
-  setTotalPayments(int totalPayments) {
-    this.totalPayments = totalPayments;
-  }
-
-  setPaymentsAmount(int paymentsAmount) {
-    this.paymentsAmount = paymentsAmount;
-  }
-
-  setTotalCollections(int totalCollections) {
-    this.totalCollections = totalCollections;
-  }
-
-  setCollectiosAmount(int collectiosAmount) {
-    this.collectiosAmount = collectiosAmount;
-  }
-
-  setPendingCollectios(int pendingCollectios) {
-    this.pendingCollectios = pendingCollectios;
-  }
-
-  setPendingCollectiosAmount(int pendingCollectiosAmount) {
-    this.pendingCollectiosAmount = pendingCollectiosAmount;
-  }
-
-  setUpcomingCollectios(int upcomingCollectios) {
-    this.upcomingCollectios = upcomingCollectios;
-  }
-
-  setupcomingCollectiosAmount(int upcomingCollectiosAmount) {
-    this.upcomingCollectiosAmount = upcomingCollectiosAmount;
-  }
-
   factory AccountsData.fromJson(Map<String, dynamic> json) =>
       _$AccountsDataFromJson(json);
   Map<String, dynamic> toJson() => _$AccountsDataToJson(this);

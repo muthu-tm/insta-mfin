@@ -8,7 +8,7 @@ class AuthService {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<User> registerWithMobileNumber(
-      int mobileNumber, String password, String name) async {
+      int mobileNumber, String password, String name, String uid) async {
     try {
       User user = User(mobileNumber);
       var data = await user.getByID(mobileNumber.toString());
@@ -24,6 +24,7 @@ class AuthService {
 
       user.setPassword(password);
       user.setName(name);
+      user.setGuid(uid);
       await user.create();
 
       Analytics.signupEvent(mobileNumber.toString());

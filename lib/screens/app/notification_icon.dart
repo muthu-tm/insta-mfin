@@ -12,7 +12,7 @@ class _PushNotificationState extends State<PushNotification> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   bool _newNotification = false;
-  Map<String, dynamic> message; 
+  Map<String, dynamic> message;
 
   @override
   void initState() {
@@ -45,13 +45,13 @@ class _PushNotificationState extends State<PushNotification> {
             children: <Widget>[
               IconButton(
                 icon: Icon(
-                Icons.notifications,
-                size: 35.0,
-              ),
-              onPressed: () => Navigator.push(
+                  Icons.notifications,
+                  size: 35.0,
+                ),
+                onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => NotificationHome(message),
+                    builder: (context) => NotificationHome(),
                     settings: RouteSettings(name: '/notifications'),
                   ),
                 ),
@@ -80,9 +80,16 @@ class _PushNotificationState extends State<PushNotification> {
               )
             ],
           )
-        : widget = Icon(
-            Icons.notifications,
-            size: 35.0,
+        : widget = IconButton(
+            icon: Icon(Icons.notifications),
+            iconSize: 35.0,
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NotificationHome(),
+                settings: RouteSettings(name: '/notifications'),
+              ),
+            ),
           );
 
     return widget;
