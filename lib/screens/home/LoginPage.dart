@@ -295,8 +295,10 @@ class _LoginPageState extends State<LoginPage> {
         .signInWithCredential(authCredential)
         .then((AuthResult authResult) async {
       final SharedPreferences prefs = await _prefs;
-      prefs.setString("mobile_number", number.toString());
+      prefs.setString("mobile_number", number);
 
+      User(int.parse(number)).update({'guid': authResult.user.uid});
+      
       Navigator.pop(context);
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (BuildContext context) => UserHomeScreen()),
