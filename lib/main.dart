@@ -5,8 +5,11 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:syncfusion_flutter_core/core.dart';
 
 void main() {
+  SyncfusionLicense.registerLicense(
+      "NT8mJyc2IWhia31ifWN9Z2FoYmF8YGJ8ampqanNiYmlmamlmanMDHmg+Jic7JmBgMCA2EzQ+Mjo/fTA8Pg==");
   runApp(MyApp());
   setupLocator();
 }

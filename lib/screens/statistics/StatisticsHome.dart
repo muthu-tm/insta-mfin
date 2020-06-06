@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/app/NotificationListWidget.dart';
 import 'package:instamfin/screens/app/SearchAppBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/statistics/DailyStatistics.dart';
+import 'package:instamfin/screens/statistics/MonthlyStatistics.dart';
+import 'package:instamfin/screens/statistics/WeeklyStatistics.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomTabBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
-class NotificationHome extends StatelessWidget {
+class StatisticsHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 3,
       child: Scaffold(
         key: _scaffoldKey,
         drawer: openDrawer(context),
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Notifications"),
+          title: Text("Statistics"),
           backgroundColor: CustomColors.mfinBlue,
           automaticallyImplyLeading: false,
           leading: InkWell(
@@ -51,7 +53,6 @@ class NotificationHome extends StatelessWidget {
           bottom: CustomTabBar(
             CustomColors.mfinLightGrey,
             TabBar(
-              isScrollable: true,
               indicatorColor: CustomColors.mfinWhite,
               labelColor: CustomColors.mfinWhite,
               unselectedLabelColor: CustomColors.mfinBlue,
@@ -72,35 +73,21 @@ class NotificationHome extends StatelessWidget {
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
-                    child: Text("All"),
+                    child: Text("Daily"),
                   ),
                 ),
                 Tab(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
-                    child: Text("Finance"),
+                    child: Text("Weekly"),
                   ),
                 ),
                 Tab(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
-                    child: Text("Alert"),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    alignment: Alignment.center,
-                    child: Text("Personal"),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    alignment: Alignment.center,
-                    child: Text("Promotions"),
+                    child: Text("Monthly"),
                   ),
                 ),
               ],
@@ -109,16 +96,9 @@ class NotificationHome extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            NotificationListWidget("No Notification received yet!",
-                CustomColors.mfinBlue, true, [0]),
-            NotificationListWidget("No Finance Notification received yet!",
-                CustomColors.mfinBlue, false, [5]),
-            NotificationListWidget(
-                "No Alerts received yet!", CustomColors.mfinBlue, false, [3]),
-            NotificationListWidget("No Personal Notification received yet!",
-                CustomColors.mfinBlue, false, [6]),
-            NotificationListWidget("No Promotions and Offers received yet!",
-                CustomColors.mfinBlue, false, [2]),
+            DailyStatistics(),
+            WeeklyStatistics(),
+            MonthlyStatistics(),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
+import 'package:instamfin/screens/statistics/StatisticsHome.dart';
 import 'package:instamfin/screens/transaction/TransactionHome.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/SettingsScreen.dart';
@@ -14,9 +15,8 @@ Widget bottomBar(BuildContext context) {
         SizedBox.fromSize(
           size: Size(screenWidth(context, dividedBy: 4), 100),
           child: Material(
-            color: CustomColors.mfinBlue, // button color
+            color: CustomColors.mfinBlue,
             child: InkWell(
-              // splashColor: CustomColors.mfinFadedButtonGreen, // splash color
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -26,7 +26,7 @@ Widget bottomBar(BuildContext context) {
                   ),
                   (Route<dynamic> route) => false,
                 );
-              }, // button pressed
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -60,9 +60,8 @@ Widget bottomBar(BuildContext context) {
         SizedBox.fromSize(
           size: Size(screenWidth(context, dividedBy: 4), 100),
           child: Material(
-            color: CustomColors.mfinBlue, // button color
+            color: CustomColors.mfinBlue,
             child: InkWell(
-              // splashColor: CustomColors.mfinButtonGreen, // splash color
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -72,7 +71,7 @@ Widget bottomBar(BuildContext context) {
                   ),
                   (Route<dynamic> route) => false,
                 );
-              }, // button pressed
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -105,18 +104,31 @@ Widget bottomBar(BuildContext context) {
         ),
         SizedBox.fromSize(
           size: Size(screenWidth(context, dividedBy: 4),
-              100), // button width and height
+              100),
           child: Material(
-            color: CustomColors.mfinBlue, // button color
+            color: CustomColors.mfinBlue,
             child: InkWell(
-              // splashColor: CustomColors.mfinButtonGreen, // splash color
-              onTap: () {}, // button pressed
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StatisticsHome(),
+                    settings: RouteSettings(name: '/statistics'),
+                  ),
+                );
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   customIconButton(
                       Icons.assessment, 35.0, CustomColors.mfinButtonGreen, () {
-                    print("Pressed Statistics");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StatisticsHome(),
+                        settings: RouteSettings(name: '/statistics'),
+                      ),
+                    );
                   }),
                   Text(
                     "Statistics",
@@ -133,9 +145,8 @@ Widget bottomBar(BuildContext context) {
         SizedBox.fromSize(
           size: Size(screenWidth(context, dividedBy: 4), 100),
           child: Material(
-            color: CustomColors.mfinBlue, // button color
+            color: CustomColors.mfinBlue,
             child: InkWell(
-              // splashColor: CustomColors.mfinButtonGreen, // splash color
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -145,7 +156,7 @@ Widget bottomBar(BuildContext context) {
                   ),
                   (Route<dynamic> route) => false,
                 );
-              }, // button pressed
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
