@@ -8,7 +8,8 @@ class PaymentTemplateController {
       int pAmount,
       int tenure,
       int amountPerColl,
-      int tenureType,
+      int collectionMode,
+      int collectionDay,
       int docCharge,
       int surcharge,
       double iRate) async {
@@ -19,7 +20,8 @@ class PaymentTemplateController {
       temp.setPrincipalAmount(pAmount);
       temp.setTenure(tenure);
       temp.setCollectionAmount(amountPerColl);
-      temp.setTenureType(tenureType);
+      temp.setCollectionMode(collectionMode);
+      temp.setCollectionDay(collectionDay);
       temp.setDocumentCharge(docCharge);
       temp.setSurcharge(surcharge);
       temp.setInterestRate(iRate);

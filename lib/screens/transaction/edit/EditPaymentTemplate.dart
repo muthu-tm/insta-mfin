@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 
-class AddPaymentTemplate extends StatefulWidget {
+class EditPaymentTemplate extends StatefulWidget {
+  EditPaymentTemplate(this.template);
+  final PaymentTemplate template;
+
   @override
-  _AddPaymentTemplateState createState() => _AddPaymentTemplateState();
+  _EditPaymentTemplateState createState() => _EditPaymentTemplateState();
 }
 
-class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
+class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final Map<String, dynamic> updatedTemplate = new Map();
 
   String templateName;
   int totalAmount;
@@ -41,6 +46,13 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   };
 
   @override
+  void initState() {
+    super.initState();
+    selectedCollectionModeID = widget.template.collectionMode.toString();
+    selectedCollectionDayID = widget.template.collectionDay.toString();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
@@ -48,7 +60,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Add Template'),
+        title: Text('Edit Template'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -101,6 +113,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                       title: TextFormField(
                         keyboardType: TextInputType.text,
+                        initialValue: widget.template.name,
                         decoration: InputDecoration(
                           hintText: 'Template Name',
                           fillColor: CustomColors.mfinWhite,
@@ -114,8 +127,9 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                         validator: (name) {
                           if (name.trim().isEmpty) {
                             return 'Enter the Template Name';
+                          } else if (name.trim() != widget.template.name) {
+                            updatedTemplate['template_name'] = name.trim();
                           }
-                          this.templateName = name.trim();
                           return null;
                         },
                       ),
@@ -135,6 +149,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                       title: new TextFormField(
                           keyboardType: TextInputType.number,
+                          initialValue: widget.template.totalAmount.toString(),
                           decoration: InputDecoration(
                             hintText: 'Total Amount',
                             fillColor: CustomColors.mfinWhite,
@@ -146,10 +161,13 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                                     BorderSide(color: CustomColors.mfinWhite)),
                           ),
                           validator: (amount) {
-                            if (amount.trim().isNotEmpty) {
-                              this.totalAmount = int.parse(amount);
+                            if (amount.trim().isNotEmpty ||
+                                amount.trim() !=
+                                    widget.template.totalAmount.toString()) {
+                              updatedTemplate['total_amount'] =
+                                  int.parse(amount);
                             } else {
-                              this.totalAmount = 0;
+                              updatedTemplate['total_amount'] = 0;
                               return null;
                             }
                             return null;
@@ -170,6 +188,8 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                       title: new TextFormField(
                           keyboardType: TextInputType.number,
+                          initialValue:
+                              widget.template.principalAmount.toString(),
                           decoration: InputDecoration(
                             hintText: 'Amount given',
                             fillColor: CustomColors.mfinWhite,
@@ -181,10 +201,14 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                                     BorderSide(color: CustomColors.mfinWhite)),
                           ),
                           validator: (amount) {
-                            if (amount.trim().isNotEmpty) {
-                              this.givenAmount = int.parse(amount);
+                            if (amount.trim().isNotEmpty ||
+                                amount.trim() !=
+                                    widget.template.principalAmount
+                                        .toString()) {
+                              updatedTemplate['principal_amount'] =
+                                  int.parse(amount);
                             } else {
-                              this.givenAmount = 0;
+                              updatedTemplate['principal_amount'] = 0;
                               return null;
                             }
                             return null;
@@ -205,6 +229,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                       title: TextFormField(
                         keyboardType: TextInputType.number,
+                        initialValue: widget.template.docCharge.toString(),
                         decoration: InputDecoration(
                           hintText: 'Document Charge',
                           fillColor: CustomColors.mfinWhite,
@@ -218,8 +243,10 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                         validator: (charge) {
                           if (charge.trim().isEmpty) {
                             return 'Enter the Document Charge';
+                          } else if (charge.trim() !=
+                              widget.template.docCharge.toString()) {
+                            updatedTemplate['doc_charge'] = int.parse(charge);
                           }
-                          this.documentCharge = int.parse(charge);
                           return null;
                         },
                       ),
@@ -239,6 +266,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                       title: TextFormField(
                         keyboardType: TextInputType.number,
+                        initialValue: widget.template.surcharge.toString(),
                         decoration: InputDecoration(
                           hintText: 'Service charge of any',
                           fillColor: CustomColors.mfinWhite,
@@ -252,8 +280,10 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                         validator: (surcharge) {
                           if (surcharge.trim().isEmpty) {
                             return 'Enter the Surcharge';
+                          } else if (surcharge.trim() !=
+                              widget.template.surcharge.toString()) {
+                            updatedTemplate['surcharge'] = int.parse(surcharge);
                           }
-                          this.surChargeAmount = int.parse(surcharge);
                           return null;
                         },
                       ),
@@ -273,6 +303,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                       title: TextFormField(
                         keyboardType: TextInputType.number,
+                        initialValue: widget.template.tenure.toString(),
                         decoration: InputDecoration(
                           hintText: 'Number of Payments',
                           fillColor: CustomColors.mfinWhite,
@@ -286,8 +317,10 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                         validator: (noOfPayment) {
                           if (noOfPayment.trim().isEmpty) {
                             return 'Enter the Number of Payments';
+                          } else if (noOfPayment.trim() !=
+                              widget.template.tenure.toString()) {
+                            updatedTemplate['tenure'] = int.parse(noOfPayment);
                           }
-                          this.noOfPayments = int.parse(noOfPayment);
                           return null;
                         },
                       ),
@@ -307,6 +340,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                       title: TextFormField(
                         keyboardType: TextInputType.number,
+                        initialValue: widget.template.interestRate.toString(),
                         decoration: InputDecoration(
                           hintText: 'Rate in 0.00%',
                           fillColor: CustomColors.mfinWhite,
@@ -320,8 +354,11 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                         validator: (intrest) {
                           if (intrest.trim().isEmpty) {
                             return 'Enter the Interest Rate';
+                          } else if (intrest.trim() !=
+                              widget.template.interestRate.toString()) {
+                            updatedTemplate['interest_rate'] =
+                                double.parse(intrest);
                           }
-                          this.interestRate = double.parse(intrest);
                           return null;
                         },
                       ),
@@ -341,6 +378,8 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                       title: TextFormField(
                         keyboardType: TextInputType.number,
+                        initialValue:
+                            widget.template.collectionAmount.toString(),
                         decoration: InputDecoration(
                           hintText: 'Collection Amount',
                           fillColor: CustomColors.mfinWhite,
@@ -354,8 +393,11 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                         validator: (collectionAmount) {
                           if (collectionAmount.trim().isEmpty) {
                             return 'Enter the Collection Amount';
+                          } else if (collectionAmount.trim() !=
+                              widget.template.collectionAmount.toString()) {
+                            updatedTemplate['collection_amount'] =
+                                int.parse(collectionAmount);
                           }
-                          this.collectionAmount = int.parse(collectionAmount);
                           return null;
                         },
                       ),
@@ -437,43 +479,42 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   void _setSelectedCollectionMode(String newVal) {
     setState(() {
       selectedCollectionModeID = newVal;
+      updatedTemplate['collection_mode'] = int.parse(newVal);
     });
   }
 
   void _setSelectedCollectionDay(String newVal) {
     setState(() {
       selectedCollectionDayID = newVal;
+      updatedTemplate['collection_day'] = int.parse(newVal);
     });
   }
 
-  _submit() async {
+  void _submit() async {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Creating Template for YOU!");
-      PaymentTemplateController _collectionController =
-          PaymentTemplateController();
-      var result = await _collectionController.createTemplate(
-          templateName,
-          totalAmount,
-          givenAmount,
-          noOfPayments,
-          collectionAmount,
-          int.parse(selectedCollectionModeID),
-          int.parse(selectedCollectionDayID),
-          documentCharge,
-          surChargeAmount,
-          interestRate);
-
-      if (!result['is_success']) {
+      if (updatedTemplate.length == 0) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No changes detected, Skipping update!", 1));
         Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Template: " + result['message']);
       } else {
-        Navigator.pop(context);
-        print("New Template added successfully");
-        Navigator.pop(context);
+        CustomDialogs.actionWaiting(context, "Updating Template");
+        PaymentTemplateController _collectionController =
+            PaymentTemplateController();
+        var result = await _collectionController.updateTemp(
+            widget.template.getDocumentID(), updatedTemplate);
+
+        if (!result['is_success']) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+          print("Unable to Edit Template: " + result['message']);
+        } else {
+          Navigator.pop(context);
+          print("Template edited successfully");
+          Navigator.pop(context);
+        }
       }
     } else {
       print("Invalid form submitted");
