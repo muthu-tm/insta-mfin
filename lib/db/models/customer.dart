@@ -213,6 +213,24 @@ class Customer extends Model {
     return custList;
   }
 
+  Future<List<Customer>> getByNameRange(String startsWith) async {
+    QuerySnapshot snap = await getCollectionRef()
+        .where('finance_id', isEqualTo: user.primaryFinance)
+        .where('branch_name', isEqualTo: user.primaryBranch)
+        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('customer_name', isGreaterThanOrEqualTo: startsWith)
+        .getDocuments();
+
+    List<Customer> custList = [];
+    if (snap.documents.isNotEmpty) {
+      snap.documents.forEach((cust) {
+        custList.add(Customer.fromJson(cust.data));
+      });
+    }
+
+    return custList;
+  }
+
   Stream<QuerySnapshot> streamCustomersByRange(int minNumber, int maxNumber) {
     return getCollectionRef()
         .where('finance_id', isEqualTo: user.primaryFinance)

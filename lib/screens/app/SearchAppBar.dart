@@ -1,9 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/screens/app/SearchOptionsRadio.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListTile.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomRadioModel.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 
 class SearchAppBar extends StatefulWidget {
   @override
@@ -11,41 +13,45 @@ class SearchAppBar extends StatefulWidget {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  TextEditingController _searchController = TextEditingController();
   int minNumber = 0;
   int maxNumber = 0;
-  Stream<QuerySnapshot> snapshot;
+  int searchMode = 0;
+  String searchKey = "";
+  Future<List<Customer>> snapshot;
+
+  List<CustomRadioModel> inOutList = new List<CustomRadioModel>();
+
+  @override
+  void initState() {
+    super.initState();
+    inOutList.add(new CustomRadioModel(true, 'Number', ''));
+    inOutList.add(new CustomRadioModel(false, 'Name', ''));
+    inOutList.add(new CustomRadioModel(false, 'Payment', ''));
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldKey,
       appBar: new AppBar(
         backgroundColor: CustomColors.mfinBlue,
         centerTitle: true,
-        title: Form(
-          key: _formKey,
-          child: new TextFormField(
-            style: new TextStyle(
-              color: CustomColors.mfinWhite,
-            ),
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter the customer number';
-              } else {
-                if (value.length < 10) {
-                  minNumber = int.parse(value.padRight(10, '0'));
-                  maxNumber = int.parse(value.padRight(10, '9'));
-                } else if (value.length == 10) {
-                  minNumber = int.parse(value);
-                  maxNumber = int.parse(value);
-                }
-                return null;
-              }
-            },
-            decoration: new InputDecoration(
-                hintText: "Type Customer Number here...",
-                hintStyle: new TextStyle(color: CustomColors.mfinWhite)),
+        title: TextFormField(
+          controller: _searchController,
+          keyboardType: TextInputType.text,
+          style: new TextStyle(
+            color: CustomColors.mfinWhite,
+          ),
+          decoration: new InputDecoration(
+            hintText: searchMode == 0
+                ? "Customer Number here.."
+                : searchMode == 1
+                    ? "Customer Name here.."
+                    : "Payment ID here..",
+            hintStyle: new TextStyle(color: CustomColors.mfinWhite),
           ),
         ),
         actions: <Widget>[
@@ -56,79 +62,170 @@ class _SearchAppBarState extends State<SearchAppBar> {
               color: CustomColors.mfinWhite,
             ),
             onPressed: () {
-              final FormState form = _formKey.currentState;
+              if (_searchController.text.isEmpty ||
+                  _searchController.text.trim().length < 3) {
+                _scaffoldKey.currentState.showSnackBar(
+                    CustomSnackBar.errorSnackBar(
+                        'Please enter minimum 3 key to search..', 2));
+                return null;
+              } else {
+                if (searchMode == 0) {
+                  int num = int.tryParse(_searchController.text.trim());
+                  if (num == null) {
+                    _scaffoldKey.currentState.showSnackBar(
+                        CustomSnackBar.errorSnackBar(
+                            "Invalid Mobile number, Please try again!", 2));
+                    return null;
+                  } else {
+                    if (_searchController.text.trim().length < 10) {
+                      minNumber = int.parse(
+                          _searchController.text.trim().padRight(10, '0'));
+                      maxNumber = int.parse(
+                          _searchController.text.trim().padRight(10, '9'));
+                    } else if (_searchController.text.trim().length == 10) {
+                      minNumber = int.parse(_searchController.text.trim());
+                      maxNumber = int.parse(_searchController.text.trim());
+                    }
+                  }
+                } else {
+                  searchKey = _searchController.text.trim();
+                }
 
-              if (form.validate()) {
                 setState(
                   () {
-                    snapshot =
-                        Customer().streamCustomersByRange(minNumber, maxNumber);
+                    searchMode == 0
+                        ? snapshot = Customer().getByRange(minNumber, maxNumber)
+                        : searchMode == 1
+                            ? snapshot = Customer().getByNameRange(searchKey)
+                            : snapshot = Customer().getByNameRange(searchKey);
                   },
                 );
+
+                return null;
               }
             },
           ),
         ],
       ),
-      body: StreamBuilder(
-        stream: snapshot,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          List<Widget> children;
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            ListTile(
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+              leading: InkWell(
+                onTap: () {
+                  setState(
+                    () {
+                      inOutList[0].isSelected = true;
+                      inOutList[1].isSelected = false;
+                      inOutList[2].isSelected = false;
+                    },
+                  );
 
-          if (snapshot.hasData) {
-            if (snapshot.data.documents.isNotEmpty) {
-              children = <Widget>[
-                ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return customerListTile(context, index,
-                        Customer.fromJson(snapshot.data.documents[index].data));
-                  },
-                ),
-              ];
-            } else {
-              // No customers found
-              children = <Widget>[
-                Text(
-                  "No Cusomters Found!",
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(
-                    color: CustomColors.mfinAlertRed,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                new Divider(),
-                Text(
-                  "Please, Try with different Mobile Number.",
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(
-                    color: CustomColors.mfinBlue,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ];
-            }
-          } else if (snapshot.hasError) {
-            children = AsyncWidgets.asyncError();
-          } else {
-            children = AsyncWidgets.asyncWaiting();
-          }
+                  searchMode = 0;
+                  _searchController.text = '';
+                },
+                child: new SearchOptionsRadio(
+                    inOutList[0], CustomColors.mfinLightBlue),
+              ),
+              title: InkWell(
+                onTap: () {
+                  setState(
+                    () {
+                      inOutList[0].isSelected = false;
+                      inOutList[1].isSelected = true;
+                      inOutList[2].isSelected = false;
+                    },
+                  );
 
-          return SingleChildScrollView(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: children,
+                  searchMode = 1;
+                  _searchController.text = '';
+                },
+                child:
+                    new SearchOptionsRadio(inOutList[1], CustomColors.mfinBlue),
+              ),
+              trailing: InkWell(
+                onTap: () {
+                  setState(
+                    () {
+                      inOutList[0].isSelected = false;
+                      inOutList[1].isSelected = false;
+                      inOutList[2].isSelected = true;
+                    },
+                  );
+
+                  searchMode = 2;
+                  _searchController.text = '';
+                },
+                child: new SearchOptionsRadio(
+                    inOutList[2], CustomColors.mfinAlertRed),
               ),
             ),
-          );
-        },
+            Divider(),
+            FutureBuilder(
+              future: snapshot,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Customer>> snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data.isNotEmpty) {
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return customerListTile(
+                            context, index, snapshot.data[index]);
+                      },
+                    );
+                  } else {
+                    // No customers found
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "No Cusomters Found!",
+                          textAlign: TextAlign.center,
+                          style: new TextStyle(
+                            color: CustomColors.mfinAlertRed,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        new Divider(),
+                        Text(
+                          "Please, Try with different Mobile Number.",
+                          textAlign: TextAlign.center,
+                          style: new TextStyle(
+                            color: CustomColors.mfinBlue,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    );
+                  }
+                } else if (snapshot.hasError) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: AsyncWidgets.asyncError(),
+                  );
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: AsyncWidgets.asyncWaiting(),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
