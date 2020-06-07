@@ -17,7 +17,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
   Map<String, String> _chartList = {"0": "Line", "1": "Bubble", "2": "Bar"};
   Map<String, String> _yList = {"0": "Amount", "1": "Count"};
 
-  DateTime selectedF = DateTime.now().subtract(Duration(days: 183));
+  DateTime selectedF = DateTime.now().subtract(Duration(days: 92));
   TextEditingController _fDate = new TextEditingController();
 
   @override
@@ -166,7 +166,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 184),
+              Duration(days: 93),
             ),
           ),
           CollectionStatisticsWidget(
@@ -174,7 +174,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 184),
+              Duration(days: 93),
             ),
           ),
           ExpenseStatisticsWidget(
@@ -182,7 +182,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 184),
+              Duration(days: 93),
             ),
           ),
           JournalStatisticsWidget(
@@ -190,7 +190,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 184),
+              Duration(days: 93),
             ),
           ),
         ],

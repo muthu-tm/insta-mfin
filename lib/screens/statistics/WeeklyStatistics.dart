@@ -17,7 +17,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
   Map<String, String> _chartList = {"0": "Line", "1": "Bubble", "2": "Bar"};
   Map<String, String> _yList = {"0": "Amount", "1": "Count"};
 
-  DateTime selectedF = DateTime.now().subtract(Duration(days: 35));
+  DateTime selectedF = DateTime.now().subtract(Duration(days: 28));
   TextEditingController _fDate = new TextEditingController();
 
   @override
@@ -166,7 +166,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
             1,
             selectedF,
             selectedF.add(
-              Duration(days: 36),
+              Duration(days: 29),
             ),
           ),
           CollectionStatisticsWidget(
@@ -174,7 +174,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
             1,
             selectedF,
             selectedF.add(
-              Duration(days: 36),
+              Duration(days: 29),
             ),
           ),
           ExpenseStatisticsWidget(
@@ -182,7 +182,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
             1,
             selectedF,
             selectedF.add(
-              Duration(days: 36),
+              Duration(days: 29),
             ),
           ),
           JournalStatisticsWidget(
@@ -190,7 +190,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
             1,
             selectedF,
             selectedF.add(
-              Duration(days: 36),
+              Duration(days: 29),
             ),
           ),
         ],

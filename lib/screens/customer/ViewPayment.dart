@@ -32,11 +32,13 @@ class _ViewPaymentState extends State<ViewPayment> {
   String emptyText = "No Collections available for this Payment!";
   Color textColor = CustomColors.mfinBlue;
   bool fetchAll = true;
+  bool isActive = false;
   List<int> collStatus = [];
 
   @override
   void initState() {
     super.initState();
+    isActive = widget.payment.isActive;
     collStatusList.add(new CustomRadioModel(true, '', ''));
     collStatusList.add(new CustomRadioModel(false, '', ''));
     collStatusList.add(new CustomRadioModel(false, '', ''));
@@ -301,6 +303,34 @@ class _ViewPaymentState extends State<ViewPayment> {
                         ),
                       ),
                     ),
+                    isActive
+                        ? Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Material(
+                              elevation: 10.0,
+                              shadowColor: CustomColors.mfinAlertRed,
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: FlatButton.icon(
+                                splashColor: CustomColors.mfinAlertRed,
+                                icon: Icon(Icons.close,
+                                    color: CustomColors.mfinAlertRed),
+                                label: Text(
+                                  "Close Payment",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  CustomDialogs.confirm(context, "WARNING",
+                                      "You cannot edit after CLOSING the Payment. ",
+                                      () {
+                                    _submit();
+                                  }, () {
+                                    Navigator.pop(context);
+                                  });
+                                },
+                              ),
+                            ),
+                          )
+                        : Padding(padding: EdgeInsets.all(1.0)),
                     new Divider(
                       color: CustomColors.mfinButtonGreen,
                     )
@@ -416,13 +446,39 @@ class _ViewPaymentState extends State<ViewPayment> {
               (UserController().getCurrentUser().preferences.tableView)
                   ? CollectionListTableWidget(widget.payment, widget.custName,
                       title, emptyText, textColor, fetchAll, collStatus)
-                  : CollectionListWidget(_scaffoldKey, widget.payment, widget.custName, title,
-                      emptyText, textColor, fetchAll, collStatus),
+                  : CollectionListWidget(
+                      _scaffoldKey,
+                      widget.payment,
+                      widget.custName,
+                      title,
+                      emptyText,
+                      textColor,
+                      fetchAll,
+                      collStatus),
             ],
           ),
         ),
       ),
       bottomNavigationBar: bottomBar(context),
     );
+  }
+
+  _submit() async {
+    CustomDialogs.actionWaiting(context, " Closing Payment");
+    PaymentController _pc = PaymentController();
+    var result = await _pc.updatePayment(widget.payment, {
+      'is_active': false,
+      'closed_date': DateUtils.getFormattedDate(DateTime.now())
+    });
+
+    if (!result['is_success']) {
+      Navigator.pop(context);
+      _scaffoldKey.currentState
+          .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+      print("Unable to Close Payment: " + result['message']);
+    } else {
+      print("Payment Closed successfully");
+      Navigator.pop(context);
+    }
   }
 }

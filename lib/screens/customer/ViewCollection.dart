@@ -12,9 +12,10 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class ViewCollection extends StatelessWidget {
-  ViewCollection(
-      this._collection, this.custName, this.payCreatedAt, this.iconColor);
+  ViewCollection(this.payActive, this._collection, this.custName,
+      this.payCreatedAt, this.iconColor);
 
+  final bool payActive;
   final Collection _collection;
   final String custName;
   final DateTime payCreatedAt;
@@ -260,9 +261,9 @@ class ViewCollection extends StatelessWidget {
                       ),
                     ),
                     (UserController().getCurrentUser().preferences.tableView)
-                        ? CollDetailsTableWidget(
+                        ? CollDetailsTableWidget(payActive, 
                             _scaffoldKey, collection, custName, payCreatedAt)
-                        : CollectionDetailsWidget(
+                        : CollectionDetailsWidget(payActive, 
                             _scaffoldKey, collection, custName, payCreatedAt),
                   ],
                 ),
@@ -304,25 +305,43 @@ class ViewCollection extends StatelessWidget {
           key: _scaffoldKey,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              _submit(context);
-            },
-            label: Text(
-              "Update",
-              style: TextStyle(
-                fontSize: 17,
-                fontFamily: "Georgia",
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            splashColor: CustomColors.mfinWhite,
-            icon: Icon(
-              Icons.edit,
-              size: 35,
-              color: CustomColors.mfinFadedButtonGreen,
-            ),
-          ),
+          floatingActionButton: payActive
+              ? FloatingActionButton.extended(
+                  onPressed: () {
+                    _submit(context);
+                  },
+                  label: Text(
+                    "Update",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontFamily: "Georgia",
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  splashColor: CustomColors.mfinWhite,
+                  icon: Icon(
+                    Icons.edit,
+                    size: 35,
+                    color: CustomColors.mfinFadedButtonGreen,
+                  ),
+                )
+              : FloatingActionButton.extended(
+                  backgroundColor: CustomColors.mfinAlertRed,
+                  onPressed: () {},
+                  label: Text(
+                    "Closed Payment",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontFamily: "Georgia",
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  icon: Icon(
+                    Icons.close,
+                    size: 35,
+                    color: CustomColors.mfinWhite,
+                  ),
+                ),
           body: SingleChildScrollView(
             child: new Container(
               child: new Column(

@@ -84,6 +84,7 @@ class CollectionListWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ViewCollection(
+                                      _payment.isActive,
                                       collection,
                                       custName,
                                       _payment.createdAt,

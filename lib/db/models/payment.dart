@@ -43,6 +43,8 @@ class Payment extends Model {
   int collectionAmount;
   @JsonKey(name: 'collection_starts_from', nullable: true)
   DateTime collectionStartsFrom;
+  @JsonKey(name: 'closed_date', nullable: true)
+  DateTime closedDate;
   @JsonKey(name: 'is_active', nullable: true)
   bool isActive;
   @JsonKey(name: 'given_by', nullable: true)

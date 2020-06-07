@@ -35,18 +35,28 @@ class CollectionStatisticsWidget extends StatelessWidget {
           if (snapshot.hasData) {
             if (snapshot.data.isNotEmpty) {
               int max = 0;
-              int interval = 10;
+              int interval = 50;
               List<CollData> cData = [];
 
+              Map<DateTime, CollData> cGroup = new Map();
               snapshot.data.forEach((p) {
                 p.collections.forEach((c) {
-                  if (c.amount > max) {
-                    max = c.amount + interval;
-                    interval = (c.amount / 5).round();
-                  }
-
-                  cData.add(CollData(c.collectedOn, c.amount));
+                  cGroup.update(
+                    c.collectedOn,
+                    (value) => CollData(c.collectedOn, value.amount + c.amount),
+                    ifAbsent: () => CollData(c.collectedOn, c.amount),
+                  );
                 });
+              });
+
+              cGroup.forEach((key, value) {
+                if (value.amount > max) {
+                  interval = (value.amount / 5).round();
+                  max = value.amount +
+                      ((1000 < interval) ? 1000 : (100 < interval) ? 100 : 10);
+                }
+
+                cData.add(value);
               });
 
               widget = Container(
