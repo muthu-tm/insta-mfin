@@ -134,6 +134,41 @@ class _EditPaymentState extends State<EditPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
+                          "PAYMENT ID:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.text,
+                        initialValue: widget.payment.paymentID,
+                        decoration: InputDecoration(
+                          hintText: 'Payment ID',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (paymentID) {
+                          if (paymentID.isNotEmpty || paymentID.trim() != widget.payment.paymentID) {
+                            updatedPayment['payment_id'] = paymentID.trim();
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
                           "DATE:",
                           style: TextStyle(
                             fontSize: 13,

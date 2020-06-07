@@ -15,6 +15,8 @@ class Payment extends Model {
 
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
+  @JsonKey(name: 'payment_id', nullable: true)
+  String paymentID;
   @JsonKey(name: 'branch_name', nullable: true)
   String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
@@ -64,6 +66,10 @@ class Payment extends Model {
 
   setFinanceID(String financeID) {
     this.financeID = financeID;
+  }
+
+  setPaymentID(String paymentID) {
+    this.paymentID = paymentID;
   }
 
   setBranchName(String branchName) {

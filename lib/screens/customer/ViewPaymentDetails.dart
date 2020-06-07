@@ -91,6 +91,36 @@ class ViewPaymentDetails extends StatelessWidget {
                           leading: SizedBox(
                             width: 70,
                             child: Text(
+                              "PAYMENT ID:",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                          title: TextFormField(
+                            textAlign: TextAlign.end,
+                            initialValue: payment.paymentID,
+                            decoration: InputDecoration(
+                              hintText: 'Payment ID',
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 3.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                            ),
+                            enabled: false,
+                            autofocus: false,
+                          ),
+                        ),
+                        ListTile(
+                          leading: SizedBox(
+                            width: 70,
+                            child: Text(
                               "DATE:",
                               style: TextStyle(
                                 fontSize: 13,

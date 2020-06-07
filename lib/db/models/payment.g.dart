@@ -9,6 +9,7 @@ part of 'payment.dart';
 Payment _$PaymentFromJson(Map<String, dynamic> json) {
   return Payment()
     ..financeID = json['finance_id'] as String
+    ..paymentID = json['payment_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
     ..customerNumber = json['customer_number'] as int
@@ -54,6 +55,7 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 
 Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'finance_id': instance.financeID,
+      'payment_id': instance.paymentID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
       'customer_number': instance.customerNumber,

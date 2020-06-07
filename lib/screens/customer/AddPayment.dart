@@ -56,6 +56,7 @@ class _AddPaymentState extends State<AddPayment> {
   int docCharge = 0;
   int surCharge = 0;
   int tenure = 0;
+  String paymentID = '';
   double intrestRate = 0.0;
   int collectionAmount = 0;
   String givenTo = '';
@@ -135,6 +136,43 @@ class _AddPaymentState extends State<AddPayment> {
                     ),
                     Divider(
                       color: CustomColors.mfinBlue,
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "PAYMENT ID:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.text,
+                        initialValue: paymentID,
+                        decoration: InputDecoration(
+                          hintText: 'Payment ID',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (paymentID) {
+                          if (paymentID.trim().isEmpty) {
+                            this.paymentID = "";
+                          } else {
+                            this.paymentID = paymentID.trim();
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                     ListTile(
                       leading: SizedBox(
@@ -937,6 +975,7 @@ class _AddPaymentState extends State<AddPayment> {
       PaymentController _pc = PaymentController();
       var result = await _pc.createPayment(
           widget.customer.mobileNumber,
+          paymentID.toString(),
           selectedDate,
           totalAmount,
           principalAmount,
