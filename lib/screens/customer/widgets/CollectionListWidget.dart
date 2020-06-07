@@ -13,10 +13,10 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CollectionListWidget extends StatelessWidget {
-  CollectionListWidget(this._payment, this.custName, this.title,
-      this.emptyText, this.textColor, this.fetchAll, this.status);
+  CollectionListWidget(this._scaffoldKey, this._payment, this.custName,
+      this.title, this.emptyText, this.textColor, this.fetchAll, this.status);
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey;
 
   final Payment _payment;
   final String custName;
@@ -42,7 +42,7 @@ class CollectionListWidget extends StatelessWidget {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          if (snapshot.data.length > 0){
+          if (snapshot.data.length > 0) {
             children = <Widget>[
               ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -84,6 +84,7 @@ class CollectionListWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ViewCollection(
+                                      _payment.isActive,
                                       collection,
                                       custName,
                                       _payment.createdAt,
@@ -368,7 +369,7 @@ class CollectionListWidget extends StatelessWidget {
   }
 
   Future markAsCollected(Collection collection, BuildContext context) async {
-    if (collection.getPending() == 0) {
+    if (collection.getReceived() == collection.collectionAmount) {
       CustomDialogs.information(
           context,
           "Alert!",
@@ -378,7 +379,9 @@ class CollectionListWidget extends StatelessWidget {
       CustomDialogs.actionWaiting(context, "Updating Collection");
       CollectionController _cc = CollectionController();
       User _user = UserController().getCurrentUser();
-      Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
+      Map<String, dynamic> collDetails = {
+        'collected_on': DateUtils.getFormattedDate(DateTime.now())
+      };
       collDetails['amount'] =
           collection.collectionAmount - collection.getReceived();
       collDetails['notes'] = "";
@@ -386,7 +389,7 @@ class CollectionListWidget extends StatelessWidget {
       collDetails['collected_from'] = custName;
       collDetails['created_at'] = DateTime.now();
       collDetails['added_by'] = _user.mobileNumber;
-      if (collection.collectionDate.isBefore(DateUtils.getCurrentDate()))
+      if (collection.collectionDate.isBefore(DateUtils.getCurrentISTDate()))
         collDetails['is_paid_late'] = true;
       else
         collDetails['is_paid_late'] = false;

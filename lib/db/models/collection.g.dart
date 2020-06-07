@@ -29,7 +29,7 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
             ?.map((e) => e == null
                 ? null
                 : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(
-                    json['collected_on'] as Timestamp)))
+                    e as Timestamp)))
             ?.toList() ??
         []
     ..collectionAmount = json['collection_amount'] as int

@@ -7,9 +7,10 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
 class CollDetailsTableWidget extends StatelessWidget {
-  CollDetailsTableWidget(
-      this._scaffoldKey, this._collection, this.custName, this._createdAt);
+  CollDetailsTableWidget(this.payActive, this._scaffoldKey, this._collection,
+      this.custName, this._createdAt);
 
+  final bool payActive;
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final Collection _collection;
   final String custName;
@@ -127,21 +128,28 @@ class CollDetailsTableWidget extends StatelessWidget {
                 color: CustomColors.mfinBlue,
               ),
               onPressed: () {
-                if (_collection.getReceived() < _collection.collectionAmount) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddCollectionDetails(
-                          _collection, custName, _createdAt),
-                      settings: RouteSettings(
-                          name:
-                              '/customers/payments/collections/collectiondetails/add'),
-                    ),
-                  );
-                } else {
+                if (!payActive) {
                   _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
-                          "Collection AMOUNT already collected Fully", 3));
+                          "You cannot edit CLOSED Payment", 2));
+                } else {
+                  if (_collection.getReceived() <
+                      _collection.collectionAmount) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddCollectionDetails(
+                            _collection, custName, _createdAt),
+                        settings: RouteSettings(
+                            name:
+                                '/customers/payments/collections/collectiondetails/add'),
+                      ),
+                    );
+                  } else {
+                    _scaffoldKey.currentState.showSnackBar(
+                        CustomSnackBar.errorSnackBar(
+                            "Collection AMOUNT already collected Fully", 3));
+                  }
                 }
               },
             ),

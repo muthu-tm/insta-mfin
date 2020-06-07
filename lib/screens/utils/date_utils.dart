@@ -24,23 +24,39 @@ class DateUtils {
     return dateTimeFormatter.format(dateTime);
   }
 
-  static DateTime getCurrentDate() {
+  static DateTime getCurrentISTDate() {
     DateTime thisInstant = DateTime.now();
     return DateTime(
         thisInstant.year, thisInstant.month, thisInstant.day, 5, 30, 0, 0, 0);
   }
 
-  static DateTime getFormattedCurrentDate(DateTime dateTime) {
+  static DateTime getCurrentDate() {
+    DateTime thisInstant = DateTime.now();
+    return DateTime(
+        thisInstant.year, thisInstant.month, thisInstant.day, 0, 0, 0, 0, 0);
+  }
+
+  static DateTime getFormattedISTDate(DateTime dateTime) {
     return DateTime(
         dateTime.year, dateTime.month, dateTime.day, 5, 30, 0, 0, 0);
+  }
+  
+  static DateTime getFormattedDate(DateTime dateTime) {
+    return DateTime(
+        dateTime.year, dateTime.month, dateTime.day, 0, 0, 0, 0, 0);
   }
 
   static List<DateTime> getDaysInBeteween(
       DateTime startDate, DateTime endDate) {
     List<DateTime> days = [];
 
-    for (int index = 0; index <= endDate.difference(startDate).inDays; index++) {
-      days.add(startDate.add(Duration(days: index)));
+    for (int index = 0;
+        index <= endDate.difference(startDate).inDays;
+        index++) {
+      DateTime newDate = startDate.add(Duration(days: index));
+
+      days.add(
+          DateTime(newDate.year, newDate.month, newDate.day, 0, 0, 0, 0, 0));
     }
     return days;
   }

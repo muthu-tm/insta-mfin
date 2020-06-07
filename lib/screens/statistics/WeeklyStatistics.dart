@@ -12,15 +12,13 @@ class WeeklyStatistics extends StatefulWidget {
 }
 
 class _WeeklyStatisticsState extends State<WeeklyStatistics> {
-  String _selectedChart = "0";
+  String _selectedChart = "2";
   String _selectedY = "0";
-  Map<String, String> _chartList = {"0": "Bar", "1": "Pie", "2": "Line"};
+  Map<String, String> _chartList = {"0": "Line", "1": "Bubble", "2": "Bar"};
   Map<String, String> _yList = {"0": "Amount", "1": "Count"};
 
-  DateTime selectedF = DateTime.now().subtract(Duration(days: 7));
+  DateTime selectedF = DateTime.now().subtract(Duration(days: 28));
   TextEditingController _fDate = new TextEditingController();
-  DateTime selectedT = DateTime.now();
-  TextEditingController _tDate = new TextEditingController();
 
   @override
   void initState() {
@@ -31,12 +29,13 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Card(
             elevation: 10.0,
             color: CustomColors.mfinLightGrey,
             child: SizedBox(
-              height: 225,
+              height: 175,
               width: MediaQuery.of(context).size.width * 0.97,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -158,59 +157,42 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
                       ),
                     ),
                   ),
-                  ListTile(
-                    leading: SizedBox(
-                      width: 90,
-                      child: TextFormField(
-                        initialValue: "TO",
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
-                          ),
-                          fillColor: CustomColors.mfinLightGrey,
-                          filled: true,
-                        ),
-                        enabled: false,
-                        autofocus: false,
-                      ),
-                    ),
-                    title: GestureDetector(
-                      onTap: () => _selectTDate(context),
-                      child: AbsorbPointer(
-                        child: TextFormField(
-                          controller: _tDate,
-                          keyboardType: TextInputType.datetime,
-                          decoration: InputDecoration(
-                            hintText: 'Date of Payment',
-                            labelStyle: TextStyle(
-                              color: CustomColors.mfinBlue,
-                            ),
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 3.0, horizontal: 3.0),
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: CustomColors.mfinWhite)),
-                            fillColor: CustomColors.mfinWhite,
-                            filled: true,
-                            suffixIcon: Icon(
-                              Icons.date_range,
-                              size: 35,
-                              color: CustomColors.mfinBlue,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
           ),
-          PaymentStatisticsWidget(1, DateTime.now().subtract(Duration(days: 31)), DateTime.now()),
-          CollectionStatisticsWidget(),
-          ExpenseStatisticsWidget(),
-          JournalStatisticsWidget(),
+          PaymentStatisticsWidget(
+            int.parse(_selectedChart),
+            1,
+            selectedF,
+            selectedF.add(
+              Duration(days: 29),
+            ),
+          ),
+          CollectionStatisticsWidget(
+            int.parse(_selectedChart),
+            1,
+            selectedF,
+            selectedF.add(
+              Duration(days: 29),
+            ),
+          ),
+          ExpenseStatisticsWidget(
+            int.parse(_selectedChart),
+            1,
+            selectedF,
+            selectedF.add(
+              Duration(days: 29),
+            ),
+          ),
+          JournalStatisticsWidget(
+            int.parse(_selectedChart),
+            1,
+            selectedF,
+            selectedF.add(
+              Duration(days: 29),
+            ),
+          ),
         ],
       ),
     );
@@ -228,24 +210,6 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
         () {
           selectedF = picked;
           _fDate.value = TextEditingValue(
-            text: DateUtils.formatDate(picked),
-          );
-        },
-      );
-  }
-
-  Future<Null> _selectTDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: selectedT,
-      firstDate: DateTime(1990),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != selectedT)
-      setState(
-        () {
-          selectedT = picked;
-          _tDate.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
         },

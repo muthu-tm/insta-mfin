@@ -879,7 +879,7 @@ class _EditPaymentState extends State<EditPayment> {
     if (picked != null && picked != widget.payment.collectionStartsFrom)
       setState(
             () {
-              updatedPayment['collection_starts_from'] = DateUtils.getFormattedCurrentDate(picked);
+              updatedPayment['collection_starts_from'] = DateUtils.getFormattedISTDate(picked);
           _collectionDate.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );

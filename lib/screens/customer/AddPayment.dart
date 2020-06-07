@@ -943,7 +943,7 @@ class _AddPaymentState extends State<AddPayment> {
           tenure,
           collectionAmount,
           int.parse(selectedCollectionModeID),
-          DateUtils.getFormattedCurrentDate(collectionDate),
+          DateUtils.getFormattedISTDate(collectionDate),
           int.parse(selectedCollectionDayID),
           docCharge,
           surCharge,

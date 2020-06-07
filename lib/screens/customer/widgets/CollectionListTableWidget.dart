@@ -223,8 +223,8 @@ class CollectionListTableWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      ViewCollection(coll, custName, _payment.createdAt, color),
+                  builder: (context) => ViewCollection(_payment.isActive, coll,
+                      custName, _payment.createdAt, color),
                   settings: RouteSettings(name: '/customers/payment/colection'),
                 ),
               );
@@ -358,46 +358,51 @@ class CollectionListTableWidget extends StatelessWidget {
   }
 
   Future markAsCollected(Collection collection, BuildContext context) async {
-    if (collection.getReceived() == collection.collectionAmount) {
-      CustomDialogs.information(
-          context,
-          "Alert!",
-          CustomColors.mfinPositiveGreen,
-          "Collection amount ${collection.collectionAmount} already collected fully!");
+    if (!_payment.isActive) {
+      _scaffoldKey.currentState.showSnackBar(
+          CustomSnackBar.errorSnackBar("You cannot edit CLOSED Payment", 2));
     } else {
-      CustomDialogs.actionWaiting(context, "Updating Collection");
-      CollectionController _cc = CollectionController();
-      User _user = UserController().getCurrentUser();
-      Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
-      collDetails['amount'] =
-          collection.collectionAmount - collection.getReceived();
-      collDetails['notes'] = "";
-      collDetails['collected_by'] = _user.name;
-      collDetails['collected_from'] = custName;
-      collDetails['created_at'] = DateTime.now();
-      collDetails['added_by'] = _user.mobileNumber;
-      if (collection.collectionDate.isBefore(DateUtils.getCurrentDate()))
-        collDetails['is_paid_late'] = true;
-      else
-        collDetails['is_paid_late'] = false;
-
-      var result = await _cc.updateCollectionDetails(
-          collection.financeID,
-          collection.branchName,
-          collection.subBranchName,
-          collection.customerNumber,
-          _payment.createdAt,
-          collection.collectionDate,
-          true,
-          collDetails);
-
-      if (!result['is_success']) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Mark as Collectied: " + result['message']);
+      if (collection.getReceived() == collection.collectionAmount) {
+        CustomDialogs.information(
+            context,
+            "Alert!",
+            CustomColors.mfinPositiveGreen,
+            "Collection amount ${collection.collectionAmount} already collected fully!");
       } else {
-        Navigator.pop(context);
+        CustomDialogs.actionWaiting(context, "Updating Collection");
+        CollectionController _cc = CollectionController();
+        User _user = UserController().getCurrentUser();
+        Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
+        collDetails['amount'] =
+            collection.collectionAmount - collection.getReceived();
+        collDetails['notes'] = "";
+        collDetails['collected_by'] = _user.name;
+        collDetails['collected_from'] = custName;
+        collDetails['created_at'] = DateTime.now();
+        collDetails['added_by'] = _user.mobileNumber;
+        if (collection.collectionDate.isBefore(DateUtils.getCurrentISTDate()))
+          collDetails['is_paid_late'] = true;
+        else
+          collDetails['is_paid_late'] = false;
+
+        var result = await _cc.updateCollectionDetails(
+            collection.financeID,
+            collection.branchName,
+            collection.subBranchName,
+            collection.customerNumber,
+            _payment.createdAt,
+            collection.collectionDate,
+            true,
+            collDetails);
+
+        if (!result['is_success']) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+          print("Unable to Mark as Collectied: " + result['message']);
+        } else {
+          Navigator.pop(context);
+        }
       }
     }
   }

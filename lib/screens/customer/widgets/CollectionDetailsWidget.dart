@@ -10,9 +10,10 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 
 class CollectionDetailsWidget extends StatelessWidget {
-  CollectionDetailsWidget(
-      this._scaffoldKey, this._collection, this.custName, this._createdAt);
+  CollectionDetailsWidget(this.payActive, this._scaffoldKey, this._collection,
+      this.custName, this._createdAt);
 
+  final bool payActive;
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final Collection _collection;
   final String custName;
@@ -104,21 +105,28 @@ class CollectionDetailsWidget extends StatelessWidget {
                 color: CustomColors.mfinBlue,
               ),
               onPressed: () {
-                if (_collection.getReceived() < _collection.collectionAmount) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddCollectionDetails(
-                          _collection, custName, _createdAt),
-                      settings: RouteSettings(
-                          name:
-                              '/customers/payments/collections/collectiondetails/add'),
-                    ),
-                  );
-                } else {
+                if (!payActive) {
                   _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
-                          "Collection AMOUNT already collected Fully", 3));
+                          "You cannot edit 'CLOSED' Payment", 2));
+                } else {
+                  if (_collection.getReceived() <
+                      _collection.collectionAmount) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddCollectionDetails(
+                            _collection, custName, _createdAt),
+                        settings: RouteSettings(
+                            name:
+                                '/customers/payments/collections/collectiondetails/add'),
+                      ),
+                    );
+                  } else {
+                    _scaffoldKey.currentState.showSnackBar(
+                        CustomSnackBar.errorSnackBar(
+                            "Collection AMOUNT already collected Fully", 2));
+                  }
                 }
               },
             ),
@@ -152,77 +160,83 @@ class CollectionDetailsWidget extends StatelessWidget {
           color: CustomColors.mfinAlertRed,
           icon: Icons.delete_forever,
           onTap: () async {
-            var state = Slidable.of(context);
-            var dismiss = await showDialog<bool>(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: new Text(
-                    "Confirm!",
-                    style: TextStyle(
+            if (!payActive) {
+              _scaffoldKey.currentState.showSnackBar(
+                  CustomSnackBar.errorSnackBar(
+                      "You cannot edit 'CLOSED' Payment", 2));
+            } else {
+              var state = Slidable.of(context);
+              var dismiss = await showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: new Text(
+                      "Confirm!",
+                      style: TextStyle(
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                    ),
+                    content: Text(
+                      "Are you sure to remove this ${_collectionDetails.amount} collection",
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        color: CustomColors.mfinButtonGreen,
+                        child: Text(
+                          "NO",
+                          style: TextStyle(
+                              color: CustomColors.mfinBlue,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.start,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      FlatButton(
                         color: CustomColors.mfinAlertRed,
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.start,
-                  ),
-                  content: Text(
-                    "Are you sure to remove this ${_collectionDetails.amount} collection",
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      color: CustomColors.mfinButtonGreen,
-                      child: Text(
-                        "NO",
-                        style: TextStyle(
-                            color: CustomColors.mfinBlue,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.start,
+                        child: Text(
+                          "YES",
+                          style: TextStyle(
+                              color: CustomColors.mfinLightGrey,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.start,
+                        ),
+                        onPressed: () async {
+                          CollectionController _cc = CollectionController();
+                          var result = await _cc.updateCollectionDetails(
+                              _collection.financeID,
+                              _collection.branchName,
+                              _collection.subBranchName,
+                              _collection.customerNumber,
+                              _createdAt,
+                              _collection.collectionDate,
+                              false,
+                              _collectionDetails.toJson());
+                          if (!result['is_success']) {
+                            Navigator.pop(context);
+                            _scaffoldKey.currentState.showSnackBar(
+                                CustomSnackBar.errorSnackBar(
+                                    result['message'], 2));
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(
+                                CustomSnackBar.errorSnackBar(
+                                    "Collection ${_collectionDetails.amount} removed successfully",
+                                    2));
+                            Navigator.pop(context);
+                          }
+                        },
                       ),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    FlatButton(
-                      color: CustomColors.mfinAlertRed,
-                      child: Text(
-                        "YES",
-                        style: TextStyle(
-                            color: CustomColors.mfinLightGrey,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.start,
-                      ),
-                      onPressed: () async {
-                        CollectionController _cc = CollectionController();
-                        var result = await _cc.updateCollectionDetails(
-                            _collection.financeID,
-                            _collection.branchName,
-                            _collection.subBranchName,
-                            _collection.customerNumber,
-                            _createdAt,
-                            _collection.collectionDate,
-                            false,
-                            _collectionDetails.toJson());
-                        if (!result['is_success']) {
-                          Navigator.pop(context);
-                          _scaffoldKey.currentState.showSnackBar(
-                              CustomSnackBar.errorSnackBar(
-                                  result['message'], 2));
-                        } else {
-                          _scaffoldKey.currentState.showSnackBar(
-                              CustomSnackBar.errorSnackBar(
-                                  "Collection ${_collectionDetails.amount} removed successfully",
-                                  2));
-                          Navigator.pop(context);
-                        }
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
+                    ],
+                  );
+                },
+              );
 
-            if (dismiss != null && dismiss && state != null) {
-              state.dismiss();
+              if (dismiss != null && dismiss && state != null) {
+                state.dismiss();
+              }
             }
           },
         ),

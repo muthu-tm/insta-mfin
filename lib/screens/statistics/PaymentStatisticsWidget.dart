@@ -8,10 +8,11 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PaymentStatisticsWidget extends StatelessWidget {
-  PaymentStatisticsWidget(this.mode, [this.fDate, this.tDate]);
+  PaymentStatisticsWidget(this.type, this.mode, [this.fDate, this.tDate]);
 
   final User user = UserController().getCurrentUser();
 
+  final int type;
   final int mode;
   final DateTime fDate;
   final DateTime tDate;
@@ -29,22 +30,33 @@ class PaymentStatisticsWidget extends StatelessWidget {
           if (snapshot.hasData) {
             if (snapshot.data.isNotEmpty) {
               int max = 0;
-              int interval = 10;
+              int interval = 50;
               List<PayData> pData = [];
+              Map<DateTime, PayData> pGroup = new Map();
               snapshot.data.forEach((p) {
-                if (p.totalAmount > max) {
-                  max = p.totalAmount + interval;
-                  interval = (p.totalAmount / 5).round();
+                pGroup.update(
+                  p.dateOfPayment,
+                  (value) =>
+                      PayData(p.dateOfPayment, value.amount + p.totalAmount),
+                  ifAbsent: () => PayData(p.dateOfPayment, p.totalAmount),
+                );
+              });
+
+              pGroup.forEach((key, value) {
+                if (value.amount > max) {
+                  interval = (value.amount / 5).round();
+                  max = value.amount + ((1000 < interval) ? 1000 : 100);
                 }
 
-                pData.add(PayData(p.dateOfPayment, p.totalAmount));
+                pData.add(value);
               });
+
               widget = Container(
                 child: SfCartesianChart(
                   title: ChartTitle(
                     text: 'PAYMENTS',
                     textStyle: ChartTextStyle(
-                      color: CustomColors.mfinBlue,
+                      color: CustomColors.mfinAlertRed,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -55,7 +67,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
                     intervalType: mode == 0
                         ? DateTimeIntervalType.days
                         : mode == 1
-                            ? DateTimeIntervalType.days
+                            ? DateTimeIntervalType.auto
                             : DateTimeIntervalType.months,
                     dateFormat: mode == 0
                         ? DateFormat('MMM-dd')
@@ -79,7 +91,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
                     minimum: 0,
                     maximum: max.toDouble(),
                     interval: interval.toDouble(),
-                    labelFormat: 'Rs.{value}',
+                    labelFormat: '{value}',
                     majorTickLines: MajorTickLines(size: 0),
                     title: AxisTitle(
                       text: 'Amount',
@@ -98,22 +110,62 @@ class PaymentStatisticsWidget extends StatelessWidget {
                       lineWidth: 2,
                       tooltipSettings:
                           InteractiveTooltip(format: 'point.x : point.y')),
-                  series: <ChartSeries>[
-                    AreaSeries<PayData, DateTime>(
-                      dataSource: pData,
-                      xValueMapper: (PayData pay, _) => pay.date,
-                      yValueMapper: (PayData pay, _) => pay.amount,
-                      dataLabelSettings: DataLabelSettings(isVisible: true),
-                      gradient: LinearGradient(
-                        colors: [
-                          CustomColors.mfinLightGrey,
-                          CustomColors.mfinLightBlue,
-                          CustomColors.mfinBlue
-                        ],
-                        stops: <double>[0.0, 0.5, 1.0],
-                      ),
-                    ),
-                  ],
+                  series: type == 0
+                      ? <ChartSeries>[
+                          LineSeries<PayData, DateTime>(
+                            dataSource: pData,
+                            xValueMapper: (PayData pay, _) => pay.date,
+                            yValueMapper: (PayData pay, _) => pay.amount,
+                            dataLabelSettings:
+                                DataLabelSettings(isVisible: true),
+                            width: 2,
+                            animationDuration: 2500,
+                            enableTooltip: true,
+                            name: 'Payment',
+                            markerSettings: MarkerSettings(isVisible: true),
+                          ),
+                        ]
+                      : type == 1
+                          ? <CartesianSeries>[
+                              BubbleSeries<PayData, DateTime>(
+                                dataSource: pData,
+                                xValueMapper: (PayData pay, _) => pay.date,
+                                yValueMapper: (PayData pay, _) => pay.amount,
+                                dataLabelSettings:
+                                    DataLabelSettings(isVisible: true),
+                                sizeValueMapper: (PayData pay, _) =>
+                                    (pay.amount.toString().length * 0.5),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    CustomColors.mfinLightGrey,
+                                    CustomColors.mfinLightBlue,
+                                    CustomColors.mfinAlertRed
+                                  ],
+                                  stops: <double>[0.0, 0.2, 1.0],
+                                ),
+                              ),
+                            ]
+                          : <ChartSeries>[
+                              ColumnSeries<PayData, DateTime>(
+                                dataSource: pData,
+                                xValueMapper: (PayData pay, _) => pay.date,
+                                yValueMapper: (PayData pay, _) => pay.amount,
+                                dataLabelSettings:
+                                    DataLabelSettings(isVisible: true),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    CustomColors.mfinLightGrey,
+                                    CustomColors.mfinLightBlue,
+                                    CustomColors.mfinAlertRed
+                                  ],
+                                  stops: <double>[0.0, 0.2, 1.0],
+                                ),
+                                animationDuration: 2500,
+                                enableTooltip: true,
+                                name: 'Payment',
+                                markerSettings: MarkerSettings(isVisible: true),
+                              )
+                            ],
                 ),
               );
             } else {
