@@ -376,7 +376,7 @@ class CollectionListTableWidget extends StatelessWidget {
       collDetails['collected_from'] = custName;
       collDetails['created_at'] = DateTime.now();
       collDetails['added_by'] = _user.mobileNumber;
-      if (collection.collectionDate.isBefore(DateUtils.getCurrentDate()))
+      if (collection.collectionDate.isBefore(DateUtils.getCurrentISTDate()))
         collDetails['is_paid_late'] = true;
       else
         collDetails['is_paid_late'] = false;

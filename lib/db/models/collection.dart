@@ -127,7 +127,7 @@ class Collection {
   }
 
   int getPending() {
-    if (this.collectionDate.isBefore(DateUtils.getCurrentDate())) {
+    if (this.collectionDate.isBefore(DateUtils.getCurrentISTDate())) {
       return collectionAmount - getReceived();
     }
 
@@ -135,7 +135,7 @@ class Collection {
   }
 
   int getCurrent() {
-    if (this.collectionDate.isAtSameMomentAs(DateUtils.getCurrentDate())) {
+    if (this.collectionDate.isAtSameMomentAs(DateUtils.getCurrentISTDate())) {
       return collectionAmount - getReceived();
     }
 
@@ -143,7 +143,7 @@ class Collection {
   }
 
   int getUpcoming() {
-    if (this.collectionDate.isAfter(DateUtils.getCurrentDate())) {
+    if (this.collectionDate.isAfter(DateUtils.getCurrentISTDate())) {
       return collectionAmount - getReceived();
     }
 
@@ -153,17 +153,17 @@ class Collection {
   int getStatus() {
     if (this.type == 1 || this.type == 2) return 1;
 
-    if (this.collectionDate.isBefore(DateUtils.getCurrentDate())) {
+    if (getPaidOnTime() > 0 && getPending() == 0)
+      return 1;
+
+    if (this.collectionDate.isBefore(DateUtils.getCurrentISTDate())) {
       if (getPending() == 0 && getPaidLate() == 0)
         return 1; //PAID
       else if (getPending() == 0 && getPaidLate() >= 0)
         return 2; //PAIDLATE
       else
         return 4; //PENDING
-    } else if (this.collectionDate.isAfter(DateUtils.getCurrentDate())) {
-      if (getPaidOnTime() > 0)
-        return 1; 
-      else
+    } else if (this.collectionDate.isAfter(DateUtils.getCurrentISTDate())) {
         return 0; //UPCOMING
     } else {
       return 3; //CURRENT
@@ -244,7 +244,7 @@ class Collection {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('collections', arrayContainsAny: dates)
+        .where('collected_on', arrayContainsAny: dates)
         .getDocuments();
 
     List<Collection> collections = [];
@@ -408,6 +408,7 @@ class Collection {
     } else {
       if (isMatched) colls.removeAt(index);
       fields['collections'] = colls;
+      fields['collected_on'] = FieldValue.arrayRemove([data['collected_on']]);
       fields['updated_at'] = DateTime.now();
     }
 

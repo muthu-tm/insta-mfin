@@ -84,7 +84,7 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                     minimum: 0,
                     maximum: max.toDouble(),
                     interval: interval.toDouble(),
-                    labelFormat: 'Rs.{value}',
+                    labelFormat: '{value}',
                     majorTickLines: MajorTickLines(size: 0),
                     title: AxisTitle(
                       text: 'Amount',
@@ -105,20 +105,17 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                           InteractiveTooltip(format: 'point.x : point.y')),
                   series: type == 0
                       ? <ChartSeries>[
-                          AreaSeries<EData, DateTime>(
+                          LineSeries<EData, DateTime>(
                             dataSource: eData,
                             xValueMapper: (EData pay, _) => pay.date,
                             yValueMapper: (EData pay, _) => pay.amount,
                             dataLabelSettings:
                                 DataLabelSettings(isVisible: true),
-                            gradient: LinearGradient(
-                              colors: [
-                                CustomColors.mfinLightGrey,
-                                CustomColors.mfinLightBlue,
-                                CustomColors.mfinBlue
-                              ],
-                              stops: <double>[0.0, 0.5, 1.0],
-                            ),
+                            width: 2,
+                            animationDuration: 2500,
+                            enableTooltip: true,
+                            name: 'Expense',
+                            markerSettings: MarkerSettings(isVisible: true),
                           ),
                         ]
                       : type == 1
@@ -137,7 +134,7 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                                     CustomColors.mfinLightBlue,
                                     CustomColors.mfinBlue
                                   ],
-                                  stops: <double>[0.0, 0.5, 1.0],
+                                  stops: <double>[0.0, 0.2, 1.0],
                                 ),
                               ),
                             ]
@@ -154,8 +151,12 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                                     CustomColors.mfinLightBlue,
                                     CustomColors.mfinBlue
                                   ],
-                                  stops: <double>[0.0, 0.5, 1.0],
+                                  stops: <double>[0.0, 0.2, 1.0],
                                 ),
+                                animationDuration: 2500,
+                                enableTooltip: true,
+                                name: 'Expense',
+                                markerSettings: MarkerSettings(isVisible: true),
                               )
                             ],
                 ),

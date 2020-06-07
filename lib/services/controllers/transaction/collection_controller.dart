@@ -125,12 +125,42 @@ class CollectionController {
       DateTime endDate) async {
     try {
       List<DateTime> dates = DateUtils.getDaysInBeteween(startDate, endDate);
-      List<Collection> collections = await Collection()
-          .getAllCollectionsByDateRage(
-              financeId, branchName, subBranchName, dates);
 
-      if (collections == null) {
-        return [];
+      List<Collection> collections = [];
+      if (dates.length > 10) {
+        //firestore arraycontains restiction
+        int limit = 10;
+
+        for (int i = 0; i + limit <= dates.length; i = i + limit) {
+          Iterable<DateTime> rDates = dates.getRange(i, i + limit);
+          List<Collection> colls = await Collection()
+              .getAllCollectionsByDateRage(
+                  financeId, branchName, subBranchName, rDates.toList());
+
+          if (colls != null) {
+            collections.addAll(colls);
+          }
+        }
+
+        if ((dates.length % 10) != 0) {
+          Iterable<DateTime> rDates =
+              dates.getRange(dates.length - (dates.length % 10), dates.length);
+          List<Collection> colls = await Collection()
+              .getAllCollectionsByDateRage(
+                  financeId, branchName, subBranchName, rDates.toList());
+
+          if (colls != null) {
+            collections.addAll(colls);
+          }
+
+        }
+      } else {
+        List<Collection> colls = await Collection().getAllCollectionsByDateRage(
+            financeId, branchName, subBranchName, dates);
+
+        if (colls != null) {
+          collections.addAll(colls);
+        }
       }
 
       return collections;

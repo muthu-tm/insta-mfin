@@ -80,12 +80,12 @@ class JournalStatisticsWidget extends StatelessWidget {
                     minimum: 0,
                     maximum: max.toDouble(),
                     interval: interval.toDouble(),
-                    labelFormat: 'Rs.{value}',
+                    labelFormat: '{value}',
                     majorTickLines: MajorTickLines(size: 0),
                     title: AxisTitle(
                       text: 'Amount',
                       textStyle: ChartTextStyle(
-                        color: CustomColors.mfinAlertRed,
+                        color: CustomColors.mfinPositiveGreen,
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold,
                       ),
@@ -101,20 +101,17 @@ class JournalStatisticsWidget extends StatelessWidget {
                           InteractiveTooltip(format: 'point.x : point.y')),
                   series: type == 0
                       ? <ChartSeries>[
-                          AreaSeries<JData, DateTime>(
+                          LineSeries<JData, DateTime>(
                             dataSource: jData,
                             xValueMapper: (JData pay, _) => pay.date,
                             yValueMapper: (JData pay, _) => pay.amount,
                             dataLabelSettings:
                                 DataLabelSettings(isVisible: true),
-                            gradient: LinearGradient(
-                              colors: [
-                                CustomColors.mfinLightGrey,
-                                CustomColors.mfinLightBlue,
-                                CustomColors.mfinBlue
-                              ],
-                              stops: <double>[0.0, 0.5, 1.0],
-                            ),
+                            width: 2,
+                            animationDuration: 2500,
+                            enableTooltip: true,
+                            name: 'Journal',
+                            markerSettings: MarkerSettings(isVisible: true),
                           ),
                         ]
                       : type == 1
@@ -133,7 +130,7 @@ class JournalStatisticsWidget extends StatelessWidget {
                                     CustomColors.mfinLightBlue,
                                     CustomColors.mfinBlue
                                   ],
-                                  stops: <double>[0.0, 0.5, 1.0],
+                                  stops: <double>[0.0, 0.2, 1.0],
                                 ),
                               ),
                             ]
@@ -150,8 +147,12 @@ class JournalStatisticsWidget extends StatelessWidget {
                                     CustomColors.mfinLightBlue,
                                     CustomColors.mfinBlue
                                   ],
-                                  stops: <double>[0.0, 0.5, 1.0],
+                                  stops: <double>[0.0, 0.2, 1.0],
                                 ),
+                                animationDuration: 2500,
+                                enableTooltip: true,
+                                name: 'Journal',
+                                markerSettings: MarkerSettings(isVisible: true),
                               )
                             ],
                 ),

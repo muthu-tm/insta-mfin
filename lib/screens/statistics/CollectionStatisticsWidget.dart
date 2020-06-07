@@ -37,11 +37,18 @@ class CollectionStatisticsWidget extends StatelessWidget {
               int max = 0;
               int interval = 10;
               List<CollData> cData = [];
+
               snapshot.data.forEach((p) {
                 p.collections.forEach((c) {
+                  if (c.amount > max) {
+                    max = c.amount + interval;
+                    interval = (c.amount / 5).round();
+                  }
+
                   cData.add(CollData(c.collectedOn, c.amount));
                 });
               });
+
               widget = Container(
                 child: SfCartesianChart(
                   title: ChartTitle(
@@ -82,12 +89,12 @@ class CollectionStatisticsWidget extends StatelessWidget {
                     minimum: 0,
                     maximum: max.toDouble(),
                     interval: interval.toDouble(),
-                    labelFormat: 'Rs.{value}',
+                    labelFormat: '{value}',
                     majorTickLines: MajorTickLines(size: 0),
                     title: AxisTitle(
                       text: 'Amount',
                       textStyle: ChartTextStyle(
-                        color: CustomColors.mfinAlertRed,
+                        color: CustomColors.mfinPositiveGreen,
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold,
                       ),
@@ -103,20 +110,17 @@ class CollectionStatisticsWidget extends StatelessWidget {
                           InteractiveTooltip(format: 'point.x : point.y')),
                   series: type == 0
                       ? <ChartSeries>[
-                          AreaSeries<CollData, DateTime>(
+                          LineSeries<CollData, DateTime>(
                             dataSource: cData,
                             xValueMapper: (CollData c, _) => c.date,
                             yValueMapper: (CollData c, _) => c.amount,
                             dataLabelSettings:
                                 DataLabelSettings(isVisible: true),
-                            gradient: LinearGradient(
-                              colors: [
-                                CustomColors.mfinLightGrey,
-                                CustomColors.mfinLightBlue,
-                                CustomColors.mfinBlue
-                              ],
-                              stops: <double>[0.0, 0.5, 1.0],
-                            ),
+                            width: 2,
+                            animationDuration: 2500,
+                            enableTooltip: true,
+                            name: 'Collection',
+                            markerSettings: MarkerSettings(isVisible: true),
                           ),
                         ]
                       : type == 1
@@ -133,9 +137,9 @@ class CollectionStatisticsWidget extends StatelessWidget {
                                   colors: [
                                     CustomColors.mfinLightGrey,
                                     CustomColors.mfinLightBlue,
-                                    CustomColors.mfinBlue
+                                    CustomColors.mfinPositiveGreen
                                   ],
-                                  stops: <double>[0.0, 0.5, 1.0],
+                                  stops: <double>[0.0, 0.3, 0.7],
                                 ),
                               ),
                             ]
@@ -150,10 +154,14 @@ class CollectionStatisticsWidget extends StatelessWidget {
                                   colors: [
                                     CustomColors.mfinLightGrey,
                                     CustomColors.mfinLightBlue,
-                                    CustomColors.mfinBlue
+                                    CustomColors.mfinPositiveGreen
                                   ],
-                                  stops: <double>[0.0, 0.5, 1.0],
+                                  stops: <double>[0.0, 0.3, 0.7],
                                 ),
+                                animationDuration: 2500,
+                                enableTooltip: true,
+                                name: 'Collection',
+                                markerSettings: MarkerSettings(isVisible: true),
                               )
                             ],
                 ),

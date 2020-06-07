@@ -41,7 +41,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
     this.totalAmount =
         widget.collection.collectionAmount - widget.collection.getReceived();
 
-    if (widget.collection.collectionDate.isBefore(DateUtils.getCurrentDate())) {
+    if (widget.collection.collectionDate.isBefore(DateUtils.getCurrentISTDate())) {
       setState(() {
         isLatePay = true;
       });

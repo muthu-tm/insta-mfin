@@ -56,7 +56,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
                     intervalType: mode == 0
                         ? DateTimeIntervalType.days
                         : mode == 1
-                            ? DateTimeIntervalType.days
+                            ? DateTimeIntervalType.auto
                             : DateTimeIntervalType.months,
                     dateFormat: mode == 0
                         ? DateFormat('MMM-dd')
@@ -80,7 +80,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
                     minimum: 0,
                     maximum: max.toDouble(),
                     interval: interval.toDouble(),
-                    labelFormat: 'Rs.{value}',
+                    labelFormat: '{value}',
                     majorTickLines: MajorTickLines(size: 0),
                     title: AxisTitle(
                       text: 'Amount',
@@ -101,20 +101,17 @@ class PaymentStatisticsWidget extends StatelessWidget {
                           InteractiveTooltip(format: 'point.x : point.y')),
                   series: type == 0
                       ? <ChartSeries>[
-                          AreaSeries<PayData, DateTime>(
+                          LineSeries<PayData, DateTime>(
                             dataSource: pData,
                             xValueMapper: (PayData pay, _) => pay.date,
                             yValueMapper: (PayData pay, _) => pay.amount,
                             dataLabelSettings:
                                 DataLabelSettings(isVisible: true),
-                            gradient: LinearGradient(
-                              colors: [
-                                CustomColors.mfinLightGrey,
-                                CustomColors.mfinLightBlue,
-                                CustomColors.mfinBlue
-                              ],
-                              stops: <double>[0.0, 0.5, 1.0],
-                            ),
+                            width: 2,
+                            animationDuration: 2500,
+                            enableTooltip: true,
+                            name: 'Payment',
+                            markerSettings: MarkerSettings(isVisible: true),
                           ),
                         ]
                       : type == 1 ? <CartesianSeries>[
@@ -129,9 +126,9 @@ class PaymentStatisticsWidget extends StatelessWidget {
                               colors: [
                                 CustomColors.mfinLightGrey,
                                 CustomColors.mfinLightBlue,
-                                CustomColors.mfinBlue
+                                CustomColors.mfinAlertRed
                               ],
-                              stops: <double>[0.0, 0.5, 1.0],
+                              stops: <double>[0.0, 0.2, 1.0],
                             ),
                           ),
                         ] : <ChartSeries>[
@@ -145,10 +142,14 @@ class PaymentStatisticsWidget extends StatelessWidget {
                               colors: [
                                 CustomColors.mfinLightGrey,
                                 CustomColors.mfinLightBlue,
-                                CustomColors.mfinBlue
+                                CustomColors.mfinAlertRed
                               ],
-                              stops: <double>[0.0, 0.5, 1.0],
+                              stops: <double>[0.0, 0.2, 1.0],
                             ),
+                            animationDuration: 2500,
+                            enableTooltip: true,
+                            name: 'Payment',
+                            markerSettings: MarkerSettings(isVisible: true),
                             )
                         ],
                 ),
