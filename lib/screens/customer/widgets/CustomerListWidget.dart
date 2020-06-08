@@ -150,8 +150,8 @@ class CustomerListWidget extends StatelessWidget {
                         },
                       ),
                     ],
-                    child: customerListTile(
-                        context, index, snapshot.data[index]),
+                    child:
+                        customerListTile(context, index, snapshot.data[index]),
                   );
                 },
               ),
@@ -198,52 +198,37 @@ class CustomerListWidget extends StatelessWidget {
 
         return Card(
           color: CustomColors.mfinLightGrey,
-          child: new Column(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(
-                  Icons.supervisor_account,
-                  size: 35.0,
-                  color: CustomColors.mfinButtonGreen,
-                ),
-                title: new Text(
-                  title,
-                  style: TextStyle(
-                    color: CustomColors.mfinBlue,
-                    fontSize: 18.0,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(
+                    Icons.supervisor_account,
+                    size: 35.0,
+                    color: CustomColors.mfinButtonGreen,
                   ),
-                ),
-                trailing: RaisedButton.icon(
-                  color: CustomColors.mfinLightGrey,
-                  highlightColor: CustomColors.mfinLightGrey,
-                  onPressed: null,
-                  icon: customIconButton(
-                    Icons.swap_vert,
-                    35.0,
-                    CustomColors.mfinBlue,
-                    null,
-                  ),
-                  label: Text(
-                    "Sort by",
+                  title: new Text(
+                    title,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 18,
                       color: CustomColors.mfinBlue,
+                      fontSize: 18.0,
                     ),
                   ),
                 ),
-              ),
-              new Divider(
-                color: CustomColors.mfinBlue,
-                thickness: 1,
-              ),
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: children,
+                new Divider(
+                  color: CustomColors.mfinBlue,
+                  thickness: 1,
                 ),
-              ),
-            ],
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: children,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

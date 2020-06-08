@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
-import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
+import 'package:instamfin/screens/customer/CustomersHome.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -270,7 +270,7 @@ class _AddCustomerState extends State<AddCustomer> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => CustomersFilteredView(),
+            builder: (context) => CustomersHome(),
             settings: RouteSettings(name: '/customers'),
           ),
           (Route<dynamic> route) => false,
