@@ -276,7 +276,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("No Finance Selected!", 3));
     } else {
-      CustomDialogs.actionWaiting(context, "Validating your Details!");
+      CustomDialogs.actionWaiting(context, "Validating Details!");
       if (_selectedSubBranch != "0") {
         _updatePrimary(widget.userID, _selectedFinance, _selectedBranch,
             _selectedSubBranch);
@@ -310,7 +310,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
   _updatePrimary(int userID, String financeID, String branchName,
       String subBranchName) async {
     Navigator.pop(context);
-    CustomDialogs.actionWaiting(context, "Updating Primary Finance!");
+    CustomDialogs.actionWaiting(context, "Updating Primary!");
     UserController _uc = UserController();
     await _uc.updatePrimaryFinance(
         userID, financeID, branchName, subBranchName);
