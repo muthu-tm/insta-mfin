@@ -28,8 +28,91 @@ Widget openDrawer(BuildContext context) {
           ),
           child: Column(
             children: <Widget>[
-              Flexible(
-                child: ProfilePictureUpload(),
+              Container(
+                child: _user.getProfilePicPath() == ""
+                    ? Container(
+                        width: 90,
+                        height: 90,
+                        margin: EdgeInsets.only(bottom: 5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: CustomColors.mfinFadedButtonGreen,
+                            style: BorderStyle.solid,
+                            width: 2.0,
+                          ),
+                          // image:
+                        ),
+                        child: FlatButton(
+                          onPressed: () {
+                            print("PATH" + _user.getProfilePicPath());
+                            showDialog(
+                              context: context,
+                              routeSettings:
+                                  RouteSettings(name: "/profile/upload"),
+                              builder: (context) {
+                                return Center(
+                                  child: ProfilePictureUpload(
+                                      _user.getProfilePicPath(),
+                                      _user.mobileNumber.toString(),
+                                      _user.mobileNumber),
+                                );
+                              },
+                            );
+                          },
+                          child: Text(
+                            "Upload",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                              color: CustomColors.mfinLightGrey,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        child: Stack(
+                          children: <Widget>[
+                            CircleAvatar(
+                              radius: 45.0,
+                              backgroundImage:
+                                  NetworkImage(_user.getProfilePicPath()),
+                              backgroundColor: Colors.transparent,
+                            ),
+                            Positioned(
+                              bottom: -5,
+                              left: 30,
+                              child: FlatButton(
+                                onPressed: () {
+                                  print("PATH" + _user.getProfilePicPath());
+                                  showDialog(
+                                    context: context,
+                                    routeSettings:
+                                        RouteSettings(name: "/profile/upload"),
+                                    builder: (context) {
+                                      return Center(
+                                        child: ProfilePictureUpload(
+                                            _user.getProfilePicPath(),
+                                            _user.mobileNumber.toString(),
+                                            _user.mobileNumber),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: CustomColors.mfinButtonGreen,
+                                  radius: 15,
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: CustomColors.mfinWhite,
+                                    size: 25.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
               ),
               Text(
                 _user.name,
