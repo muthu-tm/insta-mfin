@@ -1,5 +1,5 @@
 import 'package:instamfin/db/models/journal_category.dart';
-import 'package:instamfin/db/models/miscellaneous_category.dart';
+import 'package:instamfin/db/models/expense_category.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class CategoryController {
@@ -14,23 +14,22 @@ class CategoryController {
       return CustomResponse.getSuccesReponse(
           "Added new Journal Category $name successfully");
     } catch (err) {
-      print("Error while creating Journal category $name " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
-  Future createMiscellaneousCategory(String name, String notes) async {
+  Future createExpenseCategory(String name, String notes) async {
     try {
-      MiscellaneousCategory _mc = MiscellaneousCategory();
+      ExpenseCategory _mc = ExpenseCategory();
       _mc.setCategory(name);
       _mc.setNotes(notes);
 
       await _mc.create();
 
       return CustomResponse.getSuccesReponse(
-          "Added new Miscellaneous Category $name successfully");
+          "Added new Expense Category $name successfully");
     } catch (err) {
-      print("Error while creating Miscellaneous Category $name " +
+      print("Error while creating Expense Category $name " +
           err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -50,16 +49,16 @@ class CategoryController {
     }
   }
 
-  Future<MiscellaneousCategory> getMiscellaneousCategoryByID(String financeId,
+  Future<ExpenseCategory> getExpenseCategoryByID(String financeId,
       String branchName, String subBranchName, DateTime createdAt) async {
     try {
-      MiscellaneousCategory _mc = MiscellaneousCategory();
+      ExpenseCategory _mc = ExpenseCategory();
       Map<String, dynamic> mCategory = await _mc.getByID(
           _mc.getDocumentID(financeId, branchName, subBranchName, createdAt));
 
-      return MiscellaneousCategory.fromJson(mCategory);
+      return ExpenseCategory.fromJson(mCategory);
     } catch (err) {
-      print("Error while retrieving Miscellaneous Category: " + err.toString());
+      print("Error while retrieving Expense Category: " + err.toString());
       throw err;
     }
   }
@@ -81,10 +80,10 @@ class CategoryController {
     }
   }
 
-  Future<List<MiscellaneousCategory>> getAllMiscellaneousCategory(
+  Future<List<ExpenseCategory>> getAllExpenseCategory(
       String financeId, String branchName, String subBranchName) async {
     try {
-      List<MiscellaneousCategory> mCategories = await MiscellaneousCategory()
+      List<ExpenseCategory> mCategories = await ExpenseCategory()
           .getAllCategories(financeId, branchName, subBranchName);
 
       if (mCategories == null) {
@@ -94,7 +93,7 @@ class CategoryController {
       return mCategories;
     } catch (err) {
       print(
-          "Error while retrieving Miscellaneous Categories: " + err.toString());
+          "Error while retrieving Expense Categories: " + err.toString());
       throw err;
     }
   }
@@ -119,22 +118,22 @@ class CategoryController {
     }
   }
 
-  Future updateMiscellaneousCategory(
+  Future updateExpenseCategory(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime createdAt,
       Map<String, dynamic> mcData) async {
     try {
-      MiscellaneousCategory _mc = MiscellaneousCategory();
+      ExpenseCategory _mc = ExpenseCategory();
 
       await _mc.updateByID(mcData,
           _mc.getDocumentID(financeId, branchName, subBranchName, createdAt));
 
       return CustomResponse.getSuccesReponse(
-          "Edited the Miscellaneous Category successfully");
+          "Edited the Expense Category successfully");
     } catch (err) {
-      print("Error while editing Miscellaneous Category: " + err.toString());
+      print("Error while editing Expense Category: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -159,18 +158,18 @@ class CategoryController {
     }
   }
 
-  Future removeMiscellaneousCategory(String financeId, String branchName,
+  Future removeExpenseCategory(String financeId, String branchName,
       String subBranchName, DateTime createdAt) async {
     try {
-      MiscellaneousCategory _mc = MiscellaneousCategory();
+      ExpenseCategory _mc = ExpenseCategory();
 
       await _mc.delete(
           _mc.getDocumentID(financeId, branchName, subBranchName, createdAt));
 
       return CustomResponse.getSuccesReponse(
-          "Removed the Miscellaneous Category successfully");
+          "Removed the Expense Category successfully");
     } catch (err) {
-      print("Error while remove Miscellaneous Category: " + err.toString());
+      print("Error while remove Expense Category: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

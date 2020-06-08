@@ -11,12 +11,12 @@ import 'package:instamfin/services/controllers/transaction/Journal_controller.da
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class AddJournalEntry extends StatefulWidget {
+class AddJournal extends StatefulWidget {
   @override
-  _AddJournalEntryState createState() => _AddJournalEntryState();
+  _AddJournalState createState() => _AddJournalState();
 }
 
-class _AddJournalEntryState extends State<AddJournalEntry> {
+class _AddJournalState extends State<AddJournal> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

@@ -72,8 +72,6 @@ class UserController {
   Future<Map<String, dynamic>> getPrimaryFinanceDetails() async {
     try {
       String primaryFinanceID = _userService.cachedUser.primaryFinance;
-      String primaryBranchID = _userService.cachedUser.primaryBranch;
-      String primarySubBranchID = _userService.cachedUser.primarySubBranch;
 
       Map<String, dynamic> result = new Map();
 
@@ -84,28 +82,8 @@ class UserController {
           result['finance_name'] = finance.financeName;
         }
       }
-      if (primaryFinanceID != null &&
-          primaryFinanceID != "" &&
-          primaryBranchID != null &&
-          primaryBranchID != "") {
-        Branch branch = await _branchController.getBranchByID(
-            primaryFinanceID, primaryBranchID);
-        if (branch != null) {
-          result['branch_name'] = branch.branchName;
-        }
-      }
-      if (primaryFinanceID != null &&
-          primaryFinanceID != "" &&
-          primaryBranchID != null &&
-          primaryBranchID != "" &&
-          primarySubBranchID != null &&
-          primarySubBranchID != "") {
-        SubBranch subBranch = await _subBranchController.getSubBranchByID(
-            primaryFinanceID, primaryBranchID, primarySubBranchID);
-        if (subBranch != null) {
-          result['sub_branch_name'] = subBranch.subBranchName;
-        }
-      }
+      result['branch_name'] = _userService.cachedUser.primaryBranch;
+      result['sub_branch_name'] = _userService.cachedUser.primarySubBranch;
 
       return result;
     } catch (err) {
@@ -130,8 +108,8 @@ class UserController {
       _userService.cachedUser.primaryBranch = branchName;
       _userService.cachedUser.primarySubBranch = subBranchName;
 
-      NUtils.alertNotify("", "PRIMARY FINANCE CHANGED", "Your Primary Finance modified...!");
-
+      NUtils.alertNotify(
+          "", "PRIMARY FINANCE CHANGED", "Your Primary Finance modified...!");
     } catch (err) {
       Analytics.reportError({
         "type": 'update_primary_error',

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/miscellaneous_category.dart';
+import 'package:instamfin/db/models/expense_category.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/transaction/Miscellaneous_controller.dart';
+import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class AddMiscellaneousExpense extends StatefulWidget {
+class AddExpense extends StatefulWidget {
   @override
-  _AddMiscellaneousExpenseState createState() =>
-      _AddMiscellaneousExpenseState();
+  _AddExpenseState createState() =>
+      _AddExpenseState();
 }
 
-class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
+class _AddExpenseState extends State<AddExpense> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -23,7 +23,7 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
 
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {"0": "Choose Category"};
-  List<MiscellaneousCategory> categoryList;
+  List<ExpenseCategory> categoryList;
 
   DateTime selectedDate = DateTime.now();
   String name = "";
@@ -42,9 +42,7 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text('New Miscellaneous Expense'),
+        title: Text('New Expense'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -253,8 +251,8 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
   Future getCategoryData() async {
     try {
       CategoryController _cc = CategoryController();
-      List<MiscellaneousCategory> categories =
-          await _cc.getAllMiscellaneousCategory(_user.primaryFinance,
+      List<ExpenseCategory> categories =
+          await _cc.getAllExpenseCategory(_user.primaryFinance,
               _user.primaryBranch, _user.primarySubBranch);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
@@ -263,7 +261,7 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
         categoryList = categories;
       });
     } catch (err) {
-      print("Unable to load miscellaneous categories for ADD!");
+      print("Unable to load Expense categories for ADD!");
     }
   }
 
@@ -292,25 +290,22 @@ class _AddMiscellaneousExpenseState extends State<AddMiscellaneousExpense> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Adding Expense!");
-      MiscellaneousController _mc = MiscellaneousController();
-      MiscellaneousCategory _category;
+      ExpenseController _ec = ExpenseController();
+      ExpenseCategory _category;
       if (categoryList != null && _selectedCategory != "0") {
         _category = categoryList[int.parse(_selectedCategory) - 1];
       }
-      var result = await _mc.createNewExpense(
+      var result = await _ec.createNewExpense(
           name, amount, _category, selectedDate, notes);
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Miscellaneous Expense: " + result['message']);
       } else {
-        print("New Miscellaneous Expense $name added successfully");
         Navigator.pop(context);
         Navigator.pop(context);
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

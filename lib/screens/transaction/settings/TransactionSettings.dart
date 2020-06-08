@@ -28,7 +28,8 @@ class _TransactionSettingState extends State<TransactionSetting> {
     super.initState();
     this.paymentGroupValue = _preferences.paymentGroupBy;
     this.transctionGroupValue = _preferences.transactionGroupBy;
-    this.isTableView = (_preferences.tableView != null) ? _preferences.tableView : false;
+    this.isTableView =
+        (_preferences.tableView != null) ? _preferences.tableView : false;
 
     this.preferencesJSON = _preferences.toJson();
   }
@@ -127,22 +128,6 @@ class _TransactionSettingState extends State<TransactionSetting> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Radio(
-                          value: 3,
-                          groupValue: paymentGroupValue,
-                          activeColor: CustomColors.mfinBlue,
-                          onChanged: (val) {
-                            setPayment(val);
-                          },
-                        ),
-                        Text(
-                          "Yearly",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: CustomColors.mfinBlue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                       ],
                     ),
                     RowHeaderText(textName: "TRANSACTIONS GROUP BY:"),
@@ -196,22 +181,6 @@ class _TransactionSettingState extends State<TransactionSetting> {
                         ),
                         Text(
                           "Monthly",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: CustomColors.mfinBlue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Radio(
-                          value: 3,
-                          groupValue: transctionGroupValue,
-                          activeColor: CustomColors.mfinBlue,
-                          onChanged: (val) {
-                            setTransaction(val);
-                          },
-                        ),
-                        Text(
-                          "Yearly",
                           style: TextStyle(
                             fontSize: 16,
                             color: CustomColors.mfinBlue,

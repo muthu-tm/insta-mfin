@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/settings/add/AddNewFinance.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 
 class AddFinanceWidget extends StatelessWidget {
   @override
@@ -11,7 +10,7 @@ class AddFinanceWidget extends StatelessWidget {
         Row(
           children: <Widget>[
             Text(
-              " Wish to be a Complete Financier?",
+              "Wish to be a Complete Financier?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Georgia',
@@ -23,40 +22,35 @@ class AddFinanceWidget extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: EdgeInsets.only(left: 115.0, top: 10, bottom: 10),
-          child: InkWell(
-            splashColor: CustomColors.mfinButtonGreen,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddFinancePage(),
-                  settings: RouteSettings(name: '/settings/finance/add'),
-                ),
-              );
-            }, // button pressed
+          padding: const EdgeInsets.all(10.0),
+          child: Material(
+            elevation: 10.0,
+            shadowColor: CustomColors.mfinButtonGreen,
+            borderRadius: BorderRadius.circular(10.0),
             child: Container(
-              color: CustomColors.mfinBlue,
-              child: new Row(children: <Widget>[
-                customIconButton(
-                    Icons.business_center, 35.0, CustomColors.mfinButtonGreen,
-                    () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddFinancePage(),
-                      settings: RouteSettings(name: '/settings/finance/add'),
-                    ),
-                  );
-                }),
-                new Text(
-                  "Register your Finance here!",
+              width: MediaQuery.of(context).size.width * 0.75,
+              height: 50,
+              child: FlatButton.icon(
+                icon: Icon(
+                  Icons.business_center,
+                  size: 35.0,
+                  color: CustomColors.mfinButtonGreen,
+                ),
+                label: Text(
+                  "Register Your Finance!",
                   style: TextStyle(
                       fontFamily: 'Georgia',
-                      color: CustomColors.mfinButtonGreen,
+                      color: CustomColors.mfinBlue,
                       fontSize: 17.0),
                 ),
-              ]),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddFinancePage(),
+                    settings: RouteSettings(name: '/settings/finance/add'),
+                  ),
+                ),
+              ),
             ),
           ),
         ),

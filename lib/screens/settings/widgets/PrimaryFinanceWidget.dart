@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/settings/add/AddNewFinance.dart';
 import 'package:instamfin/screens/settings/editors/EditPrimaryFinance.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class PrimaryFinanceWidget extends StatelessWidget {
@@ -72,7 +70,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                     keyboardType: TextInputType.text,
                     initialValue: snapshot.data['sub_branch_name'],
                     decoration: InputDecoration(
-                      hintText: 'Sub_Branch',
+                      hintText: 'SubBranch Name',
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       fillColor: CustomColors.mfinWhite,
@@ -91,7 +89,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text(
-                      " Already a registered Financier? Great!",
+                      "Registered Financier? Great!",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: 'Georgia',
@@ -103,57 +101,55 @@ class PrimaryFinanceWidget extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                    padding: EdgeInsets.only(left: 115.0, top: 10),
-                    child: InkWell(
-                      splashColor: CustomColors.mfinButtonGreen,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditPrimaryFinance(
-                              _userController.getCurrentUserID(),
-                            ),
-                            settings: RouteSettings(
-                                name: '/settings/user/primary/edit'),
-                          ),
-                        );
-                      }, // button pressed
-                      child: Container(
-                        color: CustomColors.mfinBlue,
-                        child: new Row(children: <Widget>[
-                          customIconButton(
-                              Icons.edit, 35.0, CustomColors.mfinButtonGreen,
-                              () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddFinancePage(),
-                                settings: RouteSettings(
-                                    name: '/settings/finance/add'),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Material(
+                    elevation: 10.0,
+                    shadowColor: CustomColors.mfinButtonGreen,
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      height: 50,
+                      child: FlatButton.icon(
+                        icon: Icon(
+                          Icons.edit,
+                          size: 35.0,
+                          color: CustomColors.mfinButtonGreen,
+                        ),
+                        label: Text(
+                          "Set Primary Finance!",
+                          style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 17.0),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPrimaryFinance(
+                                _userController.getCurrentUserID(),
                               ),
-                            );
-                          }),
-                          new Text(
-                            "Select your primary Finance!",
-                            style: TextStyle(
-                                fontFamily: 'Georgia',
-                                color: CustomColors.mfinButtonGreen,
-                                fontSize: 17.0),
-                          ),
-                        ]),
+                              settings: RouteSettings(
+                                  name: '/settings/user/primary/edit'),
+                            ),
+                          );
+                        },
                       ),
-                    )),
+                    ),
+                  ),
+                ),
                 Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    child: new Text(
-                      "OR",
-                      style: TextStyle(
-                        color: CustomColors.mfinGrey,
-                        fontSize: 17.0,
-                        fontFamily: 'Georgia',
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  child: new Text(
+                    "OR",
+                    style: TextStyle(
+                      color: CustomColors.mfinGrey,
+                      fontSize: 17.0,
+                      fontFamily: 'Georgia',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 AddFinanceWidget(),
               ];
             }

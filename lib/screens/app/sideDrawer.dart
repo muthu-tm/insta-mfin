@@ -4,7 +4,7 @@ import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
-import 'package:instamfin/screens/customer/CustomersFilteredView.dart';
+import 'package:instamfin/screens/customer/CustomersHome.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
@@ -101,7 +101,7 @@ Widget openDrawer(BuildContext context) {
               onTap: () => Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustomersFilteredView(),
+                  builder: (context) => CustomersHome(),
                   settings: RouteSettings(name: '/customers'),
                 ),
                 (Route<dynamic> route) => false,

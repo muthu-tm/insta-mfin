@@ -1,28 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'journal_entry.dart';
+part of 'expense.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-JournalEntry _$JournalEntryFromJson(Map<String, dynamic> json) {
-  return JournalEntry()
+Expense _$ExpenseFromJson(Map<String, dynamic> json) {
+  return Expense()
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
-    ..journalName = json['journal_name'] as String
+    ..expenseName = json['expense_name'] as String
     ..category = json['category'] == null
         ? null
-        : JournalCategory.fromJson(json['category'] as Map<String, dynamic>)
+        : ExpenseCategory.fromJson(
+            json['category'] as Map<String, dynamic>)
     ..amount = json['amount'] as int
-    ..isExpense = json['is_expense'] as bool ?? false
     ..addedBy = json['added_by'] as int
     ..notes = json['notes'] as String ?? ''
-    ..journalDate = json['journal_date'] == null
+    ..expenseDate = json['expense_date'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['journal_date'] as Timestamp))
+            _getMillisecondsSinceEpoch(json['expense_date'] as Timestamp))
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -37,16 +37,16 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
   return ts.millisecondsSinceEpoch;
 }
 
-Map<String, dynamic> _$JournalEntryToJson(JournalEntry instance) =>
+Map<String, dynamic> _$ExpenseToJson(
+        Expense instance) =>
     <String, dynamic>{
       'finance_id': instance.financeID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
-      'journal_name': instance.journalName,
+      'expense_name': instance.expenseName,
       'category': instance.category?.toJson(),
+      'expense_date': instance.expenseDate,
       'amount': instance.amount,
-      'journal_date': instance.journalDate,
-      'is_expense': instance.isExpense,
       'added_by': instance.addedBy,
       'notes': instance.notes == null ? '' : instance.notes,
       'created_at': instance.createdAt,
