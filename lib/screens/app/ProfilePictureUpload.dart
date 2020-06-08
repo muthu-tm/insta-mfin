@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -202,7 +201,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
   }
 
   Future _previewImage(ImageSource source) async {
-    File selected = await ImagePicker.pickImage(source: source);
+    PickedFile selected = await ImagePicker().getImage(source: source);
     if (selected != null) {
       setState(() {
         selectedImagePath = selected.path.toString();
