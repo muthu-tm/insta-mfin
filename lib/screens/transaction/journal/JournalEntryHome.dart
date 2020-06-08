@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
-import 'package:instamfin/db/models/journal_entry.dart';
+import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/transaction/add/AddJournalEntry.dart';
+import 'package:instamfin/screens/transaction/add/AddJournal.dart';
 import 'package:instamfin/screens/transaction/edit/EditJournalEntry.dart';
 import 'package:instamfin/screens/transaction/journal/JournalCategoryScreen.dart';
 import 'package:instamfin/screens/transaction/widgets/TransactionsAppBar.dart';
@@ -30,7 +30,7 @@ class JournalEntryHome extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddJournalEntry(),
+              builder: (context) => AddJournal(),
               settings: RouteSettings(name: '/transactions/journal/add'),
             ),
           );
@@ -49,7 +49,7 @@ class JournalEntryHome extends StatelessWidget {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: JournalEntry().streamJournals(
+        stream: Journal().streamJournals(
             _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           Widget widget;
@@ -216,7 +216,7 @@ class JournalEntryHome extends StatelessWidget {
                       ),
                       onPressed: () async {
                         JournalController _mc = JournalController();
-                        var result = await _mc.removeJournalEntry(
+                        var result = await _mc.removeJournal(
                             data['finance_id'],
                             data['branch_name'],
                             data['sub_branch_name'],
@@ -262,7 +262,7 @@ class JournalEntryHome extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    EditJournalEntry(JournalEntry.fromJson(data)),
+                    EditJournalEntry(Journal.fromJson(data)),
                 settings: RouteSettings(name: '/transactions/journal/edit'),
               ),
             );

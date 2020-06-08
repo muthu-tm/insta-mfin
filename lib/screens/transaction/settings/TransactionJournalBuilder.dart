@@ -1,26 +1,44 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/accounts_data.dart';
+import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class TransactionJournalBuilder extends StatelessWidget {
-
+  final JournalController _jc = JournalController();
   final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: _user.getFinanceDocReference().get().asStream(),
+    return FutureBuilder<List<Journal>>(
+      future: _user.preferences.transactionGroupBy == 0
+          ? _jc.getTodaysExpenses(
+              _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch)
+          : _user.preferences.transactionGroupBy == 1
+              ? _jc.getThisWeekExpenses(_user.primaryFinance,
+                  _user.primaryBranch, _user.primarySubBranch)
+              : _jc.getThisMonthExpenses(_user.primaryFinance,
+                  _user.primaryBranch, _user.primarySubBranch),
       builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
         Widget widget;
 
         if (snapshot.hasData) {
-          AccountsData accData =
-              AccountsData.fromJson(snapshot.data.data['accounts_data']);
+          int inCount = 0;
+          int inAmount = 0;
+          int outCount = 0;
+          int outAmount = 0;
+          snapshot.data.forEach((j) {
+            if (j.isExpense) {
+              outCount++;
+              outAmount += j.amount;
+            } else {
+              inCount++;
+              inAmount += j.amount;
+            }
+          });
 
           widget = Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -30,7 +48,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "In: ",
+                    "In:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -38,7 +56,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    accData.journalIn.toString(),
+                    inCount.toString(),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinPositiveGreen,
@@ -51,7 +69,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "Amount: ",
+                    "Amount:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -59,7 +77,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    accData.journalInAmount.toString(),
+                    inAmount.toString(),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinPositiveGreen,
@@ -72,7 +90,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "Out: ",
+                    "Out:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -80,7 +98,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    accData.journalOut.toString(),
+                    outCount.toString(),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinAlertRed,
@@ -93,7 +111,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "Amount: ",
+                    "Amount:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -101,7 +119,7 @@ class TransactionJournalBuilder extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    accData.journalOutAmount.toString(),
+                    outAmount.toString(),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinAlertRed,

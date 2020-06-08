@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/miscellaneous_expense.dart';
+import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -21,8 +21,8 @@ class ExpenseStatisticsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5.0,
-      child: FutureBuilder<List<MiscellaneousExpense>>(
-        future: MiscellaneousExpense().getAllExpensesByDateRage(
+      child: FutureBuilder<List<Expense>>(
+        future: Expense().getAllExpensesByDateRage(
             user.primaryFinance,
             user.primaryBranch,
             user.primarySubBranch,

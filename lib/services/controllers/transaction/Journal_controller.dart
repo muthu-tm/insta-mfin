@@ -1,12 +1,13 @@
 import 'package:instamfin/db/models/journal_category.dart';
-import 'package:instamfin/db/models/journal_entry.dart';
+import 'package:instamfin/db/models/journal.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class JournalController {
   Future createNewJournal(String name, int amount, JournalCategory category,
       bool isExpense, DateTime date, String notes) async {
     try {
-      JournalEntry _je = JournalEntry();
+      Journal _je = Journal();
       _je.setJournalName(name);
       _je.setAmount(amount);
       _je.setCategory(category);
@@ -17,32 +18,77 @@ class JournalController {
       await _je.create();
 
       return CustomResponse.getSuccesReponse(
-          "Added new Journal Entry $name successfully");
+          "Added new Journal $name successfully");
     } catch (err) {
-      print("Error while creating Journal Entry $name " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
-  Future<List<JournalEntry>> getAllJournalEntries(
+  Future<List<Journal>> getAllJournalEntries(
       String financeId, String branchName, String subBranchName) {
     try {
-      JournalEntry _je = JournalEntry();
+      Journal _je = Journal();
       return _je.getAllJournals(financeId, branchName, subBranchName);
     } catch (err) {
-      print("Error while retrieving Journal Entries: " + err.toString());
+      print("Error while retrieving Journals: " + err.toString());
       throw err;
     }
   }
 
-  Future<List<JournalEntry>> getAllJournalByDateRage(
+  Future<List<Journal>> getTodaysExpenses(
+      String financeId, String branchName, String subBranchName) {
+    try {
+      return getAllJournalByDateRage(
+          financeId,
+          branchName,
+          subBranchName,
+          DateUtils.getCurrentDate(),
+          DateUtils.getCurrentDate().add(Duration(days: 1)));
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<List<Journal>> getThisWeekExpenses(
+      String financeId, String branchName, String subBranchName) {
+    try {
+      DateTime today = DateUtils.getCurrentDate();
+
+      return getAllJournalByDateRage(
+          financeId,
+          branchName,
+          subBranchName,
+          today.subtract(Duration(days: today.weekday)),
+          today.add(Duration(days: 1)));
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<List<Journal>> getThisMonthExpenses(
+      String financeId, String branchName, String subBranchName) {
+    try {
+      DateTime today = DateUtils.getCurrentDate();
+
+      return getAllJournalByDateRage(
+          financeId,
+          branchName,
+          subBranchName,
+          DateTime(today.year, today.month, 1, 0, 0, 0, 0),
+          today.add(Duration(days: 1)));
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<List<Journal>> getAllJournalByDateRage(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime startDate,
       DateTime endDate) async {
     try {
-      List<JournalEntry> journals = await JournalEntry()
+      List<Journal> journals = await Journal()
           .getAllJournalsByDateRage(
               financeId, branchName, subBranchName, startDate, endDate);
 
@@ -52,8 +98,6 @@ class JournalController {
 
       return journals;
     } catch (err) {
-      print(
-          "Error while retrieving journals with Date Range: " + err.toString());
       throw err;
     }
   }
@@ -61,7 +105,7 @@ class JournalController {
   Future<List<int>> getTotalJournalAmount(
       String financeId, String branchName, String subBranchName) async {
     try {
-      List<JournalEntry> journals =
+      List<Journal> journals =
           await getAllJournalEntries(financeId, branchName, subBranchName);
 
       int inTotal = 0;
@@ -78,53 +122,47 @@ class JournalController {
 
       return [inTotal, outTotal];
     } catch (err) {
-      print("Error while retrieving Total Miscellaneous Expense amount: " +
-          err.toString());
       throw err;
     }
   }
 
-  Future<JournalEntry> getJournalEntryByID(String financeId, String branchName,
+  Future<Journal> getJournalByID(String financeId, String branchName,
       String subBranchName, DateTime createdAt) async {
     try {
-      JournalEntry _je = JournalEntry();
+      Journal _je = Journal();
       Map<String, dynamic> jEntry = await _je.getByID(
           _je.getDocumentID(financeId, branchName, subBranchName, createdAt));
 
-      return JournalEntry.fromJson(jEntry);
+      return Journal.fromJson(jEntry);
     } catch (err) {
-      print("Error while retrieving Journal Entry: " + err.toString());
       throw err;
     }
   }
 
-  Future updateJournalEntry(
-      JournalEntry journal,
-      Map<String, dynamic> jeData) async {
+  Future updateJournal(
+      Journal journal, Map<String, dynamic> jeData) async {
     try {
-      JournalEntry _je = JournalEntry();
+      Journal _je = Journal();
 
       await _je.updateJournal(journal, jeData);
 
       return CustomResponse.getSuccesReponse(
-          "Updated Journal Entry successfully");
+          "Updated Journal successfully");
     } catch (err) {
-      print("Error while editing Journal Entry: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
-  Future removeJournalEntry(String financeId, String branchName,
+  Future removeJournal(String financeId, String branchName,
       String subBranchName, DateTime createdAt) async {
     try {
-      JournalEntry _je = JournalEntry();
+      Journal _je = Journal();
 
       await _je.removeJournal(financeId, branchName, subBranchName, createdAt);
 
       return CustomResponse.getSuccesReponse(
-          "Removed the Journal Entry successfully");
+          "Removed the Journal successfully");
     } catch (err) {
-      print("Error while removing Journal Entry: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

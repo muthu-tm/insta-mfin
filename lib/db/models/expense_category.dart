@@ -3,13 +3,13 @@ import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'miscellaneous_category.g.dart';
+part 'expense_category.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class MiscellaneousCategory extends Model {
+class ExpenseCategory extends Model {
 
-  static CollectionReference _miscellaneousCollRef =
-      Model.db.collection("miscellaneous_categories");
+  static CollectionReference _expenseCollRef =
+      Model.db.collection("expense_categories");
 
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
@@ -28,7 +28,7 @@ class MiscellaneousCategory extends Model {
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
 
-  MiscellaneousCategory();
+  ExpenseCategory();
 
   setFinanceID(String financeID) {
     this.financeID = financeID;
@@ -54,12 +54,12 @@ class MiscellaneousCategory extends Model {
     this.notes = notes;
   }
 
-  factory MiscellaneousCategory.fromJson(Map<String, dynamic> json) =>
-      _$MiscellaneousCategoryFromJson(json);
-  Map<String, dynamic> toJson() => _$MiscellaneousCategoryToJson(this);
+  factory ExpenseCategory.fromJson(Map<String, dynamic> json) =>
+      _$ExpenseCategoryFromJson(json);
+  Map<String, dynamic> toJson() => _$ExpenseCategoryToJson(this);
 
   CollectionReference getCollectionRef() {
-    return _miscellaneousCollRef;
+    return _expenseCollRef;
   }
 
   String getID() {
@@ -68,7 +68,7 @@ class MiscellaneousCategory extends Model {
   }
 
   Query getGroupQuery() {
-    return Model.db.collectionGroup('miscellaneous_categories');
+    return Model.db.collectionGroup('expense_categories');
   }
 
   String getDocumentID(String financeID, String branchName,
@@ -84,7 +84,7 @@ class MiscellaneousCategory extends Model {
         subBranchName, createdAt));
   }
 
-  Future<MiscellaneousCategory> create() async {
+  Future<ExpenseCategory> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.financeID = user.primaryFinance;
@@ -106,7 +106,7 @@ class MiscellaneousCategory extends Model {
         .snapshots();
   }
 
-  Future<List<MiscellaneousCategory>> getAllCategories(
+  Future<List<ExpenseCategory>> getAllCategories(
       String financeId, String branchName, String subBranchName) async {
     QuerySnapshot snapDocs = await getCollectionRef()
         .where('finance_id', isEqualTo: financeId)
@@ -118,9 +118,9 @@ class MiscellaneousCategory extends Model {
       return [];
     }
 
-    List<MiscellaneousCategory> categories = [];
+    List<ExpenseCategory> categories = [];
     snapDocs.documents.forEach((c) {
-      categories.add(MiscellaneousCategory.fromJson(c.data));
+      categories.add(ExpenseCategory.fromJson(c.data));
     });
 
     return categories;

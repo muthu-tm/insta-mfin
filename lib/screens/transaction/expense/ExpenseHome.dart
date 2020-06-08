@@ -2,20 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
-import 'package:instamfin/db/models/miscellaneous_expense.dart';
+import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/transaction/add/AddMiscellaneousExpense.dart';
-import 'package:instamfin/screens/transaction/edit/EditMiscellaneousExpense.dart';
-import 'package:instamfin/screens/transaction/miscellaneous/MiscellaneousCategoryScreen.dart';
+import 'package:instamfin/screens/transaction/add/AddExpense.dart';
+import 'package:instamfin/screens/transaction/edit/EditExpense.dart';
+import 'package:instamfin/screens/transaction/expense/ExpenseCategoryScreen.dart';
 import 'package:instamfin/screens/transaction/widgets/TransactionsAppBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/transaction/Miscellaneous_controller.dart';
+import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class MiscellaneousExpenseHome extends StatelessWidget {
+class ExpenseHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final User _user = UserController().getCurrentUser();
@@ -24,18 +24,15 @@ class MiscellaneousExpenseHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: transactionsAppBar(
-          context,
-          "Miscellaneous Expenses",
-          '/transactions/miscellaneous/categories',
-          MiscellaneousCategoryScreen()),
+      appBar: transactionsAppBar(context, "Expenses",
+          '/transactions/expenses/categories', ExpenseCategoryScreen()),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddMiscellaneousExpense(),
-              settings: RouteSettings(name: '/transactions/miscellaneous/add'),
+              builder: (context) => AddExpense(),
+              settings: RouteSettings(name: '/transactions/expenses/add'),
             ),
           );
         },
@@ -51,10 +48,9 @@ class MiscellaneousExpenseHome extends StatelessWidget {
           size: 40,
           color: CustomColors.mfinFadedButtonGreen,
         ),
-        // backgroundColor: CustomColors.mfinBlue,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: MiscellaneousExpense().streamExpenses(
+        stream: Expense().streamExpenses(
             _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           Widget widget;
@@ -213,8 +209,7 @@ class MiscellaneousExpenseHome extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                       onPressed: () async {
-                        MiscellaneousController _mc = MiscellaneousController();
-                        var result = await _mc.removeMiscellaneousExpense(
+                        var result = await ExpenseController().removeExpense(
                             data['finance_id'],
                             data['branch_name'],
                             data['sub_branch_name'],
@@ -229,8 +224,6 @@ class MiscellaneousExpenseHome extends StatelessWidget {
                           );
                         } else {
                           Navigator.pop(context);
-                          print(
-                              "Miscellaneous Expense ${data['expense_name']} removed successfully");
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
                                 "Expense ${data['expense_name']} removed successfully",
@@ -259,9 +252,8 @@ class MiscellaneousExpenseHome extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    EditMiscellaneousExpense(MiscellaneousExpense.fromJson(data)),
-                settings: RouteSettings(name: '/transactions/miscellaneous/edit'),
+                builder: (context) => EditExpense(Expense.fromJson(data)),
+                settings: RouteSettings(name: '/transactions/expenses/edit'),
               ),
             );
           },

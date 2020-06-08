@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
 import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
-import 'package:instamfin/screens/transaction/miscellaneous/MiscellaneousExpenseHome.dart';
+import 'package:instamfin/screens/transaction/expense/ExpenseHome.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionJournalBuilder.dart';
-import 'package:instamfin/screens/transaction/settings/TransactionMiscellaneousBuilder.dart';
+import 'package:instamfin/screens/transaction/settings/TransactionExpenseBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionSettings.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class TransactionScreen extends StatelessWidget {
+  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class TransactionScreen extends StatelessWidget {
                             Icon(
                               Icons.library_books,
                               size: 50.0,
-                              color: CustomColors.mfinWhite,
+                              color: CustomColors.mfinButtonGreen,
                             ),
                             Spacer(),
                             Text(
@@ -98,9 +101,8 @@ class TransactionScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MiscellaneousExpenseHome(),
-                      settings:
-                          RouteSettings(name: '/transactions/miscellaneous'),
+                      builder: (context) => ExpenseHome(),
+                      settings: RouteSettings(name: '/transactions/expenses'),
                     ),
                   );
                 },
@@ -118,14 +120,27 @@ class TransactionScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Spacer(),
+                            Text(
+                              _user.preferences.transactionGroupBy == 0
+                                  ? "Today's"
+                                  : _user.preferences.transactionGroupBy == 1
+                                      ? "This Week"
+                                      : "This Month",
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: CustomColors.mfinWhite,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Spacer(),
                             Icon(
-                              Icons.playlist_add,
-                              size: 55.0,
-                              color: CustomColors.mfinAlertRed,
+                              Icons.featured_play_list,
+                              size: 40.0,
+                              color: CustomColors.mfinButtonGreen,
                             ),
                             Spacer(),
                             Text(
-                              "Miscellaneous Expenses",
+                              "Expenses",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 17,
@@ -145,7 +160,7 @@ class TransactionScreen extends StatelessWidget {
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.57,
                         height: 120,
-                        child: TransactionMiscellaneousBuilder(),
+                        child: TransactionExpenseBuilder(),
                       ),
                     ),
                   ],
@@ -178,14 +193,27 @@ class TransactionScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Spacer(),
+                            Text(
+                              _user.preferences.transactionGroupBy == 0
+                                  ? "Today's"
+                                  : _user.preferences.transactionGroupBy == 1
+                                      ? "This Week"
+                                      : "This Month",
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: CustomColors.mfinWhite,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Spacer(),
                             Icon(
                               Icons.swap_horiz,
-                              size: 55.0,
-                              color: CustomColors.mfinWhite,
+                              size: 45.0,
+                              color: CustomColors.mfinButtonGreen,
                             ),
                             Spacer(),
                             Text(
-                              "Journal Entries",
+                              "Journals",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 17,

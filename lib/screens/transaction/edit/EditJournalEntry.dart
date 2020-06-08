@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/journal_category.dart';
-import 'package:instamfin/db/models/journal_entry.dart';
+import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/widgets/InOutCustomRadioButtons.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -15,7 +15,7 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 class EditJournalEntry extends StatefulWidget {
   EditJournalEntry(this.journal);
 
-  final JournalEntry journal;
+  final Journal journal;
 
   @override
   _EditJournalEntryState createState() => _EditJournalEntryState();
@@ -364,7 +364,7 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
         JournalController _jc = JournalController();
 
         var result =
-            await _jc.updateJournalEntry(widget.journal, updatedJournal);
+            await _jc.updateJournal(widget.journal, updatedJournal);
         if (!result['is_success']) {
           Navigator.pop(context);
           _scaffoldKey.currentState

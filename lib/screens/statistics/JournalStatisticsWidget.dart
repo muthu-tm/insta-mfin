@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/journal_entry.dart';
+import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -21,8 +21,8 @@ class JournalStatisticsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5.0,
-      child: FutureBuilder<List<JournalEntry>>(
-        future: JournalEntry().getAllJournalsByDateRage(user.primaryFinance,
+      child: FutureBuilder<List<Journal>>(
+        future: Journal().getAllJournalsByDateRage(user.primaryFinance,
             user.primaryBranch, user.primarySubBranch, fDate, tDate),
         builder: (context, snapshot) {
           Widget widget;

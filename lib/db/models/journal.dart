@@ -5,12 +5,12 @@ import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'journal_entry.g.dart';
+part 'journal.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class JournalEntry extends Model {
+class Journal extends Model {
   static CollectionReference _miscellaneousCollRef =
-      Model.db.collection("journal_entries");
+      Model.db.collection("journals");
 
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
@@ -37,7 +37,7 @@ class JournalEntry extends Model {
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
 
-  JournalEntry();
+  Journal();
 
   setFinanceID(String financeID) {
     this.financeID = financeID;
@@ -79,9 +79,9 @@ class JournalEntry extends Model {
     this.notes = notes;
   }
 
-  factory JournalEntry.fromJson(Map<String, dynamic> json) =>
-      _$JournalEntryFromJson(json);
-  Map<String, dynamic> toJson() => _$JournalEntryToJson(this);
+  factory Journal.fromJson(Map<String, dynamic> json) =>
+      _$JournalFromJson(json);
+  Map<String, dynamic> toJson() => _$JournalToJson(this);
 
   CollectionReference getCollectionRef() {
     return _miscellaneousCollRef;
@@ -94,7 +94,7 @@ class JournalEntry extends Model {
   }
 
   Query getGroupQuery() {
-    return Model.db.collectionGroup('journal_entries');
+    return Model.db.collectionGroup('journals');
   }
 
   String getDocumentID(String financeID, String branchName,
@@ -167,7 +167,7 @@ class JournalEntry extends Model {
         .snapshots();
   }
 
-  Future<List<JournalEntry>> getAllJournals(
+  Future<List<Journal>> getAllJournals(
       String financeId, String branchName, String subBranchName) async {
     QuerySnapshot snapDocs = await getCollectionRef()
         .where('finance_id', isEqualTo: financeId)
@@ -179,15 +179,15 @@ class JournalEntry extends Model {
       return [];
     }
 
-    List<JournalEntry> expenses = [];
+    List<Journal> expenses = [];
     snapDocs.documents.forEach((e) {
-      expenses.add(JournalEntry.fromJson(e.data));
+      expenses.add(Journal.fromJson(e.data));
     });
 
     return expenses;
   }
 
-  Future<List<JournalEntry>> getAllJournalsByDateRage(
+  Future<List<Journal>> getAllJournalsByDateRage(
       String financeId,
       String branchName,
       String subBranchName,
@@ -201,10 +201,10 @@ class JournalEntry extends Model {
         .where('journal_date', isLessThan: end)
         .getDocuments();
 
-    List<JournalEntry> journals = [];
+    List<Journal> journals = [];
     if (journalDocs.documents.isNotEmpty) {
       for (var doc in journalDocs.documents) {
-        journals.add(JournalEntry.fromJson(doc.data));
+        journals.add(Journal.fromJson(doc.data));
       }
     }
 
@@ -212,7 +212,7 @@ class JournalEntry extends Model {
   }
 
   Future<void> updateJournal(
-      JournalEntry journal, Map<String, dynamic> journalJSON) async {
+      Journal journal, Map<String, dynamic> journalJSON) async {
     journalJSON['updated_at'] = DateTime.now();
 
     DocumentReference docRef = getDocumentReference(journal.financeID,
@@ -300,7 +300,7 @@ class JournalEntry extends Model {
                 throw 'No Journal document found';
               }
 
-              JournalEntry journal = JournalEntry.fromJson(snap.data);
+              Journal journal = Journal.fromJson(snap.data);
 
               if (journal.isExpense) {
                 accData.cashInHand += journal.amount;

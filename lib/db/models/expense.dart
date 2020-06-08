@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/accounts_data.dart';
-import 'package:instamfin/db/models/miscellaneous_category.dart';
+import 'package:instamfin/db/models/expense_category.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'miscellaneous_expense.g.dart';
+part 'expense.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class MiscellaneousExpense extends Model {
-  static CollectionReference _miscellaneousCollRef =
-      Model.db.collection("miscellaneous_expenses");
+class Expense extends Model {
+  static CollectionReference _expenseCollRef =
+      Model.db.collection("expenses");
 
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
@@ -21,7 +21,7 @@ class MiscellaneousExpense extends Model {
   @JsonKey(name: 'expense_name')
   String expenseName;
   @JsonKey(name: 'category', nullable: true)
-  MiscellaneousCategory category;
+  ExpenseCategory category;
   @JsonKey(name: 'amount', nullable: true)
   int amount;
   @JsonKey(name: 'expense_date')
@@ -35,7 +35,7 @@ class MiscellaneousExpense extends Model {
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
 
-  MiscellaneousExpense();
+  Expense();
 
   setFinanceID(String financeID) {
     this.financeID = financeID;
@@ -53,7 +53,7 @@ class MiscellaneousExpense extends Model {
     this.expenseName = name;
   }
 
-  setCategory(MiscellaneousCategory category) {
+  setCategory(ExpenseCategory category) {
     this.category = category;
   }
 
@@ -73,12 +73,12 @@ class MiscellaneousExpense extends Model {
     this.notes = notes;
   }
 
-  factory MiscellaneousExpense.fromJson(Map<String, dynamic> json) =>
-      _$MiscellaneousExpenseFromJson(json);
-  Map<String, dynamic> toJson() => _$MiscellaneousExpenseToJson(this);
+  factory Expense.fromJson(Map<String, dynamic> json) =>
+      _$ExpenseFromJson(json);
+  Map<String, dynamic> toJson() => _$ExpenseToJson(this);
 
   CollectionReference getCollectionRef() {
-    return _miscellaneousCollRef;
+    return _expenseCollRef;
   }
 
   String getID() {
@@ -88,7 +88,7 @@ class MiscellaneousExpense extends Model {
   }
 
   Query getGroupQuery() {
-    return Model.db.collectionGroup('miscellaneous_expenses');
+    return Model.db.collectionGroup('expenses');
   }
 
   String getDocumentID(String financeID, String branchName,
@@ -139,9 +139,8 @@ class MiscellaneousExpense extends Model {
           );
         },
       );
-      print('Miscellaneous CREATE Transaction success!');
     } catch (err) {
-      print('Miscellaneous CREATE Transaction failure:' + err.toString());
+      print('Expense CREATE Transaction failure:' + err.toString());
       throw err;
     }
   }
@@ -155,7 +154,7 @@ class MiscellaneousExpense extends Model {
         .snapshots();
   }
 
-  Future<List<MiscellaneousExpense>> getAllExpenses(
+  Future<List<Expense>> getAllExpenses(
       String financeId, String branchName, String subBranchName) async {
     QuerySnapshot snapDocs = await getCollectionRef()
         .where('finance_id', isEqualTo: financeId)
@@ -167,15 +166,15 @@ class MiscellaneousExpense extends Model {
       return [];
     }
 
-    List<MiscellaneousExpense> expenses = [];
+    List<Expense> expenses = [];
     snapDocs.documents.forEach((e) {
-      expenses.add(MiscellaneousExpense.fromJson(e.data));
+      expenses.add(Expense.fromJson(e.data));
     });
 
     return expenses;
   }
 
-  Future<List<MiscellaneousExpense>> getAllExpensesByDateRage(
+  Future<List<Expense>> getAllExpensesByDateRage(
       String financeId,
       String branchName,
       String subBranchName,
@@ -189,10 +188,10 @@ class MiscellaneousExpense extends Model {
         .where('expense_date', isLessThan: end)
         .getDocuments();
 
-    List<MiscellaneousExpense> expenses = [];
+    List<Expense> expenses = [];
     if (expenseDocs.documents.isNotEmpty) {
       for (var doc in expenseDocs.documents) {
-        expenses.add(MiscellaneousExpense.fromJson(doc.data));
+        expenses.add(Expense.fromJson(doc.data));
       }
     }
 
@@ -200,7 +199,7 @@ class MiscellaneousExpense extends Model {
   }
 
   Future<void> updateExpense(
-      MiscellaneousExpense expense, Map<String, dynamic> expenseJSON) async {
+      Expense expense, Map<String, dynamic> expenseJSON) async {
     expenseJSON['updated_at'] = DateTime.now();
 
     DocumentReference docRef = getDocumentReference(expense.financeID,
@@ -259,11 +258,11 @@ class MiscellaneousExpense extends Model {
               DocumentSnapshot snap = await tx.get(docRef);
 
               if (!snap.exists) {
-                throw 'No Miscellaneous Expense document found';
+                throw 'No Expense document found';
               }
 
-              MiscellaneousExpense expense =
-                  MiscellaneousExpense.fromJson(snap.data);
+              Expense expense =
+                  Expense.fromJson(snap.data);
 
               accData.cashInHand += expense.amount;
               accData.miscellaneousExpenseAmount -= expense.amount;
@@ -279,10 +278,9 @@ class MiscellaneousExpense extends Model {
           );
         },
       );
-      print('Miscellaneous Expense DELETE Transaction success!');
     } catch (err) {
       print(
-          'Miscellaneous Expense DELETE Transaction failure:' + err.toString());
+          'Expense DELETE Transaction failure:' + err.toString());
       throw err;
     }
   }

@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
-import 'package:instamfin/db/models/miscellaneous_category.dart';
+import 'package:instamfin/db/models/expense_category.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/transaction/add/AddMiscellaneousCategory.dart';
-import 'package:instamfin/screens/transaction/edit/EditMiscellaneousCategory.dart';
+import 'package:instamfin/screens/transaction/add/AddExpenseCategory.dart';
+import 'package:instamfin/screens/transaction/edit/EditExpenseCategory.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class MiscellaneousCategoryScreen extends StatelessWidget {
+class ExpenseCategoryScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final User _user = UserController().getCurrentUser();
@@ -22,7 +22,7 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Miscellaneous Categories"),
+        title: Text("Expense Categories"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -30,9 +30,9 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddMiscellaneousCategory(),
-              settings: RouteSettings(
-                  name: '/transactions/miscellaneous/categories/add'),
+              builder: (context) => AddExpenseCategory(),
+              settings:
+                  RouteSettings(name: '/transactions/expenses/categories/add'),
             ),
           );
         },
@@ -51,7 +51,7 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: StreamBuilder<QuerySnapshot>(
-          stream: MiscellaneousCategory().streamCategories(_user.primaryFinance,
+          stream: ExpenseCategory().streamCategories(_user.primaryFinance,
               _user.primaryBranch, _user.primarySubBranch),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -71,22 +71,21 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
                       textColor = CustomColors.mfinGrey;
                     }
                     return SimpleFoldingCell(
-                        frontWidget: _buildFrontWidget(
-                            context,
-                            snapshot.data.documents[index].data,
-                            cardColor,
-                            textColor),
-                        innerTopWidget: _buildInnerTopWidget(snapshot
-                            .data.documents[index].data['category_name']),
-                        innerBottomWidget: _buildInnerBottomWidget(
-                            snapshot.data.documents[index].data['notes']),
-                        cellSize: Size(MediaQuery.of(context).size.width, 80),
-                        padding:
-                            EdgeInsets.only(left: 15.0, top: 15.0, right: 15.0),
-                        animationDuration: Duration(milliseconds: 300),
-                        borderRadius: 10,
-                        onOpen: () => print('$index cell opened'),
-                        onClose: () => print('$index cell closed'));
+                      frontWidget: _buildFrontWidget(
+                          context,
+                          snapshot.data.documents[index].data,
+                          cardColor,
+                          textColor),
+                      innerTopWidget: _buildInnerTopWidget(
+                          snapshot.data.documents[index].data['category_name']),
+                      innerBottomWidget: _buildInnerBottomWidget(
+                          snapshot.data.documents[index].data['notes']),
+                      cellSize: Size(MediaQuery.of(context).size.width, 80),
+                      padding:
+                          EdgeInsets.only(left: 15.0, top: 15.0, right: 15.0),
+                      animationDuration: Duration(milliseconds: 300),
+                      borderRadius: 10,
+                    );
                   },
                 );
               } else {
@@ -202,7 +201,7 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
                       ),
                       onPressed: () async {
                         CategoryController _cc = CategoryController();
-                        var result = await _cc.removeMiscellaneousCategory(
+                        var result = await _cc.removeExpenseCategory(
                             data['finance_id'],
                             data['branch_name'],
                             data['sub_branch_name'],
@@ -217,7 +216,6 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
                           );
                         } else {
                           Navigator.pop(context);
-                          print("Category removed successfully");
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
                                 "Category removed successfully", 2),
@@ -245,10 +243,10 @@ class MiscellaneousCategoryScreen extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => EditMiscellaneousCategory(
-                    MiscellaneousCategory.fromJson(data)),
+                builder: (context) =>
+                    EditExpenseCategory(ExpenseCategory.fromJson(data)),
                 settings: RouteSettings(
-                    name: '/transactions/miscellaneous/categories/edit'),
+                    name: '/transactions/expenses/categories/edit'),
               ),
             );
           },

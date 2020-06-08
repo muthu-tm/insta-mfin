@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/miscellaneous_category.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 
-class EditMiscellaneousCategory extends StatefulWidget {
-  EditMiscellaneousCategory(this.mCategory);
-
-  final MiscellaneousCategory mCategory;
+class AddExpenseCategory extends StatefulWidget {
   @override
-  _EditMiscellaneousCategoryState createState() =>
-      _EditMiscellaneousCategoryState();
+  _AddExpenseCategoryState createState() =>
+      _AddExpenseCategoryState();
 }
 
-class _EditMiscellaneousCategoryState extends State<EditMiscellaneousCategory> {
+class _AddExpenseCategoryState extends State<AddExpenseCategory> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Map<String, dynamic> updatedMC = new Map();
+  String name = "";
+  String notes = "";
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class _EditMiscellaneousCategoryState extends State<EditMiscellaneousCategory> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Edit Miscellaneous Category'),
+        title: Text('New Miscellaneous Category'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -74,7 +72,6 @@ class _EditMiscellaneousCategoryState extends State<EditMiscellaneousCategory> {
                 ),
                 title: TextFormField(
                   keyboardType: TextInputType.text,
-                  initialValue: widget.mCategory.categoryName,
                   decoration: InputDecoration(
                     hintText: "Category Name",
                     labelStyle: TextStyle(
@@ -86,10 +83,10 @@ class _EditMiscellaneousCategoryState extends State<EditMiscellaneousCategory> {
                   validator: (name) {
                     if (name.trim().isEmpty) {
                       return "Name should not be empty";
-                    } else if (name.trim() != widget.mCategory.categoryName) {
-                      updatedMC['category_name'] = name.trim();
+                    } else {
+                      this.name = name.trim();
+                      return null;
                     }
-                    return null;
                   },
                 ),
               ),
@@ -108,7 +105,6 @@ class _EditMiscellaneousCategoryState extends State<EditMiscellaneousCategory> {
                 ),
                 title: new TextFormField(
                   keyboardType: TextInputType.text,
-                  initialValue: widget.mCategory.notes,
                   maxLines: 3,
                   decoration: InputDecoration(
                     hintText: "Short notes about this category",
@@ -118,9 +114,11 @@ class _EditMiscellaneousCategoryState extends State<EditMiscellaneousCategory> {
                     fillColor: CustomColors.mfinLightGrey,
                     filled: true,
                   ),
-                  validator: (notes) {
-                    if (notes.trim() != widget.mCategory.notes) {
-                      updatedMC['notes'] = notes.trim();
+                  validator: (note) {
+                    if (note.trim().isEmpty) {
+                      this.notes = "";
+                    } else {
+                      this.notes = note.trim();
                     }
 
                     return null;
@@ -138,32 +136,18 @@ class _EditMiscellaneousCategoryState extends State<EditMiscellaneousCategory> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      if (updatedMC.length == 0) {
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "No changes detected, Skipping update!", 1));
-        print("No changes detected, Skipping update!");
+      CustomDialogs.actionWaiting(context, "Creating Category!");
+      CategoryController _cc = CategoryController();
+      var result = await _cc.createExpenseCategory(name, notes);
+      if (!result['is_success']) {
         Navigator.pop(context);
+        _scaffoldKey.currentState
+            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+        print("Unable to Create Miscellaneous Category: " + result['message']);
       } else {
-        CustomDialogs.actionWaiting(context, "Updating Category!");
-        CategoryController _cc = CategoryController();
-        var result = await _cc.updateMiscellaneousCategory(
-            widget.mCategory.financeID,
-            widget.mCategory.branchName,
-            widget.mCategory.subBranchName,
-            widget.mCategory.createdAt,
-            updatedMC);
-        if (!result['is_success']) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState
-              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-          print(
-              "Unable to Update Miscellaneous Category: " + result['message']);
-        } else {
-          print(
-              "Miscellaneous Category ${widget.mCategory.categoryName} updated successfully");
-          Navigator.pop(context);
-          Navigator.pop(context);
-        }
+        print("New Miscellaneous Category $name added successfully");
+        Navigator.pop(context);
+        Navigator.pop(context);
       }
     } else {
       print("Invalid form submitted");

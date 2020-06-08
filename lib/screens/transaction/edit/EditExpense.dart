@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/miscellaneous_category.dart';
-import 'package:instamfin/db/models/miscellaneous_expense.dart';
+import 'package:instamfin/db/models/expense_category.dart';
+import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/transaction/Miscellaneous_controller.dart';
+import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class EditMiscellaneousExpense extends StatefulWidget {
-  EditMiscellaneousExpense(this.expense);
+class EditExpense extends StatefulWidget {
+  EditExpense(this.expense);
 
-  final MiscellaneousExpense expense;
+  final Expense expense;
 
   @override
-  _EditMiscellaneousExpenseState createState() =>
-      _EditMiscellaneousExpenseState();
+  _EditExpenseState createState() =>
+      _EditExpenseState();
 }
 
-class _EditMiscellaneousExpenseState extends State<EditMiscellaneousExpense> {
+class _EditExpenseState extends State<EditExpense> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -28,7 +28,7 @@ class _EditMiscellaneousExpenseState extends State<EditMiscellaneousExpense> {
 
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {"0": "Choose Category"};
-  List<MiscellaneousCategory> categoryList;
+  List<ExpenseCategory> categoryList;
 
   Map<String, dynamic> updatedExpense = new Map();
   DateTime selectedDate = DateTime.now();
@@ -258,8 +258,8 @@ class _EditMiscellaneousExpenseState extends State<EditMiscellaneousExpense> {
   Future getCategoryData() async {
     try {
       CategoryController _cc = CategoryController();
-      List<MiscellaneousCategory> categories =
-          await _cc.getAllMiscellaneousCategory(_user.primaryFinance,
+      List<ExpenseCategory> categories =
+          await _cc.getAllExpenseCategory(_user.primaryFinance,
               _user.primaryBranch, _user.primarySubBranch);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
@@ -301,7 +301,7 @@ class _EditMiscellaneousExpenseState extends State<EditMiscellaneousExpense> {
 
     if (form.validate()) {
       if (categoryList != null && _selectedCategory != "0") {
-        MiscellaneousCategory _cat =
+        ExpenseCategory _cat =
             categoryList[int.parse(_selectedCategory) - 1];
         if (widget.expense.category == null ||
             _cat.createdAt != widget.expense.category.createdAt) {
@@ -316,8 +316,7 @@ class _EditMiscellaneousExpenseState extends State<EditMiscellaneousExpense> {
         Navigator.pop(context);
       } else {
         CustomDialogs.actionWaiting(context, "Updating Expense!");
-        MiscellaneousController _mc = MiscellaneousController();
-        var result = await _mc.updateExpense(
+        var result = await ExpenseController().updateExpense(
             widget.expense,
             updatedExpense);
         if (!result['is_success']) {
