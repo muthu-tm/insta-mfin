@@ -32,14 +32,25 @@ class JournalStatisticsWidget extends StatelessWidget {
               int max = 0;
               int interval = 10;
               List<JData> jData = [];
-              snapshot.data.forEach((e) {
-                if (e.amount > max) {
-                  max = e.amount + interval;
-                  interval = (e.amount / 5).round();
+              Map<DateTime, JData> jGroup = new Map();
+
+              snapshot.data.forEach((j) {
+                jGroup.update(
+                  j.journalDate,
+                  (value) => JData(j.journalDate, value.amount + j.amount),
+                  ifAbsent: () => JData(j.journalDate, j.amount),
+                );
+              });
+
+              jGroup.forEach((key, value) {
+                if (value.amount > max) {
+                  interval = (value.amount / 5).round();
+                  max = value.amount + ((1000 < interval) ? 1000 : 100);
                 }
 
-                jData.add(JData(e.journalDate, e.amount));
+                jData.add(value);
               });
+
               widget = Container(
                 child: SfCartesianChart(
                   title: ChartTitle(

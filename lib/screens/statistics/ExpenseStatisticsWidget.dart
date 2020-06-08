@@ -22,12 +22,8 @@ class ExpenseStatisticsWidget extends StatelessWidget {
     return Card(
       elevation: 5.0,
       child: FutureBuilder<List<Expense>>(
-        future: Expense().getAllExpensesByDateRage(
-            user.primaryFinance,
-            user.primaryBranch,
-            user.primarySubBranch,
-            fDate,
-            tDate),
+        future: Expense().getAllExpensesByDateRage(user.primaryFinance,
+            user.primaryBranch, user.primarySubBranch, fDate, tDate),
         builder: (context, snapshot) {
           Widget widget;
 
@@ -36,14 +32,25 @@ class ExpenseStatisticsWidget extends StatelessWidget {
               int max = 0;
               int interval = 10;
               List<EData> eData = [];
+              Map<DateTime, EData> eGroup = new Map();
+
               snapshot.data.forEach((e) {
-                if (e.amount > max) {
-                  max = e.amount + interval;
-                  interval = (e.amount / 5).round();
+                eGroup.update(
+                  e.expenseDate,
+                  (value) => EData(e.expenseDate, value.amount + e.amount),
+                  ifAbsent: () => EData(e.expenseDate, e.amount),
+                );
+              });
+
+              eGroup.forEach((key, value) {
+                if (value.amount > max) {
+                  interval = (value.amount / 5).round();
+                  max = value.amount + ((1000 < interval) ? 1000 : 100);
                 }
 
-                eData.add(EData(e.expenseDate, e.amount));
+                eData.add(value);
               });
+
               widget = Container(
                 child: SfCartesianChart(
                   title: ChartTitle(
