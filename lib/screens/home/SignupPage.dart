@@ -266,7 +266,7 @@ class _RegisterFormState extends State<RegisterForm> {
               CustomSnackBar.successSnackBar("$name added Successfully!", 1));
           CustomDialogs.actionWaiting(context, "Uploading Picture!");
           print("UPLOADING image file: " + _imageFile.toString());
-          Uploader.uploadImage("user_profile_org", _imageFile.path,
+          Uploader.uploadImage(true, "user_profile_org", _imageFile.path,
               mobileNumber, int.parse(mobileNumber), () {
             Navigator.pop(context);
             Navigator.pushAndRemoveUntil(

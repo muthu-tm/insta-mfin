@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -5,8 +7,9 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/storage/image_uploader.dart';
 
 class ProfilePictureUpload extends StatefulWidget {
-  ProfilePictureUpload(this.picPath, this.fileName, this.number);
+  ProfilePictureUpload(this.isUser, this.picPath, this.fileName, this.number);
 
+  final bool isUser;
   final String picPath;
   final String fileName;
   final int number;
@@ -38,7 +41,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
           children: <Widget>[
             Spacer(),
             Text(
-              'Set profile photo',
+              widget.isUser ? 'Set Profile Photo' : 'Customer Photo',
               style: TextStyle(
                   color: CustomColors.mfinBlack,
                   fontSize: 25.0,
@@ -69,7 +72,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 child: Icon(
                                   Icons.person,
                                   size: 45.0,
-                                  color: CustomColors.mfinLightGrey,
+                                  color: CustomColors.mfinBlue,
                                 ),
                               )
                             : CircleAvatar(
@@ -132,7 +135,8 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                         Spacer(),
                         CircleAvatar(
                           radius: 45.0,
-                          backgroundImage: ExactAssetImage(selectedImagePath),
+                          backgroundImage:
+                              Image.file(File(selectedImagePath)).image,
                           backgroundColor: Colors.transparent,
                         ),
                         Spacer(),
@@ -213,14 +217,20 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
     if (path != null) {
       CustomDialogs.actionWaiting(context, "Uploading!");
       Uploader.uploadImage(
-        "user_profile_org",
+        widget.isUser,
+        widget.isUser ? "user_profile_org" : "cust_profile_org",
         path,
         widget.fileName,
         widget.number,
         () {
-          Navigator.pop(context);
-          Navigator.pop(context);
-          Navigator.pop(context);
+          if (widget.isUser) {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
+          } else {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          }
         },
       );
     }
