@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/payment.dart';
@@ -153,8 +154,7 @@ class Collection {
   int getStatus() {
     if (this.type == 1 || this.type == 2) return 1;
 
-    if (getPaidOnTime() > 0 && getPending() == 0)
-      return 1;
+    if (getPaidOnTime() > 0 && getPending() == 0) return 1;
 
     if (this.collectionDate.isBefore(DateUtils.getCurrentISTDate())) {
       if (getPending() == 0 && getPaidLate() == 0)
@@ -164,7 +164,7 @@ class Collection {
       else
         return 4; //PENDING
     } else if (this.collectionDate.isAfter(DateUtils.getCurrentISTDate())) {
-        return 0; //UPCOMING
+      return 0; //UPCOMING
     } else {
       return 3; //CURRENT
     }
@@ -375,11 +375,10 @@ class Collection {
       Map<String, dynamic> data) async {
     Map<String, dynamic> fields = Map();
 
-    DocumentSnapshot snap = await this
-        .getDocumentReference(financeId, branchName, subBranchName, number,
-            createdAt, collectionDate)
-        .get();
-    List<dynamic> colls = snap.data['collections'];
+    DocumentReference docRef = this.getDocumentReference(financeId, branchName,
+        subBranchName, number, createdAt, collectionDate);
+
+    List<dynamic> colls = (await docRef.get()).data['collections'];
     int index = 0;
     bool isMatched = false;
     if (colls != null) {
@@ -400,10 +399,6 @@ class Collection {
         fields['updated_at'] = DateTime.now();
         fields['collected_on'] = FieldValue.arrayUnion([data['collected_on']]);
         fields['collections'] = FieldValue.arrayUnion([data]);
-        await this
-            .getDocumentReference(financeId, branchName, subBranchName, number,
-                createdAt, collectionDate)
-            .updateData(fields);
       }
     } else {
       if (isMatched) colls.removeAt(index);
@@ -412,10 +407,35 @@ class Collection {
       fields['updated_at'] = DateTime.now();
     }
 
-    await this
-        .getDocumentReference(financeId, branchName, subBranchName, number,
-            createdAt, collectionDate)
-        .updateData(fields);
+    try {
+      DocumentReference finDocRef = Payment().user.getFinanceDocReference();
+
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              if (isAdd) {
+                accData.cashInHand += data['amount'];
+                accData.collectionsAmount += data['amount'];
+              } else {
+                accData.cashInHand -= data['amount'];
+                accData.collectionsAmount -= data['amount'];
+              }
+
+              Map<String, dynamic> aData = {'accounts_data': accData.toJson()};
+              Model().txUpdate(tx, finDocRef, aData);
+              Model().txUpdate(tx, docRef, fields);
+            },
+          );
+        },
+      );
+    } catch (err) {
+      print('Collection ADD/REMOVE Transaction failure:' + err.toString());
+      throw err;
+    }
 
     return data;
   }

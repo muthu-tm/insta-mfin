@@ -252,23 +252,23 @@ class JournalEntryHome extends StatelessWidget {
           },
         ),
       ],
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Edit',
-          color: textColor,
-          icon: Icons.edit,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    EditJournalEntry(Journal.fromJson(data)),
-                settings: RouteSettings(name: '/transactions/journal/edit'),
-              ),
-            );
-          },
-        ),
-      ],
+      // secondaryActions: <Widget>[
+      //   IconSlideAction(
+      //     caption: 'Edit',
+      //     color: textColor,
+      //     icon: Icons.edit,
+      //     onTap: () {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (context) =>
+      //               EditJournalEntry(Journal.fromJson(data)),
+      //           settings: RouteSettings(name: '/transactions/journal/edit'),
+      //         ),
+      //       );
+      //     },
+      //   ),
+      // ],
       child: Builder(
         builder: (BuildContext context) {
           return Container(

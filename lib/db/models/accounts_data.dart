@@ -13,26 +13,16 @@ class AccountsData {
   int journalOut;
   @JsonKey(name: 'journal_out_amount', defaultValue: 0)
   int journalOutAmount;
-  @JsonKey(name: 'miscellaneous_expense', defaultValue: 0)
-  int miscellaneousExpense;
-  @JsonKey(name: 'miscellaneous_expense_amount', defaultValue: 0)
-  int miscellaneousExpenseAmount;
+  @JsonKey(name: 'expense', defaultValue: 0)
+  int expense;
+  @JsonKey(name: 'expense_amount', defaultValue: 0)
+  int expenseAmount;
   @JsonKey(name: 'total_payments', defaultValue: 0)
   int totalPayments;
   @JsonKey(name: 'payments_amount', defaultValue: 0)
   int paymentsAmount;
-  @JsonKey(name: 'total_collections', defaultValue: 0)
-  int totalCollections;
   @JsonKey(name: 'collections_amount', defaultValue: 0)
-  int collectiosAmount;
-  @JsonKey(name: 'pending_collections', defaultValue: 0)
-  int pendingCollectios;
-  @JsonKey(name: 'pending_collections_amount', defaultValue: 0)
-  int pendingCollectiosAmount;
-  @JsonKey(name: 'upcoming_collections', defaultValue: 0)
-  int upcomingCollectios;
-  @JsonKey(name: 'upcoming_collections_amount', defaultValue: 0)
-  int upcomingCollectiosAmount;
+  int collectionsAmount;
 
   AccountsData();
 

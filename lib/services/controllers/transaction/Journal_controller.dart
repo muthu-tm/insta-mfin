@@ -142,9 +142,9 @@ class JournalController {
   Future updateJournal(
       Journal journal, Map<String, dynamic> jeData) async {
     try {
-      Journal _je = Journal();
+      // Journal _je = Journal();
 
-      await _je.updateJournal(journal, jeData);
+      // await _je.updateJournal(journal, jeData);
 
       return CustomResponse.getSuccesReponse(
           "Updated Journal successfully");

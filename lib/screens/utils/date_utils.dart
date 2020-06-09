@@ -40,10 +40,9 @@ class DateUtils {
     return DateTime(
         dateTime.year, dateTime.month, dateTime.day, 5, 30, 0, 0, 0);
   }
-  
+
   static DateTime getFormattedDate(DateTime dateTime) {
-    return DateTime(
-        dateTime.year, dateTime.month, dateTime.day, 0, 0, 0, 0, 0);
+    return DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0, 0, 0);
   }
 
   static List<DateTime> getDaysInBeteween(

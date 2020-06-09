@@ -214,7 +214,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Creating Finance for YOU!");
+      CustomDialogs.actionWaiting(context, "Creating Finance!");
       FinanceController _financeController = FinanceController();
       var result = await _financeController.createFinance(financeName,
           registeredID, contactNumber, emailID, address, registeredDate);
@@ -223,14 +223,11 @@ class _AddFinancePageState extends State<AddFinancePage> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Finance: " + result['message']);
       } else {
         Navigator.pop(context);
-        print("New Finance created successfully");
         Navigator.pop(context);
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
