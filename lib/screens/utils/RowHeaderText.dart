@@ -16,6 +16,7 @@ class RowHeaderText extends StatelessWidget {
           child: new Text(
             textName,
             style: TextStyle(
+                fontFamily: "Georgia",
                 color: CustomColors.mfinGrey,
                 fontWeight: FontWeight.bold,
                 fontSize: 17),
