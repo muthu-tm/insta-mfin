@@ -101,8 +101,6 @@ class Model {
     data['updated_at'] = DateTime.now();
 
     tx.update(txDocRef, data);
-
-    return data;
   }
 
   txDelete(Transaction tx, DocumentReference txDocRef) async {

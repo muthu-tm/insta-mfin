@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/ViewCustomer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-Widget customerListTile(
-    BuildContext context, int index, Customer customer) {
+Widget customerListTile(BuildContext context, int index, Customer customer) {
   Color tileColor = CustomColors.mfinBlue;
   Color textColor = CustomColors.mfinWhite;
   IconData custIcon = Icons.person_outline;
@@ -39,21 +39,111 @@ Widget customerListTile(
           ),
           child: Row(
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(5.0),
-                width: MediaQuery.of(context).size.width / 6,
-                height: MediaQuery.of(context).size.width / 6,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35.0),
-                  border: Border.all(
-                      color: textColor, style: BorderStyle.solid, width: 2.0),
-                ),
-                child: Icon(
-                  custIcon,
-                  size: MediaQuery.of(context).size.width / 10,
-                  color: textColor,
-                ),
-              ),
+              customer.getProfilePicPath() == ""
+                  ? Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: CustomColors.mfinFadedButtonGreen,
+                            style: BorderStyle.solid,
+                            width: 2.0,
+                          ),
+                        ),
+                        child: FlatButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              routeSettings:
+                                  RouteSettings(name: "/profile/upload"),
+                              builder: (context) {
+                                return Center(
+                                  child: ProfilePictureUpload(
+                                      false,
+                                      customer.getProfilePicPath(),
+                                      customer.financeID +
+                                          '_' +
+                                          customer.mobileNumber.toString(),
+                                      customer.mobileNumber),
+                                );
+                              },
+                            );
+                          },
+                          child: Stack(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.topCenter,
+                             child: Icon(
+                                custIcon,
+                                size: 35.0,
+                                color: textColor,
+                              ),),
+                              Positioned(
+                                bottom: 15,
+                                left: 3,
+                                child: Text(
+                                  "Upload",
+                                  style: TextStyle(
+                                    fontSize: 10.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: textColor,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      child: Stack(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                            child: CircleAvatar(
+                              radius: 35.0,
+                              backgroundImage:
+                                  NetworkImage(customer.getProfilePicPath()),
+                              backgroundColor: Colors.transparent,
+                            ),
+                          ),
+                          Positioned(
+                            bottom: -10,
+                            left: 20,
+                            child: FlatButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  routeSettings:
+                                      RouteSettings(name: "/profile/upload"),
+                                  builder: (context) {
+                                    return Center(
+                                      child: ProfilePictureUpload(
+                                          false,
+                                          customer.getProfilePicPath(),
+                                          customer.mobileNumber.toString(),
+                                          customer.mobileNumber),
+                                    );
+                                  },
+                                );
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: CustomColors.mfinButtonGreen,
+                                radius: 10,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: CustomColors.mfinBlue,
+                                  size: 15.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
               Container(
                 padding: EdgeInsets.only(left: 20.0, top: 5.0),
                 width: MediaQuery.of(context).size.width / 1.5,

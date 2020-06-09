@@ -45,7 +45,6 @@ Widget openDrawer(BuildContext context) {
                         ),
                         child: FlatButton(
                           onPressed: () {
-                            print("PATH" + _user.getProfilePicPath());
                             showDialog(
                               context: context,
                               routeSettings:
@@ -53,6 +52,7 @@ Widget openDrawer(BuildContext context) {
                               builder: (context) {
                                 return Center(
                                   child: ProfilePictureUpload(
+                                      true,
                                       _user.getProfilePicPath(),
                                       _user.mobileNumber.toString(),
                                       _user.mobileNumber),
@@ -84,7 +84,6 @@ Widget openDrawer(BuildContext context) {
                               left: 30,
                               child: FlatButton(
                                 onPressed: () {
-                                  print("PATH" + _user.getProfilePicPath());
                                   showDialog(
                                     context: context,
                                     routeSettings:
@@ -92,6 +91,7 @@ Widget openDrawer(BuildContext context) {
                                     builder: (context) {
                                       return Center(
                                         child: ProfilePictureUpload(
+                                            true,
                                             _user.getProfilePicPath(),
                                             _user.mobileNumber.toString(),
                                             _user.mobileNumber),

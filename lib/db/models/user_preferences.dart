@@ -5,8 +5,6 @@ part 'user_preferences.g.dart';
 @JsonSerializable(explicitToJson: true)
 class UserPreferences {
   
-  @JsonKey(name: 'payment_group_by', defaultValue: 0)
-  int paymentGroupBy;
   @JsonKey(name: 'transaction_group_by', defaultValue: 0)
   int transactionGroupBy;
   @JsonKey(name: 'enable_table_view', defaultValue: false)

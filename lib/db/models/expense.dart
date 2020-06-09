@@ -9,8 +9,7 @@ part 'expense.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Expense extends Model {
-  static CollectionReference _expenseCollRef =
-      Model.db.collection("expenses");
+  static CollectionReference _expenseCollRef = Model.db.collection("expenses");
 
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
@@ -123,8 +122,8 @@ class Expense extends Model {
                   AccountsData.fromJson(doc.data['accounts_data']);
 
               accData.cashInHand -= this.amount;
-              accData.miscellaneousExpenseAmount += this.amount;
-              accData.miscellaneousExpense += 1;
+              accData.expenseAmount += this.amount;
+              accData.expense += 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
@@ -223,13 +222,10 @@ class Expense extends Model {
                   AccountsData.fromJson(doc.data['accounts_data']);
 
               accData.cashInHand += amount;
-              accData.miscellaneousExpenseAmount += expenseAmount;
+              accData.expenseAmount += expenseAmount;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
-              // Update finance details
               txUpdate(tx, finDocRef, data);
-
-              // Remove Payment
               txUpdate(tx, docRef, expenseJSON);
             },
           );
@@ -261,26 +257,21 @@ class Expense extends Model {
                 throw 'No Expense document found';
               }
 
-              Expense expense =
-                  Expense.fromJson(snap.data);
+              Expense expense = Expense.fromJson(snap.data);
 
               accData.cashInHand += expense.amount;
-              accData.miscellaneousExpenseAmount -= expense.amount;
-              accData.miscellaneousExpense -= 1;
+              accData.expenseAmount -= expense.amount;
+              accData.expense -= 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
-              // Update finance details
               txUpdate(tx, finDocRef, data);
-
-              // Remove Expense
               txDelete(tx, docRef);
             },
           );
         },
       );
     } catch (err) {
-      print(
-          'Expense DELETE Transaction failure:' + err.toString());
+      print('Expense DELETE Transaction failure:' + err.toString());
       throw err;
     }
   }

@@ -131,7 +131,7 @@ class Payment extends Model {
   setCSF(DateTime date) {
     this.collectionStartsFrom = date;
   }
-  
+
   setIsActive(bool isActive) {
     this.isActive = isActive;
   }
@@ -265,18 +265,21 @@ class Payment extends Model {
     this.subBranchName = user.primarySubBranch;
     try {
       DocumentReference finDocRef = user.getFinanceDocReference();
-      DocumentSnapshot doc = await finDocRef.get();
-      if (doc.exists) {
-        AccountsData accData = AccountsData.fromJson(doc.data['accounts_data']);
+      // DocumentSnapshot doc = await finDocRef.get();
+      // if (doc.exists) {
+      //   AccountsData accData = AccountsData.fromJson(doc.data['accounts_data']);
 
-        accData.cashInHand -= this.principalAmount;
+      //   accData.cashInHand.update(
+      //             DateUtils.getCashInHandDate(this.dateOfPayment),
+      //             (value) => (value - this.principalAmount),
+      //             ifAbsent: () => (this.principalAmount));
 
-        if (accData.cashInHand < 0) {
-          throw 'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!';
-        }
-      } else {
-        throw 'Unable to find your finance details!';
-      }
+      //   if (accData.cashInHand < 0) {
+      //     throw 'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!';
+      //   }
+      // } else {
+      //   throw 'Unable to find your finance details!';
+      // }
 
       await Model.db.runTransaction(
         (tx) async {
@@ -287,23 +290,21 @@ class Payment extends Model {
 
               accData.cashInHand -= this.principalAmount;
 
-              if (accData.cashInHand < 0) {
-                return Future.error(
-                    'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!');
-              } else {
-                accData.paymentsAmount += this.totalAmount;
-                accData.totalPayments += 1;
+              // if (accData.cashInHand < 0) {
+              //   return Future.error(
+              //       'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!');
+              accData.paymentsAmount += this.totalAmount;
+              accData.totalPayments += 1;
 
-                Map<String, dynamic> data = {'accounts_data': accData.toJson()};
-                txUpdate(tx, finDocRef, data);
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+              txUpdate(tx, finDocRef, data);
 
-                return txCreate(
-                  tx,
-                  this.getDocumentReference(this.financeID, this.branchName,
-                      this.subBranchName, this.customerNumber, this.createdAt),
-                  this.toJson(),
-                );
-              }
+              return txCreate(
+                tx,
+                this.getDocumentReference(this.financeID, this.branchName,
+                    this.subBranchName, this.customerNumber, this.createdAt),
+                this.toJson(),
+              );
             },
           );
         },
@@ -441,10 +442,7 @@ class Payment extends Model {
               accData.paymentsAmount += totalAmount;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
-              // Update finance details
               txUpdate(tx, finDocRef, data);
-
-              // Remove Payment
               txUpdate(tx, docRef, paymentJSON);
             },
           );
@@ -483,20 +481,15 @@ class Payment extends Model {
               accData.totalPayments -= 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
-              // Update finance details
               txUpdate(tx, finDocRef, data);
 
               QuerySnapshot snapshot = await docRef
                   .collection('customer_collections')
                   .getDocuments();
 
-              // Remove Payment's collection
               for (DocumentSnapshot ds in snapshot.documents) {
-                // ds.reference.delete();
                 txDelete(tx, ds.reference);
               }
-
-              // Remove Payment
               txDelete(tx, docRef);
             },
           );
