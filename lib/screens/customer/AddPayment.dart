@@ -5,6 +5,7 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/screens/utils/SizeConfig.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
@@ -75,6 +76,9 @@ class _AddPaymentState extends State<AddPayment> {
 
   @override
   Widget build(BuildContext context) {
+
+    SizeConfig().init(context);
+
     return new Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
@@ -137,42 +141,62 @@ class _AddPaymentState extends State<AddPayment> {
                     Divider(
                       color: CustomColors.mfinBlue,
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "PAYMENT ID:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          child: TextFormField(
+                            enabled: false,
+                            autofocus: false,
+                            initialValue: widget.customer.name,
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              labelText: 'Customer',
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 3.0),
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                  BorderSide(color: CustomColors.mfinFadedButtonGreen)),
+                              fillColor: CustomColors.mfinLightGrey,
+                              filled: true,
+                            ),
                           ),
                         ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.text,
-                        initialValue: paymentID,
-                        decoration: InputDecoration(
-                          hintText: 'Payment ID',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
+                        Divider(
+                          height: 10,
                         ),
-                        validator: (paymentID) {
-                          if (paymentID.trim().isEmpty) {
-                            this.paymentID = "";
-                          } else {
-                            this.paymentID = paymentID.trim();
-                          }
-                          return null;
-                        },
-                      ),
+                        Flexible(
+                          child: TextFormField(
+                            textAlign: TextAlign.start,
+                            keyboardType: TextInputType.text,
+                            initialValue: paymentID,
+                            decoration: InputDecoration(
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                              hintText: 'Payment ID',
+                              labelText: 'Payment ID',
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 3.0),
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                  BorderSide(color: CustomColors.mfinFadedButtonGreen)),
+                            ),
+                            validator: (paymentID) {
+                              if (paymentID.trim().isEmpty) {
+                                this.paymentID = "";
+                              } else {
+                                this.paymentID = paymentID.trim();
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                     ListTile(
                       leading: SizedBox(
@@ -187,19 +211,7 @@ class _AddPaymentState extends State<AddPayment> {
                           ),
                         ),
                       ),
-                      title: TextFormField(
-                        enabled: false,
-                        autofocus: false,
-                        initialValue: widget.customer.name,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
-                          ),
-                          fillColor: CustomColors.mfinLightGrey,
-                          filled: true,
-                        ),
-                      ),
+                      //title:
                     ),
                     ListTile(
                       leading: SizedBox(
