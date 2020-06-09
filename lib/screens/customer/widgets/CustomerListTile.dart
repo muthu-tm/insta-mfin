@@ -111,8 +111,8 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                             ),
                           ),
                           Positioned(
-                            bottom: -5,
-                            left: 15,
+                            bottom: -10,
+                            left: 20,
                             child: FlatButton(
                               onPressed: () {
                                 showDialog(
@@ -132,11 +132,11 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                               },
                               child: CircleAvatar(
                                 backgroundColor: CustomColors.mfinButtonGreen,
-                                radius: 15,
+                                radius: 10,
                                 child: Icon(
                                   Icons.edit,
-                                  color: CustomColors.mfinWhite,
-                                  size: 25.0,
+                                  color: CustomColors.mfinBlue,
+                                  size: 15.0,
                                 ),
                               ),
                             ),
