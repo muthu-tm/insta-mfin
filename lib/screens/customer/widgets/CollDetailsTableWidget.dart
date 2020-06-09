@@ -175,7 +175,7 @@ class CollDetailsTableWidget extends StatelessWidget {
           cells: <DataCell>[
             DataCell(
               Text(
-                DateUtils.formatDate(coll.collectedOn),
+                DateUtils.getFormattedDateFromEpoch(coll.collectedOn),
                 textAlign: TextAlign.center,
               ),
             ),

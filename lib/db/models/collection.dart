@@ -20,11 +20,11 @@ class Collection {
   @JsonKey(name: 'collection_number', nullable: true)
   int collectionNumber;
   @JsonKey(name: 'collection_date', defaultValue: '')
-  DateTime collectionDate;
+  int collectionDate;
   @JsonKey(name: 'notify_at', defaultValue: '')
-  DateTime notifyAt;
+  int notifyAt;
   @JsonKey(name: 'collected_on', defaultValue: '')
-  List<DateTime> collectedOn;
+  List<int> collectedOn;
   @JsonKey(name: 'collection_amount')
   int collectionAmount;
   @JsonKey(name: 'collections')
@@ -59,14 +59,14 @@ class Collection {
   }
 
   setCollectionDate(DateTime collectionDate) {
-    this.collectionDate = collectionDate;
+    this.collectionDate = DateUtils.getUTCDateEpoch(collectionDate);
   }
 
   setNotifyAt(DateTime notifyAt) {
-    this.notifyAt = notifyAt;
+    this.notifyAt = DateUtils.getUTCDateEpoch(notifyAt);
   }
 
-  setcollectedOn(List<DateTime> collectedOn) {
+  setcollectedOn(List<int> collectedOn) {
     if (this.collectedOn == null) {
       this.collectedOn = collectedOn;
     } else {
@@ -128,7 +128,8 @@ class Collection {
   }
 
   int getPending() {
-    if (this.collectionDate.isBefore(DateUtils.getCurrentISTDate())) {
+    if (this.collectionDate <
+        DateUtils.getCurrentUTCDate().millisecondsSinceEpoch) {
       return collectionAmount - getReceived();
     }
 
@@ -136,7 +137,8 @@ class Collection {
   }
 
   int getCurrent() {
-    if (this.collectionDate.isAtSameMomentAs(DateUtils.getCurrentISTDate())) {
+    if (this.collectionDate ==
+        DateUtils.getCurrentUTCDate().millisecondsSinceEpoch) {
       return collectionAmount - getReceived();
     }
 
@@ -144,7 +146,8 @@ class Collection {
   }
 
   int getUpcoming() {
-    if (this.collectionDate.isAfter(DateUtils.getCurrentISTDate())) {
+    if (this.collectionDate >
+        DateUtils.getCurrentUTCDate().millisecondsSinceEpoch) {
       return collectionAmount - getReceived();
     }
 
@@ -156,14 +159,16 @@ class Collection {
 
     if (getPaidOnTime() > 0 && getPending() == 0) return 1;
 
-    if (this.collectionDate.isBefore(DateUtils.getCurrentISTDate())) {
+    if (this.collectionDate <
+        DateUtils.getCurrentUTCDate().millisecondsSinceEpoch) {
       if (getPending() == 0 && getPaidLate() == 0)
         return 1; //PAID
       else if (getPending() == 0 && getPaidLate() >= 0)
         return 2; //PAIDLATE
       else
         return 4; //PENDING
-    } else if (this.collectionDate.isAfter(DateUtils.getCurrentISTDate())) {
+    } else if (this.collectionDate >
+        DateUtils.getCurrentUTCDate().millisecondsSinceEpoch) {
       return 0; //UPCOMING
     } else {
       return 3; //CURRENT
@@ -186,8 +191,8 @@ class Collection {
     return Model.db.collectionGroup('customer_collections');
   }
 
-  String getDocumentID(DateTime collectionDate) {
-    return collectionDate.millisecondsSinceEpoch.toString();
+  String getDocumentID(int collectionDate) {
+    return collectionDate.toString();
   }
 
   DocumentReference getDocumentReference(
@@ -196,7 +201,7 @@ class Collection {
       String subBranchName,
       int number,
       DateTime createdAt,
-      DateTime collectionDate) {
+      int collectionDate) {
     return getCollectionRef(
             financeId, branchName, subBranchName, number, createdAt)
         .document(getDocumentID(collectionDate));
@@ -217,20 +222,6 @@ class Collection {
     return this;
   }
 
-  Future<bool> isExist(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int number,
-      DateTime createdAt,
-      DateTime collectionDate) async {
-    var snap = await getDocumentReference(financeId, branchName, subBranchName,
-            number, createdAt, collectionDate)
-        .get();
-
-    return snap.exists;
-  }
-
   Stream<QuerySnapshot> streamCollectionsForCustomer(String financeId,
       String branchName, String subBranchName, int number, DateTime createdAt) {
     return getCollectionRef(
@@ -238,8 +229,8 @@ class Collection {
         .snapshots();
   }
 
-  Future<List<Collection>> getAllCollectionsByDateRage(String financeId,
-      String branchName, String subBranchName, List<DateTime> dates) async {
+  Future<List<Collection>> getAllCollectionsByDateRange(String financeId,
+      String branchName, String subBranchName, List<int> dates) async {
     var collectionDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
@@ -250,7 +241,8 @@ class Collection {
     List<Collection> collections = [];
     if (collectionDocs.documents.isNotEmpty) {
       for (var doc in collectionDocs.documents) {
-        collections.add(Collection.fromJson(doc.data));
+        if (doc.data['type'] != 1 && doc.data['type'] != 2)
+          collections.add(Collection.fromJson(doc.data));
       }
     }
 
@@ -341,7 +333,7 @@ class Collection {
       String subBranchName,
       int number,
       DateTime createdAt,
-      DateTime collectionDate) {
+      int collectionDate) {
     return getCollectionRef(
             financeId, branchName, subBranchName, number, createdAt)
         .document(getDocumentID(collectionDate))
@@ -370,7 +362,7 @@ class Collection {
       String subBranchName,
       int number,
       DateTime createdAt,
-      DateTime collectionDate,
+      int collectionDate,
       bool isAdd,
       Map<String, dynamic> data) async {
     Map<String, dynamic> fields = Map();
@@ -385,7 +377,7 @@ class Collection {
       for (index = 0; index < colls.length; index++) {
         Map<String, dynamic> collDetail = colls[index];
         CollectionDetails collDetails = CollectionDetails.fromJson(collDetail);
-        if (collDetails.createdAt == data['created_at']) {
+        if (collDetails.collectedOn == data['collected_on']) {
           isMatched = true;
           break;
         }

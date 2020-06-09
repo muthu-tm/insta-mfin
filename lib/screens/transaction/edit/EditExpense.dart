@@ -281,14 +281,14 @@ class _EditExpenseState extends State<EditExpense> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: widget.expense.expenseDate,
+      initialDate: DateTime.fromMillisecondsSinceEpoch(widget.expense.expenseDate),
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != widget.expense.expenseDate)
+    if (picked != null && picked != DateTime.fromMillisecondsSinceEpoch(widget.expense.expenseDate))
       setState(
         () {
-          updatedExpense['expense_date'] = picked;
+          updatedExpense['expense_date'] = DateUtils.getUTCDateEpoch(picked);
           _date.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
@@ -312,7 +312,6 @@ class _EditExpenseState extends State<EditExpense> {
       if (updatedExpense.length == 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "No changes detected, Skipping update!", 1));
-        print("No changes detected, Skipping update!");
         Navigator.pop(context);
       } else {
         CustomDialogs.actionWaiting(context, "Updating Expense!");
@@ -323,15 +322,12 @@ class _EditExpenseState extends State<EditExpense> {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-          print("Unable to Edit Expense: " + result['message']);
         } else {
-          print("Expense ${widget.expense.expenseName} edited successfully");
           Navigator.pop(context);
           Navigator.pop(context);
         }
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

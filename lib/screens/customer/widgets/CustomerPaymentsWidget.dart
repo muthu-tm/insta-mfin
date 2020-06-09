@@ -251,7 +251,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                         SizedBox(
                                           height: 30,
                                           child: Text(
-                                            DateUtils.formatDate(
+                                            DateUtils.getFormattedDateFromEpoch(
                                                 payment.dateOfPayment),
                                             style: TextStyle(
                                                 color: CustomColors.mfinGrey,

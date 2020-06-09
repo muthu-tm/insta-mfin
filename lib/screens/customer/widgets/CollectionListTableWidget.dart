@@ -250,7 +250,7 @@ class CollectionListTableWidget extends StatelessWidget {
             ),
             DataCell(
               Text(
-                DateUtils.formatDate(coll.collectionDate),
+                DateUtils.getFormattedDateFromEpoch(coll.collectionDate),
                 style: TextStyle(
                   color: color,
                 ),
@@ -380,7 +380,8 @@ class CollectionListTableWidget extends StatelessWidget {
         collDetails['collected_from'] = custName;
         collDetails['created_at'] = DateTime.now();
         collDetails['added_by'] = _user.mobileNumber;
-        if (collection.collectionDate.isBefore(DateUtils.getCurrentISTDate()))
+        if (collection.collectionDate <
+            DateUtils.getCurrentUTCDate().millisecondsSinceEpoch)
           collDetails['is_paid_late'] = true;
         else
           collDetails['is_paid_late'] = false;

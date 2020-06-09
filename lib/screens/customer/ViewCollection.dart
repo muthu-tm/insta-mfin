@@ -203,8 +203,8 @@ class ViewCollection extends StatelessWidget {
                       ),
                       title: TextFormField(
                         textAlign: TextAlign.end,
-                        initialValue:
-                            DateUtils.formatDate(collection.collectionDate),
+                        initialValue: DateUtils.getFormattedDateFromEpoch(
+                            collection.collectionDate),
                         decoration: InputDecoration(
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
@@ -261,10 +261,10 @@ class ViewCollection extends StatelessWidget {
                       ),
                     ),
                     (UserController().getCurrentUser().preferences.tableView)
-                        ? CollDetailsTableWidget(payActive, 
-                            _scaffoldKey, collection, custName, payCreatedAt)
-                        : CollectionDetailsWidget(payActive, 
-                            _scaffoldKey, collection, custName, payCreatedAt),
+                        ? CollDetailsTableWidget(payActive, _scaffoldKey,
+                            collection, custName, payCreatedAt)
+                        : CollectionDetailsWidget(payActive, _scaffoldKey,
+                            collection, custName, payCreatedAt),
                   ],
                 ),
               ),
@@ -359,12 +359,13 @@ class ViewCollection extends StatelessWidget {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: _collection.notifyAt,
+      initialDate: DateTime.fromMillisecondsSinceEpoch(_collection.notifyAt),
       firstDate: DateTime(1990),
       lastDate: DateTime.now().add(Duration(days: 10)),
     );
-    if (picked != null && picked != _collection.notifyAt)
-      _collection.notifyAt = picked;
+    if (picked != null &&
+        picked != DateTime.fromMillisecondsSinceEpoch(_collection.notifyAt))
+      _collection.notifyAt = picked.millisecondsSinceEpoch;
     _date.value = TextEditingValue(
       text: DateUtils.formatDate(picked),
     );

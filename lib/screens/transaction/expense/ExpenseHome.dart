@@ -86,8 +86,8 @@ class ExpenseHome extends StatelessWidget {
                           snapshot.data.documents[index].data['amount']),
                       innerBottomWidget: _buildInnerBottomWidget(
                           snapshot.data.documents[index].data['notes'],
-                          snapshot.data.documents[index].data['expense_date']
-                              .toDate(),
+                          DateTime.fromMillisecondsSinceEpoch(snapshot
+                              .data.documents[index].data['expense_date']),
                           categoryName),
                       cellSize: Size(MediaQuery.of(context).size.width, 170),
                       padding: EdgeInsets.only(

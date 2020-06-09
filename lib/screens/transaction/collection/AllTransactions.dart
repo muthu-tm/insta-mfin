@@ -19,7 +19,7 @@ class AllTransactionsBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Payment>>(
-      future: _paymentController.getAllPaymentsByDateRage(_user.primaryFinance,
+      future: _paymentController.getAllPaymentsByDateRange(_user.primaryFinance,
           _user.primaryBranch, _user.primarySubBranch, startDate, endDate),
       builder: (BuildContext context, AsyncSnapshot<List<Payment>> snapshot) {
         Widget widget;

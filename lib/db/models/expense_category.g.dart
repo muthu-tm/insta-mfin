@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'expense_category.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 ExpenseCategory _$ExpenseCategoryFromJson(
     Map<String, dynamic> json) {

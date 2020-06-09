@@ -264,7 +264,8 @@ class CollectionDetailsWidget extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     trailing: Text(
-                      DateUtils.formatDate(_collectionDetails.collectedOn),
+                      DateUtils.getFormattedDateFromEpoch(
+                          _collectionDetails.collectedOn),
                       style: TextStyle(
                           color: CustomColors.mfinWhite,
                           fontFamily: 'Georgia',
@@ -417,7 +418,8 @@ class CollectionDetailsWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   trailing: Text(
-                    DateUtils.formatDate(_collectionDetails.collectedOn),
+                    DateUtils.getFormattedDateFromEpoch(
+                        _collectionDetails.collectedOn),
                     style: TextStyle(
                         color: CustomColors.mfinWhite,
                         fontFamily: 'Georgia',

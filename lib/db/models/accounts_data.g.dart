@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'accounts_data.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 AccountsData _$AccountsDataFromJson(Map<String, dynamic> json) {
   return AccountsData()

@@ -24,7 +24,9 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final User _user = UserController().getCurrentUser();
 
-  Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
+  Map<String, dynamic> collDetails = {
+    'collected_on': DateUtils.getUTCDateEpoch(DateTime.now())
+  };
 
   int totalAmount = 0;
   int status = 0;
@@ -41,7 +43,8 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
     this.totalAmount =
         widget.collection.collectionAmount - widget.collection.getReceived();
 
-    if (widget.collection.collectionDate.isBefore(DateUtils.getCurrentISTDate())) {
+    if (widget.collection.collectionDate <
+        (DateUtils.getCurrentUTCDate().millisecondsSinceEpoch)) {
       setState(() {
         isLatePay = true;
       });
@@ -54,8 +57,6 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Add Collection Details'),
         backgroundColor: CustomColors.mfinBlue,
       ),
@@ -109,7 +110,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                           ),
                         ),
                         title: Text(
-                          DateUtils.formatDate(
+                          DateUtils.getFormattedDateFromEpoch(
                               widget.collection.collectionDate),
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -405,13 +406,13 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
     if (picked != null && picked != DateTime.now())
       setState(
         () {
-          collDetails['collected_on'] = picked;
+          collDetails['collected_on'] = DateUtils.getUTCDateEpoch(picked);
           _date.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
 
-          if (widget.collection.collectionDate
-              .isBefore(collDetails['collected_on'])) {
+          if (widget.collection.collectionDate <
+              (collDetails['collected_on'])) {
             isLatePay = true;
           } else {
             isLatePay = false;

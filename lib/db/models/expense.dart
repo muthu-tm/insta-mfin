@@ -24,7 +24,7 @@ class Expense extends Model {
   @JsonKey(name: 'amount', nullable: true)
   int amount;
   @JsonKey(name: 'expense_date')
-  DateTime expenseDate;
+  int expenseDate;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'notes', defaultValue: '')
@@ -60,7 +60,7 @@ class Expense extends Model {
     this.amount = amount;
   }
 
-  setExpenseDate(DateTime expenseDate) {
+  setExpenseDate(int expenseDate) {
     this.expenseDate = expenseDate;
   }
 
@@ -173,18 +173,41 @@ class Expense extends Model {
     return expenses;
   }
 
-  Future<List<Expense>> getAllExpensesByDateRage(
+
+  Future<List<Expense>> getAllExpensesByDate(
       String financeId,
       String branchName,
       String subBranchName,
-      DateTime start,
-      DateTime end) async {
+      int epoch) async {
+    var expenseDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('expense_date', isEqualTo: epoch)
+        .getDocuments();
+
+    List<Expense> expenses = [];
+    if (expenseDocs.documents.isNotEmpty) {
+      for (var doc in expenseDocs.documents) {
+        expenses.add(Expense.fromJson(doc.data));
+      }
+    }
+
+    return expenses;
+  }
+
+  Future<List<Expense>> getAllExpensesByDateRange(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int start,
+      int end) async {
     var expenseDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('expense_date', isGreaterThanOrEqualTo: start)
-        .where('expense_date', isLessThan: end)
+        .where('expense_date', isLessThanOrEqualTo: end)
         .getDocuments();
 
     List<Expense> expenses = [];

@@ -92,8 +92,8 @@ class JournalEntryHome extends StatelessWidget {
                       innerBottomWidget: _buildInnerBottomWidget(
                           context,
                           snapshot.data.documents[index].data['notes'],
-                          snapshot.data.documents[index].data['journal_date']
-                              .toDate(),
+                          DateTime.fromMillisecondsSinceEpoch(snapshot
+                              .data.documents[index].data['journal_date']),
                           categoryName),
                       cellSize: Size(MediaQuery.of(context).size.width, 170),
                       padding: EdgeInsets.only(

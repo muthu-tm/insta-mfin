@@ -1,4 +1,5 @@
 import 'package:instamfin/db/models/payment.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -6,18 +7,17 @@ class PaymentController {
   Future createPayment(
       int custNumber,
       String paymentID,
-      DateTime dateOfPay,
+      int dateOfPay,
       int tAmount,
       int pAmount,
       int tenure,
       int amountPerColl,
       int collectionMode,
-      DateTime collectionDate,
+      int collectionDate,
       int collectionDay,
       int docCharge,
       int surcharge,
       double iRate,
-      String givenTo,
       String givenBy,
       String notes) async {
     try {
@@ -26,7 +26,6 @@ class PaymentController {
       pay.setCustomerNumber(custNumber);
       pay.setPaymentID(paymentID);
       pay.setDOP(dateOfPay);
-      pay.setGivenTo(givenTo);
       pay.setGivenBy(givenBy);
       pay.setAddedBy(_uc.getCurrentUserID());
       pay.setTotalAmount(tAmount);
@@ -84,15 +83,19 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getAllPaymentsByDateRage(
+  Future<List<Payment>> getAllPaymentsByDateRange(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime startDate,
       DateTime endDate) async {
     try {
-      List<Payment> payments = await Payment().getAllPaymentsByDateRage(
-          financeId, branchName, subBranchName, startDate, endDate);
+      List<Payment> payments = await Payment().getAllPaymentsByDateRange(
+          financeId,
+          branchName,
+          subBranchName,
+          DateUtils.getUTCDateEpoch(startDate),
+          DateUtils.getUTCDateEpoch(endDate));
 
       if (payments == null) {
         return [];

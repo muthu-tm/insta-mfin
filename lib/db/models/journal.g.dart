@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'journal.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 Journal _$JournalFromJson(Map<String, dynamic> json) {
   return Journal()
@@ -19,10 +13,7 @@ Journal _$JournalFromJson(Map<String, dynamic> json) {
     ..isExpense = json['is_expense'] as bool ?? false
     ..addedBy = json['added_by'] as int
     ..notes = json['notes'] as String ?? ''
-    ..journalDate = json['journal_date'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['journal_date'] as Timestamp))
+    ..journalDate = json['journal_date'] as int
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(

@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'sub_branch.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 SubBranch _$SubBranchFromJson(Map<String, dynamic> json) {
   return SubBranch()

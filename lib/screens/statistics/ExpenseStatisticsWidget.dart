@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -22,8 +23,12 @@ class ExpenseStatisticsWidget extends StatelessWidget {
     return Card(
       elevation: 5.0,
       child: FutureBuilder<List<Expense>>(
-        future: Expense().getAllExpensesByDateRage(user.primaryFinance,
-            user.primaryBranch, user.primarySubBranch, fDate, tDate),
+        future: Expense().getAllExpensesByDateRange(
+            user.primaryFinance,
+            user.primaryBranch,
+            user.primarySubBranch,
+            DateUtils.getUTCDateEpoch(fDate),
+            DateUtils.getUTCDateEpoch(tDate)),
         builder: (context, snapshot) {
           Widget widget;
 
@@ -36,9 +41,13 @@ class ExpenseStatisticsWidget extends StatelessWidget {
 
               snapshot.data.forEach((e) {
                 eGroup.update(
-                  e.expenseDate,
-                  (value) => EData(e.expenseDate, value.amount + e.amount),
-                  ifAbsent: () => EData(e.expenseDate, e.amount),
+                  DateTime.fromMillisecondsSinceEpoch(e.expenseDate),
+                  (value) => EData(
+                      DateTime.fromMillisecondsSinceEpoch(e.expenseDate),
+                      value.amount + e.amount),
+                  ifAbsent: () => EData(
+                      DateTime.fromMillisecondsSinceEpoch(e.expenseDate),
+                      e.amount),
                 );
               });
 
