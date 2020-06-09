@@ -6,7 +6,6 @@ import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
 import 'package:instamfin/screens/transaction/expense/ExpenseHome.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionJournalBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionExpenseBuilder.dart';
-import 'package:instamfin/screens/transaction/settings/TransactionSettings.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -247,16 +246,7 @@ class TransactionScreen extends StatelessWidget {
                 elevation: 10.0,
                 borderRadius: BorderRadius.circular(10.0),
                 child: InkWell(
-                  splashColor: CustomColors.mfinButtonGreen,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TransactionSetting(),
-                        settings: RouteSettings(name: '/transactions/settings'),
-                      ),
-                    );
-                  },
+                  onTap: () {},
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.90,
                     height: 80,

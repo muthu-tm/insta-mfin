@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/settings/AppSettings.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
@@ -9,10 +10,8 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class SettingsScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
       drawer: openDrawer(context),
       appBar: topAppBar(context),
@@ -22,12 +21,11 @@ class SettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             new Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly, //change here don't //worked
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 InkWell(
-                  splashColor: CustomColors.mfinButtonGreen, // splash color
+                  splashColor: CustomColors.mfinButtonGreen,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -40,8 +38,11 @@ class SettingsScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      customIconButton(Icons.account_balance, 50.0,
-                          CustomColors.mfinBlue, () {}),
+                      Icon(
+                        Icons.account_balance,
+                        size: 50.0,
+                        color: CustomColors.mfinBlue,
+                      ),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Finance Settings",
@@ -55,7 +56,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  splashColor: CustomColors.mfinButtonGreen, // splash color
+                  splashColor: CustomColors.mfinButtonGreen,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -68,16 +69,11 @@ class SettingsScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      customIconButton(
-                          Icons.account_box, 50.0, CustomColors.mfinBlue, () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserSetting(),
-                            settings: RouteSettings(name: '/settings/user'),
-                          ),
-                        );
-                      }),
+                      Icon(
+                        Icons.account_box,
+                        size: 50.0,
+                        color: CustomColors.mfinBlue,
+                      ),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "Profile Settings",
@@ -93,22 +89,21 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
             Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly, //change here don't //worked
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: <Widget>[
                 InkWell(
-                  splashColor: CustomColors.mfinButtonGreen, // splash color
-                  onTap: () {}, // button pressed
+                  splashColor: CustomColors.mfinButtonGreen,
+                  onTap: () {},
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      customIconButton(Icons.notifications_active, 50.0,
-                          CustomColors.mfinBlue, () {
-                        print("Pressed Notifications");
-                      }),
-                      Padding(padding: EdgeInsets.all(05.0)),
+                      Icon(
+                        Icons.notifications_active,
+                        size: 50.0,
+                        color: CustomColors.mfinBlue,
+                      ),
+                      Padding(padding: EdgeInsets.all(5.0)),
                       Text(
                         "Notifications Settings",
                         style: TextStyle(
@@ -122,15 +117,23 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 InkWell(
                   splashColor: CustomColors.mfinButtonGreen,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AppSettings(),
+                        settings: RouteSettings(name: '/settings/app'),
+                      ),
+                    );
+                  },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      customIconButton(
-                          Icons.phonelink_setup, 50.0, CustomColors.mfinBlue,
-                          () {
-                        print("Pressed App Settings");
-                      }),
+                      Icon(
+                        Icons.phonelink_setup,
+                        size: 50.0,
+                        color: CustomColors.mfinBlue,
+                      ),
                       Padding(padding: EdgeInsets.all(05.0)),
                       Text(
                         "App Settings",
