@@ -8,6 +8,16 @@ class DateUtils {
     return dateFormatter.format(DateTime.now());
   }
 
+  static String getFormattedDateFromEpoch(int epoch) {
+    return dateFormatter.format(DateTime.fromMillisecondsSinceEpoch(epoch));
+  }
+
+  static int getUTCDateEpoch(DateTime dateTime) {
+    return DateTime.utc(
+            dateTime.year, dateTime.month, dateTime.day, 0, 0, 0, 0, 0)
+        .millisecondsSinceEpoch;
+  }
+
   static String formatDate(DateTime dateTime) {
     if (dateTime == null) {
       return "";
@@ -24,10 +34,10 @@ class DateUtils {
     return dateTimeFormatter.format(dateTime);
   }
 
-  static DateTime getCurrentISTDate() {
+  static DateTime getCurrentUTCDate() {
     DateTime thisInstant = DateTime.now();
-    return DateTime(
-        thisInstant.year, thisInstant.month, thisInstant.day, 5, 30, 0, 0, 0);
+    return DateTime.utc(
+        thisInstant.year, thisInstant.month, thisInstant.day, 0, 0, 0, 0, 0);
   }
 
   static DateTime getCurrentDate() {
@@ -45,9 +55,9 @@ class DateUtils {
     return DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0, 0, 0);
   }
 
-  static List<DateTime> getDaysInBeteween(
+  static List<int> getDaysInBeteween(
       DateTime startDate, DateTime endDate) {
-    List<DateTime> days = [];
+    List<int> days = [];
 
     for (int index = 0;
         index <= endDate.difference(startDate).inDays;
@@ -55,8 +65,16 @@ class DateUtils {
       DateTime newDate = startDate.add(Duration(days: index));
 
       days.add(
-          DateTime(newDate.year, newDate.month, newDate.day, 0, 0, 0, 0, 0));
+          DateTime.utc(newDate.year, newDate.month, newDate.day, 0, 0, 0, 0, 0)
+              .millisecondsSinceEpoch);
     }
     return days;
+  }
+
+  static DateTime getUtcDate([DateTime dateTime]) {
+    DateTime utc = DateTime.now().toUtc();
+
+    if (dateTime != null) utc = dateTime.toUtc();
+    return DateTime(utc.year, utc.month, utc.day, 0, 0, 0, 0, 0);
   }
 }

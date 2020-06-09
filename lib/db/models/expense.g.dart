@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'expense.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 Expense _$ExpenseFromJson(Map<String, dynamic> json) {
   return Expense()
@@ -19,10 +13,7 @@ Expense _$ExpenseFromJson(Map<String, dynamic> json) {
     ..amount = json['amount'] as int
     ..addedBy = json['added_by'] as int
     ..notes = json['notes'] as String ?? ''
-    ..expenseDate = json['expense_date'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['expense_date'] as Timestamp))
+    ..expenseDate = json['expense_date'] as int
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(

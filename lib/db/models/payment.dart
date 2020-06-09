@@ -22,7 +22,7 @@ class Payment extends Model {
   @JsonKey(name: 'customer_number', nullable: true)
   int customerNumber;
   @JsonKey(name: 'date_of_payment', nullable: true)
-  DateTime dateOfPayment;
+  int dateOfPayment;
   @JsonKey(name: 'total_amount', nullable: true)
   int totalAmount;
   @JsonKey(name: 'principal_amount', nullable: true)
@@ -42,15 +42,13 @@ class Payment extends Model {
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;
   @JsonKey(name: 'collection_starts_from', nullable: true)
-  DateTime collectionStartsFrom;
+  int collectionStartsFrom;
   @JsonKey(name: 'closed_date', nullable: true)
-  DateTime closedDate;
+  int closedDate;
   @JsonKey(name: 'is_active', nullable: true)
   bool isActive;
   @JsonKey(name: 'given_by', nullable: true)
   String givenBy;
-  @JsonKey(name: 'given_to', nullable: true)
-  String givenTo;
   @JsonKey(name: 'notes', defaultValue: '')
   String notes;
   @JsonKey(name: 'added_by', nullable: true)
@@ -118,11 +116,11 @@ class Payment extends Model {
     this.addedBy = mobileNumber;
   }
 
-  setDOP(DateTime date) {
+  setDOP(int date) {
     this.dateOfPayment = date;
   }
 
-  setCSF(DateTime date) {
+  setCSF(int date) {
     this.collectionStartsFrom = date;
   }
 
@@ -132,10 +130,6 @@ class Payment extends Model {
 
   setGivenBy(String givenBy) {
     this.givenBy = givenBy;
-  }
-
-  setGivenTo(String givenTo) {
-    this.givenTo = givenTo;
   }
 
   setNotes(String notes) {
@@ -365,18 +359,40 @@ class Payment extends Model {
     return payments;
   }
 
-  Future<List<Payment>> getAllPaymentsByDateRage(
+  Future<List<Payment>> getAllPaymentsByDate(
       String financeId,
       String branchName,
       String subBranchName,
-      DateTime start,
-      DateTime end) async {
+      int epoch) async {
+    var paymentDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('date_of_payment', isGreaterThanOrEqualTo: epoch)
+        .getDocuments();
+
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
+    }
+
+    return payments;
+  }
+
+  Future<List<Payment>> getAllPaymentsByDateRange(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int start,
+      int end) async {
     var paymentDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('date_of_payment', isGreaterThanOrEqualTo: start)
-        .where('date_of_payment', isLessThan: end)
+        .where('date_of_payment', isLessThanOrEqualTo: end)
         .getDocuments();
 
     List<Payment> payments = [];

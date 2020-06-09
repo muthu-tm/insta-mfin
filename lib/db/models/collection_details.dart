@@ -7,7 +7,7 @@ part 'collection_details.g.dart';
 class CollectionDetails {
 
   @JsonKey(name: 'collected_on')
-  DateTime collectedOn;
+  int collectedOn;
   @JsonKey(name: 'is_paid_late', defaultValue: false)
   bool isPaidLate;
   @JsonKey(name: 'amount')

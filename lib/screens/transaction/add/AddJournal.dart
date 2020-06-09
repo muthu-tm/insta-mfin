@@ -47,8 +47,6 @@ class _AddJournalState extends State<AddJournal> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('New Journal Entry'),
         backgroundColor: CustomColors.mfinBlue,
       ),

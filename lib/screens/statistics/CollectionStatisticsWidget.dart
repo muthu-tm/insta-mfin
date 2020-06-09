@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +24,7 @@ class CollectionStatisticsWidget extends StatelessWidget {
     return Card(
       elevation: 5.0,
       child: FutureBuilder<List<Collection>>(
-        future: CollectionController().getAllCollectionByDateRage(
+        future: CollectionController().getAllCollectionByDateRange(
             user.primaryFinance,
             user.primaryBranch,
             user.primarySubBranch,
@@ -40,13 +41,17 @@ class CollectionStatisticsWidget extends StatelessWidget {
 
               Map<DateTime, CollData> cGroup = new Map();
               snapshot.data.forEach((p) {
-                p.collections.forEach((c) {
-                  cGroup.update(
-                    c.collectedOn,
-                    (value) => CollData(c.collectedOn, value.amount + c.amount),
-                    ifAbsent: () => CollData(c.collectedOn, c.amount),
-                  );
-                });
+                  p.collections.forEach((c) {
+                    cGroup.update(
+                      DateTime.fromMillisecondsSinceEpoch(c.collectedOn),
+                      (value) => CollData(
+                          DateTime.fromMillisecondsSinceEpoch(c.collectedOn),
+                          value.amount + c.amount),
+                      ifAbsent: () => CollData(
+                          DateTime.fromMillisecondsSinceEpoch(c.collectedOn),
+                          c.amount),
+                    );
+                  });
               });
 
               cGroup.forEach((key, value) {

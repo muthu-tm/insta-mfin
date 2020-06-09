@@ -12,7 +12,7 @@ class JournalController {
       _je.setAmount(amount);
       _je.setCategory(category);
       _je.setIsExpense(isExpense);
-      _je.setJournalDate(date);
+      _je.setJournalDate(DateUtils.getUTCDateEpoch(date));
       _je.setNotes(notes);
 
       await _je.create();
@@ -36,14 +36,19 @@ class JournalController {
   }
 
   Future<List<Journal>> getTodaysExpenses(
-      String financeId, String branchName, String subBranchName) {
+      String financeId, String branchName, String subBranchName) async {
     try {
-      return getAllJournalByDateRage(
+      List<Journal> journals = await Journal().getAllJournalsByDate(
           financeId,
           branchName,
           subBranchName,
-          DateUtils.getCurrentDate(),
-          DateUtils.getCurrentDate().add(Duration(days: 1)));
+          DateUtils.getUTCDateEpoch(DateUtils.getCurrentDate()));
+
+      if (journals == null) {
+        return [];
+      }
+
+      return journals;
     } catch (err) {
       throw err;
     }
@@ -54,12 +59,8 @@ class JournalController {
     try {
       DateTime today = DateUtils.getCurrentDate();
 
-      return getAllJournalByDateRage(
-          financeId,
-          branchName,
-          subBranchName,
-          today.subtract(Duration(days: today.weekday)),
-          today.add(Duration(days: 1)));
+      return getAllJournalByDateRange(financeId, branchName, subBranchName,
+          today.subtract(Duration(days: today.weekday)), today);
     } catch (err) {
       throw err;
     }
@@ -70,27 +71,26 @@ class JournalController {
     try {
       DateTime today = DateUtils.getCurrentDate();
 
-      return getAllJournalByDateRage(
-          financeId,
-          branchName,
-          subBranchName,
-          DateTime(today.year, today.month, 1, 0, 0, 0, 0),
-          today.add(Duration(days: 1)));
+      return getAllJournalByDateRange(financeId, branchName, subBranchName,
+          DateTime(today.year, today.month, 1, 0, 0, 0, 0), today);
     } catch (err) {
       throw err;
     }
   }
 
-  Future<List<Journal>> getAllJournalByDateRage(
+  Future<List<Journal>> getAllJournalByDateRange(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime startDate,
       DateTime endDate) async {
     try {
-      List<Journal> journals = await Journal()
-          .getAllJournalsByDateRage(
-              financeId, branchName, subBranchName, startDate, endDate);
+      List<Journal> journals = await Journal().getAllJournalsByDateRange(
+          financeId,
+          branchName,
+          subBranchName,
+          DateUtils.getUTCDateEpoch(startDate),
+          DateUtils.getUTCDateEpoch(endDate));
 
       if (journals == null) {
         return [];
@@ -139,15 +139,13 @@ class JournalController {
     }
   }
 
-  Future updateJournal(
-      Journal journal, Map<String, dynamic> jeData) async {
+  Future updateJournal(Journal journal, Map<String, dynamic> jeData) async {
     try {
       // Journal _je = Journal();
 
       // await _je.updateJournal(journal, jeData);
 
-      return CustomResponse.getSuccesReponse(
-          "Updated Journal successfully");
+      return CustomResponse.getSuccesReponse("Updated Journal successfully");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

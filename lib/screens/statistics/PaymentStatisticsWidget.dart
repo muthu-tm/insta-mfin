@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -22,8 +23,12 @@ class PaymentStatisticsWidget extends StatelessWidget {
     return Card(
       elevation: 5.0,
       child: FutureBuilder<List<Payment>>(
-        future: Payment().getAllPaymentsByDateRage(user.primaryFinance,
-            user.primaryBranch, user.primarySubBranch, fDate, tDate),
+        future: Payment().getAllPaymentsByDateRange(
+            user.primaryFinance,
+            user.primaryBranch,
+            user.primarySubBranch,
+            DateUtils.getUTCDateEpoch(fDate),
+            DateUtils.getUTCDateEpoch(tDate)),
         builder: (context, snapshot) {
           Widget widget;
 
@@ -35,10 +40,13 @@ class PaymentStatisticsWidget extends StatelessWidget {
               Map<DateTime, PayData> pGroup = new Map();
               snapshot.data.forEach((p) {
                 pGroup.update(
-                  p.dateOfPayment,
-                  (value) =>
-                      PayData(p.dateOfPayment, value.amount + p.totalAmount),
-                  ifAbsent: () => PayData(p.dateOfPayment, p.totalAmount),
+                  DateTime.fromMillisecondsSinceEpoch(p.dateOfPayment),
+                  (value) => PayData(
+                      DateTime.fromMillisecondsSinceEpoch(p.dateOfPayment),
+                      value.amount + p.totalAmount),
+                  ifAbsent: () => PayData(
+                      DateTime.fromMillisecondsSinceEpoch(p.dateOfPayment),
+                      p.totalAmount),
                 );
               });
 

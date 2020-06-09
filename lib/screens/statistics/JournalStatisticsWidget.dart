@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -22,8 +23,12 @@ class JournalStatisticsWidget extends StatelessWidget {
     return Card(
       elevation: 5.0,
       child: FutureBuilder<List<Journal>>(
-        future: Journal().getAllJournalsByDateRage(user.primaryFinance,
-            user.primaryBranch, user.primarySubBranch, fDate, tDate),
+        future: Journal().getAllJournalsByDateRange(
+            user.primaryFinance,
+            user.primaryBranch,
+            user.primarySubBranch,
+            DateUtils.getUTCDateEpoch(fDate),
+            DateUtils.getUTCDateEpoch(tDate)),
         builder: (context, snapshot) {
           Widget widget;
 
@@ -36,9 +41,13 @@ class JournalStatisticsWidget extends StatelessWidget {
 
               snapshot.data.forEach((j) {
                 jGroup.update(
-                  j.journalDate,
-                  (value) => JData(j.journalDate, value.amount + j.amount),
-                  ifAbsent: () => JData(j.journalDate, j.amount),
+                  DateTime.fromMillisecondsSinceEpoch(j.journalDate),
+                  (value) => JData(
+                      DateTime.fromMillisecondsSinceEpoch(j.journalDate),
+                      value.amount + j.amount),
+                  ifAbsent: () => JData(
+                      DateTime.fromMillisecondsSinceEpoch(j.journalDate),
+                      j.amount),
                 );
               });
 

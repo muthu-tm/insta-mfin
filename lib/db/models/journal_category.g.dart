@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'journal_category.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 JournalCategory _$JournalCategoryFromJson(Map<String, dynamic> json) {
   return JournalCategory()

@@ -12,18 +12,9 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
     ..customerNumber = json['customer_number'] as int
-    ..dateOfPayment = json['date_of_payment'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['date_of_payment'] as Timestamp))
-    ..collectionStartsFrom = json['collection_starts_from'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['collection_starts_from'] as Timestamp))
-    ..closedDate = json['closed_date'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['closed_date'] as Timestamp))
+    ..dateOfPayment = json['date_of_payment'] as int
+    ..collectionStartsFrom = json['collection_starts_from'] as int
+    ..closedDate = json['closed_date'] as int
     ..totalAmount = json['total_amount'] as int
     ..principalAmount = json['principal_amount'] as int
     ..docCharge = json['doc_charge'] as int
@@ -35,7 +26,6 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..collectionAmount = json['collection_amount'] as int
     ..isActive = json['is_active'] as bool
     ..givenBy = json['given_by'] as String
-    ..givenTo = json['given_to'] as String
     ..notes = json['notes'] as String ?? ''
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
@@ -72,7 +62,6 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'collection_amount': instance.collectionAmount,
       'is_active': instance.isActive,
       'given_by': instance.givenBy == null ? '' : instance.givenBy,
-      'given_to': instance.givenTo == null ? '' : instance.givenTo,
       'notes': instance.notes == null ? '' : instance.notes,
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,

@@ -323,14 +323,14 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: widget.journal.journalDate,
+      initialDate: DateTime.fromMillisecondsSinceEpoch(widget.journal.journalDate),
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != updatedJournal['journal_date'])
+    if (picked != null && picked != DateTime.fromMillisecondsSinceEpoch(widget.journal.journalDate))
       setState(
         () {
-          updatedJournal['journal_date'] = picked;
+          updatedJournal['journal_date'] = DateUtils.getUTCDateEpoch(picked);
           _date.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );

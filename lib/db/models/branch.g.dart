@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'branch.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 Branch _$BranchFromJson(Map<String, dynamic> json) {
   return Branch()
@@ -19,7 +13,6 @@ Branch _$BranchFromJson(Map<String, dynamic> json) {
     ..contactNumber = json['contact_number'] as String
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
     ..users = (json['users'] as List)?.map((e) => e as int)?.toList()
-    ..displayProfilePath = json['display_profile_path'] as String
     ..dateOfRegistration = json['date_of_registration'] as String
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
@@ -45,9 +38,6 @@ Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
       'email': instance.emailID == null ? '' : instance.emailID,
       'admins': instance.admins == null ? [instance.addedBy] : instance.admins,
       'users': instance.users == null ? [instance.addedBy] : instance.users,
-      'display_profile_path': instance.displayProfilePath == null
-          ? ''
-          : instance.displayProfilePath,
       'date_of_registration': instance.dateOfRegistration == null
           ? ''
           : instance.dateOfRegistration,

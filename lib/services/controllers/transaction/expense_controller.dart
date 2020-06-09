@@ -11,7 +11,7 @@ class ExpenseController {
       _me.setExpenseName(name);
       _me.setAmount(amount);
       _me.setCategory(category);
-      _me.setExpenseDate(date);
+      _me.setExpenseDate(DateUtils.getUTCDateEpoch(date));
       _me.setNotes(notes);
 
       await _me.create();
@@ -36,7 +36,7 @@ class ExpenseController {
   Future<List<Expense>> getTodaysExpenses(
       String financeId, String branchName, String subBranchName) {
     try {
-      return getAllExpenseByDateRage(
+      return getAllExpenseByDateRange(
           financeId,
           branchName,
           subBranchName,
@@ -52,7 +52,7 @@ class ExpenseController {
     try {
       DateTime today = DateUtils.getCurrentDate();
 
-      return getAllExpenseByDateRage(
+      return getAllExpenseByDateRange(
           financeId,
           branchName,
           subBranchName,
@@ -68,7 +68,7 @@ class ExpenseController {
     try {
       DateTime today = DateUtils.getCurrentDate();
 
-      return getAllExpenseByDateRage(
+      return getAllExpenseByDateRange(
           financeId,
           branchName,
           subBranchName,
@@ -79,15 +79,19 @@ class ExpenseController {
     }
   }
 
-  Future<List<Expense>> getAllExpenseByDateRage(
+  Future<List<Expense>> getAllExpenseByDateRange(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime startDate,
       DateTime endDate) async {
     try {
-      List<Expense> expenses = await Expense().getAllExpensesByDateRage(
-          financeId, branchName, subBranchName, startDate, endDate);
+      List<Expense> expenses = await Expense().getAllExpensesByDateRange(
+          financeId,
+          branchName,
+          subBranchName,
+          DateUtils.getUTCDateEpoch(startDate),
+          DateUtils.getUTCDateEpoch(endDate));
 
       if (expenses == null) {
         return [];

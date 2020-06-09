@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'user_preferences.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) {
   return UserPreferences()

@@ -57,15 +57,7 @@ class _ViewPaymentState extends State<ViewPayment> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => AddPayment(customer),
-          //     settings: RouteSettings(name: '/customers/payments/add'),
-          //   ),
-          // );
-        },
+        onPressed: () {},
         label: Text(
           "Add Collection",
           style: TextStyle(
@@ -91,7 +83,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                   children: <Widget>[
                     ListTile(
                       leading: Text(
-                        DateUtils.formatDate(widget.payment.dateOfPayment),
+                        DateUtils.getFormattedDateFromEpoch(
+                            widget.payment.dateOfPayment),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -477,7 +470,6 @@ class _ViewPaymentState extends State<ViewPayment> {
           .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
       print("Unable to Close Payment: " + result['message']);
     } else {
-      print("Payment Closed successfully");
       Navigator.pop(context);
     }
   }

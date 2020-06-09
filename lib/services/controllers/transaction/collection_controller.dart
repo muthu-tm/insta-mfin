@@ -117,14 +117,14 @@ class CollectionController {
     }
   }
 
-  Future<List<Collection>> getAllCollectionByDateRage(
+  Future<List<Collection>> getAllCollectionByDateRange(
       String financeId,
       String branchName,
       String subBranchName,
       DateTime startDate,
       DateTime endDate) async {
     try {
-      List<DateTime> dates = DateUtils.getDaysInBeteween(startDate, endDate);
+      List<int> dates = DateUtils.getDaysInBeteween(startDate, endDate);
 
       List<Collection> collections = [];
       if (dates.length > 10) {
@@ -132,9 +132,9 @@ class CollectionController {
         int limit = 10;
 
         for (int i = 0; i + limit <= dates.length; i = i + limit) {
-          Iterable<DateTime> rDates = dates.getRange(i, i + limit);
+          Iterable<int> rDates = dates.getRange(i, i + limit);
           List<Collection> colls = await Collection()
-              .getAllCollectionsByDateRage(
+              .getAllCollectionsByDateRange(
                   financeId, branchName, subBranchName, rDates.toList());
 
           if (colls != null) {
@@ -143,10 +143,10 @@ class CollectionController {
         }
 
         if ((dates.length % 10) != 0) {
-          Iterable<DateTime> rDates =
+          Iterable<int> rDates =
               dates.getRange(dates.length - (dates.length % 10), dates.length);
           List<Collection> colls = await Collection()
-              .getAllCollectionsByDateRage(
+              .getAllCollectionsByDateRange(
                   financeId, branchName, subBranchName, rDates.toList());
 
           if (colls != null) {
@@ -155,7 +155,7 @@ class CollectionController {
 
         }
       } else {
-        List<Collection> colls = await Collection().getAllCollectionsByDateRage(
+        List<Collection> colls = await Collection().getAllCollectionsByDateRange(
             financeId, branchName, subBranchName, dates);
 
         if (colls != null) {
@@ -199,7 +199,7 @@ class CollectionController {
     String subBranchName,
     int custNumber,
     DateTime createdAt,
-    DateTime collDate,
+    int collDate,
     bool isAdd,
     Map<String, dynamic> collectionDetails,
   ) async {

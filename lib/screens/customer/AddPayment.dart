@@ -49,8 +49,8 @@ class _AddPaymentState extends State<AddPayment> {
   TextEditingController _date = new TextEditingController();
   TextEditingController _collectionDate = new TextEditingController();
 
-  DateTime selectedDate = DateTime.now();
-  DateTime collectionDate = DateTime.now().add(Duration(days: 1));
+  int selectedDate = DateUtils.getUTCDateEpoch(DateTime.now());
+  int collectionDate = DateUtils.getUTCDateEpoch(DateTime.now().add(Duration(days: 1)));
   int totalAmount = 0;
   int principalAmount = 0;
   int docCharge = 0;
@@ -58,7 +58,6 @@ class _AddPaymentState extends State<AddPayment> {
   int tenure = 0;
   double intrestRate = 0.0;
   int collectionAmount = 0;
-  String givenTo = '';
   String givenBy = '';
   String notes = '';
 
@@ -66,10 +65,7 @@ class _AddPaymentState extends State<AddPayment> {
   void initState() {
     super.initState();
     this.getCollectionTemp();
-    givenTo = widget.customer.name;
     givenBy = _user.name;
-
-    _tAmountController.addListener(_tAmountListener);
   }
 
   @override
@@ -78,8 +74,6 @@ class _AddPaymentState extends State<AddPayment> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Add Payment'),
         backgroundColor: CustomColors.mfinBlue,
       ),
@@ -202,43 +196,6 @@ class _AddPaymentState extends State<AddPayment> {
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "GIVEN TO:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.text,
-                        initialValue: givenTo,
-                        decoration: InputDecoration(
-                          hintText: 'Amount Given To',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (givenTo) {
-                          if (givenTo.trim().isEmpty) {
-                            return "Fill the person name who received the amount";
-                          }
-
-                          this.givenTo = givenTo.trim();
-                          return null;
-                        },
                       ),
                     ),
                     ListTile(
@@ -583,7 +540,6 @@ class _AddPaymentState extends State<AddPayment> {
                         ),
                       ),
                       title: new TextFormField(
-                        // controller: _tAmountController,
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.number,
                         initialValue: totalAmount.toString(),
@@ -841,13 +797,6 @@ class _AddPaymentState extends State<AddPayment> {
     );
   }
 
-  final _tAmountController = TextEditingController();
-  void _tAmountListener() {
-    setState(() {
-      _tAmountController.text = this.totalAmount.toString();
-    });
-  }
-
   _setSelectedTemp(String newVal) {
     if (tempList != null && newVal != "0") {
       selectedTemp = tempList[int.parse(newVal) - 1];
@@ -896,14 +845,14 @@ class _AddPaymentState extends State<AddPayment> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.now(),
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null)
       setState(
         () {
-          selectedDate = picked;
+          selectedDate = DateUtils.getUTCDateEpoch(picked);
           _date.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
@@ -914,14 +863,14 @@ class _AddPaymentState extends State<AddPayment> {
   Future<Null> _selectCollectionDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: collectionDate,
+      initialDate: DateTime.now().add(Duration(days: 1)),
       firstDate: DateTime(1990),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
-    if (picked != null && picked != collectionDate)
+    if (picked != null)
       setState(
         () {
-          collectionDate = picked;
+          collectionDate = DateUtils.getUTCDateEpoch(picked);
           _collectionDate.value = TextEditingValue(
             text: DateUtils.formatDate(picked),
           );
@@ -943,12 +892,11 @@ class _AddPaymentState extends State<AddPayment> {
           tenure,
           collectionAmount,
           int.parse(selectedCollectionModeID),
-          DateUtils.getFormattedISTDate(collectionDate),
+          collectionDate,
           int.parse(selectedCollectionDayID),
           docCharge,
           surCharge,
           intrestRate,
-          givenTo,
           givenBy,
           notes);
 

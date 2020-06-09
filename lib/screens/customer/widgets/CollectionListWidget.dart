@@ -137,7 +137,7 @@ class CollectionListWidget extends StatelessWidget {
                                         SizedBox(
                                           height: 30,
                                           child: Text(
-                                            DateUtils.formatDate(
+                                            DateUtils.getFormattedDateFromEpoch(
                                                 collection.collectionDate),
                                             style: TextStyle(
                                                 color: CustomColors.mfinWhite,
@@ -380,7 +380,7 @@ class CollectionListWidget extends StatelessWidget {
       CollectionController _cc = CollectionController();
       User _user = UserController().getCurrentUser();
       Map<String, dynamic> collDetails = {
-        'collected_on': DateUtils.getFormattedDate(DateTime.now())
+        'collected_on': DateUtils.getUTCDateEpoch(DateTime.now())
       };
       collDetails['amount'] =
           collection.collectionAmount - collection.getReceived();
@@ -389,7 +389,8 @@ class CollectionListWidget extends StatelessWidget {
       collDetails['collected_from'] = custName;
       collDetails['created_at'] = DateTime.now();
       collDetails['added_by'] = _user.mobileNumber;
-      if (collection.collectionDate.isBefore(DateUtils.getCurrentISTDate()))
+      if (collection.collectionDate <
+          (DateUtils.getCurrentUTCDate().millisecondsSinceEpoch))
         collDetails['is_paid_late'] = true;
       else
         collDetails['is_paid_late'] = false;

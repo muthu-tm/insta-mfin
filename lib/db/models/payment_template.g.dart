@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'payment_template.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 PaymentTemplate _$PaymentTemplateFromJson(Map<String, dynamic> json) {
   return PaymentTemplate()

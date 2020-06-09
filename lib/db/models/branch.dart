@@ -25,8 +25,6 @@ class Branch {
   List<int> admins;
   @JsonKey(name: 'users', nullable: true)
   List<int> users;
-  @JsonKey(name: 'display_profile_path', nullable: true)
-  String displayProfilePath;
   @JsonKey(name: 'date_of_registration', nullable: true)
   String dateOfRegistration;
   @JsonKey(name: 'added_by', nullable: true)
@@ -68,10 +66,6 @@ class Branch {
 
   setDOR(String date) {
     this.dateOfRegistration = date;
-  }
-
-  setDisplayProfilePath(String profilePath) {
-    this.displayProfilePath = profilePath;
   }
 
   setAddress(Address address) {

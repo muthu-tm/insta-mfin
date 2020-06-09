@@ -1,17 +1,8 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'collection_details.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 CollectionDetails _$CollectionDetailsFromJson(Map<String, dynamic> json) {
   return CollectionDetails()
-    ..collectedOn = json['collected_on'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['collected_on'] as Timestamp))
+    ..collectedOn = json['collected_on'] as int
     ..isPaidLate = json['is_paid_late'] as bool ?? false
     ..amount = json['amount'] as int
     ..collectedFrom = json['collected_from'] as String ?? ''

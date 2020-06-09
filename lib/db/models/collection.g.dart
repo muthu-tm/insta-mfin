@@ -13,23 +13,10 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
     ..subBranchName = json['sub_branch_name'] as String
     ..customerNumber = json['customer_number'] as int
     ..collectionNumber = json['collection_number'] as int
-    ..collectionDate = json['collection_date'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['collection_date'] as Timestamp))
-    ..notifyAt = json['notify_at'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['notify_at'] as Timestamp))
-    ..collectionDate = json['collection_date'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['collection_date'] as Timestamp))
+    ..collectionDate = json['collection_date'] as int
+    ..notifyAt = json['notify_at'] as int
     ..collectedOn = (json['collected_on'] as List)
-            ?.map((e) => e == null
-                ? null
-                : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(
-                    e as Timestamp)))
+            ?.map((e) => e == null ? null : e as int)
             ?.toList() ??
         []
     ..collectionAmount = json['collection_amount'] as int
@@ -41,10 +28,12 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
     ..type = json['type'] as int
     ..createdAt = json['created_at'] == null
         ? null
-        : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
-    ..updatedAt = json['updated_at'] == null 
-        ? null 
-        : DateTime.fromMillisecondsSinceEpoch(_getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
+    ..updatedAt = json['updated_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
 }
 
 int _getMillisecondsSinceEpoch(Timestamp ts) {

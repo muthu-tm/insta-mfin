@@ -25,7 +25,7 @@ class Journal extends Model {
   @JsonKey(name: 'amount', nullable: true)
   int amount;
   @JsonKey(name: 'journal_date')
-  DateTime journalDate;
+  int journalDate;
   @JsonKey(name: 'is_expense', defaultValue: false)
   bool isExpense;
   @JsonKey(name: 'added_by', nullable: true)
@@ -63,7 +63,7 @@ class Journal extends Model {
     this.amount = amount;
   }
 
-  setJournalDate(DateTime journalDate) {
+  setJournalDate(int journalDate) {
     this.journalDate = journalDate;
   }
 
@@ -186,18 +186,41 @@ class Journal extends Model {
     return expenses;
   }
 
-  Future<List<Journal>> getAllJournalsByDateRage(
+
+  Future<List<Journal>> getAllJournalsByDate(
       String financeId,
       String branchName,
       String subBranchName,
-      DateTime start,
-      DateTime end) async {
+      int epoch) async {
+    var journalDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('journal_date', isEqualTo: epoch)
+        .getDocuments();
+
+    List<Journal> journals = [];
+    if (journalDocs.documents.isNotEmpty) {
+      for (var doc in journalDocs.documents) {
+        journals.add(Journal.fromJson(doc.data));
+      }
+    }
+
+    return journals;
+  }
+
+  Future<List<Journal>> getAllJournalsByDateRange(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int start,
+      int end) async {
     var journalDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('journal_date', isGreaterThanOrEqualTo: start)
-        .where('journal_date', isLessThan: end)
+        .where('journal_date', isLessThanOrEqualTo: end)
         .getDocuments();
 
     List<Journal> journals = [];

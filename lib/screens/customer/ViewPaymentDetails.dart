@@ -8,11 +8,7 @@ class ViewPaymentDetails extends StatelessWidget {
 
   final Payment payment;
 
-  final List<String> _tempCollectionMode = [
-    "Daily",
-    "Weekly",
-    "Monthly"
-  ];
+  final List<String> _tempCollectionMode = ["Daily", "Weekly", "Monthly"];
 
   final List<String> _tempCollectionDays = [
     "Sunday",
@@ -103,8 +99,8 @@ class ViewPaymentDetails extends StatelessWidget {
                           title: GestureDetector(
                             child: TextFormField(
                               textAlign: TextAlign.end,
-                              initialValue:
-                                  DateUtils.formatDate(payment.dateOfPayment),
+                              initialValue: DateUtils.getFormattedDateFromEpoch(
+                                  payment.dateOfPayment),
                               decoration: InputDecoration(
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
@@ -120,36 +116,6 @@ class ViewPaymentDetails extends StatelessWidget {
                               enabled: false,
                               autofocus: false,
                             ),
-                          ),
-                        ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 70,
-                            child: Text(
-                              "GIVEN TO:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.givenTo,
-                            decoration: InputDecoration(
-                              hintText: 'Amount Given To',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
                           ),
                         ),
                         ListTile(
@@ -228,7 +194,8 @@ class ViewPaymentDetails extends StatelessWidget {
                           ),
                           title: TextFormField(
                             textAlign: TextAlign.end,
-                            initialValue: _tempCollectionMode[selectedCollectionModeID],
+                            initialValue:
+                                _tempCollectionMode[selectedCollectionModeID],
                             decoration: InputDecoration(
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
@@ -244,163 +211,175 @@ class ViewPaymentDetails extends StatelessWidget {
                         ),
                         selectedCollectionModeID == 0
                             ? ListTile(
-                          leading: SizedBox(
-                            width: 100,
-                            child: Text(
-                              "COLLECTION DATE:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: GestureDetector(
-                            child: AbsorbPointer(
-                              child: TextFormField(
-                                keyboardType: TextInputType.datetime,
-                                initialValue: DateUtils.formatDate(payment.collectionStartsFrom),
-                                decoration: InputDecoration(
-                                  hintText: 'Date of Collection',
-                                  labelStyle: TextStyle(
-                                    color: CustomColors.mfinBlue,
-                                  ),
-                                  contentPadding: new EdgeInsets.symmetric(
-                                      vertical: 3.0, horizontal: 3.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors.mfinWhite)),
-                                  fillColor: CustomColors.mfinWhite,
-                                  filled: true,
-                                  suffixIcon: Icon(
-                                    Icons.date_range,
-                                    size: 35,
-                                    color: CustomColors.mfinBlue,
+                                leading: SizedBox(
+                                  width: 100,
+                                  child: Text(
+                                    "COLLECTION DATE:",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontFamily: "Georgia",
+                                      fontWeight: FontWeight.bold,
+                                      color: CustomColors.mfinBlue,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        )
-                            : Container(),
-                        selectedCollectionModeID == 1
-                            ? Column(
-                          children: <Widget>[
-                            ListTile(
-                              leading: SizedBox(
-                                width: 100,
-                                child: Text(
-                                  "COLLECTION DATE:",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontFamily: "Georgia",
-                                    fontWeight: FontWeight.bold,
-                                    color: CustomColors.mfinBlue,
-                                  ),
-                                ),
-                              ),
-                              title: GestureDetector(
-                                child: AbsorbPointer(
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.datetime,
-                                    initialValue: DateUtils.formatDate(payment.collectionStartsFrom),
-                                    decoration: InputDecoration(
-                                      hintText: 'Date of Collection',
-                                      labelStyle: TextStyle(
-                                        color: CustomColors.mfinBlue,
-                                      ),
-                                      contentPadding:
-                                      new EdgeInsets.symmetric(
-                                          vertical: 3.0, horizontal: 3.0),
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: CustomColors.mfinWhite)),
-                                      fillColor: CustomColors.mfinWhite,
-                                      filled: true,
-                                      suffixIcon: Icon(
-                                        Icons.date_range,
-                                        size: 35,
-                                        color: CustomColors.mfinBlue,
+                                title: GestureDetector(
+                                  child: AbsorbPointer(
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.datetime,
+                                      initialValue:
+                                          DateUtils.getFormattedDateFromEpoch(
+                                              payment.collectionStartsFrom),
+                                      decoration: InputDecoration(
+                                        hintText: 'Date of Collection',
+                                        labelStyle: TextStyle(
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        contentPadding:
+                                            new EdgeInsets.symmetric(
+                                                vertical: 3.0, horizontal: 3.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        suffixIcon: Icon(
+                                          Icons.date_range,
+                                          size: 35,
+                                          color: CustomColors.mfinBlue,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            ListTile(
-                              leading: SizedBox(
-                                width: 100,
-                                child: Text(
-                                  "DAY:",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontFamily: "Georgia",
-                                    fontWeight: FontWeight.bold,
-                                    color: CustomColors.mfinBlue,
+                              )
+                            : Container(),
+                        selectedCollectionModeID == 1
+                            ? Column(
+                                children: <Widget>[
+                                  ListTile(
+                                    leading: SizedBox(
+                                      width: 100,
+                                      child: Text(
+                                        "COLLECTION DATE:",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "Georgia",
+                                          fontWeight: FontWeight.bold,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                      ),
+                                    ),
+                                    title: GestureDetector(
+                                      child: AbsorbPointer(
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.datetime,
+                                          initialValue: DateUtils
+                                              .getFormattedDateFromEpoch(
+                                                  payment.collectionStartsFrom),
+                                          decoration: InputDecoration(
+                                            hintText: 'Date of Collection',
+                                            labelStyle: TextStyle(
+                                              color: CustomColors.mfinBlue,
+                                            ),
+                                            contentPadding:
+                                                new EdgeInsets.symmetric(
+                                                    vertical: 3.0,
+                                                    horizontal: 3.0),
+                                            border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: CustomColors
+                                                        .mfinWhite)),
+                                            fillColor: CustomColors.mfinWhite,
+                                            filled: true,
+                                            suffixIcon: Icon(
+                                              Icons.date_range,
+                                              size: 35,
+                                              color: CustomColors.mfinBlue,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              title: TextFormField(
-                                textAlign: TextAlign.end,
-                                initialValue: _tempCollectionDays[selectedCollectionDayID],
-                                decoration: InputDecoration(
-                                  fillColor: CustomColors.mfinWhite,
-                                  filled: true,
-                                  contentPadding: new EdgeInsets.symmetric(
-                                      vertical: 3.0, horizontal: 3.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors.mfinWhite)),
-                                ),
-                                enabled: false,
-                                autofocus: false,
-                              ),
-                            ),
-                          ],
-                        )
+                                  ListTile(
+                                    leading: SizedBox(
+                                      width: 100,
+                                      child: Text(
+                                        "DAY:",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "Georgia",
+                                          fontWeight: FontWeight.bold,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                      ),
+                                    ),
+                                    title: TextFormField(
+                                      textAlign: TextAlign.end,
+                                      initialValue: _tempCollectionDays[
+                                          selectedCollectionDayID],
+                                      decoration: InputDecoration(
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        contentPadding:
+                                            new EdgeInsets.symmetric(
+                                                vertical: 3.0, horizontal: 3.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                      ),
+                                      enabled: false,
+                                      autofocus: false,
+                                    ),
+                                  ),
+                                ],
+                              )
                             : Container(),
                         selectedCollectionModeID == 2
                             ? ListTile(
-                          leading: SizedBox(
-                            width: 100,
-                            child: Text(
-                              "COLLECTION DATE:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: GestureDetector(
-                            child: AbsorbPointer(
-                              child: TextFormField(
-                                keyboardType: TextInputType.datetime,
-                                initialValue: DateUtils.formatDate(payment.collectionStartsFrom),
-                                decoration: InputDecoration(
-                                  hintText: 'Date of Collection',
-                                  labelStyle: TextStyle(
-                                    color: CustomColors.mfinBlue,
-                                  ),
-                                  contentPadding: new EdgeInsets.symmetric(
-                                      vertical: 3.0, horizontal: 3.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors.mfinWhite)),
-                                  fillColor: CustomColors.mfinWhite,
-                                  filled: true,
-                                  suffixIcon: Icon(
-                                    Icons.date_range,
-                                    size: 35,
-                                    color: CustomColors.mfinBlue,
+                                leading: SizedBox(
+                                  width: 100,
+                                  child: Text(
+                                    "COLLECTION DATE:",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontFamily: "Georgia",
+                                      fontWeight: FontWeight.bold,
+                                      color: CustomColors.mfinBlue,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        )
+                                title: GestureDetector(
+                                  child: AbsorbPointer(
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.datetime,
+                                      initialValue:
+                                          DateUtils.getFormattedDateFromEpoch(
+                                              payment.collectionStartsFrom),
+                                      decoration: InputDecoration(
+                                        hintText: 'Date of Collection',
+                                        labelStyle: TextStyle(
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        contentPadding:
+                                            new EdgeInsets.symmetric(
+                                                vertical: 3.0, horizontal: 3.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        suffixIcon: Icon(
+                                          Icons.date_range,
+                                          size: 35,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
                             : Container(),
                       ],
                     ),
