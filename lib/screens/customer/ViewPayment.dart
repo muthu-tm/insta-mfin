@@ -32,13 +32,13 @@ class _ViewPaymentState extends State<ViewPayment> {
   String emptyText = "No Collections available for this Payment!";
   Color textColor = CustomColors.mfinBlue;
   bool fetchAll = true;
-  bool isActive = false;
+  bool isSettled = false;
   List<int> collStatus = [];
 
   @override
   void initState() {
     super.initState();
-    isActive = widget.payment.isActive;
+    isSettled = widget.payment.isSettled;
     collStatusList.add(new CustomRadioModel(true, '', ''));
     collStatusList.add(new CustomRadioModel(false, '', ''));
     collStatusList.add(new CustomRadioModel(false, '', ''));
@@ -296,7 +296,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         ),
                       ),
                     ),
-                    isActive
+                    !isSettled
                         ? Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Material(
@@ -308,12 +308,12 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 icon: Icon(Icons.close,
                                     color: CustomColors.mfinAlertRed),
                                 label: Text(
-                                  "Close Payment",
+                                  "DO SETTLEMENT",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () {
                                   CustomDialogs.confirm(context, "WARNING",
-                                      "You cannot edit after CLOSING the Payment. ",
+                                      "You cannot edit after the Payment SETTLEMENT.",
                                       () {
                                     _submit();
                                   }, () {
@@ -460,8 +460,8 @@ class _ViewPaymentState extends State<ViewPayment> {
     CustomDialogs.actionWaiting(context, " Closing Payment");
     PaymentController _pc = PaymentController();
     var result = await _pc.updatePayment(widget.payment, {
-      'is_active': false,
-      'closed_date': DateUtils.getFormattedDate(DateTime.now())
+      'is_settled': true,
+      'closed_date': DateUtils.getUTCDateEpoch(DateTime.now())
     });
 
     if (!result['is_success']) {

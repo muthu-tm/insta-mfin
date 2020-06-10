@@ -33,8 +33,6 @@ class Collection {
   int type;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
-  @JsonKey(name: 'updated_at', nullable: true)
-  DateTime updatedAt;
 
   Collection();
 
@@ -210,7 +208,6 @@ class Collection {
   Future<Collection> create(String financeId, String branchName,
       String subBranchName, int number, DateTime createdAt) async {
     this.createdAt = DateTime.now();
-    this.updatedAt = DateTime.now();
     this.financeID = financeId;
     this.branchName = branchName;
     this.subBranchName = subBranchName;
@@ -249,7 +246,7 @@ class Collection {
     return collections;
   }
 
-  Stream<QuerySnapshot> streamCollectionsByStatus(String financeId,
+  Stream<QuerySnapshot> streamCollectionsForPayment(String financeId,
       String branchName, String subBranchName, int number, DateTime createdAt) {
     return getCollectionRef(
             financeId, branchName, subBranchName, number, createdAt)

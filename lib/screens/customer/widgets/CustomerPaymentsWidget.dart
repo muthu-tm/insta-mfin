@@ -51,10 +51,10 @@ class CustomerPaymentsWidget extends StatelessWidget {
                         color: CustomColors.mfinAlertRed,
                         icon: Icons.delete_forever,
                         onTap: () async {
-                          if (!payment.isActive) {
+                          if (payment.isSettled) {
                             _scaffoldKey.currentState
                                 .showSnackBar(CustomSnackBar.errorSnackBar(
-                              "You cannot Edit 'CLOSED' Payment!}",
+                              "You cannot Edit already 'SETTLED' Payment!}",
                               3,
                             ));
                           } else {
@@ -169,10 +169,10 @@ class CustomerPaymentsWidget extends StatelessWidget {
                         color: CustomColors.mfinGrey,
                         icon: Icons.edit,
                         onTap: () async {
-                          if (!payment.isActive) {
+                          if (payment.isSettled) {
                             _scaffoldKey.currentState
                                 .showSnackBar(CustomSnackBar.errorSnackBar(
-                              "You cannot Edit 'CLOSED' Payment!}",
+                              "You cannot Edit already 'SETTLED' Payment!}",
                               3,
                             ));
                           } else {

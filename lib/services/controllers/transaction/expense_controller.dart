@@ -5,13 +5,13 @@ import 'package:instamfin/services/utils/response_utils.dart';
 
 class ExpenseController {
   Future createNewExpense(String name, int amount, ExpenseCategory category,
-      DateTime date, String notes) async {
+      int date, String notes) async {
     try {
       Expense _me = Expense();
       _me.setExpenseName(name);
       _me.setAmount(amount);
       _me.setCategory(category);
-      _me.setExpenseDate(DateUtils.getUTCDateEpoch(date));
+      _me.setExpenseDate(date);
       _me.setNotes(notes);
 
       await _me.create();

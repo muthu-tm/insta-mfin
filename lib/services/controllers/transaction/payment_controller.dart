@@ -35,7 +35,7 @@ class PaymentController {
       pay.setSurcharge(surcharge);
       pay.setInterestRate(iRate);
       pay.setNotes(notes);
-      pay.setIsActive(true);
+      pay.setIsSettled(false);
       pay.setCSF(collectionDate);
       pay.setCollectionDay(collectionDay);
 

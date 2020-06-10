@@ -150,7 +150,7 @@ class Customer extends Model {
 
       for (var paysnap in allSnap.documents) {
         Payment pay = Payment.fromJson(paysnap.data);
-        if (pay.isActive) {
+        if (!pay.isSettled) {
           List<int> aDetails = await pay.getAmountDetails();
 
           if (aDetails[1] > 0) {

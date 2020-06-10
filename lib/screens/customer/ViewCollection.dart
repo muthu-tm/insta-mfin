@@ -12,10 +12,10 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class ViewCollection extends StatelessWidget {
-  ViewCollection(this.payActive, this._collection, this.custName,
+  ViewCollection(this.paySettled, this._collection, this.custName,
       this.payCreatedAt, this.iconColor);
 
-  final bool payActive;
+  final bool paySettled;
   final Collection _collection;
   final String custName;
   final DateTime payCreatedAt;
@@ -261,9 +261,9 @@ class ViewCollection extends StatelessWidget {
                       ),
                     ),
                     (UserController().getCurrentUser().preferences.tableView)
-                        ? CollDetailsTableWidget(payActive, _scaffoldKey,
+                        ? CollDetailsTableWidget(paySettled, _scaffoldKey,
                             collection, custName, payCreatedAt)
-                        : CollectionDetailsWidget(payActive, _scaffoldKey,
+                        : CollectionDetailsWidget(paySettled, _scaffoldKey,
                             collection, custName, payCreatedAt),
                   ],
                 ),
@@ -305,7 +305,7 @@ class ViewCollection extends StatelessWidget {
           key: _scaffoldKey,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: payActive
+          floatingActionButton: !paySettled
               ? FloatingActionButton.extended(
                   onPressed: () {
                     _submit(context);
