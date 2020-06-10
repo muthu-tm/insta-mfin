@@ -24,7 +24,7 @@ class ExpenseController {
   }
 
   Future<List<Expense>> getAllExpenses(
-      String financeId, String branchName, String subBranchName) {
+      String financeId, String branchName, String subBranchName) async {
     try {
       Expense _me = Expense();
       return _me.getAllExpenses(financeId, branchName, subBranchName);
@@ -34,14 +34,19 @@ class ExpenseController {
   }
 
   Future<List<Expense>> getTodaysExpenses(
-      String financeId, String branchName, String subBranchName) {
+      String financeId, String branchName, String subBranchName) async {
     try {
-      return getAllExpenseByDateRange(
+      List<Expense> expenses = await Expense().getAllExpensesByDate(
           financeId,
           branchName,
           subBranchName,
-          DateUtils.getCurrentDate(),
-          DateUtils.getCurrentDate().add(Duration(days: 1)));
+          DateUtils.getUTCDateEpoch(DateUtils.getCurrentDate()));
+
+      if (expenses == null) {
+        return [];
+      }
+
+      return expenses;
     } catch (err) {
       throw err;
     }

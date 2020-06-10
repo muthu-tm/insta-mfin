@@ -55,7 +55,7 @@ class JournalController {
   }
 
   Future<List<Journal>> getThisWeekExpenses(
-      String financeId, String branchName, String subBranchName) {
+      String financeId, String branchName, String subBranchName) async {
     try {
       DateTime today = DateUtils.getCurrentDate();
 
@@ -67,7 +67,7 @@ class JournalController {
   }
 
   Future<List<Journal>> getThisMonthExpenses(
-      String financeId, String branchName, String subBranchName) {
+      String financeId, String branchName, String subBranchName) async {
     try {
       DateTime today = DateUtils.getCurrentDate();
 

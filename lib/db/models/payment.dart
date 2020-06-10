@@ -384,7 +384,7 @@ class Payment extends Model {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('date_of_payment', isGreaterThanOrEqualTo: epoch)
+        .where('date_of_payment', isEqualTo: epoch)
         .getDocuments();
 
     List<Payment> payments = [];

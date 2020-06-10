@@ -173,7 +173,6 @@ class Expense extends Model {
     return expenses;
   }
 
-
   Future<List<Expense>> getAllExpensesByDate(
       String financeId,
       String branchName,

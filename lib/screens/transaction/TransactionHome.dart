@@ -4,6 +4,7 @@ import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
 import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
 import 'package:instamfin/screens/transaction/expense/ExpenseHome.dart';
+import 'package:instamfin/screens/transaction/settings/TransactionCollectionBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionJournalBuilder.dart';
 import 'package:instamfin/screens/transaction/settings/TransactionExpenseBuilder.dart';
 import 'package:instamfin/screens/app/appBar.dart';
@@ -46,7 +47,7 @@ class TransactionScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.33,
-                        height: 140,
+                        height: 110,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,7 +62,7 @@ class TransactionScreen extends StatelessWidget {
                             Text(
                               "Collection Book",
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 14,
                                 color: CustomColors.mfinWhite,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -76,18 +77,10 @@ class TransactionScreen extends StatelessWidget {
                       elevation: 10.0,
                       borderRadius: BorderRadius.circular(10.0),
                       child: Container(
-                          width: MediaQuery.of(context).size.width * 0.57,
-                          height: 140,
-                          child: Text(
-                            "TODO",
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: CustomColors.mfinAlertRed,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                          //TransactionCollectionBuilder(),
-                          ),
+                        width: MediaQuery.of(context).size.width * 0.57,
+                        height: 110,
+                        child: TransactionCollectionBuilder(),
+                      ),
                     ),
                   ],
                 ),
@@ -126,7 +119,7 @@ class TransactionScreen extends StatelessWidget {
                                       ? "This Week"
                                       : "This Month",
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 14,
                                 color: CustomColors.mfinWhite,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -142,7 +135,7 @@ class TransactionScreen extends StatelessWidget {
                               "Expenses",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 16,
                                 color: CustomColors.mfinAlertRed,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -199,7 +192,7 @@ class TransactionScreen extends StatelessWidget {
                                       ? "This Week"
                                       : "This Month",
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 14,
                                 color: CustomColors.mfinWhite,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -215,7 +208,7 @@ class TransactionScreen extends StatelessWidget {
                               "Journals",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 16,
                                 color: CustomColors.mfinWhite,
                                 fontWeight: FontWeight.bold,
                               ),
