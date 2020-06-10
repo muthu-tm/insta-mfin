@@ -37,6 +37,9 @@ dependencies:
   folding_cell: ^0.1.2
   shared_preferences: ^0.5.7+3
   syncfusion_flutter_charts: ^18.1.55
+  syncfusion_flutter_pdf: ^18.1.56-beta
+  open_file: ^3.0.1
+  path_provider: ^1.6.10
 
 dev_dependencies:
   build_runner: ^1.8.0

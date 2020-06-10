@@ -13,6 +13,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/pdf/payment_receipt.dart';
 
 class ViewPayment extends StatefulWidget {
   ViewPayment(this.payment, this.custName);
@@ -122,35 +123,15 @@ class _ViewPaymentState extends State<ViewPayment> {
                           ],
                         ),
                       ),
-                      trailing: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: '${widget.payment.totalAmount}',
-                          style: TextStyle(
-                            color: CustomColors.mfinPositiveGreen,
-                            fontFamily: 'Georgia',
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: ' / ',
-                              style: TextStyle(
-                                color: CustomColors.mfinBlack,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '${widget.payment.principalAmount}',
-                              style: TextStyle(
-                                color: CustomColors.mfinAlertRed,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.print,
+                          size: 35.0,
+                          color: CustomColors.mfinBlack,
                         ),
+                        onPressed: () async {
+                          await PayReceipt().generateInvoice();
+                        },
                       ),
                     ),
                     new Divider(

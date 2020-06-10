@@ -57,13 +57,15 @@ class ViewCollection extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                trailing: Text(
-                  collection.getReceived().toString(),
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: CustomColors.mfinPositiveGreen,
-                    fontWeight: FontWeight.bold,
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.print,
+                    size: 35.0,
+                    color: CustomColors.mfinBlack,
                   ),
+                  onPressed: () {
+                    print("Collection Receipt Button Clicked");
+                  },
                 ),
               ),
               new Divider(
