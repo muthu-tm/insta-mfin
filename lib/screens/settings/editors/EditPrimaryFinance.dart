@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
+import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -314,7 +315,12 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
     UserController _uc = UserController();
     await _uc.updatePrimaryFinance(
         userID, financeID, branchName, subBranchName);
-    Navigator.pop(context);
-    Navigator.pop(context);
+        
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (BuildContext context) => UserHomeScreen(),
+      ),
+      (Route<dynamic> route) => false,
+    );
   }
 }

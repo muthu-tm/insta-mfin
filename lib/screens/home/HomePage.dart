@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
       constraints: const BoxConstraints.expand(),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-        child: PrimaryFinanceWidget("Primary Finance"),
+        child: PrimaryFinanceWidget("Primary Finance", true),
       ),
     ),
     new ConstrainedBox(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/customer/CustomersHome.dart';
 import 'package:instamfin/screens/statistics/StatisticsHome.dart';
 import 'package:instamfin/screens/transaction/TransactionHome.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/settings/SettingsScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
@@ -30,20 +29,10 @@ Widget bottomBar(BuildContext context) {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  customIconButton(
+                  Icon(
                     Icons.supervisor_account,
-                    40.0,
-                    CustomColors.mfinButtonGreen,
-                    () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CustomersHome(),
-                          settings: RouteSettings(name: '/customers'),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
-                    },
+                    size: 35.0,
+                    color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
                     "Customers",
@@ -75,20 +64,10 @@ Widget bottomBar(BuildContext context) {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  customIconButton(
+                  Icon(
                     Icons.content_copy,
-                    35.0,
-                    CustomColors.mfinButtonGreen,
-                    () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TransactionScreen(),
-                          settings: RouteSettings(name: '/transactions'),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
-                    },
+                    size: 35.0,
+                    color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
                     "Transactions",
@@ -96,15 +75,14 @@ Widget bottomBar(BuildContext context) {
                       fontSize: 12,
                       color: CustomColors.mfinGrey,
                     ),
-                  ), // text
+                  ),
                 ],
               ),
             ),
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 4),
-              100),
+          size: Size(screenWidth(context, dividedBy: 4), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -120,16 +98,11 @@ Widget bottomBar(BuildContext context) {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  customIconButton(
-                      Icons.assessment, 35.0, CustomColors.mfinButtonGreen, () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StatisticsHome(),
-                        settings: RouteSettings(name: '/statistics'),
-                      ),
-                    );
-                  }),
+                  Icon(
+                    Icons.assessment,
+                    size: 35.0,
+                    color: CustomColors.mfinButtonGreen,
+                  ),
                   Text(
                     "Statistics",
                     style: TextStyle(
@@ -160,17 +133,11 @@ Widget bottomBar(BuildContext context) {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  customIconButton(
-                      Icons.settings, 35.0, CustomColors.mfinButtonGreen, () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SettingsScreen(),
-                        settings: RouteSettings(name: '/settings'),
-                      ),
-                      (Route<dynamic> route) => false,
-                    );
-                  }),
+                  Icon(
+                    Icons.settings,
+                    size: 35.0,
+                    color: CustomColors.mfinButtonGreen,
+                  ),
                   Text(
                     "Settings",
                     style: TextStyle(

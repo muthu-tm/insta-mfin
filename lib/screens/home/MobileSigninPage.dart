@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -285,12 +285,10 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
         final SharedPreferences prefs = await _prefs;
         prefs.setString("mobile_number", number.toString());
 
-        Navigator.pop(context);
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (BuildContext context) => UserHomeScreen()),
-          (Route<dynamic> route) => false,
-        );
+      MaterialPageRoute(builder: (BuildContext context) => UserFinanceSetup()),
+      (Route<dynamic> route) => false,
+    );
       }
     }).catchError((error) {
       Navigator.pop(context);

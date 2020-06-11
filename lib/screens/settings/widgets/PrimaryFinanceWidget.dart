@@ -8,9 +8,10 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 class PrimaryFinanceWidget extends StatelessWidget {
   final UserController _userController = UserController();
 
-  PrimaryFinanceWidget(this.title);
+  PrimaryFinanceWidget(this.title, this.editEnabled);
 
   final String title;
+  final bool editEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -165,37 +166,40 @@ class PrimaryFinanceWidget extends StatelessWidget {
               child: new Column(
                 children: <Widget>[
                   ListTile(
-                      leading: Icon(
-                        Icons.work,
-                        size: 35.0,
-                        color: CustomColors.mfinFadedButtonGreen,
+                    leading: Icon(
+                      Icons.work,
+                      size: 35.0,
+                      color: CustomColors.mfinFadedButtonGreen,
+                    ),
+                    title: new Text(
+                      title,
+                      style: TextStyle(
+                        color: CustomColors.mfinBlue,
+                        fontSize: 18.0,
                       ),
-                      title: new Text(
-                        title,
-                        style: TextStyle(
-                          color: CustomColors.mfinBlue,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                      trailing: IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          size: 35.0,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditPrimaryFinance(
-                                _userController.getCurrentUserID(),
-                              ),
-                              settings: RouteSettings(
-                                  name: '/settings/user/primary/edit'),
+                    ),
+                    trailing: editEnabled
+                        ? IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              size: 35.0,
+                              color: CustomColors.mfinBlue,
                             ),
-                          );
-                        },
-                      )),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditPrimaryFinance(
+                                    _userController.getCurrentUserID(),
+                                  ),
+                                  settings: RouteSettings(
+                                      name: '/settings/user/primary/edit'),
+                                ),
+                              );
+                            },
+                          )
+                        : Text(""),
+                  ),
                   new Divider(
                     color: CustomColors.mfinBlue,
                     thickness: 1,
