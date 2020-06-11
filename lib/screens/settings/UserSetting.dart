@@ -17,8 +17,6 @@ class UserSetting extends StatelessWidget {
     return new Scaffold(
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Profile Settings'),
         backgroundColor: CustomColors.mfinBlue,
       ),
@@ -28,7 +26,7 @@ class UserSetting extends StatelessWidget {
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  PrimaryFinanceWidget("Finance Details"),
+                  PrimaryFinanceWidget("Finance Details", true),
                   UserProfileWidget(_user),
                 ]),
           ),

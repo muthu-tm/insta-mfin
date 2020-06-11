@@ -37,7 +37,7 @@ class PaymentController {
       pay.setSurcharge(surcharge);
       pay.setInterestRate(iRate);
       pay.setNotes(notes);
-      pay.setIsActive(true);
+      pay.setIsSettled(false);
       pay.setCSF(collectionDate);
       pay.setCollectionDay(collectionDay);
 
@@ -79,6 +79,57 @@ class PaymentController {
     } catch (err) {
       print("Error while retrieving payments for customer $custNumber:" +
           err.toString());
+      throw err;
+    }
+  }
+
+  Future<List<Payment>> getTodaysPayments(
+      String financeId, String branchName, String subBranchName) async {
+    try {
+      List<Payment> payments = await Payment().getAllPaymentsByDate(
+          financeId,
+          branchName,
+          subBranchName,
+          DateUtils.getUTCDateEpoch(DateUtils.getCurrentDate()));
+
+      if (payments == null) {
+        return [];
+      }
+
+      return payments;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<List<Payment>> getThisWeekPayments(
+      String financeId, String branchName, String subBranchName) {
+    try {
+      DateTime today = DateUtils.getCurrentDate();
+
+      return getAllPaymentsByDateRange(
+          financeId,
+          branchName,
+          subBranchName,
+          today.subtract(Duration(days: today.weekday)),
+          today.add(Duration(days: 1)));
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<List<Payment>> getThisMonthPayments(
+      String financeId, String branchName, String subBranchName) {
+    try {
+      DateTime today = DateUtils.getCurrentDate();
+
+      return getAllPaymentsByDateRange(
+          financeId,
+          branchName,
+          subBranchName,
+          DateTime(today.year, today.month, 1, 0, 0, 0, 0),
+          today.add(Duration(days: 1)));
+    } catch (err) {
       throw err;
     }
   }

@@ -14,7 +14,6 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
     ..customerNumber = json['customer_number'] as int
     ..collectionNumber = json['collection_number'] as int
     ..collectionDate = json['collection_date'] as int
-    ..notifyAt = json['notify_at'] as int
     ..collectedOn = (json['collected_on'] as List)
             ?.map((e) => e == null ? null : e as int)
             ?.toList() ??
@@ -29,11 +28,7 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
-    ..updatedAt = json['updated_at'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
+            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp));
 }
 
 int _getMillisecondsSinceEpoch(Timestamp ts) {
@@ -48,11 +43,9 @@ Map<String, dynamic> _$CollectionToJson(Collection instance) =>
       'customer_number': instance.customerNumber,
       'collection_number': instance.collectionNumber,
       'collection_date': instance.collectionDate,
-      'notify_at': instance.notifyAt,
       'collected_on': instance.collectedOn == null ? [] : instance.collectedOn,
       'collection_amount': instance.collectionAmount,
       'collections': instance.collections?.map((e) => e?.toJson())?.toList(),
       'type': instance.type,
       'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
     };

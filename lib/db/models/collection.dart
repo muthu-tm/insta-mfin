@@ -21,8 +21,6 @@ class Collection {
   int collectionNumber;
   @JsonKey(name: 'collection_date', defaultValue: '')
   int collectionDate;
-  @JsonKey(name: 'notify_at', defaultValue: '')
-  int notifyAt;
   @JsonKey(name: 'collected_on', defaultValue: '')
   List<int> collectedOn;
   @JsonKey(name: 'collection_amount')
@@ -33,8 +31,6 @@ class Collection {
   int type;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
-  @JsonKey(name: 'updated_at', nullable: true)
-  DateTime updatedAt;
 
   Collection();
 
@@ -60,10 +56,6 @@ class Collection {
 
   setCollectionDate(DateTime collectionDate) {
     this.collectionDate = DateUtils.getUTCDateEpoch(collectionDate);
-  }
-
-  setNotifyAt(DateTime notifyAt) {
-    this.notifyAt = DateUtils.getUTCDateEpoch(notifyAt);
   }
 
   setcollectedOn(List<int> collectedOn) {
@@ -210,7 +202,6 @@ class Collection {
   Future<Collection> create(String financeId, String branchName,
       String subBranchName, int number, DateTime createdAt) async {
     this.createdAt = DateTime.now();
-    this.updatedAt = DateTime.now();
     this.financeID = financeId;
     this.branchName = branchName;
     this.subBranchName = subBranchName;
@@ -249,7 +240,7 @@ class Collection {
     return collections;
   }
 
-  Stream<QuerySnapshot> streamCollectionsByStatus(String financeId,
+  Stream<QuerySnapshot> streamCollectionsForPayment(String financeId,
       String branchName, String subBranchName, int number, DateTime createdAt) {
     return getCollectionRef(
             financeId, branchName, subBranchName, number, createdAt)

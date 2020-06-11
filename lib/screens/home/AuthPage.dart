@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/home/LoginPage.dart';
 import 'package:instamfin/screens/home/MobileSigninPage.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -272,16 +272,10 @@ class _AuthPageState extends State<AuthPage> {
             "Unable to Login, Something went wrong!", 2));
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
-        print("Unable to register USER: " + result['message']);
       } else {
-        Navigator.pop(context);
-        print("User logged in successfully");
-        Navigator.pushAndRemoveUntil(
-          context,
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => UserHomeScreen(),
-            settings: RouteSettings(name: '/home'),
-          ),
+              builder: (BuildContext context) => UserFinanceSetup()),
           (Route<dynamic> route) => false,
         );
       }

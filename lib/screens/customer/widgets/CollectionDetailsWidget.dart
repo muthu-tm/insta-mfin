@@ -10,10 +10,10 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 
 class CollectionDetailsWidget extends StatelessWidget {
-  CollectionDetailsWidget(this.payActive, this._scaffoldKey, this._collection,
+  CollectionDetailsWidget(this.paySettled, this._scaffoldKey, this._collection,
       this.custName, this._createdAt);
 
-  final bool payActive;
+  final bool paySettled;
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final Collection _collection;
   final String custName;
@@ -105,10 +105,10 @@ class CollectionDetailsWidget extends StatelessWidget {
                 color: CustomColors.mfinBlue,
               ),
               onPressed: () {
-                if (!payActive) {
+                if (paySettled) {
                   _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
-                          "You cannot edit 'CLOSED' Payment", 2));
+                          "You cannot edit already 'SETTLED' Payment", 2));
                 } else {
                   if (_collection.getReceived() <
                       _collection.collectionAmount) {
@@ -160,10 +160,10 @@ class CollectionDetailsWidget extends StatelessWidget {
           color: CustomColors.mfinAlertRed,
           icon: Icons.delete_forever,
           onTap: () async {
-            if (!payActive) {
+            if (paySettled) {
               _scaffoldKey.currentState.showSnackBar(
                   CustomSnackBar.errorSnackBar(
-                      "You cannot edit 'CLOSED' Payment", 2));
+                      "You cannot edit already 'SETTLED' Payment", 2));
             } else {
               var state = Slidable.of(context);
               var dismiss = await showDialog<bool>(

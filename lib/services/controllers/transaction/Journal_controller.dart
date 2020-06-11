@@ -5,14 +5,14 @@ import 'package:instamfin/services/utils/response_utils.dart';
 
 class JournalController {
   Future createNewJournal(String name, int amount, JournalCategory category,
-      bool isExpense, DateTime date, String notes) async {
+      bool isExpense, int date, String notes) async {
     try {
       Journal _je = Journal();
       _je.setJournalName(name);
       _je.setAmount(amount);
       _je.setCategory(category);
       _je.setIsExpense(isExpense);
-      _je.setJournalDate(DateUtils.getUTCDateEpoch(date));
+      _je.setJournalDate(date);
       _je.setNotes(notes);
 
       await _je.create();
@@ -55,7 +55,7 @@ class JournalController {
   }
 
   Future<List<Journal>> getThisWeekExpenses(
-      String financeId, String branchName, String subBranchName) {
+      String financeId, String branchName, String subBranchName) async {
     try {
       DateTime today = DateUtils.getCurrentDate();
 
@@ -67,7 +67,7 @@ class JournalController {
   }
 
   Future<List<Journal>> getThisMonthExpenses(
-      String financeId, String branchName, String subBranchName) {
+      String financeId, String branchName, String subBranchName) async {
     try {
       DateTime today = DateUtils.getCurrentDate();
 

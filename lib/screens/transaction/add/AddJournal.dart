@@ -336,20 +336,17 @@ class _AddJournalState extends State<AddJournal> {
         _category = categoryList[int.parse(_selectedCategory) - 1];
       }
 
-      var result = await _jc.createNewJournal(
-          name, amount, _category, isExpense, selectedDate, notes);
+      var result = await _jc.createNewJournal(name, amount, _category,
+          isExpense, DateUtils.getUTCDateEpoch(selectedDate), notes);
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Journal Entry: " + result['message']);
       } else {
-        print("New Journal Entry $name added successfully");
         Navigator.pop(context);
         Navigator.pop(context);
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

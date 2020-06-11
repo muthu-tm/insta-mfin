@@ -23,8 +23,6 @@ class _AddJournalCategoryState extends State<AddJournalCategory> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('New Journal Category'),
         backgroundColor: CustomColors.mfinBlue,
       ),
@@ -142,14 +140,11 @@ class _AddJournalCategoryState extends State<AddJournalCategory> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Journal Category: " + result['message']);
       } else {
-        print("New Journal Category $name added successfully");
         Navigator.pop(context);
         Navigator.pop(context);
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

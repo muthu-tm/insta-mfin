@@ -87,7 +87,7 @@ class CollectionController {
       bool fetchAll) async* {
     try {
       Collection coll = new Collection();
-      Stream<QuerySnapshot> stream = coll.streamCollectionsByStatus(
+      Stream<QuerySnapshot> stream = coll.streamCollectionsForPayment(
           financeId, branchName, subBranchName, number, createdAt);
 
       if (await stream.isEmpty) {
@@ -152,11 +152,11 @@ class CollectionController {
           if (colls != null) {
             collections.addAll(colls);
           }
-
         }
       } else {
-        List<Collection> colls = await Collection().getAllCollectionsByDateRange(
-            financeId, branchName, subBranchName, dates);
+        List<Collection> colls = await Collection()
+            .getAllCollectionsByDateRange(
+                financeId, branchName, subBranchName, dates);
 
         if (colls != null) {
           collections.addAll(colls);

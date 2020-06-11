@@ -223,8 +223,8 @@ class CollectionListTableWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ViewCollection(_payment.isActive, coll,
-                      custName, _payment.createdAt, color),
+                  builder: (context) =>
+                      ViewCollection(_payment, coll, custName, color),
                   settings: RouteSettings(name: '/customers/payment/colection'),
                 ),
               );
@@ -358,9 +358,9 @@ class CollectionListTableWidget extends StatelessWidget {
   }
 
   Future markAsCollected(Collection collection, BuildContext context) async {
-    if (!_payment.isActive) {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("You cannot edit CLOSED Payment", 2));
+    if (_payment.isSettled) {
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          "You cannot edit already 'SETTLED' Payment", 2));
     } else {
       if (collection.getReceived() == collection.collectionAmount) {
         CustomDialogs.information(

@@ -7,10 +7,10 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
 class CollDetailsTableWidget extends StatelessWidget {
-  CollDetailsTableWidget(this.payActive, this._scaffoldKey, this._collection,
+  CollDetailsTableWidget(this.paySettled, this._scaffoldKey, this._collection,
       this.custName, this._createdAt);
 
-  final bool payActive;
+  final bool paySettled;
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final Collection _collection;
   final String custName;
@@ -128,10 +128,10 @@ class CollDetailsTableWidget extends StatelessWidget {
                 color: CustomColors.mfinBlue,
               ),
               onPressed: () {
-                if (!payActive) {
+                if (paySettled) {
                   _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
-                          "You cannot edit CLOSED Payment", 2));
+                          "You cannot edit already SETTLED Payment", 2));
                 } else {
                   if (_collection.getReceived() <
                       _collection.collectionAmount) {

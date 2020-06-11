@@ -296,7 +296,7 @@ class _AddExpenseState extends State<AddExpense> {
         _category = categoryList[int.parse(_selectedCategory) - 1];
       }
       var result = await _ec.createNewExpense(
-          name, amount, _category, selectedDate, notes);
+          name, amount, _category, DateUtils.getUTCDateEpoch(selectedDate), notes);
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState
