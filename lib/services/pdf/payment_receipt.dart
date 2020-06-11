@@ -1,12 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/db/models/payment.dart';
+import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/pdf/pdf_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 
 class PayReceipt {
-  Future<void> generateInvoice() async {
+  Future<void> generateInvoice(User _u, Payment _p) async {
     final PdfDocument document = PdfDocument();
     final PdfPage page = document.pages.add();
     final Size pageSize = page.getClientSize();
@@ -14,32 +19,29 @@ class PayReceipt {
         bounds: Rect.fromLTWH(0, 0, pageSize.width, pageSize.height),
         pen: PdfPen(PdfColor(52, 213, 120)));
 
-    //Generate PDF grid.
-    final PdfGrid grid = getGrid();
-    //Draw the header section by creating text element
-    final PdfLayoutResult result = drawHeader(page, pageSize, grid);
-    //Draw grid
+    final PdfGrid grid = getGrid(_p);
+    final PdfLayoutResult result = await drawHeader(page, pageSize, grid, _p);
     drawGrid(page, grid, result);
-    //Add invoice footer
-    drawFooter(page, pageSize);
-    //Save and launch the document
+    await PDFUtils.drawFooter(page, pageSize, _u.getFinanceDocReference());
+
     final List<int> bytes = document.save();
-    //Dispose the document.
     document.dispose();
-    //Get the storage folder location using path_provider package.
+
     final Directory directory = await getApplicationDocumentsDirectory();
     final String path = directory.path;
     final File file = File('$path/output.pdf');
     file.writeAsBytes(bytes);
-    //Launch the file (used open_file package)
+
     OpenFile.open('$path/output.pdf');
   }
 
-  PdfLayoutResult drawHeader(PdfPage page, Size pageSize, PdfGrid grid) {
+  Future<PdfLayoutResult> drawHeader(
+      PdfPage page, Size pageSize, PdfGrid grid, Payment _p) async {
+    Customer _c = await Customer().getByMobileNumber(_p.customerNumber);
+
     page.graphics.drawRectangle(
         brush: PdfSolidBrush(PdfColor(68, 138, 255)),
         bounds: Rect.fromLTWH(0, 0, pageSize.width - 115, 90));
-    //Draw string
     page.graphics.drawString(
         'PAYMENT INVOCE', PdfStandardFont(PdfFontFamily.timesRoman, 22),
         brush: PdfBrushes.white,
@@ -52,7 +54,7 @@ class PayReceipt {
         bounds: Rect.fromLTWH(400, 0, pageSize.width - 400, 90),
         brush: PdfSolidBrush(PdfColor(25, 60, 126)));
 
-    page.graphics.drawString('Rs.' + getTotalAmount(grid).toString(),
+    page.graphics.drawString('Rs.' + _p.totalAmount.toString(),
         PdfStandardFont(PdfFontFamily.timesRoman, 18),
         bounds: Rect.fromLTWH(400, 0, pageSize.width - 400, 100),
         brush: PdfBrushes.white,
@@ -61,22 +63,21 @@ class PayReceipt {
             lineAlignment: PdfVerticalAlignment.middle));
 
     final PdfFont contentFont = PdfStandardFont(PdfFontFamily.timesRoman, 9);
-    //Draw string
     page.graphics.drawString('AMOUNT', contentFont,
         brush: PdfBrushes.white,
         bounds: Rect.fromLTWH(400, 0, pageSize.width - 400, 33),
         format: PdfStringFormat(
             alignment: PdfTextAlignment.center,
             lineAlignment: PdfVerticalAlignment.bottom));
-    //Create data foramt and convert it to text.
+    
     final DateFormat format = DateFormat.yMMMMd('en_US');
-    final String invoiceNumber = 'Payment Number: 2058557939\r\n\r\nDate: ' +
+    final String payID = 'Payment ID: ${_p.customerNumber}\r\n\r\nDate: ' +
         format.format(DateTime.now());
-    final Size contentSize = contentFont.measureString(invoiceNumber);
-    const String address =
-        'Bill To: \r\n\r\nAbraham Swearegin, \r\n\r\nUnited States, California, San Mateo, \r\n\r\n9920 BridgePointe Parkway, \r\n\r\n9365550136';
+    final Size contentSize = contentFont.measureString(payID);
+    String address =
+        'Bill To: \r\n\r\n${_c.name}, \r\n\r\n${_c.mobileNumber}\r\n\r\n${_c.address.street}\r\n\r\n${_c.address.city}';
 
-    PdfTextElement(text: invoiceNumber, font: contentFont).draw(
+    PdfTextElement(text: payID, font: contentFont).draw(
         page: page,
         bounds: Rect.fromLTWH(pageSize.width - (contentSize.width + 30), 120,
             contentSize.width + 30, pageSize.height - 120));
@@ -100,11 +101,9 @@ class PayReceipt {
         quantityCellBounds = args.bounds;
       }
     };
-    //Draw the PDF grid and get the result.
     result = grid.draw(
         page: page, bounds: Rect.fromLTWH(0, result.bounds.bottom + 40, 0, 0));
 
-    //Draw grand total.
     page.graphics.drawString('Grand Total',
         PdfStandardFont(PdfFontFamily.helvetica, 9, style: PdfFontStyle.bold),
         bounds: Rect.fromLTWH(
@@ -121,49 +120,31 @@ class PayReceipt {
             totalPriceCellBounds.height));
   }
 
-  //Draw the invoice footer data.
-  void drawFooter(PdfPage page, Size pageSize) {
-    final PdfPen linePen =
-        PdfPen(PdfColor(105, 240, 174), dashStyle: PdfDashStyle.custom);
-    linePen.dashPattern = <double>[3, 3];
-    //Draw line
-    page.graphics.drawLine(linePen, Offset(0, pageSize.height - 100),
-        Offset(pageSize.width, pageSize.height - 100));
-
-    const String footerContent =
-        'iFin - Micro Finance Solution\r\n\r\nAny Questions? hello@ifin.com';
-
-    //Added 30 as a margin for the layout
-    page.graphics.drawString(
-        footerContent, PdfStandardFont(PdfFontFamily.helvetica, 9),
-        format: PdfStringFormat(alignment: PdfTextAlignment.right),
-        bounds: Rect.fromLTWH(pageSize.width - 30, pageSize.height - 70, 0, 0));
-  }
-
   //Create PDF grid and return
-  PdfGrid getGrid() {
-    //Create a PDF grid
+  PdfGrid getGrid(Payment _p) {
     final PdfGrid grid = PdfGrid();
-    //Secify the columns count to the grid.
     grid.columns.add(count: 5);
-    //Create the header row of the grid.
     final PdfGridRow headerRow = grid.headers.add(1)[0];
-    //Set style
+    
     headerRow.style.backgroundBrush = PdfSolidBrush(PdfColor(68, 114, 196));
     headerRow.style.textBrush = PdfBrushes.white;
-    headerRow.cells[0].value = 'Product Id';
+    headerRow.cells[0].value = 'Payment ID';
     headerRow.cells[0].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[1].value = 'Product Name';
-    headerRow.cells[2].value = 'Price';
-    headerRow.cells[3].value = 'Quantity';
-    headerRow.cells[4].value = 'Total';
+    headerRow.cells[1].value = 'Date';
+    headerRow.cells[1].stringFormat.alignment = PdfTextAlignment.center;
+    headerRow.cells[2].value = 'No. of Installments';
+    headerRow.cells[2].stringFormat.alignment = PdfTextAlignment.center;
+    headerRow.cells[3].value = 'Repayment Mode';
+    headerRow.cells[3].stringFormat.alignment = PdfTextAlignment.center;
+    headerRow.cells[4].value = 'Amount Received';
     //Add rows
-    addProducts('CA-1098', 'AWC Logo Cap', 8.99, 2, 17.98, grid);
-    addProducts('LJ-0192', 'Long-Sleeve Logo Jersey,M', 49.99, 3, 149.97, grid);
-    addProducts('So-B909-M', 'Mountain Bike Socks,M', 9.5, 2, 19, grid);
-    addProducts('LJ-0192', 'Long-Sleeve Logo Jersey,M', 49.99, 4, 199.96, grid);
-    addProducts('FK-5136', 'ML Fork', 175.49, 6, 1052.94, grid);
-    addProducts('HL-U509', 'Sports-100 Helmet,Black', 34.99, 1, 34.99, grid);
+    addProducts(
+        _p.totalAmount.toString(),
+        DateTime.fromMillisecondsSinceEpoch(_p.dateOfPayment),
+        _p.tenure,
+        _p.getMode(),
+        _p.principalAmount,
+        grid);
     //Apply the table built-in style
     grid.applyBuiltInStyle(PdfGridBuiltInStyle.listTable4Accent5);
     //Set gird columns width
@@ -176,8 +157,10 @@ class PayReceipt {
       final PdfGridRow row = grid.rows[i];
       for (int j = 0; j < row.cells.count; j++) {
         final PdfGridCell cell = row.cells[j];
-        if (j == 0) {
+        if (j != 4) {
           cell.stringFormat.alignment = PdfTextAlignment.center;
+        } else {
+          cell.stringFormat.alignment = PdfTextAlignment.right;
         }
         cell.style.cellPadding =
             PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
@@ -187,14 +170,14 @@ class PayReceipt {
   }
 
   //Create and row for the grid.
-  void addProducts(String productId, String productName, double price,
-      int quantity, double total, PdfGrid grid) {
+  void addProducts(String pID, DateTime date, int ins, String mode, int amount,
+      PdfGrid grid) {
     final PdfGridRow row = grid.rows.add();
-    row.cells[0].value = productId;
-    row.cells[1].value = productName;
-    row.cells[2].value = price.toString();
-    row.cells[3].value = quantity.toString();
-    row.cells[4].value = total.toString();
+    row.cells[0].value = pID;
+    row.cells[1].value = DateUtils.formatDate(date);
+    row.cells[2].value = ins.toString();
+    row.cells[3].value = mode;
+    row.cells[4].value = amount.toString();
   }
 
   //Get the total amount.

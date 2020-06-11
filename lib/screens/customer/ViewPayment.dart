@@ -130,7 +130,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                           color: CustomColors.mfinBlack,
                         ),
                         onPressed: () async {
-                          await PayReceipt().generateInvoice();
+                          await PayReceipt().generateInvoice(
+                              UserController().getCurrentUser(), widget.payment);
                         },
                       ),
                     ),

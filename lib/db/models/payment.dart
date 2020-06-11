@@ -144,6 +144,15 @@ class Payment extends Model {
     this.updatedAt = updatedAt;
   }
 
+  String getMode() {
+    if (this.collectionMode == 0)
+      return "Daily";
+    else if (this.collectionMode == 1)
+      return "Weekly";
+    else
+      return "Monthly";
+  }
+
   Future<int> getTotalReceived() async {
     try {
       List<Collection> collList = await Collection()
