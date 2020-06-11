@@ -265,8 +265,10 @@ class ViewCollection extends StatelessWidget {
           key: _scaffoldKey,
           body: SingleChildScrollView(
             child: new Container(
+              alignment: Alignment.center,
               child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: children),
             ),
           ),

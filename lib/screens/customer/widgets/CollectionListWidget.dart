@@ -191,7 +191,7 @@ class CollectionListWidget extends StatelessWidget {
                                           height: 35,
                                           child: ListTile(
                                             leading: Text(
-                                              "TYPE: ",
+                                              "TYPE:",
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 color: CustomColors.mfinBlue,
@@ -307,21 +307,21 @@ class CollectionListWidget extends StatelessWidget {
   List<String> setCardValue(Collection coll) {
     switch (coll.getStatus()) {
       case 0:
-        return ["AMOUNT: ", coll.collectionAmount.toString()];
+        return ["AMOUNT:", coll.collectionAmount.toString()];
         break;
       case 1:
       case 2:
-        return ["RECEIVED: ", coll.getReceived().toString()];
+        return ["RECEIVED:", coll.getReceived().toString()];
         break;
       case 3:
-        return ["AMOUNT: ", coll.collectionAmount.toString()];
+        return ["AMOUNT:", coll.collectionAmount.toString()];
         break;
       case 4:
         int pending = coll.collectionAmount - coll.getReceived();
-        return ["PENDING: ", pending.toString()];
+        return ["PENDING:", pending.toString()];
         break;
       default:
-        return ["AMOUNT: ", coll.collectionAmount.toString()];
+        return ["AMOUNT:", coll.collectionAmount.toString()];
         break;
     }
   }
