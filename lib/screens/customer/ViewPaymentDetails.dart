@@ -83,334 +83,178 @@ class ViewPaymentDetails extends StatelessWidget {
                         Divider(
                           color: CustomColors.mfinBlue,
                         ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 70,
-                            child: Text(
-                              "PAYMENT ID:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.paymentID,
-                            decoration: InputDecoration(
-                              hintText: 'Payment ID',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
-                          ),
-                        ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 70,
-                            child: Text(
-                              "DATE:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: GestureDetector(
-                            child: TextFormField(
-                              textAlign: TextAlign.end,
-                              initialValue: DateUtils.getFormattedDateFromEpoch(
-                                  payment.dateOfPayment),
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 3.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CustomColors.mfinWhite)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              enabled: false,
-                              autofocus: false,
-                            ),
-                          ),
-                        ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 70,
-                            child: Text(
-                              "GIVEN BY:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.givenBy,
-                            decoration: InputDecoration(
-                              hintText: 'Amount Given by',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
-                          ),
-                        ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 70,
-                            child: Text(
-                              "NOTES:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.notes,
-                            maxLines: 3,
-                            decoration: InputDecoration(
-                              hintText: 'Notes',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
-                          ),
-                        ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 100,
-                            child: Text(
-                              "MODE:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue:
-                                _tempCollectionMode[selectedCollectionModeID],
-                            decoration: InputDecoration(
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
-                          ),
-                        ),
-                        selectedCollectionModeID == 0
-                            ? ListTile(
-                                leading: SizedBox(
-                                  width: 100,
-                                  child: Text(
-                                    "COLLECTION DATE:",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: "Georgia",
-                                      fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Flexible(
+                                child: TextFormField(
+                                  enabled: false,
+                                  autofocus: false,
+                                  //initialValue: payment.,
+                                  textAlign: TextAlign.start,
+                                  decoration: InputDecoration(
+                                    labelText: 'Customer name',
+                                    floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                    fillColor: CustomColors.mfinLightGrey,
+                                    filled: true,
                                   ),
                                 ),
-                                title: GestureDetector(
-                                  child: AbsorbPointer(
-                                    child: TextFormField(
-                                      keyboardType: TextInputType.datetime,
-                                      initialValue:
-                                          DateUtils.getFormattedDateFromEpoch(
-                                              payment.collectionStartsFrom),
-                                      decoration: InputDecoration(
-                                        hintText: 'Date of Collection',
-                                        labelStyle: TextStyle(
-                                          color: CustomColors.mfinBlue,
-                                        ),
-                                        contentPadding:
-                                            new EdgeInsets.symmetric(
-                                                vertical: 3.0, horizontal: 3.0),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: CustomColors.mfinWhite)),
-                                        fillColor: CustomColors.mfinWhite,
-                                        filled: true,
-                                        suffixIcon: Icon(
-                                          Icons.date_range,
-                                          size: 35,
-                                          color: CustomColors.mfinBlue,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                        selectedCollectionModeID == 1
-                            ? Column(
-                                children: <Widget>[
-                                  ListTile(
-                                    leading: SizedBox(
-                                      width: 100,
-                                      child: Text(
-                                        "COLLECTION DATE:",
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          fontFamily: "Georgia",
-                                          fontWeight: FontWeight.bold,
-                                          color: CustomColors.mfinBlue,
-                                        ),
-                                      ),
-                                    ),
-                                    title: GestureDetector(
-                                      child: AbsorbPointer(
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.datetime,
-                                          initialValue: DateUtils
-                                              .getFormattedDateFromEpoch(
-                                                  payment.collectionStartsFrom),
-                                          decoration: InputDecoration(
-                                            hintText: 'Date of Collection',
-                                            labelStyle: TextStyle(
-                                              color: CustomColors.mfinBlue,
-                                            ),
-                                            contentPadding:
-                                                new EdgeInsets.symmetric(
-                                                    vertical: 3.0,
-                                                    horizontal: 3.0),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: CustomColors
-                                                        .mfinWhite)),
-                                            fillColor: CustomColors.mfinWhite,
-                                            filled: true,
-                                            suffixIcon: Icon(
-                                              Icons.date_range,
-                                              size: 35,
-                                              color: CustomColors.mfinBlue,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  ListTile(
-                                    leading: SizedBox(
-                                      width: 100,
-                                      child: Text(
-                                        "DAY:",
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          fontFamily: "Georgia",
-                                          fontWeight: FontWeight.bold,
-                                          color: CustomColors.mfinBlue,
-                                        ),
-                                      ),
-                                    ),
-                                    title: TextFormField(
-                                      textAlign: TextAlign.end,
-                                      initialValue: _tempCollectionDays[
-                                          selectedCollectionDayID],
-                                      decoration: InputDecoration(
-                                        fillColor: CustomColors.mfinWhite,
-                                        filled: true,
-                                        contentPadding:
-                                            new EdgeInsets.symmetric(
-                                                vertical: 3.0, horizontal: 3.0),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: CustomColors.mfinWhite)),
-                                      ),
-                                      enabled: false,
-                                      autofocus: false,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Container(),
-                        selectedCollectionModeID == 2
-                            ? ListTile(
-                                leading: SizedBox(
-                                  width: 100,
-                                  child: Text(
-                                    "COLLECTION DATE:",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: "Georgia",
-                                      fontWeight: FontWeight.bold,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                              ),
+                              Flexible(
+                                child: TextFormField(
+                                  enabled: false,
+                                  autofocus: false,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.text,
+                                  initialValue: payment.paymentID,
+                                  decoration: InputDecoration(
+                                    floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                    hintText: 'Payment ID',
+                                    labelText: 'Payment ID',
+                                    labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
-                                  ),
-                                ),
-                                title: GestureDetector(
-                                  child: AbsorbPointer(
-                                    child: TextFormField(
-                                      keyboardType: TextInputType.datetime,
-                                      initialValue:
-                                          DateUtils.getFormattedDateFromEpoch(
-                                              payment.collectionStartsFrom),
-                                      decoration: InputDecoration(
-                                        hintText: 'Date of Collection',
-                                        labelStyle: TextStyle(
-                                          color: CustomColors.mfinBlue,
-                                        ),
-                                        contentPadding:
-                                            new EdgeInsets.symmetric(
-                                                vertical: 3.0, horizontal: 3.0),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: CustomColors.mfinWhite)),
-                                        fillColor: CustomColors.mfinWhite,
-                                        filled: true,
-                                        suffixIcon: Icon(
-                                          Icons.date_range,
-                                          size: 35,
-                                          color: CustomColors.mfinBlue,
-                                        ),
-                                      ),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                  ),),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: TextFormField(
+                                  enabled: false,
+                                  autofocus: false,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.text,
+                                  initialValue: payment.givenBy,
+                                  decoration: InputDecoration(
+                                    hintText: 'Amount given by',
+                                    labelText: 'Amount given by',
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
                                     ),
+                                    floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
                                   ),
                                 ),
-                              )
-                            : Container(),
+                              ),
+                              Padding(padding: EdgeInsets.all(10)),
+                              Flexible(
+                                child: DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Payment template',
+                                      labelStyle: TextStyle(
+                                        color: CustomColors.mfinBlue,
+                                      ),
+                                      floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                      fillColor: CustomColors.mfinWhite,
+                                      filled: true,
+                                      contentPadding: new EdgeInsets.symmetric(
+                                          vertical: 3.0, horizontal: 10.0),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: CustomColors.mfinWhite)),
+                                    ),
+                                    value: payment.principalAmount,
+                              ), )
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: DropdownButtonFormField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Collection mode',
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                  ),
+                                  value: selectedCollectionModeID,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: TextFormField(
+                                  enabled: false,
+                                  autofocus: false,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.text,
+                                  initialValue: payment.notes,
+                                  maxLines: 3,
+                                  decoration: InputDecoration(
+                                    hintText: 'Notes',
+                                    labelText: 'Notes',
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -440,214 +284,283 @@ class ViewPaymentDetails extends StatelessWidget {
                         Divider(
                           color: CustomColors.mfinBlue,
                         ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 90,
-                            child: Text(
-                              "TOTAL AMOUNT:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: new TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.totalAmount.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Total Amount',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
-                          ),
-                        ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 90,
-                            child: Text(
-                              "PRINCIPAL:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: new TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.principalAmount.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Principal amount given',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(child: TextFormField(
+                                enabled: false,
+                                autofocus: false,
+                                textAlign: TextAlign.start,
+                                keyboardType: TextInputType.number,
+                                initialValue: payment.principalAmount.toString(),
+                                decoration: InputDecoration(
+                                  hintText: 'Principal amount',
+                                  labelText: 'Principal amount',
+                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: CustomColors.mfinWhite)),
+                                ),
+                              ),),
+                              Padding(padding: EdgeInsets.all(10)),
+                              Flexible(child: TextFormField(
+                                enabled: false,
+                                autofocus: false,
+                                textAlign: TextAlign.start,
+                                keyboardType: TextInputType.number,
+                                initialValue: payment.interestRate.toString(),
+                                decoration: InputDecoration(
+                                  hintText: 'Rate in 0.00%',
+                                  labelText: 'Rate of interest',
+                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue
+                                  ),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: CustomColors.mfinWhite)),
+                                ),
+                              ),),
+                            ],
                           ),
                         ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 90,
-                            child: Text(
-                              "DOC CHARGE:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: TextFormField(
+                                  enabled: false,
+                                  autofocus: false,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.number,
+                                  initialValue: payment.tenure.toString(),
+                                  decoration: InputDecoration(
+                                    hintText: 'Number of Collections',
+                                    labelText: 'No. of collections',
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                        color: CustomColors.mfinBlue
+                                    ),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: CustomColors.mfinWhite)),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.docCharge.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Document Charge',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
+                              Padding(padding: EdgeInsets.all(10)),
+                              Flexible(
+                                child: TextFormField(
+                                  enabled: false,
+                                  autofocus: false,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.number,
+                                  initialValue: payment.collectionAmount.toString(),
+                                  decoration: InputDecoration(
+                                    hintText: 'Each Collection Amount',
+                                    labelText: 'Collection amount',
+                                    labelStyle: TextStyle(
+                                        color: CustomColors.mfinBlue
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: CustomColors.mfinWhite)),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 90,
-                            child: Text(
-                              "SUR CHARGE:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: GestureDetector(
+                                  child: AbsorbPointer(
+                                    child: TextFormField(
+                                      enabled: false,
+                                      autofocus: false,
+                                      initialValue: DateUtils.getFormattedDateFromEpoch(
+                                          payment.dateOfPayment),
+                                      decoration: InputDecoration(
+                                        labelText: 'Start date',
+                                        floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                        labelStyle: TextStyle(
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        contentPadding: new EdgeInsets.symmetric(
+                                            vertical: 3.0, horizontal: 10.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        suffixIcon: Icon(
+                                          Icons.date_range,
+                                          size: 35,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.surcharge.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Service charge if any',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
+                              Padding(padding: EdgeInsets.all(10)),
+                              Flexible(
+                                child: GestureDetector(
+                                  child: AbsorbPointer(
+                                    child: TextFormField(
+                                      enabled: false,
+                                      autofocus: false,
+                                      keyboardType: TextInputType.datetime,
+                                      decoration: InputDecoration(
+                                        labelText: 'End date',
+                                        floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                        labelStyle: TextStyle(
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        contentPadding: new EdgeInsets.symmetric(
+                                            vertical: 3.0, horizontal: 10.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        suffixIcon: Icon(
+                                          Icons.date_range,
+                                          size: 35,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 90,
-                            child: Text(
-                              "TENURE:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: TextFormField(
+                                  enabled: false,
+                                  autofocus: false,
+                                  textAlign: TextAlign.start,
+                                  initialValue: payment.docCharge.toString(),
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    hintText: 'Document charge',
+                                    labelText: 'Document charge',
+                                    labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10),
+                                    border: OutlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: CustomColors.mfinWhite)),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.tenure.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Number of Collections',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
+                              Padding(padding: EdgeInsets.all(10)),
+                              Flexible(child: TextFormField(
+                                enabled: false,
+                                autofocus: false,
+                                textAlign: TextAlign.start,
+                                initialValue: payment.surcharge.toString(),
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  hintText: 'Service charge if any',
+                                  labelText: 'Service charge',
+                                  labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: CustomColors.mfinWhite)),
+                                ),
+                              ),)
+                            ],
                           ),
                         ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 90,
-                            child: Text(
-                              "INTEREST:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(child: TextFormField(
+                                enabled: false,
+                                autofocus: false,
+                                textAlign: TextAlign.start,
+                                keyboardType: TextInputType.number,
+                                initialValue: "0",
+                                decoration: InputDecoration(
+                                  hintText: 'Amount received so far',
+                                  labelText: 'Amount received',
+                                  labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue
+                                  ),
+                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: CustomColors.mfinWhite)),
+                                ),
+                              ),),
+                              Padding(padding: EdgeInsets.all(10)),
+                              Flexible(
+                                child: TextFormField(
+                                  enabled: false,
+                                  autofocus: false,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.number,
+                                  initialValue: payment.totalAmount.toString(),
+                                  decoration: InputDecoration(
+                                    hintText: 'Total amount',
+                                    labelText: 'Total amount',
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.interestRate.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Rate in 0.00%',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
-                          ),
-                        ),
-                        ListTile(
-                          leading: SizedBox(
-                            width: 90,
-                            child: Text(
-                              "COLLECTION AMOUNT:",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                          title: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: payment.collectionAmount.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Each Collection Amount',
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            enabled: false,
-                            autofocus: false,
+                            ],
                           ),
                         ),
                       ],

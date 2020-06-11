@@ -63,19 +63,10 @@ class _AddPaymentState extends State<AddPayment> {
   int collectionAmount = 0;
   String givenBy = '';
   String notes = '';
+  int alreadyReceivedAmount = 0;
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
-    print('screenWidth: ${SizeConfig.screenWidth}');
-    print('screenHeight: ${SizeConfig.screenHeight}');
-    print('blockSizeHorizontal: ${SizeConfig.blockSizeHorizontal}');
-    print('blockSizeVertical: ${SizeConfig.blockSizeVertical}');
-
-    print('safeBlockHorizontal: ${SizeConfig.safeBlockHorizontal}');
-    print('safeBlockVertical: ${SizeConfig.safeBlockVertical}');
-
     return new Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
@@ -314,76 +305,6 @@ class _AddPaymentState extends State<AddPayment> {
                       child: Row(
                         children: <Widget>[
                           Flexible(
-                            child: GestureDetector(
-                              onTap: () => _selectDate(context),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _date,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    labelText: 'Start date',
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    labelStyle: TextStyle(
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: new EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 10.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.all(10)),
-                          Flexible(
-                            child: GestureDetector(
-                              onTap: () => _selectDate(context),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _date,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    labelText: 'End date',
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    labelStyle: TextStyle(
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: new EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 10.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
@@ -451,35 +372,6 @@ class _AddPaymentState extends State<AddPayment> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              initialValue: totalAmount.toString(),
-                              decoration: InputDecoration(
-                                hintText: 'Total amount',
-                                labelText: 'Total amount',
-                                labelStyle: TextStyle(color: CustomColors.mfinBlue),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CustomColors.mfinWhite)),
-                              ),
-                              validator: (amount) {
-                                if (amount.trim().isEmpty ||
-                                    amount.trim() == "0") {
-                                  return "Cannot be empty!";
-                                } else {
-                                  this.totalAmount = int.parse(amount.trim());
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.all(10)),
                           Flexible(child: TextFormField(
                             textAlign: TextAlign.start,
                             keyboardType: TextInputType.number,
@@ -505,7 +397,173 @@ class _AddPaymentState extends State<AddPayment> {
                                 return null;
                               }
                             },
-                          ),)
+                          ),),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(child: TextFormField(
+                            textAlign: TextAlign.start,
+                            keyboardType: TextInputType.number,
+                            initialValue: intrestRate.toString(),
+                            decoration: InputDecoration(
+                              hintText: 'Rate in 0.00%',
+                              labelText: 'Rate of interest',
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                              labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue
+                              ),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                            ),
+                            validator: (tenure) {
+                              if (tenure.trim().isEmpty) {
+                                this.intrestRate = double.parse('0');
+                              } else {
+                                this.intrestRate = double.parse(tenure);
+                              }
+                              return null;
+                            },
+                          ),),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue: tenure.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Number of Collections',
+                                labelText: 'No. of collections',
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue
+                                ),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (tenure) {
+                                if (tenure.trim().isEmpty) {
+                                  return 'Cannot be empty!';
+                                }
+                                this.tenure = int.parse(tenure);
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue: collectionAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Each Collection Amount',
+                                labelText: 'Collection amount',
+                                labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue
+                                ),
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (collAmount) {
+                                if (collAmount.trim().isEmpty ||
+                                    collAmount.trim() == '0') {
+                                  return "Cannot be empty or zero";
+                                }
+                                this.collectionAmount = int.parse(collAmount.trim());
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _date,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: 'Start date',
+                                    floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _date,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: 'End date',
+                                    floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -575,108 +633,13 @@ class _AddPaymentState extends State<AddPayment> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              initialValue: tenure.toString(),
-                              decoration: InputDecoration(
-                                hintText: 'Number of Collections',
-                                labelText: 'No. of collections',
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue
-                                ),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: CustomColors.mfinWhite)),
-                              ),
-                              validator: (tenure) {
-                                if (tenure.trim().isEmpty) {
-                                  return 'Cannot be empty!';
-                                }
-                                this.tenure = int.parse(tenure);
-                                return null;
-                              },
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.all(10)),
                           Flexible(child: TextFormField(
                             textAlign: TextAlign.start,
                             keyboardType: TextInputType.number,
-                            initialValue: intrestRate.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Rate in 0.00%',
-                              labelText: 'Rate of interest',
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue
-                              ),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                            ),
-                            validator: (tenure) {
-                              if (tenure.trim().isEmpty) {
-                                this.intrestRate = double.parse('0');
-                              } else {
-                                this.intrestRate = double.parse(tenure);
-                              }
-                              return null;
-                            },
-                          ),),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              initialValue: collectionAmount.toString(),
-                              decoration: InputDecoration(
-                                hintText: 'Each Collection Amount',
-                                labelText: 'Collection amount',
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue
-                                ),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: CustomColors.mfinWhite)),
-                              ),
-                              validator: (collAmount) {
-                                if (collAmount.trim().isEmpty ||
-                                    collAmount.trim() == '0') {
-                                  return "Cannot be empty or zero";
-                                }
-                                this.collectionAmount = int.parse(collAmount.trim());
-                                return null;
-                              },
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.all(10)),
-                          Flexible(child: TextFormField(
-                            textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
-                            initialValue: collectionAmount.toString(),
+                            initialValue: alreadyReceivedAmount.toString(),
                             decoration: InputDecoration(
                               hintText: 'Amount received so far',
-                              labelText: 'Already received amount',
+                              labelText: 'Amount received',
                               labelStyle: TextStyle(
                                 color: CustomColors.mfinBlue
                               ),
@@ -698,6 +661,36 @@ class _AddPaymentState extends State<AddPayment> {
                               return null;
                             },
                           ),),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue: totalAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Total amount',
+                                labelText: 'Total amount',
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (amount) {
+                                if (amount.trim().isEmpty ||
+                                    amount.trim() == "0") {
+                                  return "Cannot be empty!";
+                                } else {
+                                  this.totalAmount = int.parse(amount.trim());
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
