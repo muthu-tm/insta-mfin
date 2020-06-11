@@ -222,46 +222,6 @@ class ViewCollection extends StatelessWidget {
                         autofocus: false,
                       ),
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "NOTIFY AT",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "Georgia",
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinGrey),
-                        ),
-                      ),
-                      title: GestureDetector(
-                        onTap: () => _selectDate(context),
-                        child: AbsorbPointer(
-                          child: TextFormField(
-                            controller: _date,
-                            keyboardType: TextInputType.datetime,
-                            decoration: InputDecoration(
-                              hintText: 'Date of Payment',
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue,
-                              ),
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              suffixIcon: Icon(
-                                Icons.date_range,
-                                size: 35,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                     (UserController().getCurrentUser().preferences.tableView)
                         ? CollDetailsTableWidget(paySettled, _scaffoldKey,
                             collection, custName, payCreatedAt)
@@ -305,45 +265,6 @@ class ViewCollection extends StatelessWidget {
             backgroundColor: CustomColors.mfinBlue,
           ),
           key: _scaffoldKey,
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: !paySettled
-              ? FloatingActionButton.extended(
-                  onPressed: () {
-                    _submit(context);
-                  },
-                  label: Text(
-                    "Update",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  splashColor: CustomColors.mfinWhite,
-                  icon: Icon(
-                    Icons.edit,
-                    size: 35,
-                    color: CustomColors.mfinFadedButtonGreen,
-                  ),
-                )
-              : FloatingActionButton.extended(
-                  backgroundColor: CustomColors.mfinAlertRed,
-                  onPressed: () {},
-                  label: Text(
-                    "Closed Payment",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  icon: Icon(
-                    Icons.close,
-                    size: 35,
-                    color: CustomColors.mfinWhite,
-                  ),
-                ),
           body: SingleChildScrollView(
             child: new Container(
               child: new Column(
@@ -354,45 +275,6 @@ class ViewCollection extends StatelessWidget {
         );
       },
     );
-  }
-
-  TextEditingController _date = new TextEditingController();
-
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.fromMillisecondsSinceEpoch(_collection.notifyAt),
-      firstDate: DateTime(1990),
-      lastDate: DateTime.now().add(Duration(days: 10)),
-    );
-    if (picked != null &&
-        picked != DateTime.fromMillisecondsSinceEpoch(_collection.notifyAt))
-      _collection.notifyAt = picked.millisecondsSinceEpoch;
-    _date.value = TextEditingValue(
-      text: DateUtils.formatDate(picked),
-    );
-  }
-
-  Future<void> _submit(BuildContext context) async {
-    CustomDialogs.actionWaiting(context, "Updating Profile");
-    CollectionController _cc = CollectionController();
-    var result = await _cc.updateCollection(
-        _collection.financeID,
-        _collection.branchName,
-        _collection.subBranchName,
-        _collection.customerNumber,
-        payCreatedAt,
-        _collection.getDocumentID(_collection.collectionDate),
-        {'notify_at': _collection.notifyAt});
-
-    if (!result['is_success']) {
-      Navigator.pop(context);
-      _scaffoldKey.currentState
-          .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
-    } else {
-      Navigator.pop(context);
-      Navigator.pop(context);
-    }
   }
 
   String getType(int type) {

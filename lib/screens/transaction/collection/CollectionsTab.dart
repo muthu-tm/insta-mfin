@@ -6,7 +6,7 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class CollectionsTab extends StatelessWidget{
+class CollectionsTab extends StatelessWidget {
   final User _u = UserController().getCurrentUser();
 
   @override
@@ -18,97 +18,100 @@ class CollectionsTab extends StatelessWidget{
             AsyncSnapshot<Map<int, List<Payment>>> snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.isNotEmpty) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Material(
-                      elevation: 10.0,
-                      borderRadius: BorderRadius.circular(10.0),
-                      shadowColor: CustomColors.mfinButtonGreen,
-                      color: CustomColors.mfinBlue,
-                      child: ExpansionTile(
-                        leading: Icon(
-                          Icons.collections_bookmark,
-                          color: CustomColors.mfinWhite,
-                        ),
-                        title: Text(
-                          "TODAY'S PAYMENTS",
-                          style: TextStyle(
-                            fontSize: 17.0,
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Material(
+                        elevation: 10.0,
+                        borderRadius: BorderRadius.circular(10.0),
+                        shadowColor: CustomColors.mfinButtonGreen,
+                        color: CustomColors.mfinBlue,
+                        child: ExpansionTile(
+                          leading: Icon(
+                            Icons.collections_bookmark,
                             color: CustomColors.mfinWhite,
-                            fontWeight: FontWeight.bold,
                           ),
+                          title: Text(
+                            "TODAY'S PAYMENTS",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                              color: CustomColors.mfinWhite,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          children: <Widget>[
+                            (snapshot.data[3] != null)
+                                ? PaymentsWidget(CustomColors.mfinWhite,
+                                    snapshot.data[3], CustomColors.mfinGrey)
+                                : Text("No Payments for COLLECTION Today")
+                          ],
                         ),
-                        children: <Widget>[
-                          (snapshot.data[3] != null)
-                              ? PaymentsWidget(CustomColors.mfinWhite,
-                                  snapshot.data[3], CustomColors.mfinGrey)
-                              : Text("No Payments for COLLECTION Today")
-                        ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Material(
-                      elevation: 10.0,
-                      borderRadius: BorderRadius.circular(10.0),
-                      shadowColor: CustomColors.mfinGrey,
-                      color: CustomColors.mfinAlertRed,
-                      child: ExpansionTile(
-                        leading: Icon(
-                          Icons.collections_bookmark,
-                          color: CustomColors.mfinWhite,
-                        ),
-                        title: Text(
-                          "PENDING PAYMENTS",
-                          style: TextStyle(
-                            fontSize: 17.0,
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Material(
+                        elevation: 10.0,
+                        borderRadius: BorderRadius.circular(10.0),
+                        shadowColor: CustomColors.mfinGrey,
+                        color: CustomColors.mfinAlertRed,
+                        child: ExpansionTile(
+                          leading: Icon(
+                            Icons.collections_bookmark,
                             color: CustomColors.mfinWhite,
-                            fontWeight: FontWeight.bold,
                           ),
+                          title: Text(
+                            "PENDING PAYMENTS",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                              color: CustomColors.mfinWhite,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          children: <Widget>[
+                            (snapshot.data[4] != null)
+                                ? PaymentsWidget(CustomColors.mfinWhite,
+                                    snapshot.data[4], CustomColors.mfinBlue)
+                                : Text("Great! No PENDING Payments")
+                          ],
                         ),
-                        children: <Widget>[
-                          (snapshot.data[4] != null)
-                              ? PaymentsWidget(CustomColors.mfinWhite,
-                                  snapshot.data[4], CustomColors.mfinBlue)
-                              : Text("Great! No PENDING Payments")
-                        ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Material(
-                      elevation: 10.0,
-                      borderRadius: BorderRadius.circular(10.0),
-                      shadowColor: CustomColors.mfinButtonGreen,
-                      color: CustomColors.mfinGrey,
-                      child: ExpansionTile(
-                        leading: Icon(
-                          Icons.collections_bookmark,
-                          color: CustomColors.mfinWhite,
-                        ),
-                        title: Text(
-                          "UPCOMING PAYMENTS",
-                          style: TextStyle(
-                            fontSize: 17.0,
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Material(
+                        elevation: 10.0,
+                        borderRadius: BorderRadius.circular(10.0),
+                        shadowColor: CustomColors.mfinButtonGreen,
+                        color: CustomColors.mfinGrey,
+                        child: ExpansionTile(
+                          leading: Icon(
+                            Icons.collections_bookmark,
                             color: CustomColors.mfinWhite,
-                            fontWeight: FontWeight.bold,
                           ),
+                          title: Text(
+                            "UPCOMING PAYMENTS",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                              color: CustomColors.mfinWhite,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          children: <Widget>[
+                            (snapshot.data[0] != null)
+                                ? PaymentsWidget(CustomColors.mfinWhite,
+                                    snapshot.data[0], CustomColors.mfinBlue)
+                                : Text(
+                                    "Great! No Payments with UPCOMING Collections")
+                          ],
                         ),
-                        children: <Widget>[
-                          (snapshot.data[0] != null)
-                              ? PaymentsWidget(CustomColors.mfinWhite,
-                                  snapshot.data[0], CustomColors.mfinBlue)
-                              : Text("Great! No Payments with UPCOMING Collections")
-                        ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             } else {
               return Container(

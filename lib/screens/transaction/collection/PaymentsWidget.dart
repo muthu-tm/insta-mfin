@@ -17,6 +17,7 @@ class PaymentsWidget extends StatelessWidget {
     return ListView.builder(
       itemCount: payments.length,
       shrinkWrap: true,
+      primary: false,
       itemBuilder: (BuildContext context, int index) {
         Payment pay = payments[index];
         return Padding(

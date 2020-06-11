@@ -21,8 +21,6 @@ class Collection {
   int collectionNumber;
   @JsonKey(name: 'collection_date', defaultValue: '')
   int collectionDate;
-  @JsonKey(name: 'notify_at', defaultValue: '')
-  int notifyAt;
   @JsonKey(name: 'collected_on', defaultValue: '')
   List<int> collectedOn;
   @JsonKey(name: 'collection_amount')
@@ -58,10 +56,6 @@ class Collection {
 
   setCollectionDate(DateTime collectionDate) {
     this.collectionDate = DateUtils.getUTCDateEpoch(collectionDate);
-  }
-
-  setNotifyAt(DateTime notifyAt) {
-    this.notifyAt = DateUtils.getUTCDateEpoch(notifyAt);
   }
 
   setcollectedOn(List<int> collectedOn) {
