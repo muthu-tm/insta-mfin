@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -86,18 +86,13 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
                   Image.asset("images/icons/logo.png", height: _height * 0.1),
             ),
           ),
-
-          // AppName:
           Text('iFIN',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: CustomColors.mfinWhite,
                   fontSize: 24.0,
                   fontWeight: FontWeight.w700)),
-
           SizedBox(height: 20.0),
-
-          //  Info text
           Row(
             children: <Widget>[
               SizedBox(width: 16.0),
@@ -129,9 +124,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
               SizedBox(width: 16.0),
             ],
           ),
-
           SizedBox(height: 16.0),
-
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -149,9 +142,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
               SizedBox(width: 5.0),
             ],
           ),
-
           SizedBox(height: 32.0),
-
           RaisedButton(
             elevation: 16.0,
             onPressed: signIn,
@@ -199,7 +190,6 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-          print("Unable to register USER: " + result['message']);
         } else {
           await _success();
         }
@@ -220,8 +210,9 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
   _success() async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString("mobile_number", widget.number.toString());
+
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => UserHomeScreen()),
+      MaterialPageRoute(builder: (BuildContext context) => UserFinanceSetup()),
       (Route<dynamic> route) => false,
     );
   }
