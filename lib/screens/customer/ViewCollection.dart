@@ -1,24 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
+import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/customer/widgets/CollDetailsTableWidget.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionDetailsWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/CustomDialogs.dart';
-import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/pdf/collection_receipt.dart';
 
 class ViewCollection extends StatelessWidget {
-  ViewCollection(this.paySettled, this._collection, this.custName,
-      this.payCreatedAt, this.iconColor);
+  ViewCollection(this.pay, this._collection, this.custName, this.iconColor);
 
-  final bool paySettled;
+  final Payment pay;
   final Collection _collection;
   final String custName;
-  final DateTime payCreatedAt;
   final Color iconColor;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -31,7 +28,7 @@ class ViewCollection extends StatelessWidget {
           _collection.branchName,
           _collection.subBranchName,
           _collection.customerNumber,
-          payCreatedAt,
+          pay.createdAt,
           _collection.collectionDate),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -63,8 +60,9 @@ class ViewCollection extends StatelessWidget {
                     size: 35.0,
                     color: CustomColors.mfinBlack,
                   ),
-                  onPressed: () {
-                    print("Collection Receipt Button Clicked");
+                  onPressed: () async {
+                    await CollectionReceipt().generateInvoice(
+                        UserController().getCurrentUser(), pay, collection);
                   },
                 ),
               ),
@@ -223,10 +221,10 @@ class ViewCollection extends StatelessWidget {
                       ),
                     ),
                     (UserController().getCurrentUser().preferences.tableView)
-                        ? CollDetailsTableWidget(paySettled, _scaffoldKey,
-                            collection, custName, payCreatedAt)
-                        : CollectionDetailsWidget(paySettled, _scaffoldKey,
-                            collection, custName, payCreatedAt),
+                        ? CollDetailsTableWidget(pay.isSettled, _scaffoldKey,
+                            collection, custName, pay.createdAt)
+                        : CollectionDetailsWidget(pay.isSettled, _scaffoldKey,
+                            collection, custName, pay.createdAt),
                   ],
                 ),
               ),

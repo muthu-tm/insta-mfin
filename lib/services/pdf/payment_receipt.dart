@@ -29,10 +29,10 @@ class PayReceipt {
 
     final Directory directory = await getApplicationDocumentsDirectory();
     final String path = directory.path;
-    final File file = File('$path/output.pdf');
+    final File file = File('$path/pay_receipt.pdf');
     file.writeAsBytes(bytes);
 
-    OpenFile.open('$path/output.pdf');
+    OpenFile.open('$path/pay_receipt.pdf');
   }
 
   Future<PdfLayoutResult> drawHeader(
@@ -43,7 +43,7 @@ class PayReceipt {
         brush: PdfSolidBrush(PdfColor(68, 138, 255)),
         bounds: Rect.fromLTWH(0, 0, pageSize.width - 115, 90));
     page.graphics.drawString(
-        'PAYMENT INVOCE', PdfStandardFont(PdfFontFamily.timesRoman, 22),
+        'Payment Invoice', PdfStandardFont(PdfFontFamily.timesRoman, 22),
         brush: PdfBrushes.white,
         bounds: Rect.fromLTWH(25, 0, pageSize.width - 115, 90),
         format: PdfStringFormat(
@@ -130,7 +130,7 @@ class PayReceipt {
     headerRow.style.textBrush = PdfBrushes.white;
     headerRow.cells[0].value = 'Payment ID';
     headerRow.cells[0].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[1].value = 'Date';
+    headerRow.cells[1].value = 'Date of Payment';
     headerRow.cells[1].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[2].value = 'No. of Installments';
     headerRow.cells[2].stringFormat.alignment = PdfTextAlignment.center;
@@ -148,7 +148,7 @@ class PayReceipt {
     //Apply the table built-in style
     grid.applyBuiltInStyle(PdfGridBuiltInStyle.listTable4Accent5);
     //Set gird columns width
-    grid.columns[1].width = 200;
+    // grid.columns[1].width = 200;
     for (int i = 0; i < headerRow.cells.count; i++) {
       headerRow.cells[i].style.cellPadding =
           PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
