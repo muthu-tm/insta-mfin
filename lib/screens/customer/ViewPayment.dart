@@ -6,6 +6,7 @@ import 'package:instamfin/screens/customer/ViewPaymentDetails.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionListTableWidget.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionStatusRadioItem.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionListWidget.dart';
+import 'package:instamfin/screens/customer/widgets/PaymentSettlementDialog.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomRadioModel.dart';
@@ -131,7 +132,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                         ),
                         onPressed: () async {
                           await PayReceipt().generateInvoice(
-                              UserController().getCurrentUser(), widget.payment);
+                              UserController().getCurrentUser(),
+                              widget.payment);
                         },
                       ),
                     ),
@@ -240,8 +242,6 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   );
                                 } else {
                                   Navigator.pop(context);
-                                  print(
-                                      "Payment of ${widget.payment.customerNumber} customer removed successfully");
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
                                         "Payment removed successfully", 2),
@@ -283,24 +283,47 @@ class _ViewPaymentState extends State<ViewPayment> {
                             padding: const EdgeInsets.all(10.0),
                             child: Material(
                               elevation: 10.0,
-                              shadowColor: CustomColors.mfinAlertRed,
+                              shadowColor: CustomColors.mfinBlue,
+                              color: CustomColors.mfinPositiveGreen,
                               borderRadius: BorderRadius.circular(10.0),
-                              child: FlatButton.icon(
-                                splashColor: CustomColors.mfinAlertRed,
-                                icon: Icon(Icons.close,
-                                    color: CustomColors.mfinAlertRed),
-                                label: Text(
-                                  "DO SETTLEMENT",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                              child: InkWell(
+                                splashColor: CustomColors.mfinWhite,
+                                child: Container(
+                                  height: 40,
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "DO SETTLEMENT",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: CustomColors.mfinWhite,
+                                    ),
+                                  ),
                                 ),
-                                onPressed: () {
-                                  CustomDialogs.confirm(context, "WARNING",
-                                      "You cannot edit after the Payment SETTLEMENT.",
-                                      () {
-                                    _submit();
-                                  }, () {
-                                    Navigator.pop(context);
-                                  });
+                                onTap: () async {
+                                  List<int> pDetails =
+                                      await widget.payment.getAmountDetails();
+                                  showDialog(
+                                    context: context,
+                                    routeSettings:
+                                        RouteSettings(name: "/customers/payment/settlement"),
+                                    builder: (context) {
+                                      return Center(
+                                        child: paymentSettlementDialog(widget.payment, pDetails),
+                                      );
+                                    },
+                                  );
+                                  // CustomDialogs.confirm(
+                                  //   context,
+                                  //   "WARNING",
+                                  //   "You cannot edit after the Payment SETTLEMENT.",
+                                  //   () {
+                                  //     _submit();
+                                  //   },
+                                  //   () {
+                                  //     Navigator.pop(context);
+                                  //   },
+                                  // );
                                 },
                               ),
                             ),
@@ -419,8 +442,15 @@ class _ViewPaymentState extends State<ViewPayment> {
                 ],
               ),
               (UserController().getCurrentUser().preferences.tableView)
-                  ? CollectionListTableWidget(widget.payment, widget.custName,
-                      title, emptyText, textColor, fetchAll, collStatus)
+                  ? CollectionListTableWidget(
+                      widget.payment,
+                      widget.custName,
+                      title,
+                      emptyText,
+                      textColor,
+                      fetchAll,
+                      collStatus,
+                    )
                   : CollectionListWidget(
                       _scaffoldKey,
                       widget.payment,
@@ -429,7 +459,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                       emptyText,
                       textColor,
                       fetchAll,
-                      collStatus),
+                      collStatus,
+                    ),
             ],
           ),
         ),
@@ -439,7 +470,7 @@ class _ViewPaymentState extends State<ViewPayment> {
   }
 
   _submit() async {
-    CustomDialogs.actionWaiting(context, " Closing Payment");
+    CustomDialogs.actionWaiting(context, "Updating");
     PaymentController _pc = PaymentController();
     var result = await _pc.updatePayment(widget.payment, {
       'is_settled': true,
@@ -453,6 +484,9 @@ class _ViewPaymentState extends State<ViewPayment> {
       print("Unable to Close Payment: " + result['message']);
     } else {
       Navigator.pop(context);
+      setState(() {
+        isSettled = true;
+      });
     }
   }
 }
