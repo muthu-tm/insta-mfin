@@ -1,3 +1,4 @@
+import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -162,6 +163,34 @@ class PaymentController {
       Payment payment, Map<String, dynamic> paymentJSON) async {
     try {
       await Payment().updatePayment(payment, paymentJSON);
+
+      return CustomResponse.getSuccesReponse(
+          "Updated ${payment.customerNumber} customer's Payment");
+    } catch (err) {
+      print(
+          "Error while updating ${payment.customerNumber}customer's Payment: " +
+              err.toString());
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future settlement(Payment payment, Map<String, dynamic> paymentJSON) async {
+    try {
+      Collection coll = await Collection().getCollectionByID(
+          payment.financeID,
+          payment.branchName,
+          payment.subBranchName,
+          payment.customerNumber,
+          payment.createdAt,
+          paymentJSON['settled_date'].toString());
+
+      if (coll != null && coll.getReceived() > 0) {
+        String sDate = DateUtils.formatDate(
+            DateTime.fromMillisecondsSinceEpoch(paymentJSON['settled_date']));
+        throw "Already a Collection received on this day $sDate";
+      }
+
+      await payment.settlement(paymentJSON);
 
       return CustomResponse.getSuccesReponse(
           "Updated ${payment.customerNumber} customer's Payment");

@@ -328,7 +328,7 @@ class CollectionListTableWidget extends StatelessWidget {
         return "SURCHARGE";
         break;
       case 3:
-        return "CLOSING";
+        return "SETTLEMENT";
         break;
       default:
         return "COLLECTION";
@@ -400,7 +400,6 @@ class CollectionListTableWidget extends StatelessWidget {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-          print("Unable to Mark as Collectied: " + result['message']);
         } else {
           Navigator.pop(context);
         }

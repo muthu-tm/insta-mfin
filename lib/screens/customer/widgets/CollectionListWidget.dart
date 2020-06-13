@@ -83,11 +83,8 @@ class CollectionListWidget extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ViewCollection(
-                                      _payment,
-                                      collection,
-                                      custName,
-                                      cardColor),
+                                  builder: (context) => ViewCollection(_payment,
+                                      collection, custName, cardColor),
                                   settings: RouteSettings(
                                       name: '/customers/payment/colection'),
                                 ),
@@ -338,7 +335,7 @@ class CollectionListWidget extends StatelessWidget {
         return "SURCHARGE";
         break;
       case 3:
-        return "CLOSING";
+        return "SETTLEMENT";
         break;
       default:
         return "COLLECTION";
@@ -408,9 +405,9 @@ class CollectionListWidget extends StatelessWidget {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Mark as Collectied: " + result['message']);
       } else {
         Navigator.pop(context);
+        _scaffoldKey.currentState.setState(() {});
       }
     }
   }
