@@ -3,6 +3,7 @@ import 'package:instamfin/db/enums/collection_type.dart';
 import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -45,10 +46,18 @@ class Payment extends Model {
   int collectionAmount;
   @JsonKey(name: 'collection_starts_from', nullable: true)
   int collectionStartsFrom;
-  @JsonKey(name: 'closed_date', nullable: true)
-  int closedDate;
-  @JsonKey(name: 'is_settled', nullable: true)
+  @JsonKey(name: 'settled_date', nullable: true)
+  int settledDate;
+  @JsonKey(name: 'is_settled', defaultValue: false)
   bool isSettled;
+  @JsonKey(name: 'is_loss', defaultValue: false)
+  bool isLoss;
+  @JsonKey(name: 'profit_amount', defaultValue: 0)
+  int profitAmount;
+  @JsonKey(name: 'loss_amount', defaultValue: 0)
+  int lossAmount;
+  @JsonKey(name: 'shortage_amount', defaultValue: 0)
+  int shortageAmount;
   @JsonKey(name: 'given_by', nullable: true)
   String givenBy;
   @JsonKey(name: 'notes', defaultValue: '')
@@ -481,6 +490,163 @@ class Payment extends Model {
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
               txUpdate(tx, docRef, paymentJSON);
+            },
+          );
+        },
+      );
+    } catch (err) {
+      print('Payment UPDATE Transaction failure:' + err.toString());
+      throw err;
+    }
+  }
+
+  Future<void> settlement(Map<String, dynamic> paymentJSON) async {
+    Map<String, dynamic> payJSON = {
+      'updated_at': DateTime.now(),
+      'is_settled': true,
+      'settled_date': paymentJSON['settled_date']
+    };
+
+    DocumentReference docRef = getDocumentReference(
+        this.financeID,
+        this.branchName,
+        this.subBranchName,
+        this.customerNumber,
+        this.createdAt);
+
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              QuerySnapshot cSnap = await this
+                  .getDocumentRef(this.getID())
+                  .collection('customer_collections')
+                  .where('collection_date',
+                      isGreaterThanOrEqualTo: paymentJSON['settled_date'])
+                  .getDocuments();
+
+              //remove all upcoming collections
+              if (cSnap.documents.length > 0) {
+                for (int i = 0; i < cSnap.documents.length; i++) {
+                  Collection _c = Collection.fromJson(cSnap.documents[i].data);
+                  if (_c.getReceived() == 0) {
+                    txDelete(tx, cSnap.documents[i].reference);
+                  }
+                }
+              }
+
+              if (paymentJSON['settlement_amount'] > 0) {
+                QuerySnapshot sSnap = await this
+                    .getDocumentRef(this.getID())
+                    .collection('customer_collections')
+                    .where('type', isEqualTo: 3)
+                    .getDocuments();
+
+                Map<String, dynamic> fields = Map();
+                Map<String, dynamic> collDetails = {
+                  'amount': paymentJSON['settlement_amount']
+                };
+                collDetails['collected_on'] = paymentJSON['settled_date'];
+                collDetails['created_at'] = DateTime.now();
+                collDetails['added_by'] = user.mobileNumber;
+                collDetails['is_paid_late'] = false;
+                collDetails['notes'] = paymentJSON['received_from'];
+                collDetails['collected_by'] = user.name;
+                collDetails['collected_from'] = paymentJSON['received_from'];
+
+                if (sSnap.documents.length > 0) {
+                  Collection sColl =
+                      Collection.fromJson(sSnap.documents[0].data);
+                  if (sColl.collectionDate < paymentJSON['settled_date'])
+                    collDetails['is_paid_late'] = true;
+
+                  if (sColl.collectedOn.contains(paymentJSON['settled_date'])) {
+                    String sDate = DateUtils.formatDate(
+                        DateTime.fromMillisecondsSinceEpoch(
+                            paymentJSON['settled_date']));
+                    throw "A Settlement added for the date $sDate; You cannot add two amount for same DAY!";
+                  } else if (sColl.getReceived() > 0) {
+                    fields['updated_at'] = DateTime.now();
+                    fields['collected_on'] =
+                        FieldValue.arrayUnion([paymentJSON['settled_date']]);
+                    fields['collections'] =
+                        FieldValue.arrayUnion([collDetails]);
+                    txUpdate(tx, sSnap.documents[0].reference, fields);
+                  } else {
+                    Map<String, dynamic> data = {
+                      'finance_id': this.financeID,
+                      'branch_name': this.branchName,
+                      'sub_branch_name': this.subBranchName,
+                      'collection_amount': paymentJSON['settlement_amount'],
+                      'customer_number': this.customerNumber,
+                      'collection_date': paymentJSON['settled_date'],
+                      'collected_on': [paymentJSON['settled_date']],
+                      'collections': [collDetails],
+                      'type': 3, //3 - Settlement
+                      'collection_number': this.tenure,
+                      'created_at': DateTime.now(),
+                    };
+                    txCreate(
+                        tx,
+                        Collection().getDocumentReference(
+                            this.financeID,
+                            this.branchName,
+                            this.subBranchName,
+                            this.customerNumber,
+                            this.createdAt,
+                            paymentJSON['settled_date']),
+                        data);
+                  }
+                } else {
+                  Map<String, dynamic> data = {
+                    'finance_id': this.financeID,
+                    'branch_name': this.branchName,
+                    'sub_branch_name': this.subBranchName,
+                    'collection_amount': paymentJSON['settlement_amount'],
+                    'customer_number': this.customerNumber,
+                    'collection_date': paymentJSON['settled_date'],
+                    'collected_on': [paymentJSON['settled_date']],
+                    'collections': [collDetails],
+                    'type': 3, //3 - Settlement
+                    'collection_number': this.tenure,
+                    'created_at': DateTime.now(),
+                  };
+                  txCreate(
+                      tx,
+                      Collection().getDocumentReference(
+                          this.financeID,
+                          this.branchName,
+                          this.subBranchName,
+                          this.customerNumber,
+                          this.createdAt,
+                          paymentJSON['settled_date']),
+                      data);
+                }
+              }
+
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              accData.cashInHand += paymentJSON['settlement_amount'];
+              accData.paymentsAmount -= this.totalAmount;
+              accData.totalPayments -= 1;
+
+              if (paymentJSON['loss']) {
+                payJSON['is_loss'] = true;
+                payJSON['loss_amount'] = paymentJSON['loss_amount'];
+              } else {
+                payJSON['is_loss'] = false;
+                payJSON['profit_amount'] = paymentJSON['profit_amount'];
+              }
+
+              payJSON['shortage_amount'] = paymentJSON['shortage_amount'];
+
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+              txUpdate(tx, finDocRef, data);
+
+              txUpdate(tx, docRef, payJSON);
             },
           );
         },

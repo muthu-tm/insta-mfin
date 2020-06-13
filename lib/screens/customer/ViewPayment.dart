@@ -305,30 +305,70 @@ class _ViewPaymentState extends State<ViewPayment> {
                                       await widget.payment.getAmountDetails();
                                   showDialog(
                                     context: context,
-                                    routeSettings:
-                                        RouteSettings(name: "/customers/payment/settlement"),
+                                    routeSettings: RouteSettings(
+                                        name: "/customers/payment/settlement"),
                                     builder: (context) {
-                                      return Center(
-                                        child: paymentSettlementDialog(widget.payment, pDetails),
+                                      return SingleChildScrollView(
+                                        child: Center(
+                                          child: PaymentSettlementDialog(
+                                              _scaffoldKey,
+                                              widget.payment,
+                                              pDetails,
+                                              widget.custName),
+                                        ),
                                       );
                                     },
                                   );
-                                  // CustomDialogs.confirm(
-                                  //   context,
-                                  //   "WARNING",
-                                  //   "You cannot edit after the Payment SETTLEMENT.",
-                                  //   () {
-                                  //     _submit();
-                                  //   },
-                                  //   () {
-                                  //     Navigator.pop(context);
-                                  //   },
-                                  // );
                                 },
                               ),
                             ),
                           )
-                        : Padding(padding: EdgeInsets.all(1.0)),
+                        : Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Material(
+                              elevation: 10.0,
+                              shadowColor: CustomColors.mfinBlue,
+                              color: CustomColors.mfinPositiveGreen,
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Container(
+                                height: 40,
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                alignment: Alignment.center,
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                    text: 'SETTLED ON',
+                                    style: TextStyle(
+                                      color: CustomColors.mfinWhite,
+                                      fontFamily: 'Georgia',
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: '  -  ',
+                                        style: TextStyle(
+                                          color: CustomColors.mfinBlack,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: DateUtils.formatDate(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                widget.payment.settledDate)),
+                                        style: TextStyle(
+                                          color: CustomColors.mfinLightGrey,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                     new Divider(
                       color: CustomColors.mfinButtonGreen,
                     )
@@ -467,26 +507,5 @@ class _ViewPaymentState extends State<ViewPayment> {
       ),
       bottomNavigationBar: bottomBar(context),
     );
-  }
-
-  _submit() async {
-    CustomDialogs.actionWaiting(context, "Updating");
-    PaymentController _pc = PaymentController();
-    var result = await _pc.updatePayment(widget.payment, {
-      'is_settled': true,
-      'closed_date': DateUtils.getUTCDateEpoch(DateTime.now())
-    });
-
-    if (!result['is_success']) {
-      Navigator.pop(context);
-      _scaffoldKey.currentState
-          .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-      print("Unable to Close Payment: " + result['message']);
-    } else {
-      Navigator.pop(context);
-      setState(() {
-        isSettled = true;
-      });
-    }
   }
 }
