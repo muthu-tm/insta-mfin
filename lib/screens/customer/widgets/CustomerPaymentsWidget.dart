@@ -40,6 +40,10 @@ class CustomerPaymentsWidget extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   Payment payment =
                       Payment.fromJson(snapshot.data.documents[index].data);
+
+                  Color cColor = CustomColors.mfinBlue;
+                  if (payment.isSettled) cColor = CustomColors.mfinGrey;
+
                   return Slidable(
                     actionPane: SlidableDrawerActionPane(),
                     actionExtentRatio: 0.25,
@@ -232,7 +236,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                             child: Row(
                               children: <Widget>[
                                 Material(
-                                  color: CustomColors.mfinBlue,
+                                  color: cColor,
                                   elevation: 10.0,
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: Container(
@@ -254,7 +258,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                             DateUtils.getFormattedDateFromEpoch(
                                                 payment.dateOfPayment),
                                             style: TextStyle(
-                                                color: CustomColors.mfinGrey,
+                                                color: CustomColors.mfinWhite,
                                                 fontFamily: 'Georgia',
                                                 fontSize: 18.0,
                                                 fontWeight: FontWeight.bold),
@@ -287,7 +291,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                             text: TextSpan(
                                               text: '${payment.tenure}',
                                               style: TextStyle(
-                                                color: CustomColors.mfinGrey,
+                                                color: CustomColors.mfinWhite,
                                                 fontFamily: 'Georgia',
                                                 fontSize: 18.0,
                                               ),
@@ -322,7 +326,9 @@ class CustomerPaymentsWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                getPaymentsDetails(payment),
+                                payment.isSettled
+                                    ? getSettledPaymentsDetails(payment)
+                                    : getPaymentsDetails(payment),
                               ],
                             ),
                           ),
@@ -452,7 +458,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                   height: 30,
                   child: ListTile(
                     leading: Text(
-                      "PAID: ",
+                      "RECEIVED",
                       style: TextStyle(
                         fontSize: 18,
                         color: CustomColors.mfinBlue,
@@ -473,7 +479,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                   height: 30,
                   child: ListTile(
                     leading: Text(
-                      'PENDING:',
+                      'PENDING',
                       style: TextStyle(
                         fontSize: 17,
                         color: CustomColors.mfinBlue,
@@ -494,7 +500,7 @@ class CustomerPaymentsWidget extends StatelessWidget {
                   height: 30,
                   child: ListTile(
                     leading: Text(
-                      'UPCOMING:',
+                      'UPCOMING',
                       style: TextStyle(
                         fontSize: 17,
                         color: CustomColors.mfinBlue,
@@ -514,6 +520,112 @@ class CustomerPaymentsWidget extends StatelessWidget {
               ],
             );
           }
+        } else if (paidSnap.hasError) {
+          child = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncError());
+        } else {
+          child = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncWaiting());
+        }
+
+        return Material(
+          color: CustomColors.mfinLightGrey,
+          elevation: 10.0,
+          borderRadius: BorderRadius.circular(10.0),
+          child: Container(
+              width: MediaQuery.of(context).size.width * 0.60,
+              height: 120,
+              child: child),
+        );
+      },
+    );
+  }
+
+  Widget getSettledPaymentsDetails(Payment payment) {
+    return FutureBuilder(
+      future: payment.getTotalReceived(),
+      builder: (BuildContext context, AsyncSnapshot<int> paidSnap) {
+        Widget child;
+
+        if (paidSnap.hasData) {
+          child = Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: 30,
+                child: ListTile(
+                  leading: Text(
+                    "RECEIVED",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: Text(
+                    paidSnap.data.toString(),
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: CustomColors.mfinPositiveGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+                child: ListTile(
+                  leading: Text(
+                    payment.isLoss ? 'LOSS' : 'PROFIT',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: Text(
+                    payment.isLoss
+                        ? payment.lossAmount.toString()
+                        : payment.profitAmount.toString(),
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: payment.isLoss
+                          ? CustomColors.mfinAlertRed
+                          : CustomColors.mfinPositiveGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+                child: ListTile(
+                  leading: Text(
+                    'SETTLED ON',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: Text(
+                    DateUtils.formatDate(DateTime.fromMillisecondsSinceEpoch(
+                        payment.settledDate)),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: CustomColors.mfinGrey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
         } else if (paidSnap.hasError) {
           child = Column(
               mainAxisAlignment: MainAxisAlignment.center,
