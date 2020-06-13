@@ -21,7 +21,7 @@ class AddPayment extends StatefulWidget {
 }
 
 class _AddPaymentState extends State<AddPayment> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final User _user = UserController().getCurrentUser();
 
@@ -43,12 +43,12 @@ class _AddPaymentState extends State<AddPayment> {
     "5": "Friday",
     "6": "Saturday",
   };
-  List<PaymentTemplate> templates = new List<PaymentTemplate>();
+  List<PaymentTemplate> templates = List<PaymentTemplate>();
   List<PaymentTemplate> tempList;
   PaymentTemplate selectedTemp;
 
-  TextEditingController _date = new TextEditingController();
-  TextEditingController _collectionDate = new TextEditingController();
+  TextEditingController _date = TextEditingController();
+  TextEditingController _collectionDate = TextEditingController();
 
   int selectedDate = DateUtils.getUTCDateEpoch(DateTime.now());
   int collectionDate =
@@ -67,7 +67,7 @@ class _AddPaymentState extends State<AddPayment> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
@@ -97,16 +97,16 @@ class _AddPaymentState extends State<AddPayment> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new Card(
+             Card(
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
                 margin: EdgeInsets.only(top: 5.0),
                 shadowColor: CustomColors.mfinLightBlue,
-                child: new Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -145,7 +145,7 @@ class _AddPaymentState extends State<AddPayment> {
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -174,7 +174,7 @@ class _AddPaymentState extends State<AddPayment> {
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -213,7 +213,7 @@ class _AddPaymentState extends State<AddPayment> {
                                     FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -240,7 +240,7 @@ class _AddPaymentState extends State<AddPayment> {
                                       FloatingLabelBehavior.always,
                                   fillColor: CustomColors.mfinWhite,
                                   filled: true,
-                                  contentPadding: new EdgeInsets.symmetric(
+                                  contentPadding: EdgeInsets.symmetric(
                                       vertical: 3.0, horizontal: 10.0),
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide(
@@ -277,7 +277,7 @@ class _AddPaymentState extends State<AddPayment> {
                                     FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -320,7 +320,7 @@ class _AddPaymentState extends State<AddPayment> {
                                     FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -342,12 +342,12 @@ class _AddPaymentState extends State<AddPayment> {
                   ],
                 ),
               ),
-              new Card(
+             Card(
                 shadowColor: CustomColors.mfinAlertRed,
                 color: CustomColors.mfinLightGrey,
                 elevation: 15.0,
                 margin: EdgeInsets.only(top: 5.0),
-                child: new Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -383,7 +383,7 @@ class _AddPaymentState extends State<AddPayment> {
                               labelStyle: TextStyle(color: CustomColors.mfinBlue),
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
+                              contentPadding: EdgeInsets.symmetric(
                                   vertical: 3.0, horizontal: 10.0),
                               border: OutlineInputBorder(
                                   borderSide:
@@ -412,7 +412,7 @@ class _AddPaymentState extends State<AddPayment> {
                               ),
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
+                              contentPadding: EdgeInsets.symmetric(
                                   vertical: 3.0, horizontal: 10.0),
                               border: OutlineInputBorder(
                                   borderSide:
@@ -448,7 +448,7 @@ class _AddPaymentState extends State<AddPayment> {
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
                                     borderSide:
@@ -478,7 +478,7 @@ class _AddPaymentState extends State<AddPayment> {
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
                                     borderSide:
@@ -515,7 +515,7 @@ class _AddPaymentState extends State<AddPayment> {
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
-                                    contentPadding: new EdgeInsets.symmetric(
+                                    contentPadding: EdgeInsets.symmetric(
                                         vertical: 3.0, horizontal: 10.0),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -547,7 +547,7 @@ class _AddPaymentState extends State<AddPayment> {
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
-                                    contentPadding: new EdgeInsets.symmetric(
+                                    contentPadding: EdgeInsets.symmetric(
                                         vertical: 3.0, horizontal: 10.0),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -583,7 +583,7 @@ class _AddPaymentState extends State<AddPayment> {
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10),
                                 border: OutlineInputBorder(
                                     borderSide:
@@ -611,7 +611,7 @@ class _AddPaymentState extends State<AddPayment> {
                               floatingLabelBehavior: FloatingLabelBehavior.always,
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
+                              contentPadding: EdgeInsets.symmetric(
                                   vertical: 3.0, horizontal: 10.0),
                               border: OutlineInputBorder(
                                   borderSide:
@@ -646,7 +646,7 @@ class _AddPaymentState extends State<AddPayment> {
                               floatingLabelBehavior: FloatingLabelBehavior.always,
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
+                              contentPadding: EdgeInsets.symmetric(
                                   vertical: 3.0, horizontal: 10.0),
                               border: OutlineInputBorder(
                                   borderSide:
@@ -674,7 +674,7 @@ class _AddPaymentState extends State<AddPayment> {
                                 labelStyle: TextStyle(color: CustomColors.mfinBlue),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(

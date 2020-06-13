@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/home/Home.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
@@ -58,111 +60,53 @@ class _ViewPaymentState extends State<ViewPayment> {
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: Text(
-          "Add Collection",
-          style: TextStyle(
-            fontSize: 17,
-            fontFamily: "Georgia",
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        splashColor: CustomColors.mfinWhite,
-        icon: Icon(
-          Icons.money_off,
-          size: 35,
-          color: CustomColors.mfinFadedButtonGreen,
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: new Container(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Text(
-                        DateUtils.getFormattedDateFromEpoch(
-                            widget.payment.dateOfPayment),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: CustomColors.mfinAlertRed,
-                          fontWeight: FontWeight.bold,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showMaterialModalBottomSheet(
+              expand: false,
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (context, scrollController) {
+                return Material(
+                    child: SafeArea(
+                  top: false,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ListTile(
+                        title: Text('Add Collection'),
+                        leading: Icon(
+                          Icons.monetization_on,
+                          color: CustomColors.mfinBlue,
                         ),
-                      ),
-                      title: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: '${widget.payment.tenure}',
-                          style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontFamily: 'Georgia',
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: ' x ',
-                              style: TextStyle(
-                                color: CustomColors.mfinBlack,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '${widget.payment.collectionAmount}',
-                              style: TextStyle(
-                                color: CustomColors.mfinPositiveGreen,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      trailing: IconButton(
-                        icon: Icon(
-                          Icons.print,
-                          size: 35.0,
-                          color: CustomColors.mfinBlack,
-                        ),
-                        onPressed: () async {
-                          await PayReceipt().generateInvoice(
-                              UserController().getCurrentUser(),
-                              widget.payment);
+                        onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          // TODO: Need to add collection screen here
+                          //     builder: (context) => ,
+                          //     settings: RouteSettings(
+                          //         name: '/customers/payments/add'),
+                          //   ),
+                          // );
                         },
                       ),
-                    ),
-                    new Divider(
-                      color: CustomColors.mfinButtonGreen,
-                    ),
-                    ListTile(
-                      leading: RaisedButton.icon(
-                        color: CustomColors.mfinFadedButtonGreen,
-                        onPressed: () {
-                          _scaffoldKey.currentState.openEndDrawer();
-                        },
-                        icon: Icon(
-                          Icons.payment,
-                          size: 30.0,
-                          color: CustomColors.mfinBlack,
+                      ListTile(
+                        title: Text('View Payment'),
+                        leading: Icon(
+                          Icons.remove_red_eye,
+                          color: CustomColors.mfinBlue,
                         ),
-                        label: Text(
-                          "View",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: CustomColors.mfinBlack,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        // TODO - Need to refractor view customer and hook-up here
+                        onTap: () => {},
                       ),
-                      title: RaisedButton.icon(
-                        color: CustomColors.mfinBlue,
-                        onPressed: () async {
+                      ListTile(
+                        title: Text('Edit Payment'),
+                        leading: Icon(
+                          Icons.edit,
+                          color: CustomColors.mfinBlue,
+                        ),
+                        onTap: () async {
                           int totalReceived =
                               await widget.payment.getTotalReceived();
                           if (totalReceived != null && totalReceived > 0) {
@@ -191,93 +135,119 @@ class _ViewPaymentState extends State<ViewPayment> {
                             );
                           }
                         },
-                        icon: Icon(
-                          Icons.edit,
-                          size: 30.0,
-                          color: CustomColors.mfinWhite,
+                      ),
+                      ListTile(
+                        title: Text('Do Settlement'),
+                        leading: Icon(
+                          Icons.account_balance_wallet,
+                          color: CustomColors.mfinBlue,
                         ),
-                        label: Text(
-                          "Edit",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: CustomColors.mfinWhite,
-                            fontWeight: FontWeight.bold,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserHomeScreen(),
+                            settings: RouteSettings(name: '/home'),
                           ),
                         ),
                       ),
-                      trailing: RaisedButton.icon(
-                        color: CustomColors.mfinAlertRed,
-                        onPressed: () async {
-                          CustomDialogs.confirm(
-                            context,
-                            "Confirm",
-                            "Are you sure to remove this Payment?",
-                            () async {
-                              int totalReceived =
-                                  await widget.payment.getTotalReceived();
+                      ListTile(
+                          title: Text('Delete Payment'),
+                          leading: Icon(
+                            Icons.delete_forever,
+                            color: CustomColors.mfinAlertRed,
+                          ),
+                          onTap: () async {
+                            CustomDialogs.confirm(
+                              context,
+                              "Confirm",
+                              "Are you sure to remove this Payment?",
+                              () async {
+                                int totalReceived =
+                                    await widget.payment.getTotalReceived();
 
-                              if (totalReceived != null && totalReceived > 0) {
-                                Navigator.pop(context);
-                                _scaffoldKey.currentState.showSnackBar(
-                                  CustomSnackBar.errorSnackBar(
-                                    "You cannot Remove Payments which has already received COLLECTION!}",
-                                    3,
-                                  ),
-                                );
-                              } else if (totalReceived != null) {
-                                PaymentController _pc = PaymentController();
-                                var result = await _pc.removePayment(
-                                    widget.payment.financeID,
-                                    widget.payment.branchName,
-                                    widget.payment.subBranchName,
-                                    widget.payment.customerNumber,
-                                    widget.payment.createdAt);
-                                if (!result['is_success']) {
+                                if (totalReceived != null &&
+                                    totalReceived > 0) {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
-                                      "Unable to remove the Payment! ${result['message']}",
+                                      "You cannot Remove Payments which has already received COLLECTION!}",
                                       3,
                                     ),
                                   );
+                                } else if (totalReceived != null) {
+                                  PaymentController _pc = PaymentController();
+                                  var result = await _pc.removePayment(
+                                      widget.payment.financeID,
+                                      widget.payment.branchName,
+                                      widget.payment.subBranchName,
+                                      widget.payment.customerNumber,
+                                      widget.payment.createdAt);
+                                  if (!result['is_success']) {
+                                    Navigator.pop(context);
+                                    _scaffoldKey.currentState.showSnackBar(
+                                      CustomSnackBar.errorSnackBar(
+                                        "Unable to remove the Payment! ${result['message']}",
+                                        3,
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.pop(context);
+                                    _scaffoldKey.currentState.showSnackBar(
+                                      CustomSnackBar.errorSnackBar(
+                                          "Payment removed successfully", 2),
+                                    );
+                                    Navigator.pop(context);
+                                  }
                                 } else {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
-                                        "Payment removed successfully", 2),
+                                      "Error, Please try again later!}",
+                                      3,
+                                    ),
                                   );
-                                  Navigator.pop(context);
                                 }
-                              } else {
+                              },
+                              () {
                                 Navigator.pop(context);
-                                _scaffoldKey.currentState.showSnackBar(
-                                  CustomSnackBar.errorSnackBar(
-                                    "Error, Please try again later!}",
-                                    3,
-                                  ),
-                                );
-                              }
-                            },
-                            () {
-                              Navigator.pop(context);
-                            },
-                          );
-                        },
-                        icon: Icon(
-                          Icons.delete_forever,
-                          size: 30.0,
-                          color: CustomColors.mfinWhite,
+                              },
+                            );
+                          }),
+                      ListTile(
+                        title: Text('Home'),
+                        leading: Icon(
+                          Icons.home,
+                          color: CustomColors.mfinBlue,
                         ),
-                        label: Text(
-                          "Remove",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: CustomColors.mfinWhite,
-                            fontWeight: FontWeight.bold,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserHomeScreen(),
+                            settings: RouteSettings(name: '/home'),
                           ),
                         ),
-                      ),
-                    ),
+                      )
+                    ],
+                  ),
+                ));
+              });
+        },
+        backgroundColor: CustomColors.mfinBlue,
+        splashColor: CustomColors.mfinWhite,
+        child: Icon(
+          Icons.navigation,
+          size: 30,
+          color: CustomColors.mfinButtonGreen,
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: new Container(
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                child: Column(
+                  children: <Widget>[
                     !isSettled
                         ? Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -482,30 +452,34 @@ class _ViewPaymentState extends State<ViewPayment> {
                 ],
               ),
               (UserController().getCurrentUser().preferences.tableView)
-                  ? CollectionListTableWidget(
-                      widget.payment,
-                      widget.custName,
-                      title,
-                      emptyText,
-                      textColor,
-                      fetchAll,
-                      collStatus,
-                    )
-                  : CollectionListWidget(
-                      _scaffoldKey,
-                      widget.payment,
-                      widget.custName,
-                      title,
-                      emptyText,
-                      textColor,
-                      fetchAll,
-                      collStatus,
-                    ),
+                  ? Container(
+                    child: CollectionListTableWidget(
+                        widget.payment,
+                        widget.custName,
+                        title,
+                        emptyText,
+                        textColor,
+                        fetchAll,
+                        collStatus,
+                      ),
+                  )
+                  : Container(
+                    child: CollectionListWidget(
+                        _scaffoldKey,
+                        widget.payment,
+                        widget.custName,
+                        title,
+                        emptyText,
+                        textColor,
+                        fetchAll,
+                        collStatus,
+                      ),
+                  ),
+                  Padding(padding: EdgeInsets.fromLTRB(0, 40, 0, 40))
             ],
           ),
         ),
       ),
-      bottomNavigationBar: bottomBar(context),
     );
   }
 }

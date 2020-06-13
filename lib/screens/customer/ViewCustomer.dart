@@ -3,7 +3,6 @@ import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
-import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsWidget.dart';
 import 'package:instamfin/screens/customer/AddPayment.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -31,7 +30,6 @@ class ViewCustomer extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        //mini: true,
         onPressed: () {
           showMaterialModalBottomSheet(
               expand: false,
@@ -47,7 +45,7 @@ class ViewCustomer extends StatelessWidget {
                       ListTile(
                         title: Text('Add Payment'),
                         leading: Icon(
-                          Icons.add,
+                          Icons.monetization_on,
                           color: CustomColors.mfinBlue,
                         ),
                         onTap: () {
@@ -67,6 +65,7 @@ class ViewCustomer extends StatelessWidget {
                           Icons.remove_red_eye,
                           color: CustomColors.mfinBlue,
                         ),
+                        // TODO - Need to refractor view customer and hook-up here
                         onTap: () => {},
                       ),
                       ListTile(
