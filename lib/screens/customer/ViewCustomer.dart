@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/home/Home.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsWidget.dart';
@@ -12,7 +13,7 @@ import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
 class ViewCustomer extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   ViewCustomer(this.customer);
 
@@ -20,9 +21,8 @@ class ViewCustomer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
-      endDrawer: ViewCustomerProfile(customer),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -30,96 +30,53 @@ class ViewCustomer extends StatelessWidget {
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AddPayment(customer),
-            settings: RouteSettings(name: '/customers/payments/add'),
-          ),
-        ),
-        label: Text(
-          "Add Payment",
-          style: TextStyle(
-            fontSize: 17,
-            fontFamily: "Georgia",
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        splashColor: CustomColors.mfinWhite,
-        icon: Icon(
-          Icons.money_off,
-          size: 35,
-          color: CustomColors.mfinFadedButtonGreen,
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: new Container(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(
-                        Icons.account_box,
-                        size: 45.0,
-                        color: CustomColors.mfinButtonGreen,
-                      ),
-                      title: Text(
-                        customer.name,
-                        style: TextStyle(
-                          fontSize: 18,
+      floatingActionButton: FloatingActionButton(
+        //mini: true,
+        onPressed: () {
+          showMaterialModalBottomSheet(
+              expand: false,
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (context, scrollController) {
+                return Material(
+                    child: SafeArea(
+                  top: false,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ListTile(
+                        title: Text('Add Payment'),
+                        leading: Icon(
+                          Icons.add,
                           color: CustomColors.mfinBlue,
                         ),
-                      ),
-                      trailing: Text(
-                        customer.mobileNumber.toString(),
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: CustomColors.mfinBlue,
-                        ),
-                      ),
-                    ),
-                    new Divider(
-                      color: CustomColors.mfinButtonGreen,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        new Spacer(
-                          flex: 2,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _scaffoldKey.currentState.openEndDrawer();
-                          },
-                          child: Container(
-                            color: CustomColors.mfinButtonGreen,
-                            width: MediaQuery.of(context).size.width * 0.18,
-                            height: 60,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.contacts,
-                                  size: 25.0,
-                                  color: CustomColors.mfinBlack,
-                                ),
-                                Text(
-                                  "View",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: CustomColors.mfinBlack,
-                                  ),
-                                )
-                              ],
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddPayment(customer),
+                              settings: RouteSettings(
+                                  name: '/customers/payments/add'),
                             ),
-                          ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text('View Customer'),
+                        leading: Icon(
+                          Icons.remove_red_eye,
+                          color: CustomColors.mfinBlue,
                         ),
-                        new Spacer(),
-                        InkWell(
-                          onTap: () => Navigator.push(
+                        onTap: () => {},
+                      ),
+                      ListTile(
+                        title: Text('Edit Customer'),
+                        leading: Icon(
+                          Icons.edit,
+                          color: CustomColors.mfinBlue,
+                        ),
+                        onTap: () {
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
@@ -127,32 +84,33 @@ class ViewCustomer extends StatelessWidget {
                               settings: RouteSettings(
                                   name: '/customers/profile/edit'),
                             ),
-                          ),
-                          child: Container(
-                            color: CustomColors.mfinBlue,
-                            width: MediaQuery.of(context).size.width * 0.18,
-                            height: 60,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.edit,
-                                  size: 25.0,
-                                  color: CustomColors.mfinLightGrey,
-                                ),
-                                Text(
-                                  "Edit",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: CustomColors.mfinLightGrey,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Phone Customer'),
+                        leading: Icon(
+                          Icons.phone,
+                          color: CustomColors.mfinBlue,
                         ),
-                        new Spacer(),
-                        InkWell(
+                        onTap: () => UrlLauncherUtils.makePhoneCall(
+                            customer.mobileNumber),
+                      ),
+                      ListTile(
+                        title: Text('Text Customer'),
+                        leading: Icon(
+                          Icons.textsms,
+                          color: CustomColors.mfinBlue,
+                        ),
+                        onTap: () =>
+                            UrlLauncherUtils.makeSMS(customer.mobileNumber),
+                      ),
+                      ListTile(
+                          title: Text('Delete Customer'),
+                          leading: Icon(
+                            Icons.delete_forever,
+                            color: CustomColors.mfinAlertRed,
+                          ),
                           onTap: () async {
                             CustomDialogs.confirm(
                               context,
@@ -167,11 +125,13 @@ class ViewCustomer extends StatelessWidget {
                                     customer.mobileNumber, false);
                                 if (result == null) {
                                   Navigator.pop(context);
+                                  Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                       CustomSnackBar.errorSnackBar(
                                           "There are few Payments available for this Customer. Please remove the Payments first!",
                                           3));
                                 } else {
+                                  // ! Once customer deleted; need to route user to list page
                                   Navigator.pop(context);
                                   print("Customer removed successfully");
                                   Navigator.pop(context);
@@ -181,102 +141,49 @@ class ViewCustomer extends StatelessWidget {
                                 Navigator.pop(context);
                               },
                             );
-                          },
-                          child: Container(
-                            color: CustomColors.mfinAlertRed,
-                            width: MediaQuery.of(context).size.width * 0.18,
-                            height: 60,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.delete_forever,
-                                  size: 25.0,
-                                  color: CustomColors.mfinLightGrey,
-                                ),
-                                Text(
-                                  "Remove",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: CustomColors.mfinLightGrey,
-                                  ),
-                                )
-                              ],
-                            ),
+                          }),
+                      ListTile(
+                        title: Text('Home'),
+                        leading: Icon(
+                          Icons.home,
+                          color: CustomColors.mfinBlue,
+                        ),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserHomeScreen(),
+                            settings: RouteSettings(name: '/home'),
                           ),
                         ),
-                        new Spacer(),
-                        InkWell(
-                          onTap: () => UrlLauncherUtils.makePhoneCall(
-                              customer.mobileNumber),
-                          child: Container(
-                            color: CustomColors.mfinPositiveGreen,
-                            width: MediaQuery.of(context).size.width * 0.18,
-                            height: 60,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.phone,
-                                  size: 25.0,
-                                  color: CustomColors.mfinLightGrey,
-                                ),
-                                Text(
-                                  "Phone",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: CustomColors.mfinLightGrey,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        new Spacer(),
-                        InkWell(
-                          onTap: () =>
-                              UrlLauncherUtils.makeSMS(customer.mobileNumber),
-                          child: Container(
-                            color: CustomColors.mfinGrey,
-                            width: MediaQuery.of(context).size.width * 0.18,
-                            height: 60,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.message,
-                                  size: 25.0,
-                                  color: CustomColors.mfinBlack,
-                                ),
-                                Text(
-                                  "Text",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: CustomColors.mfinBlack,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        new Spacer(
-                          flex: 2,
-                        ),
-                      ],
-                    ),
-                    new Divider(
-                      color: CustomColors.mfinButtonGreen,
-                    )
-                  ],
-                ),
-              ),
+                      )
+                    ],
+                  ),
+                ));
+              });
+        },
+        backgroundColor: CustomColors.mfinBlue,
+        splashColor: CustomColors.mfinWhite,
+        child: Icon(
+          Icons.navigation,
+          size: 30,
+          color: CustomColors.mfinButtonGreen,
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
               CustomerPaymentsWidget(
                   customer.mobileNumber, customer.name, _scaffoldKey),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 40, 0, 40),
+              ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: bottomBar(context),
+      //bottomNavigationBar: bottomBar(context),
     );
   }
 }
