@@ -202,10 +202,6 @@ class Payment extends Model {
 
   Future<List<int>> getAmountDetails() async {
     try {
-      if (this.isSettled) {
-        int rAmount = await getTotalReceived();
-        return [rAmount, 0, 0, 0];
-      }
       List<Collection> collList = await Collection()
           .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
               this.subBranchName, this.customerNumber, this.createdAt);

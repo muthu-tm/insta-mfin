@@ -503,11 +503,11 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
       Navigator.pop(context);
       Navigator.pop(context);
       widget._scaffoldKey.currentState
-          .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+          .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 3));
     } else {
       Navigator.pop(context);
       Navigator.pop(context);
-      widget._scaffoldKey.currentState.setState(() {});
+      Navigator.pop(context);
     }
   }
 
