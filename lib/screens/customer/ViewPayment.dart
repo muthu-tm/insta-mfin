@@ -280,15 +280,13 @@ class _ViewPaymentState extends State<ViewPayment> {
                                     routeSettings: RouteSettings(
                                         name: "/customers/payment/settlement"),
                                     builder: (context) {
-                                      return Container(
-                                        child: SingleChildScrollView(
-                                          child: Center(
-                                            child: PaymentSettlementDialog(
-                                                _scaffoldKey,
-                                                widget.payment,
-                                                pDetails,
-                                                widget.custName),
-                                          ),
+                                      return SingleChildScrollView(
+                                        child: Center(
+                                          child: PaymentSettlementDialog(
+                                              _scaffoldKey,
+                                              widget.payment,
+                                              pDetails,
+                                              widget.custName),
                                         ),
                                       );
                                     },
