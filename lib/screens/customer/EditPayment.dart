@@ -97,16 +97,16 @@ class _EditPaymentState extends State<EditPayment> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new Card(
+              Card(
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
                 margin: EdgeInsets.only(top: 5.0),
                 shadowColor: CustomColors.mfinLightBlue,
-                child: new Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -127,389 +127,229 @@ class _EditPaymentState extends State<EditPayment> {
                     Divider(
                       color: CustomColors.mfinBlue,
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "PAYMENT ID:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.text,
-                        initialValue: widget.payment.paymentID,
-                        decoration: InputDecoration(
-                          hintText: 'Payment ID',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (paymentID) {
-                          if (paymentID.isNotEmpty || paymentID.trim() != widget.payment.paymentID) {
-                            updatedPayment['payment_id'] = paymentID.trim();
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "DATE:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: GestureDetector(
-                        onTap: () => _selectDate(context),
-                        child: AbsorbPointer(
-                          child: TextFormField(
-                            controller: _date,
-                            keyboardType: TextInputType.datetime,
-                            decoration: InputDecoration(
-                              hintText: 'Date of Payment',
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue,
-                              ),
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              suffixIcon: Icon(
-                                Icons.date_range,
-                                size: 35,
-                                color: CustomColors.mfinBlue,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              enabled: false,
+                              autofocus: false,
+                              //initialValue: widget.customer.name,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Customer name',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
                               ),
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.text,
+                              initialValue: widget.payment.paymentID,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                hintText: 'Payment ID',
+                                labelText: 'Payment ID',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                              ),
+                              validator: (paymentID) {
+                                if (paymentID.isNotEmpty ||
+                                    paymentID.trim() !=
+                                        widget.payment.paymentID) {
+                                  updatedPayment['payment_id'] =
+                                      paymentID.trim();
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "GIVEN BY:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.text,
-                        initialValue: widget.payment.givenBy,
-                        decoration: InputDecoration(
-                          hintText: 'Amount Given by',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (givenby) {
-                          if (givenby.trim().isEmpty) {
-                            return "Please fill the person name who gave the amount";
-                          } else if (givenby.trim() != widget.payment.givenBy) {
-                            updatedPayment['given_by'] = givenby.trim();
-                          }
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.text,
+                              initialValue: widget.payment.givenBy,
+                              decoration: InputDecoration(
+                                hintText: 'Amount given by',
+                                labelText: 'Amount given by',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (givenby) {
+                                if (givenby.trim().isEmpty) {
+                                  return "Please fill the person name who gave the amount";
+                                } else if (givenby.trim() !=
+                                    widget.payment.givenBy) {
+                                  updatedPayment['given_by'] = givenby.trim();
+                                }
 
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "NOTES:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.text,
-                        initialValue: widget.payment.notes,
-                        maxLines: 3,
-                        decoration: InputDecoration(
-                          hintText: 'Notes',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (notes) {
-                          if (notes.trim() != widget.payment.notes) {
-                            updatedPayment['notes'] = notes.trim();
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "TYPE:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: DropdownButton<String>(
-                        dropdownColor: CustomColors.mfinWhite,
-                        isExpanded: true,
-                        items: _tempMap.entries.map(
-                          (f) {
-                            return DropdownMenuItem<String>(
-                              value: f.key,
-                              child: Text(f.value),
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (newVal) {
-                          _setSelectedTemp(newVal);
-                        },
-                        value: _selectedTempID,
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "MODE:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: DropdownButton<String>(
-                        dropdownColor: CustomColors.mfinWhite,
-                        isExpanded: true,
-                        items: _tempCollectionMode.entries.map(
-                          (f) {
-                            return DropdownMenuItem<String>(
-                              value: f.key,
-                              child: Text(f.value),
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (newVal) {
-                          _setSelectedCollectionMode(newVal);
-                        },
-                        value: selectedCollectionModeID,
-                      ),
-                    ),
-                    int.parse(selectedCollectionModeID) == 0
-                        ? ListTile(
-                            leading: SizedBox(
-                              width: 100,
-                              child: Text(
-                                "COLLECTION DATE:",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontFamily: "Georgia",
-                                  fontWeight: FontWeight.bold,
-                                  color: CustomColors.mfinBlue,
-                                ),
-                              ),
+                                return null;
+                              },
                             ),
-                            title: GestureDetector(
-                              onTap: () => _selectCollectionDate(context),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _collectionDate,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    hintText: 'Date of Collection',
-                                    labelStyle: TextStyle(
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: new EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 3.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                  labelText: 'Payment template',
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
                                   ),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors.mfinWhite)),
                                 ),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    int.parse(selectedCollectionModeID) == 1
-                        ? Column(
-                            children: <Widget>[
-                              ListTile(
-                                leading: SizedBox(
-                                  width: 100,
-                                  child: Text(
-                                    "COLLECTION DATE:",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: "Georgia",
-                                      fontWeight: FontWeight.bold,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
-                                ),
-                                title: GestureDetector(
-                                  onTap: () => _selectCollectionDate(context),
-                                  child: AbsorbPointer(
-                                    child: TextFormField(
-                                      controller: _collectionDate,
-                                      keyboardType: TextInputType.datetime,
-                                      decoration: InputDecoration(
-                                        hintText: 'Date of Collection',
-                                        labelStyle: TextStyle(
-                                          color: CustomColors.mfinBlue,
-                                        ),
-                                        contentPadding:
-                                            new EdgeInsets.symmetric(
-                                                vertical: 3.0, horizontal: 3.0),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: CustomColors.mfinWhite)),
-                                        fillColor: CustomColors.mfinWhite,
-                                        filled: true,
-                                        suffixIcon: Icon(
-                                          Icons.date_range,
-                                          size: 35,
-                                          color: CustomColors.mfinBlue,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              ListTile(
-                                leading: SizedBox(
-                                  width: 100,
-                                  child: Text(
-                                    "DAY:",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: "Georgia",
-                                      fontWeight: FontWeight.bold,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
-                                ),
-                                title: DropdownButton<String>(
-                                  dropdownColor: CustomColors.mfinWhite,
-                                  isExpanded: true,
-                                  items: _tempCollectionDays.entries.map(
-                                    (f) {
-                                      return DropdownMenuItem<String>(
-                                        value: f.key,
-                                        child: Text(f.value),
-                                      );
-                                    },
-                                  ).toList(),
-                                  onChanged: (newVal) {
-                                    _setSelectedCollectionDay(newVal);
+                                items: _tempMap.entries.map(
+                                  (f) {
+                                    return DropdownMenuItem<String>(
+                                      value: f.key,
+                                      child: Text(f.value),
+                                    );
                                   },
-                                  value: selectedCollectionDayID,
-                                ),
-                              ),
-                            ],
+                                ).toList(),
+                                value: _selectedTempID,
+                                onChanged: (newVal) {
+                                  _setSelectedTemp(newVal);
+                                }),
                           )
-                        : Container(),
-                    int.parse(selectedCollectionModeID) == 2
-                        ? ListTile(
-                            leading: SizedBox(
-                              width: 100,
-                              child: Text(
-                                "COLLECTION DATE:",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontFamily: "Georgia",
-                                  fontWeight: FontWeight.bold,
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Collection mode',
+                                labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
                               ),
+                              items: _tempCollectionMode.entries.map(
+                                (f) {
+                                  return DropdownMenuItem<String>(
+                                    value: f.key,
+                                    child: Text(f.value),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (newVal) {
+                                _setSelectedCollectionMode(newVal);
+                              },
+                              value: selectedCollectionModeID,
                             ),
-                            title: GestureDetector(
-                              onTap: () => _selectCollectionDate(context),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _collectionDate,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    hintText: 'Date of Collection',
-                                    labelStyle: TextStyle(
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: new EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 3.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.text,
+                              initialValue: widget.payment.notes,
+                              maxLines: 3,
+                              decoration: InputDecoration(
+                                hintText: 'Notes',
+                                labelText: 'Notes',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
                                 ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
                               ),
+                              validator: (notes) {
+                                if (notes.trim() != widget.payment.notes) {
+                                  updatedPayment['notes'] = notes.trim();
+                                }
+                                return null;
+                              },
                             ),
-                          )
-                        : Container(),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-              new Card(
+              Card(
                 shadowColor: CustomColors.mfinAlertRed,
                 color: CustomColors.mfinLightGrey,
                 elevation: 15.0,
                 margin: EdgeInsets.only(top: 5.0),
-                child: new Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -530,290 +370,382 @@ class _EditPaymentState extends State<EditPayment> {
                     Divider(
                       color: CustomColors.mfinBlue,
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "TOTAL AMOUNT:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue:
+                                  widget.payment.principalAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Principal amount',
+                                labelText: 'Principal amount',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (amount) {
+                                if (amount.trim().isEmpty ||
+                                    amount.trim() == "0") {
+                                  return "Principal Amount should not be empty!";
+                                } else if (amount.trim() !=
+                                    widget.payment.principalAmount.toString()) {
+                                  updatedPayment['principal_amount'] =
+                                      int.parse(amount.trim());
+                                }
+                                return null;
+                              },
+                            ),
                           ),
-                        ),
-                      ),
-                      title: new TextFormField(
-                        // controller: _tAmountController,
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.number,
-                        initialValue: widget.payment.totalAmount.toString(),
-                        decoration: InputDecoration(
-                          hintText: 'Total Amount',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (amount) {
-                          if (amount.trim().isEmpty || amount.trim() == "0") {
-                            return "Total Amount should not be empty!";
-                          } else if (amount.trim() !=
-                              widget.payment.totalAmount.toString()) {
-                            updatedPayment['total_amount'] =
-                                int.parse(amount.trim());
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "PRINCIPAL:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: new TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.number,
-                        initialValue: widget.payment.principalAmount.toString(),
-                        decoration: InputDecoration(
-                          hintText: 'Principal amount given',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (amount) {
-                          if (amount.trim().isEmpty || amount.trim() == "0") {
-                            return "Principal Amount should not be empty!";
-                          } else if (amount.trim() !=
-                              widget.payment.principalAmount.toString()) {
-                            updatedPayment['principal_amount'] =
-                                int.parse(amount.trim());
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "DOC CHARGE:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        initialValue: widget.payment.docCharge.toString(),
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: 'Document Charge',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (charge) {
-                          if (charge.trim() !=
-                              widget.payment.docCharge.toString()) {
-                            if (charge.trim().isEmpty) {
-                              updatedPayment['doc_charge'] = 0;
-                            } else {
-                              updatedPayment['doc_charge'] =
-                                  int.parse(charge.trim());
-                            }
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "SUR CHARGE:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        initialValue: widget.payment.surcharge.toString(),
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: 'Service charge if any',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (charge) {
-                          if (charge.trim() !=
-                              widget.payment.surcharge.toString()) {
-                            if (charge.trim().isEmpty) {
-                              updatedPayment['surcharge'] = 0;
-                            } else {
-                              updatedPayment['surcharge'] =
-                                  int.parse(charge.trim());
-                            }
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "TENURE:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.number,
-                        initialValue: widget.payment.tenure.toString(),
-                        decoration: InputDecoration(
-                          hintText: 'Number of Collections',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (tenure) {
-                          if (tenure.trim().isEmpty) {
-                            return 'Enter the Number of Collections';
-                          } else if (tenure.trim() !=
-                              widget.payment.tenure.toString()) {
-                            updatedPayment['tenure'] = int.parse(tenure.trim());
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "INTEREST:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.number,
-                        initialValue: widget.payment.interestRate.toString(),
-                        decoration: InputDecoration(
-                          hintText: 'Rate in 0.00%',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (iRate) {
-                          if (iRate.trim() !=
-                              widget.payment.interestRate.toString()) {
-                            if (iRate.trim().isEmpty) {
-                              updatedPayment['interest_rate'] =
-                                  double.parse('0');
-                            } else {
-                              updatedPayment['interest_rate'] =
-                                  double.parse(iRate.trim());
-                            }
-                          }
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue:
+                                  widget.payment.interestRate.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Rate in 0.00%',
+                                labelText: 'Rate of interest',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (iRate) {
+                                if (iRate.trim() !=
+                                    widget.payment.interestRate.toString()) {
+                                  if (iRate.trim().isEmpty) {
+                                    updatedPayment['interest_rate'] =
+                                        double.parse('0');
+                                  } else {
+                                    updatedPayment['interest_rate'] =
+                                        double.parse(iRate.trim());
+                                  }
+                                }
 
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "COLLECTION AMOUNT:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
+                                return null;
+                              },
+                            ),
                           ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.number,
-                        initialValue:
-                            widget.payment.collectionAmount.toString(),
-                        decoration: InputDecoration(
-                          hintText: 'Each Collection Amount',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (collAmount) {
-                          if (collAmount.trim().isEmpty ||
-                              collAmount.trim() == '0') {
-                            return "Collection amount should not be empty pr Zero";
-                          } else if (collAmount.trim() !=
-                              widget.payment.collectionAmount.toString()) {
-                            updatedPayment['collection_amount'] =
-                                int.parse(collAmount.trim());
-                          }
-
-                          return null;
-                        },
+                        ],
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue: widget.payment.tenure.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Number of Collections',
+                                labelText: 'No. of collections',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (tenure) {
+                                if (tenure.trim().isEmpty) {
+                                  return 'Enter the Number of Collections';
+                                } else if (tenure.trim() !=
+                                    widget.payment.tenure.toString()) {
+                                  updatedPayment['tenure'] =
+                                      int.parse(tenure.trim());
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue:
+                                  widget.payment.collectionAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Each Collection Amount',
+                                labelText: 'Collection amount',
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (collAmount) {
+                                if (collAmount.trim().isEmpty ||
+                                    collAmount.trim() == '0') {
+                                  return "Collection amount should not be empty pr Zero";
+                                } else if (collAmount.trim() !=
+                                    widget.payment.collectionAmount
+                                        .toString()) {
+                                  updatedPayment['collection_amount'] =
+                                      int.parse(collAmount.trim());
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _date,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: 'Start date',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _date,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: 'End date',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              initialValue: widget.payment.docCharge.toString(),
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: 'Document charge',
+                                labelText: 'Document charge',
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (charge) {
+                                if (charge.trim() !=
+                                    widget.payment.docCharge.toString()) {
+                                  if (charge.trim().isEmpty) {
+                                    updatedPayment['doc_charge'] = 0;
+                                  } else {
+                                    updatedPayment['doc_charge'] =
+                                        int.parse(charge.trim());
+                                  }
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              initialValue: widget.payment.surcharge.toString(),
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: 'Service charge if any',
+                                labelText: 'Service charge',
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (charge) {
+                                if (charge.trim() !=
+                                    widget.payment.surcharge.toString()) {
+                                  if (charge.trim().isEmpty) {
+                                    updatedPayment['surcharge'] = 0;
+                                  } else {
+                                    updatedPayment['surcharge'] =
+                                        int.parse(charge.trim());
+                                  }
+                                }
+                                return null;
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              // ! already received amount schema level
+                              //initialValue: widget.payment.al.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Amount received so far',
+                                labelText: 'Amount received',
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              // ! need to fix validator part as well
+                              // validator: (collAmount) {
+                              //   if (collAmount.trim().isEmpty ||
+                              //       collAmount.trim() == '0') {
+                              //     return "Cannot be empty or zero";
+                              //   }
+                              //   //this.collectionAmount = int.parse(collAmount.trim());
+                              //   return null;
+                              // },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue:
+                                  widget.payment.totalAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Total amount',
+                                labelText: 'Total amount',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (amount) {
+                                if (amount.trim().isEmpty ||
+                                    amount.trim() == "0") {
+                                  return "Total Amount should not be empty!";
+                                } else if (amount.trim() !=
+                                    widget.payment.totalAmount.toString()) {
+                                  updatedPayment['total_amount'] =
+                                      int.parse(amount.trim());
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.all(40))
                   ],
                 ),
               ),

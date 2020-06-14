@@ -9,23 +9,11 @@ class ViewPaymentDetails extends StatelessWidget {
 
   final List<String> _tempCollectionMode = ["Daily", "Weekly", "Monthly"];
 
-  final List<String> _tempCollectionDays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
   @override
   Widget build(BuildContext context) {
-    int selectedCollectionModeID = payment.collectionMode;
-    int selectedCollectionDayID = payment.collectionDay;
-
-    return new Material(
-      child: SafeArea(
+    return Container(
+      height: MediaQuery.of(context).size.height * (0.75),
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -177,7 +165,8 @@ class ViewPaymentDetails extends StatelessWidget {
                           child: TextFormField(
                             enabled: false,
                             autofocus: false,
-                            initialValue: _tempCollectionMode[payment.collectionMode],
+                            initialValue:
+                                _tempCollectionMode[payment.collectionMode],
                             decoration: InputDecoration(
                               labelText: 'Collection mode',
                               labelStyle: TextStyle(
@@ -462,6 +451,8 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.all(10)),
                         Flexible(
                           child: TextFormField(
+                            enabled: false,
+                            autofocus: false,
                             textAlign: TextAlign.start,
                             initialValue: payment.surcharge.toString(),
                             keyboardType: TextInputType.number,
@@ -490,6 +481,8 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
+                            enabled: false,
+                            autofocus: false,
                             textAlign: TextAlign.start,
                             keyboardType: TextInputType.number,
                             //! need to fix in schema initialValue: payment.alreadyReceivedAmount.toString(),
@@ -513,6 +506,8 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.all(10)),
                         Flexible(
                           child: TextFormField(
+                            enabled: false,
+                            autofocus: false,
                             textAlign: TextAlign.start,
                             keyboardType: TextInputType.number,
                             initialValue: payment.totalAmount.toString(),
@@ -535,7 +530,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(padding: EdgeInsets.all(40))
+                  Padding(padding: EdgeInsets.all(20))
                 ],
               ),
             ),

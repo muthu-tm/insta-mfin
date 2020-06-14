@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/customer/ViewPaymentDetails.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionListTableWidget.dart';
@@ -16,7 +15,6 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
-import 'package:instamfin/services/pdf/payment_receipt.dart';
 
 class ViewPayment extends StatefulWidget {
   ViewPayment(this.payment, this.custName);
@@ -29,8 +27,8 @@ class ViewPayment extends StatefulWidget {
 }
 
 class _ViewPaymentState extends State<ViewPayment> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  List<CustomRadioModel> collStatusList = new List<CustomRadioModel>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<CustomRadioModel> collStatusList = List<CustomRadioModel>();
 
   String title = "ALL";
   String emptyText = "No Collections available for this Payment!";
@@ -43,16 +41,16 @@ class _ViewPaymentState extends State<ViewPayment> {
   void initState() {
     super.initState();
     isSettled = widget.payment.isSettled;
-    collStatusList.add(new CustomRadioModel(true, '', ''));
-    collStatusList.add(new CustomRadioModel(false, '', ''));
-    collStatusList.add(new CustomRadioModel(false, '', ''));
-    collStatusList.add(new CustomRadioModel(false, '', ''));
-    collStatusList.add(new CustomRadioModel(false, '', ''));
+    collStatusList.add(CustomRadioModel(true, '', ''));
+    collStatusList.add(CustomRadioModel(false, '', ''));
+    collStatusList.add(CustomRadioModel(false, '', ''));
+    collStatusList.add(CustomRadioModel(false, '', ''));
+    collStatusList.add(CustomRadioModel(false, '', ''));
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       endDrawer: ViewPaymentDetails(widget.payment),
       appBar: AppBar(
@@ -92,14 +90,23 @@ class _ViewPaymentState extends State<ViewPayment> {
                         },
                       ),
                       ListTile(
-                        title: Text('View Payment'),
-                        leading: Icon(
-                          Icons.remove_red_eye,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        // TODO - Need to refractor view customer and hook-up here
-                        onTap: () => {},
-                      ),
+                          title: Text('View Payment'),
+                          leading: Icon(
+                            Icons.remove_red_eye,
+                            color: CustomColors.mfinBlue,
+                          ),
+                          onTap: () {
+                            showMaterialModalBottomSheet(
+                                enableDrag: true,
+                                isDismissible: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:  BorderRadius.circular(8.0),
+                                ),
+                                context: context,
+                                builder: (context, scrollController) {
+                                  return ViewPaymentDetails(widget.payment);
+                                });
+                          }),
                       ListTile(
                         title: Text('Edit Payment'),
                         leading: Icon(
@@ -138,17 +145,12 @@ class _ViewPaymentState extends State<ViewPayment> {
                       ),
                       ListTile(
                         title: Text('Do Settlement'),
+                        // TODO: Need to complete this
                         leading: Icon(
                           Icons.account_balance_wallet,
                           color: CustomColors.mfinBlue,
                         ),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserHomeScreen(),
-                            settings: RouteSettings(name: '/home'),
-                          ),
-                        ),
+                        onTap: () {}
                       ),
                       ListTile(
                           title: Text('Delete Payment'),
@@ -241,8 +243,8 @@ class _ViewPaymentState extends State<ViewPayment> {
         ),
       ),
       body: SingleChildScrollView(
-        child: new Container(
-          child: new Column(
+        child: Container(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
@@ -278,13 +280,15 @@ class _ViewPaymentState extends State<ViewPayment> {
                                     routeSettings: RouteSettings(
                                         name: "/customers/payment/settlement"),
                                     builder: (context) {
-                                      return SingleChildScrollView(
-                                        child: Center(
-                                          child: PaymentSettlementDialog(
-                                              _scaffoldKey,
-                                              widget.payment,
-                                              pDetails,
-                                              widget.custName),
+                                      return Container(
+                                        child: SingleChildScrollView(
+                                          child: Center(
+                                            child: PaymentSettlementDialog(
+                                                _scaffoldKey,
+                                                widget.payment,
+                                                pDetails,
+                                                widget.custName),
+                                          ),
                                         ),
                                       );
                                     },
@@ -339,7 +343,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                               ),
                             ),
                           ),
-                    new Divider(
+                    Divider(
                       color: CustomColors.mfinButtonGreen,
                     )
                   ],
@@ -364,7 +368,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       fetchAll = true;
                       textColor = CustomColors.mfinBlue;
                     },
-                    child: new CollectionStatusRadioItem(collStatusList[0],
+                    child: CollectionStatusRadioItem(collStatusList[0],
                         CustomColors.mfinLightBlue, CustomColors.mfinLightBlue),
                   ),
                   InkWell(
@@ -384,7 +388,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       textColor = CustomColors.mfinPositiveGreen;
                       collStatus = [1, 2]; //Paid and PaidLate
                     },
-                    child: new CollectionStatusRadioItem(
+                    child: CollectionStatusRadioItem(
                         collStatusList[1],
                         CustomColors.mfinPositiveGreen,
                         CustomColors.mfinPositiveGreen),
@@ -406,7 +410,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       textColor = CustomColors.mfinAlertRed;
                       collStatus = [4]; // Pending
                     },
-                    child: new CollectionStatusRadioItem(collStatusList[2],
+                    child: CollectionStatusRadioItem(collStatusList[2],
                         CustomColors.mfinAlertRed, CustomColors.mfinAlertRed),
                   ),
                   InkWell(
@@ -426,7 +430,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       textColor = CustomColors.mfinLightBlue;
                       collStatus = [3]; // Current
                     },
-                    child: new CollectionStatusRadioItem(collStatusList[3],
+                    child: CollectionStatusRadioItem(collStatusList[3],
                         CustomColors.mfinBlue, CustomColors.mfinBlue),
                   ),
                   InkWell(
@@ -446,14 +450,14 @@ class _ViewPaymentState extends State<ViewPayment> {
                       textColor = CustomColors.mfinGrey;
                       collStatus = [0]; // Upcoming
                     },
-                    child: new CollectionStatusRadioItem(collStatusList[4],
+                    child: CollectionStatusRadioItem(collStatusList[4],
                         CustomColors.mfinGrey, CustomColors.mfinGrey),
                   ),
                 ],
               ),
               (UserController().getCurrentUser().preferences.tableView)
                   ? Container(
-                    child: CollectionListTableWidget(
+                      child: CollectionListTableWidget(
                         widget.payment,
                         widget.custName,
                         title,
@@ -462,9 +466,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                         fetchAll,
                         collStatus,
                       ),
-                  )
+                    )
                   : Container(
-                    child: CollectionListWidget(
+                      child: CollectionListWidget(
                         _scaffoldKey,
                         widget.payment,
                         widget.custName,
@@ -474,8 +478,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                         fetchAll,
                         collStatus,
                       ),
-                  ),
-                  Padding(padding: EdgeInsets.fromLTRB(0, 40, 0, 40))
+                    ),
+              Padding(padding: EdgeInsets.fromLTRB(0, 40, 0, 40))
             ],
           ),
         ),
