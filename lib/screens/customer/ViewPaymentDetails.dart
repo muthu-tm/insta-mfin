@@ -84,6 +84,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             keyboardType: TextInputType.text,
                             initialValue: payment.paymentID,
                             decoration: InputDecoration(
+                              labelText: 'Payment ID',
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(

@@ -146,6 +146,9 @@ class _AddCustomerState extends State<AddCustomer> {
                                   filled: true,
                                 ),
                                 validator: (id) {
+                                  if (id.isEmpty) {
+                                    return 'Enter Customer ID';
+                                  }
                                   this.id = id.trim();
                                   return null;
                                 },

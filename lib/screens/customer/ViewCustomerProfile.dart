@@ -355,7 +355,7 @@ class ViewCustomerProfile extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(padding: EdgeInsets.all(40))
+              Padding(padding: EdgeInsets.all(20))
             ],
           ),
         ),
