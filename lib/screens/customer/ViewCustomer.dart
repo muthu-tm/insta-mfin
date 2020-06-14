@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
@@ -65,8 +66,18 @@ class ViewCustomer extends StatelessWidget {
                           Icons.remove_red_eye,
                           color: CustomColors.mfinBlue,
                         ),
-                        // TODO - Need to refractor view customer and hook-up here
-                        onTap: () => {},
+                        onTap: () {
+                            showMaterialModalBottomSheet(
+                                enableDrag: true,
+                                isDismissible: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:  BorderRadius.circular(8.0),
+                                ),
+                                context: context,
+                                builder: (context, scrollController) {
+                                  return ViewCustomerProfile(customer);
+                                });
+                          }
                       ),
                       ListTile(
                         title: Text('Edit Customer'),
@@ -87,7 +98,7 @@ class ViewCustomer extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        title: Text('Phone Customer'),
+                        title: Text('Call Customer'),
                         leading: Icon(
                           Icons.phone,
                           color: CustomColors.mfinBlue,

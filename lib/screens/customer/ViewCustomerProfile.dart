@@ -9,305 +9,356 @@ class ViewCustomerProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Drawer(
-      child: new ListView(
-        children: <Widget>[
-          Container(
-            height: 100.0,
-            child: DrawerHeader(
-              decoration: BoxDecoration(
-                color: CustomColors.mfinBlue,
-              ),
-              child: ListTile(
-                leading: Icon(
-                  Icons.assignment_ind,
-                  size: 35.0,
-                  color: CustomColors.mfinButtonGreen,
+    return Container(
+      height: MediaQuery.of(context).size.height * (0.75),
+      child: SingleChildScrollView(
+        child: Container(
+          color: CustomColors.mfinLightGrey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Card(
+                color: CustomColors.mfinLightGrey,
+                elevation: 5.0,
+                margin: EdgeInsets.only(top: 5.0),
+                shadowColor: CustomColors.mfinLightBlue,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 40,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Personal Details",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlue,
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      color: CustomColors.mfinBlue,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.name,
+                              textAlign: TextAlign.start,
+                              enabled: false,
+                              autofocus: false,
+                              decoration: InputDecoration(
+                                labelText: 'Customer name',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.customerID,
+                              textAlign: TextAlign.start,
+                              enabled: false,
+                              autofocus: false,
+                              decoration: InputDecoration(
+                                labelText: 'Customer ID',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.mobileNumber.toString(),
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Phone number',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.profession,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Profession',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.age.toString(),
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Age',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.guarantiedBy.toString(),
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Guarantee by',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                title: Text(
-                  "Customer Profile",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: "Georgia",
-                    fontWeight: FontWeight.bold,
-                    color: CustomColors.mfinFadedButtonGreen,
-                  ),
+              ),
+              Card(
+                color: CustomColors.mfinLightGrey,
+                elevation: 5.0,
+                margin: EdgeInsets.only(top: 5.0),
+                shadowColor: CustomColors.mfinLightBlue,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 40,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Address Details",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlue,
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      color: CustomColors.mfinBlue,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.address.street,
+                              textAlign: TextAlign.start,
+                              maxLines: 3,
+                              decoration: InputDecoration(
+                                labelText: 'Building no. & street',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.address.street,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'City',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.address.street,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'State',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.address.street,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Pincode',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
+              Padding(padding: EdgeInsets.all(40))
+            ],
           ),
-          SingleChildScrollView(
-            child: Card(
-              color: CustomColors.mfinLightGrey,
-              child: new Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      child: Text(
-                        "NAME",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey),
-                      ),
-                    ),
-                    title: TextFormField(
-                      initialValue: customer.name,
-                      decoration: InputDecoration(
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                    ),
-                  ),
-                  ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      child: Text(
-                        "ID",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey),
-                      ),
-                    ),
-                    title: TextFormField(
-                      initialValue: customer.customerID,
-                      decoration: InputDecoration(
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                    ),
-                  ),
-                  ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      child: Text(
-                        "CONTACT",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey),
-                      ),
-                    ),
-                    title: TextFormField(
-                      initialValue: customer.mobileNumber.toString(),
-                      decoration: InputDecoration(
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                    ),
-                  ),
-                  ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      child: Text(
-                        "PROFESSION",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey),
-                      ),
-                    ),
-                    title: TextFormField(
-                      initialValue: customer.profession,
-                      decoration: InputDecoration(
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                    ),
-                  ),
-                  ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      child: Text(
-                        "GENDER",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey),
-                      ),
-                    ),
-                    title: TextFormField(
-                      initialValue: customer.gender,
-                      decoration: InputDecoration(
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                    ),
-                  ),
-                  ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      child: Text(
-                        "AGE",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey),
-                      ),
-                    ),
-                    title: TextFormField(
-                      initialValue: customer.age.toString(),
-                      decoration: InputDecoration(
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                    ),
-                  ),
-                  ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      child: Text(
-                        "GUARANTY",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey),
-                      ),
-                    ),
-                    title: TextFormField(
-                      initialValue: customer.guarantiedBy.toString(),
-                      decoration: InputDecoration(
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                    ),
-                  ),
-                  ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      child: Text(
-                        "ADDED BY",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey),
-                      ),
-                    ),
-                    title: TextFormField(
-                      initialValue: customer.addedBy.toString(),
-                      decoration: InputDecoration(
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                    ),
-                  ),
-                  ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      child: Text(
-                        "ADDRESS",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey),
-                      ),
-                    ),
-                    title: TextFormField(
-                      initialValue: customer.address.toString(),
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      enabled: false,
-                      autofocus: false,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

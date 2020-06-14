@@ -101,7 +101,7 @@ class _AddPaymentState extends State<AddPayment> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-             Card(
+              Card(
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
                 margin: EdgeInsets.only(top: 5.0),
@@ -342,7 +342,7 @@ class _AddPaymentState extends State<AddPayment> {
                   ],
                 ),
               ),
-             Card(
+              Card(
                 shadowColor: CustomColors.mfinAlertRed,
                 color: CustomColors.mfinLightGrey,
                 elevation: 15.0,
@@ -372,61 +372,69 @@ class _AddPaymentState extends State<AddPayment> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
-                          Flexible(child: TextFormField(
-                            textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
-                            initialValue: principalAmount.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Principal amount',
-                              labelText: 'Principal amount',
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                              labelStyle: TextStyle(color: CustomColors.mfinBlue),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                            ),
-                            validator: (amount) {
-                              if (amount.trim().isEmpty || amount.trim() == "0") {
-                                return "Cannot be empty!";
-                              } else {
-                                this.principalAmount = int.parse(amount.trim());
-                                return null;
-                              }
-                            },
-                          ),),
-                          Padding(padding: EdgeInsets.all(10)),
-                          Flexible(child: TextFormField(
-                            textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
-                            initialValue: intrestRate.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Rate in 0.00%',
-                              labelText: 'Rate of interest',
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                              labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue: principalAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Principal amount',
+                                labelText: 'Principal amount',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
                               ),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
+                              validator: (amount) {
+                                if (amount.trim().isEmpty ||
+                                    amount.trim() == "0") {
+                                  return "Cannot be empty!";
+                                } else {
+                                  this.principalAmount =
+                                      int.parse(amount.trim());
+                                  return null;
+                                }
+                              },
                             ),
-                            validator: (tenure) {
-                              if (tenure.trim().isEmpty) {
-                                this.intrestRate = double.parse('0');
-                              } else {
-                                this.intrestRate = double.parse(tenure);
-                              }
-                              return null;
-                            },
-                          ),),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue: intrestRate.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Rate in 0.00%',
+                                labelText: 'Rate of interest',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (tenure) {
+                                if (tenure.trim().isEmpty) {
+                                  this.intrestRate = double.parse('0');
+                                } else {
+                                  this.intrestRate = double.parse(tenure);
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -442,17 +450,17 @@ class _AddPaymentState extends State<AddPayment> {
                               decoration: InputDecoration(
                                 hintText: 'Number of Collections',
                                 labelText: 'No. of collections',
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                    color: CustomColors.mfinBlue
-                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: CustomColors.mfinWhite)),
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
                               ),
                               validator: (tenure) {
                                 if (tenure.trim().isEmpty) {
@@ -472,24 +480,25 @@ class _AddPaymentState extends State<AddPayment> {
                               decoration: InputDecoration(
                                 hintText: 'Each Collection Amount',
                                 labelText: 'Collection amount',
-                                labelStyle: TextStyle(
-                                    color: CustomColors.mfinBlue
-                                ),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: CustomColors.mfinWhite)),
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
                               ),
                               validator: (collAmount) {
                                 if (collAmount.trim().isEmpty ||
                                     collAmount.trim() == '0') {
                                   return "Cannot be empty or zero";
                                 }
-                                this.collectionAmount = int.parse(collAmount.trim());
+                                this.collectionAmount =
+                                    int.parse(collAmount.trim());
                                 return null;
                               },
                             ),
@@ -511,7 +520,7 @@ class _AddPaymentState extends State<AddPayment> {
                                   decoration: InputDecoration(
                                     labelText: 'Start date',
                                     floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
+                                        FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
@@ -543,7 +552,7 @@ class _AddPaymentState extends State<AddPayment> {
                                   decoration: InputDecoration(
                                     labelText: 'End date',
                                     floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
+                                        FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
@@ -579,15 +588,17 @@ class _AddPaymentState extends State<AddPayment> {
                               decoration: InputDecoration(
                                 hintText: 'Document charge',
                                 labelText: 'Document charge',
-                                labelStyle: TextStyle(color: CustomColors.mfinBlue),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10),
                                 border: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: CustomColors.mfinWhite)),
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
                               ),
                               validator: (charge) {
                                 if (charge.trim().isEmpty) {
@@ -600,32 +611,36 @@ class _AddPaymentState extends State<AddPayment> {
                             ),
                           ),
                           Padding(padding: EdgeInsets.all(10)),
-                          Flexible(child: TextFormField(
-                            textAlign: TextAlign.start,
-                            initialValue: surCharge.toString(),
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: 'Service charge if any',
-                              labelText: 'Service charge',
-                              labelStyle: TextStyle(color: CustomColors.mfinBlue),
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              initialValue: surCharge.toString(),
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: 'Service charge if any',
+                                labelText: 'Service charge',
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (surcharge) {
+                                if (surcharge.trim().isEmpty) {
+                                  this.surCharge = 0;
+                                } else {
+                                  this.surCharge = int.parse(surcharge);
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (surcharge) {
-                              if (surcharge.trim().isEmpty) {
-                                this.surCharge = 0;
-                              } else {
-                                this.surCharge = int.parse(surcharge);
-                              }
-                              return null;
-                            },
-                          ),)
+                          )
                         ],
                       ),
                     ),
@@ -633,34 +648,37 @@ class _AddPaymentState extends State<AddPayment> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
-                          Flexible(child: TextFormField(
-                            textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
-                            initialValue: alreadyReceivedAmount.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Amount received so far',
-                              labelText: 'Amount received',
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue: alreadyReceivedAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Amount received so far',
+                                labelText: 'Amount received',
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
                               ),
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
+                              validator: (collAmount) {
+                                if (collAmount.trim().isEmpty ||
+                                    collAmount.trim() == '0') {
+                                  return "Cannot be empty or zero";
+                                }
+                                this.collectionAmount =
+                                    int.parse(collAmount.trim());
+                                return null;
+                              },
                             ),
-                            validator: (collAmount) {
-                              if (collAmount.trim().isEmpty ||
-                                  collAmount.trim() == '0') {
-                                return "Cannot be empty or zero";
-                              }
-                              this.collectionAmount = int.parse(collAmount.trim());
-                              return null;
-                            },
-                          ),),
+                          ),
                           Padding(padding: EdgeInsets.all(10)),
                           Flexible(
                             child: TextFormField(
@@ -670,8 +688,10 @@ class _AddPaymentState extends State<AddPayment> {
                               decoration: InputDecoration(
                                 hintText: 'Total amount',
                                 labelText: 'Total amount',
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                                 contentPadding: EdgeInsets.symmetric(

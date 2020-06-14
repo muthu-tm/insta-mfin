@@ -16,95 +16,159 @@ class AddressWidget extends StatefulWidget {
 class _AddressWidgetState extends State<AddressWidget> {
   @override
   Widget build(BuildContext context) {
-    return new Card(
+    return Card(
       color: CustomColors.mfinLightGrey,
-      child: new Column(
+      elevation: 5.0,
+      margin: EdgeInsets.only(top: 5.0),
+      shadowColor: CustomColors.mfinLightBlue,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          ListTile(
-            leading: new Text(
+          Container(
+            height: 40,
+            alignment: Alignment.center,
+            child: Text(
               widget.addreesTitle,
+              textAlign: TextAlign.center,
               style: TextStyle(
+                fontSize: 18,
                 fontFamily: "Georgia",
-                color: CustomColors.mfinGrey,
                 fontWeight: FontWeight.bold,
-                fontSize: 17,
+                color: CustomColors.mfinBlue,
               ),
             ),
           ),
-          ListTile(
-            title: TextFormField(
-              initialValue: widget.address.street,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                hintText: 'Building No. & Street',
-                fillColor: CustomColors.mfinWhite,
-                filled: true,
-                contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-              ),
-              validator: (street) {
-                if (street.trim() != "") {
-                  widget.updatedAddress.street = street.trim();
-                }
-                return null;
-              },
+          Divider(
+            color: CustomColors.mfinBlue,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  child: TextFormField(
+                    initialValue: widget.address.street,
+                    textAlign: TextAlign.start,
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      labelText: 'Building no. & street',
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: CustomColors.mfinFadedButtonGreen)),
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
+                    ),
+                    validator: (street) {
+                      if (street.trim() != "") {
+                        widget.updatedAddress.street = street.trim();
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-          ListTile(
-            title: TextFormField(
-              keyboardType: TextInputType.text,
-              initialValue: widget.address.city,
-              decoration: InputDecoration(
-                hintText: 'City',
-                fillColor: CustomColors.mfinWhite,
-                filled: true,
-                contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-              ),
-              validator: (city) {
-                if (city.trim() != "") {
-                  widget.updatedAddress.city = city.trim();
-                }
-                return null;
-              },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  child: TextFormField(
+                    initialValue: widget.address.street,
+                    textAlign: TextAlign.start,
+                    decoration: InputDecoration(
+                      labelText: 'City',
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: CustomColors.mfinFadedButtonGreen)),
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
+                    ),
+                    validator: (city) {
+                      if (city.trim() != "") {
+                        widget.updatedAddress.city = city.trim();
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                ),
+                Flexible(
+                  child: TextFormField(
+                    initialValue: widget.address.street,
+                    textAlign: TextAlign.start,
+                    decoration: InputDecoration(
+                      labelText: 'State',
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: CustomColors.mfinFadedButtonGreen)),
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
+                    ),
+                    validator: (state) {
+                      if (state.trim() != "") {
+                        widget.updatedAddress.state = state.trim();
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-          ListTile(
-            title: TextFormField(
-              keyboardType: TextInputType.text,
-              initialValue: widget.address.state,
-              decoration: InputDecoration(
-                hintText: 'State',
-                fillColor: CustomColors.mfinWhite,
-                filled: true,
-                contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-              ),
-              validator: (state) {
-                if (state.trim() != "") {
-                  widget.updatedAddress.state = state.trim();
-                }
-                return null;
-              },
-            ),
-          ),
-          ListTile(
-            title: TextFormField(
-              keyboardType: TextInputType.text,
-              initialValue: widget.address.pincode,
-              decoration: InputDecoration(
-                hintText: 'Pincode',
-                fillColor: CustomColors.mfinWhite,
-                filled: true,
-                contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-              ),
-              validator: (pinCode) {
-                if (pinCode.trim() != "") {
-                  widget.updatedAddress.pincode = pinCode.trim();
-                }
-                return null;
-              },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  child: TextFormField(
+                    initialValue: widget.address.street,
+                    textAlign: TextAlign.start,
+                    decoration: InputDecoration(
+                      labelText: 'Pincode',
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: CustomColors.mfinFadedButtonGreen)),
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
+                    ),
+                    validator: (pinCode) {
+                      if (pinCode.trim() != "") {
+                        widget.updatedAddress.pincode = pinCode.trim();
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],

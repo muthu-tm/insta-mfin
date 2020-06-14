@@ -5,8 +5,6 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
-import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
@@ -20,19 +18,20 @@ class EditCustomerProfile extends StatefulWidget {
 }
 
 class _EditCustomerProfileState extends State<EditCustomerProfile> {
-  final Map<String, dynamic> updatedCustomer = new Map();
-  final Address updatedAddress = new Address();
+  final Map<String, dynamic> updatedCustomer = Map();
+  final Address updatedAddress = Address();
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var groupValue = 0;
 
   @override
   Widget build(BuildContext context) {
+    print(widget.customer);
     updatedCustomer['mobile_number'] = widget.customer['mobile_number'];
 
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
@@ -41,192 +40,286 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
         title: Text('Edit - ${widget.customer['customer_name']}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _submit();
+        },
+        label: Text(
+          "Save",
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: "Georgia",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        splashColor: CustomColors.mfinWhite,
+        icon: Icon(
+          Icons.check,
+          size: 35,
+          color: CustomColors.mfinFadedButtonGreen,
+        ),
+      ),
       body: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: new Container(
-              color: CustomColors.mfinLightGrey,
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  RowHeaderText(textName: 'Name'),
-                  ListTile(
-                    title: TextFormField(
-                      keyboardType: TextInputType.text,
-                      initialValue: widget.customer['customer_name'],
-                      decoration: InputDecoration(
-                        hintText: 'Customer Name',
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Enter Customer Name';
-                        }
-                        updatedCustomer['customer_name'] = value;
-                        return null;
-                      },
-                    ),
-                  ),
-                  RowHeaderText(textName: 'Customer ID'),
-                  ListTile(
-                    title: new TextFormField(
-                        keyboardType: TextInputType.text,
-                        initialValue: widget.customer['customer_id'],
-                        decoration: InputDecoration(
-                          hintText: 'Enter Customer ID',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Enter Customer ID';
-                          }
-                          updatedCustomer['customer_id'] = value;
-                          return null;
-                        }),
-                  ),
-                  RowHeaderText(textName: 'Age'),
-                  ListTile(
-                    title: new TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: widget.customer['age'].toString(),
-                      decoration: InputDecoration(
-                        hintText: 'Enter Customer Age',
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                      ),
-                      validator: (val) {
-                        if (val.trim().isEmpty) {
-                          updatedCustomer['age'] = 0;
-                        } else {
-                          updatedCustomer['age'] = int.parse(val.trim());
-                        }
-                          return null;
-                      },
-                    ),
-                  ),
-                  RowHeaderText(textName: 'Profession'),
-                  ListTile(
-                    title: new TextFormField(
-                      initialValue: widget.customer['customer_profession'],
-                      decoration: InputDecoration(
-                        hintText: "Customer Profession",
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: CustomColors.mfinWhite),
-                        ),
-                      ),
-                      validator: (val) {
-                        if (val.trim().isEmpty) {
-                          updatedCustomer['customer_profession'] = '';
-                        } else {
-                          updatedCustomer['customer_profession'] = val.trim();
-                        }
-                          return null;
-                      },
-                    ),
-                  ),
-                  RowHeaderText(textName: 'Gender'),
-                  new Row(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Container(
+            color: CustomColors.mfinLightGrey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Card(
+                  color: CustomColors.mfinLightGrey,
+                  elevation: 5.0,
+                  margin: EdgeInsets.only(top: 5.0),
+                  shadowColor: CustomColors.mfinLightBlue,
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      ButtonBar(
-                        alignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Radio(
-                            value: 0,
-                            groupValue: groupValue,
-                            activeColor: CustomColors.mfinBlue,
-                            onChanged: (val) {
-                              setSelectedRadio(val);
-                            },
+                      Container(
+                        height: 40,
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Personal Details",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
                           ),
-                          Text(
-                            "Male",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
-                          Radio(
-                            value: 1,
-                            groupValue: groupValue,
-                            activeColor: CustomColors.mfinBlue,
-                            onChanged: (val) {
-                              setSelectedRadio(val);
-                            },
-                          ),
-                          Text(
-                            "Female",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
+                      Divider(
+                        color: CustomColors.mfinBlue,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: TextFormField(
+                                initialValue: widget.customer['customer_name'],
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Customer name',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinLightGrey,
+                                  filled: true,
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Enter Customer Name';
+                                  }
+                                  updatedCustomer['customer_name'] = value;
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                initialValue: widget.customer['customer_id'],
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Customer ID',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinLightGrey,
+                                  filled: true,
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Enter Customer ID';
+                                  }
+                                  updatedCustomer['customer_id'] = value;
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: TextFormField(
+                                initialValue: widget.customer['mobile_number'].toString(),
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Phone number',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinLightGrey,
+                                  filled: true,
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Enter Phone number';
+                                  }
+                                  updatedCustomer['mobile_number'] = value;
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                initialValue:
+                                    widget.customer['customer_profession'],
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Profession',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinLightGrey,
+                                  filled: true,
+                                ),
+                                validator: (val) {
+                                  if (val.trim().isEmpty) {
+                                    updatedCustomer['customer_profession'] = '';
+                                  } else {
+                                    updatedCustomer['customer_profession'] =
+                                        val.trim();
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: TextFormField(
+                                initialValue: widget.customer['age'].toString(),
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Age',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinLightGrey,
+                                  filled: true,
+                                ),
+                                validator: (val) {
+                                  if (val.trim().isEmpty) {
+                                    updatedCustomer['age'] = 0;
+                                  } else {
+                                    updatedCustomer['age'] =
+                                        int.parse(val.trim());
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                initialValue:
+                                    widget.customer['guarantied_by'].toString(),
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Guarantee by',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinLightGrey,
+                                  filled: true,
+                                ),
+                                validator: (val) {
+                                  if (val.trim().isEmpty) {
+                                    updatedCustomer['guarantied_by'] = '';
+                                    return null;
+                                  } else {
+                                    return FieldValidator.mobileValidator(
+                                        val.trim(), setGuarantiedBy);
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                  RowHeaderText(textName: 'Guarantied by'),
-                  ListTile(
-                    title: new TextFormField(
-                      initialValue: widget.customer['guarantied_by'].toString(),
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: "Referred/Gurantied by",
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                      ),
-                      validator: (val) {
-                        if (val.trim().isEmpty) {
-                          updatedCustomer['guarantied_by'] = '';
-                          return null;
-                        } else {
-                          return FieldValidator.mobileValidator(
-                              val.trim(), setGuarantiedBy);
-                        }
-                      },
-                    ),
-                  ),
-                  AddressWidget(
-                      "Address",
-                      Address.fromJson(widget.customer['address']),
-                      updatedAddress),
-                ],
-              ),
+                ),
+                AddressWidget(
+                    "Address Details",
+                    Address.fromJson(widget.customer['address']),
+                    updatedAddress),
+                Padding(padding: EdgeInsets.all(40))
+              ],
             ),
-          )),
-      bottomSheet: EditorsActionButtons(() {
-        _submit();
-      }, () {
-        Navigator.pop(context);
-      }),
-      // bottomNavigationBar: bottomBar(context),
+          ),
+        ),
+      ),
     );
   }
 
