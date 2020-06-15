@@ -26,7 +26,6 @@ class _AddPaymentState extends State<AddPayment> {
 
   String _selectedTempID = "0";
   String selectedCollectionModeID = "0";
-  String selectedCollectionDayID = "0";
   Map<String, String> _tempMap = {"0": "Choose Type.."};
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
@@ -38,6 +37,7 @@ class _AddPaymentState extends State<AddPayment> {
   PaymentTemplate selectedTemp;
 
   TextEditingController _date = TextEditingController();
+  TextEditingController _collectionDate = TextEditingController();
 
   int selectedDate = DateUtils.getUTCDateEpoch(DateTime.now());
   int collectionDate =
@@ -145,9 +145,45 @@ class _AddPaymentState extends State<AddPayment> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectPaymentDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _date,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: 'Date of Pay',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -217,7 +253,7 @@ class _AddPaymentState extends State<AddPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: DropdownButtonFormField(
                                 decoration: InputDecoration(
@@ -295,7 +331,7 @@ class _AddPaymentState extends State<AddPayment> {
                         children: <Widget>[
                           Flexible(
                             child: GestureDetector(
-                              onTap: () => _selectDate(context),
+                              onTap: () => _selectCollectionDate(context),
                               child: AbsorbPointer(
                                 child: TextFormField(
                                   controller: _date,
@@ -324,10 +360,10 @@ class _AddPaymentState extends State<AddPayment> {
                               ),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: GestureDetector(
-                              onTap: () => _selectDate(context),
+                              onTap: () => _selectCollectionDate(context),
                               child: AbsorbPointer(
                                 child: TextFormField(
                                   controller: _date,
@@ -344,7 +380,7 @@ class _AddPaymentState extends State<AddPayment> {
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
+                                    fillColor: CustomColors.mfinLightGrey,
                                     filled: true,
                                     suffixIcon: Icon(
                                       Icons.date_range,
@@ -464,7 +500,7 @@ class _AddPaymentState extends State<AddPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -534,7 +570,7 @@ class _AddPaymentState extends State<AddPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -603,7 +639,7 @@ class _AddPaymentState extends State<AddPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -672,7 +708,7 @@ class _AddPaymentState extends State<AddPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -706,7 +742,7 @@ class _AddPaymentState extends State<AddPayment> {
                         ],
                       ),
                     ),
-                    Padding(padding: EdgeInsets.all(40))
+                    Padding(padding: EdgeInsets.all(30))
                   ],
                 ),
               ),
@@ -739,12 +775,30 @@ class _AddPaymentState extends State<AddPayment> {
     givenBy = _user.name;
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<Null> _selectCollectionDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now().add(Duration(days: 1)),
       firstDate: DateTime(1990),
       lastDate: DateTime.now().add(Duration(days: 365)),
+    );
+    if (picked != null)
+      setState(
+        () {
+          collectionDate = DateUtils.getUTCDateEpoch(picked);
+          _collectionDate.value = TextEditingValue(
+            text: DateUtils.formatDate(picked),
+          );
+        },
+      );
+  }
+
+  Future<Null> _selectPaymentDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now(),
     );
     if (picked != null)
       setState(
@@ -797,7 +851,6 @@ class _AddPaymentState extends State<AddPayment> {
           collectionAmount,
           int.parse(selectedCollectionModeID),
           collectionDate,
-          int.parse(selectedCollectionDayID),
           docCharge,
           surCharge,
           intrestRate,

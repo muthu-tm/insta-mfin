@@ -74,9 +74,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                        ),
+                        Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
                             enabled: false,
@@ -98,6 +96,48 @@ class ViewPaymentDetails extends StatelessWidget {
                                   borderSide: BorderSide(
                                       color:
                                           CustomColors.mfinFadedButtonGreen)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          child: GestureDetector(
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                enabled: false,
+                                autofocus: false,
+                                initialValue: DateUtils.formatDate(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        payment.dateOfPayment)),
+                                keyboardType: TextInputType.datetime,
+                                decoration: InputDecoration(
+                                  labelText: 'Date of Payment',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors.mfinWhite)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  suffixIcon: Icon(
+                                    Icons.date_range,
+                                    size: 35,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -131,7 +171,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                        Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
                             enabled: false,
@@ -256,9 +296,9 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            initialValue: payment.principalAmount.toString(),
+                            initialValue: payment.totalAmount.toString(),
                             decoration: InputDecoration(
-                              labelText: 'Principal amount',
+                              labelText: 'Total amount',
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle:
@@ -273,7 +313,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                        Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
                             enabled: false,
@@ -308,6 +348,29 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
+                            initialValue: payment.principalAmount.toString(),
+                            decoration: InputDecoration(
+                              labelText: 'Principal amount',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              labelStyle:
+                                  TextStyle(color: CustomColors.mfinBlue),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                            ),
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Flexible(
+                          child: TextFormField(
+                            enabled: false,
+                            autofocus: false,
+                            textAlign: TextAlign.start,
                             initialValue: payment.tenure.toString(),
                             decoration: InputDecoration(
                               labelText: 'No. of collections',
@@ -325,7 +388,13 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
                         Flexible(
                           child: TextFormField(
                             enabled: false,
@@ -335,6 +404,30 @@ class ViewPaymentDetails extends StatelessWidget {
                             decoration: InputDecoration(
                               hintText: 'Each Collection Amount',
                               labelText: 'Collection amount',
+                              labelStyle:
+                                  TextStyle(color: CustomColors.mfinBlue),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                            ),
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Flexible(
+                          child: TextFormField(
+                            enabled: false,
+                            autofocus: false,
+                            textAlign: TextAlign.start,
+                            //! need to fix in schema initialValue: payment.alreadyReceivedAmount.toString(),
+                            decoration: InputDecoration(
+                              hintText: 'Amount received so far',
+                              labelText: 'Amount received',
                               labelStyle:
                                   TextStyle(color: CustomColors.mfinBlue),
                               floatingLabelBehavior:
@@ -362,7 +455,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             autofocus: false,
                             initialValue: DateUtils.formatDate(
                                 DateTime.fromMillisecondsSinceEpoch(
-                                    payment.dateOfPayment)),
+                                    payment.collectionStartsFrom)),
                             decoration: InputDecoration(
                               labelText: 'Start date',
                               floatingLabelBehavior:
@@ -392,7 +485,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             autofocus: false,
                             initialValue: DateUtils.formatDate(
                                 DateTime.fromMillisecondsSinceEpoch(
-                                    payment.dateOfPayment)),
+                                    payment.collectionStartsFrom)),
                             decoration: InputDecoration(
                               labelText: 'End date',
                               floatingLabelBehavior:
@@ -467,59 +560,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
-                            textAlign: TextAlign.start,
-                            //! need to fix in schema initialValue: payment.alreadyReceivedAmount.toString(),
-                            decoration: InputDecoration(
-                              hintText: 'Amount received so far',
-                              labelText: 'Amount received',
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.all(10)),
-                        Flexible(
-                          child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
-                            textAlign: TextAlign.start,
-                            initialValue: payment.totalAmount.toString(),
-                            decoration: InputDecoration(
-                              labelText: 'Total amount',
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),

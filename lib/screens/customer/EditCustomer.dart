@@ -33,10 +33,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Edit - ${widget.customer['customer_name']}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
@@ -64,7 +61,6 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
         key: _formKey,
         child: SingleChildScrollView(
           child: Container(
-            color: CustomColors.mfinLightGrey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,7 +68,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                 Card(
                   color: CustomColors.mfinLightGrey,
                   elevation: 5.0,
-                  margin: EdgeInsets.only(top: 5.0),
+                  margin: EdgeInsets.all(5.0),
                   shadowColor: CustomColors.mfinLightBlue,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -101,6 +97,38 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
+                                initialValue:
+                                    widget.customer['mobile_number'].toString(),
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Phone number',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinLightGrey,
+                                  filled: true,
+                                ),
+                                autofocus: false,
+                                enabled: false,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: TextFormField(
                                 initialValue: widget.customer['customer_name'],
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
@@ -116,7 +144,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (value) {
@@ -128,9 +156,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                            ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
                                 initialValue: widget.customer['customer_id'],
@@ -148,7 +174,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (value) {
@@ -169,38 +195,6 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
-                                initialValue: widget.customer['mobile_number'].toString(),
-                                textAlign: TextAlign.start,
-                                decoration: InputDecoration(
-                                  labelText: 'Phone number',
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  labelStyle: TextStyle(
-                                    color: CustomColors.mfinBlue,
-                                  ),
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 3.0, horizontal: 10.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors
-                                              .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
-                                  filled: true,
-                                ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Enter Phone number';
-                                  }
-                                  updatedCustomer['mobile_number'] = value;
-                                  return null;
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                            ),
-                            Flexible(
-                              child: TextFormField(
                                 initialValue:
                                     widget.customer['customer_profession'],
                                 textAlign: TextAlign.start,
@@ -217,7 +211,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (val) {
@@ -255,7 +249,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (val) {
@@ -269,9 +263,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                            ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
                                 initialValue:
@@ -290,7 +282,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (val) {
@@ -314,7 +306,6 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                     "Address Details",
                     Address.fromJson(widget.customer['address']),
                     updatedAddress),
-                Padding(padding: EdgeInsets.all(40))
               ],
             ),
           ),

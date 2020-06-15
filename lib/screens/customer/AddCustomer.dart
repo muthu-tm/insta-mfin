@@ -31,10 +31,7 @@ class _AddCustomerState extends State<AddCustomer> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('New Customer'),
         backgroundColor: CustomColors.mfinBlue,
       ),
@@ -61,16 +58,14 @@ class _AddCustomerState extends State<AddCustomer> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: Container(
-            color: CustomColors.mfinLightGrey,
-            child: Column(
+          child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Card(
                   color: CustomColors.mfinLightGrey,
                   elevation: 5.0,
-                  margin: EdgeInsets.only(top: 5.0),
+                  margin: EdgeInsets.all(5.0),
                   shadowColor: CustomColors.mfinLightBlue,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -122,13 +117,11 @@ class _AddCustomerState extends State<AddCustomer> {
                                         name, setCustomerNameState),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                            ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
                                 initialValue: id,
-                                textAlign: TextAlign.start,
+                                textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   labelText: 'Customer ID',
                                   floatingLabelBehavior:
@@ -187,9 +180,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                            ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
                                 initialValue: profession,
@@ -257,9 +248,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                            ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
                                 //initialValue: guarantiedBy.toString(),
@@ -297,12 +286,10 @@ class _AddCustomerState extends State<AddCustomer> {
                   ),
                 ),
                 AddressWidget("Address Details", Address(), address),
-                Padding(padding: EdgeInsets.all(40))
               ],
             ),
           ),
         ),
-      ),
     );
   }
 
@@ -314,7 +301,7 @@ class _AddCustomerState extends State<AddCustomer> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Creating $name!");
+      CustomDialogs.actionWaiting(context, "Creating Customer!");
       CustController _cc = CustController();
       var result = await _cc.createCustomer(
           name, id, profession, number, address, age, guarantiedBy);
@@ -323,9 +310,7 @@ class _AddCustomerState extends State<AddCustomer> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Customer: " + result['message']);
       } else {
-        print("New Customer $name added successfully");
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -336,7 +321,6 @@ class _AddCustomerState extends State<AddCustomer> {
         );
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

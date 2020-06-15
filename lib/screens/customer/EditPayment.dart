@@ -23,21 +23,11 @@ class _EditPaymentState extends State<EditPayment> {
 
   String _selectedTempID = "0";
   String selectedCollectionModeID = "0";
-  String selectedCollectionDayID = "0";
   Map<String, String> _tempMap = {"0": "Choose Type.."};
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
     "1": "Weekly",
     "2": "Monthly"
-  };
-  Map<String, String> _tempCollectionDays = {
-    "0": "Sunday",
-    "1": "Monday",
-    "2": "Tuesday",
-    "3": "Wednesday",
-    "4": "Thursday",
-    "5": "Friday",
-    "6": "Saturday",
   };
   List<PaymentTemplate> templates = new List<PaymentTemplate>();
   List<PaymentTemplate> tempList;
@@ -53,7 +43,6 @@ class _EditPaymentState extends State<EditPayment> {
     super.initState();
     this.getCollectionTemp();
 
-    selectedCollectionDayID = widget.payment.collectionDay.toString();
     selectedCollectionModeID = widget.payment.collectionMode.toString();
 
     _date.value = TextEditingValue(
@@ -156,9 +145,7 @@ class _EditPaymentState extends State<EditPayment> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -190,6 +177,45 @@ class _EditPaymentState extends State<EditPayment> {
                                 }
                                 return null;
                               },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectPaymentDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _date,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: 'Date of Payment',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -232,7 +258,7 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: DropdownButtonFormField(
                                 decoration: InputDecoration(
@@ -408,7 +434,7 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -485,7 +511,7 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -531,7 +557,7 @@ class _EditPaymentState extends State<EditPayment> {
                         children: <Widget>[
                           Flexible(
                             child: GestureDetector(
-                              onTap: () => _selectDate(context),
+                              onTap: () => _selectCollectionDate(context),
                               child: AbsorbPointer(
                                 child: TextFormField(
                                   controller: _date,
@@ -560,10 +586,10 @@ class _EditPaymentState extends State<EditPayment> {
                               ),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: GestureDetector(
-                              onTap: () => _selectDate(context),
+                              onTap: () => _selectCollectionDate(context),
                               child: AbsorbPointer(
                                 child: TextFormField(
                                   controller: _date,
@@ -633,7 +659,7 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -707,7 +733,7 @@ class _EditPaymentState extends State<EditPayment> {
                               // },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -745,7 +771,7 @@ class _EditPaymentState extends State<EditPayment> {
                         ],
                       ),
                     ),
-                    Padding(padding: EdgeInsets.all(40))
+                    Padding(padding: EdgeInsets.all(30))
                   ],
                 ),
               ),
@@ -788,13 +814,6 @@ class _EditPaymentState extends State<EditPayment> {
     }
   }
 
-  void _setSelectedCollectionDay(String newVal) {
-    setState(() {
-      updatedPayment['collection_day'] = int.parse(newVal);
-      selectedCollectionDayID = newVal;
-    });
-  }
-
   Future<Null> _selectCollectionDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -818,7 +837,7 @@ class _EditPaymentState extends State<EditPayment> {
       );
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<Null> _selectPaymentDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate:

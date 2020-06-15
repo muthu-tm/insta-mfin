@@ -15,7 +15,6 @@ class PaymentController {
       int amountPerColl,
       int collectionMode,
       int collectionDate,
-      int collectionDay,
       int docCharge,
       int surcharge,
       double iRate,
@@ -40,7 +39,6 @@ class PaymentController {
       pay.setNotes(notes);
       pay.setIsSettled(false);
       pay.setCSF(collectionDate);
-      pay.setCollectionDay(collectionDay);
 
       await pay.create(custNumber);
 

@@ -19,7 +19,7 @@ class _AddressWidgetState extends State<AddressWidget> {
     return Card(
       color: CustomColors.mfinLightGrey,
       elevation: 5.0,
-      margin: EdgeInsets.only(top: 5.0),
+      margin: EdgeInsets.all(5.0),
       shadowColor: CustomColors.mfinLightBlue,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -62,7 +62,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: CustomColors.mfinFadedButtonGreen)),
-                      fillColor: CustomColors.mfinLightGrey,
+                      fillColor: CustomColors.mfinWhite,
                       filled: true,
                     ),
                     validator: (street) {
@@ -95,7 +95,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: CustomColors.mfinFadedButtonGreen)),
-                      fillColor: CustomColors.mfinLightGrey,
+                      fillColor: CustomColors.mfinWhite,
                       filled: true,
                     ),
                     validator: (city) {
@@ -106,9 +106,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                ),
+                Padding(padding: EdgeInsets.only(left: 10)),
                 Flexible(
                   child: TextFormField(
                     initialValue: widget.address.street,
@@ -124,7 +122,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: CustomColors.mfinFadedButtonGreen)),
-                      fillColor: CustomColors.mfinLightGrey,
+                      fillColor: CustomColors.mfinWhite,
                       filled: true,
                     ),
                     validator: (state) {
@@ -157,7 +155,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: CustomColors.mfinFadedButtonGreen)),
-                      fillColor: CustomColors.mfinLightGrey,
+                      fillColor: CustomColors.mfinWhite,
                       filled: true,
                     ),
                     validator: (pinCode) {

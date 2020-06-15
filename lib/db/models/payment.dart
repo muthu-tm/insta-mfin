@@ -16,12 +16,12 @@ class Payment extends Model {
 
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
-  @JsonKey(name: 'payment_id', nullable: true)
-  String paymentID;
   @JsonKey(name: 'branch_name', nullable: true)
   String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
+  @JsonKey(name: 'payment_id', nullable: true)
+  String paymentID;
   @JsonKey(name: 'customer_number', nullable: true)
   int customerNumber;
   @JsonKey(name: 'date_of_payment', nullable: true)
@@ -38,8 +38,6 @@ class Payment extends Model {
   int tenure;
   @JsonKey(name: 'collection_mode', nullable: true)
   int collectionMode;
-  @JsonKey(name: 'collection_day', nullable: true)
-  int collectionDay;
   @JsonKey(name: 'interest_rate', nullable: true)
   double interestRate;
   @JsonKey(name: 'collection_amount', nullable: true)
@@ -113,10 +111,6 @@ class Payment extends Model {
 
   setCollectionMode(int collectionMode) {
     this.collectionMode = collectionMode;
-  }
-
-  setCollectionDay(int collectionDay) {
-    this.collectionDay = collectionDay;
   }
 
   setCollectionAmount(int amount) {
