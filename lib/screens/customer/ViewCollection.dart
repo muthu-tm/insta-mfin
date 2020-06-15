@@ -289,7 +289,7 @@ class ViewCollection extends StatelessWidget {
         return "SURCHARGE";
         break;
       case 3:
-        return "CLOSING";
+        return "SETTLEMENT";
         break;
       default:
         return "COLLECTION";

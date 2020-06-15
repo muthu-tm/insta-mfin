@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 
 class ViewPaymentDetails extends StatelessWidget {
   ViewPaymentDetails(this.payment);
@@ -81,7 +82,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.text,
                             initialValue: payment.paymentID,
                             decoration: InputDecoration(
                               labelText: 'Payment ID',
@@ -113,7 +113,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.text,
                             initialValue: payment.givenBy,
                             decoration: InputDecoration(
                               labelText: 'Amount given by',
@@ -197,7 +196,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.text,
                             initialValue: payment.notes,
                             maxLines: 3,
                             decoration: InputDecoration(
@@ -258,7 +256,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
                             initialValue: payment.principalAmount.toString(),
                             decoration: InputDecoration(
                               labelText: 'Principal amount',
@@ -282,7 +279,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
                             initialValue: payment.interestRate.toString(),
                             decoration: InputDecoration(
                               labelText: 'Rate of interest',
@@ -312,7 +308,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
                             initialValue: payment.tenure.toString(),
                             decoration: InputDecoration(
                               labelText: 'No. of collections',
@@ -336,7 +331,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
                             initialValue: payment.collectionAmount.toString(),
                             decoration: InputDecoration(
                               hintText: 'Each Collection Amount',
@@ -366,8 +360,9 @@ class ViewPaymentDetails extends StatelessWidget {
                           child: TextFormField(
                             enabled: false,
                             autofocus: false,
-                            keyboardType: TextInputType.datetime,
-                            initialValue: payment.dateOfPayment.toString(),
+                            initialValue: DateUtils.formatDate(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    payment.dateOfPayment)),
                             decoration: InputDecoration(
                               labelText: 'Start date',
                               floatingLabelBehavior:
@@ -395,8 +390,9 @@ class ViewPaymentDetails extends StatelessWidget {
                           child: TextFormField(
                             enabled: false,
                             autofocus: false,
-                            initialValue: payment.dateOfPayment.toString(),
-                            keyboardType: TextInputType.datetime,
+                            initialValue: DateUtils.formatDate(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    payment.dateOfPayment)),
                             decoration: InputDecoration(
                               labelText: 'End date',
                               floatingLabelBehavior:
@@ -432,7 +428,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             autofocus: false,
                             textAlign: TextAlign.start,
                             initialValue: payment.docCharge.toString(),
-                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelText: 'Document charge',
                               labelStyle:
@@ -456,7 +451,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             autofocus: false,
                             textAlign: TextAlign.start,
                             initialValue: payment.surcharge.toString(),
-                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelText: 'Service charge',
                               labelStyle:
@@ -485,7 +479,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
                             //! need to fix in schema initialValue: payment.alreadyReceivedAmount.toString(),
                             decoration: InputDecoration(
                               hintText: 'Amount received so far',
@@ -510,7 +503,6 @@ class ViewPaymentDetails extends StatelessWidget {
                             enabled: false,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
                             initialValue: payment.totalAmount.toString(),
                             decoration: InputDecoration(
                               labelText: 'Total amount',
@@ -531,7 +523,6 @@ class ViewPaymentDetails extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(padding: EdgeInsets.all(20))
                 ],
               ),
             ),

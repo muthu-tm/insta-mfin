@@ -10,7 +10,7 @@ class ViewCustomerProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * (0.75),
+      height: MediaQuery.of(context).size.height * (0.6),
       child: SingleChildScrollView(
         child: Container(
           color: CustomColors.mfinLightGrey,
@@ -355,7 +355,6 @@ class ViewCustomerProfile extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(padding: EdgeInsets.all(20))
             ],
           ),
         ),
