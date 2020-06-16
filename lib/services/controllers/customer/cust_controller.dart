@@ -56,38 +56,6 @@ class CustController {
     }
   }
 
-  Future<List<Customer>> searchCustomer(int number) async {
-    try {
-      Customer customer = Customer();
-      int minValue = number;
-      int maxValue = number;
-      if (number.toString().length < 10) {
-        minValue = int.parse(minValue.toString().padRight(10, '0'));
-        maxValue = int.parse(number.toString().padRight(10, '9'));
-      } else if (number.toString().length == 10) {
-        Customer cust = await customer.getByMobileNumber(number);
-        if (cust == null) {
-          return [];
-        }
-
-        return [cust];
-      } else {
-        return [];
-      }
-
-      List<Customer> custList = await customer.getByRange(minValue, maxValue);
-
-      return custList;
-    } catch (err) {
-      Analytics.reportError({
-        "type": 'customer_search_error',
-        "cust_number": number,
-        'error': err.toString()
-      });
-      throw err;
-    }
-  }
-
   Stream<List<Customer>> streamCustomersByStatus(
       int status, bool fetchAll) async* {
     try {

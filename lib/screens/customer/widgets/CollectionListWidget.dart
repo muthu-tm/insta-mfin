@@ -13,13 +13,12 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CollectionListWidget extends StatelessWidget {
-  CollectionListWidget(this._scaffoldKey, this._payment, this.custName,
+  CollectionListWidget(this._scaffoldKey, this._payment, 
       this.title, this.emptyText, this.textColor, this.fetchAll, this.status);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   final Payment _payment;
-  final String custName;
   final String title;
   final String emptyText;
   final Color textColor;
@@ -84,7 +83,7 @@ class CollectionListWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ViewCollection(_payment,
-                                      collection, custName, cardColor),
+                                      collection, cardColor),
                                   settings: RouteSettings(
                                       name: '/customers/payment/colection'),
                                 ),
@@ -382,7 +381,7 @@ class CollectionListWidget extends StatelessWidget {
           collection.collectionAmount - collection.getReceived();
       collDetails['notes'] = "";
       collDetails['collected_by'] = _user.name;
-      collDetails['collected_from'] = custName;
+      collDetails['collected_from'] = _payment.custName;
       collDetails['created_at'] = DateTime.now();
       collDetails['added_by'] = _user.mobileNumber;
       if (collection.collectionDate <

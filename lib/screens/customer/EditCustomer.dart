@@ -97,6 +97,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
+                                readOnly: true,
                                 initialValue:
                                     widget.customer['mobile_number'].toString(),
                                 textAlign: TextAlign.start,
@@ -116,8 +117,6 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   fillColor: CustomColors.mfinLightGrey,
                                   filled: true,
                                 ),
-                                autofocus: false,
-                                enabled: false,
                               ),
                             ),
                           ],

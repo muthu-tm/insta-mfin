@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
+import 'package:instamfin/screens/customer/widgets/CustomerPaymentsListWidget.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
-import 'package:instamfin/screens/customer/widgets/CustomerPaymentsWidget.dart';
 import 'package:instamfin/screens/customer/AddPayment.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -184,8 +184,8 @@ class ViewCustomer extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              CustomerPaymentsWidget(
-                  customer.mobileNumber, customer.name, _scaffoldKey),
+              CustomerPaymentsListWidget(
+                  customer.mobileNumber, _scaffoldKey),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 40, 0, 40),
               ),

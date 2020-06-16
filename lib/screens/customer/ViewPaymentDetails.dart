@@ -52,9 +52,8 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
-                            // ! initialValue: widget.customer.name, need value for customer name
+                            readOnly: true,
+                            initialValue: payment.custName,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
                               labelText: 'Customer name',
@@ -77,8 +76,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.paymentID,
                             decoration: InputDecoration(
@@ -111,8 +109,7 @@ class ViewPaymentDetails extends StatelessWidget {
                           child: GestureDetector(
                             child: AbsorbPointer(
                               child: TextFormField(
-                                enabled: false,
-                                autofocus: false,
+                                readOnly: true,
                                 initialValue: DateUtils.formatDate(
                                     DateTime.fromMillisecondsSinceEpoch(
                                         payment.dateOfPayment)),
@@ -150,8 +147,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.givenBy,
                             decoration: InputDecoration(
@@ -174,8 +170,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             // ! initialValue: , need value for payment template
                             decoration: InputDecoration(
                               labelText: 'Payment template',
@@ -203,8 +198,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             initialValue:
                                 _tempCollectionMode[payment.collectionMode],
                             decoration: InputDecoration(
@@ -233,8 +227,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.notes,
                             maxLines: 3,
@@ -293,8 +286,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.totalAmount.toString(),
                             decoration: InputDecoration(
@@ -316,8 +308,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.interestRate.toString(),
                             decoration: InputDecoration(
@@ -345,8 +336,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.principalAmount.toString(),
                             decoration: InputDecoration(
@@ -368,8 +358,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.tenure.toString(),
                             decoration: InputDecoration(
@@ -397,8 +386,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.collectionAmount.toString(),
                             decoration: InputDecoration(
@@ -421,10 +409,9 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
-                            //! need to fix in schema initialValue: payment.alreadyReceivedAmount.toString(),
+                            initialValue: payment.alreadyCollectedAmount.toString(),
                             decoration: InputDecoration(
                               hintText: 'Amount received so far',
                               labelText: 'Amount received',
@@ -451,8 +438,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             initialValue: DateUtils.formatDate(
                                 DateTime.fromMillisecondsSinceEpoch(
                                     payment.collectionStartsFrom)),
@@ -481,8 +467,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.all(10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             initialValue: DateUtils.formatDate(
                                 DateTime.fromMillisecondsSinceEpoch(
                                     payment.collectionStartsFrom)),
@@ -517,8 +502,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.docCharge.toString(),
                             decoration: InputDecoration(
@@ -540,8 +524,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.all(10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.surcharge.toString(),
                             decoration: InputDecoration(

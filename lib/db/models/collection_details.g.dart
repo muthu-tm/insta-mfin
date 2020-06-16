@@ -5,6 +5,7 @@ CollectionDetails _$CollectionDetailsFromJson(Map<String, dynamic> json) {
     ..collectedOn = json['collected_on'] as int
     ..isPaidLate = json['is_paid_late'] as bool ?? false
     ..amount = json['amount'] as int
+    ..transferredMode = json['transferred_mode'] as int
     ..collectedFrom = json['collected_from'] as String ?? ''
     ..collectedBy = json['collected_by'] as String ?? ''
     ..notes = json['notes'] as String ?? ''
@@ -24,7 +25,10 @@ Map<String, dynamic> _$CollectionDetailsToJson(CollectionDetails instance) =>
       'collected_on': instance.collectedOn,
       'is_paid_late': instance.isPaidLate == null ? false : instance.isPaidLate,
       'amount': instance.amount,
-      'collected_from': instance.collectedFrom == null ? '' : instance.collectedFrom,
+      'transferred_mode':
+          instance.transferredMode == null ? 0 : instance.transferredMode,
+      'collected_from':
+          instance.collectedFrom == null ? '' : instance.collectedFrom,
       'collected_by': instance.collectedBy == null ? '' : instance.collectedBy,
       'notes': instance.notes == null ? '' : instance.notes,
       'added_by': instance.addedBy,

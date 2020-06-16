@@ -32,7 +32,7 @@ class PaymentsWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ViewPayment(pay, ""),
+                  builder: (context) => ViewPayment(pay),
                   settings: RouteSettings(name: '/customers/payment'),
                 ),
               );

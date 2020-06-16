@@ -14,6 +14,8 @@ class Payment extends Model {
   static CollectionReference _paymentCollRef =
       Model.db.collection("customer_payments");
 
+  @JsonKey(name: 'customer_name', nullable: true)
+  String custName;
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
   @JsonKey(name: 'branch_name', nullable: true)
@@ -30,6 +32,10 @@ class Payment extends Model {
   int totalAmount;
   @JsonKey(name: 'principal_amount', nullable: true)
   int principalAmount;
+  @JsonKey(name: 'already_collected_amount', nullable: true)
+  int alreadyCollectedAmount;
+  @JsonKey(name: 'transferred_mode', nullable: true)
+  int transferredMode;
   @JsonKey(name: 'doc_charge', nullable: true)
   int docCharge;
   @JsonKey(name: 'surcharge', nullable: true)
@@ -38,6 +44,8 @@ class Payment extends Model {
   int tenure;
   @JsonKey(name: 'collection_mode', nullable: true)
   int collectionMode;
+  @JsonKey(name: 'collection_days', nullable: true)
+  List<int> collectionDays;
   @JsonKey(name: 'interest_rate', nullable: true)
   double interestRate;
   @JsonKey(name: 'collection_amount', nullable: true)
@@ -68,6 +76,10 @@ class Payment extends Model {
   DateTime updatedAt;
 
   Payment();
+
+  setCustomerName(String custName) {
+    this.custName = custName;
+  }
 
   setFinanceID(String financeID) {
     this.financeID = financeID;
@@ -112,9 +124,21 @@ class Payment extends Model {
   setCollectionMode(int collectionMode) {
     this.collectionMode = collectionMode;
   }
+  
+  setTransferredMode(int transferredMode) {
+    this.transferredMode = transferredMode;
+  }
+  
+  setCollectionDays(List<int> collectiondays) {
+    this.collectionDays = collectiondays;
+  }
 
   setCollectionAmount(int amount) {
     this.collectionAmount = amount;
+  }
+  
+  setAlreadyCollectionAmount(int collectedAmount) {
+    this.alreadyCollectedAmount = collectedAmount;
   }
 
   setInterestRate(double iRate) {
@@ -365,6 +389,24 @@ class Payment extends Model {
     }
 
     return payMap;
+  }
+
+  Future<List<Map<String, dynamic>>> getByPaymentIDRange(String minID) async {
+    QuerySnapshot snap = await getCollectionRef()
+        .where('finance_id', isEqualTo: user.primaryFinance)
+        .where('branch_name', isEqualTo: user.primaryBranch)
+        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('payment_id', isGreaterThanOrEqualTo: minID)
+        .getDocuments();
+
+    List<Map<String, dynamic>> payList = [];
+    if (snap.documents.isNotEmpty) {
+      snap.documents.forEach((pay) {
+        payList.add(pay.data);
+      });
+    }
+
+    return payList;
   }
 
   Stream<QuerySnapshot> streamPayments(

@@ -123,9 +123,8 @@ class _EditPaymentState extends State<EditPayment> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              enabled: false,
-                              autofocus: false,
-                              //initialValue: widget.customer.name,
+                              readOnly: true,
+                              initialValue: widget.payment.custName,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Customer name',

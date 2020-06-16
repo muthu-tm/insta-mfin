@@ -194,7 +194,8 @@ class Customer extends Model {
     return Customer.fromJson(snap.documents.first.data);
   }
 
-  Future<List<Customer>> getByRange(int minNumber, int maxNumber) async {
+  Future<List<Map<String, dynamic>>> getByRange(
+      int minNumber, int maxNumber) async {
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: user.primaryFinance)
         .where('branch_name', isEqualTo: user.primaryBranch)
@@ -203,17 +204,17 @@ class Customer extends Model {
         .where('mobile_number', isLessThanOrEqualTo: maxNumber)
         .getDocuments();
 
-    List<Customer> custList = [];
+    List<Map<String, dynamic>> custList = [];
     if (snap.documents.isNotEmpty) {
       snap.documents.forEach((cust) {
-        custList.add(Customer.fromJson(cust.data));
+        custList.add(cust.data);
       });
     }
 
     return custList;
   }
 
-  Future<List<Customer>> getByNameRange(String startsWith) async {
+  Future<List<Map<String, dynamic>>> getByNameRange(String startsWith) async {
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: user.primaryFinance)
         .where('branch_name', isEqualTo: user.primaryBranch)
@@ -221,10 +222,10 @@ class Customer extends Model {
         .where('customer_name', isGreaterThanOrEqualTo: startsWith)
         .getDocuments();
 
-    List<Customer> custList = [];
+    List<Map<String, dynamic>> custList = [];
     if (snap.documents.isNotEmpty) {
       snap.documents.forEach((cust) {
-        custList.add(Customer.fromJson(cust.data));
+        custList.add(cust.data);
       });
     }
 

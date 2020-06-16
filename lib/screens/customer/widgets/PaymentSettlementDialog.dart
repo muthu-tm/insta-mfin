@@ -8,12 +8,11 @@ import 'package:instamfin/services/controllers/transaction/payment_controller.da
 
 class PaymentSettlementDialog extends StatefulWidget {
   PaymentSettlementDialog(
-      this._scaffoldKey, this._p, this.pDetails, this.custName);
+      this._scaffoldKey, this._p, this.pDetails);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final Payment _p;
   final List<int> pDetails;
-  final String custName;
 
   @override
   _PaymentSettlementDialogState createState() =>
@@ -32,7 +31,7 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
   @override
   void initState() {
     super.initState();
-    this.rFrom = widget.custName;
+    this.rFrom = widget._p.custName;
   }
 
   @override
@@ -286,7 +285,7 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                             padding: EdgeInsets.all(5.0),
                             child: TextFormField(
                               textAlign: TextAlign.end,
-                              initialValue: widget.custName,
+                              initialValue: widget._p.custName,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 labelText: "Received From",

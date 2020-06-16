@@ -12,6 +12,8 @@ class CollectionDetails {
   bool isPaidLate;
   @JsonKey(name: 'amount')
   int amount;
+  @JsonKey(name: 'transferred_mode', nullable: true)
+  int transferredMode;
   @JsonKey(name: 'collected_from', defaultValue: '')
   String collectedFrom;
   @JsonKey(name: 'collected_by', defaultValue: '')

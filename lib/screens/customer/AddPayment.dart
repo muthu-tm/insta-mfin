@@ -32,6 +32,13 @@ class _AddPaymentState extends State<AddPayment> {
     "1": "Weekly",
     "2": "Monthly"
   };
+
+  String transferredMode = "0";
+  Map<String, String> _transferMode = {
+    "0": "Cash",
+    "1": "NetBanking",
+    "2": "GPay"
+  };
   List<PaymentTemplate> templates = List<PaymentTemplate>();
   List<PaymentTemplate> tempList;
   PaymentTemplate selectedTemp;
@@ -50,6 +57,7 @@ class _AddPaymentState extends State<AddPayment> {
   String paymentID = '';
   double intrestRate = 0.0;
   int collectionAmount = 0;
+  List<int> collectionDays = [0, 1, 2, 3, 4, 5, 6];
   String givenBy = '';
   String notes = '';
   int alreadyReceivedAmount = 0;
@@ -123,8 +131,7 @@ class _AddPaymentState extends State<AddPayment> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              enabled: false,
-                              autofocus: false,
+                              readOnly: true,
                               initialValue: widget.customer.name,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -256,6 +263,44 @@ class _AddPaymentState extends State<AddPayment> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Transferred Mode',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              items: _transferMode.entries.map(
+                                (f) {
+                                  return DropdownMenuItem<String>(
+                                    value: f.key,
+                                    child: Text(f.value),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (newVal) {
+                                _setTransferredMode(newVal);
+                              },
+                              value: transferredMode,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: DropdownButtonFormField(
                                 decoration: InputDecoration(
                                   labelText: 'Payment template',
                                   labelStyle: TextStyle(
@@ -283,14 +328,8 @@ class _AddPaymentState extends State<AddPayment> {
                                 onChanged: (newVal) {
                                   _setSelectedTemp(newVal);
                                 }),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
@@ -334,7 +373,7 @@ class _AddPaymentState extends State<AddPayment> {
                               onTap: () => _selectCollectionDate(context),
                               child: AbsorbPointer(
                                 child: TextFormField(
-                                  controller: _date,
+                                  controller: _collectionDate,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
                                     labelText: 'Start date',
@@ -363,10 +402,9 @@ class _AddPaymentState extends State<AddPayment> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: GestureDetector(
-                              onTap: () => _selectCollectionDate(context),
                               child: AbsorbPointer(
                                 child: TextFormField(
-                                  controller: _date,
+                                  controller: _collectionDate,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
                                     labelText: 'End date',
@@ -660,13 +698,12 @@ class _AddPaymentState extends State<AddPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
-                              validator: (collAmount) {
-                                if (collAmount.trim().isEmpty ||
-                                    collAmount.trim() == '0') {
-                                  return "Cannot be empty or zero";
+                              validator: (aCollAmount) {
+                                if (aCollAmount.trim().isEmpty) {
+                                  alreadyReceivedAmount = 0;
                                 }
-                                this.collectionAmount =
-                                    int.parse(collAmount.trim());
+                                this.alreadyReceivedAmount =
+                                    int.parse(aCollAmount.trim());
                                 return null;
                               },
                             ),
@@ -811,6 +848,12 @@ class _AddPaymentState extends State<AddPayment> {
       );
   }
 
+  _setTransferredMode(String newVal) {
+    setState(() {
+      transferredMode = newVal;
+    });
+  }
+
   _setSelectedCollectionMode(String newVal) {
     setState(() {
       selectedCollectionModeID = newVal;
@@ -843,6 +886,7 @@ class _AddPaymentState extends State<AddPayment> {
       PaymentController _pc = PaymentController();
       var result = await _pc.createPayment(
           widget.customer.mobileNumber,
+          widget.customer.name,
           paymentID.toString(),
           selectedDate,
           totalAmount,
@@ -850,6 +894,9 @@ class _AddPaymentState extends State<AddPayment> {
           tenure,
           collectionAmount,
           int.parse(selectedCollectionModeID),
+          collectionDays,
+          int.parse(transferredMode),
+          alreadyReceivedAmount,
           collectionDate,
           docCharge,
           surCharge,

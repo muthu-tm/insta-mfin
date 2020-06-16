@@ -11,11 +11,10 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/collection_receipt.dart';
 
 class ViewCollection extends StatelessWidget {
-  ViewCollection(this.pay, this._collection, this.custName, this.iconColor);
+  ViewCollection(this.pay, this._collection, this.iconColor);
 
   final Payment pay;
   final Collection _collection;
-  final String custName;
   final Color iconColor;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -86,7 +85,8 @@ class ViewCollection extends StatelessWidget {
                         ),
                       ),
                       title: TextFormField(
-                        initialValue: custName,
+                        readOnly: true,
+                        initialValue: pay.custName,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(
@@ -95,8 +95,6 @@ class ViewCollection extends StatelessWidget {
                           fillColor: CustomColors.mfinLightGrey,
                           filled: true,
                         ),
-                        enabled: false,
-                        autofocus: false,
                       ),
                     ),
                     ListTile(
@@ -112,6 +110,7 @@ class ViewCollection extends StatelessWidget {
                         ),
                       ),
                       title: TextFormField(
+                        readOnly: true,
                         textAlign: TextAlign.end,
                         initialValue: collection.collectionNumber.toString(),
                         decoration: InputDecoration(
@@ -125,8 +124,6 @@ class ViewCollection extends StatelessWidget {
                             ),
                           ),
                         ),
-                        enabled: false,
-                        autofocus: false,
                       ),
                     ),
                     ListTile(
@@ -142,6 +139,7 @@ class ViewCollection extends StatelessWidget {
                         ),
                       ),
                       title: TextFormField(
+                        readOnly: true,
                         textAlign: TextAlign.end,
                         initialValue: collection.collectionAmount.toString(),
                         decoration: InputDecoration(
@@ -155,8 +153,6 @@ class ViewCollection extends StatelessWidget {
                             ),
                           ),
                         ),
-                        enabled: false,
-                        autofocus: false,
                       ),
                     ),
                     ListTile(
@@ -172,6 +168,7 @@ class ViewCollection extends StatelessWidget {
                         ),
                       ),
                       title: TextFormField(
+                        readOnly: true,
                         textAlign: TextAlign.end,
                         initialValue: collection.getReceived().toString(),
                         decoration: InputDecoration(
@@ -185,8 +182,6 @@ class ViewCollection extends StatelessWidget {
                             ),
                           ),
                         ),
-                        enabled: false,
-                        autofocus: false,
                       ),
                     ),
                     ListTile(
@@ -202,6 +197,7 @@ class ViewCollection extends StatelessWidget {
                         ),
                       ),
                       title: TextFormField(
+                        readOnly: true,
                         textAlign: TextAlign.end,
                         initialValue: DateUtils.getFormattedDateFromEpoch(
                             collection.collectionDate),
@@ -216,15 +212,13 @@ class ViewCollection extends StatelessWidget {
                             ),
                           ),
                         ),
-                        enabled: false,
-                        autofocus: false,
                       ),
                     ),
                     (UserController().getCurrentUser().preferences.tableView)
                         ? CollDetailsTableWidget(pay.isSettled, _scaffoldKey,
-                            collection, custName, pay.createdAt)
+                            collection, pay.custName, pay.createdAt)
                         : CollectionDetailsWidget(pay.isSettled, _scaffoldKey,
-                            collection, custName, pay.createdAt),
+                            collection, pay.custName, pay.createdAt),
                   ],
                 ),
               ),
