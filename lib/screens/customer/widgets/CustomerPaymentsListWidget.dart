@@ -4,13 +4,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
-import 'package:instamfin/screens/customer/ViewPayment.dart';
-import 'package:instamfin/screens/customer/widgets/CustomerPaymentsWidget.dart';
+import 'package:instamfin/screens/customer/widgets/CustomerPaymentWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
-import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
@@ -210,7 +208,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                         },
                       ),
                     ],
-                    child: paymentsWidget(context, index, payment),
+                    child: customerPaymentWidget(context, index, payment),
                   );
                 },
               )

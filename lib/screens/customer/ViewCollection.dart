@@ -28,7 +28,9 @@ class ViewCollection extends StatelessWidget {
           _collection.subBranchName,
           _collection.customerNumber,
           pay.createdAt,
-          _collection.collectionDate),
+          (_collection.type != 1 && _collection.type != 2)
+              ? _collection.collectionDate
+              : (_collection.collectionDate + _collection.type)),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         List<Widget> children;

@@ -5,7 +5,7 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
-Widget paymentsWidget(BuildContext context, int index, Payment payment) {
+Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
   Color cColor = CustomColors.mfinBlue;
   if (payment.isSettled) cColor = CustomColors.mfinGrey;
 

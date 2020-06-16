@@ -3,8 +3,7 @@ import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/app/SearchOptionsRadio.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListTile.dart';
-import 'package:instamfin/screens/customer/widgets/CustomerPaymentsWidget.dart';
-import 'package:instamfin/screens/transaction/collection/PaymentListTile.dart';
+import 'package:instamfin/screens/customer/widgets/CustomerPaymentWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomRadioModel.dart';
@@ -182,7 +181,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, int index) {
                         if (inOutList[2].isSelected == true) {
-                          return paymentsWidget(context, index,
+                          return customerPaymentWidget(context, index,
                               Payment.fromJson(snapshot.data[index]));
                         } else {
                           return customerListTile(context, index,
