@@ -8,6 +8,7 @@ part of 'payment.dart';
 
 Payment _$PaymentFromJson(Map<String, dynamic> json) {
   return Payment()
+    ..custName = json['customer_name'] as String
     ..financeID = json['finance_id'] as String
     ..paymentID = json['payment_id'] as String
     ..branchName = json['branch_name'] as String
@@ -22,8 +23,14 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..surcharge = json['surcharge'] as int
     ..tenure = json['tenure'] as int
     ..collectionMode = json['collection_mode'] as int
+    ..collectionDays = (json['collection_days'] as List)
+            ?.map((e) => e == null ? null : e as int)
+            ?.toList() ??
+        []
     ..interestRate = (json['interest_rate'] as num)?.toDouble()
     ..collectionAmount = json['collection_amount'] as int
+    ..alreadyCollectedAmount = json['already_collected_amount'] as int
+    ..transferredMode = json['transferred_mode'] as int
     ..lossAmount = json['loss_amount'] as int
     ..profitAmount = json['profit_amount'] as int
     ..shortageAmount = json['shortage_amount'] as int
@@ -47,6 +54,7 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
+      'customer_name': instance.custName,
       'finance_id': instance.financeID,
       'payment_id': instance.paymentID,
       'branch_name': instance.branchName,
@@ -67,6 +75,9 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'surcharge': instance.surcharge == null ? 0 : instance.surcharge,
       'tenure': instance.tenure,
       'collection_mode': instance.collectionMode,
+      'collection_days': instance.collectionDays,
+      'already_collected_amount': instance.alreadyCollectedAmount,
+      'transferred_mode': instance.transferredMode,
       'interest_rate':
           instance.interestRate == null ? 0 : instance.interestRate,
       'collection_amount': instance.collectionAmount,

@@ -17,10 +17,9 @@ import 'package:instamfin/services/controllers/transaction/payment_controller.da
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class ViewPayment extends StatefulWidget {
-  ViewPayment(this.payment, this.custName);
+  ViewPayment(this.payment);
 
   final Payment payment;
-  final String custName;
 
   @override
   _ViewPaymentState createState() => _ViewPaymentState();
@@ -285,8 +284,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                           child: PaymentSettlementDialog(
                                               _scaffoldKey,
                                               widget.payment,
-                                              pDetails,
-                                              widget.custName),
+                                              pDetails),
                                         ),
                                       );
                                     },
@@ -457,7 +455,6 @@ class _ViewPaymentState extends State<ViewPayment> {
                   ? Container(
                       child: CollectionListTableWidget(
                         widget.payment,
-                        widget.custName,
                         title,
                         emptyText,
                         textColor,
@@ -469,7 +466,6 @@ class _ViewPaymentState extends State<ViewPayment> {
                       child: CollectionListWidget(
                         _scaffoldKey,
                         widget.payment,
-                        widget.custName,
                         title,
                         emptyText,
                         textColor,

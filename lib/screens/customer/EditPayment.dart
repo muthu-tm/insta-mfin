@@ -29,6 +29,14 @@ class _EditPaymentState extends State<EditPayment> {
     "1": "Weekly",
     "2": "Monthly"
   };
+
+  String transferredMode = "0";
+  Map<String, String> _transferMode = {
+    "0": "Cash",
+    "1": "NetBanking",
+    "2": "GPay"
+  };
+
   List<PaymentTemplate> templates = new List<PaymentTemplate>();
   List<PaymentTemplate> tempList;
   PaymentTemplate selectedTemp;
@@ -123,9 +131,8 @@ class _EditPaymentState extends State<EditPayment> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              enabled: false,
-                              autofocus: false,
-                              //initialValue: widget.customer.name,
+                              readOnly: true,
+                              initialValue: widget.payment.custName,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Customer name',
@@ -143,40 +150,6 @@ class _EditPaymentState extends State<EditPayment> {
                                 fillColor: CustomColors.mfinLightGrey,
                                 filled: true,
                               ),
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.text,
-                              initialValue: widget.payment.paymentID,
-                              decoration: InputDecoration(
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                hintText: 'Payment ID',
-                                labelText: 'Payment ID',
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                              ),
-                              validator: (paymentID) {
-                                if (paymentID.isNotEmpty ||
-                                    paymentID.trim() !=
-                                        widget.payment.paymentID) {
-                                  updatedPayment['payment_id'] =
-                                      paymentID.trim();
-                                }
-                                return null;
-                              },
                             ),
                           ),
                         ],
@@ -216,6 +189,39 @@ class _EditPaymentState extends State<EditPayment> {
                                   ),
                                 ),
                               ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.text,
+                              initialValue: widget.payment.paymentID,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                hintText: 'Payment ID',
+                                labelText: 'Payment ID',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                              ),
+                              validator: (paymentID) {
+                                if (paymentID.trim() !=
+                                    widget.payment.paymentID) {
+                                  updatedPayment['payment_id'] =
+                                      paymentID.trim();
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ],
@@ -261,6 +267,44 @@ class _EditPaymentState extends State<EditPayment> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Transferred Mode',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              items: _transferMode.entries.map(
+                                (f) {
+                                  return DropdownMenuItem<String>(
+                                    value: f.key,
+                                    child: Text(f.value),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (newVal) {
+                                _setSelectedTransferredMode(newVal);
+                              },
+                              value: transferredMode,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: DropdownButtonFormField(
                                 decoration: InputDecoration(
                                   labelText: 'Payment template',
                                   labelStyle: TextStyle(
@@ -288,14 +332,8 @@ class _EditPaymentState extends State<EditPayment> {
                                 onChanged: (newVal) {
                                   _setSelectedTemp(newVal);
                                 }),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
@@ -327,6 +365,76 @@ class _EditPaymentState extends State<EditPayment> {
                               value: selectedCollectionModeID,
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectCollectionDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _collectionDate,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: 'Start date',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectCollectionDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _collectionDate,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: 'End date',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -405,10 +513,10 @@ class _EditPaymentState extends State<EditPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               initialValue:
-                                  widget.payment.principalAmount.toString(),
+                                  widget.payment.totalAmount.toString(),
                               decoration: InputDecoration(
-                                hintText: 'Principal amount',
-                                labelText: 'Principal amount',
+                                hintText: 'Total amount',
+                                labelText: 'Total amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -424,10 +532,10 @@ class _EditPaymentState extends State<EditPayment> {
                               validator: (amount) {
                                 if (amount.trim().isEmpty ||
                                     amount.trim() == "0") {
-                                  return "Principal Amount should not be empty!";
+                                  return "Total Amount should not be empty!";
                                 } else if (amount.trim() !=
-                                    widget.payment.principalAmount.toString()) {
-                                  updatedPayment['principal_amount'] =
+                                    widget.payment.totalAmount.toString()) {
+                                  updatedPayment['total_amount'] =
                                       int.parse(amount.trim());
                                 }
                                 return null;
@@ -483,6 +591,41 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
+                              initialValue:
+                                  widget.payment.principalAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Principal amount',
+                                labelText: 'Principal amount',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (amount) {
+                                if (amount.trim().isEmpty ||
+                                    amount.trim() == "0") {
+                                  return "Principal Amount should not be empty!";
+                                } else if (amount.trim() !=
+                                    widget.payment.principalAmount.toString()) {
+                                  updatedPayment['principal_amount'] =
+                                      int.parse(amount.trim());
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
                               initialValue: widget.payment.tenure.toString(),
                               decoration: InputDecoration(
                                 hintText: 'Number of Collections',
@@ -511,7 +654,13 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -548,76 +697,39 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: GestureDetector(
-                              onTap: () => _selectCollectionDate(context),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _date,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    labelText: 'Start date',
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    labelStyle: TextStyle(
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 10.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
-                            child: GestureDetector(
-                              onTap: () => _selectCollectionDate(context),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _date,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    labelText: 'End date',
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    labelStyle: TextStyle(
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 10.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
+                            child: TextFormField(
+                                textAlign: TextAlign.start,
+                                keyboardType: TextInputType.number,
+                                initialValue: widget
+                                    .payment.alreadyCollectedAmount
+                                    .toString(),
+                                decoration: InputDecoration(
+                                  hintText: 'Amount received so far',
+                                  labelText: 'Amount received',
+                                  labelStyle:
+                                      TextStyle(color: CustomColors.mfinBlue),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors.mfinWhite)),
                                 ),
-                              ),
-                            ),
-                          )
+                                validator: (collAmount) {
+                                  if (collAmount.trim() !=
+                                      widget.payment.alreadyCollectedAmount
+                                          .toString()) {
+                                    updatedPayment['already_collected_amount'] =
+                                        int.parse(collAmount.trim());
+                                  }
+                                  return null;
+                                }),
+                          ),
                         ],
                       ),
                     ),
@@ -693,80 +805,6 @@ class _EditPaymentState extends State<EditPayment> {
                                 return null;
                               },
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              // ! already received amount schema level
-                              //initialValue: widget.payment.al.toString(),
-                              decoration: InputDecoration(
-                                hintText: 'Amount received so far',
-                                labelText: 'Amount received',
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CustomColors.mfinWhite)),
-                              ),
-                              // ! need to fix validator part as well
-                              // validator: (collAmount) {
-                              //   if (collAmount.trim().isEmpty ||
-                              //       collAmount.trim() == '0') {
-                              //     return "Cannot be empty or zero";
-                              //   }
-                              //   //this.collectionAmount = int.parse(collAmount.trim());
-                              //   return null;
-                              // },
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              initialValue:
-                                  widget.payment.totalAmount.toString(),
-                              decoration: InputDecoration(
-                                hintText: 'Total amount',
-                                labelText: 'Total amount',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CustomColors.mfinWhite)),
-                              ),
-                              validator: (amount) {
-                                if (amount.trim().isEmpty ||
-                                    amount.trim() == "0") {
-                                  return "Total Amount should not be empty!";
-                                } else if (amount.trim() !=
-                                    widget.payment.totalAmount.toString()) {
-                                  updatedPayment['total_amount'] =
-                                      int.parse(amount.trim());
-                                }
-                                return null;
-                              },
-                            ),
                           ),
                         ],
                       ),
@@ -784,8 +822,17 @@ class _EditPaymentState extends State<EditPayment> {
 
   _setSelectedCollectionMode(String newVal) {
     setState(() {
-      updatedPayment['collection_mode'] = int.parse(newVal);
+      if (widget.payment.collectionMode != int.parse(newVal))
+        updatedPayment['collection_mode'] = int.parse(newVal);
       selectedCollectionModeID = newVal;
+    });
+  }
+
+  _setSelectedTransferredMode(String newVal) {
+    setState(() {
+      if (widget.payment.transferredMode != int.parse(newVal))
+        updatedPayment['transferred_mode'] = int.parse(newVal);
+      transferredMode = newVal;
     });
   }
 

@@ -7,6 +7,7 @@ import 'package:instamfin/services/utils/response_utils.dart';
 class PaymentController {
   Future createPayment(
       int custNumber,
+      String custName,
       String paymentID,
       int dateOfPay,
       int tAmount,
@@ -14,6 +15,9 @@ class PaymentController {
       int tenure,
       int amountPerColl,
       int collectionMode,
+      List<int> collectionDays,
+      int transferredMode,
+      int aCollectedAmount,
       int collectionDate,
       int docCharge,
       int surcharge,
@@ -24,6 +28,7 @@ class PaymentController {
       UserController _uc = UserController();
       Payment pay = Payment();
       pay.setCustomerNumber(custNumber);
+      pay.setCustomerName(custName);
       pay.setPaymentID(paymentID);
       pay.setDOP(dateOfPay);
       pay.setGivenBy(givenBy);
@@ -32,6 +37,9 @@ class PaymentController {
       pay.setPrincipalAmount(pAmount);
       pay.setTenure(tenure);
       pay.setCollectionAmount(amountPerColl);
+      pay.setAlreadyCollectionAmount(aCollectedAmount);
+      pay.setCollectionDays(collectionDays);
+      pay.setTransferredMode(transferredMode);
       pay.setCollectionMode(collectionMode);
       pay.setDocumentCharge(docCharge);
       pay.setSurcharge(surcharge);
@@ -45,7 +53,6 @@ class PaymentController {
       return CustomResponse.getSuccesReponse(
           "Created new Payment successfully");
     } catch (err) {
-      print("Error while creating payment for $custNumber: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -76,8 +83,6 @@ class PaymentController {
 
       return payments;
     } catch (err) {
-      print("Error while retrieving payments for customer $custNumber:" +
-          err.toString());
       throw err;
     }
   }
@@ -153,8 +158,6 @@ class PaymentController {
 
       return payments;
     } catch (err) {
-      print(
-          "Error while retrieving payments with Date Range: " + err.toString());
       throw err;
     }
   }
@@ -195,9 +198,6 @@ class PaymentController {
       return CustomResponse.getSuccesReponse(
           "Updated ${payment.customerNumber} customer's Payment");
     } catch (err) {
-      print(
-          "Error while updating ${payment.customerNumber}customer's Payment: " +
-              err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -216,9 +216,6 @@ class PaymentController {
       return CustomResponse.getSuccesReponse(
           "Removed customer's Payment for customer $custNumber");
     } catch (err) {
-      print(
-          "Error while removing customer's Payment for customer $custNumber: " +
-              err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

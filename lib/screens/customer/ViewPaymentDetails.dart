@@ -9,7 +9,7 @@ class ViewPaymentDetails extends StatelessWidget {
   final Payment payment;
 
   final List<String> _tempCollectionMode = ["Daily", "Weekly", "Monthly"];
-
+  final List<String> _transferMode = ["Cash", "NetBanking", "GPay"];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,9 +52,8 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
-                            // ! initialValue: widget.customer.name, need value for customer name
+                            readOnly: true,
+                            initialValue: payment.custName,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
                               labelText: 'Customer name',
@@ -74,11 +73,51 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          child: GestureDetector(
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                readOnly: true,
+                                initialValue: DateUtils.formatDate(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        payment.dateOfPayment)),
+                                keyboardType: TextInputType.datetime,
+                                decoration: InputDecoration(
+                                  labelText: 'Date of Pay',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors.mfinWhite)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  suffixIcon: Icon(
+                                    Icons.date_range,
+                                    size: 35,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.paymentID,
                             decoration: InputDecoration(
@@ -103,55 +142,12 @@ class ViewPaymentDetails extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(
-                          child: GestureDetector(
-                            child: AbsorbPointer(
-                              child: TextFormField(
-                                enabled: false,
-                                autofocus: false,
-                                initialValue: DateUtils.formatDate(
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        payment.dateOfPayment)),
-                                keyboardType: TextInputType.datetime,
-                                decoration: InputDecoration(
-                                  labelText: 'Date of Payment',
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  labelStyle: TextStyle(
-                                    color: CustomColors.mfinBlue,
-                                  ),
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 3.0, horizontal: 10.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors.mfinWhite)),
-                                  fillColor: CustomColors.mfinWhite,
-                                  filled: true,
-                                  suffixIcon: Icon(
-                                    Icons.date_range,
-                                    size: 35,
-                                    color: CustomColors.mfinBlue,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
                     padding: EdgeInsets.all(8),
                     child: Row(
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.givenBy,
                             decoration: InputDecoration(
@@ -174,11 +170,11 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
-                            // ! initialValue: , need value for payment template
+                            readOnly: true,
+                            initialValue:
+                                _transferMode[payment.transferredMode],
                             decoration: InputDecoration(
-                              labelText: 'Payment template',
+                              labelText: 'Transferred Mode',
                               labelStyle: TextStyle(
                                 color: CustomColors.mfinBlue,
                               ),
@@ -193,7 +189,7 @@ class ViewPaymentDetails extends StatelessWidget {
                                       color: CustomColors.mfinWhite)),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -203,8 +199,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             initialValue:
                                 _tempCollectionMode[payment.collectionMode],
                             decoration: InputDecoration(
@@ -233,8 +228,71 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
+                            initialValue: DateUtils.formatDate(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    payment.collectionStartsFrom)),
+                            decoration: InputDecoration(
+                              labelText: 'Start date',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              suffixIcon: Icon(
+                                Icons.date_range,
+                                size: 35,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.all(10)),
+                        Flexible(
+                          child: TextFormField(
+                            readOnly: true,
+                            initialValue: DateUtils.formatDate(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    payment.collectionStartsFrom)),
+                            decoration: InputDecoration(
+                              labelText: 'End date',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              suffixIcon: Icon(
+                                Icons.date_range,
+                                size: 35,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: TextFormField(
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.notes,
                             maxLines: 3,
@@ -293,8 +351,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.totalAmount.toString(),
                             decoration: InputDecoration(
@@ -316,8 +373,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.interestRate.toString(),
                             decoration: InputDecoration(
@@ -345,8 +401,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.principalAmount.toString(),
                             decoration: InputDecoration(
@@ -368,8 +423,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.tenure.toString(),
                             decoration: InputDecoration(
@@ -397,8 +451,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.collectionAmount.toString(),
                             decoration: InputDecoration(
@@ -421,10 +474,10 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.only(left: 10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
-                            //! need to fix in schema initialValue: payment.alreadyReceivedAmount.toString(),
+                            initialValue:
+                                payment.alreadyCollectedAmount.toString(),
                             decoration: InputDecoration(
                               hintText: 'Amount received so far',
                               labelText: 'Amount received',
@@ -451,74 +504,7 @@ class ViewPaymentDetails extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
-                            initialValue: DateUtils.formatDate(
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    payment.collectionStartsFrom)),
-                            decoration: InputDecoration(
-                              labelText: 'Start date',
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              suffixIcon: Icon(
-                                Icons.date_range,
-                                size: 35,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.all(10)),
-                        Flexible(
-                          child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
-                            initialValue: DateUtils.formatDate(
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    payment.collectionStartsFrom)),
-                            decoration: InputDecoration(
-                              labelText: 'End date',
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              suffixIcon: Icon(
-                                Icons.date_range,
-                                size: 35,
-                                color: CustomColors.mfinBlue,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.docCharge.toString(),
                             decoration: InputDecoration(
@@ -540,8 +526,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Padding(padding: EdgeInsets.all(10)),
                         Flexible(
                           child: TextFormField(
-                            enabled: false,
-                            autofocus: false,
+                            readOnly: true,
                             textAlign: TextAlign.start,
                             initialValue: payment.surcharge.toString(),
                             decoration: InputDecoration(

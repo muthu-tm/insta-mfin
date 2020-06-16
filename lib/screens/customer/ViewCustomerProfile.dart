@@ -52,8 +52,7 @@ class ViewCustomerProfile extends StatelessWidget {
                             child: TextFormField(
                               initialValue: customer.name,
                               textAlign: TextAlign.start,
-                              enabled: false,
-                              autofocus: false,
+                              readOnly: true,
                               decoration: InputDecoration(
                                 labelText: 'Customer name',
                                 floatingLabelBehavior:
@@ -79,8 +78,7 @@ class ViewCustomerProfile extends StatelessWidget {
                             child: TextFormField(
                               initialValue: customer.customerID,
                               textAlign: TextAlign.start,
-                              enabled: false,
-                              autofocus: false,
+                              readOnly: true,
                               decoration: InputDecoration(
                                 labelText: 'Customer ID',
                                 floatingLabelBehavior:
@@ -108,6 +106,7 @@ class ViewCustomerProfile extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              readOnly: true,
                               initialValue: customer.mobileNumber.toString(),
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -133,6 +132,7 @@ class ViewCustomerProfile extends StatelessWidget {
                           ),
                           Flexible(
                             child: TextFormField(
+                              readOnly: true,
                               initialValue: customer.profession,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -162,6 +162,7 @@ class ViewCustomerProfile extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              readOnly: true,
                               initialValue: customer.age.toString(),
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -187,6 +188,7 @@ class ViewCustomerProfile extends StatelessWidget {
                           ),
                           Flexible(
                             child: TextFormField(
+                              readOnly: true,
                               initialValue: customer.guarantiedBy.toString(),
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -245,6 +247,7 @@ class ViewCustomerProfile extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              readOnly: true,
                               initialValue: customer.address.street,
                               textAlign: TextAlign.start,
                               maxLines: 3,
@@ -275,6 +278,7 @@ class ViewCustomerProfile extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              readOnly: true,
                               initialValue: customer.address.street,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -300,6 +304,7 @@ class ViewCustomerProfile extends StatelessWidget {
                           ),
                           Flexible(
                             child: TextFormField(
+                              readOnly: true,
                               initialValue: customer.address.street,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -329,6 +334,7 @@ class ViewCustomerProfile extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              readOnly: true,
                               initialValue: customer.address.street,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(

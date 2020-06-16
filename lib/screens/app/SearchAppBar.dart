@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/app/SearchOptionsRadio.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListTile.dart';
+import 'package:instamfin/screens/customer/widgets/CustomerPaymentWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomRadioModel.dart';
@@ -20,7 +22,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
   int maxNumber = 0;
   int searchMode = 0;
   String searchKey = "";
-  Future<List<Customer>> snapshot;
+  Future<List<Map<String, dynamic>>> snapshot;
 
   List<CustomRadioModel> inOutList = new List<CustomRadioModel>();
 
@@ -63,10 +65,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
             ),
             onPressed: () {
               if (_searchController.text.isEmpty ||
-                  _searchController.text.trim().length < 3) {
+                  _searchController.text.trim().length < 2) {
                 _scaffoldKey.currentState.showSnackBar(
                     CustomSnackBar.errorSnackBar(
-                        'Please enter minimum 3 key to search..', 2));
+                        'Please enter minimum 2 key to search..', 2));
                 return null;
               } else {
                 if (searchMode == 0) {
@@ -97,7 +99,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
                         ? snapshot = Customer().getByRange(minNumber, maxNumber)
                         : searchMode == 1
                             ? snapshot = Customer().getByNameRange(searchKey)
-                            : snapshot = Customer().getByNameRange(searchKey);
+                            : snapshot =
+                                Payment().getByPaymentIDRange(searchKey);
                   },
                 );
 
@@ -168,7 +171,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
             FutureBuilder(
               future: snapshot,
               builder: (BuildContext context,
-                  AsyncSnapshot<List<Customer>> snapshot) {
+                  AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data.isNotEmpty) {
                     return ListView.builder(
@@ -177,8 +180,13 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       primary: false,
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return customerListTile(
-                            context, index, snapshot.data[index]);
+                        if (inOutList[2].isSelected == true) {
+                          return customerPaymentWidget(context, index,
+                              Payment.fromJson(snapshot.data[index]));
+                        } else {
+                          return customerListTile(context, index,
+                              Customer.fromJson(snapshot.data[index]));
+                        }
                       },
                     );
                   } else {
@@ -188,7 +196,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "No Cusomters Found!",
+                          inOutList[2].isSelected == true
+                              ? "No Payment found!"
+                              : "No Cusomters Found!",
                           textAlign: TextAlign.center,
                           style: new TextStyle(
                             color: CustomColors.mfinAlertRed,
@@ -198,7 +208,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                         ),
                         new Divider(),
                         Text(
-                          "Please, Try with different Mobile Number.",
+                          "Please try with different Search Key!",
                           textAlign: TextAlign.center,
                           style: new TextStyle(
                             color: CustomColors.mfinBlue,
