@@ -37,6 +37,17 @@ class _EditPaymentState extends State<EditPayment> {
     "2": "GPay"
   };
 
+  List<int> collectionDays;
+  Map<String, String> tempCollectionDays = {
+    "0": "Sun",
+    "1": "Mon",
+    "2": "Tue",
+    "3": "Wed",
+    "4": "Thu",
+    "5": "Fri",
+    "6": "Sat",
+  };
+
   List<PaymentTemplate> templates = new List<PaymentTemplate>();
   List<PaymentTemplate> tempList;
   PaymentTemplate selectedTemp;
@@ -60,6 +71,8 @@ class _EditPaymentState extends State<EditPayment> {
     _collectionDate.value = TextEditingValue(
         text: DateUtils.getFormattedDateFromEpoch(
             widget.payment.collectionStartsFrom));
+            
+    collectionDays = widget.payment.collectionDays;
   }
 
   @override
@@ -368,6 +381,26 @@ class _EditPaymentState extends State<EditPayment> {
                         ],
                       ),
                     ),
+                    selectedCollectionModeID == '0' ? Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(color: Colors.grey[350], width: 1.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            'Scheduled collection days',
+                            style: TextStyle(
+                              color: CustomColors.mfinBlue,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: selectedDays.toList(),
+                          ),
+                        ],
+                      ),
+                    ): Container(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -844,6 +877,30 @@ class _EditPaymentState extends State<EditPayment> {
     setState(() {
       _selectedTempID = newVal;
     });
+  }
+
+  Iterable<Widget> get selectedDays sync* {
+    for (MapEntry days in tempCollectionDays.entries) {
+      yield Transform(
+        transform: Matrix4.identity()..scale(0.8),
+        child: ChoiceChip(
+            label: Text(days.value),
+            selected: collectionDays.contains(int.parse(days.key)),
+            elevation: 5.0,
+            selectedColor: CustomColors.mfinBlue,
+            backgroundColor: CustomColors.mfinWhite,
+            labelStyle: TextStyle(color: CustomColors.mfinButtonGreen),
+            onSelected: (selected) {
+              setState(() {
+                if (selected) {
+                  collectionDays.add(int.parse(days.key));
+                } else {
+                  collectionDays.remove(int.parse(days.key));
+                }
+              });
+            }),
+      );
+    }
   }
 
   Future getCollectionTemp() async {

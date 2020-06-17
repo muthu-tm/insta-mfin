@@ -41,7 +41,6 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
     "6": "Sat",
   };
 
-  bool isDaysSelected = false;
   List<int> collectionDays;
 
   @override
