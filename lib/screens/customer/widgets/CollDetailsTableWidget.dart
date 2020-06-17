@@ -110,7 +110,7 @@ class CollDetailsTableWidget extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Icon(
-              Icons.person,
+              Icons.collections_bookmark,
               size: 35.0,
               color: CustomColors.mfinButtonGreen,
             ),

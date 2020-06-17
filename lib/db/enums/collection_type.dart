@@ -1,4 +1,4 @@
-enum CollectionType { Collection, DocCharge, Surcharge, Settlement }
+enum CollectionType { Collection, DocCharge, Surcharge, Settlement, Penality }
 
 extension TransactionTypeExtension on CollectionType {
   int get name {
@@ -14,6 +14,9 @@ extension TransactionTypeExtension on CollectionType {
         break;
       case CollectionType.Settlement:
         return 3;
+        break;
+      case CollectionType.Penality:
+        return 4;
         break;
       default:
         return 0;

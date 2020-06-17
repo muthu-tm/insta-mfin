@@ -13,8 +13,8 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CollectionListWidget extends StatelessWidget {
-  CollectionListWidget(this._scaffoldKey, this._payment, 
-      this.title, this.emptyText, this.textColor, this.fetchAll, this.status);
+  CollectionListWidget(this._scaffoldKey, this._payment, this.title,
+      this.emptyText, this.textColor, this.fetchAll, this.status);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
@@ -82,8 +82,8 @@ class CollectionListWidget extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ViewCollection(_payment,
-                                      collection, cardColor),
+                                  builder: (context) => ViewCollection(
+                                      _payment, collection, cardColor),
                                   settings: RouteSettings(
                                       name: '/customers/payment/colection'),
                                 ),
@@ -336,6 +336,9 @@ class CollectionListWidget extends StatelessWidget {
       case 3:
         return "SETTLEMENT";
         break;
+      case 4:
+        return "PENALITY";
+        break;
       default:
         return "COLLECTION";
         break;
@@ -379,9 +382,11 @@ class CollectionListWidget extends StatelessWidget {
       };
       collDetails['amount'] =
           collection.collectionAmount - collection.getReceived();
+      collDetails['transferred_mode'] = 0;
       collDetails['notes'] = "";
       collDetails['collected_by'] = _user.name;
       collDetails['collected_from'] = _payment.custName;
+      collDetails['penality_amount'] = 0;
       collDetails['created_at'] = DateTime.now();
       collDetails['added_by'] = _user.mobileNumber;
       if (collection.collectionDate <
@@ -398,7 +403,8 @@ class CollectionListWidget extends StatelessWidget {
           _payment.createdAt,
           collection.collectionDate,
           true,
-          collDetails);
+          collDetails,
+          false);
 
       if (!result['is_success']) {
         Navigator.pop(context);

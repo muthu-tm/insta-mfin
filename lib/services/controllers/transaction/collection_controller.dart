@@ -202,6 +202,7 @@ class CollectionController {
     int collDate,
     bool isAdd,
     Map<String, dynamic> collectionDetails,
+    bool hasPenality,
   ) async {
     try {
       await Collection().updateCollectionDetails(
@@ -212,7 +213,7 @@ class CollectionController {
           createdAt,
           collDate,
           isAdd,
-          collectionDetails);
+          collectionDetails, hasPenality);
       return CustomResponse.getSuccesReponse(
           "Payment's Collection updated for customer $custNumber");
     } catch (err) {

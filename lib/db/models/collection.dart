@@ -199,6 +199,18 @@ class Collection {
         .document(getDocumentID(collectionDate));
   }
 
+  DocumentReference getPenalityDocumentReference(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int number,
+      DateTime createdAt,
+      int collectionDate) {
+    return getCollectionRef(
+            financeId, branchName, subBranchName, number, createdAt)
+        .document(getDocumentID(collectionDate + 4));
+  }
+
   Future<Collection> create(String financeId, String branchName,
       String subBranchName, int number, DateTime createdAt) async {
     this.createdAt = DateTime.now();
@@ -232,7 +244,9 @@ class Collection {
     List<Collection> collections = [];
     if (collectionDocs.documents.isNotEmpty) {
       for (var doc in collectionDocs.documents) {
-        if (doc.data['type'] != 1 && doc.data['type'] != 2)
+        if (doc.data['type'] != 1 &&
+            doc.data['type'] != 2 &&
+            doc.data['type'] != 4)
           collections.add(Collection.fromJson(doc.data));
       }
     }
@@ -355,13 +369,15 @@ class Collection {
       DateTime createdAt,
       int collectionDate,
       bool isAdd,
-      Map<String, dynamic> data) async {
+      Map<String, dynamic> data,
+      bool hasPenality) async {
     Map<String, dynamic> fields = Map();
 
     DocumentReference docRef = this.getDocumentReference(financeId, branchName,
         subBranchName, number, createdAt, collectionDate);
 
-    List<dynamic> colls = (await docRef.get()).data['collections'];
+    Map<String, dynamic> _coll = (await docRef.get()).data;
+    List<dynamic> colls = _coll['collections'];
     int index = 0;
     bool isMatched = false;
     if (colls != null) {
@@ -403,9 +419,66 @@ class Collection {
               if (isAdd) {
                 accData.cashInHand += data['amount'];
                 accData.collectionsAmount += data['amount'];
+
+                if (hasPenality) {
+                  Collection _c = Collection.fromJson(_coll);
+                  accData.cashInHand += data['penality_amount'];
+                  accData.penalityAmount += data['penality_amount'];
+
+                  Map<String, dynamic> pData = {
+                    "finance_id": _c.financeID,
+                    "branch_name": _c.branchName,
+                    "sub_branch_name": _c.subBranchName,
+                    "collection_amount": data['penality_amount'],
+                    "customer_number": _c.customerNumber,
+                    "collected_on": [data['collected_on']],
+                    "collection_date": data['collected_on'],
+                    "type": 4, // Penality
+                    "collections": [
+                      {
+                        "collected_on": data['collected_on'],
+                        "is_paid_late": false,
+                        "amount": data['penality_amount'],
+                        "transferred_mode": data['transferred_mode'],
+                        "status": 1, // Paid
+                        "collected_from": data['collected_from'],
+                        "collected_by": data['collected_by'],
+                        "notes": data['notes'],
+                        "added_by": data['added_by'],
+                        "created_at": data['created_at'],
+                      }
+                    ],
+                    "collection_number": _c.collectionNumber,
+                    "created_at": data['created_at'],
+                  };
+                  Model().txCreate(
+                      tx,
+                      this.getPenalityDocumentReference(
+                          financeId,
+                          branchName,
+                          subBranchName,
+                          number,
+                          createdAt,
+                          data['collected_on']),
+                      pData);
+                }
               } else {
                 accData.cashInHand -= data['amount'];
                 accData.collectionsAmount -= data['amount'];
+                if (hasPenality) {
+                  accData.cashInHand -= data['penality_amount'];
+                  accData.penalityAmount -= data['penality_amount'];
+
+                  Model().txDelete(
+                      tx,
+                      this.getPenalityDocumentReference(
+                          financeId,
+                          branchName,
+                          subBranchName,
+                          number,
+                          createdAt,
+                          data['collected_on']));
+                }
               }
 
               Map<String, dynamic> aData = {'accounts_data': accData.toJson()};

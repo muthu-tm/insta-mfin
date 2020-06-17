@@ -374,10 +374,12 @@ class CollectionListTableWidget extends StatelessWidget {
         Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
         collDetails['amount'] =
             collection.collectionAmount - collection.getReceived();
+        collDetails['transferred_mode'] = 0;
         collDetails['notes'] = "";
         collDetails['collected_by'] = _user.name;
         collDetails['collected_from'] = _payment.custName;
         collDetails['created_at'] = DateTime.now();
+        collDetails['penality_amount'] = 0;
         collDetails['added_by'] = _user.mobileNumber;
         if (collection.collectionDate <
             DateUtils.getCurrentUTCDate().millisecondsSinceEpoch)
@@ -393,7 +395,7 @@ class CollectionListTableWidget extends StatelessWidget {
             _payment.createdAt,
             collection.collectionDate,
             true,
-            collDetails);
+            collDetails, false);
 
         if (!result['is_success']) {
           Navigator.pop(context);

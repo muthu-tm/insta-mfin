@@ -25,7 +25,15 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
   final User _user = UserController().getCurrentUser();
 
   Map<String, dynamic> collDetails = {
-    'collected_on': DateUtils.getUTCDateEpoch(DateTime.now())
+    'collected_on': DateUtils.getUTCDateEpoch(DateTime.now()),
+    'penality_amount': 0
+  };
+
+  String transferredMode = "0";
+  Map<String, String> _transferMode = {
+    "0": "Cash",
+    "1": "NetBanking",
+    "2": "GPay"
   };
 
   int totalAmount = 0;
@@ -34,10 +42,12 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
   String receivedFrom = '';
   String notes = '';
   bool isLatePay = false;
+  bool hasPenality = false;
 
   @override
   void initState() {
     super.initState();
+    this._date.text = DateUtils.formatDate(DateTime.now());
     this.receivedFrom = widget.custName;
     this.collectedBy = _user.name;
     this.totalAmount =
@@ -55,7 +65,6 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Add Collection Details'),
         backgroundColor: CustomColors.mfinBlue,
@@ -134,221 +143,239 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                     Divider(
                       color: CustomColors.mfinBlue,
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "CUSTOMER:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        initialValue: widget.custName,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
-                          ),
-                          fillColor: CustomColors.mfinLightGrey,
-                          filled: true,
-                        ),
-                        enabled: false,
-                        autofocus: false,
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "DATE:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                      ),
-                      title: GestureDetector(
-                        onTap: () => _selectDate(context),
-                        child: AbsorbPointer(
-                          child: TextFormField(
-                            controller: _date,
-                            keyboardType: TextInputType.datetime,
-                            decoration: InputDecoration(
-                              hintText: 'Collected On',
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue,
-                              ),
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              suffixIcon: Icon(
-                                Icons.date_range,
-                                size: 35,
-                                color: CustomColors.mfinBlue,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              readOnly: true,
+                              initialValue: widget.custName,
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                labelText: "Customer Name",
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "COLLECTED AMOUNT:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _date,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    hintText: 'Date Collected',
+                                    labelText: "Collected On",
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 3.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      title: new TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.number,
-                        initialValue: totalAmount.toString(),
-                        decoration: InputDecoration(
-                          hintText: 'Collected Amount',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (amount) {
-                          if (amount.trim().isEmpty || amount.trim() == "0") {
-                            return "Collected Amount should not be empty!";
-                          } else {
-                            collDetails['amount'] = int.parse(amount.trim());
-                            return null;
-                          }
-                        },
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.end,
+                              keyboardType: TextInputType.number,
+                              initialValue: totalAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Collected Amount',
+                                labelText: 'Collected Amount',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 3.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (amount) {
+                                if (amount.trim().isEmpty ||
+                                    amount.trim() == "0") {
+                                  return "Collected Amount should not be empty!";
+                                } else {
+                                  collDetails['amount'] =
+                                      int.parse(amount.trim());
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "RECEIVED FROM:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Transferred Mode',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              items: _transferMode.entries.map(
+                                (f) {
+                                  return DropdownMenuItem<String>(
+                                    value: f.key,
+                                    child: Text(f.value),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (newVal) {
+                                _setTransferredMode(newVal);
+                              },
+                              value: transferredMode,
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.text,
-                        initialValue: receivedFrom,
-                        decoration: InputDecoration(
-                          hintText: 'Amount Given To',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (receivedFrom) {
-                          if (receivedFrom.trim().isEmpty) {
-                            return "Fill the person name who Paid the amount";
-                          }
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.end,
+                              keyboardType: TextInputType.text,
+                              initialValue: receivedFrom,
+                              decoration: InputDecoration(
+                                hintText: 'Amount Received From',
+                                labelText: "Collected From",
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 3.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (receivedFrom) {
+                                if (receivedFrom.trim().isEmpty) {
+                                  return "Fill the person name who Paid the amount";
+                                }
 
-                          collDetails['collected_from'] = receivedFrom.trim();
-                          return null;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "COLLECTED BY:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
+                                collDetails['collected_from'] =
+                                    receivedFrom.trim();
+                                return null;
+                              },
+                            ),
                           ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.text,
-                        initialValue: collectedBy,
-                        decoration: InputDecoration(
-                          hintText: 'Amount Collected by',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (collectedBy) {
-                          if (collectedBy.trim().isEmpty) {
-                            return "Please fill the person name who collected the amount";
-                          }
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.end,
+                              keyboardType: TextInputType.text,
+                              initialValue: collectedBy,
+                              decoration: InputDecoration(
+                                hintText: 'Amount Collected by',
+                                labelText: "Collected By",
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 3.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (collectedBy) {
+                                if (collectedBy.trim().isEmpty) {
+                                  return "Please fill the person name who collected the amount";
+                                }
 
-                          collDetails['collected_by'] = collectedBy.trim();
-                          return null;
-                        },
+                                collDetails['collected_by'] =
+                                    collectedBy.trim();
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "NOTES:",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.text,
+                              initialValue: notes,
+                              maxLines: 2,
+                              decoration: InputDecoration(
+                                labelText: 'Notes',
+                                hintText:
+                                    "Short notes/reference about the Collection",
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 3.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (notes) {
+                                if (notes.trim().isEmpty) {
+                                  collDetails['notes'] = "";
+                                } else {
+                                  collDetails['notes'] = notes.trim();
+                                }
+                                return null;
+                              },
+                            ),
                           ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        textAlign: TextAlign.end,
-                        keyboardType: TextInputType.text,
-                        initialValue: notes,
-                        maxLines: 3,
-                        decoration: InputDecoration(
-                          hintText: 'Notes',
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        validator: (notes) {
-                          if (notes.trim().isEmpty) {
-                            collDetails['notes'] = "";
-                          } else {
-                            collDetails['notes'] = notes.trim();
-                          }
-                          return null;
-                        },
+                        ],
                       ),
                     ),
                   ],
@@ -357,8 +384,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Material(
-                  elevation: 10.0,
-                  shadowColor: CustomColors.mfinAlertRed,
+                  elevation: 5.0,
                   borderRadius: BorderRadius.circular(10.0),
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.75,
@@ -387,11 +413,54 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                   ),
                 ),
               ),
+              isLatePay
+                  ? Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.end,
+                        keyboardType: TextInputType.number,
+                        initialValue: '0',
+                        decoration: InputDecoration(
+                          hintText: 'Penality Amount',
+                          labelText: 'Penality Amount',
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                        validator: (amount) {
+                          if (amount.trim().isEmpty || amount.trim() == "0") {
+                            collDetails['penality_amount'] = 0;
+                            hasPenality = false;
+                          } else {
+                            hasPenality = true;
+                            collDetails['penality_amount'] =
+                                int.parse(amount.trim());
+                          }
+                          return null;
+                        },
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(10.0),
+                    ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  _setTransferredMode(String newVal) {
+    setState(() {
+      transferredMode = newVal;
+    });
   }
 
   TextEditingController _date = new TextEditingController();
@@ -434,6 +503,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
         CustomDialogs.actionWaiting(context, "Updating Collection");
         CollectionController _cc = CollectionController();
 
+        collDetails['transferred_mode'] = int.parse(transferredMode);
         collDetails['created_at'] = DateTime.now();
         collDetails['added_by'] = _user.mobileNumber;
         collDetails['is_paid_late'] = isLatePay;
@@ -445,7 +515,8 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
             widget.payCreatedAt,
             widget.collection.collectionDate,
             true,
-            collDetails);
+            collDetails,
+            hasPenality);
 
         if (!result['is_success']) {
           Navigator.pop(context);

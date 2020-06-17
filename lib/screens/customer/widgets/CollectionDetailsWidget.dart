@@ -50,6 +50,7 @@ class CollectionDetailsWidget extends StatelessWidget {
         ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
+          primary: false,
           itemCount: _collection.collections == null
               ? 0
               : _collection.collections.length,
@@ -87,7 +88,7 @@ class CollectionDetailsWidget extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Icon(
-              Icons.person,
+              Icons.collections_bookmark,
               size: 35.0,
               color: CustomColors.mfinButtonGreen,
             ),
@@ -214,7 +215,8 @@ class CollectionDetailsWidget extends StatelessWidget {
                               _createdAt,
                               _collection.collectionDate,
                               false,
-                              _collectionDetails.toJson());
+                              _collectionDetails.toJson(),
+                              (_collectionDetails.penalityAmount > 0));
                           if (!result['is_success']) {
                             Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
