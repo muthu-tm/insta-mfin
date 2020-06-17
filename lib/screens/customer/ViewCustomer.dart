@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsListWidget.dart';
 import 'package:instamfin/screens/home/Home.dart';
@@ -59,24 +60,23 @@ class ViewCustomer extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        title: Text('View Customer'),
-                        leading: Icon(
-                          Icons.remove_red_eye,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        onTap: () {
+                          title: Text('View Customer'),
+                          leading: Icon(
+                            Icons.remove_red_eye,
+                            color: CustomColors.mfinBlue,
+                          ),
+                          onTap: () {
                             showMaterialModalBottomSheet(
                                 enableDrag: true,
                                 isDismissible: true,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius:  BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 context: context,
                                 builder: (context, scrollController) {
                                   return ViewCustomerProfile(customer);
                                 });
-                          }
-                      ),
+                          }),
                       ListTile(
                         title: Text('Edit Customer'),
                         leading: Icon(
@@ -182,8 +182,130 @@ class ViewCustomer extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              CustomerPaymentsListWidget(
-                  customer.mobileNumber, _scaffoldKey),
+              Container(
+                child: customer.getProfilePicPath() == ""
+                    ? Container(
+                        width: 80,
+                        height: 80,
+                        margin: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: CustomColors.mfinFadedButtonGreen,
+                            style: BorderStyle.solid,
+                            width: 2.0,
+                          ),
+                        ),
+                        child: FlatButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              routeSettings:
+                                  RouteSettings(name: "/profile/upload"),
+                              builder: (context) {
+                                return Center(
+                                  child: ProfilePictureUpload(
+                                      false,
+                                      customer.getProfilePicPath(),
+                                      customer.financeID +
+                                          '_' +
+                                          customer.mobileNumber.toString(),
+                                      customer.mobileNumber),
+                                );
+                              },
+                            );
+                          },
+                          child: Stack(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Icon(
+                                  Icons.person,
+                                  size: 40.0,
+                                  color: CustomColors.mfinBlue,
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 15,
+                                left: 3,
+                                child: Text(
+                                  "Upload",
+                                  style: TextStyle(
+                                    fontSize: 10.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    : Container(
+                        margin: EdgeInsets.all(5),
+                        child: Stack(
+                          children: <Widget>[
+                            CircleAvatar(
+                              radius: 45.0,
+                              backgroundImage:
+                                  NetworkImage(customer.getProfilePicPath()),
+                              backgroundColor: Colors.transparent,
+                            ),
+                            Positioned(
+                              bottom: -5,
+                              left: 30,
+                              child: FlatButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    routeSettings:
+                                        RouteSettings(name: "/profile/upload"),
+                                    builder: (context) {
+                                      return Center(
+                                        child: ProfilePictureUpload(
+                                            false,
+                                            customer.getProfilePicPath(),
+                                            customer.financeID +
+                                                '_' +
+                                                customer.mobileNumber
+                                                    .toString(),
+                                            customer.mobileNumber),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: CustomColors.mfinButtonGreen,
+                                  radius: 15,
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: CustomColors.mfinWhite,
+                                    size: 25.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+              ),
+              Text(
+                customer.name,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                  color: CustomColors.mfinButtonGreen,
+                ),
+              ),
+              Text(
+                customer.mobileNumber.toString(),
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                  color: CustomColors.mfinBlue,
+                ),
+              ),
+              CustomerPaymentsListWidget(customer.mobileNumber, _scaffoldKey),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 40, 0, 40),
               ),

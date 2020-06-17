@@ -255,7 +255,16 @@ class CustomerPaymentsListWidget extends StatelessWidget {
           child: new Column(
             children: <Widget>[
               ListTile(
-                leading: RichText(
+                leading: Text(
+                  "PAYMENTS",
+                  style: TextStyle(
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinPositiveGreen,
+                    fontSize: 17.0,
+                  ),
+                ),
+                trailing: RichText(
                   text: TextSpan(
                     text: "Total: ",
                     style: TextStyle(
