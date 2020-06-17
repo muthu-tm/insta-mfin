@@ -5,8 +5,8 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
-class PaymentsWidget extends StatelessWidget {
-  PaymentsWidget(this.textColor, this.payments, this.cardColor);
+class CollectionBookPaymentsWidget extends StatelessWidget {
+  CollectionBookPaymentsWidget(this.textColor, this.payments, this.cardColor);
 
   final Color textColor;
   final List<Payment> payments;

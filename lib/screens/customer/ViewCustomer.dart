@@ -193,7 +193,6 @@ class ViewCustomer extends StatelessWidget {
           ),
         ),
       ),
-      //bottomNavigationBar: bottomBar(context),
     );
   }
 }

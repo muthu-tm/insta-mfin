@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/transaction/collection/PaymentsWidget.dart';
+import 'package:instamfin/screens/transaction/collection/CollectionBookPaymentsWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -44,7 +44,7 @@ class CollectionsTab extends StatelessWidget {
                           ),
                           children: <Widget>[
                             (snapshot.data[3] != null)
-                                ? PaymentsWidget(CustomColors.mfinWhite,
+                                ? CollectionBookPaymentsWidget(CustomColors.mfinWhite,
                                     snapshot.data[3], CustomColors.mfinGrey)
                                 : Text("No Payments for COLLECTION Today")
                           ],
@@ -73,7 +73,7 @@ class CollectionsTab extends StatelessWidget {
                           ),
                           children: <Widget>[
                             (snapshot.data[4] != null)
-                                ? PaymentsWidget(CustomColors.mfinWhite,
+                                ? CollectionBookPaymentsWidget(CustomColors.mfinWhite,
                                     snapshot.data[4], CustomColors.mfinBlue)
                                 : Text("Great! No PENDING Payments")
                           ],
@@ -102,7 +102,7 @@ class CollectionsTab extends StatelessWidget {
                           ),
                           children: <Widget>[
                             (snapshot.data[0] != null)
-                                ? PaymentsWidget(CustomColors.mfinWhite,
+                                ? CollectionBookPaymentsWidget(CustomColors.mfinWhite,
                                     snapshot.data[0], CustomColors.mfinBlue)
                                 : Text(
                                     "Great! No Payments with UPCOMING Collections")

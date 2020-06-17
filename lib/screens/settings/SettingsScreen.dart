@@ -31,66 +31,85 @@ class SettingsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  InkWell(
-                    splashColor: CustomColors.mfinButtonGreen,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FinanceSetting(),
-                          settings: RouteSettings(name: '/settings/finance'),
+                  Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.30,
+                      height: 110,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FinanceSetting(),
+                              settings:
+                                  RouteSettings(name: '/settings/finance'),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.account_balance,
+                              size: 45.0,
+                              color: CustomColors.mfinButtonGreen,
+                            ),
+                            Padding(padding: EdgeInsets.all(05.0)),
+                            Text(
+                              "Finance Settings",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Georgia',
+                                color: CustomColors.mfinBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Icon(
-                          Icons.account_balance,
-                          size: 50.0,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        Padding(padding: EdgeInsets.all(05.0)),
-                        Text(
-                          "Finance Settings",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ), // text
-                      ],
+                      ),
                     ),
                   ),
-                  InkWell(
-                    splashColor: CustomColors.mfinButtonGreen,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserSetting(),
-                          settings: RouteSettings(name: '/settings/user'),
+                  Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.30,
+                      height: 110,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserSetting(),
+                              settings: RouteSettings(name: '/settings/user'),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.account_box,
+                              size: 45.0,
+                              color: CustomColors.mfinButtonGreen,
+                            ),
+                            Padding(padding: EdgeInsets.all(05.0)),
+                            Text(
+                              "Profile Settings",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Georgia',
+                                color: CustomColors.mfinBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    }, // button pressed
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Icon(
-                          Icons.account_box,
-                          size: 50.0,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        Padding(padding: EdgeInsets.all(05.0)),
-                        Text(
-                          "Profile Settings",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ), // text
-                      ],
+                      ),
                     ),
                   ),
                 ],
@@ -99,58 +118,75 @@ class SettingsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  InkWell(
-                    splashColor: CustomColors.mfinButtonGreen,
-                    onTap: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Icon(
-                          Icons.notifications_active,
-                          size: 50.0,
-                          color: CustomColors.mfinBlue,
+                  Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.30,
+                      height: 110,
+                      child: InkWell(
+                        onTap: () {},
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.notifications_active,
+                              size: 45.0,
+                              color: CustomColors.mfinButtonGreen,
+                            ),
+                            Padding(padding: EdgeInsets.all(5.0)),
+                            Text(
+                              "Notification Settings",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Georgia',
+                                color: CustomColors.mfinBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(padding: EdgeInsets.all(5.0)),
-                        Text(
-                          "Notifications Settings",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                  InkWell(
-                    splashColor: CustomColors.mfinButtonGreen,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AppSettings(),
-                          settings: RouteSettings(name: '/settings/app'),
+                  Material(
+                    elevation: 5.0,
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.30,
+                      height: 110,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AppSettings(),
+                              settings: RouteSettings(name: '/settings/app'),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.phonelink_setup,
+                              size: 45.0,
+                              color: CustomColors.mfinButtonGreen,
+                            ),
+                            Padding(padding: EdgeInsets.all(05.0)),
+                            Text(
+                              "App Settings",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Georgia',
+                                color: CustomColors.mfinBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Icon(
-                          Icons.phonelink_setup,
-                          size: 50.0,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        Padding(padding: EdgeInsets.all(05.0)),
-                        Text(
-                          "App Settings",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: CustomColors.mfinGrey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ), // text
-                      ],
+                      ),
                     ),
                   ),
                 ],
