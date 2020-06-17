@@ -131,7 +131,7 @@ class CustomersHome extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.25,
                       alignment: Alignment.center,
                       child: Text(
-                        "Closed",
+                        "Settled",
                         style: TextStyle(
                           color: CustomColors.mfinBlack,
                         ),
@@ -174,7 +174,7 @@ class CustomersHome extends StatelessWidget {
               CustomerListWidget(_scaffoldKey, 'New Customers', 0, false),
               CustomerListWidget(_scaffoldKey, 'Active Customers', 1, false),
               CustomerListWidget(_scaffoldKey, 'Pending Customers', 2, false),
-              CustomerListWidget(_scaffoldKey, 'Closed Customers', 3, false),
+              CustomerListWidget(_scaffoldKey, 'Settled Customers', 3, false),
             ],
           ),
           bottomNavigationBar: bottomBar(context),

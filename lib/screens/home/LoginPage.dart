@@ -260,14 +260,7 @@ class _LoginPageState extends State<LoginPage> {
         return;
       } else {
         this._user = User.fromJson(_uJSON);
-        dynamic result = await _authController.signInWithMobileNumber(_user);
-        if (!result['is_success']) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState
-              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        } else {
-          _verifyPhoneNumber();
-        }
+        _verifyPhoneNumber();
       }
     }
   }
@@ -297,11 +290,12 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setString("mobile_number", number);
 
       User(int.parse(number)).update({'guid': authResult.user.uid});
-      
+
       Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => UserFinanceSetup()),
-      (Route<dynamic> route) => false,
-    );
+        MaterialPageRoute(
+            builder: (BuildContext context) => UserFinanceSetup()),
+        (Route<dynamic> route) => false,
+      );
     }).catchError((error) {
       Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
@@ -334,7 +328,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) => PhoneAuthVerify(
-            true,
+            false,
             _user.mobileNumber.toString(),
             _user.password,
             _user.name,

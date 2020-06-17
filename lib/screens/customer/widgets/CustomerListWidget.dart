@@ -195,39 +195,11 @@ class CustomerListWidget extends StatelessWidget {
           children = AsyncWidgets.asyncWaiting();
         }
 
-        return Card(
-          color: CustomColors.mfinLightGrey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(
-                    Icons.supervisor_account,
-                    size: 35.0,
-                    color: CustomColors.mfinButtonGreen,
-                  ),
-                  title: new Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: CustomColors.mfinBlue,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                ),
-                new Divider(
-                  color: CustomColors.mfinBlue,
-                  thickness: 1,
-                ),
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: children,
-                  ),
-                ),
-              ],
-            ),
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: children,
           ),
         );
       },

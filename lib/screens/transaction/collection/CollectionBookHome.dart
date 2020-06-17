@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/transaction/collection/CollectionBookPayments.dart';
 import 'package:instamfin/screens/transaction/collection/CollectionsTab.dart';
-import 'package:instamfin/screens/transaction/collection/PaymentListTile.dart';
 import 'package:instamfin/screens/transaction/collection/PaymentReports.dart';
 import 'package:instamfin/screens/transaction/collection/PaymentTemplatesScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -75,10 +75,7 @@ class CollectionBookHome extends StatelessWidget {
         body: TabBarView(
           children: [
             CollectionsTab(),
-            PaymentListWidget(
-                new DateTime(
-                    currentDate.year, currentDate.month, currentDate.day - 7),
-                currentDate),
+            CollectionBookPayments(),
             PaymentReportScreen(),
           ],
         ),

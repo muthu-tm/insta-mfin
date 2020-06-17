@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
@@ -14,8 +15,8 @@ class TransactionCollectionBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Payment>>(
       future: _user.preferences.transactionGroupBy == 0
-          ? _pc.getTodaysPayments(
-              _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch)
+          ? _pc.getPaymentsByDate(_user.primaryFinance, _user.primaryBranch,
+              _user.primarySubBranch, DateUtils.getUTCDateEpoch(DateTime.now()))
           : _user.preferences.transactionGroupBy == 1
               ? _pc.getThisWeekPayments(_user.primaryFinance,
                   _user.primaryBranch, _user.primarySubBranch)
@@ -38,7 +39,7 @@ class TransactionCollectionBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "PAYMENTS",
+                    "Payments:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -59,7 +60,7 @@ class TransactionCollectionBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "AMOUNT",
+                    "Amount:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -80,7 +81,7 @@ class TransactionCollectionBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "PAY OUT",
+                    "Pay Out:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,

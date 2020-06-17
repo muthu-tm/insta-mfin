@@ -59,238 +59,241 @@ class _AddCustomerState extends State<AddCustomer> {
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Card(
-                color: CustomColors.mfinLightGrey,
-                elevation: 5.0,
-                margin: EdgeInsets.all(5.0),
-                shadowColor: CustomColors.mfinLightBlue,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 40,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Personal Details",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Georgia",
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinBlue,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Card(
+                  color: CustomColors.mfinLightGrey,
+                  elevation: 5.0,
+                  margin: EdgeInsets.all(5.0),
+                  shadowColor: CustomColors.mfinLightBlue,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        height: 40,
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Personal Details",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
                         ),
                       ),
-                    ),
-                    Divider(
-                      color: CustomColors.mfinBlue,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              initialValue: name,
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Customer name',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              validator: (name) =>
-                                  FieldValidator.customerNameValidator(
-                                      name, setCustomerNameState),
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
-                          Flexible(
-                            child: TextFormField(
-                              initialValue: id,
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                labelText: 'Customer ID',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              validator: (id) {
-                                if (id.isEmpty) {
-                                  return 'Enter Customer ID';
-                                }
-                                this.id = id.trim();
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
+                      Divider(
+                        color: CustomColors.mfinBlue,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              //initialValue: number.toString(),
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Phone number',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: TextFormField(
+                                keyboardType: TextInputType.text,
+                                initialValue: name,
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Customer name',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
                                 ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
+                                validator: (name) =>
+                                    FieldValidator.customerNameValidator(
+                                        name, setCustomerNameState),
                               ),
-                              validator: (number) {
-                                return FieldValidator.mobileValidator(
-                                    number.trim(), setContactNumber);
-                              },
                             ),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
-                          Flexible(
-                            child: TextFormField(
-                              initialValue: profession,
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Profession',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
+                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Flexible(
+                              child: TextFormField(
+                                initialValue: id,
+                                keyboardType: TextInputType.text,
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  labelText: 'Customer ID',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
                                 ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
+                                validator: (id) {
+                                  if (id.isEmpty) {
+                                    return 'Enter Customer ID';
+                                  }
+                                  this.id = id.trim();
+                                  return null;
+                                },
                               ),
-                              validator: (val) {
-                                if (val.trim().isNotEmpty) {
-                                  this.profession = val;
-                                } else {
-                                  this.profession = "";
-                                }
-                                return null;
-                              },
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              initialValue: age.toString(),
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Age',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Phone number',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
                                 ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
+                                validator: (number) {
+                                  return FieldValidator.mobileValidator(
+                                      number.trim(), setContactNumber);
+                                },
                               ),
-                              validator: (val) {
-                                if (val.trim().isNotEmpty) {
-                                  this.age = int.parse(val);
-                                } else {
-                                  this.age = 0;
-                                }
-                                return null;
-                              },
                             ),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
-                          Flexible(
-                            child: TextFormField(
-                              //initialValue: guarantiedBy.toString(),
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Guarantee by',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
+                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Flexible(
+                              child: TextFormField(
+                                keyboardType: TextInputType.text,
+                                initialValue: profession,
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Profession',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
                                 ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
+                                validator: (val) {
+                                  if (val.trim().isNotEmpty) {
+                                    this.profession = val;
+                                  } else {
+                                    this.profession = "";
+                                  }
+                                  return null;
+                                },
                               ),
-                              validator: (val) {
-                                if (val.trim().isNotEmpty) {
-                                  this.guarantiedBy = int.parse(val);
-                                } else {
-                                  this.guarantiedBy = 0;
-                                }
-                                return null;
-                              },
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                initialValue: age.toString(),
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Age',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                ),
+                                validator: (val) {
+                                  if (val.trim().isNotEmpty) {
+                                    this.age = int.parse(val);
+                                  } else {
+                                    this.age = 0;
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Flexible(
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Guarantee by',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                ),
+                                validator: (val) {
+                                  if (val.trim().isNotEmpty) {
+                                    this.guarantiedBy = int.parse(val);
+                                  } else {
+                                    this.guarantiedBy = 0;
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              AddressWidget("Address Details", Address(), address),
-              Padding(padding: EdgeInsets.all(30))
-            ],
+                AddressWidget("Address Details", Address(), address),
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
 

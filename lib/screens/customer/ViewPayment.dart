@@ -51,9 +51,8 @@ class _ViewPaymentState extends State<ViewPayment> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: ViewPaymentDetails(widget.payment),
       appBar: AppBar(
-        title: Text('Payment - ${widget.payment.customerNumber}'),
+        title: Text('Payment - ${widget.payment.paymentID}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

@@ -317,20 +317,9 @@ Widget openDrawer(BuildContext context) {
                     TextSpan(
                       text: 'i',
                       style: TextStyle(
-                        shadows: [
-                          Shadow(
-                              // topRight
-                              offset: Offset(0.5, 0.5),
-                              color: CustomColors.mfinWhite),
-                          Shadow(
-                              // topLeft
-                              offset: Offset(-0.5, 0.5),
-                              color: CustomColors.mfinWhite),
-                        ],
-                        color: CustomColors.mfinBlue,
+                        color: CustomColors.mfinFadedButtonGreen,
                         fontFamily: 'Georgia',
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
                       ),
                     ),
                     TextSpan(

@@ -194,8 +194,17 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
           await _success();
         }
       } else {
-        User(int.parse(widget.number)).update({'guid': authResult.user.uid});
-        await _success();
+        Map<String, dynamic> _uJSON =
+            await User(int.parse(widget.number)).getByID(widget.number);
+        dynamic result =
+            await _authController.signInWithMobileNumber(User.fromJson(_uJSON));
+        if (!result['is_success']) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+        } else {
+          await _success();
+        }
       }
     }).catchError((error) {
       Navigator.pop(context);

@@ -30,7 +30,7 @@ class Uploader {
         'error': err.toString()
       });
     });
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 8));
 
     filePath = '${fileDir.replaceAll('_org', "")}/$fileName.png';
     reference = FirebaseStorage.instance.ref().child(filePath);

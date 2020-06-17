@@ -87,14 +87,11 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getTodaysPayments(
-      String financeId, String branchName, String subBranchName) async {
+  Future<List<Payment>> getPaymentsByDate(String financeId, String branchName,
+      String subBranchName, int epoch) async {
     try {
-      List<Payment> payments = await Payment().getAllPaymentsByDate(
-          financeId,
-          branchName,
-          subBranchName,
-          DateUtils.getUTCDateEpoch(DateUtils.getCurrentDate()));
+      List<Payment> payments = await Payment()
+          .getAllPaymentsByDate(financeId, branchName, subBranchName, epoch);
 
       if (payments == null) {
         return [];
