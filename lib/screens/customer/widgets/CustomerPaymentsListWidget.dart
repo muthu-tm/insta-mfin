@@ -39,9 +39,6 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                   Payment payment =
                       Payment.fromJson(snapshot.data.documents[index].data);
 
-                  Color cColor = CustomColors.mfinBlue;
-                  if (payment.isSettled) cColor = CustomColors.mfinGrey;
-
                   return Slidable(
                     actionPane: SlidableDrawerActionPane(),
                     actionExtentRatio: 0.25,
@@ -278,24 +275,6 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                             fontSize: 18.0,
                           )),
                     ],
-                  ),
-                ),
-                trailing: RaisedButton.icon(
-                  color: CustomColors.mfinLightGrey,
-                  highlightColor: CustomColors.mfinLightGrey,
-                  onPressed: null,
-                  icon: customIconButton(
-                    Icons.swap_vert,
-                    35.0,
-                    CustomColors.mfinBlue,
-                    () {},
-                  ),
-                  label: Text(
-                    "Sort by",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: CustomColors.mfinBlue,
-                    ),
                   ),
                 ),
               ),

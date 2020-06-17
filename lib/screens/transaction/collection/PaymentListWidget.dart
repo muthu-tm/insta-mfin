@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/customer/ViewPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
@@ -40,132 +41,143 @@ class PaymentListWidget extends StatelessWidget {
                   Payment payment = snapshot.data[index];
                   return Padding(
                     padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Material(
-                          color: CustomColors.mfinBlue,
-                          elevation: 10.0,
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.35,
-                            height: 70,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 25,
-                                  child: Text(
-                                    DateUtils.formatDate(
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            payment.dateOfPayment)),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: CustomColors.mfinWhite,
-                                        fontFamily: 'Georgia',
-                                        fontSize: 17.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                new Divider(
-                                  color: CustomColors.mfinWhite,
-                                ),
-                                SizedBox(
-                                  height: 25,
-                                  child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                      text: "${payment.tenure}",
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewPayment(payment),
+                            settings: RouteSettings(name: '/customers/payment'),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Material(
+                            color: CustomColors.mfinBlue,
+                            elevation: 10.0,
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              height: 70,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 25,
+                                    child: Text(
+                                      DateUtils.formatDate(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              payment.dateOfPayment)),
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: CustomColors.mfinGrey,
-                                        fontFamily: 'Georgia',
-                                        fontSize: 18.0,
-                                      ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: ' x ',
-                                          style: TextStyle(
-                                            color: CustomColors.mfinBlack,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: "${payment.collectionAmount}",
-                                          style: TextStyle(
-                                            color:
-                                                CustomColors.mfinPositiveGreen,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
+                                          color: CustomColors.mfinWhite,
+                                          fontFamily: 'Georgia',
+                                          fontSize: 17.0,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  new Divider(
+                                    color: CustomColors.mfinWhite,
+                                  ),
+                                  SizedBox(
+                                    height: 25,
+                                    child: RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(
+                                        text: "${payment.tenure}",
+                                        style: TextStyle(
+                                          color: CustomColors.mfinGrey,
+                                          fontFamily: 'Georgia',
+                                          fontSize: 18.0,
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: ' x ',
+                                            style: TextStyle(
+                                              color: CustomColors.mfinBlack,
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: "${payment.collectionAmount}",
+                                            style: TextStyle(
+                                              color: CustomColors
+                                                  .mfinPositiveGreen,
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Material(
-                          color: CustomColors.mfinLightGrey,
-                          elevation: 10.0,
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.50,
-                            height: 70,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 25,
-                                  child: ListTile(
-                                    leading: Text(
-                                      "ID",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: CustomColors.mfinBlue,
-                                        fontWeight: FontWeight.bold,
+                          Material(
+                            color: CustomColors.mfinLightGrey,
+                            elevation: 10.0,
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.50,
+                              height: 70,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 25,
+                                    child: ListTile(
+                                      leading: Text(
+                                        "ID",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: CustomColors.mfinBlue,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    trailing: Text(
-                                      "${payment.paymentID}",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: CustomColors.mfinBlack,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 25,
-                                  child: ListTile(
-                                    leading: Text(
-                                      "Amount",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: CustomColors.mfinBlue,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    trailing: Text(
-                                      "${payment.totalAmount}",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: CustomColors.mfinAlertRed,
-                                        fontWeight: FontWeight.bold,
+                                      trailing: Text(
+                                        "${payment.paymentID}",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: CustomColors.mfinBlack,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    height: 25,
+                                    child: ListTile(
+                                      leading: Text(
+                                        "Amount",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: CustomColors.mfinBlue,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      trailing: Text(
+                                        "${payment.totalAmount}",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: CustomColors.mfinAlertRed,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },

@@ -71,7 +71,7 @@ class PayReceipt {
             lineAlignment: PdfVerticalAlignment.bottom));
     
     final DateFormat format = DateFormat.yMMMMd('en_US');
-    final String payID = 'Payment ID: ${_p.customerNumber}\r\n\r\nDate: ' +
+    final String payID = 'Payment ID: ${_p.paymentID}\r\n\r\nDate: ' +
         format.format(DateTime.now());
     final Size contentSize = contentFont.measureString(payID);
     String address =

@@ -44,7 +44,6 @@ class CollectionBookPayments extends StatelessWidget {
                   text,
                   style: TextStyle(
                     fontSize: 17.0,
-                    color: CustomColors.mfinWhite,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -91,7 +90,6 @@ class CollectionBookPayments extends StatelessWidget {
                   tText,
                   style: TextStyle(
                     fontSize: 17.0,
-                    color: CustomColors.mfinWhite,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

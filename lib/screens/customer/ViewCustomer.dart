@@ -24,8 +24,6 @@ class ViewCustomer extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(customer.name),
         backgroundColor: CustomColors.mfinBlue,
       ),
