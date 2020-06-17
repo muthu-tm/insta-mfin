@@ -279,8 +279,8 @@ class ViewCustomer extends StatelessWidget {
                                   radius: 15,
                                   child: Icon(
                                     Icons.edit,
-                                    color: CustomColors.mfinWhite,
-                                    size: 25.0,
+                                    color: CustomColors.mfinBlue,
+                                    size: 20.0,
                                   ),
                                 ),
                               ),

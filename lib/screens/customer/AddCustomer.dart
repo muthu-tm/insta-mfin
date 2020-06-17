@@ -94,6 +94,7 @@ class _AddCustomerState extends State<AddCustomer> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
+                                keyboardType: TextInputType.text,
                                 initialValue: name,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
@@ -121,6 +122,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             Flexible(
                               child: TextFormField(
                                 initialValue: id,
+                                keyboardType: TextInputType.text,
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   labelText: 'Customer ID',
@@ -156,6 +158,7 @@ class _AddCustomerState extends State<AddCustomer> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Phone number',
@@ -182,6 +185,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
+                                keyboardType: TextInputType.text,
                                 initialValue: profession,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
@@ -219,6 +223,7 @@ class _AddCustomerState extends State<AddCustomer> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 initialValue: age.toString(),
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
@@ -250,6 +255,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Guarantee by',
