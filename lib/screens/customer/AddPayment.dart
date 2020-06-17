@@ -404,6 +404,7 @@ class _AddPaymentState extends State<AddPayment> {
                             child: GestureDetector(
                               child: AbsorbPointer(
                                 child: TextFormField(
+                                  readOnly: true,
                                   controller: _collectionDate,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
@@ -426,8 +427,6 @@ class _AddPaymentState extends State<AddPayment> {
                                       color: CustomColors.mfinBlue,
                                     ),
                                   ),
-                                  enabled: false,
-                                  autofocus: false,
                                 ),
                               ),
                             ),
@@ -700,10 +699,11 @@ class _AddPaymentState extends State<AddPayment> {
                               ),
                               validator: (aCollAmount) {
                                 if (aCollAmount.trim().isEmpty) {
-                                  alreadyReceivedAmount = 0;
-                                }
+                                  this.alreadyReceivedAmount = 0;
+                                } else {
                                 this.alreadyReceivedAmount =
                                     int.parse(aCollAmount.trim());
+                                }
                                 return null;
                               },
                             ),

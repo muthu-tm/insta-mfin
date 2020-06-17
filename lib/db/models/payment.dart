@@ -124,11 +124,11 @@ class Payment extends Model {
   setCollectionMode(int collectionMode) {
     this.collectionMode = collectionMode;
   }
-  
+
   setTransferredMode(int transferredMode) {
     this.transferredMode = transferredMode;
   }
-  
+
   setCollectionDays(List<int> collectiondays) {
     this.collectionDays = collectiondays;
   }
@@ -136,7 +136,7 @@ class Payment extends Model {
   setCollectionAmount(int amount) {
     this.collectionAmount = amount;
   }
-  
+
   setAlreadyCollectionAmount(int collectedAmount) {
     this.alreadyCollectedAmount = collectedAmount;
   }
@@ -194,7 +194,8 @@ class Payment extends Model {
       int received = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
-            coll.type != CollectionType.Surcharge.name)
+            coll.type != CollectionType.Surcharge.name &&
+            coll.type != CollectionType.Penality.name)
           received += coll.getReceived();
       });
 
@@ -213,7 +214,8 @@ class Payment extends Model {
       int pending = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
-            coll.type != CollectionType.Surcharge.name)
+            coll.type != CollectionType.Surcharge.name &&
+            coll.type != CollectionType.Penality.name)
           pending += coll.getPending();
       });
 
@@ -234,17 +236,21 @@ class Payment extends Model {
       int _p = 0;
       int _c = 0;
       int _u = 0;
+      int _penality = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
-            coll.type != CollectionType.Surcharge.name) {
+            coll.type != CollectionType.Surcharge.name &&
+            coll.type != CollectionType.Penality.name) {
           _r += coll.getReceived();
           _p += coll.getPending();
           _c += coll.getCurrent();
           _u += coll.getUpcoming();
+        } else if (coll.type == CollectionType.Penality.name) {
+          _penality += coll.collectionAmount;
         }
       });
 
-      return [_r, _p, _c, _u];
+      return [_r, _p, _c, _u, _penality];
     } catch (err) {
       print("Unable to get Payment's amount details!" + err.toString());
       return [];

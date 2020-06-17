@@ -28,7 +28,9 @@ class ViewCollection extends StatelessWidget {
           _collection.subBranchName,
           _collection.customerNumber,
           pay.createdAt,
-          (_collection.type != 1 && _collection.type != 2)
+          (_collection.type != 1 &&
+                  _collection.type != 2 &&
+                  _collection.type != 4)
               ? _collection.collectionDate
               : (_collection.collectionDate + _collection.type)),
       builder:
@@ -70,9 +72,6 @@ class ViewCollection extends StatelessWidget {
               new Divider(
                 color: CustomColors.mfinButtonGreen,
               ),
-              Card(
-                child: Column(
-                  children: <Widget>[
                     ListTile(
                       leading: SizedBox(
                         width: 100,
@@ -93,6 +92,11 @@ class ViewCollection extends StatelessWidget {
                         decoration: InputDecoration(
                           labelStyle: TextStyle(
                             color: CustomColors.mfinBlue,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: CustomColors.mfinGrey,
+                            ),
                           ),
                           fillColor: CustomColors.mfinLightGrey,
                           filled: true,
@@ -221,9 +225,6 @@ class ViewCollection extends StatelessWidget {
                             collection, pay.custName, pay.createdAt)
                         : CollectionDetailsWidget(pay.isSettled, _scaffoldKey,
                             collection, pay.custName, pay.createdAt),
-                  ],
-                ),
-              ),
             ];
           } else {
             // No Collections available for this filterred view
@@ -260,14 +261,11 @@ class ViewCollection extends StatelessWidget {
           ),
           key: _scaffoldKey,
           body: SingleChildScrollView(
-            child: new Container(
-              alignment: Alignment.center,
-              child: new Column(
+            child: new Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: children),
             ),
-          ),
         );
       },
     );
@@ -286,6 +284,9 @@ class ViewCollection extends StatelessWidget {
         break;
       case 3:
         return "SETTLEMENT";
+        break;
+      case 4:
+        return "PENALITY";
         break;
       default:
         return "COLLECTION";

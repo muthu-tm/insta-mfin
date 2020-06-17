@@ -11,7 +11,8 @@ AccountsData _$AccountsDataFromJson(Map<String, dynamic> json) {
     ..expenseAmount = json['expense_amount'] as int ?? 0
     ..totalPayments = json['total_payments'] as int ?? 0
     ..paymentsAmount = json['payments_amount'] as int ?? 0
-    ..collectionsAmount = json['collections_amount'] as int ?? 0;
+    ..collectionsAmount = json['collections_amount'] as int ?? 0
+    ..penalityAmount = json['penality_amount'] as int ?? 0;
 }
 
 Map<String, dynamic> _$AccountsDataToJson(AccountsData instance) =>
@@ -31,5 +32,7 @@ Map<String, dynamic> _$AccountsDataToJson(AccountsData instance) =>
       'payments_amount':
           instance.paymentsAmount == null ? 0 : instance.paymentsAmount,
       'collections_amount':
-          instance.collectionsAmount == null ? 0 : instance.collectionsAmount
+          instance.collectionsAmount == null ? 0 : instance.collectionsAmount,
+      'penality_amount':
+          instance.penalityAmount == null ? 0 : instance.penalityAmount
     };
