@@ -35,14 +35,17 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
     "1": "Weekly",
     "2": "Monthly"
   };
-  Map<String, String> _tempCollectionDays = {
-    "0": "Sunday",
-    "1": "Monday",
-    "2": "Tuesday",
-    "3": "Wednesday",
-    "4": "Thursday",
-    "5": "Friday",
-    "6": "Saturday",
+
+  List<int> collectionDays;
+
+  Map<String, String> tempCollectionDays = {
+    "0": "Sun",
+    "1": "Mon",
+    "2": "Tue",
+    "3": "Wed",
+    "4": "Thu",
+    "5": "Fri",
+    "6": "Sat",
   };
 
   @override
@@ -50,6 +53,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
     super.initState();
     selectedCollectionModeID = widget.template.collectionMode.toString();
     selectedCollectionDayID = widget.template.collectionDay.toString();
+    collectionDays = <int>[];
   }
 
   @override
@@ -457,6 +461,33 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                         ],
                       ),
                     ),
+                    Padding(padding: EdgeInsets.all(5)),
+                    selectedCollectionModeID == '0'
+                        ? Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              border: Border.all(
+                                  color: Colors.grey[350], width: 1.0),
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  'Scheduled collection days',
+                                  style: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: selectedDays.toList(),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
+                    Padding(padding: EdgeInsets.all(35))
                   ],
                 ),
               )
@@ -474,11 +505,28 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
     });
   }
 
-  void _setSelectedCollectionDay(String newVal) {
-    setState(() {
-      selectedCollectionDayID = newVal;
-      updatedTemplate['collection_day'] = int.parse(newVal);
-    });
+  Iterable<Widget> get selectedDays sync* {
+    for (MapEntry days in tempCollectionDays.entries) {
+      yield Transform(
+        transform: Matrix4.identity()..scale(0.8),
+        child: ChoiceChip(
+            label: Text(days.value),
+            selected: collectionDays.contains(int.parse(days.key)),
+            elevation: 5.0,
+            selectedColor: CustomColors.mfinBlue,
+            backgroundColor: CustomColors.mfinWhite,
+            labelStyle: TextStyle(color: CustomColors.mfinButtonGreen),
+            onSelected: (selected) {
+              setState(() {
+                if (selected) {
+                  collectionDays.add(int.parse(days.key));
+                } else {
+                  collectionDays.remove(int.parse(days.key));
+                }
+              });
+            }),
+      );
+    }
   }
 
   void _submit() async {
