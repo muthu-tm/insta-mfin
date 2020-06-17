@@ -39,7 +39,7 @@ class TransactionCollectionBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "PAYMENTS",
+                    "Payments:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -60,7 +60,7 @@ class TransactionCollectionBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "AMOUNT",
+                    "Amount:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -81,7 +81,7 @@ class TransactionCollectionBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "PAY OUT",
+                    "Pay Out:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,

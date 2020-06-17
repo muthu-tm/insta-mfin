@@ -109,7 +109,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (name) =>
@@ -135,7 +135,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (id) {
@@ -156,7 +156,6 @@ class _AddCustomerState extends State<AddCustomer> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
-                                //initialValue: number.toString(),
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Phone number',
@@ -171,7 +170,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (number) {
@@ -198,7 +197,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (val) {
@@ -235,7 +234,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (val) {
@@ -251,7 +250,6 @@ class _AddCustomerState extends State<AddCustomer> {
                             Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
-                                //initialValue: guarantiedBy.toString(),
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Guarantee by',
@@ -266,7 +264,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
                                 validator: (val) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/transaction/collection/AllTransactions.dart';
-import 'package:instamfin/screens/transaction/settings/TransactionJournalBuilder.dart';
-import 'package:instamfin/screens/transaction/settings/TransactionExpenseBuilder.dart';
+import 'package:instamfin/screens/transaction/widgets/TransactionJournalBuilder.dart';
+import 'package:instamfin/screens/transaction/widgets/TransactionExpenseBuilder.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class PaymentReportScreen extends StatelessWidget {
