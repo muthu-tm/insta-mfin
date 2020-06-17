@@ -4,6 +4,7 @@ import 'package:instamfin/screens/settings/editors/EditFinanceProfile.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 
 class FinanceProfileWidget extends StatelessWidget {
@@ -59,7 +60,11 @@ class FinanceProfileWidget extends StatelessWidget {
               ListTile(
                 title: TextFormField(
                   keyboardType: TextInputType.text,
-                  initialValue: snapshot.data.dateOfRegistration,
+                  initialValue: snapshot.data.dateOfRegistration != null
+                      ? DateUtils.formatDate(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              snapshot.data.dateOfRegistration))
+                      : "",
                   decoration: InputDecoration(
                     hintText: 'Registered Date',
                     fillColor: CustomColors.mfinWhite,

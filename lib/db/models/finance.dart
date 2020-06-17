@@ -30,7 +30,7 @@ class Finance extends Model {
   @JsonKey(name: 'accounts_data', nullable: true)
   AccountsData accountsData;
   @JsonKey(name: 'date_of_registration', nullable: true)
-  String dateOfRegistration;
+  int dateOfRegistration;
   @JsonKey(name: 'allocated_branch_count', nullable: true)
   int allocatedBranchCount;
   @JsonKey(name: 'available_branch_count', nullable: true)
@@ -80,7 +80,7 @@ class Finance extends Model {
     }
   }
 
-  setDOR(String date) {
+  setDOR(int date) {
     this.dateOfRegistration = date;
   }
 

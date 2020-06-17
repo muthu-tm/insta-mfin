@@ -12,7 +12,7 @@ Finance _$FinanceFromJson(Map<String, dynamic> json) {
     ..address = json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
-    ..dateOfRegistration = json['date_of_registration'] as String
+    ..dateOfRegistration = json['date_of_registration'] as int
     ..allocatedBranchCount = json['allocated_branch_count'] as int
     ..availableBranchCount = json['available_branch_count'] as int
     ..allocatedUsersCount = json['allocated_users_count'] as int
@@ -47,9 +47,7 @@ Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
           ? ''
           : instance.displayProfilePath,
       'address': instance.address?.toJson(),
-      'date_of_registration': instance.dateOfRegistration == null
-          ? ''
-          : instance.dateOfRegistration,
+      'date_of_registration': instance.dateOfRegistration,
       'allocated_branch_count': instance.allocatedBranchCount == null
           ? 1
           : instance.allocatedBranchCount,

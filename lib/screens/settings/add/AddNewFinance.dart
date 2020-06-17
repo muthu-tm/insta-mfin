@@ -23,11 +23,17 @@ class _AddFinancePageState extends State<AddFinancePage> {
   var dateFormatter = DateUtils.dateFormatter;
   String financeName;
   String registeredID = "";
-  String registeredDate = "";
+  int registeredDate;
   String contactNumber = "";
   String emailID = "";
 
   Address address = new Address();
+
+  @override
+  void initState() {
+    super.initState();
+    this._date.text = DateUtils.formatDate(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,19 +121,33 @@ class _AddFinancePageState extends State<AddFinancePage> {
                 ),
                 RowHeaderText(textName: "Registered Date"),
                 ListTile(
-                  title: new TextFormField(
-                    controller: _date,
-                    decoration: InputDecoration(
-                      hintText: DateUtils.getCurrentFormattedDate(),
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
+                  title: GestureDetector(
                     onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: _date,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                          // labelText: 'Finance Registrated On',
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            size: 35,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 RowHeaderText(textName: "Contact Number"),
@@ -205,8 +225,8 @@ class _AddFinancePageState extends State<AddFinancePage> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        this.registeredDate = DateUtils.formatDate(picked);
-        _date.value = TextEditingValue(text: DateUtils.formatDate(picked));
+        this.registeredDate = DateUtils.getUTCDateEpoch(picked);
+        _date.text = DateUtils.formatDate(picked);
       });
   }
 

@@ -23,9 +23,19 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  DateTime selectedDate = DateTime.now();
   final Map<String, dynamic> updatedFinance = new Map();
   final Address updatedAddress = new Address();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.finance.dateOfRegistration != null)
+      this._date.text = DateUtils.formatDate(
+          DateTime.fromMillisecondsSinceEpoch(
+              widget.finance.dateOfRegistration));
+    else
+      this._date.text = DateUtils.formatDate(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,23 +178,33 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                 ),
                 RowHeaderText(textName: 'Registered Date'),
                 ListTile(
-                  title: new TextFormField(
-                    decoration: InputDecoration(
-                      hintText: DateUtils.formatDate(selectedDate),
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                      suffixIcon: Icon(
-                        Icons.perm_contact_calendar,
-                        color: CustomColors.mfinBlue,
-                        size: 35.0,
+                  title: GestureDetector(
+                    onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: _date,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                          // labelText: 'Finance Registered On',
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            size: 35,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
                       ),
                     ),
-                    onTap: () => _selectDate(context),
                   ),
                 ),
                 AddressWidget(
@@ -205,17 +225,23 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
     updatedFinance['contact_number'] = contactNumber;
   }
 
+  TextEditingController _date = TextEditingController();
+
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: widget.finance.dateOfRegistration != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              widget.finance.dateOfRegistration)
+          : DateTime.now(),
       firstDate: DateTime(1900, 1),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null)
       setState(() {
-        selectedDate = picked;
-        updatedFinance['date_of_registration'] = DateUtils.formatDate(picked);
+        _date.text = DateUtils.formatDate(picked);
+        updatedFinance['date_of_registration'] =
+            DateUtils.getUTCDateEpoch(picked);
       });
   }
 

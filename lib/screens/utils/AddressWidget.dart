@@ -82,7 +82,7 @@ class _AddressWidgetState extends State<AddressWidget> {
               children: <Widget>[
                 Flexible(
                   child: TextFormField(
-                    initialValue: widget.address.street,
+                    initialValue: widget.address.city,
                     textAlign: TextAlign.start,
                     decoration: InputDecoration(
                       labelText: 'City',
@@ -109,7 +109,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                 Padding(padding: EdgeInsets.only(left: 10)),
                 Flexible(
                   child: TextFormField(
-                    initialValue: widget.address.street,
+                    initialValue: widget.address.state,
                     textAlign: TextAlign.start,
                     decoration: InputDecoration(
                       labelText: 'State',
@@ -142,7 +142,7 @@ class _AddressWidgetState extends State<AddressWidget> {
               children: <Widget>[
                 Flexible(
                   child: TextFormField(
-                    initialValue: widget.address.street,
+                    initialValue: widget.address.pincode,
                     textAlign: TextAlign.start,
                     decoration: InputDecoration(
                       labelText: 'Pincode',

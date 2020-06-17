@@ -11,7 +11,7 @@ class FinanceController {
   BranchController _branchController = BranchController();
 
   Future createFinance(String name, String registeredID, String contactNumber,
-      String email, Address address, String dateOfRegistration) async {
+      String email, Address address, int dateOfRegistration) async {
     try {
       UserController _userController = UserController();
       int addedBy = _userController.getCurrentUserID();
