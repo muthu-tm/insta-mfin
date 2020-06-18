@@ -23,7 +23,6 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   double interestRate = 0.00;
   int collectionAmount = 0;
   String selectedCollectionModeID = "0";
-  String selectedCollectionDayID = "0";
 
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
@@ -495,7 +494,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
           noOfPayments,
           collectionAmount,
           int.parse(selectedCollectionModeID),
-          int.parse(selectedCollectionDayID),
+          collectionDays,
           documentCharge,
           surChargeAmount,
           interestRate);

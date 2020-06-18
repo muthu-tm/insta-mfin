@@ -37,3 +37,9 @@ lib/generated_plugin_registrant.dart
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+.vscode/launch.json
+android/.project
+android/.settings/org.eclipse.buildship.core.prefs
+android/app/.classpath
+android/app/.project
+android/app/.settings/org.eclipse.buildship.core.prefs
