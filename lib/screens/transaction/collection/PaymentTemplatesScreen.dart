@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/payment_template.dart';
-import 'package:instamfin/screens/transaction/add/AddPaymentTemplate.dart';
 import 'package:instamfin/screens/transaction/edit/EditPaymentTemplate.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -25,30 +24,6 @@ class PaymentTemplateScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Payment Templates"),
         backgroundColor: CustomColors.mfinBlue,
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddPaymentTemplate(),
-              settings: RouteSettings(
-                  name: '/transactions/collectionbook/template/add'),
-            ),
-          );
-        },
-        label: Text(
-          'Add',
-          style: TextStyle(
-            color: CustomColors.mfinWhite,
-            fontSize: 16,
-          ),
-        ),
-        icon: Icon(
-          Icons.add,
-          size: 40,
-          color: CustomColors.mfinFadedButtonGreen,
-        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: PaymentTemplate().streamTemplates(),
