@@ -69,9 +69,9 @@ class ExpenseHome extends StatelessWidget {
                             },
                           ),
                           ListTile(
-                            title: Text('Add expenses categories'),
+                            title: Text('Expense categories list'),
                             leading: Icon(
-                              Icons.category,
+                              Icons.view_list,
                               color: CustomColors.mfinBlue,
                             ),
                             onTap: () {

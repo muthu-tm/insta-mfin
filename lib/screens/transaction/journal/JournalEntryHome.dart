@@ -4,8 +4,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/transaction/add/AddJournal.dart';
-import 'package:instamfin/screens/transaction/edit/EditJournalEntry.dart';
 import 'package:instamfin/screens/transaction/journal/JournalCategoryScreen.dart';
 import 'package:instamfin/screens/transaction/widgets/TransactionsAppBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
@@ -14,6 +14,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class JournalEntryHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -23,30 +24,85 @@ class JournalEntryHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: transactionsAppBar(context, "Journal Entries",
-          '/transactions/journal/categories', JournalCategoryScreen()),
-      floatingActionButton: FloatingActionButton.extended(
+      appBar: AppBar(
+        title: Text("Journal Entries"),
+        backgroundColor: CustomColors.mfinBlue,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: CustomColors.mfinBlue,
+        splashColor: CustomColors.mfinWhite,
+        child: Icon(
+          Icons.navigation,
+          size: 30,
+          color: CustomColors.mfinButtonGreen,
+        ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddJournal(),
-              settings: RouteSettings(name: '/transactions/journal/add'),
-            ),
-          );
+          showMaterialModalBottomSheet(
+              expand: false,
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (context, scrollController) {
+                return Material(
+                  child: SafeArea(
+                      top: false,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          ListTile(
+                            title: Text('Add journal entry'),
+                            leading: Icon(
+                              Icons.monetization_on,
+                              color: CustomColors.mfinBlue,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddJournal(),
+                                  settings: RouteSettings(
+                                      name: '/transactions/journal/add'),
+                                ),
+                              );
+                            },
+                          ),
+                          ListTile(
+                            title: Text('Journal categories list'),
+                            leading: Icon(
+                              Icons.view_list,
+                              color: CustomColors.mfinBlue,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => JournalCategoryScreen(),
+                                  settings: RouteSettings(
+                                      name:
+                                          '/transactions/journal/categories'),
+                                ),
+                              );
+                            },
+                          ),
+                          ListTile(
+                            title: Text('Home'),
+                            leading: Icon(
+                              Icons.home,
+                              color: CustomColors.mfinBlue,
+                            ),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserHomeScreen(),
+                                settings: RouteSettings(name: '/home'),
+                              ),
+                            ),
+                          )
+                        ],
+                      )),
+                );
+              });
         },
-        label: Text(
-          'Add',
-          style: TextStyle(
-            color: CustomColors.mfinWhite,
-            fontSize: 16,
-          ),
-        ),
-        icon: Icon(
-          Icons.add,
-          size: 40,
-          color: CustomColors.mfinFadedButtonGreen,
-        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: Journal().streamJournals(
