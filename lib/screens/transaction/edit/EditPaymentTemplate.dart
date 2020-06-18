@@ -36,7 +36,6 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
   };
 
   List<int> collectionDays;
-
   Map<String, String> tempCollectionDays = {
     "0": "Sun",
     "1": "Mon",
@@ -58,10 +57,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      //backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Edit Template'),
         backgroundColor: CustomColors.mfinBlue,
       ),
@@ -125,6 +121,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: widget.template.name,
+                              keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Template name',
@@ -165,6 +162,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.totalAmount.toString(),
+                                  keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Total amount',
@@ -202,6 +200,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.principalAmount.toString(),
+                                  keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Amount given',
@@ -245,6 +244,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.docCharge.toString(),
+                                  keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Document charge',
@@ -279,9 +279,10 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.surcharge.toString(),
+                                  keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Amount given',
+                                labelText: 'SurCharge',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -318,6 +319,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: widget.template.tenure.toString(),
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'No. of Collections',
@@ -352,6 +354,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.interestRate.toString(),
+                                  keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Rate of interest',
@@ -392,6 +395,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.collectionAmount.toString(),
+                                  keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Collection amount',
@@ -466,7 +470,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5)),
                               border: Border.all(
-                                  color: Colors.grey[350], width: 1.0),
+                                  color: CustomColors.mfinGrey, width: 1.0),
                             ),
                             child: Column(
                               children: <Widget>[
@@ -506,7 +510,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
   Iterable<Widget> get selectedDays sync* {
     for (MapEntry days in tempCollectionDays.entries) {
       yield Transform(
-        transform: Matrix4.identity()..scale(0.8),
+        transform: Matrix4.identity()..scale(0.9),
         child: ChoiceChip(
             label: Text(days.value),
             selected: collectionDays.contains(int.parse(days.key)),
@@ -518,8 +522,10 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
               setState(() {
                 if (selected) {
                   collectionDays.add(int.parse(days.key));
+                  updatedTemplate['collection_days'] = collectionDays;
                 } else {
                   collectionDays.remove(int.parse(days.key));
+                  updatedTemplate['collection_days'] = collectionDays;
                 }
               });
             }),
@@ -546,15 +552,12 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-          print("Unable to Edit Template: " + result['message']);
         } else {
           Navigator.pop(context);
-          print("Template edited successfully");
           Navigator.pop(context);
         }
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

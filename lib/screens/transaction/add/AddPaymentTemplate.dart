@@ -45,7 +45,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   @override
   void initState() {
     super.initState();
-    collectionDays = <int>[];
+    collectionDays = <int>[1, 2, 3, 4, 5];
   }
 
   @override
@@ -116,6 +116,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: templateName,
+                              keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Template name',
@@ -152,6 +153,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: totalAmount.toString(),
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Total amount',
@@ -184,6 +186,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: givenAmount.toString(),
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Amount given',
@@ -222,6 +225,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: documentCharge.toString(),
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Document charge',
@@ -252,9 +256,10 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: surChargeAmount.toString(),
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Amount given',
+                                labelText: 'SurCharge',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -288,6 +293,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: noOfPayments.toString(),
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'No. of Collections',
@@ -318,6 +324,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: interestRate.toString(),
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Rate of interest',
@@ -354,6 +361,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue: collectionAmount.toString(),
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Collection amount',
@@ -422,7 +430,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                     selectedCollectionModeID == '0' ? Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
-                        border: Border.all(color: Colors.grey[350], width: 1.0),
+                        border: Border.all(color: CustomColors.mfinGrey, width: 1.0),
                       ),
                       child: Column(
                         children: <Widget>[
@@ -459,7 +467,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   Iterable<Widget> get selectedDays sync* {
     for (MapEntry days in tempCollectionDays.entries) {
       yield Transform(
-        transform: Matrix4.identity()..scale(0.8),
+        transform: Matrix4.identity()..scale(0.9),
         child: ChoiceChip(
             label: Text(days.value),
             selected: collectionDays.contains(int.parse(days.key)),
@@ -484,7 +492,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Creating Template for YOU!");
+      CustomDialogs.actionWaiting(context, "Creating Template!");
       PaymentTemplateController _collectionController =
           PaymentTemplateController();
       var result = await _collectionController.createTemplate(
@@ -503,14 +511,11 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Template: " + result['message']);
       } else {
         Navigator.pop(context);
-        print("New Template added successfully");
         Navigator.pop(context);
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
