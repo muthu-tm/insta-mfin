@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/transaction/add/AddExpense.dart';
 import 'package:instamfin/screens/transaction/edit/EditExpense.dart';
 import 'package:instamfin/screens/transaction/expense/ExpenseCategoryScreen.dart';
@@ -14,6 +15,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ExpenseHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -24,30 +26,85 @@ class ExpenseHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: transactionsAppBar(context, "Expenses",
-          '/transactions/expenses/categories', ExpenseCategoryScreen()),
-      floatingActionButton: FloatingActionButton.extended(
+      appBar: AppBar(
+        title: Text("Expenses"),
+        backgroundColor: CustomColors.mfinBlue,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: CustomColors.mfinBlue,
+        splashColor: CustomColors.mfinWhite,
+        child: Icon(
+          Icons.navigation,
+          size: 30,
+          color: CustomColors.mfinButtonGreen,
+        ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddExpense(),
-              settings: RouteSettings(name: '/transactions/expenses/add'),
-            ),
-          );
+          showMaterialModalBottomSheet(
+              expand: false,
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (context, scrollController) {
+                return Material(
+                  child: SafeArea(
+                      top: false,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          ListTile(
+                            title: Text('Add expenses'),
+                            leading: Icon(
+                              Icons.monetization_on,
+                              color: CustomColors.mfinBlue,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddExpense(),
+                                  settings: RouteSettings(
+                                      name: '/transactions/expenses/add'),
+                                ),
+                              );
+                            },
+                          ),
+                          ListTile(
+                            title: Text('Add expenses categories'),
+                            leading: Icon(
+                              Icons.category,
+                              color: CustomColors.mfinBlue,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ExpenseCategoryScreen(),
+                                  settings: RouteSettings(
+                                      name:
+                                          '/transactions/expenses/categories'),
+                                ),
+                              );
+                            },
+                          ),
+                          ListTile(
+                            title: Text('Home'),
+                            leading: Icon(
+                              Icons.home,
+                              color: CustomColors.mfinBlue,
+                            ),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserHomeScreen(),
+                                settings: RouteSettings(name: '/home'),
+                              ),
+                            ),
+                          )
+                        ],
+                      )),
+                );
+              });
         },
-        label: Text(
-          'Add',
-          style: TextStyle(
-            color: CustomColors.mfinWhite,
-            fontSize: 16,
-          ),
-        ),
-        icon: Icon(
-          Icons.add,
-          size: 40,
-          color: CustomColors.mfinFadedButtonGreen,
-        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: Expense().streamExpenses(
