@@ -42,7 +42,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
   String receivedFrom = '';
   String notes = '';
   bool isLatePay = false;
-  bool hasPenality = false;
+  bool hasPenalty = false;
 
   @override
   void initState() {
@@ -421,8 +421,8 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                         keyboardType: TextInputType.number,
                         initialValue: '0',
                         decoration: InputDecoration(
-                          hintText: 'Penality Amount',
-                          labelText: 'Penality Amount',
+                          hintText: 'Penalty Amount',
+                          labelText: 'Penalty Amount',
                           labelStyle: TextStyle(
                             color: CustomColors.mfinBlue,
                           ),
@@ -437,9 +437,9 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                         validator: (amount) {
                           if (amount.trim().isEmpty || amount.trim() == "0") {
                             collDetails['penalty_amount'] = 0;
-                            hasPenality = false;
+                            hasPenalty = false;
                           } else {
-                            hasPenality = true;
+                            hasPenalty = true;
                             collDetails['penalty_amount'] =
                                 int.parse(amount.trim());
                           }
@@ -516,20 +516,18 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
             widget.collection.collectionDate,
             true,
             collDetails,
-            hasPenality);
+            hasPenalty);
 
         if (!result['is_success']) {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-          print("Unable to Add Collection details: " + result['message']);
         } else {
           Navigator.pop(context);
           Navigator.pop(context);
         }
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

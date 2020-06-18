@@ -286,7 +286,7 @@ class ViewCollection extends StatelessWidget {
         return "SETTLEMENT";
         break;
       case 4:
-        return "PENALITY";
+        return "PENALTY";
         break;
       default:
         return "COLLECTION";

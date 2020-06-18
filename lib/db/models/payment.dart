@@ -195,7 +195,7 @@ class Payment extends Model {
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
             coll.type != CollectionType.Surcharge.name &&
-            coll.type != CollectionType.Penality.name)
+            coll.type != CollectionType.Penalty.name)
           received += coll.getReceived();
       });
 
@@ -215,7 +215,7 @@ class Payment extends Model {
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
             coll.type != CollectionType.Surcharge.name &&
-            coll.type != CollectionType.Penality.name)
+            coll.type != CollectionType.Penalty.name)
           pending += coll.getPending();
       });
 
@@ -236,21 +236,21 @@ class Payment extends Model {
       int _p = 0;
       int _c = 0;
       int _u = 0;
-      int _penality = 0;
+      int _penalty = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
             coll.type != CollectionType.Surcharge.name &&
-            coll.type != CollectionType.Penality.name) {
+            coll.type != CollectionType.Penalty.name) {
           _r += coll.getReceived();
           _p += coll.getPending();
           _c += coll.getCurrent();
           _u += coll.getUpcoming();
-        } else if (coll.type == CollectionType.Penality.name) {
-          _penality += coll.collectionAmount;
+        } else if (coll.type == CollectionType.Penalty.name) {
+          _penalty += coll.collectionAmount;
         }
       });
 
-      return [_r, _p, _c, _u, _penality];
+      return [_r, _p, _c, _u, _penalty];
     } catch (err) {
       print("Unable to get Payment's amount details!" + err.toString());
       return [];

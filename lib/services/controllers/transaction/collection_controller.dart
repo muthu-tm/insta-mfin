@@ -6,23 +6,34 @@ import 'package:instamfin/services/utils/response_utils.dart';
 
 class CollectionController {
   Future createCollection(
-    String financeId,
+    String financeID,
     String branchName,
     String subBranchName,
     int custNumber,
     DateTime createdAt,
+    int cNumber,
+    int type,
     int collAmount,
-    DateTime collDate,
-    List<CollectionDetails> collections,
+    int collDate,
+    CollectionDetails collection,
   ) async {
     try {
       Collection coll = Collection();
-      coll.addCollections(collections);
+      coll.setFinanceID(financeID);
+      coll.setBranchName(branchName);
+      coll.setSubBranchName(subBranchName);
       coll.setCollectionAmount(collAmount);
+      coll.setCustomerNumber(custNumber);
+      coll.setcollectionNumber(cNumber);
+      coll.setType(type);
       coll.setCollectionDate(collDate);
+      bool cAlready = false;
 
-      await coll.create(
-          financeId, branchName, subBranchName, custNumber, createdAt);
+      if (collection != null) {
+        cAlready = true;
+      }
+
+      await coll.create(createdAt, cAlready, collection);
 
       return CustomResponse.getSuccesReponse(
           "Added new Collection successfully for $custNumber customer's payment ${createdAt.toString()}");
@@ -202,7 +213,7 @@ class CollectionController {
     int collDate,
     bool isAdd,
     Map<String, dynamic> collectionDetails,
-    bool hasPenality,
+    bool hasPenalty,
   ) async {
     try {
       await Collection().updateCollectionDetails(
@@ -213,7 +224,8 @@ class CollectionController {
           createdAt,
           collDate,
           isAdd,
-          collectionDetails, hasPenality);
+          collectionDetails,
+          hasPenalty);
       return CustomResponse.getSuccesReponse(
           "Payment's Collection updated for customer $custNumber");
     } catch (err) {

@@ -374,26 +374,29 @@ class _AddPaymentState extends State<AddPayment> {
                         ],
                       ),
                     ),
-                    selectedCollectionModeID == '0' ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        border: Border.all(color: Colors.grey[350], width: 1.0),
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            'Scheduled collection days',
-                            style: TextStyle(
-                              color: CustomColors.mfinBlue,
+                    selectedCollectionModeID == '0'
+                        ? Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: CustomColors.mfinGrey, width: 1.0),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: selectedDays.toList(),
-                          ),
-                        ],
-                      ),
-                    ): Container(),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  'Scheduled collection days',
+                                  style: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: selectedDays.toList(),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -731,8 +734,8 @@ class _AddPaymentState extends State<AddPayment> {
                                 if (aCollAmount.trim().isEmpty) {
                                   this.alreadyReceivedAmount = 0;
                                 } else {
-                                this.alreadyReceivedAmount =
-                                    int.parse(aCollAmount.trim());
+                                  this.alreadyReceivedAmount =
+                                      int.parse(aCollAmount.trim());
                                 }
                                 return null;
                               },
@@ -840,13 +843,13 @@ class _AddPaymentState extends State<AddPayment> {
     super.initState();
     this.getCollectionTemp();
     givenBy = _user.name;
-    collectionDays = <int>[];
+    collectionDays = <int>[1, 2, 3, 4, 5];
   }
 
   Iterable<Widget> get selectedDays sync* {
     for (MapEntry days in tempCollectionDays.entries) {
       yield Transform(
-        transform: Matrix4.identity()..scale(0.8),
+        transform: Matrix4.identity()..scale(0.9),
         child: ChoiceChip(
             label: Text(days.value),
             selected: collectionDays.contains(int.parse(days.key)),
@@ -878,9 +881,7 @@ class _AddPaymentState extends State<AddPayment> {
       setState(
         () {
           collectionDate = DateUtils.getUTCDateEpoch(picked);
-          _collectionDate.value = TextEditingValue(
-            text: DateUtils.formatDate(picked),
-          );
+          _collectionDate.text = DateUtils.formatDate(picked);
         },
       );
   }
@@ -896,9 +897,7 @@ class _AddPaymentState extends State<AddPayment> {
       setState(
         () {
           selectedDate = DateUtils.getUTCDateEpoch(picked);
-          _date.value = TextEditingValue(
-            text: DateUtils.formatDate(picked),
-          );
+          _date.text = DateUtils.formatDate(picked);
         },
       );
   }

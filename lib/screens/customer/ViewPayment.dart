@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/customer/AddCollection.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/db/models/payment.dart';
@@ -76,15 +77,15 @@ class _ViewPaymentState extends State<ViewPayment> {
                           color: CustomColors.mfinBlue,
                         ),
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          // TODO: Need to add collection screen here
-                          //     builder: (context) => ,
-                          //     settings: RouteSettings(
-                          //         name: '/customers/payments/add'),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  AddCollection(widget.payment),
+                              settings: RouteSettings(
+                                  name: '/customers/payment/collections/add'),
+                            ),
+                          );
                         },
                       ),
                       ListTile(
@@ -98,7 +99,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 enableDrag: true,
                                 isDismissible: true,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius:  BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 context: context,
                                 builder: (context, scrollController) {
@@ -115,6 +116,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                           int totalReceived =
                               await widget.payment.getTotalReceived();
                           if (totalReceived != null && totalReceived > 0) {
+                            Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
                                 "You cannot Edit Payments which has valid COLLECTION!}",
@@ -142,14 +144,13 @@ class _ViewPaymentState extends State<ViewPayment> {
                         },
                       ),
                       ListTile(
-                        title: Text('Do Settlement'),
-                        // TODO: Need to complete this
-                        leading: Icon(
-                          Icons.account_balance_wallet,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        onTap: () {}
-                      ),
+                          title: Text('Do Settlement'),
+                          // TODO: Need to complete this
+                          leading: Icon(
+                            Icons.account_balance_wallet,
+                            color: CustomColors.mfinBlue,
+                          ),
+                          onTap: () {}),
                       ListTile(
                           title: Text('Delete Payment'),
                           leading: Icon(
@@ -168,6 +169,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 if (totalReceived != null &&
                                     totalReceived > 0) {
                                   Navigator.pop(context);
+                                  Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
                                       "You cannot Remove Payments which has already received COLLECTION!}",
@@ -184,6 +186,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                       widget.payment.createdAt);
                                   if (!result['is_success']) {
                                     Navigator.pop(context);
+                                    Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
                                       CustomSnackBar.errorSnackBar(
                                         "Unable to remove the Payment! ${result['message']}",
@@ -192,6 +195,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                     );
                                   } else {
                                     Navigator.pop(context);
+                                    Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
                                       CustomSnackBar.errorSnackBar(
                                           "Payment removed successfully", 2),
@@ -199,6 +203,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                     Navigator.pop(context);
                                   }
                                 } else {
+                                  Navigator.pop(context);
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(

@@ -54,8 +54,8 @@ class Collection {
     this.collectionNumber = number;
   }
 
-  setCollectionDate(DateTime collectionDate) {
-    this.collectionDate = DateUtils.getUTCDateEpoch(collectionDate);
+  setCollectionDate(int collectionDate) {
+    this.collectionDate = collectionDate;
   }
 
   setcollectedOn(List<int> collectedOn) {
@@ -72,14 +72,6 @@ class Collection {
 
   setType(int type) {
     this.type = type;
-  }
-
-  addCollections(List<CollectionDetails> collections) {
-    if (this.collections == null) {
-      this.collections = collections;
-    } else {
-      this.collections.addAll(collections);
-    }
   }
 
   int getReceived() {
@@ -199,7 +191,7 @@ class Collection {
         .document(getDocumentID(collectionDate));
   }
 
-  DocumentReference getPenalityDocumentReference(
+  DocumentReference getPenaltyDocumentReference(
       String financeId,
       String branchName,
       String subBranchName,
@@ -211,16 +203,26 @@ class Collection {
         .document(getDocumentID(collectionDate + 4));
   }
 
-  Future<Collection> create(String financeId, String branchName,
-      String subBranchName, int number, DateTime createdAt) async {
+  Future<Collection> create(DateTime createdAt, bool cAlready,
+      CollectionDetails collDetails) async {
     this.createdAt = DateTime.now();
-    this.financeID = financeId;
-    this.branchName = branchName;
-    this.subBranchName = subBranchName;
+    this.financeID = this.financeID;
+    this.branchName = this.branchName;
+    this.subBranchName = this.subBranchName;
 
-    await getDocumentReference(this.financeID, this.branchName,
-            this.subBranchName, number, createdAt, this.collectionDate)
-        .setData(this.toJson());
+    String docID = "";
+    if (this.type != 0) {
+      docID = getDocumentID(this.collectionDate + this.type);
+    } else {
+      docID = getDocumentID(this.collectionDate);
+    }
+
+    if (!cAlready) {
+      await getCollectionRef(this.financeID, this.branchName,
+              this.subBranchName, this.customerNumber, createdAt)
+          .document(docID)
+          .setData(this.toJson());
+    }
 
     return this;
   }
@@ -370,7 +372,7 @@ class Collection {
       int collectionDate,
       bool isAdd,
       Map<String, dynamic> data,
-      bool hasPenality) async {
+      bool hasPenalty) async {
     Map<String, dynamic> fields = Map();
 
     DocumentReference docRef = this.getDocumentReference(financeId, branchName,
@@ -420,7 +422,7 @@ class Collection {
                 accData.cashInHand += data['amount'];
                 accData.collectionsAmount += data['amount'];
 
-                if (hasPenality) {
+                if (hasPenalty) {
                   Collection _c = Collection.fromJson(_coll);
                   accData.cashInHand += data['penalty_amount'];
                   accData.penaltyAmount += data['penalty_amount'];
@@ -433,7 +435,7 @@ class Collection {
                     "customer_number": _c.customerNumber,
                     "collected_on": [data['collected_on']],
                     "collection_date": data['collected_on'],
-                    "type": 4, // Penality
+                    "type": 4, // Penalty
                     "collections": [
                       {
                         "collected_on": data['collected_on'],
@@ -453,7 +455,7 @@ class Collection {
                   };
                   Model().txCreate(
                       tx,
-                      this.getPenalityDocumentReference(
+                      this.getPenaltyDocumentReference(
                           financeId,
                           branchName,
                           subBranchName,
@@ -465,13 +467,13 @@ class Collection {
               } else {
                 accData.cashInHand -= data['amount'];
                 accData.collectionsAmount -= data['amount'];
-                if (hasPenality) {
+                if (hasPenalty) {
                   accData.cashInHand -= data['penalty_amount'];
                   accData.penaltyAmount -= data['penalty_amount'];
 
                   Model().txDelete(
                       tx,
-                      this.getPenalityDocumentReference(
+                      this.getPenaltyDocumentReference(
                           financeId,
                           branchName,
                           subBranchName,

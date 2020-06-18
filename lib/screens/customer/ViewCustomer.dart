@@ -141,7 +141,7 @@ class ViewCustomer extends StatelessWidget {
                                 } else {
                                   // ! Once customer deleted; need to route user to list page
                                   Navigator.pop(context);
-                                  print("Customer removed successfully");
+                                  Navigator.pop(context);
                                   Navigator.pop(context);
                                 }
                               },
