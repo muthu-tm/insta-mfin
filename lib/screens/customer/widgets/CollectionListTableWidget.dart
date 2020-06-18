@@ -379,7 +379,7 @@ class CollectionListTableWidget extends StatelessWidget {
         collDetails['collected_by'] = _user.name;
         collDetails['collected_from'] = _payment.custName;
         collDetails['created_at'] = DateTime.now();
-        collDetails['penality_amount'] = 0;
+        collDetails['penalty_amount'] = 0;
         collDetails['added_by'] = _user.mobileNumber;
         if (collection.collectionDate <
             DateUtils.getCurrentUTCDate().millisecondsSinceEpoch)

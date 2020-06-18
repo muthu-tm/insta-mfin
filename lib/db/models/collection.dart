@@ -422,14 +422,14 @@ class Collection {
 
                 if (hasPenality) {
                   Collection _c = Collection.fromJson(_coll);
-                  accData.cashInHand += data['penality_amount'];
-                  accData.penalityAmount += data['penality_amount'];
+                  accData.cashInHand += data['penalty_amount'];
+                  accData.penaltyAmount += data['penalty_amount'];
 
                   Map<String, dynamic> pData = {
                     "finance_id": _c.financeID,
                     "branch_name": _c.branchName,
                     "sub_branch_name": _c.subBranchName,
-                    "collection_amount": data['penality_amount'],
+                    "collection_amount": data['penalty_amount'],
                     "customer_number": _c.customerNumber,
                     "collected_on": [data['collected_on']],
                     "collection_date": data['collected_on'],
@@ -438,7 +438,7 @@ class Collection {
                       {
                         "collected_on": data['collected_on'],
                         "is_paid_late": false,
-                        "amount": data['penality_amount'],
+                        "amount": data['penalty_amount'],
                         "transferred_mode": data['transferred_mode'],
                         "status": 1, // Paid
                         "collected_from": data['collected_from'],
@@ -466,8 +466,8 @@ class Collection {
                 accData.cashInHand -= data['amount'];
                 accData.collectionsAmount -= data['amount'];
                 if (hasPenality) {
-                  accData.cashInHand -= data['penality_amount'];
-                  accData.penalityAmount -= data['penality_amount'];
+                  accData.cashInHand -= data['penalty_amount'];
+                  accData.penaltyAmount -= data['penalty_amount'];
 
                   Model().txDelete(
                       tx,

@@ -12,8 +12,8 @@ class CollectionDetails {
   bool isPaidLate;
   @JsonKey(name: 'amount')
   int amount;
-  @JsonKey(name: 'penality_amount', defaultValue: 0)
-  int penalityAmount;
+  @JsonKey(name: 'penalty_amount', defaultValue: 0)
+  int penaltyAmount;
   @JsonKey(name: 'transferred_mode', nullable: true)
   int transferredMode;
   @JsonKey(name: 'collected_from', defaultValue: '')

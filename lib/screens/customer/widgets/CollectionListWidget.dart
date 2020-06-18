@@ -386,7 +386,7 @@ class CollectionListWidget extends StatelessWidget {
       collDetails['notes'] = "";
       collDetails['collected_by'] = _user.name;
       collDetails['collected_from'] = _payment.custName;
-      collDetails['penality_amount'] = 0;
+      collDetails['penalty_amount'] = 0;
       collDetails['created_at'] = DateTime.now();
       collDetails['added_by'] = _user.mobileNumber;
       if (collection.collectionDate <

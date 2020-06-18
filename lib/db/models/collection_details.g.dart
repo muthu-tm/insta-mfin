@@ -5,7 +5,7 @@ CollectionDetails _$CollectionDetailsFromJson(Map<String, dynamic> json) {
     ..collectedOn = json['collected_on'] as int
     ..isPaidLate = json['is_paid_late'] as bool ?? false
     ..amount = json['amount'] as int
-    ..penalityAmount = json['penality_amount'] as int
+    ..penaltyAmount = json['penalty_amount'] as int
     ..transferredMode = json['transferred_mode'] as int
     ..collectedFrom = json['collected_from'] as String ?? ''
     ..collectedBy = json['collected_by'] as String ?? ''
@@ -24,16 +24,13 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 Map<String, dynamic> _$CollectionDetailsToJson(CollectionDetails instance) =>
     <String, dynamic>{
       'collected_on': instance.collectedOn,
-      'is_paid_late': instance.isPaidLate == null ? false : instance.isPaidLate,
+      'is_paid_late': instance.isPaidLate ?? false,
       'amount': instance.amount,
-      'penality_amount':
-          instance.penalityAmount == null ? 0 : instance.penalityAmount,
-      'transferred_mode':
-          instance.transferredMode == null ? 0 : instance.transferredMode,
-      'collected_from':
-          instance.collectedFrom == null ? '' : instance.collectedFrom,
-      'collected_by': instance.collectedBy == null ? '' : instance.collectedBy,
-      'notes': instance.notes == null ? '' : instance.notes,
+      'penalty_amount': instance.penaltyAmount ?? 0,
+      'transferred_mode': instance.transferredMode ?? 0,
+      'collected_from': instance.collectedFrom ?? '',
+      'collected_by': instance.collectedBy ?? '',
+      'notes': instance.notes ?? '',
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,
     };

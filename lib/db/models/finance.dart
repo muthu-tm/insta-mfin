@@ -31,14 +31,6 @@ class Finance extends Model {
   AccountsData accountsData;
   @JsonKey(name: 'date_of_registration', nullable: true)
   int dateOfRegistration;
-  @JsonKey(name: 'allocated_branch_count', nullable: true)
-  int allocatedBranchCount;
-  @JsonKey(name: 'available_branch_count', nullable: true)
-  int availableBranchCount;
-  @JsonKey(name: 'allocated_users_count', nullable: true)
-  int allocatedUsersCount;
-  @JsonKey(name: 'available_users_count', nullable: true)
-  int availableUsersCount;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
@@ -94,14 +86,6 @@ class Finance extends Model {
 
   setAccountsData(AccountsData accountsData) {
     this.accountsData = accountsData;
-  }
-
-  setAllocatedBranchCount(int allocBranchCount) {
-    this.allocatedBranchCount = allocBranchCount;
-  }
-
-  setAllocatedUsersCount(int allocUsersCount) {
-    this.allocatedUsersCount = allocUsersCount;
   }
 
   setAddedBy(int mobileNumber) {

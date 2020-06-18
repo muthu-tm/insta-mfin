@@ -13,10 +13,6 @@ Finance _$FinanceFromJson(Map<String, dynamic> json) {
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
     ..dateOfRegistration = json['date_of_registration'] as int
-    ..allocatedBranchCount = json['allocated_branch_count'] as int
-    ..availableBranchCount = json['available_branch_count'] as int
-    ..allocatedUsersCount = json['allocated_users_count'] as int
-    ..availableUsersCount = json['available_users_count'] as int
     ..addedBy = json['added_by'] as int
     ..accountsData = json['accounts_data'] == null
         ? new AccountsData()
@@ -36,30 +32,15 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
-      'registration_id':
-          instance.registrationID == null ? '' : instance.registrationID,
+      'registration_id': instance.registrationID ?? '',
       'finance_name': instance.financeName,
-      'contact_number': instance.contactNumber == null ? '' : instance.contactNumber,
-      'email': instance.emailID == null ? '' : instance.emailID,
-      'admins': instance.admins == null ? [instance.addedBy] : instance.admins,
-      'users': instance.users == null ? [instance.addedBy] : instance.users,
-      'display_profile_path': instance.displayProfilePath == null
-          ? ''
-          : instance.displayProfilePath,
+      'contact_number': instance.contactNumber ?? '',
+      'email': instance.emailID ?? '',
+      'admins': instance.admins ?? [instance.addedBy],
+      'users': instance.users ?? [instance.addedBy],
+      'display_profile_path': instance.displayProfilePath ?? '',
       'address': instance.address?.toJson(),
       'date_of_registration': instance.dateOfRegistration,
-      'allocated_branch_count': instance.allocatedBranchCount == null
-          ? 1
-          : instance.allocatedBranchCount,
-      'available_branch_count': instance.availableBranchCount == null
-          ? 1
-          : instance.availableBranchCount,
-      'allocated_users_count': instance.allocatedUsersCount == null
-          ? 1
-          : instance.allocatedUsersCount,
-      'available_users_count': instance.availableUsersCount == null
-          ? 1
-          : instance.availableUsersCount,
       'accounts_data': instance.accountsData?.toJson(),
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,

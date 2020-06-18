@@ -26,7 +26,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
 
   Map<String, dynamic> collDetails = {
     'collected_on': DateUtils.getUTCDateEpoch(DateTime.now()),
-    'penality_amount': 0
+    'penalty_amount': 0
   };
 
   String transferredMode = "0";
@@ -436,11 +436,11 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                         ),
                         validator: (amount) {
                           if (amount.trim().isEmpty || amount.trim() == "0") {
-                            collDetails['penality_amount'] = 0;
+                            collDetails['penalty_amount'] = 0;
                             hasPenality = false;
                           } else {
                             hasPenality = true;
-                            collDetails['penality_amount'] =
+                            collDetails['penalty_amount'] =
                                 int.parse(amount.trim());
                           }
                           return null;

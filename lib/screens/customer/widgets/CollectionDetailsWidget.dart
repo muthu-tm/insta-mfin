@@ -216,7 +216,7 @@ class CollectionDetailsWidget extends StatelessWidget {
                               _collection.collectionDate,
                               false,
                               _collectionDetails.toJson(),
-                              (_collectionDetails.penalityAmount > 0));
+                              (_collectionDetails.penaltyAmount > 0));
                           if (!result['is_success']) {
                             Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(

@@ -23,8 +23,8 @@ class AccountsData {
   int paymentsAmount;
   @JsonKey(name: 'collections_amount', defaultValue: 0)
   int collectionsAmount;
-  @JsonKey(name: 'penality_amount', defaultValue: 0)
-  int penalityAmount;
+  @JsonKey(name: 'penalty_amount', defaultValue: 0)
+  int penaltyAmount;
 
   AccountsData();
 
