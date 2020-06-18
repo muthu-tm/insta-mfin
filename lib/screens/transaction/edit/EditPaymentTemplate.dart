@@ -28,7 +28,6 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
   double interestRate;
   int collectionAmount;
   String selectedCollectionModeID = "0";
-  String selectedCollectionDayID = "0";
 
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
@@ -52,8 +51,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
   void initState() {
     super.initState();
     selectedCollectionModeID = widget.template.collectionMode.toString();
-    selectedCollectionDayID = widget.template.collectionDay.toString();
-    collectionDays = <int>[];
+    collectionDays = widget.template.collectionDays;
   }
 
   @override

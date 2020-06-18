@@ -22,8 +22,8 @@ class PaymentTemplate {
   int tenure;
   @JsonKey(name: 'collection_mode', nullable: true)
   int collectionMode;
-  @JsonKey(name: 'collection_day', nullable: true)
-  int collectionDay;
+  @JsonKey(name: 'collection_days', nullable: true)
+  List<int> collectionDays;
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;
   @JsonKey(name: 'interest_rate', nullable: true)
@@ -45,8 +45,8 @@ class PaymentTemplate {
     this.totalAmount = amount;
   }
 
-  setPrincipalAmount(int pricipal) {
-    this.principalAmount = pricipal;
+  setPrincipalAmount(int principal) {
+    this.principalAmount = principal;
   }
 
   setDocumentCharge(int docCharge) {
@@ -69,8 +69,8 @@ class PaymentTemplate {
     this.collectionAmount = amount;
   }
 
-  void setCollectionDay(int collectionDay) {
-    this.collectionDay = collectionDay;
+  void setCollectionDays(List<int> collectionDay) {
+    this.collectionDays = collectionDay;
   }
 
   setInterestRate(double iRate) {
