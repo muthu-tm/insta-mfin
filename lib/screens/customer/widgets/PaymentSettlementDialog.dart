@@ -32,6 +32,7 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
   void initState() {
     super.initState();
     this.rFrom = widget._p.custName;
+    _date.text = DateUtils.formatDate(DateTime.now());
   }
 
   @override

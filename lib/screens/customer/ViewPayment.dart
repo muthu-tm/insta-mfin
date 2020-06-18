@@ -144,13 +144,42 @@ class _ViewPaymentState extends State<ViewPayment> {
                         },
                       ),
                       ListTile(
-                          title: Text('Do Settlement'),
-                          // TODO: Need to complete this
-                          leading: Icon(
-                            Icons.account_balance_wallet,
-                            color: CustomColors.mfinBlue,
-                          ),
-                          onTap: () {}),
+                        title: Text('Do Settlement'),
+                        leading: Icon(
+                          Icons.account_balance_wallet,
+                          color: CustomColors.mfinBlue,
+                        ),
+                        onTap: () async {
+                          if (widget.payment.isSettled) {
+                            String sDate = DateUtils.formatDate(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    widget.payment.settledDate));
+                            Navigator.pop(context);
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                "Payment has already SETTLED on $sDate.!",
+                                3,
+                              ),
+                            );
+                          } else {
+                            List<int> pDetails =
+                                await widget.payment.getAmountDetails();
+                            showDialog(
+                              context: context,
+                              routeSettings: RouteSettings(
+                                  name: "/customers/payment/settlement"),
+                              builder: (context) {
+                                return SingleChildScrollView(
+                                  child: Center(
+                                    child: PaymentSettlementDialog(
+                                        _scaffoldKey, widget.payment, pDetails),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        },
+                      ),
                       ListTile(
                           title: Text('Delete Payment'),
                           leading: Icon(
@@ -253,6 +282,138 @@ class _ViewPaymentState extends State<ViewPayment> {
               Container(
                 child: Column(
                   children: <Widget>[
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "CUSTOMER",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        readOnly: true,
+                        initialValue: widget.payment.custName,
+                        textAlign: TextAlign.end,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: CustomColors.mfinFadedButtonGreen)),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "DATE",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        readOnly: true,
+                        initialValue: DateUtils.formatDate(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                widget.payment.dateOfPayment)),
+                        keyboardType: TextInputType.datetime,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            size: 35,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "AMOUNT",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        readOnly: true,
+                        textAlign: TextAlign.end,
+                        initialValue: widget.payment.totalAmount.toString(),
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "PAY OUT",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        readOnly: true,
+                        textAlign: TextAlign.end,
+                        initialValue: widget.payment.principalAmount.toString(),
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                      ),
+                    ),
                     !isSettled
                         ? Padding(
                             padding: const EdgeInsets.all(10.0),
