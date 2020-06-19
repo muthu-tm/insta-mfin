@@ -4,9 +4,15 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/GradientText.dart';
 
 class AsyncWidgets {
-  static asyncWaiting() {
+  static asyncWaiting(
+      {dotOneColor = CustomColors.mfinAlertRed,
+      dotTwoColor = CustomColors.mfinButtonGreen,
+      dotThreeColor = CustomColors.mfinLightBlue}) {
     return <Widget>[
       ColorLoader(
+        dotOneColor: dotOneColor,
+        dotTwoColor: dotTwoColor,
+        dotThreeColor: dotThreeColor,
         dotIcon: Icon(Icons.adjust),
       ),
       GradientText(
