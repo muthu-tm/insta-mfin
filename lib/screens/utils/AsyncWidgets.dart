@@ -1,36 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/utils/ColorLoader.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/GradientText.dart';
 
 class AsyncWidgets {
   static asyncWaiting() {
     return <Widget>[
-      Stack(
-        children: <Widget>[
-          Container(
-            width: 50,
-            height: 50,
-            decoration: new BoxDecoration(
-              shape: BoxShape.circle,
-              image: new DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('images/icons/logo.png'),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 50,
-            height: 50,
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-              backgroundColor: CustomColors.mfinButtonGreen,
-              valueColor: AlwaysStoppedAnimation<Color>(CustomColors.mfinBlue),
-            ),
-          ),
-        ],
+      ColorLoader(
+        dotIcon: Icon(Icons.adjust),
       ),
       GradientText(
-        'Awaiting result...',
+        'Loading...',
         gradient: LinearGradient(
           colors: [
             CustomColors.mfinBlue,
