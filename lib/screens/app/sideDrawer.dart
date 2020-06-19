@@ -270,7 +270,7 @@ Widget openDrawer(BuildContext context) {
           leading: new Icon(Icons.error, color: CustomColors.mfinAlertRed),
           title: new Text('Logout'),
           onTap: () => CustomDialogs.confirm(
-              context, "Warning!", "Do you really want to exit?", () async {
+              context, "Warning!", "Do you really want to Logout?", () async {
             await _authController.signOut();
             Navigator.pushAndRemoveUntil(
               context,
