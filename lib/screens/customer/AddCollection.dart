@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -319,7 +320,7 @@ class _AddCollectionState extends State<AddCollection> {
                               validator: (number) {
                                 if (number.trim().isEmpty ||
                                     number.trim() == "0") {
-                                  if (collType != "0" && collType != "4")
+                                  if (collType == "0" || collType == "4")
                                     return "Collected Amount should not be empty!";
                                   else
                                     _cNumberController.text = "0";
@@ -648,6 +649,58 @@ class _AddCollectionState extends State<AddCollection> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Updating Collection");
+
+      int type = int.parse(collType);
+      int cNumber = int.parse(_cNumberController.text);
+      if (type == 0) {
+        // check for collection with this collection number
+        Collection res = await Collection().getByCollectionNumber(
+            widget.payment.financeID,
+            widget.payment.branchName,
+            widget.payment.subBranchName,
+            widget.payment.customerNumber,
+            widget.payment.createdAt,
+            cNumber);
+
+        if (res != null) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Found a Collection with the same Collection NUMBER. Please enter unique Colleciton Number!',
+              2));
+          return;
+        }
+
+        // check already existing collections total amount
+        List<Collection> allColl = await Collection()
+            .getAllCollectionsForCustomerPayment(
+                widget.payment.financeID,
+                widget.payment.branchName,
+                widget.payment.subBranchName,
+                widget.payment.customerNumber,
+                widget.payment.createdAt);
+
+        int cAmount = 0;
+        allColl.forEach((c) {
+          if (c.type != 1 && c.type != 2 && c.type != 4)
+            cAmount += c.collectionAmount;
+        });
+
+        if (cAmount == widget.payment.totalAmount) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              "You have enough collection entries for this Payment amount $cAmount",
+              2));
+          return;
+        } else if ((cAmount + collAmount) > widget.payment.totalAmount) {
+          int bAmount = widget.payment.totalAmount - cAmount;
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              "Total collection amount should not be greater than Payment amount $cAmount! You can create collection for $bAmount",
+              2));
+          return;
+        }
+      }
+
       CollectionController _cc = CollectionController();
 
       Map<String, dynamic> collDetails = {};
@@ -669,8 +722,8 @@ class _AddCollectionState extends State<AddCollection> {
           widget.payment.subBranchName,
           widget.payment.customerNumber,
           widget.payment.createdAt,
-          int.parse(_cNumberController.text),
-          int.parse(collType),
+          cNumber,
+          type,
           collAmount,
           collDate,
           collDetails);

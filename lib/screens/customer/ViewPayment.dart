@@ -60,23 +60,32 @@ class _ViewPaymentState extends State<ViewPayment> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showMaterialModalBottomSheet(
-              expand: false,
-              context: context,
-              backgroundColor: Colors.transparent,
-              builder: (context, scrollController) {
-                return Material(
-                    child: SafeArea(
-                  top: false,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        title: Text('Add Collection'),
-                        leading: Icon(
-                          Icons.monetization_on,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        onTap: () {
+            expand: false,
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context, scrollController) {
+              return Material(
+                  child: SafeArea(
+                top: false,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      title: Text('Add Collection'),
+                      leading: Icon(
+                        Icons.monetization_on,
+                        color: CustomColors.mfinBlue,
+                      ),
+                      onTap: () {
+                        if (widget.payment.isSettled) {
+                          Navigator.pop(context);
+                          _scaffoldKey.currentState.showSnackBar(
+                            CustomSnackBar.errorSnackBar(
+                              "You cannot add collection for SETTLED Payment!",
+                              3,
+                            ),
+                          );
+                        } else {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -86,185 +95,185 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   name: '/customers/payment/collections/add'),
                             ),
                           );
-                        },
-                      ),
-                      ListTile(
-                          title: Text('View Payment'),
-                          leading: Icon(
-                            Icons.remove_red_eye,
-                            color: CustomColors.mfinBlue,
-                          ),
-                          onTap: () {
-                            showMaterialModalBottomSheet(
-                                enableDrag: true,
-                                isDismissible: true,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                context: context,
-                                builder: (context, scrollController) {
-                                  return ViewPaymentDetails(widget.payment);
-                                });
-                          }),
-                      ListTile(
-                        title: Text('Edit Payment'),
+                        }
+                      },
+                    ),
+                    ListTile(
+                        title: Text('View Payment'),
                         leading: Icon(
-                          Icons.edit,
+                          Icons.remove_red_eye,
                           color: CustomColors.mfinBlue,
                         ),
-                        onTap: () async {
-                          int totalReceived =
-                              await widget.payment.getTotalReceived();
-                          if (totalReceived != null && totalReceived > 0) {
-                            Navigator.pop(context);
-                            _scaffoldKey.currentState.showSnackBar(
-                              CustomSnackBar.errorSnackBar(
-                                "You cannot Edit Payments which has valid COLLECTION!}",
-                                3,
+                        onTap: () {
+                          showMaterialModalBottomSheet(
+                              enableDrag: true,
+                              isDismissible: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                            );
-                          } else if (totalReceived != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    EditPayment(widget.payment),
-                                settings: RouteSettings(
-                                    name: '/customers/payment/edit'),
-                              ),
-                            );
-                          } else {
-                            _scaffoldKey.currentState.showSnackBar(
-                              CustomSnackBar.errorSnackBar(
-                                "Error, Please try again later!}",
-                                3,
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                      ListTile(
-                        title: Text('Do Settlement'),
-                        leading: Icon(
-                          Icons.account_balance_wallet,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        onTap: () async {
-                          if (widget.payment.isSettled) {
-                            String sDate = DateUtils.formatDate(
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    widget.payment.settledDate));
-                            Navigator.pop(context);
-                            _scaffoldKey.currentState.showSnackBar(
-                              CustomSnackBar.errorSnackBar(
-                                "Payment has already SETTLED on $sDate.!",
-                                3,
-                              ),
-                            );
-                          } else {
-                            List<int> pDetails =
-                                await widget.payment.getAmountDetails();
-                            showDialog(
                               context: context,
-                              routeSettings: RouteSettings(
-                                  name: "/customers/payment/settlement"),
-                              builder: (context) {
-                                return SingleChildScrollView(
-                                  child: Center(
-                                    child: PaymentSettlementDialog(
-                                        _scaffoldKey, widget.payment, pDetails),
+                              builder: (context, scrollController) {
+                                return ViewPaymentDetails(widget.payment);
+                              });
+                        }),
+                    ListTile(
+                      title: Text('Edit Payment'),
+                      leading: Icon(
+                        Icons.edit,
+                        color: CustomColors.mfinBlue,
+                      ),
+                      onTap: () async {
+                        int totalReceived =
+                            await widget.payment.getTotalReceived();
+                        if (totalReceived != null && totalReceived > 0) {
+                          Navigator.pop(context);
+                          _scaffoldKey.currentState.showSnackBar(
+                            CustomSnackBar.errorSnackBar(
+                              "You cannot Edit Payments which has valid COLLECTION!}",
+                              3,
+                            ),
+                          );
+                        } else if (totalReceived != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPayment(widget.payment),
+                              settings: RouteSettings(
+                                  name: '/customers/payment/edit'),
+                            ),
+                          );
+                        } else {
+                          _scaffoldKey.currentState.showSnackBar(
+                            CustomSnackBar.errorSnackBar(
+                              "Error, Please try again later!}",
+                              3,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Do Settlement'),
+                      leading: Icon(
+                        Icons.account_balance_wallet,
+                        color: CustomColors.mfinBlue,
+                      ),
+                      onTap: () async {
+                        if (widget.payment.isSettled) {
+                          String sDate = DateUtils.formatDate(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  widget.payment.settledDate));
+                          Navigator.pop(context);
+                          _scaffoldKey.currentState.showSnackBar(
+                            CustomSnackBar.errorSnackBar(
+                              "Payment has already SETTLED on $sDate.!",
+                              3,
+                            ),
+                          );
+                        } else {
+                          List<int> pDetails =
+                              await widget.payment.getAmountDetails();
+                          showDialog(
+                            context: context,
+                            routeSettings: RouteSettings(
+                                name: "/customers/payment/settlement"),
+                            builder: (context) {
+                              return SingleChildScrollView(
+                                child: Center(
+                                  child: PaymentSettlementDialog(
+                                      _scaffoldKey, widget.payment, pDetails),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                    ),
+                    ListTile(
+                        title: Text('Delete Payment'),
+                        leading: Icon(
+                          Icons.delete_forever,
+                          color: CustomColors.mfinAlertRed,
+                        ),
+                        onTap: () async {
+                          CustomDialogs.confirm(
+                            context,
+                            "Confirm",
+                            "Are you sure to remove this Payment?",
+                            () async {
+                              int totalReceived =
+                                  await widget.payment.getTotalReceived();
+
+                              if (totalReceived != null && totalReceived > 0) {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                _scaffoldKey.currentState.showSnackBar(
+                                  CustomSnackBar.errorSnackBar(
+                                    "You cannot Remove Payments which has already received COLLECTION!}",
+                                    3,
                                   ),
                                 );
-                              },
-                            );
-                          }
-                        },
-                      ),
-                      ListTile(
-                          title: Text('Delete Payment'),
-                          leading: Icon(
-                            Icons.delete_forever,
-                            color: CustomColors.mfinAlertRed,
-                          ),
-                          onTap: () async {
-                            CustomDialogs.confirm(
-                              context,
-                              "Confirm",
-                              "Are you sure to remove this Payment?",
-                              () async {
-                                int totalReceived =
-                                    await widget.payment.getTotalReceived();
-
-                                if (totalReceived != null &&
-                                    totalReceived > 0) {
+                              } else if (totalReceived != null) {
+                                PaymentController _pc = PaymentController();
+                                var result = await _pc.removePayment(
+                                    widget.payment.financeID,
+                                    widget.payment.branchName,
+                                    widget.payment.subBranchName,
+                                    widget.payment.customerNumber,
+                                    widget.payment.createdAt);
+                                if (!result['is_success']) {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
-                                      "You cannot Remove Payments which has already received COLLECTION!}",
+                                      "Unable to remove the Payment! ${result['message']}",
                                       3,
                                     ),
                                   );
-                                } else if (totalReceived != null) {
-                                  PaymentController _pc = PaymentController();
-                                  var result = await _pc.removePayment(
-                                      widget.payment.financeID,
-                                      widget.payment.branchName,
-                                      widget.payment.subBranchName,
-                                      widget.payment.customerNumber,
-                                      widget.payment.createdAt);
-                                  if (!result['is_success']) {
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                    _scaffoldKey.currentState.showSnackBar(
-                                      CustomSnackBar.errorSnackBar(
-                                        "Unable to remove the Payment! ${result['message']}",
-                                        3,
-                                      ),
-                                    );
-                                  } else {
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                    _scaffoldKey.currentState.showSnackBar(
-                                      CustomSnackBar.errorSnackBar(
-                                          "Payment removed successfully", 2),
-                                    );
-                                    Navigator.pop(context);
-                                  }
                                 } else {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
-                                      "Error, Please try again later!}",
-                                      3,
-                                    ),
+                                        "Payment removed successfully", 2),
                                   );
+                                  Navigator.pop(context);
                                 }
-                              },
-                              () {
+                              } else {
                                 Navigator.pop(context);
-                              },
-                            );
-                          }),
-                      ListTile(
-                        title: Text('Home'),
-                        leading: Icon(
-                          Icons.home,
-                          color: CustomColors.mfinBlue,
+                                Navigator.pop(context);
+                                _scaffoldKey.currentState.showSnackBar(
+                                  CustomSnackBar.errorSnackBar(
+                                    "Error, Please try again later!}",
+                                    3,
+                                  ),
+                                );
+                              }
+                            },
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        }),
+                    ListTile(
+                      title: Text('Home'),
+                      leading: Icon(
+                        Icons.home,
+                        color: CustomColors.mfinBlue,
+                      ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserHomeScreen(),
+                          settings: RouteSettings(name: '/home'),
                         ),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserHomeScreen(),
-                            settings: RouteSettings(name: '/home'),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ));
-              });
+                      ),
+                    )
+                  ],
+                ),
+              ));
+            },
+          );
         },
         backgroundColor: CustomColors.mfinBlue,
         splashColor: CustomColors.mfinWhite,
@@ -344,7 +353,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                           border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: CustomColors.mfinWhite)),
-                          fillColor: CustomColors.mfinWhite,
+                          fillColor: CustomColors.mfinLightGrey,
                           filled: true,
                           suffixIcon: Icon(
                             Icons.date_range,
@@ -374,7 +383,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelStyle: TextStyle(color: CustomColors.mfinBlue),
-                          fillColor: CustomColors.mfinWhite,
+                          fillColor: CustomColors.mfinLightGrey,
                           filled: true,
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 10.0),
@@ -404,7 +413,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelStyle: TextStyle(color: CustomColors.mfinBlue),
-                          fillColor: CustomColors.mfinWhite,
+                          fillColor: CustomColors.mfinLightGrey,
                           filled: true,
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 10.0),

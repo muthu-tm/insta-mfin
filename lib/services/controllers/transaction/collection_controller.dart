@@ -31,13 +31,6 @@ class CollectionController {
         return CustomResponse.getFailureReponse(
             'Found a Collection on the selected DATE and TYPE. Please use that to add amount!');
 
-      res = await coll.getByCollectionNumber(
-          financeID, branchName, subBranchName, custNumber, createdAt, cNumber);
-
-      if (res != null)
-        return CustomResponse.getFailureReponse(
-            'Found a Collection with the same Collection NUMBER. Please enter unique Colleciton Number!');
-
       coll.setFinanceID(financeID);
       coll.setBranchName(branchName);
       coll.setSubBranchName(subBranchName);

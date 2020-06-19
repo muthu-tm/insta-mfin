@@ -291,7 +291,7 @@ class Collection {
                 CollectionDetails cDetails =
                     CollectionDetails.fromJson(collDetails);
                 cDetails.createdAt = DateTime.now();
-                this.collections.add(cDetails);
+                this.collections = [cDetails];
 
                 Model().txCreate(tx, docRef, this.toJson());
               },
@@ -303,8 +303,6 @@ class Collection {
         throw err;
       }
     }
-
-    return this;
   }
 
   Stream<QuerySnapshot> streamCollectionsForCustomer(String financeId,
