@@ -204,11 +204,8 @@ class Collection {
   }
 
   Future<Collection> create(DateTime createdAt, bool cAlready,
-      CollectionDetails collDetails) async {
+      Map<String, dynamic> collDetails) async {
     this.createdAt = DateTime.now();
-    this.financeID = this.financeID;
-    this.branchName = this.branchName;
-    this.subBranchName = this.subBranchName;
 
     String docID = "";
     if (this.type != 0) {
@@ -222,6 +219,89 @@ class Collection {
               this.subBranchName, this.customerNumber, createdAt)
           .document(docID)
           .setData(this.toJson());
+    } else {
+      DocumentReference docRef = getCollectionRef(
+              this.financeID,
+              this.branchName,
+              this.subBranchName,
+              this.customerNumber,
+              createdAt)
+          .document(docID);
+
+      try {
+        DocumentReference finDocRef = Payment().user.getFinanceDocReference();
+
+        await Model.db.runTransaction(
+          (tx) {
+            return tx.get(finDocRef).then(
+              (doc) async {
+                AccountsData accData =
+                    AccountsData.fromJson(doc.data['accounts_data']);
+
+                accData.cashInHand += collDetails['amount'];
+                accData.collectionsAmount += collDetails['amount'];
+
+                if (collDetails['penalty_amount'] > 0) {
+                  accData.cashInHand += collDetails['penalty_amount'];
+                  accData.penaltyAmount += collDetails['penalty_amount'];
+
+                  Map<String, dynamic> pData = {
+                    "finance_id": this.financeID,
+                    "branch_name": this.branchName,
+                    "sub_branch_name": this.subBranchName,
+                    "collection_amount": collDetails['penalty_amount'],
+                    "customer_number": this.customerNumber,
+                    "collected_on": [collDetails['collected_on']],
+                    "collection_date": collDetails['collected_on'],
+                    "type": 4, // Penalty
+                    "collections": [
+                      {
+                        "collected_on": collDetails['collected_on'],
+                        "is_paid_late": false,
+                        "amount": collDetails['penalty_amount'],
+                        "transferred_mode": collDetails['transferred_mode'],
+                        "status": 1, // Paid
+                        "collected_from": collDetails['collected_from'],
+                        "collected_by": collDetails['collected_by'],
+                        "notes": collDetails['notes'],
+                        "added_by": collDetails['added_by'],
+                        "created_at": DateTime.now(),
+                      }
+                    ],
+                    "collection_number": this.collectionNumber,
+                    "created_at": DateTime.now(),
+                  };
+                  Model().txCreate(
+                      tx,
+                      this.getPenaltyDocumentReference(
+                          this.financeID,
+                          this.branchName,
+                          this.subBranchName,
+                          this.customerNumber,
+                          createdAt,
+                          collDetails['collected_on']),
+                      pData);
+                }
+
+                Map<String, dynamic> aData = {
+                  'accounts_data': accData.toJson()
+                };
+                Model().txUpdate(tx, finDocRef, aData);
+
+                CollectionDetails cDetails =
+                    CollectionDetails.fromJson(collDetails);
+                cDetails.createdAt = DateTime.now();
+                this.collections.add(cDetails);
+
+                Model().txCreate(tx, docRef, this.toJson());
+              },
+            );
+          },
+        );
+      } catch (err) {
+        print('Collection CREATE Transaction failure:' + err.toString());
+        throw err;
+      }
     }
 
     return this;
@@ -280,6 +360,27 @@ class Collection {
     }
 
     return coll;
+  }
+
+  Future<Collection> getByCollectionNumber(
+      String financeID,
+      String branchName,
+      String subBranchName,
+      int custNumber,
+      DateTime createdAt,
+      int cNumber) async {
+    var collectionDocs = await getCollectionRef(
+            financeID, branchName, subBranchName, custNumber, createdAt)
+        .where('collection_number', isEqualTo: cNumber)
+        .getDocuments();
+
+    Collection coll;
+    if (collectionDocs.documents.isNotEmpty) {
+      coll = Collection.fromJson(collectionDocs.documents[0].data);
+      return coll;
+    } else {
+      return null;
+    }
   }
 
   Future<List<Collection>> getAllCollectionsForCustomerPayment(
