@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
-import 'package:instamfin/screens/utils/ColorLoader.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
@@ -49,215 +49,223 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Material(
-                            elevation: 10.0,
-                            color: CustomColors.mfinButtonGreen,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(60.0),
-                              topLeft: Radius.circular(10.0),
-                              bottomLeft: Radius.circular(10.0),
-                              bottomRight: Radius.circular(10.0),
-                            ),
-                            child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 10.0),
-                              padding: EdgeInsets.all(10.0),
-                              height: 150,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.grade,
-                                    size: 40,
-                                    color: CustomColors.mfinBlue,
+                          padding: EdgeInsets.all(10.0),
+                          child: Stack(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 32, left: 8, right: 8, bottom: 16),
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10.0),
+                                  decoration: BoxDecoration(
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                          color: CustomColors.mfinButtonGreen
+                                              .withOpacity(0.6),
+                                          offset: const Offset(1.1, 4.0),
+                                          blurRadius: 8.0),
+                                    ],
+                                    gradient: LinearGradient(
+                                      colors: <Color>[
+                                        CustomColors.mfinButtonGreen,
+                                        CustomColors.mfinBlue,
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: const BorderRadius.only(
+                                      bottomRight: Radius.circular(8.0),
+                                      bottomLeft: Radius.circular(8.0),
+                                      topLeft: Radius.circular(8.0),
+                                      topRight: Radius.circular(54.0),
+                                    ),
                                   ),
-                                  Column(
+                                  height: 150,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      getCIHAmount(context),
-                                      SizedBox(height: 20),
-                                      Text(
-                                        "Cash In Hand",
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                          color: CustomColors.mfinWhite,
-                                          fontWeight: FontWeight.bold,
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 70, left: 5, right: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              "Cash In Hand",
+                                              style: TextStyle(
+                                                fontSize: 17.0,
+                                                color: CustomColors.mfinWhite,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(height: 20),
+                                            getCIHAmount(context),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                              Positioned(
+                                top: 15,
+                                left: 0,
+                                child: Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    color: CustomColors.mfinLightGrey
+                                        .withOpacity(0.3),
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 30,
+                                left: 16,
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: CustomColors.mfinBlue,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Icon(
+                                        Icons.grade,
+                                        size: 35,
+                                        color: CustomColors.mfinButtonGreen,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Material(
-                            elevation: 10.0,
-                            color: CustomColors.mfinAlertRed,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(60.0),
-                              topLeft: Radius.circular(10.0),
-                              bottomLeft: Radius.circular(10.0),
-                              bottomRight: Radius.circular(10.0),
-                            ),
-                            child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 10.0),
-                              padding: EdgeInsets.all(10.0),
-                              height: 150,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.featured_play_list,
-                                    size: 40,
-                                    color: CustomColors.mfinGrey,
+                          padding: EdgeInsets.all(10.0),
+                          child: Stack(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 32, left: 8, right: 8, bottom: 16),
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10.0),
+                                  decoration: BoxDecoration(
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                          color: CustomColors.mfinAlertRed
+                                              .withOpacity(0.6),
+                                          offset: const Offset(1.1, 4.0),
+                                          blurRadius: 8.0),
+                                    ],
+                                    gradient: LinearGradient(
+                                      colors: <Color>[
+                                        CustomColors.mfinAlertRed,
+                                        CustomColors.mfinBlue,
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: const BorderRadius.only(
+                                      bottomRight: Radius.circular(8.0),
+                                      bottomLeft: Radius.circular(8.0),
+                                      topLeft: Radius.circular(8.0),
+                                      topRight: Radius.circular(54.0),
+                                    ),
                                   ),
-                                  Column(
+                                  height: 150,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      getStockAmount(context),
-                                      SizedBox(height: 20),
-                                      Text(
-                                        "OutStanding",
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                          color: CustomColors.mfinLightGrey,
-                                          fontWeight: FontWeight.bold,
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 70, left: 5, right: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              "Outstanding",
+                                              style: TextStyle(
+                                                fontSize: 17.0,
+                                                color: CustomColors.mfinWhite,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(height: 20),
+                                            getStockAmount(context),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                              Positioned(
+                                top: 15,
+                                left: 0,
+                                child: Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    color: CustomColors.mfinLightGrey
+                                        .withOpacity(0.3),
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 30,
+                                left: 16,
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: CustomColors.mfinGrey,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Icon(
+                                        Icons.featured_play_list,
+                                        size: 30,
+                                        color: CustomColors.mfinAlertRed,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 5.0),
                     Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Material(
-                        elevation: 10.0,
-                        color: CustomColors.mfinBlue,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30.0),
-                          topLeft: Radius.circular(10.0),
-                          bottomLeft: Radius.circular(10.0),
-                          bottomRight: Radius.circular(10.0),
-                        ),
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 10.0),
-                          padding: EdgeInsets.all(10.0),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Icon(Icons.group)),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  ColorLoader(),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      padding: EdgeInsets.only(
+                          left: 10.0, right: 10.0, bottom: 10.0),
+                      child: getCustomerCard(context),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Material(
-                        elevation: 10.0,
-                        color: CustomColors.mfinAlertRed,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30.0),
-                          topLeft: Radius.circular(10.0),
-                          bottomLeft: Radius.circular(10.0),
-                          bottomRight: Radius.circular(10.0),
-                        ),
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 10.0),
-                          padding: EdgeInsets.all(10.0),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Icon(Icons.group)),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Cash In Hand",
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      padding: EdgeInsets.only(
+                          left: 10.0, right: 10.0, bottom: 10.0),
+                      child: getCustomerCard(context),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Material(
-                        elevation: 10.0,
-                        color: CustomColors.mfinGrey,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30.0),
-                          topLeft: Radius.circular(10.0),
-                          bottomLeft: Radius.circular(10.0),
-                          bottomRight: Radius.circular(10.0),
-                        ),
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 10.0),
-                          padding: EdgeInsets.all(10.0),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Icon(Icons.group)),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Cash In Hand",
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      padding: EdgeInsets.only(
+                          left: 10.0, right: 10.0, bottom: 10.0),
+                      child: getCustomerCard(context),
                     ),
                   ],
                 ),
@@ -267,6 +275,47 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: bottomBar(context),
+    );
+  }
+
+  Widget getCustomerCard(BuildContext context) {
+    return Card(
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Color(0xffE8F2F7),
+                shape: BoxShape.circle,
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Color(0xff7AC1E7),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Icon(
+                      Icons.group,
+                      size: 30,
+                      color: CustomColors.mfinWhite,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 20),
+          getCustomerData(context),
+        ],
+      ),
     );
   }
 
@@ -282,12 +331,49 @@ class HomeScreen extends StatelessWidget {
         if (snapshot.hasData) {
           Map<String, dynamic> finDoc = snapshot.data.data;
           int amount = finDoc['accounts_data']['cash_in_hand'];
-          Color color = CustomColors.mfinLightGrey;
-          if (amount < 0) color = CustomColors.mfinAlertRed;
-
           children = <Widget>[
             Text(
               amount.toString(),
+              style: TextStyle(
+                fontSize: 17.0,
+                color: CustomColors.mfinLightGrey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ];
+        } else if (snapshot.hasError) {
+          children = AsyncWidgets.asyncError();
+        } else {
+          children = AsyncWidgets.asyncWaiting();
+        }
+
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: children,
+        );
+      },
+    );
+  }
+
+  Widget getStockAmount(BuildContext context) {
+    final User _u = UserController().getCurrentUser();
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: _u.getFinanceDocReference().get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        List<Widget> children;
+
+        if (snapshot.hasData) {
+          Map<String, dynamic> finDoc = snapshot.data.data;
+          int amount = finDoc['accounts_data']['payments_amount'];
+          Color color = CustomColors.mfinLightGrey;
+          if (amount == 0) color = CustomColors.mfinPositiveGreen;
+
+          children = <Widget>[
+            Text(
+              '$amount',
               style: TextStyle(
                 fontSize: 17.0,
                 color: color,
@@ -312,27 +398,21 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget getStockAmount(BuildContext context) {
-    final User _u = UserController().getCurrentUser();
-
-    return FutureBuilder<DocumentSnapshot>(
-      future: _u.getFinanceDocReference().get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+  Widget getCustomerData(BuildContext context) {
+    return FutureBuilder<QuerySnapshot>(
+      future: Customer().getAllCustomers(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          Map<String, dynamic> finDoc = snapshot.data.data;
-          int amount = finDoc['accounts_data']['payments_amount'];
-          Color color = CustomColors.mfinLightGrey;
-          if (amount == 0) color = CustomColors.mfinPositiveGreen;
+          int tCount = snapshot.data.documents.length;
 
           children = <Widget>[
             Text(
-              amount.toString(),
+              'Total Customers - $tCount',
               style: TextStyle(
                 fontSize: 17.0,
-                color: color,
+                color: CustomColors.mfinBlue,
                 fontWeight: FontWeight.bold,
               ),
             ),
