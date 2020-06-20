@@ -932,8 +932,6 @@ class _AddPaymentState extends State<AddPayment> {
   _setSelectedTemp(String newVal) {
     if (tempList != null && newVal != "0") {
       selectedTemp = tempList[int.parse(newVal) - 1];
-      print(selectedTemp.toJson());
-
       setState(() {
         _selectedTempID = newVal;
         collectionDays = selectedTemp.collectionDays;
