@@ -50,7 +50,6 @@ class _EditPaymentState extends State<EditPayment> {
 
   List<PaymentTemplate> templates = new List<PaymentTemplate>();
   List<PaymentTemplate> tempList;
-  PaymentTemplate selectedTemp;
 
   TextEditingController _date = new TextEditingController();
   TextEditingController _collectionDate = new TextEditingController();
@@ -316,36 +315,6 @@ class _EditPaymentState extends State<EditPayment> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
-                          Flexible(
-                            child: DropdownButtonFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Payment template',
-                                  labelStyle: TextStyle(
-                                    color: CustomColors.mfinBlue,
-                                  ),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  fillColor: CustomColors.mfinWhite,
-                                  filled: true,
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 3.0, horizontal: 10.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors.mfinWhite)),
-                                ),
-                                items: _tempMap.entries.map(
-                                  (f) {
-                                    return DropdownMenuItem<String>(
-                                      value: f.key,
-                                      child: Text(f.value),
-                                    );
-                                  },
-                                ).toList(),
-                                value: _selectedTempID,
-                                onChanged: (newVal) {
-                                  _setSelectedTemp(newVal);
-                                }),
-                          ),
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: DropdownButtonFormField(
@@ -866,16 +835,6 @@ class _EditPaymentState extends State<EditPayment> {
       if (widget.payment.transferredMode != int.parse(newVal))
         updatedPayment['transferred_mode'] = int.parse(newVal);
       transferredMode = newVal;
-    });
-  }
-
-  _setSelectedTemp(String newVal) {
-    if (tempList != null && newVal != "0") {
-      selectedTemp = tempList[int.parse(newVal) - 1];
-    }
-
-    setState(() {
-      _selectedTempID = newVal;
     });
   }
 

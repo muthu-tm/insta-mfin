@@ -57,6 +57,14 @@ class _AddPaymentState extends State<AddPayment> {
   TextEditingController _date = TextEditingController();
   TextEditingController _collectionDate = TextEditingController();
 
+  TextEditingController totalAmountController = TextEditingController();
+  TextEditingController principalAmountController = TextEditingController();
+  TextEditingController docChargeController = TextEditingController();
+  TextEditingController surChargeController = TextEditingController();
+  TextEditingController tenureController = TextEditingController();
+  TextEditingController intrestRateController = TextEditingController();
+  TextEditingController collectionAmountController = TextEditingController();
+
   int selectedDate = DateUtils.getUTCDateEpoch(DateTime.now());
   int collectionDate =
       DateUtils.getUTCDateEpoch(DateTime.now().add(Duration(days: 1)));
@@ -71,6 +79,21 @@ class _AddPaymentState extends State<AddPayment> {
   String givenBy = '';
   String notes = '';
   int alreadyReceivedAmount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    this.getCollectionTemp();
+    givenBy = _user.name;
+    collectionDays = <int>[1, 2, 3, 4, 5];
+    totalAmountController.text = "0";
+    principalAmountController.text = "0";
+    docChargeController.text = '0';
+    surChargeController.text = '0';
+    tenureController.text = '0';
+    intrestRateController.text = '0';
+    collectionAmountController.text = '0';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -541,9 +564,9 @@ class _AddPaymentState extends State<AddPayment> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              controller: totalAmountController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue: totalAmount.toString(),
                               decoration: InputDecoration(
                                 hintText: 'Total amount',
                                 labelText: 'Total amount',
@@ -573,9 +596,9 @@ class _AddPaymentState extends State<AddPayment> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
+                              controller: intrestRateController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue: intrestRate.toString(),
                               decoration: InputDecoration(
                                 hintText: 'Rate in 0.00%',
                                 labelText: 'Rate of interest',
@@ -610,9 +633,9 @@ class _AddPaymentState extends State<AddPayment> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              controller: principalAmountController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue: principalAmount.toString(),
                               decoration: InputDecoration(
                                 hintText: 'Principal amount',
                                 labelText: 'Principal amount',
@@ -643,9 +666,9 @@ class _AddPaymentState extends State<AddPayment> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
+                              controller: tenureController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue: tenure.toString(),
                               decoration: InputDecoration(
                                 hintText: 'Number of Collections',
                                 labelText: 'No. of collections',
@@ -680,9 +703,9 @@ class _AddPaymentState extends State<AddPayment> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              controller: collectionAmountController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue: collectionAmount.toString(),
                               decoration: InputDecoration(
                                 hintText: 'Each Collection Amount',
                                 labelText: 'Collection amount',
@@ -750,8 +773,8 @@ class _AddPaymentState extends State<AddPayment> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              controller: docChargeController,
                               textAlign: TextAlign.start,
-                              initialValue: docCharge.toString(),
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText: 'Document charge',
@@ -781,8 +804,8 @@ class _AddPaymentState extends State<AddPayment> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
+                              controller: surChargeController,
                               textAlign: TextAlign.start,
-                              initialValue: surCharge.toString(),
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText: 'Service charge if any',
@@ -836,14 +859,6 @@ class _AddPaymentState extends State<AddPayment> {
     } catch (err) {
       print("Unable to load Payment templates for Payment ADD!");
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    this.getCollectionTemp();
-    givenBy = _user.name;
-    collectionDays = <int>[1, 2, 3, 4, 5];
   }
 
   Iterable<Widget> get selectedDays sync* {
@@ -917,19 +932,22 @@ class _AddPaymentState extends State<AddPayment> {
   _setSelectedTemp(String newVal) {
     if (tempList != null && newVal != "0") {
       selectedTemp = tempList[int.parse(newVal) - 1];
+      print(selectedTemp.toJson());
 
-      this.totalAmount = selectedTemp.totalAmount;
-      this.principalAmount = selectedTemp.principalAmount;
-      this.docCharge = selectedTemp.docCharge;
-      this.surCharge = selectedTemp.surcharge;
-      this.tenure = selectedTemp.tenure;
-      this.intrestRate = selectedTemp.interestRate;
-      this.collectionAmount = selectedTemp.collectionAmount;
+      setState(() {
+        _selectedTempID = newVal;
+        collectionDays = selectedTemp.collectionDays;
+        totalAmountController.text = selectedTemp.totalAmount.toString();
+        principalAmountController.text =
+            selectedTemp.principalAmount.toString();
+        docChargeController.text = selectedTemp.docCharge.toString();
+        surChargeController.text = selectedTemp.surcharge.toString();
+        tenureController.text = selectedTemp.tenure.toString();
+        intrestRateController.text = selectedTemp.interestRate.toString();
+        collectionAmountController.text =
+            selectedTemp.collectionAmount.toString();
+      });
     }
-
-    setState(() {
-      _selectedTempID = newVal;
-    });
   }
 
   _submit() async {
