@@ -77,7 +77,7 @@ Widget contactAndSupportDialog() {
                 elevation: 15.0,
                 onPressed: () {
                   UrlLauncherUtils.sendEmail(
-                      'muthu33cse@gmail.com',
+                      'hello.ifin@gmail.com',
                       'iFIN - Help %26 Support',
                       'Please type your query/issue here with your mobile number.. We will get back to you ASAP!');
                 },
@@ -107,7 +107,7 @@ Widget contactAndSupportDialog() {
                 ),
                 elevation: 15.0,
                 onPressed: () {
-                  UrlLauncherUtils.makePhoneCall(7502751029);
+                  UrlLauncherUtils.makePhoneCall(9361808580);
                 },
                 label: Padding(
                   padding: const EdgeInsets.all(5.0),
