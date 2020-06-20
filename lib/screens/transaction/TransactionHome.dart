@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
+import 'package:instamfin/screens/transaction/configuration/TransactionConfigHome.dart';
 import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
 import 'package:instamfin/screens/transaction/expense/ExpenseHome.dart';
 import 'package:instamfin/screens/transaction/widgets/TransactionCollectionBuilder.dart';
@@ -247,7 +248,16 @@ class TransactionScreen extends StatelessWidget {
                   elevation: 10.0,
                   borderRadius: BorderRadius.circular(10.0),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TransactionConfigHome(),
+                          settings:
+                              RouteSettings(name: '/transactions/config'),
+                        ),
+                      );
+                    },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.90,
                       height: 80,
@@ -262,7 +272,7 @@ class TransactionScreen extends StatelessWidget {
                           ),
                           Spacer(),
                           Text(
-                            "Settings & Preferences",
+                            "Transaction Configuration",
                             style: TextStyle(
                               fontSize: 18,
                               color: CustomColors.mfinBlue,

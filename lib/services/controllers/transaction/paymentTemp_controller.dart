@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -57,6 +58,28 @@ class PaymentTemplateController {
       return temps;
     } catch (err) {
       print("Error while retrieving Payment templates:" + err.toString());
+      throw err;
+    }
+  }
+
+  Stream<List<PaymentTemplate>> streamAllPaymentTemplates() async* {
+    try {
+      Stream<QuerySnapshot> stream = PaymentTemplate().streamTemplates();
+
+      if (await stream.isEmpty) {
+        yield [];
+      }
+
+      List<PaymentTemplate> paymentTemplates = [];
+
+      await for (var event in stream) {
+        for (var doc in event.documents) {
+          PaymentTemplate templates = PaymentTemplate.fromJson(doc.data);
+          paymentTemplates.add(templates);
+          yield paymentTemplates;
+        }
+      }
+    } catch (err) {
       throw err;
     }
   }
