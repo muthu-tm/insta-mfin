@@ -134,6 +134,14 @@ class Customer extends Model {
         .where('sub_branch_name', isEqualTo: user.primarySubBranch)
         .snapshots();
   }
+  
+  Future<QuerySnapshot> getAllCustomers() {
+    return getCollectionRef()
+        .where('finance_id', isEqualTo: user.primaryFinance)
+        .where('branch_name', isEqualTo: user.primaryBranch)
+        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .getDocuments();
+  }
 
   Future<int> getStatus(int number) async {
     try {

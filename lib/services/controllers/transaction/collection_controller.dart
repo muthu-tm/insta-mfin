@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/collection.dart';
-import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -15,10 +14,23 @@ class CollectionController {
     int type,
     int collAmount,
     int collDate,
-    CollectionDetails collection,
+    Map<String, dynamic> collection,
   ) async {
     try {
       Collection coll = Collection();
+      Collection res;
+      if (type != 0) {
+        res = await coll.getCollectionByID(financeID, branchName, subBranchName,
+            custNumber, createdAt, (collDate + type).toString());
+      } else {
+        res = await coll.getCollectionByID(financeID, branchName, subBranchName,
+            custNumber, createdAt, collDate.toString());
+      }
+
+      if (res != null)
+        return CustomResponse.getFailureReponse(
+            'Found a Collection on the selected DATE and TYPE. Please use that to add amount!');
+
       coll.setFinanceID(financeID);
       coll.setBranchName(branchName);
       coll.setSubBranchName(subBranchName);
@@ -29,7 +41,7 @@ class CollectionController {
       coll.setCollectionDate(collDate);
       bool cAlready = false;
 
-      if (collection != null) {
+      if (collection.containsKey('amount')) {
         cAlready = true;
       }
 
@@ -38,9 +50,6 @@ class CollectionController {
       return CustomResponse.getSuccesReponse(
           "Added new Collection successfully for $custNumber customer's payment ${createdAt.toString()}");
     } catch (err) {
-      print(
-          "Error while creating collection for $custNumber customer's payment ${createdAt.toString()}: " +
-              err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

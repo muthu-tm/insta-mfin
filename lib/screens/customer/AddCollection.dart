@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/collection_details.dart';
+import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -90,7 +90,6 @@ class _AddCollectionState extends State<AddCollection> {
                 elevation: 10.0,
                 margin: EdgeInsets.only(
                     top: 10.0, bottom: 10.0, left: 5.0, right: 5.0),
-                shadowColor: CustomColors.mfinPositiveGreen,
                 child: new Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,43 +97,200 @@ class _AddCollectionState extends State<AddCollection> {
                     Container(
                       height: 40,
                       alignment: Alignment.center,
-                      child: ListTile(
-                        leading: Text(
-                          DateUtils.formatDate(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                  widget.payment.dateOfPayment)),
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinAlertRed,
-                          ),
+                      child: Text(
+                        "Payment Info",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlue,
                         ),
-                        title: Text(
-                          widget.payment.customerNumber.toString(),
-                          textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Divider(
+                      color: CustomColors.mfinBlue,
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "CUSTOMER",
                           style: TextStyle(
-                            fontSize: 17,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinBlue,
-                          ),
-                        ),
-                        trailing: Text(
-                          widget.payment.paymentID.toString(),
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            fontSize: 17,
+                            fontSize: 13,
                             fontFamily: "Georgia",
                             fontWeight: FontWeight.bold,
                             color: CustomColors.mfinBlue,
                           ),
                         ),
                       ),
+                      title: TextFormField(
+                        readOnly: true,
+                        initialValue: widget.payment.custName,
+                        textAlign: TextAlign.end,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: CustomColors.mfinFadedButtonGreen)),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "ID",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        readOnly: true,
+                        initialValue: widget.payment.paymentID.toString(),
+                        textAlign: TextAlign.end,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: CustomColors.mfinFadedButtonGreen)),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "DATE",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        readOnly: true,
+                        initialValue: DateUtils.formatDate(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                widget.payment.dateOfPayment)),
+                        keyboardType: TextInputType.datetime,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            size: 35,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "AMOUNT",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        readOnly: true,
+                        textAlign: TextAlign.end,
+                        initialValue: widget.payment.totalAmount.toString(),
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "PAY OUT",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                      title: TextFormField(
+                        readOnly: true,
+                        textAlign: TextAlign.end,
+                        initialValue: widget.payment.principalAmount.toString(),
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(color: CustomColors.mfinBlue),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                        ),
+                      ),
                     ),
                     Divider(
-                      color: CustomColors.mfinBlue,
+                      color: CustomColors.mfinButtonGreen,
+                    ),
+                    Container(
+                      height: 40,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Collection Info",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlue,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -164,7 +320,7 @@ class _AddCollectionState extends State<AddCollection> {
                               validator: (number) {
                                 if (number.trim().isEmpty ||
                                     number.trim() == "0") {
-                                  if (collType != "0" && collType != "4")
+                                  if (collType == "0" || collType == "4")
                                     return "Collected Amount should not be empty!";
                                   else
                                     _cNumberController.text = "0";
@@ -304,8 +460,7 @@ class _AddCollectionState extends State<AddCollection> {
                               keyboardType: TextInputType.number,
                               controller: _aCollectedController,
                               decoration: InputDecoration(
-                                hintText: 'Collected Amount',
-                                labelText: 'Already Collected Amount',
+                                labelText: 'Already Collected',
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -436,6 +591,7 @@ class _AddCollectionState extends State<AddCollection> {
         _aCollectedController.text = widget.payment.surcharge.toString();
       } else {
         _aCollectedController.text = _cAmountController.text;
+        isLatePay = false;
       }
     }
 
@@ -471,7 +627,7 @@ class _AddCollectionState extends State<AddCollection> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1990),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now(),
     );
     if (picked != null && picked != DateTime.now())
       setState(
@@ -493,11 +649,62 @@ class _AddCollectionState extends State<AddCollection> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Updating Collection");
+
+      int type = int.parse(collType);
+      int cNumber = int.parse(_cNumberController.text);
+      if (type == 0) {
+        // check for collection with this collection number
+        Collection res = await Collection().getByCollectionNumber(
+            widget.payment.financeID,
+            widget.payment.branchName,
+            widget.payment.subBranchName,
+            widget.payment.customerNumber,
+            widget.payment.createdAt,
+            cNumber);
+
+        if (res != null) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Found a Collection with the same Collection NUMBER. Please enter unique Colleciton Number!',
+              2));
+          return;
+        }
+
+        // check already existing collections total amount
+        List<Collection> allColl = await Collection()
+            .getAllCollectionsForCustomerPayment(
+                widget.payment.financeID,
+                widget.payment.branchName,
+                widget.payment.subBranchName,
+                widget.payment.customerNumber,
+                widget.payment.createdAt);
+
+        int cAmount = 0;
+        allColl.forEach((c) {
+          if (c.type != 1 && c.type != 2 && c.type != 4)
+            cAmount += c.collectionAmount;
+        });
+
+        if (cAmount == widget.payment.totalAmount) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              "You have enough collection entries for this Payment amount $cAmount",
+              2));
+          return;
+        } else if ((cAmount + collAmount) > widget.payment.totalAmount) {
+          int bAmount = widget.payment.totalAmount - cAmount;
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              "Total collection amount should not be greater than Payment amount $cAmount! You can create collection for $bAmount",
+              2));
+          return;
+        }
+      }
+
       CollectionController _cc = CollectionController();
 
-      CollectionDetails collectionDetails;
+      Map<String, dynamic> collDetails = {};
       if (int.parse(_aCollectedController.text) > 0) {
-        Map<String, dynamic> collDetails = {};
         collDetails['amount'] = int.parse(_aCollectedController.text);
         collDetails['collected_from'] = widget.payment.custName;
         collDetails['collected_by'] = _user.name;
@@ -505,11 +712,8 @@ class _AddCollectionState extends State<AddCollection> {
         collDetails['penalty_amount'] = penaltyAmount;
         collDetails['collected_on'] = collectedDate;
         collDetails['transferred_mode'] = 0;
-        collDetails['created_at'] = DateTime.now();
         collDetails['added_by'] = _user.mobileNumber;
         collDetails['is_paid_late'] = isLatePay;
-
-        collectionDetails = CollectionDetails.fromJson(collDetails);
       }
 
       var result = await _cc.createCollection(
@@ -518,11 +722,11 @@ class _AddCollectionState extends State<AddCollection> {
           widget.payment.subBranchName,
           widget.payment.customerNumber,
           widget.payment.createdAt,
-          int.parse(_cNumberController.text),
-          int.parse(collType),
+          cNumber,
+          type,
           collAmount,
           collDate,
-          collectionDetails);
+          collDetails);
 
       if (!result['is_success']) {
         Navigator.pop(context);
