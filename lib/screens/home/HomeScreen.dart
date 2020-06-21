@@ -29,7 +29,36 @@ class HomeScreen extends StatelessWidget {
             ),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: getFinanceDetails(context),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 50.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Welcome Back, ",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: CustomColors.mfinLightGrey,
+                        fontFamily: 'Georgia',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '${_u.name}!',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: CustomColors.mfinLightGrey,
+                        fontFamily: 'Georgia',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.0),
+                getFinanceDetails(context),
+              ],
+            ),
           ),
           Positioned(
             top: 300,
@@ -914,9 +943,8 @@ class HomeScreen extends StatelessWidget {
         if (snapshot.hasData) {
           if (snapshot.data['finance_name'] != null) {
             children = <Widget>[
-              SizedBox(height: 50.0),
               CircleAvatar(
-                radius: 40.0,
+                radius: 50.0,
                 backgroundColor: CustomColors.mfinButtonGreen,
                 child: Icon(
                   Icons.account_balance,

@@ -18,6 +18,8 @@ class Collection {
   String subBranchName;
   @JsonKey(name: 'customer_number', nullable: true)
   int customerNumber;
+  @JsonKey(name: 'payment_id', nullable: true)
+  String paymentID;
   @JsonKey(name: 'collection_number', nullable: true)
   int collectionNumber;
   @JsonKey(name: 'collection_date', defaultValue: '')
@@ -49,6 +51,10 @@ class Collection {
 
   setCustomerNumber(int number) {
     this.customerNumber = number;
+  }
+
+  setPaymentID(String paymentID) {
+    this.paymentID = paymentID;
   }
 
   setcollectionNumber(int number) {
@@ -264,6 +270,7 @@ class Collection {
                     "sub_branch_name": this.subBranchName,
                     "collection_amount": collDetails['penalty_amount'],
                     "customer_number": this.customerNumber,
+                    "payment_id": this.paymentID,
                     "collected_on": [collDetails['collected_on']],
                     "collection_date": collDetails['collected_on'],
                     "type": 4, // Penalty
@@ -589,6 +596,7 @@ class Collection {
                     "sub_branch_name": _c.subBranchName,
                     "collection_amount": data['penalty_amount'],
                     "customer_number": _c.customerNumber,
+                    "payment_id": _c.paymentID,
                     "collected_on": [data['collected_on']],
                     "collection_date": data['collected_on'],
                     "type": 4, // Penalty

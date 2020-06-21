@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/transaction/collection/BooksHome.dart';
 import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
 import 'package:instamfin/screens/transaction/configuration/TransactionConfigHome.dart';
 import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
@@ -42,7 +43,7 @@ class TransactionScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CollectionBookHome(),
+                        builder: (context) => BooksHome(),
                         settings:
                             RouteSettings(name: "/transactions/collectionbook"),
                       ),

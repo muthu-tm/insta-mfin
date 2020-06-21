@@ -9,6 +9,7 @@ class CollectionController {
     String branchName,
     String subBranchName,
     int custNumber,
+    String payID,
     DateTime createdAt,
     int cNumber,
     int type,
@@ -36,6 +37,7 @@ class CollectionController {
       coll.setSubBranchName(subBranchName);
       coll.setCollectionAmount(collAmount);
       coll.setCustomerNumber(custNumber);
+      coll.setPaymentID(payID);
       coll.setcollectionNumber(cNumber);
       coll.setType(type);
       coll.setCollectionDate(collDate);

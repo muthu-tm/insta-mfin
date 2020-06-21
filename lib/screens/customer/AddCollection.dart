@@ -721,6 +721,7 @@ class _AddCollectionState extends State<AddCollection> {
           widget.payment.branchName,
           widget.payment.subBranchName,
           widget.payment.customerNumber,
+          widget.payment.paymentID,
           widget.payment.createdAt,
           cNumber,
           type,
