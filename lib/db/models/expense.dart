@@ -122,8 +122,6 @@ class Expense extends Model {
                   AccountsData.fromJson(doc.data['accounts_data']);
 
               accData.cashInHand -= this.amount;
-              accData.expenseAmount += this.amount;
-              accData.expense += 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
@@ -244,7 +242,6 @@ class Expense extends Model {
                   AccountsData.fromJson(doc.data['accounts_data']);
 
               accData.cashInHand += amount;
-              accData.expenseAmount += expenseAmount;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
@@ -282,8 +279,6 @@ class Expense extends Model {
               Expense expense = Expense.fromJson(snap.data);
 
               accData.cashInHand += expense.amount;
-              accData.expenseAmount -= expense.amount;
-              accData.expense -= 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
