@@ -7,7 +7,6 @@ part 'expense_category.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ExpenseCategory extends Model {
-
   static CollectionReference _expenseCollRef =
       Model.db.collection("expense_categories");
 
@@ -64,7 +63,8 @@ class ExpenseCategory extends Model {
 
   String getID() {
     String value = this.financeID + this.branchName + this.subBranchName;
-    return HashGenerator.hmacGenerator(value, this.createdAt.millisecondsSinceEpoch.toString());
+    return HashGenerator.hmacGenerator(
+        value, this.createdAt.millisecondsSinceEpoch.toString());
   }
 
   Query getGroupQuery() {
@@ -80,8 +80,8 @@ class ExpenseCategory extends Model {
 
   DocumentReference getDocumentReference(String financeId, String branchName,
       String subBranchName, DateTime createdAt) {
-    return getCollectionRef().document(getDocumentID(financeId, branchName,
-        subBranchName, createdAt));
+    return getCollectionRef().document(
+        getDocumentID(financeId, branchName, subBranchName, createdAt));
   }
 
   Future<ExpenseCategory> create() async {
@@ -104,31 +104,6 @@ class ExpenseCategory extends Model {
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
         .snapshots();
-  }
-
-  Stream<List<ExpenseCategory>> streamAllExpenseCategories() async* {
-    try {
-      Stream<QuerySnapshot> stream = ExpenseCategory().streamCategories(this.financeID, this.branchName, this.subBranchName);
-
-      if (await stream.isEmpty) {
-        yield [];
-      }
-
-      List<ExpenseCategory> categories = [];
-
-      await for (var event in stream) {
-        
-        for (var doc in event.documents) {
-          ExpenseCategory category = ExpenseCategory.fromJson(doc.data);
-          categories.add(category);
-          print(categories);
-          yield categories;
-        }
-      }
-
-    } catch (err) {
-      throw err;
-    }
   }
 
   Future<List<ExpenseCategory>> getAllCategories(

@@ -1,32 +1,40 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/expense_category.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/edit/EditExpenseCategory.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class ExpenseCategoryListWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  final User _u = UserController().getCurrentUser();
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: ExpenseCategory().streamAllExpenseCategories(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<ExpenseCategory>> snapshot) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: ExpenseCategory().streamCategories(
+            _u.primaryFinance, _u.primaryBranch, _u.primarySubBranch),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           List<Widget> children;
 
           if (snapshot.hasData) {
-            if (snapshot.data.isNotEmpty) {
+            if (snapshot.data.documents.length > 0) {
               children = <Widget>[
                 ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     primary: false,
-                    itemCount: snapshot.data.length,
+                    itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext context, int index) {
+                      ExpenseCategory category = ExpenseCategory.fromJson(
+                          snapshot.data.documents[index].data);
+
                       return Slidable(
                         actionPane: SlidableDrawerActionPane(),
                         actionExtentRatio: 0.20,
@@ -52,7 +60,7 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                                       textAlign: TextAlign.start,
                                     ),
                                     content: Text(
-                                        'Are you sure to remove ${snapshot.data[index].categoryName} Category?'),
+                                        'Are you sure to remove ${category.categoryName} Category?'),
                                     actions: <Widget>[
                                       FlatButton(
                                         color: CustomColors.mfinButtonGreen,
@@ -81,14 +89,10 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                                               CategoryController();
                                           var result =
                                               await _cc.removeExpenseCategory(
-                                                  snapshot
-                                                      .data[index].financeID,
-                                                  snapshot
-                                                      .data[index].branchName,
-                                                  snapshot.data[index]
-                                                      .subBranchName,
-                                                  snapshot
-                                                      .data[index].createdAt);
+                                                  category.financeID,
+                                                  category.branchName,
+                                                  category.subBranchName,
+                                                  category.createdAt);
                                           if (!result['is_success']) {
                                             Navigator.pop(context);
                                             _scaffoldKey.currentState
@@ -129,8 +133,8 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditExpenseCategory(
-                                      ExpenseCategory.fromJson(snapshot.data[index].toJson())),
+                                  builder: (context) =>
+                                      EditExpenseCategory(category),
                                   settings: RouteSettings(
                                       name:
                                           '/transactions/expenses/categories/edit'),
@@ -139,8 +143,7 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                             },
                           ),
                         ],
-                        child:
-                            _expenseList(context, index, snapshot.data[index]),
+                        child: _expenseList(context, index, category),
                       );
                     })
               ];

@@ -126,27 +126,4 @@ class JournalCategory extends Model {
     return categories;
   }
 
-  Stream<List<JournalCategory>> streamAllCategories() async* {
-    try {
-      Stream<QuerySnapshot> stream = JournalCategory().streamCategories(
-          this.financeID, this.branchName, this.subBranchName);
-
-      if (await stream.isEmpty) {
-        yield [];
-      }
-
-      List<JournalCategory> categories = [];
-
-      await for (var event in stream) {
-        for (var doc in event.documents) {
-          JournalCategory category = JournalCategory.fromJson(doc.data);
-          categories.add(category);
-          print(categories);
-          yield categories;
-        }
-      }
-    } catch (err) {
-      throw err;
-    }
-  }
 }

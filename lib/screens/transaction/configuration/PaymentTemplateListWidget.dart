@@ -1,32 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/screens/transaction/edit/EditPaymentTemplate.dart';
+import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 
 class PaymentTemplateListWidget extends StatelessWidget {
-  List _collectionMode = ["Daily", "Weekly", "Monthly"];
+  final List _collectionMode = ["Daily", "Weekly", "Monthly"];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: PaymentTemplateController().streamAllPaymentTemplates(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<PaymentTemplate>> snapshot) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: PaymentTemplate().streamTemplates(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          if (snapshot.data.isNotEmpty) {
+          if (snapshot.data.documents.length > 0) {
             children = <Widget>[
               ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data.documents.length,
                   itemBuilder: (BuildContext context, int index) {
+                    PaymentTemplate temp = PaymentTemplate.fromJson(
+                        snapshot.data.documents[index].data);
+
                     return Slidable(
                       actionPane: SlidableDrawerActionPane(),
                       actionExtentRatio: 0.20,
@@ -52,7 +56,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                                     textAlign: TextAlign.start,
                                   ),
                                   content: Text(
-                                      'Are you sure to remove ${snapshot.data[index].name} template?'),
+                                      'Are you sure to remove ${temp.name} template?'),
                                   actions: <Widget>[
                                     FlatButton(
                                       color: CustomColors.mfinButtonGreen,
@@ -84,7 +88,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                                         PaymentTemplateController _ctc =
                                             PaymentTemplateController();
                                         var result = await _ctc
-                                            .removeTemp(snapshot.data[index].getDocumentID());
+                                            .removeTemp(temp.getDocumentID());
                                         if (!result['is_success']) {
                                           _scaffoldKey.currentState
                                               .showSnackBar(
@@ -117,8 +121,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  EditPaymentTemplate(snapshot.data[index]),
+                              builder: (context) => EditPaymentTemplate(temp),
                               settings: RouteSettings(
                                   name:
                                       '/transactions/collectionbook/template/edit'),
@@ -126,11 +129,61 @@ class PaymentTemplateListWidget extends StatelessWidget {
                           ),
                         ),
                       ],
-                      child: _paymentList(context, index, snapshot.data[index]),
+                      child: _paymentList(context, index, temp),
                     );
                   })
             ];
+          } else {
+            // No Template added yet
+            return Container(
+              alignment: Alignment.center,
+              height: 90,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  new Spacer(),
+                  Text(
+                    "No Payment Templates!",
+                    style: TextStyle(
+                      color: CustomColors.mfinAlertRed,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  new Spacer(
+                    flex: 2,
+                  ),
+                  Text(
+                    "Add your Templates and make your Payment faster!",
+                    style: TextStyle(
+                      color: CustomColors.mfinBlue,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  new Spacer(),
+                ],
+              ),
+            );
           }
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncError(),
+            ),
+          );
+        } else {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncWaiting(),
+            ),
+          );
         }
 
         return Center(
