@@ -106,6 +106,31 @@ class ExpenseCategory extends Model {
         .snapshots();
   }
 
+  Stream<List<ExpenseCategory>> streamAllExpenseCategories() async* {
+    try {
+      Stream<QuerySnapshot> stream = ExpenseCategory().streamCategories(this.financeID, this.branchName, this.subBranchName);
+
+      if (await stream.isEmpty) {
+        yield [];
+      }
+
+      List<ExpenseCategory> categories = [];
+
+      await for (var event in stream) {
+        
+        for (var doc in event.documents) {
+          ExpenseCategory category = ExpenseCategory.fromJson(doc.data);
+          categories.add(category);
+          print(categories);
+          yield categories;
+        }
+      }
+
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future<List<ExpenseCategory>> getAllCategories(
       String financeId, String branchName, String subBranchName) async {
     QuerySnapshot snapDocs = await getCollectionRef()
