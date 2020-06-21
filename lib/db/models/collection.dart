@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/enums/collection_type.dart';
 import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/db/models/model.dart';
@@ -203,7 +204,7 @@ class Collection {
         .document(getDocumentID(collectionDate + 4));
   }
 
-  Future<Collection> create(DateTime createdAt, bool cAlready,
+  Future<void> create(DateTime createdAt, bool cAlready,
       Map<String, dynamic> collDetails) async {
     this.createdAt = DateTime.now();
 
@@ -239,10 +240,22 @@ class Collection {
                     AccountsData.fromJson(doc.data['accounts_data']);
 
                 accData.cashInHand += collDetails['amount'];
-                accData.collectionsAmount += collDetails['amount'];
+                if (this.type == CollectionType.Collection.name) {
+                  accData.collectionsAmount += collDetails['amount'];
+                } else if (this.type == CollectionType.Penalty.name) {
+                  accData.totalPenalty += 1;
+                  accData.penaltyAmount += collDetails['amount'];
+                } else if (this.type == CollectionType.DocCharge.name) {
+                  accData.totalDocCharge += 1;
+                  accData.docCharge += collDetails['amount'];
+                } else if (this.type == CollectionType.Surcharge.name) {
+                  accData.totalSurCharge += 1;
+                  accData.surcharge += collDetails['amount'];
+                }
 
                 if (collDetails['penalty_amount'] > 0) {
                   accData.cashInHand += collDetails['penalty_amount'];
+                  accData.totalPenalty += 1;
                   accData.penaltyAmount += collDetails['penalty_amount'];
 
                   Map<String, dynamic> pData = {
@@ -312,6 +325,26 @@ class Collection {
         .snapshots();
   }
 
+  Future<List<Collection>> getAllCollectionByDate(String financeId,
+      String branchName, String subBranchName, int type, int epoch) async {
+    var collDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('collection_date', isEqualTo: epoch)
+        .where('type', isEqualTo: type)
+        .getDocuments();
+
+    List<Collection> colls = [];
+    if (collDocs.documents.isNotEmpty) {
+      for (var doc in collDocs.documents) {
+        colls.add(Collection.fromJson(doc.data));
+      }
+    }
+
+    return colls;
+  }
+
   Future<List<Collection>> getAllCollectionsByDateRange(String financeId,
       String branchName, String subBranchName, List<int> dates) async {
     var collectionDocs = await getGroupQuery()
@@ -370,6 +403,7 @@ class Collection {
     var collectionDocs = await getCollectionRef(
             financeID, branchName, subBranchName, custNumber, createdAt)
         .where('collection_number', isEqualTo: cNumber)
+        .where('type', isEqualTo: CollectionType.Collection.name)
         .getDocuments();
 
     Collection coll;
@@ -379,6 +413,28 @@ class Collection {
     } else {
       return null;
     }
+  }
+
+  Future<List<Collection>> getByCollectionType(
+      String financeID,
+      String branchName,
+      String subBranchName,
+      int custNumber,
+      DateTime createdAt,
+      int type) async {
+    var collectionDocs = await getCollectionRef(
+            financeID, branchName, subBranchName, custNumber, createdAt)
+        .where('type', isEqualTo: type)
+        .getDocuments();
+
+    List<Collection> colls = [];
+    if (collectionDocs.documents.isNotEmpty) {
+      collectionDocs.documents.forEach((c) {
+        colls.add(Collection.fromJson(c.data));
+      });
+    }
+
+    return colls;
   }
 
   Future<List<Collection>> getAllCollectionsForCustomerPayment(
@@ -524,6 +580,7 @@ class Collection {
                 if (hasPenalty) {
                   Collection _c = Collection.fromJson(_coll);
                   accData.cashInHand += data['penalty_amount'];
+                  accData.totalPenalty += 1;
                   accData.penaltyAmount += data['penalty_amount'];
 
                   Map<String, dynamic> pData = {
@@ -568,6 +625,7 @@ class Collection {
                 accData.collectionsAmount -= data['amount'];
                 if (hasPenalty) {
                   accData.cashInHand -= data['penalty_amount'];
+                  accData.totalPenalty -= 1;
                   accData.penaltyAmount -= data['penalty_amount'];
 
                   Model().txDelete(

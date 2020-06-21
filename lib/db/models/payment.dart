@@ -226,6 +226,30 @@ class Payment extends Model {
     }
   }
 
+  Future<List<int>> getPenalityDetails() async {
+    try {
+      List<Collection> collList = await Collection().getByCollectionType(
+          this.financeID,
+          this.branchName,
+          this.subBranchName,
+          this.customerNumber,
+          this.createdAt,
+          CollectionType.Penalty.name);
+
+      int tPenalty = 0;
+      int amount = 0;
+      collList.forEach((coll) {
+        tPenalty += 1;
+        amount += coll.collectionAmount;
+      });
+
+      return [tPenalty, amount];
+    } catch (err) {
+      print("Unable to get Payment's Total Paid amount!" + err.toString());
+      throw err;
+    }
+  }
+
   Future<List<int>> getAmountDetails() async {
     try {
       List<Collection> collList = await Collection()
@@ -350,6 +374,15 @@ class Payment extends Model {
               //       'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!');
               accData.paymentsAmount += this.totalAmount;
               accData.totalPayments += 1;
+
+              if (this.docCharge > 0) {
+                accData.totalDocCharge += 1;
+                accData.docCharge += this.docCharge;
+              }
+              if (this.surcharge > 0) {
+                accData.totalSurCharge += 1;
+                accData.surcharge += this.surcharge;
+              }
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
@@ -508,13 +541,34 @@ class Payment extends Model {
 
     int amount = 0;
     int totalAmount = 0;
+    int totalDocCharge = 0;
+    int totalSurCharge = 0;
+    int docAdd = 0;
+    int surAdd = 0;
 
     if (paymentJSON.containsKey('principal_amount')) {
-      amount = paymentJSON['principal_amount'] - payment.principalAmount;
+      amount = payment.principalAmount - paymentJSON['principal_amount'];
     }
 
     if (paymentJSON.containsKey('total_amount')) {
-      totalAmount = paymentJSON['total_amount'] - payment.principalAmount;
+      totalAmount = paymentJSON['total_amount'] - payment.totalAmount;
+    }
+
+    if (paymentJSON.containsKey('doc_charge')) {
+      totalDocCharge = paymentJSON['doc_charge'] - payment.docCharge;
+      if (payment.docCharge == 0 && paymentJSON['doc_charge'] > 0)
+        docAdd = 1;
+      else if (paymentJSON['doc_charge'] == 0 && payment.docCharge > 0)
+        docAdd = -1;
+    }
+
+    if (paymentJSON.containsKey('surcharge')) {
+      totalSurCharge = paymentJSON['surcharge'] - payment.surcharge;
+
+      if (payment.surcharge == 0 && paymentJSON['surcharge'] > 0)
+        surAdd = 1;
+      else if (paymentJSON['surcharge'] == 0 && payment.surcharge > 0)
+        surAdd = -1;
     }
 
     try {
@@ -528,6 +582,10 @@ class Payment extends Model {
 
               accData.cashInHand += amount;
               accData.paymentsAmount += totalAmount;
+              accData.totalDocCharge += docAdd;
+              accData.docCharge += totalDocCharge;
+              accData.totalSurCharge += surAdd;
+              accData.surcharge += totalSurCharge;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
@@ -555,6 +613,11 @@ class Payment extends Model {
         this.subBranchName,
         this.customerNumber,
         this.createdAt);
+
+    int tReceived = await getTotalReceived();
+    if (tReceived == null)
+      throw 'Unable to fetch Total Received Amount! Try again Later.';
+    List<int> pDetails = await getPenalityDetails();
 
     try {
       DocumentReference finDocRef = user.getFinanceDocReference();
@@ -672,8 +735,15 @@ class Payment extends Model {
                   AccountsData.fromJson(doc.data['accounts_data']);
 
               accData.cashInHand += paymentJSON['settlement_amount'];
-              accData.paymentsAmount -= this.totalAmount;
               accData.totalPayments -= 1;
+              accData.paymentsAmount -= this.totalAmount;
+              if (this.docCharge > 0) accData.totalDocCharge -= 1;
+              accData.docCharge -= this.docCharge;
+              if (this.surcharge > 0) accData.totalSurCharge -= 1;
+              accData.surcharge -= this.surcharge;
+              accData.collectionsAmount -= tReceived;
+              accData.totalPenalty -= pDetails[0];
+              accData.penaltyAmount -= pDetails[1];
 
               if (paymentJSON['loss']) {
                 payJSON['is_loss'] = true;
@@ -694,7 +764,7 @@ class Payment extends Model {
         },
       );
     } catch (err) {
-      print('Payment UPDATE Transaction failure:' + err.toString());
+      print('Payment SETTLEMENT Transaction failure:' + err.toString());
       throw err;
     }
   }

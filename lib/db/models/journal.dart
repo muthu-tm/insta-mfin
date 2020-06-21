@@ -130,12 +130,8 @@ class Journal extends Model {
 
               if (this.isExpense) {
                 accData.cashInHand -= this.amount;
-                accData.journalOutAmount += this.amount;
-                accData.journalOut += 1;
               } else {
                 accData.cashInHand += this.amount;
-                accData.journalInAmount += this.amount;
-                accData.journalIn += 1;
               }
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
@@ -382,12 +378,8 @@ class Journal extends Model {
 
               if (journal.isExpense) {
                 accData.cashInHand += journal.amount;
-                accData.journalOutAmount -= journal.amount;
-                accData.journalOut -= 1;
               } else {
                 accData.cashInHand -= journal.amount;
-                accData.journalInAmount -= journal.amount;
-                accData.journalIn -= 1;
               }
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};

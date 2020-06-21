@@ -648,7 +648,7 @@ class _AddCollectionState extends State<AddCollection> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Updating Collection");
+      CustomDialogs.actionWaiting(context, "Adding Collection");
 
       int type = int.parse(collType);
       int cNumber = int.parse(_cNumberController.text);

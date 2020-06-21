@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
+  final User _u = UserController().getCurrentUser();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: EdgeInsets.only(right: 10.0, left: 10.0),
                           child: Stack(
                             children: <Widget>[
                               Padding(
@@ -98,6 +102,7 @@ class HomeScreen extends StatelessWidget {
                                               "Cash In Hand",
                                               style: TextStyle(
                                                 fontSize: 17.0,
+                                                fontFamily: "Georgia",
                                                 color: CustomColors.mfinWhite,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -150,7 +155,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: EdgeInsets.only(right: 10.0, left: 10.0),
                           child: Stack(
                             children: <Widget>[
                               Padding(
@@ -199,6 +204,7 @@ class HomeScreen extends StatelessWidget {
                                               "Outstanding",
                                               style: TextStyle(
                                                 fontSize: 17.0,
+                                                fontFamily: "Georgia",
                                                 color: CustomColors.mfinWhite,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -253,19 +259,45 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.only(
-                          left: 10.0, right: 10.0, bottom: 10.0),
-                      child: getCustomerCard(context),
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                                bottom: 10.0, right: 5.0, left: 5.0),
+                            child: getPaymentCard(context),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: 10.0, left: 5.0, right: 5.0),
+                              child: getAllCollectionCard(context)),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
                           left: 10.0, right: 10.0, bottom: 10.0),
-                      child: getCustomerCard(context),
+                      child: getPresentCard(context),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
                           left: 10.0, right: 10.0, bottom: 10.0),
-                      child: getCustomerCard(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 5.0, right: 5.0, bottom: 10.0),
+                            child: getPastCard(context),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 5.0, right: 5.0, bottom: 10.0),
+                            child: getUpcomingCard(context),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -278,50 +310,117 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget getCustomerCard(BuildContext context) {
-    return Card(
-      elevation: 10,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+  Widget getPaymentCard(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: <Color>[
+            CustomColors.mfinBlack,
+            CustomColors.mfinGrey,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(25.0),
+          bottomLeft: Radius.circular(3.0),
+          topLeft: Radius.circular(25.0),
+          topRight: Radius.circular(3.0),
+        ),
       ),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Color(0xffE8F2F7),
-                shape: BoxShape.circle,
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Color(0xff7AC1E7),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(
-                      Icons.group,
-                      size: 30,
-                      color: CustomColors.mfinWhite,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(width: 20),
-          getCustomerData(context),
-        ],
+      height: 150,
+      child: getPaymentData(context),
+    );
+  }
+
+  Widget getAllCollectionCard(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: <Color>[
+            CustomColors.mfinBlue,
+            CustomColors.mfinLightBlue,
+          ],
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(3.0),
+          bottomLeft: Radius.circular(25.0),
+          topLeft: Radius.circular(3.0),
+          topRight: Radius.circular(25.0),
+        ),
       ),
+      height: 150,
+      child: getAllCollectionData(context),
+    );
+  }
+
+  Widget getPresentCard(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.92,
+      decoration: BoxDecoration(
+        color: CustomColors.mfinBlue,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5.0),
+        ),
+      ),
+      height: 140,
+      child: getTodayCollectionData(context),
+    );
+  }
+
+  Widget getPastCard(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: <Color>[
+            CustomColors.mfinFadedButtonGreen,
+            CustomColors.mfinLightBlue,
+          ],
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(3.0),
+          bottomLeft: Radius.circular(25.0),
+          topLeft: Radius.circular(3.0),
+          topRight: Radius.circular(25.0),
+        ),
+      ),
+      height: 150,
+      child: getPastCollectionData(context),
+    );
+  }
+
+  Widget getUpcomingCard(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: <Color>[
+            CustomColors.mfinFadedButtonGreen,
+            CustomColors.mfinGrey,
+          ],
+          begin: Alignment.bottomRight,
+          end: Alignment.topLeft,
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(25.0),
+          bottomLeft: Radius.circular(3.0),
+          topLeft: Radius.circular(25.0),
+          topRight: Radius.circular(3.0),
+        ),
+      ),
+      height: 150,
+      child: getUpcomingCollectionData(context),
     );
   }
 
   Widget getCIHAmount(BuildContext context) {
-    final User _u = UserController().getCurrentUser();
-
     return FutureBuilder<DocumentSnapshot>(
       future: _u.getFinanceDocReference().get(),
       builder:
@@ -333,9 +432,10 @@ class HomeScreen extends StatelessWidget {
           int amount = finDoc['accounts_data']['cash_in_hand'];
           children = <Widget>[
             Text(
-              amount.toString(),
+              'Rs.$amount',
               style: TextStyle(
                 fontSize: 17.0,
+                fontFamily: "Georgia",
                 color: CustomColors.mfinLightGrey,
                 fontWeight: FontWeight.bold,
               ),
@@ -357,8 +457,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget getStockAmount(BuildContext context) {
-    final User _u = UserController().getCurrentUser();
-
     return FutureBuilder<DocumentSnapshot>(
       future: _u.getFinanceDocReference().get(),
       builder:
@@ -367,16 +465,16 @@ class HomeScreen extends StatelessWidget {
 
         if (snapshot.hasData) {
           Map<String, dynamic> finDoc = snapshot.data.data;
-          int amount = finDoc['accounts_data']['payments_amount'];
-          Color color = CustomColors.mfinLightGrey;
-          if (amount == 0) color = CustomColors.mfinPositiveGreen;
+          int pAmount = finDoc['accounts_data']['payments_amount'];
+          int cAmount = finDoc['accounts_data']['collections_amount'];
 
           children = <Widget>[
             Text(
-              '$amount',
+              'Rs.${pAmount - cAmount}',
               style: TextStyle(
                 fontSize: 17.0,
-                color: color,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinLightGrey,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -398,20 +496,312 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget getCustomerData(BuildContext context) {
-    return FutureBuilder<QuerySnapshot>(
-      future: Customer().getAllCustomers(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+  Widget getPaymentData(BuildContext context) {
+    return FutureBuilder<DocumentSnapshot>(
+      future: _u.getFinanceDocReference().get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          int tCount = snapshot.data.documents.length;
+          Map<String, dynamic> finDoc = snapshot.data.data;
+          int tPay = finDoc['accounts_data']['total_payments'];
 
           children = <Widget>[
             Text(
-              'Total Customers - $tCount',
+              "Active",
+              textAlign: TextAlign.start,
               style: TextStyle(
-                fontSize: 17.0,
+                fontSize: 20.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinLightGrey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              "Payments",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontSize: 20.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinLightGrey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(
+                  '$tPay',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontFamily: "Georgia",
+                    color: CustomColors.mfinLightGrey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Icon(
+                  Icons.featured_play_list,
+                  size: 40,
+                  color: CustomColors.mfinAlertRed,
+                ),
+              ],
+            ),
+          ];
+        } else if (snapshot.hasError) {
+          children = AsyncWidgets.asyncError();
+        } else {
+          children = AsyncWidgets.asyncWaiting();
+        }
+
+        return Padding(
+          padding: EdgeInsets.all(5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget getAllCollectionData(BuildContext context) {
+    return FutureBuilder<DocumentSnapshot>(
+      future: _u.getFinanceDocReference().get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        List<Widget> children;
+
+        if (snapshot.hasData) {
+          Map<String, dynamic> finDoc = snapshot.data.data;
+          int cAmount = finDoc['accounts_data']['collections_amount'];
+
+          children = <Widget>[
+            Text(
+              "Collected",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontSize: 20.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinLightGrey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              "Amount",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontSize: 20.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinLightGrey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(
+                  'Rs.$cAmount',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontFamily: "Georgia",
+                    color: CustomColors.mfinLightGrey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Icon(
+                  Icons.collections_bookmark,
+                  size: 40,
+                  color: CustomColors.mfinButtonGreen,
+                ),
+              ],
+            ),
+          ];
+        } else if (snapshot.hasError) {
+          children = AsyncWidgets.asyncError();
+        } else {
+          children = AsyncWidgets.asyncWaiting();
+        }
+
+        return Padding(
+          padding: EdgeInsets.all(5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget getTodayCollectionData(BuildContext context) {
+    return FutureBuilder<List<Collection>>(
+      future: Collection().getAllCollectionByDate(
+          _u.primaryFinance,
+          _u.primaryBranch,
+          _u.primarySubBranch,
+          0,
+          DateUtils.getUTCDateEpoch(DateTime.now())),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {
+        List<Widget> children;
+
+        if (snapshot.hasData) {
+          int amount = 0;
+          int rAmount = 0;
+          int total = snapshot.data.length;
+
+          snapshot.data.forEach((coll) {
+            amount += coll.collectionAmount;
+            rAmount += coll.getReceived();
+          });
+
+          children = <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Todays Collection',
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        fontFamily: "Georgia",
+                        color: CustomColors.mfinLightGrey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Text(
+                      'Total - $total',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontFamily: "Georgia",
+                        color: CustomColors.mfinGrey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Amount - Rs.$amount',
+                      style: TextStyle(
+                        fontSize: 17.0,
+                        fontFamily: "Georgia",
+                        color: CustomColors.mfinGrey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: CircularPercentIndicator(
+                    radius: 80.0,
+                    lineWidth: 10.0,
+                    animation: true,
+                    percent: rAmount == 0 ? 0.00 : (rAmount / amount),
+                    center: Icon(
+                      Icons.collections_bookmark,
+                      size: 30.0,
+                      color: CustomColors.mfinButtonGreen,
+                    ),
+                    footer: new Text(
+                      "Rs.$rAmount",
+                      style: new TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Georgia",
+                          fontSize: 17.0),
+                    ),
+                    circularStrokeCap: CircularStrokeCap.round,
+                    backgroundColor: CustomColors.mfinAlertRed,
+                    progressColor: CustomColors.mfinButtonGreen,
+                  ),
+                ),
+              ],
+            ),
+          ];
+        } else if (snapshot.hasError) {
+          children = AsyncWidgets.asyncError();
+        } else {
+          children = AsyncWidgets.asyncWaiting();
+        }
+
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: children,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget getPastCollectionData(BuildContext context) {
+    return FutureBuilder<List<Collection>>(
+      future: Collection().getAllCollectionByDate(
+          _u.primaryFinance,
+          _u.primaryBranch,
+          _u.primarySubBranch,
+          0,
+          DateUtils.getUTCDateEpoch(
+              DateTime.now().subtract(Duration(days: 1)))),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {
+        List<Widget> children;
+
+        if (snapshot.hasData) {
+          int amount = 0;
+          int rAmount = 0;
+          int total = snapshot.data.length;
+
+          snapshot.data.forEach((coll) {
+            amount += coll.collectionAmount;
+            rAmount += coll.getReceived();
+          });
+
+          children = <Widget>[
+            Text(
+              'Yesterday',
+              style: TextStyle(
+                fontSize: 22.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinLightGrey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              'Total: $total',
+              style: TextStyle(
+                fontSize: 14.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinBlue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Amount:  Rs.$amount',
+              style: TextStyle(
+                fontSize: 14.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinBlue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Received: Rs.$rAmount',
+              style: TextStyle(
+                fontSize: 14.0,
+                fontFamily: "Georgia",
                 color: CustomColors.mfinBlue,
                 fontWeight: FontWeight.bold,
               ),
@@ -425,8 +815,86 @@ class HomeScreen extends StatelessWidget {
 
         return Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget getUpcomingCollectionData(BuildContext context) {
+    return FutureBuilder<List<Collection>>(
+      future: Collection().getAllCollectionByDate(
+          _u.primaryFinance,
+          _u.primaryBranch,
+          _u.primarySubBranch,
+          0,
+          DateUtils.getUTCDateEpoch(DateTime.now().add(Duration(days: 1)))),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {
+        List<Widget> children;
+
+        if (snapshot.hasData) {
+          int amount = 0;
+          int rAmount = 0;
+          int total = snapshot.data.length;
+
+          snapshot.data.forEach((coll) {
+            amount += coll.collectionAmount;
+            rAmount += coll.getReceived();
+          });
+
+          children = <Widget>[
+            Text(
+              'Tomorrow',
+              style: TextStyle(
+                fontSize: 22.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinLightGrey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              'Total: $total',
+              style: TextStyle(
+                fontSize: 14.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinBlue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Amount:  Rs.$amount',
+              style: TextStyle(
+                fontSize: 14.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinBlue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Received: Rs.$rAmount',
+              style: TextStyle(
+                fontSize: 14.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinBlue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ];
+        } else if (snapshot.hasError) {
+          children = AsyncWidgets.asyncError();
+        } else {
+          children = AsyncWidgets.asyncWaiting();
+        }
+
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           ),
         );
@@ -438,70 +906,71 @@ class HomeScreen extends StatelessWidget {
     final UserController _userController = UserController();
 
     return FutureBuilder<Map<String, dynamic>>(
-        future: _userController.getPrimaryFinanceDetails(),
-        builder: (BuildContext context,
-            AsyncSnapshot<Map<String, dynamic>> snapshot) {
-          List<Widget> children;
+      future: _userController.getPrimaryFinanceDetails(),
+      builder:
+          (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        List<Widget> children;
 
-          if (snapshot.hasData) {
-            if (snapshot.data['finance_name'] != null) {
-              children = <Widget>[
-                SizedBox(height: 50.0),
-                CircleAvatar(
-                  radius: 40.0,
-                  backgroundColor: CustomColors.mfinButtonGreen,
-                  child: Icon(
-                    Icons.account_balance,
-                    size: 45.0,
-                    color: CustomColors.mfinWhite,
-                  ),
+        if (snapshot.hasData) {
+          if (snapshot.data['finance_name'] != null) {
+            children = <Widget>[
+              SizedBox(height: 50.0),
+              CircleAvatar(
+                radius: 40.0,
+                backgroundColor: CustomColors.mfinButtonGreen,
+                child: Icon(
+                  Icons.account_balance,
+                  size: 45.0,
+                  color: CustomColors.mfinWhite,
                 ),
-                SizedBox(height: 15.0),
-                Text(
-                  snapshot.data['finance_name'],
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontFamily: 'Georgia',
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              SizedBox(height: 15.0),
+              Text(
+                snapshot.data['finance_name'],
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'Georgia',
+                  fontWeight: FontWeight.bold,
                 ),
-                SizedBox(height: 15.0),
-                (snapshot.data['branch_name'] != "")
-                    ? Text(
-                        snapshot.data['branch_name'],
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontFamily: 'Georgia',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    : Container(),
-                SizedBox(height: 15.0),
-                (snapshot.data['sub_branch_name'] != "")
-                    ? Text(
-                        snapshot.data['sub_branch_name'],
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontFamily: 'Georgia',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    : Container(),
-              ];
-            }
-          } else if (snapshot.hasError) {
-            children = AsyncWidgets.asyncError();
-          } else {
-            children = AsyncWidgets.asyncWaiting();
+              ),
+              SizedBox(height: 15.0),
+              (snapshot.data['branch_name'] != "")
+                  ? Text(
+                      snapshot.data['branch_name'],
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'Georgia',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Container(),
+              SizedBox(height: 15.0),
+              (snapshot.data['sub_branch_name'] != "")
+                  ? Text(
+                      snapshot.data['sub_branch_name'],
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'Georgia',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Container(),
+            ];
           }
+        } else if (snapshot.hasError) {
+          children = AsyncWidgets.asyncError();
+        } else {
+          children = AsyncWidgets.asyncWaiting();
+        }
 
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: children,
-            ),
-          );
-        });
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: children,
+          ),
+        );
+      },
+    );
   }
 }
