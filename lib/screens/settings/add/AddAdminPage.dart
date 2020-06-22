@@ -212,7 +212,6 @@ class _AddAdminPageState extends State<AddAdminPage> {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             'Unable to update admins for $groupName! Please contact support',
             5));
-        print('Unable to update admins for $groupName: ' + err.toString());
       }
 
       if (!response['is_success']) {
@@ -220,10 +219,8 @@ class _AddAdminPageState extends State<AddAdminPage> {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             'Unable to update admins for $groupName! Please contact support',
             5));
-        print('Unable to update admins for $groupName: ' + response['message']);
       } else {
         Navigator.pop(context);
-        print('Admins added for $groupName successfully');
         Navigator.pop(context);
       }
     }

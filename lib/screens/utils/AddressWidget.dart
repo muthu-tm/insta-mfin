@@ -20,7 +20,6 @@ class _AddressWidgetState extends State<AddressWidget> {
       color: CustomColors.mfinLightGrey,
       elevation: 5.0,
       margin: EdgeInsets.all(5.0),
-      shadowColor: CustomColors.mfinLightBlue,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

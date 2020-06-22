@@ -199,7 +199,7 @@ class _AddSubBranchState extends State<AddSubBranch> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Creating Sub Branch for YOU!");
+      CustomDialogs.actionWaiting(context, "Creating SubBranch!");
       SubBranchController _subBranchController = SubBranchController();
       var result = await _subBranchController.addSubBranch(
           widget.financeID,
@@ -214,14 +214,11 @@ class _AddSubBranchState extends State<AddSubBranch> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Sub Branch: " + result['message']);
       } else {
         Navigator.pop(context);
-        print("New Sub Branch added successfully");
         Navigator.pop(context);
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

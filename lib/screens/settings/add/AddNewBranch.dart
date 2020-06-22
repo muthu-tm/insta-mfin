@@ -198,7 +198,7 @@ class _AddBranchState extends State<AddBranch> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Creating Branch for YOU!");
+      CustomDialogs.actionWaiting(context, "Creating Branch!");
       BranchController _branchController = BranchController();
       var result = await _branchController.addBranch(widget.financeID,
           branchName, contactNumber, emailID, address, registeredDate);
@@ -207,14 +207,11 @@ class _AddBranchState extends State<AddBranch> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to Create Branch: " + result['message']);
       } else {
         Navigator.pop(context);
-        print("New Branch added successfully");
         Navigator.pop(context);
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

@@ -159,8 +159,8 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                     onTap: () => _selectDate(context),
                   ),
                 ),
-                AddressWidget(
-                    "Address", widget.subBranch.address, updatedAddress),
+                AddressWidget("SubBranch Address", widget.subBranch.address,
+                    updatedAddress),
               ],
             ),
           ),
@@ -196,8 +196,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(
-          context, "Updating ${widget.subBranch.subBranchName}!");
+      CustomDialogs.actionWaiting(context, "Updating SubBranch!");
       SubBranchController _subBranchController = SubBranchController();
       updatedSubBranch['address'] = updatedAddress.toJson();
       var result = await _subBranchController.updateSubBranch(widget.financeID,
@@ -207,17 +206,12 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to update SubBranch ${widget.subBranch.subBranchName}: " +
-            result['message']);
       } else {
         Navigator.pop(context);
         Navigator.pop(context);
-        print(
-            "${widget.subBranch.subBranchName} SubBranch updated successfully");
         Navigator.pop(context);
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 5));
     }

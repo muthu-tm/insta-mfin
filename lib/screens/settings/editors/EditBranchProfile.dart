@@ -157,7 +157,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
                     onTap: () => _selectDate(context),
                   ),
                 ),
-                AddressWidget("Address", widget.branch.address, updatedAddress),
+                AddressWidget("Branch Address", widget.branch.address, updatedAddress),
               ],
             ),
           ),
@@ -192,8 +192,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(
-          context, "Updating ${widget.branch.branchName}!");
+      CustomDialogs.actionWaiting(context, "Updating Branch!");
       BranchController _branchController = BranchController();
       updatedBranch['address'] = updatedAddress.toJson();
       var result = await _branchController.updateBranch(
@@ -203,15 +202,11 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to update branch ${widget.branch.branchName}: " +
-            result['message']);
       } else {
         Navigator.pop(context);
         Navigator.pop(context);
-        print("${widget.branch.branchName} branch updated successfully");
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 5));
     }

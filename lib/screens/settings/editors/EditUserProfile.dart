@@ -42,7 +42,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
 
     return new Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Edit Profile'),
         backgroundColor: CustomColors.mfinBlue,
@@ -267,7 +266,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Updating Profile");
+      CustomDialogs.actionWaiting(context, "Updating Profile!");
       updatedUser['address'] = updatedAddress.toJson();
       var result = await _userController.updateUser(updatedUser);
 
@@ -275,10 +274,8 @@ class _EditUserProfileState extends State<EditUserProfile> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
-        print("User profile update failed: " + result['message']);
       } else {
         Navigator.pop(context);
-        print("Updated user profile data");
         Navigator.pop(context);
         Navigator.pop(context);
         Navigator.push(
@@ -290,7 +287,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
         );
       }
     } else {
-      print('Form not valid');
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill valid data!", 2));
     }

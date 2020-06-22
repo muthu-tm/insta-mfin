@@ -259,15 +259,12 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to update Finance: " + result['message']);
       } else {
         Navigator.pop(context);
         Navigator.pop(context);
-        print("Finance updated successfully");
         Navigator.pop(context);
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }
