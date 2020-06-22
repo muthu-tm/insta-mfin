@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
+import 'package:instamfin/screens/transaction/collection/AllTransactionsBook.dart';
 import 'package:instamfin/screens/transaction/collection/PaymentsBook.dart';
-import 'package:instamfin/screens/transaction/collection/PaymentReports.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
@@ -10,7 +10,7 @@ class BooksHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Books"),
+        title: Text("NoteBooks"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: Column(
@@ -170,7 +170,7 @@ class BooksHome extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PaymentReportScreen(),
+                    builder: (context) => AllTransactionsBook(),
                     settings: RouteSettings(name: '/transactions/books/all'),
                   ),
                 );

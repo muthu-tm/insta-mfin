@@ -33,14 +33,11 @@ class ExpenseController {
     }
   }
 
-  Future<List<Expense>> getTodaysExpenses(
-      String financeId, String branchName, String subBranchName) async {
+  Future<List<Expense>> getExpenseByDate(String financeId, String branchName,
+      String subBranchName, DateTime date) async {
     try {
-      List<Expense> expenses = await Expense().getAllExpensesByDate(
-          financeId,
-          branchName,
-          subBranchName,
-          DateUtils.getUTCDateEpoch(DateUtils.getCurrentDate()));
+      List<Expense> expenses = await Expense().getAllExpensesByDate(financeId,
+          branchName, subBranchName, DateUtils.getUTCDateEpoch(date));
 
       if (expenses == null) {
         return [];

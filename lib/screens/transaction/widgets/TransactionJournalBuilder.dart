@@ -14,15 +14,14 @@ class TransactionJournalBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Journal>>(
       future: _user.preferences.transactionGroupBy == 0
-          ? _jc.getTodaysExpenses(
-              _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch)
+          ? _jc.getJournalByDate(_user.primaryFinance, _user.primaryBranch,
+              _user.primarySubBranch, DateTime.now())
           : _user.preferences.transactionGroupBy == 1
               ? _jc.getThisWeekExpenses(_user.primaryFinance,
                   _user.primaryBranch, _user.primarySubBranch)
               : _jc.getThisMonthExpenses(_user.primaryFinance,
                   _user.primaryBranch, _user.primarySubBranch),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
         Widget widget;
 
         if (snapshot.hasData) {

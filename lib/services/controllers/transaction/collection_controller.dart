@@ -156,7 +156,7 @@ class CollectionController {
         for (int i = 0; i + limit <= dates.length; i = i + limit) {
           Iterable<int> rDates = dates.getRange(i, i + limit);
           List<Collection> colls = await Collection()
-              .getAllCollectionsByDateRange(
+              .getAllCollectionDetailsByDateRange(
                   financeId, branchName, subBranchName, rDates.toList());
 
           if (colls != null) {
@@ -168,7 +168,7 @@ class CollectionController {
           Iterable<int> rDates =
               dates.getRange(dates.length - (dates.length % 10), dates.length);
           List<Collection> colls = await Collection()
-              .getAllCollectionsByDateRange(
+              .getAllCollectionDetailsByDateRange(
                   financeId, branchName, subBranchName, rDates.toList());
 
           if (colls != null) {
@@ -177,7 +177,7 @@ class CollectionController {
         }
       } else {
         List<Collection> colls = await Collection()
-            .getAllCollectionsByDateRange(
+            .getAllCollectionDetailsByDateRange(
                 financeId, branchName, subBranchName, dates);
 
         if (colls != null) {

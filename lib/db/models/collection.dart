@@ -333,13 +333,33 @@ class Collection {
   }
 
   Future<List<Collection>> getAllCollectionByDate(String financeId,
-      String branchName, String subBranchName, int type, int epoch) async {
+      String branchName, String subBranchName, List<int> types, int epoch) async {
     var collDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('collection_date', isEqualTo: epoch)
-        .where('type', isEqualTo: type)
+        .where('type', whereIn: types)
+        .getDocuments();
+
+    List<Collection> colls = [];
+    if (collDocs.documents.isNotEmpty) {
+      for (var doc in collDocs.documents) {
+        colls.add(Collection.fromJson(doc.data));
+      }
+    }
+
+    return colls;
+  }
+  Future<List<Collection>> getAllCollectionsByDateRange(String financeId,
+      String branchName, String subBranchName, List<int> types, int start, int end) async {
+    var collDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('collection_date', isGreaterThanOrEqualTo: start)
+        .where('collection_date', isLessThanOrEqualTo: end)
+        .where('type', whereIn: types)
         .getDocuments();
 
     List<Collection> colls = [];
@@ -352,7 +372,7 @@ class Collection {
     return colls;
   }
 
-  Future<List<Collection>> getAllCollectionsByDateRange(String financeId,
+  Future<List<Collection>> getAllCollectionDetailsByDateRange(String financeId,
       String branchName, String subBranchName, List<int> dates) async {
     var collectionDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)

@@ -20,7 +20,7 @@ class CollectionBookTab extends StatelessWidget {
 
     return FutureBuilder(
       future: Collection().getAllCollectionByDate(
-          _u.primaryFinance, _u.primaryBranch, _u.primarySubBranch, 0, epoch),
+          _u.primaryFinance, _u.primaryBranch, _u.primarySubBranch, [0], epoch),
       builder:
           (BuildContext context, AsyncSnapshot<List<Collection>> collSnap) {
         Widget child;

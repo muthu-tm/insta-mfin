@@ -35,14 +35,14 @@ class JournalController {
     }
   }
 
-  Future<List<Journal>> getTodaysExpenses(
-      String financeId, String branchName, String subBranchName) async {
+  Future<List<Journal>> getJournalByDate(
+      String financeId, String branchName, String subBranchName, DateTime date) async {
     try {
       List<Journal> journals = await Journal().getAllJournalsByDate(
           financeId,
           branchName,
           subBranchName,
-          DateUtils.getUTCDateEpoch(DateUtils.getCurrentDate()));
+          DateUtils.getUTCDateEpoch(date));
 
       if (journals == null) {
         return [];
