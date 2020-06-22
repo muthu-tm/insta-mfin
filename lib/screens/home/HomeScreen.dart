@@ -61,17 +61,16 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 300,
+            top: 250,
             bottom: 0,
             width: MediaQuery.of(context).size.width,
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.6,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 color: CustomColors.mfinLightGrey,
                 borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(40.0),
-                  topLeft: Radius.circular(40.0),
+                  topRight: Radius.circular(30.0),
+                  topLeft: Radius.circular(30.0),
                 ),
               ),
               child: SingleChildScrollView(
@@ -87,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 32, left: 8, right: 8, bottom: 16),
+                                    top: 16, left: 8, right: 8, bottom: 16),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(vertical: 10.0),
                                   decoration: BoxDecoration(
@@ -146,7 +145,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               Positioned(
-                                top: 15,
+                                top: -5,
                                 left: 0,
                                 child: Container(
                                   width: 80,
@@ -159,7 +158,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               Positioned(
-                                top: 30,
+                                top: 10,
                                 left: 16,
                                 child: SizedBox(
                                   width: 50,
@@ -189,7 +188,7 @@ class HomeScreen extends StatelessWidget {
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 32, left: 8, right: 8, bottom: 16),
+                                    top: 16, left: 8, right: 8, bottom: 16),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(vertical: 10.0),
                                   decoration: BoxDecoration(
@@ -238,7 +237,7 @@ class HomeScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            SizedBox(height: 20),
+                                            SizedBox(height: 5),
                                             getStockAmount(context),
                                           ],
                                         ),
@@ -248,7 +247,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               Positioned(
-                                top: 15,
+                                top: -5,
                                 left: 0,
                                 child: Container(
                                   width: 80,
@@ -261,7 +260,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               Positioned(
-                                top: 30,
+                                top: 10,
                                 left: 16,
                                 child: SizedBox(
                                   width: 50,
@@ -288,41 +287,24 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 10.0, right: 5.0, left: 5.0),
-                            child: getPaymentCard(context),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: 10.0, left: 5.0, right: 5.0),
-                              child: getAllCollectionCard(context)),
-                        ],
-                      ),
-                    ),
-                    Padding(
                       padding: EdgeInsets.only(
-                          left: 10.0, right: 10.0, bottom: 10.0),
+                          left: 10.0, right: 10.0, bottom: 5.0),
                       child: getPresentCard(context),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: 10.0, right: 10.0, bottom: 10.0),
+                          left: 10.0, right: 10.0, bottom: 5.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Padding(
                             padding: EdgeInsets.only(
-                                left: 5.0, right: 5.0, bottom: 10.0),
+                                left: 5.0, right: 5.0, bottom: 5.0),
                             child: getPastCard(context),
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                                left: 5.0, right: 5.0, bottom: 10.0),
+                                left: 5.0, right: 5.0, bottom: 5.0),
                             child: getUpcomingCard(context),
                           ),
                         ],
@@ -339,53 +321,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget getPaymentCard(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.45,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: <Color>[
-            CustomColors.mfinBlack,
-            CustomColors.mfinGrey,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(25.0),
-          bottomLeft: Radius.circular(3.0),
-          topLeft: Radius.circular(25.0),
-          topRight: Radius.circular(3.0),
-        ),
-      ),
-      height: 150,
-      child: getPaymentData(context),
-    );
-  }
-
-  Widget getAllCollectionCard(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.45,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: <Color>[
-            CustomColors.mfinBlue,
-            CustomColors.mfinLightBlue,
-          ],
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-        ),
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(3.0),
-          bottomLeft: Radius.circular(25.0),
-          topLeft: Radius.circular(3.0),
-          topRight: Radius.circular(25.0),
-        ),
-      ),
-      height: 150,
-      child: getAllCollectionData(context),
-    );
-  }
 
   Widget getPresentCard(BuildContext context) {
     return Container(
@@ -494,10 +429,20 @@ class HomeScreen extends StatelessWidget {
 
         if (snapshot.hasData) {
           Map<String, dynamic> finDoc = snapshot.data.data;
+          int tPay = finDoc['accounts_data']['total_payments'];
           int pAmount = finDoc['accounts_data']['payments_amount'];
           int cAmount = finDoc['accounts_data']['collections_amount'];
 
           children = <Widget>[
+            Text(
+              '$tPay',
+              style: TextStyle(
+                fontSize: 16.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinLightGrey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Text(
               'Rs.${pAmount - cAmount}',
               style: TextStyle(
@@ -518,150 +463,6 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: children,
-          ),
-        );
-      },
-    );
-  }
-
-  Widget getPaymentData(BuildContext context) {
-    return FutureBuilder<DocumentSnapshot>(
-      future: _u.getFinanceDocReference().get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        List<Widget> children;
-
-        if (snapshot.hasData) {
-          Map<String, dynamic> finDoc = snapshot.data.data;
-          int tPay = finDoc['accounts_data']['total_payments'];
-
-          children = <Widget>[
-            Text(
-              "Active",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontFamily: "Georgia",
-                color: CustomColors.mfinLightGrey,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              "Payments",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontFamily: "Georgia",
-                color: CustomColors.mfinLightGrey,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text(
-                  '$tPay',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontFamily: "Georgia",
-                    color: CustomColors.mfinLightGrey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Icon(
-                  Icons.featured_play_list,
-                  size: 40,
-                  color: CustomColors.mfinAlertRed,
-                ),
-              ],
-            ),
-          ];
-        } else if (snapshot.hasError) {
-          children = AsyncWidgets.asyncError();
-        } else {
-          children = AsyncWidgets.asyncWaiting();
-        }
-
-        return Padding(
-          padding: EdgeInsets.all(5),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
-          ),
-        );
-      },
-    );
-  }
-
-  Widget getAllCollectionData(BuildContext context) {
-    return FutureBuilder<DocumentSnapshot>(
-      future: _u.getFinanceDocReference().get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        List<Widget> children;
-
-        if (snapshot.hasData) {
-          Map<String, dynamic> finDoc = snapshot.data.data;
-          int cAmount = finDoc['accounts_data']['collections_amount'];
-
-          children = <Widget>[
-            Text(
-              "Collected",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontFamily: "Georgia",
-                color: CustomColors.mfinLightGrey,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              "Amount",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontFamily: "Georgia",
-                color: CustomColors.mfinLightGrey,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text(
-                  'Rs.$cAmount',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontFamily: "Georgia",
-                    color: CustomColors.mfinLightGrey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Icon(
-                  Icons.collections_bookmark,
-                  size: 40,
-                  color: CustomColors.mfinButtonGreen,
-                ),
-              ],
-            ),
-          ];
-        } else if (snapshot.hasError) {
-          children = AsyncWidgets.asyncError();
-        } else {
-          children = AsyncWidgets.asyncWaiting();
-        }
-
-        return Padding(
-          padding: EdgeInsets.all(5),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           ),
         );
@@ -961,28 +762,7 @@ class HomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 15.0),
-              (snapshot.data['branch_name'] != "")
-                  ? Text(
-                      snapshot.data['branch_name'],
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontFamily: 'Georgia',
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : Container(),
-              SizedBox(height: 15.0),
-              (snapshot.data['sub_branch_name'] != "")
-                  ? Text(
-                      snapshot.data['sub_branch_name'],
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontFamily: 'Georgia',
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : Container(),
+              SizedBox(height: 5.0),
             ];
           }
         } else if (snapshot.hasError) {
