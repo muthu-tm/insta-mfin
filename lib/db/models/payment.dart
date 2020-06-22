@@ -448,6 +448,26 @@ class Payment extends Model {
     return payList;
   }
 
+  Future<List<Map<String, dynamic>>> getByCustomerAndID(String financeID,
+      String branchName, String subBranchName, int number, String payID) async {
+    QuerySnapshot snap = await getCollectionRef()
+        .where('finance_id', isEqualTo: financeID)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('customer_number', isEqualTo: number)
+        .where('payment_id', isEqualTo: payID)
+        .getDocuments();
+
+    List<Map<String, dynamic>> payList = [];
+    if (snap.documents.isNotEmpty) {
+      snap.documents.forEach((pay) {
+        payList.add(pay.data);
+      });
+    }
+
+    return payList;
+  }
+
   Stream<QuerySnapshot> streamPayments(
       String financeId, String branchName, String subBranchName, int number) {
     return getCollectionRef()

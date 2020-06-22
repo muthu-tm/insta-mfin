@@ -7,8 +7,6 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/transaction/add/AddExpense.dart';
 import 'package:instamfin/screens/transaction/edit/EditExpense.dart';
-import 'package:instamfin/screens/transaction/expense/ExpenseCategoryScreen.dart';
-import 'package:instamfin/screens/transaction/widgets/TransactionsAppBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -41,69 +39,52 @@ class ExpenseHome extends StatelessWidget {
         ),
         onPressed: () {
           showMaterialModalBottomSheet(
-              expand: false,
-              context: context,
-              backgroundColor: Colors.transparent,
-              builder: (context, scrollController) {
-                return Material(
-                  child: SafeArea(
-                      top: false,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          ListTile(
-                            title: Text('Add expenses'),
-                            leading: Icon(
-                              Icons.monetization_on,
-                              color: CustomColors.mfinBlue,
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddExpense(),
-                                  settings: RouteSettings(
-                                      name: '/transactions/expenses/add'),
-                                ),
-                              );
-                            },
+            expand: false,
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context, scrollController) {
+              return Material(
+                child: SafeArea(
+                    top: false,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          title: Text('Add Expense'),
+                          leading: Icon(
+                            Icons.monetization_on,
+                            color: CustomColors.mfinBlue,
                           ),
-                          ListTile(
-                            title: Text('Expense categories list'),
-                            leading: Icon(
-                              Icons.view_list,
-                              color: CustomColors.mfinBlue,
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ExpenseCategoryScreen(),
-                                  settings: RouteSettings(
-                                      name:
-                                          '/transactions/expenses/categories'),
-                                ),
-                              );
-                            },
-                          ),
-                          ListTile(
-                            title: Text('Home'),
-                            leading: Icon(
-                              Icons.home,
-                              color: CustomColors.mfinBlue,
-                            ),
-                            onTap: () => Navigator.push(
+                          onTap: () {
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => UserHomeScreen(),
-                                settings: RouteSettings(name: '/home'),
+                                builder: (context) => AddExpense(),
+                                settings: RouteSettings(
+                                    name: '/transactions/expenses/add'),
                               ),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          title: Text('Home'),
+                          leading: Icon(
+                            Icons.home,
+                            color: CustomColors.mfinBlue,
+                          ),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserHomeScreen(),
+                              settings: RouteSettings(name: '/home'),
                             ),
-                          )
-                        ],
-                      )),
-                );
-              });
+                          ),
+                        )
+                      ],
+                    )),
+              );
+            },
+          );
         },
       ),
       body: StreamBuilder<QuerySnapshot>(

@@ -4,18 +4,29 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class CollectionBookPayments extends StatelessWidget {
+class PaymentsBook extends StatefulWidget {
+  @override
+  _PaymentsBookState createState() => _PaymentsBookState();
+}
+
+class _PaymentsBookState extends State<PaymentsBook> {
   final int groupPref =
       UserController().getCurrentUser().preferences.transactionGroupBy;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: groupPref == 0
-            ? getPaymentsForDaily()
-            : groupPref == 1
-                ? getPaymentsForWeekly()
-                : getPaymentsForMonthly());
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Payments Book"),
+        backgroundColor: CustomColors.mfinBlue,
+      ),
+      body: SingleChildScrollView(
+          child: groupPref == 0
+              ? getPaymentsForDaily()
+              : groupPref == 1
+                  ? getPaymentsForWeekly()
+                  : getPaymentsForMonthly()),
+    );
   }
 
   Widget getPaymentsForDaily() {

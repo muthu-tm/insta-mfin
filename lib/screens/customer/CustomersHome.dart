@@ -60,86 +60,77 @@ class CustomersHome extends StatelessWidget {
               ),
               PushNotification(),
             ],
-            bottom: CustomTabBar(
-              CustomColors.mfinLightGrey,
-              TabBar(
-                isScrollable: true,
-                labelColor: CustomColors.mfinWhite,
-                indicatorWeight: 0,
-                labelPadding: EdgeInsets.only(left: 5.0, right: 5.0),
-                indicator: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      CustomColors.mfinLightBlue,
-                      CustomColors.mfinLightGrey,
-                      CustomColors.mfinLightBlue,
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                tabs: [
-                  Tab(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "All",
-                        style: TextStyle(
-                          color: CustomColors.mfinBlue,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "New",
-                        style: TextStyle(
-                          color: CustomColors.mfinBlue,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Active",
-                        style: TextStyle(
-                          color: CustomColors.mfinButtonGreen,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Pending",
-                        style: TextStyle(
-                          color: CustomColors.mfinAlertRed,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Settled",
-                        style: TextStyle(
-                          color: CustomColors.mfinBlack,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+            bottom: TabBar(
+              isScrollable: true,
+              labelColor: CustomColors.mfinWhite,
+              indicatorWeight: 0,
+              labelPadding: EdgeInsets.only(left: 5.0, right: 5.0),
+              indicator: BoxDecoration(
+                color: CustomColors.mfinLightBlue,
+                borderRadius: BorderRadius.circular(5),
               ),
+              tabs: [
+                Tab(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "All",
+                      style: TextStyle(
+                        color: CustomColors.mfinWhite,
+                      ),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "New",
+                      style: TextStyle(
+                        color: CustomColors.mfinWhite,
+                      ),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Active",
+                      style: TextStyle(
+                        color: CustomColors.mfinButtonGreen,
+                      ),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Pending",
+                      style: TextStyle(
+                        color: CustomColors.mfinAlertRed,
+                      ),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Settled",
+                      style: TextStyle(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           floatingActionButton: FloatingActionButton.extended(

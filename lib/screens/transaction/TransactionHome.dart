@@ -3,10 +3,9 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/transaction/collection/BooksHome.dart';
-import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
 import 'package:instamfin/screens/transaction/configuration/TransactionConfigHome.dart';
-import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
-import 'package:instamfin/screens/transaction/expense/ExpenseHome.dart';
+import 'package:instamfin/screens/transaction/JournalEntryHome.dart';
+import 'package:instamfin/screens/transaction/ExpenseHome.dart';
 import 'package:instamfin/screens/transaction/widgets/TransactionCollectionBuilder.dart';
 import 'package:instamfin/screens/transaction/widgets/TransactionJournalBuilder.dart';
 import 'package:instamfin/screens/transaction/widgets/TransactionExpenseBuilder.dart';
@@ -45,7 +44,7 @@ class TransactionScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => BooksHome(),
                         settings:
-                            RouteSettings(name: "/transactions/collectionbook"),
+                            RouteSettings(name: "/transactions/books"),
                       ),
                     );
                   },
@@ -70,7 +69,7 @@ class TransactionScreen extends StatelessWidget {
                               ),
                               Spacer(),
                               Text(
-                                "Collection Book",
+                                "NoteBooks",
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: CustomColors.mfinWhite,
@@ -177,7 +176,7 @@ class TransactionScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => JournalEntryHome(),
-                        settings: RouteSettings(name: '/transactions/journal'),
+                        settings: RouteSettings(name: '/transactions/journals'),
                       ),
                     );
                   },

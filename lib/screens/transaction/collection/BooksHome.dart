@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
-import 'package:instamfin/screens/transaction/journal/JournalEntryHome.dart';
-import 'package:instamfin/screens/transaction/expense/ExpenseHome.dart';
+import 'package:instamfin/screens/transaction/collection/PaymentsBook.dart';
+import 'package:instamfin/screens/transaction/collection/PaymentReports.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class BooksHome extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +25,7 @@ class BooksHome extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => CollectionBookHome(),
                     settings:
-                        RouteSettings(name: "/transactions/collectionbook"),
+                        RouteSettings(name: "/transactions/books/collections"),
                   ),
                 );
               },
@@ -97,8 +96,9 @@ class BooksHome extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ExpenseHome(),
-                    settings: RouteSettings(name: '/transactions/expenses'),
+                    builder: (context) => PaymentsBook(),
+                    settings:
+                        RouteSettings(name: '/transactions/books/payments'),
                   ),
                 );
               },
@@ -170,8 +170,8 @@ class BooksHome extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => JournalEntryHome(),
-                    settings: RouteSettings(name: '/transactions/journal'),
+                    builder: (context) => PaymentReportScreen(),
+                    settings: RouteSettings(name: '/transactions/books/all'),
                   ),
                 );
               },
@@ -191,8 +191,7 @@ class BooksHome extends StatelessWidget {
                           decoration: BoxDecoration(
                             boxShadow: <BoxShadow>[
                               BoxShadow(
-                                  color: CustomColors.mfinBlue
-                                      .withOpacity(0.5),
+                                  color: CustomColors.mfinBlue.withOpacity(0.5),
                                   offset: const Offset(1.0, 1.0),
                                   blurRadius: 5.0),
                             ],

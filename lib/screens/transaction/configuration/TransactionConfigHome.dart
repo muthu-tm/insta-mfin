@@ -9,7 +9,7 @@ class TransactionConfigHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Transaction configurations'),
+        title: Text('Transaction Configurations'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -31,7 +31,7 @@ class TransactionConfigHome extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Payment templates",
+                      "Payment Templates",
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: "Georgia",
@@ -61,7 +61,7 @@ class TransactionConfigHome extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Expense categories",
+                      "Expense Categories",
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: "Georgia",
@@ -91,7 +91,7 @@ class TransactionConfigHome extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Journal categories",
+                      "Journal Categories",
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: "Georgia",
