@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/Home.dart';
-import 'package:instamfin/screens/transaction/collection/BooksHome.dart';
+import 'package:instamfin/screens/transaction/books/BooksHome.dart';
 import 'package:instamfin/screens/transaction/configuration/TransactionConfigHome.dart';
 import 'package:instamfin/screens/transaction/JournalEntryHome.dart';
 import 'package:instamfin/screens/transaction/ExpenseHome.dart';

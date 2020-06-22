@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/transaction/collection/CollectionBookTab.dart';
+import 'package:instamfin/screens/transaction/books/CollectionBookTab.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
 class CollectionBookHome extends StatelessWidget {
-  final DateTime currentDate = DateTime.now();
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +11,6 @@ class CollectionBookHome extends StatelessWidget {
       length: 3,
       initialIndex: 1,
       child: Scaffold(
-        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("Collection Book"),
           backgroundColor: CustomColors.mfinBlue,

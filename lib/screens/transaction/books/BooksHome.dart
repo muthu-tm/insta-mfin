@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/transaction/collection/CollectionBookHome.dart';
-import 'package:instamfin/screens/transaction/collection/AllTransactionsBook.dart';
-import 'package:instamfin/screens/transaction/collection/PaymentsBook.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/transaction/books/CollectionBookHome.dart';
+import 'package:instamfin/screens/transaction/books/AllTransactionsBook.dart';
+import 'package:instamfin/screens/transaction/books/PaymentsBook.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class BooksHome extends StatelessWidget {
@@ -191,7 +190,8 @@ class BooksHome extends StatelessWidget {
                           decoration: BoxDecoration(
                             boxShadow: <BoxShadow>[
                               BoxShadow(
-                                  color: CustomColors.mfinBlack.withOpacity(0.5),
+                                  color:
+                                      CustomColors.mfinBlack.withOpacity(0.5),
                                   offset: const Offset(1.0, 1.0),
                                   blurRadius: 5.0),
                             ],
@@ -228,7 +228,6 @@ class BooksHome extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: bottomBar(context),
     );
   }
 }

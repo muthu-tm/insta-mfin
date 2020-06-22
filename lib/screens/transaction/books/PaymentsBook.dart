@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/transaction/collection/PaymentListWidget.dart';
+import 'package:instamfin/screens/transaction/books/PaymentListWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class PaymentsBook extends StatefulWidget {
-  @override
-  _PaymentsBookState createState() => _PaymentsBookState();
-}
-
-class _PaymentsBookState extends State<PaymentsBook> {
+class PaymentsBook extends StatelessWidget {
   final int groupPref =
       UserController().getCurrentUser().preferences.transactionGroupBy;
 
