@@ -191,21 +191,13 @@ class BooksHome extends StatelessWidget {
                           decoration: BoxDecoration(
                             boxShadow: <BoxShadow>[
                               BoxShadow(
-                                  color: CustomColors.mfinBlue.withOpacity(0.5),
+                                  color: CustomColors.mfinBlack.withOpacity(0.5),
                                   offset: const Offset(1.0, 1.0),
                                   blurRadius: 5.0),
                             ],
                             color: CustomColors.mfinBlue,
                             shape: BoxShape.rectangle,
                             borderRadius: BorderRadius.circular(10.0),
-                            gradient: LinearGradient(
-                              colors: <Color>[
-                                CustomColors.mfinAlertRed,
-                                CustomColors.mfinButtonGreen,
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(5),
