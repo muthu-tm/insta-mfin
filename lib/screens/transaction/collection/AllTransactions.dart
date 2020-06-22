@@ -24,6 +24,7 @@ class AllTransactionsBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         ListTile(
           leading: Icon(
@@ -122,32 +123,103 @@ class AllTransactionsBuilder extends StatelessWidget {
                 itemBuilder: (context, int index) {
                   Payment payment = snapshot.data[index];
 
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 30,
-                        child: ListTile(
-                          leading: Text(
-                            "Total Amount: ",
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: CustomColors.mfinBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          trailing: Text(
-                            payment.paymentID,
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: CustomColors.mfinBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                  return Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinAlertRed.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
-                    ],
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Customer:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                payment.customerNumber.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Payment ID:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                payment.paymentID ?? "-",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Collection:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: RichText(
+                                text: TextSpan(
+                                  text: '${payment.tenure}',
+                                  style: TextStyle(
+                                    color: CustomColors.mfinWhite,
+                                    fontFamily: 'Georgia',
+                                    fontSize: 18.0,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: ' x ',
+                                      style: TextStyle(
+                                        color: CustomColors.mfinBlack,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: '${payment.collectionAmount}',
+                                      style: TextStyle(
+                                        color: CustomColors.mfinPositiveGreen,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 });
           } else {
@@ -215,32 +287,90 @@ class AllTransactionsBuilder extends StatelessWidget {
                 itemBuilder: (context, int index) {
                   Collection coll = snapshot.data[index];
 
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 30,
-                        child: ListTile(
-                          leading: Text(
-                            "Total Amount: ",
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: CustomColors.mfinBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          trailing: Text(
-                            coll.collectionAmount.toString(),
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: CustomColors.mfinBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                  return Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinPositiveGreen.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
-                    ],
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Type:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                coll.type == 0
+                                    ? "Collection"
+                                    : coll.type == 1
+                                        ? "Doc Charge"
+                                        : coll.type == 2
+                                            ? "SurCharge"
+                                            : coll.type == 3
+                                                ? "Settlement"
+                                                : "Penalty",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Amount:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                coll.collectionAmount.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Received:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                coll.getReceived().toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 });
           } else {
@@ -298,32 +428,62 @@ class AllTransactionsBuilder extends StatelessWidget {
                 itemBuilder: (context, int index) {
                   Journal journal = snapshot.data[index];
 
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 30,
-                        child: ListTile(
-                          leading: Text(
-                            "Total Amount: ",
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: CustomColors.mfinBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          trailing: Text(
-                            journal.amount.toString(),
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: CustomColors.mfinBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                  return Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Container(
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinLightBlue.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
-                    ],
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 20,
+                            child: ListTile(
+                              leading: Text(
+                                "Name:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                journal.journalName,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                            child: ListTile(
+                              leading: Text(
+                                journal.isExpense ? "Expense:" : "Income:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                journal.amount.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 });
           } else {
@@ -381,32 +541,62 @@ class AllTransactionsBuilder extends StatelessWidget {
                 itemBuilder: (context, int index) {
                   Expense expense = snapshot.data[index];
 
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 30,
-                        child: ListTile(
-                          leading: Text(
-                            "Total Amount: ",
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: CustomColors.mfinBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          trailing: Text(
-                            expense.amount.toString(),
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: CustomColors.mfinBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                  return Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Container(
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinAlertRed.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
-                    ],
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 20,
+                            child: ListTile(
+                              leading: Text(
+                                "Name:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                expense.expenseName,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                            child: ListTile(
+                              leading: Text(
+                                "Amount:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                expense.amount.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 });
           } else {
