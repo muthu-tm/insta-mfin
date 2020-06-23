@@ -40,6 +40,8 @@ class Payment extends Model {
   int docCharge;
   @JsonKey(name: 'surcharge', nullable: true)
   int surcharge;
+  @JsonKey(name: 'referral_commission', nullable: true)
+  int rCommission;
   @JsonKey(name: 'tenure', nullable: true)
   int tenure;
   @JsonKey(name: 'collection_mode', nullable: true)
@@ -115,6 +117,10 @@ class Payment extends Model {
 
   setSurcharge(int surcharge) {
     this.surcharge = surcharge;
+  }
+  
+  setCommission(int commission) {
+    this.rCommission = commission;
   }
 
   setTenure(int tenure) {
@@ -374,6 +380,7 @@ class Payment extends Model {
                     AccountsData.fromJson(doc.data['accounts_data']);
 
                 accData.cashInHand -= this.principalAmount;
+                accData.cashInHand -= this.rCommission;
 
                 // if (accData.cashInHand < 0) {
                 //   return Future.error(
@@ -565,6 +572,7 @@ class Payment extends Model {
     int totalAmount = 0;
     int totalDocCharge = 0;
     int totalSurCharge = 0;
+    int totalCommission = 0;
     int docAdd = 0;
     int surAdd = 0;
 
@@ -592,6 +600,10 @@ class Payment extends Model {
       else if (paymentJSON['surcharge'] == 0 && payment.surcharge > 0)
         surAdd = -1;
     }
+    
+    if (paymentJSON.containsKey('referral_commission')) {
+      totalCommission = payment.rCommission - paymentJSON['referral_commission'];
+    }
 
     try {
       DocumentReference finDocRef = user.getFinanceDocReference();
@@ -603,6 +615,7 @@ class Payment extends Model {
                   AccountsData.fromJson(doc.data['accounts_data']);
 
               accData.cashInHand += amount;
+              accData.cashInHand += totalCommission;
               accData.paymentsAmount += totalAmount;
               accData.totalDocCharge += docAdd;
               accData.docCharge += totalDocCharge;

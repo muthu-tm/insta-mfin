@@ -555,7 +555,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       emptyText = "No collection RECEIVED for this Payment!";
                       fetchAll = false;
                       textColor = CustomColors.mfinPositiveGreen;
-                      collStatus = [1, 2]; //Paid and PaidLate
+                      collStatus = [1, 2, 5]; //Paid and PaidLate
                     },
                     child: CollectionStatusRadioItem(
                         collStatusList[1],

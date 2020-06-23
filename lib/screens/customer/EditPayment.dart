@@ -70,7 +70,7 @@ class _EditPaymentState extends State<EditPayment> {
     _collectionDate.value = TextEditingValue(
         text: DateUtils.getFormattedDateFromEpoch(
             widget.payment.collectionStartsFrom));
-            
+
     collectionDays = widget.payment.collectionDays;
   }
 
@@ -350,26 +350,31 @@ class _EditPaymentState extends State<EditPayment> {
                         ],
                       ),
                     ),
-                    selectedCollectionModeID == '0' ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        border: Border.all(color: Colors.grey[350], width: 1.0),
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            'Scheduled collection days',
-                            style: TextStyle(
-                              color: CustomColors.mfinBlue,
+                    selectedCollectionModeID == '0'
+                        ? Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              border: Border.all(
+                                  color: Colors.grey[350], width: 1.0),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: selectedDays.toList(),
-                          ),
-                        ],
-                      ),
-                    ): Container(),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  'Scheduled collection days',
+                                  style: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: selectedDays.toList(),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -437,6 +442,48 @@ class _EditPaymentState extends State<EditPayment> {
                               ),
                             ),
                           )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              initialValue:
+                                  widget.payment.rCommission.toString(),
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: 'Referral Commission',
+                                labelText: 'Referral Commission',
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (commission) {
+                                if (commission.trim() !=
+                                    widget.payment.rCommission.toString()) {
+                                  if (commission.trim().isEmpty) {
+                                    updatedPayment['referral_commission'] = 0;
+                                  } else {
+                                    updatedPayment['referral_commission'] =
+                                        int.parse(commission);
+                                  }
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),

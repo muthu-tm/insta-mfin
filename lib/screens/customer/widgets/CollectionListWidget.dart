@@ -315,6 +315,13 @@ class CollectionListWidget extends StatelessWidget {
         int pending = coll.collectionAmount - coll.getReceived();
         return ["PENDING:", pending.toString()];
         break;
+      case 4:
+        int pending = coll.collectionAmount - coll.getReceived();
+        return ["PENDING:", pending.toString()];
+        break;
+      case 5:
+        return ["AMOUNT:", coll.collectionAmount.toString()];
+        break;
       default:
         return ["AMOUNT:", coll.collectionAmount.toString()];
         break;
@@ -338,6 +345,9 @@ class CollectionListWidget extends StatelessWidget {
       case 4:
         return "PENALTY";
         break;
+      case 5:
+        return "COMMISSION";
+        break;
       default:
         return "COLLECTION";
         break;
@@ -358,6 +368,9 @@ class CollectionListWidget extends StatelessWidget {
         break;
       case 4:
         return CustomColors.mfinAlertRed;
+        break;
+      case 5:
+        return CustomColors.mfinAlertRed.withOpacity(0.5);
         break;
       default:
         return CustomColors.mfinBlue;

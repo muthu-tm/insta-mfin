@@ -513,7 +513,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      'Total - $total',
+                      'Total: $total',
                       style: TextStyle(
                         fontSize: 18.0,
                         fontFamily: "Georgia",
@@ -522,7 +522,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Amount - Rs.$amount',
+                      'Amount: Rs.$amount',
                       style: TextStyle(
                         fontSize: 17.0,
                         fontFamily: "Georgia",
@@ -542,7 +542,7 @@ class HomeScreen extends StatelessWidget {
                     center: Icon(
                       Icons.collections_bookmark,
                       size: 30.0,
-                      color: CustomColors.mfinButtonGreen,
+                      color: CustomColors.mfinFadedButtonGreen.withOpacity(0.9),
                     ),
                     footer: new Text(
                       "Rs.$rAmount",
@@ -552,8 +552,8 @@ class HomeScreen extends StatelessWidget {
                           fontSize: 17.0),
                     ),
                     circularStrokeCap: CircularStrokeCap.round,
-                    backgroundColor: CustomColors.mfinAlertRed,
-                    progressColor: CustomColors.mfinButtonGreen,
+                    backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
+                    progressColor: CustomColors.mfinFadedButtonGreen.withOpacity(0.9),
                   ),
                 ),
               ],

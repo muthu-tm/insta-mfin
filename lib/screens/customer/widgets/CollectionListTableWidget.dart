@@ -327,6 +327,12 @@ class CollectionListTableWidget extends StatelessWidget {
       case 3:
         return "SETTLEMENT";
         break;
+      case 4:
+        return "PENALTY";
+        break;
+      case 5:
+        return "COMMISSION";
+        break;
       default:
         return "COLLECTION";
         break;
@@ -347,6 +353,9 @@ class CollectionListTableWidget extends StatelessWidget {
         break;
       case 4:
         return CustomColors.mfinAlertRed;
+        break;
+      case 5:
+        return CustomColors.mfinAlertRed.withOpacity(0.5);
         break;
       default:
         return CustomColors.mfinBlack;

@@ -72,6 +72,7 @@ class _AddPaymentState extends State<AddPayment> {
   int principalAmount = 0;
   int docCharge = 0;
   int surCharge = 0;
+  int commission = 0;
   int tenure = 0;
   String paymentID = '';
   double intrestRate = 0.0;
@@ -485,6 +486,43 @@ class _AddPaymentState extends State<AddPayment> {
                                   ),
                                 ),
                               ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: commission.toString(),
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: 'Referral Commission',
+                                labelText: 'Referral Commission',
+                                labelStyle:
+                                    TextStyle(color: CustomColors.mfinBlue),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (commission) {
+                                if (commission.trim().isEmpty) {
+                                  this.commission = 0;
+                                } else {
+                                  this.commission = int.parse(commission);
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ],
@@ -970,6 +1008,7 @@ class _AddPaymentState extends State<AddPayment> {
           collectionDate,
           docCharge,
           surCharge,
+          commission,
           intrestRate,
           givenBy,
           notes);

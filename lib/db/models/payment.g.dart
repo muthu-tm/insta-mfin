@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'payment.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 Payment _$PaymentFromJson(Map<String, dynamic> json) {
   return Payment()
@@ -21,6 +15,7 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..principalAmount = json['principal_amount'] as int
     ..docCharge = json['doc_charge'] as int
     ..surcharge = json['surcharge'] as int
+    ..rCommission = json['referral_commission'] as int
     ..tenure = json['tenure'] as int
     ..collectionMode = json['collection_mode'] as int
     ..collectionDays = (json['collection_days'] as List)
@@ -64,26 +59,24 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'collection_starts_from': instance.collectionStartsFrom,
       'settled_date': instance.settledDate,
       'total_amount': instance.totalAmount,
-      'is_loss': instance.isLoss == null ? false : instance.isLoss,
-      'loss_amount': instance.lossAmount == null ? 0 : instance.lossAmount,
-      'profit_amount':
-          instance.profitAmount == null ? 0 : instance.profitAmount,
-      'shortage_amount':
-          instance.shortageAmount == null ? 0 : instance.shortageAmount,
+      'is_loss': instance.isLoss ?? false,
+      'loss_amount': instance.lossAmount ?? 0,
+      'profit_amount': instance.profitAmount ?? 0,
+      'shortage_amount': instance.shortageAmount ?? 0,
       'principal_amount': instance.principalAmount,
-      'doc_charge': instance.docCharge == null ? 0 : instance.docCharge,
-      'surcharge': instance.surcharge == null ? 0 : instance.surcharge,
+      'doc_charge': instance.docCharge ?? 0,
+      'surcharge': instance.surcharge ?? 0,
+      'referral_commission': instance.rCommission ?? 0,
       'tenure': instance.tenure,
       'collection_mode': instance.collectionMode,
       'collection_days': instance.collectionDays,
       'already_collected_amount': instance.alreadyCollectedAmount,
       'transferred_mode': instance.transferredMode,
-      'interest_rate':
-          instance.interestRate == null ? 0 : instance.interestRate,
+      'interest_rate': instance.interestRate ?? 0,
       'collection_amount': instance.collectionAmount,
       'is_settled': instance.isSettled,
-      'given_by': instance.givenBy == null ? '' : instance.givenBy,
-      'notes': instance.notes == null ? '' : instance.notes,
+      'given_by': instance.givenBy ?? '',
+      'notes': instance.notes ?? '',
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,

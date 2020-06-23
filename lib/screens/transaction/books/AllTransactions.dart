@@ -264,14 +264,14 @@ class AllTransactionsBuilder extends StatelessWidget {
               _user.primaryFinance,
               _user.primaryBranch,
               _user.primarySubBranch,
-              [0, 1, 2, 3, 4],
+              [0, 1, 2, 3, 4, 5],
               DateUtils.getUTCDateEpoch(startDate),
               DateUtils.getUTCDateEpoch(endDate))
           : _c.allCollectionByDate(
               _user.primaryFinance,
               _user.primaryBranch,
               _user.primarySubBranch,
-              [0, 1, 2, 3, 4],
+              [0, 1, 2, 3, 4, 5],
               DateUtils.getUTCDateEpoch(startDate)),
       builder:
           (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {
@@ -317,7 +317,9 @@ class AllTransactionsBuilder extends StatelessWidget {
                                             ? "SurCharge"
                                             : coll.type == 3
                                                 ? "Settlement"
-                                                : "Penalty",
+                                                : coll.type == 4
+                                                    ? "Penalty"
+                                                    : "Commission",
                                 style: TextStyle(
                                   fontSize: 17,
                                   color: CustomColors.mfinLightGrey,

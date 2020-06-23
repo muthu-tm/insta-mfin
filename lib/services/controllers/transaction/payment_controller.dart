@@ -21,6 +21,7 @@ class PaymentController {
       int collectionDate,
       int docCharge,
       int surcharge,
+      int rCommission,
       double iRate,
       String givenBy,
       String notes) async {
@@ -43,6 +44,7 @@ class PaymentController {
       pay.setCollectionMode(collectionMode);
       pay.setDocumentCharge(docCharge);
       pay.setSurcharge(surcharge);
+      pay.setCommission(rCommission);
       pay.setInterestRate(iRate);
       pay.setNotes(notes);
       pay.setIsSettled(false);

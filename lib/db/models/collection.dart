@@ -158,7 +158,8 @@ class Collection {
   }
 
   int getStatus() {
-    if (this.type == 1 || this.type == 2) return 1;
+    if (this.type == 1 || this.type == 2  || this.type == 4) return 1;
+    if (this.type == 5) return 5; // COMMISSION
 
     if (getPaidOnTime() > 0 && getPending() == 0) return 1;
 
