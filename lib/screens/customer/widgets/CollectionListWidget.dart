@@ -32,8 +32,7 @@ class CollectionListWidget extends StatelessWidget {
           _payment.financeID,
           _payment.branchName,
           _payment.subBranchName,
-          _payment.customerNumber,
-          _payment.createdAt,
+          _payment.paymentID,
           status,
           fetchAll),
       builder:
@@ -399,9 +398,9 @@ class CollectionListWidget extends StatelessWidget {
           collection.financeID,
           collection.branchName,
           collection.subBranchName,
-          collection.customerNumber,
-          _payment.createdAt,
+          collection.paymentID,
           collection.collectionDate,
+          true,
           true,
           collDetails,
           false);

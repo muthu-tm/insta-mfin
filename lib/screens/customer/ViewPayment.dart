@@ -219,8 +219,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                     widget.payment.financeID,
                                     widget.payment.branchName,
                                     widget.payment.subBranchName,
-                                    widget.payment.customerNumber,
-                                    widget.payment.createdAt);
+                                    widget.payment.paymentID);
                                 if (!result['is_success']) {
                                   Navigator.pop(context);
                                   Navigator.pop(context);

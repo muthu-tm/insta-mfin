@@ -9,11 +9,11 @@ class CollectionController {
     String branchName,
     String subBranchName,
     int custNumber,
-    String payID,
-    DateTime createdAt,
+    String paymentID,
     int cNumber,
     int type,
     int collAmount,
+    bool isPaid,
     int collDate,
     Map<String, dynamic> collection,
   ) async {
@@ -22,10 +22,10 @@ class CollectionController {
       Collection res;
       if (type != 0) {
         res = await coll.getCollectionByID(financeID, branchName, subBranchName,
-            custNumber, createdAt, (collDate + type).toString());
+            paymentID, (collDate + type).toString());
       } else {
         res = await coll.getCollectionByID(financeID, branchName, subBranchName,
-            custNumber, createdAt, collDate.toString());
+            paymentID, collDate.toString());
       }
 
       if (res != null)
@@ -36,8 +36,9 @@ class CollectionController {
       coll.setBranchName(branchName);
       coll.setSubBranchName(subBranchName);
       coll.setCollectionAmount(collAmount);
+      coll.setIsPaid(isPaid);
       coll.setCustomerNumber(custNumber);
-      coll.setPaymentID(payID);
+      coll.setPaymentID(paymentID);
       coll.setcollectionNumber(cNumber);
       coll.setType(type);
       coll.setCollectionDate(collDate);
@@ -47,44 +48,32 @@ class CollectionController {
         cAlready = true;
       }
 
-      await coll.create(createdAt, cAlready, collection);
+      await coll.create(cAlready, collection);
 
       return CustomResponse.getSuccesReponse(
-          "Added new Collection successfully for $custNumber customer's payment ${createdAt.toString()}");
+          "Added new Collection successfully for Payment $paymentID}");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
-  Future<Collection> getCollectionByID(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int custNumber,
-      DateTime createdAt,
-      String collID) async {
+  Future<Collection> getCollectionByID(String financeId, String branchName,
+      String subBranchName, String paymentID, String collID) async {
     try {
       Collection collection = Collection();
       return await collection.getCollectionByID(
-          financeId, branchName, subBranchName, custNumber, createdAt, collID);
+          financeId, branchName, subBranchName, paymentID, collID);
     } catch (err) {
-      print(
-          "Error while retrieving colletction of $custNumber customer's payment createdAt ${createdAt.toString()}: " +
-              err.toString());
       return null;
     }
   }
 
-  Future<List<Collection>> getAllCollectionsForPayment(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int custNumber,
-      DateTime createdAt) async {
+  Future<List<Collection>> getAllCollectionsForPayment(String financeId,
+      String branchName, String subBranchName, String paymentID) async {
     try {
       List<Collection> payments = await Collection()
           .getAllCollectionsForCustomerPayment(
-              financeId, branchName, subBranchName, custNumber, createdAt);
+              financeId, branchName, subBranchName, paymentID);
 
       if (payments == null) {
         return [];
@@ -92,9 +81,6 @@ class CollectionController {
 
       return payments;
     } catch (err) {
-      print(
-          "Error while retrieving collection of $custNumber customer's payment createdAt ${createdAt.toString()}: " +
-              err.toString());
       throw err;
     }
   }
@@ -103,14 +89,13 @@ class CollectionController {
       String financeId,
       String branchName,
       String subBranchName,
-      int number,
-      DateTime createdAt,
+      String paymentID,
       List<int> status,
       bool fetchAll) async* {
     try {
       Collection coll = new Collection();
       Stream<QuerySnapshot> stream = coll.streamCollectionsForPayment(
-          financeId, branchName, subBranchName, number, createdAt);
+          financeId, branchName, subBranchName, paymentID);
 
       if (await stream.isEmpty) {
         yield [];
@@ -187,8 +172,6 @@ class CollectionController {
 
       return collections;
     } catch (err) {
-      print("Error while retrieving collections with Date Range: " +
-          err.toString());
       throw err;
     }
   }
@@ -197,20 +180,16 @@ class CollectionController {
       String financeId,
       String branchName,
       String subBranchName,
-      int custNumber,
-      DateTime paymentCreatedAt,
+      String paymentID,
       String collID,
       Map<String, dynamic> collectionJSON) async {
     try {
       await Collection().update(financeId, branchName, subBranchName,
-          custNumber, paymentCreatedAt, collID, collectionJSON);
+          paymentID, collID, collectionJSON);
 
       return CustomResponse.getSuccesReponse(
-          "Updated $custNumber customer's collection $collID");
+          "Updated $paymentID Payment's collection $collID");
     } catch (err) {
-      print(
-          "Error while updating $custNumber customer's collection with ID $collID: " +
-              err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -219,9 +198,9 @@ class CollectionController {
     String financeId,
     String branchName,
     String subBranchName,
-    int custNumber,
-    DateTime createdAt,
+    String paymentID,
     int collDate,
+    bool isPaid,
     bool isAdd,
     Map<String, dynamic> collectionDetails,
     bool hasPenalty,
@@ -231,18 +210,15 @@ class CollectionController {
           financeId,
           branchName,
           subBranchName,
-          custNumber,
-          createdAt,
+          paymentID,
           collDate,
+          isPaid,
           isAdd,
           collectionDetails,
           hasPenalty);
       return CustomResponse.getSuccesReponse(
-          "Payment's Collection updated for customer $custNumber");
+          "Payment's Collection updated for Payment $paymentID");
     } catch (err) {
-      print(
-          "Error while updating Payment's Collection for customer $custNumber: " +
-              err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

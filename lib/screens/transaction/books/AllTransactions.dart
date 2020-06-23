@@ -267,7 +267,7 @@ class AllTransactionsBuilder extends StatelessWidget {
               [0, 1, 2, 3, 4],
               DateUtils.getUTCDateEpoch(startDate),
               DateUtils.getUTCDateEpoch(endDate))
-          : _c.getAllCollectionByDate(
+          : _c.allCollectionByDate(
               _user.primaryFinance,
               _user.primaryBranch,
               _user.primarySubBranch,

@@ -45,14 +45,14 @@ class CollectionBookHome extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            CollectionBookTab(
+            CollectionBookTab(true,
                 DateUtils.getUTCDateEpoch(
                     DateTime.now().subtract(Duration(days: 1))),
                 CustomColors.mfinAlertRed,
                 CustomColors.mfinGrey),
-            CollectionBookTab(DateUtils.getUTCDateEpoch(DateTime.now()),
+            CollectionBookTab(false, DateUtils.getUTCDateEpoch(DateTime.now()),
                 CustomColors.mfinBlue, CustomColors.mfinGrey),
-            CollectionBookTab(
+            CollectionBookTab(false, 
                 DateUtils.getUTCDateEpoch(
                     DateTime.now().add(Duration(days: 1))),
                 CustomColors.mfinGrey,

@@ -190,7 +190,7 @@ class Payment extends Model {
     try {
       List<Collection> collList = await Collection()
           .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
-              this.subBranchName, this.customerNumber, this.createdAt);
+              this.subBranchName, this.paymentID);
       int received = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
@@ -210,7 +210,7 @@ class Payment extends Model {
     try {
       List<Collection> collList = await Collection()
           .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
-              this.subBranchName, this.customerNumber, this.createdAt);
+              this.subBranchName, this.paymentID);
       int pending = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
@@ -232,8 +232,7 @@ class Payment extends Model {
           this.financeID,
           this.branchName,
           this.subBranchName,
-          this.customerNumber,
-          this.createdAt,
+          this.paymentID,
           CollectionType.Penalty.name);
 
       int tPenalty = 0;
@@ -254,7 +253,7 @@ class Payment extends Model {
     try {
       List<Collection> collList = await Collection()
           .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
-              this.subBranchName, this.customerNumber, this.createdAt);
+              this.subBranchName, this.paymentID);
 
       int _r = 0;
       int _p = 0;
@@ -285,7 +284,7 @@ class Payment extends Model {
     try {
       List<Collection> collList = await Collection()
           .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
-              this.subBranchName, this.customerNumber, this.createdAt);
+              this.subBranchName, this.paymentID);
 
       List<int> status = [];
       for (var coll in collList) {
@@ -309,13 +308,9 @@ class Payment extends Model {
   }
 
   String getID() {
-    String value = this.financeID +
-        this.branchName +
-        this.subBranchName +
-        this.customerNumber.toString();
+    String value = this.financeID + this.branchName + this.subBranchName;
 
-    return HashGenerator.hmacGenerator(
-        value, this.createdAt.millisecondsSinceEpoch.toString());
+    return HashGenerator.hmacGenerator(value, this.paymentID);
   }
 
   Query getGroupQuery() {
@@ -323,17 +318,23 @@ class Payment extends Model {
   }
 
   String getDocumentID(String financeId, String branchName,
-      String subBranchName, int custNumber, DateTime createdAt) {
-    String value =
-        financeId + branchName + subBranchName + custNumber.toString();
-    return HashGenerator.hmacGenerator(
-        value, createdAt.millisecondsSinceEpoch.toString());
+      String subBranchName, String paymentID) {
+    String value = financeId + branchName + subBranchName;
+    return HashGenerator.hmacGenerator(value, paymentID);
   }
 
   DocumentReference getDocumentReference(String financeId, String branchName,
-      String subBranchName, int number, DateTime createdAt) {
+      String subBranchName, String paymentID) {
     return getCollectionRef().document(
-        getDocumentID(financeId, branchName, subBranchName, number, createdAt));
+        getDocumentID(financeId, branchName, subBranchName, paymentID));
+  }
+
+  Future<bool> isExist() async {
+    var branchSnap = await getDocumentReference(
+            this.financeID, this.branchName, this.subBranchName, this.paymentID)
+        .get();
+
+    return branchSnap.exists;
   }
 
   Future create(int number) async {
@@ -343,60 +344,66 @@ class Payment extends Model {
     this.branchName = user.primaryBranch;
     this.subBranchName = user.primarySubBranch;
     try {
-      DocumentReference finDocRef = user.getFinanceDocReference();
-      // DocumentSnapshot doc = await finDocRef.get();
-      // if (doc.exists) {
-      //   AccountsData accData = AccountsData.fromJson(doc.data['accounts_data']);
+      bool isExist = await this.isExist();
 
-      //   accData.cashInHand.update(
-      //             DateUtils.getCashInHandDate(this.dateOfPayment),
-      //             (value) => (value - this.principalAmount),
-      //             ifAbsent: () => (this.principalAmount));
+      if (isExist) {
+        throw 'Already a Payment exist with this PAYMENT ID - ${this.paymentID}';
+      } else {
+        DocumentReference finDocRef = user.getFinanceDocReference();
+        // DocumentSnapshot doc = await finDocRef.get();
+        // if (doc.exists) {
+        //   AccountsData accData = AccountsData.fromJson(doc.data['accounts_data']);
 
-      //   if (accData.cashInHand < 0) {
-      //     throw 'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!';
-      //   }
-      // } else {
-      //   throw 'Unable to find your finance details!';
-      // }
+        //   accData.cashInHand.update(
+        //             DateUtils.getCashInHandDate(this.dateOfPayment),
+        //             (value) => (value - this.principalAmount),
+        //             ifAbsent: () => (this.principalAmount));
 
-      await Model.db.runTransaction(
-        (tx) async {
-          return tx.get(finDocRef).then(
-            (doc) {
-              AccountsData accData =
-                  AccountsData.fromJson(doc.data['accounts_data']);
+        //   if (accData.cashInHand < 0) {
+        //     throw 'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!';
+        //   }
+        // } else {
+        //   throw 'Unable to find your finance details!';
+        // }
 
-              accData.cashInHand -= this.principalAmount;
+        await Model.db.runTransaction(
+          (tx) async {
+            return tx.get(finDocRef).then(
+              (doc) {
+                AccountsData accData =
+                    AccountsData.fromJson(doc.data['accounts_data']);
 
-              // if (accData.cashInHand < 0) {
-              //   return Future.error(
-              //       'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!');
-              accData.paymentsAmount += this.totalAmount;
-              accData.totalPayments += 1;
+                accData.cashInHand -= this.principalAmount;
 
-              if (this.docCharge > 0) {
-                accData.totalDocCharge += 1;
-                accData.docCharge += this.docCharge;
-              }
-              if (this.surcharge > 0) {
-                accData.totalSurCharge += 1;
-                accData.surcharge += this.surcharge;
-              }
+                // if (accData.cashInHand < 0) {
+                //   return Future.error(
+                //       'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!');
+                accData.paymentsAmount += this.totalAmount;
+                accData.totalPayments += 1;
 
-              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
-              txUpdate(tx, finDocRef, data);
+                if (this.docCharge > 0) {
+                  accData.totalDocCharge += 1;
+                  accData.docCharge += this.docCharge;
+                }
+                if (this.surcharge > 0) {
+                  accData.totalSurCharge += 1;
+                  accData.surcharge += this.surcharge;
+                }
 
-              return txCreate(
-                tx,
-                this.getDocumentReference(this.financeID, this.branchName,
-                    this.subBranchName, this.customerNumber, this.createdAt),
-                this.toJson(),
-              );
-            },
-          );
-        },
-      );
+                Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+                txUpdate(tx, finDocRef, data);
+
+                return txCreate(
+                  tx,
+                  this.getDocumentReference(this.financeID, this.branchName,
+                      this.subBranchName, this.paymentID),
+                  this.toJson(),
+                );
+              },
+            );
+          },
+        );
+      }
     } catch (err) {
       print('Payment CREATE Transaction failure:' + err.toString());
       throw err;
@@ -448,13 +455,12 @@ class Payment extends Model {
     return payList;
   }
 
-  Future<List<Map<String, dynamic>>> getByCustomerAndID(String financeID,
-      String branchName, String subBranchName, int number, String payID) async {
+  Future<List<Map<String, dynamic>>> getByPaymentID(String financeID,
+      String branchName, String subBranchName, String payID) async {
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: financeID)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('customer_number', isEqualTo: number)
         .where('payment_id', isEqualTo: payID)
         .getDocuments();
 
@@ -537,9 +543,9 @@ class Payment extends Model {
   }
 
   Future<Payment> getPaymentByID(String financeId, String branchName,
-      String subBranchName, int number, DateTime createdAt) async {
+      String subBranchName, String paymentID) async {
     Map<String, dynamic> payment = await getByID(
-        getDocumentID(financeId, branchName, subBranchName, number, createdAt));
+        getDocumentID(financeId, branchName, subBranchName, paymentID));
 
     if (payment != null) {
       return Payment.fromJson(payment);
@@ -552,12 +558,8 @@ class Payment extends Model {
       Payment payment, Map<String, dynamic> paymentJSON) async {
     paymentJSON['updated_at'] = DateTime.now();
 
-    DocumentReference docRef = getDocumentReference(
-        payment.financeID,
-        payment.branchName,
-        payment.subBranchName,
-        payment.customerNumber,
-        payment.createdAt);
+    DocumentReference docRef = getDocumentReference(payment.financeID,
+        payment.branchName, payment.subBranchName, payment.paymentID);
 
     int amount = 0;
     int totalAmount = 0;
@@ -628,11 +630,7 @@ class Payment extends Model {
     };
 
     DocumentReference docRef = getDocumentReference(
-        this.financeID,
-        this.branchName,
-        this.subBranchName,
-        this.customerNumber,
-        this.createdAt);
+        this.financeID, this.branchName, this.subBranchName, this.paymentID);
 
     int tReceived = await getTotalReceived();
     if (tReceived == null)
@@ -719,8 +717,7 @@ class Payment extends Model {
                             this.financeID,
                             this.branchName,
                             this.subBranchName,
-                            this.customerNumber,
-                            this.createdAt,
+                            this.paymentID,
                             paymentJSON['settled_date']),
                         data);
                   }
@@ -744,8 +741,7 @@ class Payment extends Model {
                           this.financeID,
                           this.branchName,
                           this.subBranchName,
-                          this.customerNumber,
-                          this.createdAt,
+                          this.paymentID,
                           paymentJSON['settled_date']),
                       data);
                 }
@@ -790,9 +786,9 @@ class Payment extends Model {
   }
 
   Future removePayment(String financeId, String branchName,
-      String subBranchName, int number, DateTime createdAt) async {
-    DocumentReference docRef = getDocumentReference(
-        financeId, branchName, subBranchName, number, createdAt);
+      String subBranchName, String paymentID) async {
+    DocumentReference docRef =
+        getDocumentReference(financeId, branchName, subBranchName, paymentID);
 
     try {
       DocumentReference finDocRef = user.getFinanceDocReference();

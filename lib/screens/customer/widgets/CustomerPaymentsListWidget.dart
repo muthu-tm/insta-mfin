@@ -8,7 +8,6 @@ import 'package:instamfin/screens/customer/widgets/CustomerPaymentWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
@@ -116,8 +115,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                               payment.financeID,
                                               payment.branchName,
                                               payment.subBranchName,
-                                              payment.customerNumber,
-                                              payment.createdAt);
+                                              payment.paymentID);
                                           if (!result['is_success']) {
                                             Navigator.pop(context);
                                             _scaffoldKey.currentState

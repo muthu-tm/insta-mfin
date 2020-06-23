@@ -477,6 +477,7 @@ class HomeScreen extends StatelessWidget {
           _u.primaryBranch,
           _u.primarySubBranch,
           [0],
+          false,
           DateUtils.getUTCDateEpoch(DateTime.now())),
       builder:
           (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {
@@ -582,6 +583,7 @@ class HomeScreen extends StatelessWidget {
           _u.primaryBranch,
           _u.primarySubBranch,
           [0],
+          false,
           DateUtils.getUTCDateEpoch(
               DateTime.now().subtract(Duration(days: 1)))),
       builder:
@@ -661,6 +663,7 @@ class HomeScreen extends StatelessWidget {
           _u.primaryBranch,
           _u.primarySubBranch,
           [0],
+          false,
           DateUtils.getUTCDateEpoch(DateTime.now().add(Duration(days: 1)))),
       builder:
           (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {

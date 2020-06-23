@@ -9,11 +9,10 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddCollectionDetails extends StatefulWidget {
-  AddCollectionDetails(this.collection, this.custName, this.payCreatedAt);
+  AddCollectionDetails(this.collection, this.custName);
 
   final Collection collection;
   final String custName;
-  final DateTime payCreatedAt;
 
   @override
   _AddCollectionDetailsState createState() => _AddCollectionDetailsState();
@@ -502,6 +501,10 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
       } else {
         CustomDialogs.actionWaiting(context, "Updating Collection");
         CollectionController _cc = CollectionController();
+        bool isPaid = false;
+
+        if (collDetails['amount'] + widget.collection.getReceived() >= widget.collection.collectionAmount)
+          isPaid = true;
 
         collDetails['transferred_mode'] = int.parse(transferredMode);
         collDetails['created_at'] = DateTime.now();
@@ -511,9 +514,9 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
             widget.collection.financeID,
             widget.collection.branchName,
             widget.collection.subBranchName,
-            widget.collection.customerNumber,
-            widget.payCreatedAt,
+            widget.collection.paymentID,
             widget.collection.collectionDate,
+            isPaid,
             true,
             collDetails,
             hasPenalty);

@@ -8,19 +8,22 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CollectionBookTab extends StatelessWidget {
-  CollectionBookTab(this.epoch, this.cardColor, this.textColor);
+  CollectionBookTab(this.isPending, this.epoch, this.cardColor, this.textColor);
 
+  final bool isPending;
   final int epoch;
-  final Color cardColor;
-  final Color textColor;
+  final Color cardColor, textColor;
 
   @override
   Widget build(BuildContext context) {
     final User _u = UserController().getCurrentUser();
 
     return FutureBuilder(
-      future: Collection().getAllCollectionByDate(
-          _u.primaryFinance, _u.primaryBranch, _u.primarySubBranch, [0], epoch),
+      future: isPending
+          ? Collection().getAllPendingCollectionByDate(_u.primaryFinance,
+              _u.primaryBranch, _u.primarySubBranch, epoch)
+          : Collection().getAllCollectionByDate(_u.primaryFinance,
+              _u.primaryBranch, _u.primarySubBranch, [0], false, epoch),
       builder:
           (BuildContext context, AsyncSnapshot<List<Collection>> collSnap) {
         Widget child;
@@ -44,12 +47,8 @@ class CollectionBookTab extends StatelessWidget {
                   child: InkWell(
                     onTap: () async {
                       List<Map<String, dynamic>> payList = await Payment()
-                          .getByCustomerAndID(
-                              coll.financeID,
-                              coll.branchName,
-                              coll.subBranchName,
-                              coll.customerNumber,
-                              coll.paymentID);
+                          .getByPaymentID(coll.financeID, coll.branchName,
+                              coll.subBranchName, coll.paymentID);
                       Payment pay = Payment.fromJson(payList[0]);
 
                       Navigator.push(

@@ -658,8 +658,7 @@ class _AddCollectionState extends State<AddCollection> {
             widget.payment.financeID,
             widget.payment.branchName,
             widget.payment.subBranchName,
-            widget.payment.customerNumber,
-            widget.payment.createdAt,
+            widget.payment.paymentID,
             cNumber);
 
         if (res != null) {
@@ -676,8 +675,7 @@ class _AddCollectionState extends State<AddCollection> {
                 widget.payment.financeID,
                 widget.payment.branchName,
                 widget.payment.subBranchName,
-                widget.payment.customerNumber,
-                widget.payment.createdAt);
+                widget.payment.paymentID);
 
         int cAmount = 0;
         allColl.forEach((c) {
@@ -704,8 +702,12 @@ class _AddCollectionState extends State<AddCollection> {
       CollectionController _cc = CollectionController();
 
       Map<String, dynamic> collDetails = {};
+      bool isPaid = false;
       if (int.parse(_aCollectedController.text) > 0) {
-        collDetails['amount'] = int.parse(_aCollectedController.text);
+        int cAmount = int.parse(_aCollectedController.text);
+        if(cAmount >= collAmount)
+          isPaid = true;
+        collDetails['amount'] = cAmount;
         collDetails['collected_from'] = widget.payment.custName;
         collDetails['collected_by'] = _user.name;
         collDetails['notes'] = "";
@@ -722,10 +724,10 @@ class _AddCollectionState extends State<AddCollection> {
           widget.payment.subBranchName,
           widget.payment.customerNumber,
           widget.payment.paymentID,
-          widget.payment.createdAt,
           cNumber,
           type,
           collAmount,
+          isPaid,
           collDate,
           collDetails);
 

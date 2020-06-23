@@ -8,13 +8,12 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 
 class CollDetailsTableWidget extends StatelessWidget {
   CollDetailsTableWidget(this.paySettled, this._scaffoldKey, this._collection,
-      this.custName, this._createdAt);
+      this.custName);
 
   final bool paySettled;
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final Collection _collection;
   final String custName;
-  final DateTime _createdAt;
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +138,7 @@ class CollDetailsTableWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddCollectionDetails(
-                            _collection, custName, _createdAt),
+                            _collection, custName),
                         settings: RouteSettings(
                             name:
                                 '/customers/payments/collections/collectiondetails/add'),

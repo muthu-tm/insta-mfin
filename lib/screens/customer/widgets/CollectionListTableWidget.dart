@@ -12,8 +12,8 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CollectionListTableWidget extends StatelessWidget {
-  CollectionListTableWidget(this._payment, this.title,
-      this.emptyText, this.textColor, this.fetchAll, this.status);
+  CollectionListTableWidget(this._payment, this.title, this.emptyText,
+      this.textColor, this.fetchAll, this.status);
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -31,8 +31,7 @@ class CollectionListTableWidget extends StatelessWidget {
           _payment.financeID,
           _payment.branchName,
           _payment.subBranchName,
-          _payment.customerNumber,
-          _payment.createdAt,
+          _payment.paymentID,
           status,
           fetchAll),
       builder:
@@ -222,8 +221,7 @@ class CollectionListTableWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      ViewCollection(_payment, coll, color),
+                  builder: (context) => ViewCollection(_payment, coll, color),
                   settings: RouteSettings(name: '/customers/payment/colection'),
                 ),
               );
@@ -391,11 +389,12 @@ class CollectionListTableWidget extends StatelessWidget {
             collection.financeID,
             collection.branchName,
             collection.subBranchName,
-            collection.customerNumber,
-            _payment.createdAt,
+            collection.paymentID,
             collection.collectionDate,
             true,
-            collDetails, false);
+            true,
+            collDetails,
+            false);
 
         if (!result['is_success']) {
           Navigator.pop(context);

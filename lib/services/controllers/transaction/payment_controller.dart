@@ -58,15 +58,13 @@ class PaymentController {
   }
 
   Future<Payment> getPaymentByID(String financeId, String branchName,
-      String subBranchName, int custNumber, DateTime createdAt) async {
+      String subBranchName, String paymentID) async {
     try {
       Payment payment = Payment();
       return await payment.getPaymentByID(
-          financeId, branchName, subBranchName, custNumber, createdAt);
+          financeId, branchName, subBranchName, paymentID);
     } catch (err) {
-      print(
-          "Error while retrieving $custNumber customer's Payment createdAt ${createdAt.toString()}: " +
-              err.toString());
+      print("Error while retrieving Payment $paymentID}: " + err.toString());
       return null;
     }
   }
@@ -180,8 +178,7 @@ class PaymentController {
           payment.financeID,
           payment.branchName,
           payment.subBranchName,
-          payment.customerNumber,
-          payment.createdAt,
+          payment.paymentID,
           paymentJSON['settled_date'].toString());
 
       if (coll != null && coll.getReceived() > 0) {
@@ -203,15 +200,14 @@ class PaymentController {
     String financeId,
     String branchName,
     String subBranchName,
-    int custNumber,
-    DateTime createdAt,
+    String paymentID,
   ) async {
     try {
-      await Payment().removePayment(
-          financeId, branchName, subBranchName, custNumber, createdAt);
+      await Payment()
+          .removePayment(financeId, branchName, subBranchName, paymentID);
 
       return CustomResponse.getSuccesReponse(
-          "Removed customer's Payment for customer $custNumber");
+          "Removed customer's Payment $paymentID");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

@@ -26,6 +26,8 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
             : CollectionDetails.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..type = json['type'] as int
+    ..isPaid = json['is_paid'] as bool
+    ..isSettled = json['is_settled'] as bool
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -49,5 +51,7 @@ Map<String, dynamic> _$CollectionToJson(Collection instance) =>
       'collection_amount': instance.collectionAmount,
       'collections': instance.collections?.map((e) => e?.toJson())?.toList(),
       'type': instance.type,
+      'is_paid': instance.isPaid,
+      'is_settled': instance.isSettled,
       'created_at': instance.createdAt,
     };

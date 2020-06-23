@@ -10,14 +10,13 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 
 class CollectionDetailsWidget extends StatelessWidget {
-  CollectionDetailsWidget(this.paySettled, this._scaffoldKey, this._collection,
-      this.custName, this._createdAt);
+  CollectionDetailsWidget(
+      this.paySettled, this._scaffoldKey, this._collection, this.custName);
 
   final bool paySettled;
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final Collection _collection;
   final String custName;
-  final DateTime _createdAt;
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +116,7 @@ class CollectionDetailsWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddCollectionDetails(
-                            _collection, custName, _createdAt),
+                            _collection, custName),
                         settings: RouteSettings(
                             name:
                                 '/customers/payments/collections/collectiondetails/add'),
@@ -211,9 +210,9 @@ class CollectionDetailsWidget extends StatelessWidget {
                               _collection.financeID,
                               _collection.branchName,
                               _collection.subBranchName,
-                              _collection.customerNumber,
-                              _createdAt,
+                              _collection.paymentID,
                               _collection.collectionDate,
+                              false,
                               false,
                               _collectionDetails.toJson(),
                               (_collectionDetails.penaltyAmount > 0));

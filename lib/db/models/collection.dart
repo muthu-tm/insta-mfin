@@ -32,6 +32,10 @@ class Collection {
   List<CollectionDetails> collections;
   @JsonKey(name: 'type', nullable: true)
   int type;
+  @JsonKey(name: 'is_paid', nullable: true)
+  bool isPaid;
+  @JsonKey(name: 'is_settled', nullable: true)
+  bool isSettled;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
 
@@ -79,6 +83,14 @@ class Collection {
 
   setType(int type) {
     this.type = type;
+  }
+
+  setIsPaid(bool isPaid) {
+    this.isPaid = isPaid;
+  }
+
+  setIsSettled(bool isSettled) {
+    this.isSettled = isSettled;
   }
 
   int getReceived() {
@@ -171,10 +183,9 @@ class Collection {
   Map<String, dynamic> toJson() => _$CollectionToJson(this);
 
   CollectionReference getCollectionRef(String financeId, String branchName,
-      String subBranchName, int number, DateTime createdAt) {
+      String subBranchName, String paymentID) {
     return Payment()
-        .getDocumentReference(
-            financeId, branchName, subBranchName, number, createdAt)
+        .getDocumentReference(financeId, branchName, subBranchName, paymentID)
         .collection("customer_collections");
   }
 
@@ -186,15 +197,9 @@ class Collection {
     return collectionDate.toString();
   }
 
-  DocumentReference getDocumentReference(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int number,
-      DateTime createdAt,
-      int collectionDate) {
-    return getCollectionRef(
-            financeId, branchName, subBranchName, number, createdAt)
+  DocumentReference getDocumentReference(String financeId, String branchName,
+      String subBranchName, String paymentID, int collectionDate) {
+    return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .document(getDocumentID(collectionDate));
   }
 
@@ -202,17 +207,15 @@ class Collection {
       String financeId,
       String branchName,
       String subBranchName,
-      int number,
-      DateTime createdAt,
+      String paymentID,
       int collectionDate) {
-    return getCollectionRef(
-            financeId, branchName, subBranchName, number, createdAt)
+    return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .document(getDocumentID(collectionDate + 4));
   }
 
-  Future<void> create(DateTime createdAt, bool cAlready,
-      Map<String, dynamic> collDetails) async {
+  Future<void> create(bool cAlready, Map<String, dynamic> collDetails) async {
     this.createdAt = DateTime.now();
+    this.isSettled = false;
 
     String docID = "";
     if (this.type != 0) {
@@ -223,16 +226,12 @@ class Collection {
 
     if (!cAlready) {
       await getCollectionRef(this.financeID, this.branchName,
-              this.subBranchName, this.customerNumber, createdAt)
+              this.subBranchName, this.paymentID)
           .document(docID)
           .setData(this.toJson());
     } else {
-      DocumentReference docRef = getCollectionRef(
-              this.financeID,
-              this.branchName,
-              this.subBranchName,
-              this.customerNumber,
-              createdAt)
+      DocumentReference docRef = getCollectionRef(this.financeID,
+              this.branchName, this.subBranchName, this.paymentID)
           .document(docID);
 
       try {
@@ -249,12 +248,18 @@ class Collection {
                 if (this.type == CollectionType.Collection.name) {
                   accData.collectionsAmount += collDetails['amount'];
                 } else if (this.type == CollectionType.Penalty.name) {
+                  this.isPaid = true;
+
                   accData.totalPenalty += 1;
                   accData.penaltyAmount += collDetails['amount'];
                 } else if (this.type == CollectionType.DocCharge.name) {
+                  this.isPaid = true;
+
                   accData.totalDocCharge += 1;
                   accData.docCharge += collDetails['amount'];
                 } else if (this.type == CollectionType.Surcharge.name) {
+                  this.isPaid = true;
+
                   accData.totalSurCharge += 1;
                   accData.surcharge += collDetails['amount'];
                 }
@@ -269,6 +274,8 @@ class Collection {
                     "branch_name": this.branchName,
                     "sub_branch_name": this.subBranchName,
                     "collection_amount": collDetails['penalty_amount'],
+                    "is_paid": true,
+                    "is_settled": false,
                     "customer_number": this.customerNumber,
                     "payment_id": this.paymentID,
                     "collected_on": [collDetails['collected_on']],
@@ -297,8 +304,7 @@ class Collection {
                           this.financeID,
                           this.branchName,
                           this.subBranchName,
-                          this.customerNumber,
-                          createdAt,
+                          this.paymentID,
                           collDetails['collected_on']),
                       pData);
                 }
@@ -326,14 +332,65 @@ class Collection {
   }
 
   Stream<QuerySnapshot> streamCollectionsForCustomer(String financeId,
-      String branchName, String subBranchName, int number, DateTime createdAt) {
-    return getCollectionRef(
-            financeId, branchName, subBranchName, number, createdAt)
+      String branchName, String subBranchName, String paymentID) {
+    return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .snapshots();
   }
 
-  Future<List<Collection>> getAllCollectionByDate(String financeId,
-      String branchName, String subBranchName, List<int> types, int epoch) async {
+  Future<List<Collection>> getAllPendingCollectionByDate(String financeId,
+      String branchName, String subBranchName, int epoch) async {
+    var collDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('collection_date', isLessThanOrEqualTo: epoch)
+        .where('type', isEqualTo: 0)
+        .where('is_settled', isEqualTo: false)
+        .where('is_paid', isEqualTo: false)
+        .getDocuments();
+
+    List<Collection> colls = [];
+    if (collDocs.documents.isNotEmpty) {
+      for (var doc in collDocs.documents) {
+        colls.add(Collection.fromJson(doc.data));
+      }
+    }
+
+    return colls;
+  }
+
+  Future<List<Collection>> getAllCollectionByDate(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      List<int> types,
+      bool isSettled,
+      int epoch) async {
+    var collDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('collection_date', isEqualTo: epoch)
+        .where('type', whereIn: types)
+        .where('is_settled', isEqualTo: isSettled)
+        .getDocuments();
+
+    List<Collection> colls = [];
+    if (collDocs.documents.isNotEmpty) {
+      for (var doc in collDocs.documents) {
+        colls.add(Collection.fromJson(doc.data));
+      }
+    }
+
+    return colls;
+  }
+
+  Future<List<Collection>> allCollectionByDate(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      List<int> types,
+      int epoch) async {
     var collDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
@@ -351,8 +408,14 @@ class Collection {
 
     return colls;
   }
-  Future<List<Collection>> getAllCollectionsByDateRange(String financeId,
-      String branchName, String subBranchName, List<int> types, int start, int end) async {
+
+  Future<List<Collection>> getAllCollectionsByDateRange(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      List<int> types,
+      int start,
+      int end) async {
     var collDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
@@ -395,9 +458,8 @@ class Collection {
   }
 
   Stream<QuerySnapshot> streamCollectionsForPayment(String financeId,
-      String branchName, String subBranchName, int number, DateTime createdAt) {
-    return getCollectionRef(
-            financeId, branchName, subBranchName, number, createdAt)
+      String branchName, String subBranchName, String paymentID) {
+    return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .snapshots();
   }
 
@@ -420,18 +482,13 @@ class Collection {
     return coll;
   }
 
-  Future<Collection> getByCollectionNumber(
-      String financeID,
-      String branchName,
-      String subBranchName,
-      int custNumber,
-      DateTime createdAt,
-      int cNumber) async {
-    var collectionDocs = await getCollectionRef(
-            financeID, branchName, subBranchName, custNumber, createdAt)
-        .where('collection_number', isEqualTo: cNumber)
-        .where('type', isEqualTo: CollectionType.Collection.name)
-        .getDocuments();
+  Future<Collection> getByCollectionNumber(String financeID, String branchName,
+      String subBranchName, String paymentID, int cNumber) async {
+    var collectionDocs =
+        await getCollectionRef(financeID, branchName, subBranchName, paymentID)
+            .where('collection_number', isEqualTo: cNumber)
+            .where('type', isEqualTo: CollectionType.Collection.name)
+            .getDocuments();
 
     Collection coll;
     if (collectionDocs.documents.isNotEmpty) {
@@ -446,13 +503,12 @@ class Collection {
       String financeID,
       String branchName,
       String subBranchName,
-      int custNumber,
-      DateTime createdAt,
+      String paymentID,
       int type) async {
-    var collectionDocs = await getCollectionRef(
-            financeID, branchName, subBranchName, custNumber, createdAt)
-        .where('type', isEqualTo: type)
-        .getDocuments();
+    var collectionDocs =
+        await getCollectionRef(financeID, branchName, subBranchName, paymentID)
+            .where('type', isEqualTo: type)
+            .getDocuments();
 
     List<Collection> colls = [];
     if (collectionDocs.documents.isNotEmpty) {
@@ -464,15 +520,11 @@ class Collection {
     return colls;
   }
 
-  Future<List<Collection>> getAllCollectionsForCustomerPayment(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int number,
-      DateTime createdAt) async {
-    var collectionDocs = await getCollectionRef(
-            financeId, branchName, subBranchName, number, createdAt)
-        .getDocuments();
+  Future<List<Collection>> getAllCollectionsForCustomerPayment(String financeId,
+      String branchName, String subBranchName, String paymentID) async {
+    var collectionDocs =
+        await getCollectionRef(financeId, branchName, subBranchName, paymentID)
+            .getDocuments();
 
     List<Collection> coll = [];
     if (collectionDocs.documents.isNotEmpty) {
@@ -497,17 +549,12 @@ class Collection {
     return payments;
   }
 
-  Future<Collection> getCollectionByID(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int number,
-      DateTime createdAt,
-      String docID) async {
-    DocumentSnapshot snapshot = await getCollectionRef(
-            financeId, branchName, subBranchName, number, createdAt)
-        .document(docID)
-        .get();
+  Future<Collection> getCollectionByID(String financeId, String branchName,
+      String subBranchName, String paymentID, String docID) async {
+    DocumentSnapshot snapshot =
+        await getCollectionRef(financeId, branchName, subBranchName, paymentID)
+            .document(docID)
+            .get();
 
     if (snapshot.exists) {
       return Collection.fromJson(snapshot.data);
@@ -520,27 +567,18 @@ class Collection {
       String financeId,
       String branchName,
       String subBranchName,
-      int number,
-      DateTime createdAt,
+      String paymentID,
       int collectionDate) {
-    return getCollectionRef(
-            financeId, branchName, subBranchName, number, createdAt)
+    return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .document(getDocumentID(collectionDate))
         .snapshots();
   }
 
-  Future<void> update(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int number,
-      DateTime createdAt,
-      String docID,
-      Map<String, dynamic> collJSON) async {
+  Future<void> update(String financeId, String branchName, String subBranchName,
+      String paymentID, String docID, Map<String, dynamic> collJSON) async {
     collJSON['updated_at'] = DateTime.now();
 
-    await getCollectionRef(
-            financeId, branchName, subBranchName, number, createdAt)
+    await getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .document(docID)
         .updateData(collJSON);
   }
@@ -549,16 +587,16 @@ class Collection {
       String financeId,
       String branchName,
       String subBranchName,
-      int number,
-      DateTime createdAt,
+      String paymentID,
       int collectionDate,
+      bool isPaid,
       bool isAdd,
       Map<String, dynamic> data,
       bool hasPenalty) async {
     Map<String, dynamic> fields = Map();
 
-    DocumentReference docRef = this.getDocumentReference(financeId, branchName,
-        subBranchName, number, createdAt, collectionDate);
+    DocumentReference docRef = this.getDocumentReference(
+        financeId, branchName, subBranchName, paymentID, collectionDate);
 
     Map<String, dynamic> _coll = (await docRef.get()).data;
     List<dynamic> colls = _coll['collections'];
@@ -574,6 +612,8 @@ class Collection {
         }
       }
     }
+
+    fields['is_paid'] = isPaid;
 
     if (isAdd) {
       if (isMatched) {
@@ -615,6 +655,8 @@ class Collection {
                     "branch_name": _c.branchName,
                     "sub_branch_name": _c.subBranchName,
                     "collection_amount": data['penalty_amount'],
+                    "is_paid": true,
+                    "is_settled": false,
                     "customer_number": _c.customerNumber,
                     "payment_id": _c.paymentID,
                     "collected_on": [data['collected_on']],
@@ -639,13 +681,8 @@ class Collection {
                   };
                   Model().txCreate(
                       tx,
-                      this.getPenaltyDocumentReference(
-                          financeId,
-                          branchName,
-                          subBranchName,
-                          number,
-                          createdAt,
-                          data['collected_on']),
+                      this.getPenaltyDocumentReference(financeId, branchName,
+                          subBranchName, paymentID, data['collected_on']),
                       pData);
                 }
               } else {
@@ -658,13 +695,8 @@ class Collection {
 
                   Model().txDelete(
                       tx,
-                      this.getPenaltyDocumentReference(
-                          financeId,
-                          branchName,
-                          subBranchName,
-                          number,
-                          createdAt,
-                          data['collected_on']));
+                      this.getPenaltyDocumentReference(financeId, branchName,
+                          subBranchName, paymentID, data['collected_on']));
                 }
               }
 

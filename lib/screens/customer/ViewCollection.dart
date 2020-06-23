@@ -26,8 +26,7 @@ class ViewCollection extends StatelessWidget {
           _collection.financeID,
           _collection.branchName,
           _collection.subBranchName,
-          _collection.customerNumber,
-          pay.createdAt,
+          _collection.paymentID,
           (_collection.type != 1 &&
                   _collection.type != 2 &&
                   _collection.type != 4)
@@ -222,9 +221,9 @@ class ViewCollection extends StatelessWidget {
                     ),
                     (UserController().getCurrentUser().preferences.tableView)
                         ? CollDetailsTableWidget(pay.isSettled, _scaffoldKey,
-                            collection, pay.custName, pay.createdAt)
+                            collection, pay.custName)
                         : CollectionDetailsWidget(pay.isSettled, _scaffoldKey,
-                            collection, pay.custName, pay.createdAt),
+                            collection, pay.custName),
             ];
           } else {
             // No Collections available for this filterred view
