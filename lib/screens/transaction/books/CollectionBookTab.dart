@@ -20,8 +20,8 @@ class CollectionBookTab extends StatelessWidget {
 
     return FutureBuilder(
       future: isPending
-          ? Collection().getAllPendingCollectionByDate(_u.primaryFinance,
-              _u.primaryBranch, _u.primarySubBranch, epoch)
+          ? Collection().getAllPendingCollectionByDate(
+              _u.primaryFinance, _u.primaryBranch, _u.primarySubBranch, epoch)
           : Collection().getAllCollectionByDate(_u.primaryFinance,
               _u.primaryBranch, _u.primarySubBranch, [0], false, epoch),
       builder:
@@ -70,7 +70,7 @@ class CollectionBookTab extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5.0),
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.35,
-                            height: 80,
+                            height: 100,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,13 +110,34 @@ class CollectionBookTab extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5.0),
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.60,
-                            height: 80,
+                            height: 100,
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 SizedBox(
-                                  height: 30,
+                                  height: 25,
+                                  child: ListTile(
+                                    leading: Text(
+                                      "Number",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: 'Georgia',
+                                        color: CustomColors.mfinBlue,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    trailing: Text(
+                                      coll.customerNumber.toString(),
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontFamily: 'Georgia',
+                                        color: CustomColors.mfinBlack,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 25,
                                   child: ListTile(
                                     leading: Text(
                                       "Collection",
@@ -139,10 +160,10 @@ class CollectionBookTab extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 30,
+                                  height: 25,
                                   child: ListTile(
                                     leading: Text(
-                                      "Number",
+                                      "Received",
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontFamily: 'Georgia',
@@ -151,11 +172,11 @@ class CollectionBookTab extends StatelessWidget {
                                       ),
                                     ),
                                     trailing: Text(
-                                      coll.customerNumber.toString(),
+                                      coll.getReceived().toString(),
                                       style: TextStyle(
                                         fontSize: 17,
                                         fontFamily: 'Georgia',
-                                        color: CustomColors.mfinBlack,
+                                        color: CustomColors.mfinPositiveGreen,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
