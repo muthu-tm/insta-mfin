@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/screens/transaction/edit/EditPaymentTemplate.dart';
+import 'package:instamfin/screens/transaction/view/ViewPaymentTemplate.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PaymentTemplateListWidget extends StatelessWidget {
   final List _collectionMode = ["Daily", "Weekly", "Monthly"];
@@ -206,7 +208,16 @@ class PaymentTemplateListWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          
+          showMaterialModalBottomSheet(
+              enableDrag: true,
+              isDismissible: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              context: context,
+              builder: (context, scrollController) {
+                return ViewPaymentTemplate(template);
+              });
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
