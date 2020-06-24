@@ -85,45 +85,6 @@ class CollectionController {
     }
   }
 
-  Stream<List<Collection>> streamCollectionsByStatus(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      String paymentID,
-      List<int> status,
-      bool fetchAll) async* {
-    try {
-      Collection coll = new Collection();
-      Stream<QuerySnapshot> stream = coll.streamCollectionsForPayment(
-          financeId, branchName, subBranchName, paymentID);
-
-      if (await stream.isEmpty) {
-        yield [];
-      }
-
-      List<Collection> colls = [];
-
-      if (fetchAll) {
-        await for (var event in stream) {
-          for (var doc in event.documents) {
-            colls.add(Collection.fromJson(doc.data));
-          }
-          yield colls;
-        }
-      } else {
-        await for (var event in stream) {
-          for (var doc in event.documents) {
-            Collection coll = Collection.fromJson(doc.data);
-            if (status.contains(coll.getStatus())) colls.add(coll);
-          }
-          yield colls;
-        }
-      }
-    } catch (err) {
-      throw err;
-    }
-  }
-
   Future<List<Collection>> getAllCollectionByDateRange(
       String financeId,
       String branchName,

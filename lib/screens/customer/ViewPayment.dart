@@ -35,7 +35,7 @@ class _ViewPaymentState extends State<ViewPayment> {
   Color textColor = CustomColors.mfinBlue;
   bool fetchAll = true;
   bool isSettled = false;
-  List<int> collStatus = [];
+  int collStatus;
 
   @override
   void initState() {
@@ -555,7 +555,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       emptyText = "No collection RECEIVED for this Payment!";
                       fetchAll = false;
                       textColor = CustomColors.mfinPositiveGreen;
-                      collStatus = [1, 2, 5]; //Paid and PaidLate
+                      collStatus = 1; //Paid
                     },
                     child: CollectionStatusRadioItem(
                         collStatusList[1],
@@ -577,7 +577,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       emptyText = "Great! No PENDING collection!";
                       fetchAll = false;
                       textColor = CustomColors.mfinAlertRed;
-                      collStatus = [4]; // Pending
+                      collStatus = 4; // Pending
                     },
                     child: CollectionStatusRadioItem(collStatusList[2],
                         CustomColors.mfinAlertRed, CustomColors.mfinAlertRed),
@@ -597,7 +597,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       emptyText = "No Collection to receive TODAY";
                       fetchAll = false;
                       textColor = CustomColors.mfinLightBlue;
-                      collStatus = [3]; // Current
+                      collStatus = 3; // Current
                     },
                     child: CollectionStatusRadioItem(collStatusList[3],
                         CustomColors.mfinBlue, CustomColors.mfinBlue),
@@ -617,7 +617,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       emptyText = "No UPCOMING collection available!";
                       fetchAll = false;
                       textColor = CustomColors.mfinGrey;
-                      collStatus = [0]; // Upcoming
+                      collStatus = 0; // Upcoming
                     },
                     child: CollectionStatusRadioItem(collStatusList[4],
                         CustomColors.mfinGrey, CustomColors.mfinGrey),
