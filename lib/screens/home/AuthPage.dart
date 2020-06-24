@@ -201,7 +201,8 @@ class _AuthPageState extends State<AuthPage> {
                         child: new Text(
                           'LOGIN',
                           style: new TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 18.0,
+                            fontFamily: 'Georgia',
                             color: CustomColors.mfinBlue,
                             fontWeight: FontWeight.bold,
                           ),
@@ -221,8 +222,8 @@ class _AuthPageState extends State<AuthPage> {
                 Text(
                   "Don't have an account?",
                   style: new TextStyle(
-                    fontSize: 14.0,
-                    // fontFamily: 'Georgia',
+                    fontSize: 13.0,
+                    fontFamily: 'Georgia',
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinAlertRed.withOpacity(0.7),
                   ),
