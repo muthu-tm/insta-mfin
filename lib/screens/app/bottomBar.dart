@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/customer/CustomersHome.dart';
+import 'package:instamfin/screens/reports/ReportsHome.dart';
 import 'package:instamfin/screens/statistics/StatisticsHome.dart';
 import 'package:instamfin/screens/transaction/TransactionHome.dart';
 import 'package:instamfin/screens/settings/SettingsScreen.dart';
@@ -7,12 +8,12 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 
 Widget bottomBar(BuildContext context) {
   return Container(
-    height: MediaQuery.of(context).size.height * 0.10,
+    height: 70,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 4), 100),
+          size: Size(screenWidth(context, dividedBy: 5), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -31,23 +32,24 @@ Widget bottomBar(BuildContext context) {
                 children: <Widget>[
                   Icon(
                     Icons.supervisor_account,
-                    size: 35.0,
+                    size: 30.0,
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
                     "Customers",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontFamily: "Georgia",
+                      fontSize: 11,
                       color: CustomColors.mfinGrey,
                     ),
-                  ), // text
+                  ),
                 ],
               ),
             ),
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 4), 100),
+          size: Size(screenWidth(context, dividedBy: 5), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -66,13 +68,14 @@ Widget bottomBar(BuildContext context) {
                 children: <Widget>[
                   Icon(
                     Icons.content_copy,
-                    size: 35.0,
+                    size: 30.0,
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
                     "Transactions",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontFamily: "Georgia",
+                      fontSize: 11,
                       color: CustomColors.mfinGrey,
                     ),
                   ),
@@ -82,7 +85,43 @@ Widget bottomBar(BuildContext context) {
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 4), 100),
+          size: Size(screenWidth(context, dividedBy: 5), 100),
+          child: Material(
+            color: CustomColors.mfinBlue,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReportsHome(),
+                    settings: RouteSettings(name: '/reports'),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.description,
+                    size: 30.0,
+                    color: CustomColors.mfinButtonGreen,
+                  ),
+                  Text(
+                    "Reports",
+                    style: TextStyle(
+                      fontFamily: "Georgia",
+                      fontSize: 11,
+                      color: CustomColors.mfinGrey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox.fromSize(
+          size: Size(screenWidth(context, dividedBy: 5), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -100,13 +139,14 @@ Widget bottomBar(BuildContext context) {
                 children: <Widget>[
                   Icon(
                     Icons.assessment,
-                    size: 35.0,
+                    size: 30.0,
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
                     "Statistics",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontFamily: "Georgia",
+                      fontSize: 11,
                       color: CustomColors.mfinGrey,
                     ),
                   ), // text
@@ -116,7 +156,7 @@ Widget bottomBar(BuildContext context) {
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 4), 100),
+          size: Size(screenWidth(context, dividedBy: 5), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -135,16 +175,17 @@ Widget bottomBar(BuildContext context) {
                 children: <Widget>[
                   Icon(
                     Icons.settings,
-                    size: 35.0,
+                    size: 30.0,
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
                     "Settings",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontFamily: "Georgia",
+                      fontSize: 11,
                       color: CustomColors.mfinGrey,
                     ),
-                  ), // text
+                  ),
                 ],
               ),
             ),
