@@ -11,7 +11,9 @@ import 'package:instamfin/services/controllers/transaction/category_controller.d
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class JournalCategoryListWidget extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey;
+
+  JournalCategoryListWidget(this._scaffoldKey);
 
   final User _u = UserController().getCurrentUser();
   @override
@@ -43,7 +45,7 @@ class JournalCategoryListWidget extends StatelessWidget {
                           IconSlideAction(
                             caption: 'Remove',
                             color: CustomColors.mfinAlertRed,
-                            icon: Icons.edit,
+                            icon: Icons.delete_forever,
                             onTap: () async {
                               var state = Slidable.of(context);
                               var dismiss = await showDialog<bool>(
@@ -84,6 +86,7 @@ class JournalCategoryListWidget extends StatelessWidget {
                                           textAlign: TextAlign.start,
                                         ),
                                         onPressed: () async {
+                                          Navigator.pop(context);
                                           CategoryController _cc =
                                               CategoryController();
                                           var result =
@@ -93,7 +96,6 @@ class JournalCategoryListWidget extends StatelessWidget {
                                                   category.subBranchName,
                                                   category.createdAt);
                                           if (!result['is_success']) {
-                                            Navigator.pop(context);
                                             _scaffoldKey.currentState
                                                 .showSnackBar(
                                               CustomSnackBar.errorSnackBar(
@@ -102,7 +104,6 @@ class JournalCategoryListWidget extends StatelessWidget {
                                               ),
                                             );
                                           } else {
-                                            Navigator.pop(context);
                                             _scaffoldKey.currentState
                                                 .showSnackBar(
                                               CustomSnackBar.errorSnackBar(

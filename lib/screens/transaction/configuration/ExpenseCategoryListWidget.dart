@@ -11,9 +11,10 @@ import 'package:instamfin/services/controllers/transaction/category_controller.d
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class ExpenseCategoryListWidget extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey;
   final User _u = UserController().getCurrentUser();
+
+  ExpenseCategoryListWidget(this._scaffoldKey);
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +86,7 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                                           textAlign: TextAlign.start,
                                         ),
                                         onPressed: () async {
+                                          Navigator.pop(context);
                                           CategoryController _cc =
                                               CategoryController();
                                           var result =
@@ -94,7 +96,6 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                                                   category.subBranchName,
                                                   category.createdAt);
                                           if (!result['is_success']) {
-                                            Navigator.pop(context);
                                             _scaffoldKey.currentState
                                                 .showSnackBar(
                                               CustomSnackBar.errorSnackBar(
@@ -103,7 +104,6 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                                               ),
                                             );
                                           } else {
-                                            Navigator.pop(context);
                                             _scaffoldKey.currentState
                                                 .showSnackBar(
                                               CustomSnackBar.errorSnackBar(

@@ -10,7 +10,9 @@ import 'package:instamfin/services/controllers/transaction/paymentTemp_controlle
 
 class PaymentTemplateListWidget extends StatelessWidget {
   final List _collectionMode = ["Daily", "Weekly", "Monthly"];
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey;
+
+  PaymentTemplateListWidget(this._scaffoldKey);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,6 @@ class PaymentTemplateListWidget extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     PaymentTemplate temp = PaymentTemplate.fromJson(
                         snapshot.data.documents[index].data);
-
                     return Slidable(
                       actionPane: SlidableDrawerActionPane(),
                       actionExtentRatio: 0.20,
@@ -40,7 +41,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                         IconSlideAction(
                           caption: 'Remove',
                           color: CustomColors.mfinAlertRed,
-                          icon: Icons.edit,
+                          icon: Icons.delete_forever,
                           onTap: () async {
                             var state = Slidable.of(context);
                             var dismiss = await showDialog<bool>(
@@ -82,9 +83,6 @@ class PaymentTemplateListWidget extends StatelessWidget {
                                       ),
                                       onPressed: () async {
                                         Navigator.pop(context);
-                                        _scaffoldKey.currentState.showSnackBar(
-                                            CustomSnackBar.errorSnackBar(
-                                                "Removing a template", 2));
                                         PaymentTemplateController _ctc =
                                             PaymentTemplateController();
                                         var result = await _ctc
@@ -96,9 +94,15 @@ class PaymentTemplateListWidget extends StatelessWidget {
                                                       result['message'], 5));
                                           print("Unable to remove Template: " +
                                               result['message']);
+                                          _scaffoldKey.currentState.showSnackBar(
+                                              CustomSnackBar.errorSnackBar(
+                                                  "Unable to remove Template",
+                                                  2));
                                         } else {
-                                          print(
-                                              "Template removed successfully");
+                                          _scaffoldKey.currentState.showSnackBar(
+                                              CustomSnackBar.errorSnackBar(
+                                                  "Template removed successfully",
+                                                  2));
                                         }
                                       },
                                     ),
@@ -200,111 +204,116 @@ class PaymentTemplateListWidget extends StatelessWidget {
   _paymentList(BuildContext context, int index, PaymentTemplate template) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Material(
-            color: CustomColors.mfinBlue,
-            elevation: 10.0,
-            borderRadius: BorderRadius.circular(10.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.36,
-              height: 90,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Spacer(
-                    flex: 1,
-                  ),
-                  SizedBox(
-                    height: 30,
-                    child: Text(
-                      template.totalAmount.toString(),
-                      style: TextStyle(
-                          color: CustomColors.mfinAlertRed,
-                          fontFamily: 'Georgia',
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
+      child: InkWell(
+        onTap: () {
+          
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Material(
+              color: CustomColors.mfinBlue,
+              elevation: 10.0,
+              borderRadius: BorderRadius.circular(10.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.36,
+                height: 90,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Spacer(
+                      flex: 1,
                     ),
-                  ),
-                  Spacer(
-                    flex: 1,
-                  ),
-                  SizedBox(
-                    height: 30,
-                    child: RichText(
-                      text: TextSpan(
-                        text: '${template.tenure}',
+                    SizedBox(
+                      height: 30,
+                      child: Text(
+                        template.totalAmount.toString(),
                         style: TextStyle(
-                          color: CustomColors.mfinWhite,
-                          fontFamily: 'Georgia',
-                          fontSize: 18.0,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: ' x ',
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '${template.collectionAmount}',
-                            style: TextStyle(
-                              color: CustomColors.mfinFadedButtonGreen,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                            color: CustomColors.mfinAlertRed,
+                            fontFamily: 'Georgia',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
-                  ),
-                  Spacer(
-                    flex: 1,
-                  ),
-                ],
+                    Spacer(
+                      flex: 1,
+                    ),
+                    SizedBox(
+                      height: 30,
+                      child: RichText(
+                        text: TextSpan(
+                          text: '${template.tenure}',
+                          style: TextStyle(
+                            color: CustomColors.mfinWhite,
+                            fontFamily: 'Georgia',
+                            fontSize: 18.0,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: ' x ',
+                              style: TextStyle(
+                                color: CustomColors.mfinBlack,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${template.collectionAmount}',
+                              style: TextStyle(
+                                color: CustomColors.mfinFadedButtonGreen,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Spacer(
+                      flex: 1,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Material(
-            color: CustomColors.mfinWhite,
-            elevation: 10.0,
-            borderRadius: BorderRadius.circular(10.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.56,
-              height: 90,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    child: ListTile(
-                      title: Text(
-                        template.name,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: CustomColors.mfinBlue,
-                          fontWeight: FontWeight.bold,
+            Material(
+              color: CustomColors.mfinWhite,
+              elevation: 10.0,
+              borderRadius: BorderRadius.circular(10.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.56,
+                height: 90,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      child: ListTile(
+                        title: Text(
+                          template.name,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: CustomColors.mfinBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          _collectionMode[template.collectionMode],
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: CustomColors.mfinBlue,
+                            //fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      subtitle: Text(
-                        _collectionMode[template.collectionMode],
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: CustomColors.mfinBlue,
-                          //fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

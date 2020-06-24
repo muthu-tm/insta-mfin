@@ -10,9 +10,13 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TransactionConfigHome extends StatelessWidget {
+
+final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();	
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Transaction Configurations'),
         backgroundColor: CustomColors.mfinBlue,
@@ -141,7 +145,7 @@ class TransactionConfigHome extends StatelessWidget {
                   Divider(
                     color: CustomColors.mfinBlue,
                   ),
-                  PaymentTemplateListWidget()
+                  PaymentTemplateListWidget(_scaffoldKey)
                 ],
               ),
             ),
@@ -171,7 +175,7 @@ class TransactionConfigHome extends StatelessWidget {
                   Divider(
                     color: CustomColors.mfinBlue,
                   ),
-                  ExpenseCategoryListWidget(),
+                  ExpenseCategoryListWidget(_scaffoldKey),
                 ],
               ),
             ),
@@ -201,7 +205,7 @@ class TransactionConfigHome extends StatelessWidget {
                   Divider(
                     color: CustomColors.mfinBlue,
                   ),
-                  JournalCategoryListWidget(),
+                  JournalCategoryListWidget(_scaffoldKey),
                 ],
               ),
             ),
