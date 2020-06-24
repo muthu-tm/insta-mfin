@@ -977,6 +977,7 @@ class _AddPaymentState extends State<AddPayment> {
       setState(() {
         _selectedTempID = newVal;
         collectionDays = selectedTemp.collectionDays;
+        selectedCollectionModeID = selectedTemp.collectionMode.toString();
         totalAmountController.text = selectedTemp.totalAmount.toString();
         principalAmountController.text =
             selectedTemp.principalAmount.toString();
