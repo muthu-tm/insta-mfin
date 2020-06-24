@@ -25,6 +25,8 @@ class Customer extends Model {
   Address address;
   @JsonKey(name: 'age', nullable: true)
   int age;
+  @JsonKey(name: 'joined_at', nullable: true)
+  int joinedAt;
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
   @JsonKey(name: 'branch_name', nullable: true)
@@ -66,6 +68,10 @@ class Customer extends Model {
 
   setAge(int age) {
     this.age = age;
+  }
+
+  setJoinedAt(int joinedAt) {
+    this.joinedAt = joinedAt;
   }
 
   setProfession(String profession) {
@@ -134,13 +140,52 @@ class Customer extends Model {
         .where('sub_branch_name', isEqualTo: user.primarySubBranch)
         .snapshots();
   }
-  
+
   Future<QuerySnapshot> getAllCustomers() {
     return getCollectionRef()
         .where('finance_id', isEqualTo: user.primaryFinance)
         .where('branch_name', isEqualTo: user.primaryBranch)
         .where('sub_branch_name', isEqualTo: user.primarySubBranch)
         .getDocuments();
+  }
+
+  Future<List<Customer>> getAllByDate(String financeId,
+      String branchName, String subBranchName, int epoch) async {
+    var custDocs = await getCollectionRef()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('joined_at', isEqualTo: epoch)
+        .getDocuments();
+
+    List<Customer> customers = [];
+    if (custDocs.documents.isNotEmpty) {
+      for (var doc in custDocs.documents) {
+        customers.add(Customer.fromJson(doc.data));
+      }
+    }
+
+    return customers;
+  }
+
+  Future<List<Customer>> getAllByDateRange(String financeId,
+      String branchName, String subBranchName, int start, int end) async {
+    var custDocs = await getCollectionRef()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('joined_at', isGreaterThanOrEqualTo: start)
+        .where('joined_at', isLessThanOrEqualTo: end)
+        .getDocuments();
+
+    List<Customer> customers = [];
+    if (custDocs.documents.isNotEmpty) {
+      for (var doc in custDocs.documents) {
+        customers.add(Customer.fromJson(doc.data));
+      }
+    }
+
+    return customers;
   }
 
   Future<int> getStatus(int number) async {

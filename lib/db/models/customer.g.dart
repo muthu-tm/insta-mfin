@@ -10,6 +10,7 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
     ..age = json['age'] as int
+    ..joinedAt = json['joined_at'] as int
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
@@ -33,27 +34,20 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
-      'customer_id': instance.customerID == null ? '' : instance.customerID,
+      'customer_id': instance.customerID ?? '',
       'mobile_number': instance.mobileNumber,
-      'customer_name': instance.name == null ? '' : instance.name,
-      'gender': instance.gender == null ? '' : instance.gender,
-      'profile_path_org': instance.profilePathOrg == null
-          ? ''
-          : instance.profilePathOrg,
-      'profile_path': instance.profilePath == null
-          ? ''
-          : instance.profilePath,
-      'finance_id': instance.financeID == null ? '' : instance.financeID,
+      'customer_name': instance.name ?? '',
+      'gender': instance.gender ?? '',
+      'profile_path_org': instance.profilePathOrg ?? '',
+      'profile_path': instance.profilePath ?? '',
+      'finance_id': instance.financeID ?? '',
       'address': instance.address?.toJson(),
-      'age': instance.age == null ? 0 : instance.age,
-      'customer_profession':
-          instance.profession == null ? '' : instance.profession,
-      'branch_name': instance.branchName == null ? '' : instance.branchName,
-      'sub_branch_name':
-          instance.subBranchName == null ? '' : instance.subBranchName,
-      'guarantied_by': instance.guarantiedBy == null
-          ? instance.addedBy
-          : instance.guarantiedBy,
+      'age': instance.age ?? 0,
+      'joined_at': instance.joinedAt ?? 0,
+      'customer_profession': instance.profession ?? '',
+      'branch_name': instance.branchName ?? '',
+      'sub_branch_name': instance.subBranchName ?? '',
+      'guarantied_by': instance.guarantiedBy ?? instance.addedBy,
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,

@@ -21,9 +21,7 @@ class _EditPaymentState extends State<EditPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _selectedTempID = "0";
   String selectedCollectionModeID = "0";
-  Map<String, String> _tempMap = {"0": "Choose Type.."};
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
     "1": "Weekly",
@@ -48,9 +46,6 @@ class _EditPaymentState extends State<EditPayment> {
     "6": "Sat",
   };
 
-  List<PaymentTemplate> templates = new List<PaymentTemplate>();
-  List<PaymentTemplate> tempList;
-
   TextEditingController _date = new TextEditingController();
   TextEditingController _collectionDate = new TextEditingController();
 
@@ -59,8 +54,6 @@ class _EditPaymentState extends State<EditPayment> {
   @override
   void initState() {
     super.initState();
-    this.getCollectionTemp();
-
     selectedCollectionModeID = widget.payment.collectionMode.toString();
 
     _date.value = TextEditingValue(
@@ -909,21 +902,6 @@ class _EditPaymentState extends State<EditPayment> {
     }
   }
 
-  Future getCollectionTemp() async {
-    try {
-      PaymentTemplateController _ctc = PaymentTemplateController();
-      List<PaymentTemplate> templates = await _ctc.getAllTemplates();
-      for (int index = 0; index < templates.length; index++) {
-        _tempMap[(index + 1).toString()] = templates[index].name;
-      }
-      setState(() {
-        tempList = templates;
-      });
-    } catch (err) {
-      print("Unable to load Payment templates for Payment EDIT!");
-    }
-  }
-
   Future<Null> _selectCollectionDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -985,15 +963,12 @@ class _EditPaymentState extends State<EditPayment> {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-          print("Unable to Edit Payment: " + result['message']);
         } else {
           Navigator.pop(context);
-          print("Payment edited successfully");
           Navigator.pop(context);
         }
       }
     } else {
-      print("Invalid form submitted");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

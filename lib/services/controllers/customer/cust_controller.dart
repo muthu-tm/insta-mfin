@@ -10,8 +10,15 @@ import 'package:instamfin/services/utils/response_utils.dart';
 class CustController {
   UserController uc = UserController();
 
-  Future createCustomer(String name, String customerID, String profession,
-      int mobileNumber, Address address, int age, int guarantiedBy) async {
+  Future createCustomer(
+      String name,
+      String customerID,
+      String profession,
+      int mobileNumber,
+      int joinedAt,
+      Address address,
+      int age,
+      int guarantiedBy) async {
     try {
       Customer cust = Customer();
       User user = uc.getCurrentUser();
@@ -24,6 +31,7 @@ class CustController {
       cust.setName(name);
       cust.setCustomerID(customerID);
       cust.setMobileNumber(mobileNumber);
+      cust.setJoinedAt(joinedAt);
       cust.setAddress(address);
       cust.setAge(age);
       cust.setProfession(profession);
@@ -39,9 +47,7 @@ class CustController {
 
       await cust.create();
 
-      NUtils.financeNotify(
-          "",
-          "NEW Customer OnBoard",
+      NUtils.financeNotify("", "NEW Customer OnBoard",
           "New Customer $name onboarded by ${user.mobileNumber}.!");
 
       return CustomResponse.getSuccesReponse(cust.toJson());
@@ -121,9 +127,7 @@ class CustController {
       await customer.remove(mobileNumber);
 
       NUtils.financeNotify(
-          "",
-          "Customer Removed!",
-          "Customer $mobileNumber removed!");
+          "", "Customer Removed!", "Customer $mobileNumber removed!");
 
       return CustomResponse.getSuccesReponse("Successfully removed customer!");
     } catch (err) {
