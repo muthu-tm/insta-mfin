@@ -228,6 +228,9 @@ class PaymentTemplateListWidget extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
+                  Divider(
+                    color: CustomColors.mfinButtonGreen
+                  ),
                   Spacer(
                     flex: 1,
                   ),

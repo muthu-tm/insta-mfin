@@ -205,7 +205,7 @@ class TransactionConfigHome extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(padding: EdgeInsets.fromLTRB(0, 40, 0, 30))
+            Padding(padding: EdgeInsets.all(40))
           ],
         ),
       ),
