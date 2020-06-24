@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/collection.dart';
@@ -23,200 +24,260 @@ class CollectionListWidget extends StatelessWidget {
   final String emptyText;
   final Color textColor;
   final bool fetchAll;
-  final List<int> status;
+  final int status;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: CollectionController().streamCollectionsByStatus(
-          _payment.financeID,
-          _payment.branchName,
-          _payment.subBranchName,
-          _payment.paymentID,
-          status,
-          fetchAll),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {
+      stream: fetchAll
+          ? Collection().streamCollectionsForPayment(_payment.financeID,
+              _payment.branchName, _payment.subBranchName, _payment.paymentID)
+          : status == 0
+              ? Collection().streamUpcomingForPayment(
+                  _payment.financeID,
+                  _payment.branchName,
+                  _payment.subBranchName,
+                  _payment.paymentID)
+              : status == 3
+                  ? Collection().streamTodaysForPayment(
+                      _payment.financeID,
+                      _payment.branchName,
+                      _payment.subBranchName,
+                      _payment.paymentID)
+                  : Collection().streamPastForPayment(
+                      _payment.financeID,
+                      _payment.branchName,
+                      _payment.subBranchName,
+                      _payment.paymentID),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          if (snapshot.data.length > 0) {
-            children = <Widget>[
-              ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                primary: false,
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Collection collection = snapshot.data[index];
-                  List<String> textValue = setCardValue(collection);
-                  Color cardColor = getCardColor(collection.getStatus());
+          if (snapshot.data.documents.length > 0) {
+            List<Collection> collList = [];
+            if (fetchAll) {
+              snapshot.data.documents.forEach((doc) {
+                Collection _c = Collection.fromJson(doc.data);
+                collList.add(_c);
+              });
+            } else if (status == 1) {
+              snapshot.data.documents.forEach((doc) {
+                Collection _c = Collection.fromJson(doc.data);
+                if (_c.getReceived() == _c.collectionAmount) collList.add(_c);
+              });
+            } else if (status == 4) {
+              snapshot.data.documents.forEach((doc) {
+                Collection _c = Collection.fromJson(doc.data);
+                if (_c.getReceived() < _c.collectionAmount) collList.add(_c);
+              });
+            } else {
+              snapshot.data.documents.forEach((doc) {
+                Collection _c = Collection.fromJson(doc.data);
+                collList.add(_c);
+              });
+            }
 
-                  return Slidable(
-                    actionPane: SlidableDrawerActionPane(),
-                    actionExtentRatio: 0.40,
-                    closeOnScroll: true,
-                    direction: Axis.horizontal,
-                    actions: <Widget>[
-                      IconSlideAction(
-                        caption: 'Mark As Collected',
-                        color: CustomColors.mfinPositiveGreen,
-                        icon: Icons.check_box,
-                        onTap: () {
-                          markAsCollected(collection, context);
+            if (collList.length > 0) {
+              children = <Widget>[
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: collList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Collection collection = collList[index];
+                    List<String> textValue = setCardValue(collection);
+                    Color cardColor = getCardColor(collection.getStatus());
+
+                    return Slidable(
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.40,
+                      closeOnScroll: true,
+                      direction: Axis.horizontal,
+                      actions: <Widget>[
+                        IconSlideAction(
+                          caption: 'Mark As Collected',
+                          color: CustomColors.mfinPositiveGreen,
+                          icon: Icons.check_box,
+                          onTap: () {
+                            markAsCollected(collection, context);
+                          },
+                        ),
+                      ],
+                      child: Builder(
+                        builder: (BuildContext context) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              left: 2.0,
+                              top: 5,
+                              right: 2.0,
+                              bottom: 5,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ViewCollection(
+                                        _payment, collection, cardColor),
+                                    settings: RouteSettings(
+                                        name: '/customers/payment/colection'),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Material(
+                                    color: cardColor,
+                                    elevation: 10.0,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.36,
+                                      height: 80,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Spacer(
+                                            flex: 3,
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                            child: Text(
+                                              collection.collectionNumber
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: CustomColors.mfinWhite,
+                                                  fontFamily: 'Georgia',
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Spacer(
+                                            flex: 1,
+                                          ),
+                                          new Divider(
+                                            color: CustomColors.mfinWhite,
+                                          ),
+                                          Spacer(
+                                            flex: 1,
+                                          ),
+                                          SizedBox(
+                                            height: 30,
+                                            child: Text(
+                                              DateUtils
+                                                  .getFormattedDateFromEpoch(
+                                                      collection
+                                                          .collectionDate),
+                                              style: TextStyle(
+                                                  color: CustomColors.mfinWhite,
+                                                  fontFamily: 'Georgia',
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Spacer(
+                                            flex: 1,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Material(
+                                    color: CustomColors.mfinLightGrey,
+                                    elevation: 10.0,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.60,
+                                      height: 80,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: 35,
+                                            child: ListTile(
+                                              leading: Text(
+                                                textValue[0],
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: CustomColors.mfinBlue,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              trailing: Text(
+                                                textValue[1],
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                  color: textColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 35,
+                                            child: ListTile(
+                                              leading: Text(
+                                                "TYPE:",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: CustomColors.mfinBlue,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              trailing: Text(
+                                                getType(collection.type),
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                  color: CustomColors.mfinBlue,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
                       ),
+                    );
+                  },
+                )
+              ];
+            } else {
+              children = [
+                Container(
+                  height: 90,
+                  child: Column(
+                    children: <Widget>[
+                      new Spacer(),
+                      Text(
+                        emptyText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      new Spacer(),
                     ],
-                    child: Builder(
-                      builder: (BuildContext context) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            left: 2.0,
-                            top: 5,
-                            right: 2.0,
-                            bottom: 5,
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ViewCollection(
-                                      _payment, collection, cardColor),
-                                  settings: RouteSettings(
-                                      name: '/customers/payment/colection'),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Material(
-                                  color: cardColor,
-                                  elevation: 10.0,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.36,
-                                    height: 80,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Spacer(
-                                          flex: 3,
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                          child: Text(
-                                            collection.collectionNumber
-                                                .toString(),
-                                            style: TextStyle(
-                                                color: CustomColors.mfinWhite,
-                                                fontFamily: 'Georgia',
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        Spacer(
-                                          flex: 1,
-                                        ),
-                                        new Divider(
-                                          color: CustomColors.mfinWhite,
-                                        ),
-                                        Spacer(
-                                          flex: 1,
-                                        ),
-                                        SizedBox(
-                                          height: 30,
-                                          child: Text(
-                                            DateUtils.getFormattedDateFromEpoch(
-                                                collection.collectionDate),
-                                            style: TextStyle(
-                                                color: CustomColors.mfinWhite,
-                                                fontFamily: 'Georgia',
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        Spacer(
-                                          flex: 1,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Material(
-                                  color: CustomColors.mfinLightGrey,
-                                  elevation: 10.0,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.60,
-                                    height: 80,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height: 35,
-                                          child: ListTile(
-                                            leading: Text(
-                                              textValue[0],
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                color: CustomColors.mfinBlue,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            trailing: Text(
-                                              textValue[1],
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                color: textColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 35,
-                                          child: ListTile(
-                                            leading: Text(
-                                              "TYPE:",
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                color: CustomColors.mfinBlue,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            trailing: Text(
-                                              getType(collection.type),
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                color: CustomColors.mfinBlue,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              )
-            ];
+                  ),
+                ),
+              ];
+            }
           } else {
             // No Collections available for this filterred view
             children = [
@@ -251,28 +312,6 @@ class CollectionListWidget extends StatelessWidget {
           child: new Column(
             children: <Widget>[
               ListTile(
-                leading: RichText(
-                  text: TextSpan(
-                    text: "Total: ",
-                    style: TextStyle(
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinGrey,
-                      fontSize: 18.0,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: snapshot.hasData
-                              ? snapshot.data.length.toString()
-                              : "00",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey,
-                            fontSize: 18.0,
-                          )),
-                    ],
-                  ),
-                ),
                 trailing: Text(
                   title,
                   style: TextStyle(

@@ -76,7 +76,7 @@ class AllTransactionsBook extends StatelessWidget {
 
           String eDateString = DateUtils.formatDate(eDate);
           sDate = eDate.subtract(Duration(days: eDate.weekday));
-          eDate = sDate;
+          eDate = sDate.subtract(Duration(days: 1));
           String sDateString = DateUtils.formatDate(sDate);
           String tText = '$sDateString - $eDateString';
 

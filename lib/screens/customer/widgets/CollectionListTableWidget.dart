@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
@@ -22,105 +23,163 @@ class CollectionListTableWidget extends StatelessWidget {
   final String emptyText;
   final Color textColor;
   final bool fetchAll;
-  final List<int> status;
+  final int status;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: CollectionController().streamCollectionsByStatus(
-          _payment.financeID,
-          _payment.branchName,
-          _payment.subBranchName,
-          _payment.paymentID,
-          status,
-          fetchAll),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {
+      stream: fetchAll
+          ? Collection().streamCollectionsForPayment(_payment.financeID,
+              _payment.branchName, _payment.subBranchName, _payment.paymentID)
+          : status == 0
+              ? Collection().streamUpcomingForPayment(
+                  _payment.financeID,
+                  _payment.branchName,
+                  _payment.subBranchName,
+                  _payment.paymentID)
+              : status == 3
+                  ? Collection().streamTodaysForPayment(
+                      _payment.financeID,
+                      _payment.branchName,
+                      _payment.subBranchName,
+                      _payment.paymentID)
+                  : Collection().streamPastForPayment(
+                      _payment.financeID,
+                      _payment.branchName,
+                      _payment.subBranchName,
+                      _payment.paymentID),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         Widget widget;
 
         if (snapshot.hasData) {
-          if (snapshot.data.length > 0) {
-            widget = SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                showCheckboxColumn: false,
-                columns: <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      "Action",
-                      textAlign: TextAlign.center,
+          if (snapshot.data.documents.length > 0) {
+            List<Collection> collList = [];
+            if (fetchAll) {
+              snapshot.data.documents.forEach((doc) {
+                Collection _c = Collection.fromJson(doc.data);
+                collList.add(_c);
+              });
+            } else if (status == 1) {
+              snapshot.data.documents.forEach((doc) {
+                Collection _c = Collection.fromJson(doc.data);
+                if (_c.getReceived() == _c.collectionAmount) collList.add(_c);
+              });
+            } else if (status == 4) {
+              snapshot.data.documents.forEach((doc) {
+                Collection _c = Collection.fromJson(doc.data);
+                if (_c.getReceived() < _c.collectionAmount) collList.add(_c);
+              });
+            } else {
+              snapshot.data.documents.forEach((doc) {
+                Collection _c = Collection.fromJson(doc.data);
+                collList.add(_c);
+              });
+            }
+
+            if (collList.length > 0) {
+              widget = SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  showCheckboxColumn: false,
+                  columns: <DataColumn>[
+                    DataColumn(
+                      label: Text(
+                        "Action",
+                        textAlign: TextAlign.center,
+                      ),
+                      numeric: false,
+                      tooltip: "Mark As Collected",
                     ),
-                    numeric: false,
-                    tooltip: "Mark As Collected",
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "No.",
-                      textAlign: TextAlign.center,
+                    DataColumn(
+                      label: Text(
+                        "No.",
+                        textAlign: TextAlign.center,
+                      ),
+                      numeric: false,
+                      tooltip: "Collection Number",
                     ),
-                    numeric: false,
-                    tooltip: "Collection Number",
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "Date",
-                      textAlign: TextAlign.center,
+                    DataColumn(
+                      label: Text(
+                        "Date",
+                        textAlign: TextAlign.center,
+                      ),
+                      numeric: false,
+                      tooltip: "Collection Date",
                     ),
-                    numeric: false,
-                    tooltip: "Collection Date",
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "Type",
-                      textAlign: TextAlign.center,
+                    DataColumn(
+                      label: Text(
+                        "Type",
+                        textAlign: TextAlign.center,
+                      ),
+                      numeric: false,
+                      tooltip: "Collection Type",
                     ),
-                    numeric: false,
-                    tooltip: "Collection Type",
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "Amount",
-                      textAlign: TextAlign.center,
+                    DataColumn(
+                      label: Text(
+                        "Amount",
+                        textAlign: TextAlign.center,
+                      ),
+                      numeric: false,
+                      tooltip: "Collection Amount",
                     ),
-                    numeric: false,
-                    tooltip: "Collection Amount",
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "Total Received",
-                      textAlign: TextAlign.center,
+                    DataColumn(
+                      label: Text(
+                        "Total Received",
+                        textAlign: TextAlign.center,
+                      ),
+                      numeric: false,
+                      tooltip: "Received Amount",
                     ),
-                    numeric: false,
-                    tooltip: "Received Amount",
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "Received On Time",
-                      textAlign: TextAlign.center,
+                    DataColumn(
+                      label: Text(
+                        "Received On Time",
+                        textAlign: TextAlign.center,
+                      ),
+                      numeric: false,
+                      tooltip: "Amount Received On Time",
                     ),
-                    numeric: false,
-                    tooltip: "Amount Received On Time",
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "Received Late",
-                      textAlign: TextAlign.center,
+                    DataColumn(
+                      label: Text(
+                        "Received Late",
+                        textAlign: TextAlign.center,
+                      ),
+                      numeric: false,
+                      tooltip: "Amount Received Late",
                     ),
-                    numeric: false,
-                    tooltip: "Amount Received Late",
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "Pending",
-                      textAlign: TextAlign.center,
+                    DataColumn(
+                      label: Text(
+                        "Pending",
+                        textAlign: TextAlign.center,
+                      ),
+                      numeric: false,
+                      tooltip: "Pending Amount",
                     ),
-                    numeric: false,
-                    tooltip: "Pending Amount",
+                  ],
+                  rows: getRows(context, collList),
+                ),
+              );
+            } else {
+              widget = Center(
+                child: Container(
+                  height: 90,
+                  child: Column(
+                    children: <Widget>[
+                      new Spacer(),
+                      Text(
+                        emptyText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      new Spacer(),
+                    ],
                   ),
-                ],
-                rows: getRows(context, snapshot.data),
-              ),
-            );
+                ),
+              );
+            }
           } else {
             // No Collections available for this filterred view
             widget = Center(
@@ -167,28 +226,6 @@ class CollectionListTableWidget extends StatelessWidget {
           child: new Column(
             children: <Widget>[
               ListTile(
-                leading: RichText(
-                  text: TextSpan(
-                    text: "Total: ",
-                    style: TextStyle(
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinGrey,
-                      fontSize: 18.0,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: snapshot.hasData
-                              ? snapshot.data.length.toString()
-                              : "00",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey,
-                            fontSize: 18.0,
-                          )),
-                    ],
-                  ),
-                ),
                 trailing: Text(
                   title,
                   style: TextStyle(

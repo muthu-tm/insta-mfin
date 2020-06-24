@@ -94,6 +94,10 @@ class _AddPaymentState extends State<AddPayment> {
     tenureController.text = '0';
     intrestRateController.text = '0';
     collectionAmountController.text = '0';
+
+    _date.text = DateUtils.formatDate(DateTime.now());
+    _collectionDate.text =
+        DateUtils.formatDate(DateTime.now().add(Duration(days: 1)));
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 
 class ViewCustomerProfile extends StatelessWidget {
   ViewCustomerProfile(this.customer);
@@ -43,6 +44,36 @@ class ViewCustomerProfile extends StatelessWidget {
                     ),
                     Divider(
                       color: CustomColors.mfinBlue,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              readOnly: true,
+                              initialValue: customer.mobileNumber.toString(),
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Mobile Number',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -105,25 +136,34 @@ class ViewCustomerProfile extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           Flexible(
-                            child: TextFormField(
-                              readOnly: true,
-                              initialValue: customer.mobileNumber.toString(),
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Phone number',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
+                            child: GestureDetector(
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  readOnly: true,
+                                  initialValue: DateUtils.formatDate(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          customer.joinedAt)),
+                                  decoration: InputDecoration(
+                                    labelText: 'Joined On',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinLightGrey,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
                                 ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinLightGrey,
-                                filled: true,
                               ),
                             ),
                           ),
@@ -279,7 +319,7 @@ class ViewCustomerProfile extends StatelessWidget {
                           Flexible(
                             child: TextFormField(
                               readOnly: true,
-                              initialValue: customer.address.street,
+                              initialValue: customer.address.city,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'City',
@@ -305,7 +345,7 @@ class ViewCustomerProfile extends StatelessWidget {
                           Flexible(
                             child: TextFormField(
                               readOnly: true,
-                              initialValue: customer.address.street,
+                              initialValue: customer.address.state,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'State',
@@ -335,7 +375,7 @@ class ViewCustomerProfile extends StatelessWidget {
                           Flexible(
                             child: TextFormField(
                               readOnly: true,
-                              initialValue: customer.address.street,
+                              initialValue: customer.address.pincode,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Pincode',

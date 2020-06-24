@@ -36,16 +36,8 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinLightGrey,
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Center(
-              child: SingleChildScrollView(
-                child: _getBody(),
-              ),
-            ),
-          ],
-        ),
+      body: SingleChildScrollView(
+        child: _getBody(),
       ),
     );
   }
@@ -197,21 +189,22 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
-          SizedBox(height: 10),
+          Padding(padding: EdgeInsets.all(25.0)),
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              new Container(
+              Container(
                 child: const Text(
                   'Already have an account?',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 13,
+                    fontFamily: 'Georgia',
                     color: CustomColors.mfinPositiveGreen,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               FlatButton(
-                padding: const EdgeInsets.all(20.0),
                 onPressed: () => Navigator.pop(context),
                 child: const Text(
                   'LOGIN',
@@ -223,7 +216,6 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 ),
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.end,
           ),
         ],
       );
@@ -243,7 +235,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
       return;
     } else {
       CustomDialogs.actionWaiting(context, "Checking User");
-      
+
       this.number = _phoneNumberController.text;
       await _verifyPhoneNumber();
     }
@@ -270,7 +262,6 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
     FirebaseAuth.instance
         .signInWithCredential(authCredential)
         .then((AuthResult authResult) async {
-
       dynamic result = await _authController.registerWithMobileNumber(
           int.parse(number),
           _passKeyController.text,
@@ -286,9 +277,10 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
         prefs.setString("mobile_number", number.toString());
 
         Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => UserFinanceSetup()),
-      (Route<dynamic> route) => false,
-    );
+          MaterialPageRoute(
+              builder: (BuildContext context) => UserFinanceSetup()),
+          (Route<dynamic> route) => false,
+        );
       }
     }).catchError((error) {
       Navigator.pop(context);

@@ -201,7 +201,8 @@ class _AuthPageState extends State<AuthPage> {
                         child: new Text(
                           'LOGIN',
                           style: new TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 18.0,
+                            fontFamily: 'Georgia',
                             color: CustomColors.mfinBlue,
                             fontWeight: FontWeight.bold,
                           ),
@@ -216,14 +217,15 @@ class _AuthPageState extends State<AuthPage> {
           Padding(padding: EdgeInsets.all(25.0)),
           Container(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  "Don't have an account? ",
+                  "Don't have an account?",
                   style: new TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 13.0,
                     fontFamily: 'Georgia',
                     fontWeight: FontWeight.bold,
-                    color: CustomColors.mfinAlertRed,
+                    color: CustomColors.mfinAlertRed.withOpacity(0.7),
                   ),
                 ),
                 FlatButton(
@@ -235,16 +237,15 @@ class _AuthPageState extends State<AuthPage> {
                     );
                   },
                   child: Text(
-                    ' SIGN UP',
+                    'SIGN UP',
                     style: new TextStyle(
+                      fontSize: 18.0,
                       fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinBlue,
-                      fontSize: 22.0,
+                      color: CustomColors.mfinPositiveGreen,
                     ),
                   ),
                 ),
               ],
-              mainAxisAlignment: MainAxisAlignment.end,
             ),
           )
         ],

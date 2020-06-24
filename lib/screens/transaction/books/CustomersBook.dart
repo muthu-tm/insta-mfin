@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/transaction/books/PaymentListWidget.dart';
+import 'package:instamfin/screens/transaction/books/CustomerBookListWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class PaymentsBook extends StatelessWidget {
+class CustomersBook extends StatelessWidget {
   final int groupPref =
       UserController().getCurrentUser().preferences.transactionGroupBy;
 
@@ -12,19 +12,19 @@ class PaymentsBook extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Payments Book"),
+        title: Text("Customers Book"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
           child: groupPref == 0
-              ? getPaymentsForDaily()
+              ? getCustomersForDaily()
               : groupPref == 1
-                  ? getPaymentsForWeekly()
-                  : getPaymentsForMonthly()),
+                  ? getCustomersForWeekly()
+                  : getCustomersForMonthly()),
     );
   }
 
-  Widget getPaymentsForDaily() {
+  Widget getCustomersForDaily() {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
@@ -54,7 +54,7 @@ class PaymentsBook extends StatelessWidget {
                   ),
                 ),
                 children: <Widget>[
-                  PaymentListWidget(false, date, date),
+                  CustomerBookListWidget(false, date, date),
                 ],
               ),
             ),
@@ -62,7 +62,7 @@ class PaymentsBook extends StatelessWidget {
         });
   }
 
-  Widget getPaymentsForWeekly() {
+  Widget getCustomersForWeekly() {
     DateTime sDate;
     DateTime eDate = DateTime.now();
 
@@ -100,7 +100,7 @@ class PaymentsBook extends StatelessWidget {
                   ),
                 ),
                 children: <Widget>[
-                  PaymentListWidget(true, sDate, endDate),
+                  CustomerBookListWidget(true, sDate, endDate),
                 ],
               ),
             ),
@@ -108,7 +108,7 @@ class PaymentsBook extends StatelessWidget {
         });
   }
 
-  Widget getPaymentsForMonthly() {
+  Widget getCustomersForMonthly() {
     DateTime sDate;
     DateTime eDate = DateTime.now();
 
@@ -146,7 +146,7 @@ class PaymentsBook extends StatelessWidget {
                   ),
                 ),
                 children: <Widget>[
-                  PaymentListWidget(true, sDate, endDate),
+                  CustomerBookListWidget(true, sDate, endDate),
                 ],
               ),
             ),

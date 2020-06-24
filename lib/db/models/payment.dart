@@ -118,7 +118,7 @@ class Payment extends Model {
   setSurcharge(int surcharge) {
     this.surcharge = surcharge;
   }
-  
+
   setCommission(int commission) {
     this.rCommission = commission;
   }
@@ -201,7 +201,8 @@ class Payment extends Model {
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
             coll.type != CollectionType.Surcharge.name &&
-            coll.type != CollectionType.Penalty.name)
+            coll.type != CollectionType.Penalty.name &&
+            coll.type != CollectionType.Commission.name)
           received += coll.getReceived();
       });
 
@@ -221,7 +222,8 @@ class Payment extends Model {
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
             coll.type != CollectionType.Surcharge.name &&
-            coll.type != CollectionType.Penalty.name)
+            coll.type != CollectionType.Penalty.name &&
+            coll.type != CollectionType.Commission.name)
           pending += coll.getPending();
       });
 
@@ -269,7 +271,8 @@ class Payment extends Model {
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
             coll.type != CollectionType.Surcharge.name &&
-            coll.type != CollectionType.Penalty.name) {
+            coll.type != CollectionType.Penalty.name &&
+            coll.type != CollectionType.Commission.name) {
           _r += coll.getReceived();
           _p += coll.getPending();
           _c += coll.getCurrent();
@@ -600,9 +603,10 @@ class Payment extends Model {
       else if (paymentJSON['surcharge'] == 0 && payment.surcharge > 0)
         surAdd = -1;
     }
-    
+
     if (paymentJSON.containsKey('referral_commission')) {
-      totalCommission = payment.rCommission - paymentJSON['referral_commission'];
+      totalCommission =
+          payment.rCommission - paymentJSON['referral_commission'];
     }
 
     try {

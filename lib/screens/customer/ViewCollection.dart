@@ -29,7 +29,8 @@ class ViewCollection extends StatelessWidget {
           _collection.paymentID,
           (_collection.type != 1 &&
                   _collection.type != 2 &&
-                  _collection.type != 4)
+                  _collection.type != 4 &&
+                  _collection.type != 5)
               ? _collection.collectionDate
               : (_collection.collectionDate + _collection.type)),
       builder:
@@ -71,159 +72,159 @@ class ViewCollection extends StatelessWidget {
               new Divider(
                 color: CustomColors.mfinButtonGreen,
               ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "CUSTOMER",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Georgia",
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey,
-                          ),
-                        ),
-                      ),
-                      title: TextFormField(
-                        readOnly: true,
-                        initialValue: pay.custName,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: CustomColors.mfinGrey,
-                            ),
-                          ),
-                          fillColor: CustomColors.mfinLightGrey,
-                          filled: true,
-                        ),
+              ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "CUSTOMER",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "Georgia",
+                      fontWeight: FontWeight.bold,
+                      color: CustomColors.mfinGrey,
+                    ),
+                  ),
+                ),
+                title: TextFormField(
+                  readOnly: true,
+                  initialValue: pay.custName,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(
+                      color: CustomColors.mfinBlue,
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
                       ),
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "COLL NO",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "Georgia",
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinGrey),
-                        ),
-                      ),
-                      title: TextFormField(
-                        readOnly: true,
-                        textAlign: TextAlign.end,
-                        initialValue: collection.collectionNumber.toString(),
-                        decoration: InputDecoration(
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: CustomColors.mfinGrey,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "AMOUNT",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "Georgia",
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinGrey),
-                        ),
-                      ),
-                      title: TextFormField(
-                        readOnly: true,
-                        textAlign: TextAlign.end,
-                        initialValue: collection.collectionAmount.toString(),
-                        decoration: InputDecoration(
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: CustomColors.mfinGrey,
-                            ),
-                          ),
-                        ),
+                    fillColor: CustomColors.mfinLightGrey,
+                    filled: true,
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "COLL NO",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
+                title: TextFormField(
+                  readOnly: true,
+                  textAlign: TextAlign.end,
+                  initialValue: collection.collectionNumber.toString(),
+                  decoration: InputDecoration(
+                    fillColor: CustomColors.mfinWhite,
+                    filled: true,
+                    contentPadding: new EdgeInsets.symmetric(
+                        vertical: 3.0, horizontal: 3.0),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
                       ),
                     ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "RECEIVED",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "Georgia",
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinGrey),
-                        ),
-                      ),
-                      title: TextFormField(
-                        readOnly: true,
-                        textAlign: TextAlign.end,
-                        initialValue: collection.getReceived().toString(),
-                        decoration: InputDecoration(
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: CustomColors.mfinGrey,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: SizedBox(
-                        width: 100,
-                        child: Text(
-                          "DATE",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "Georgia",
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinGrey),
-                        ),
-                      ),
-                      title: TextFormField(
-                        readOnly: true,
-                        textAlign: TextAlign.end,
-                        initialValue: DateUtils.getFormattedDateFromEpoch(
-                            collection.collectionDate),
-                        decoration: InputDecoration(
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: CustomColors.mfinGrey,
-                            ),
-                          ),
-                        ),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "AMOUNT",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
+                title: TextFormField(
+                  readOnly: true,
+                  textAlign: TextAlign.end,
+                  initialValue: collection.collectionAmount.toString(),
+                  decoration: InputDecoration(
+                    fillColor: CustomColors.mfinWhite,
+                    filled: true,
+                    contentPadding: new EdgeInsets.symmetric(
+                        vertical: 3.0, horizontal: 3.0),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
                       ),
                     ),
-                    (UserController().getCurrentUser().preferences.tableView)
-                        ? CollDetailsTableWidget(pay.isSettled, _scaffoldKey,
-                            collection, pay.custName)
-                        : CollectionDetailsWidget(pay.isSettled, _scaffoldKey,
-                            collection, pay.custName),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "RECEIVED",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
+                title: TextFormField(
+                  readOnly: true,
+                  textAlign: TextAlign.end,
+                  initialValue: collection.getReceived().toString(),
+                  decoration: InputDecoration(
+                    fillColor: CustomColors.mfinWhite,
+                    filled: true,
+                    contentPadding: new EdgeInsets.symmetric(
+                        vertical: 3.0, horizontal: 3.0),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
+                    "DATE",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
+                title: TextFormField(
+                  readOnly: true,
+                  textAlign: TextAlign.end,
+                  initialValue: DateUtils.getFormattedDateFromEpoch(
+                      collection.collectionDate),
+                  decoration: InputDecoration(
+                    fillColor: CustomColors.mfinWhite,
+                    filled: true,
+                    contentPadding: new EdgeInsets.symmetric(
+                        vertical: 3.0, horizontal: 3.0),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              (UserController().getCurrentUser().preferences.tableView)
+                  ? CollDetailsTableWidget(
+                      pay.isSettled, _scaffoldKey, collection, pay.custName)
+                  : CollectionDetailsWidget(
+                      pay.isSettled, _scaffoldKey, collection, pay.custName),
             ];
           } else {
             // No Collections available for this filterred view
@@ -261,10 +262,10 @@ class ViewCollection extends StatelessWidget {
           key: _scaffoldKey,
           body: SingleChildScrollView(
             child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: children),
-            ),
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: children),
+          ),
         );
       },
     );
@@ -286,6 +287,9 @@ class ViewCollection extends StatelessWidget {
         break;
       case 4:
         return "PENALTY";
+        break;
+      case 5:
+        return "COMMISSION";
         break;
       default:
         return "COLLECTION";

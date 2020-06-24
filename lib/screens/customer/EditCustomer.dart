@@ -5,6 +5,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
@@ -24,7 +25,17 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController _date = new TextEditingController();
   var groupValue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _date.value = TextEditingValue(
+      text: DateUtils.getFormattedDateFromEpoch(widget.customer['joined_at']),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +204,38 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         child: Row(
                           children: <Widget>[
                             Flexible(
+                              child: GestureDetector(
+                                onTap: () => _selectedDate(context),
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                    controller: _date,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      labelText: 'Joined On',
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                      labelStyle: TextStyle(
+                                        color: CustomColors.mfinBlue,
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 3.0, horizontal: 10.0),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: CustomColors.mfinWhite)),
+                                      fillColor: CustomColors.mfinWhite,
+                                      filled: true,
+                                      suffixIcon: Icon(
+                                        Icons.date_range,
+                                        size: 35,
+                                        color: CustomColors.mfinBlue,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Flexible(
                               child: TextFormField(
                                 initialValue:
                                     widget.customer['customer_profession'],
@@ -313,6 +356,27 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
     );
   }
 
+  Future<Null> _selectedDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate:
+          DateTime.fromMillisecondsSinceEpoch(widget.customer['joined_at']),
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null &&
+        picked !=
+            DateTime.fromMillisecondsSinceEpoch(widget.customer['joined_at']))
+      setState(
+        () {
+          updatedCustomer['joined_at'] = DateUtils.getUTCDateEpoch(picked);
+          _date.value = TextEditingValue(
+            text: DateUtils.formatDate(picked),
+          );
+        },
+      );
+  }
+
   setGuarantiedBy(String guranteeNumber) {
     updatedCustomer['guarantied_by'] = int.parse(guranteeNumber);
   }
@@ -340,14 +404,11 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
-        print("Customer profile update failed: " + result['message']);
       } else {
         Navigator.pop(context);
-        print("Updated Customer profile data");
         Navigator.pop(context);
       }
     } else {
-      print('Form not valid');
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill valid data!", 2));
     }

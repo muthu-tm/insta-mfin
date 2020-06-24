@@ -158,7 +158,7 @@ class Collection {
   }
 
   int getStatus() {
-    if (this.type == 1 || this.type == 2  || this.type == 4) return 1;
+    if (this.type == 1 || this.type == 2 || this.type == 4) return 1;
     if (this.type == 5) return 5; // COMMISSION
 
     if (getPaidOnTime() > 0 && getPending() == 0) return 1;
@@ -464,23 +464,29 @@ class Collection {
         .snapshots();
   }
 
-  Future<List<Collection>> getAllCollectionsForCustomer(String financeId,
-      String branchName, String subBranchName, int custNumber) async {
-    var collectionDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('customer_number', isEqualTo: custNumber)
-        .getDocuments();
+  Stream<QuerySnapshot> streamUpcomingForPayment(String financeId,
+      String branchName, String subBranchName, String paymentID) {
+    return getCollectionRef(financeId, branchName, subBranchName, paymentID)
+        .where('collection_date',
+            isGreaterThan: DateUtils.getUTCDateEpoch(DateTime.now()))
+        .snapshots();
+  }
 
-    List<Collection> coll = [];
-    if (collectionDocs.documents.isNotEmpty) {
-      for (var doc in collectionDocs.documents) {
-        coll.add(Collection.fromJson(doc.data));
-      }
-    }
+  Stream<QuerySnapshot> streamTodaysForPayment(String financeId,
+      String branchName, String subBranchName, String paymentID) {
+    return getCollectionRef(financeId, branchName, subBranchName, paymentID)
+        .where('collection_date',
+            isEqualTo: DateUtils.getUTCDateEpoch(DateTime.now()))
+        .where('type', isEqualTo: 0)
+        .snapshots();
+  }
 
-    return coll;
+  Stream<QuerySnapshot> streamPastForPayment(String financeId,
+      String branchName, String subBranchName, String paymentID) {
+    return getCollectionRef(financeId, branchName, subBranchName, paymentID)
+        .where('collection_date',
+            isLessThan: DateUtils.getUTCDateEpoch(DateTime.now()))
+        .snapshots();
   }
 
   Future<Collection> getByCollectionNumber(String financeID, String branchName,

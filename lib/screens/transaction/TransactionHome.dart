@@ -135,7 +135,7 @@ class TransactionScreen extends StatelessWidget {
                               ),
                               Spacer(),
                               Icon(
-                                Icons.featured_play_list,
+                                Icons.shopping_basket,
                                 size: 40.0,
                                 color: CustomColors.mfinButtonGreen,
                               ),
