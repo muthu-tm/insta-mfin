@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/collection.dart';
@@ -25,24 +26,24 @@ class CollectionBookTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final User _u = UserController().getCurrentUser();
 
-    return FutureBuilder(
-      future: isPending
-          ? Collection().getAllPendingCollectionByDate(
+    return StreamBuilder(
+      stream: isPending
+          ? Collection().streamAllPendingCollectionByDate(
               _u.primaryFinance, _u.primaryBranch, _u.primarySubBranch, epoch)
-          : Collection().getAllCollectionByDate(_u.primaryFinance,
+          : Collection().streamAllCollectionByDate(_u.primaryFinance,
               _u.primaryBranch, _u.primarySubBranch, [0], false, epoch),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<Collection>> collSnap) {
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> collSnap) {
         Widget child;
 
         if (collSnap.hasData) {
-          if (collSnap.data.length > 0) {
+          if (collSnap.data.documents.length > 0) {
             child = ListView.builder(
-              itemCount: collSnap.data.length,
+              itemCount: collSnap.data.documents.length,
               shrinkWrap: true,
               primary: false,
               itemBuilder: (BuildContext context, int index) {
-                Collection coll = collSnap.data[index];
+                Collection coll =
+                    Collection.fromJson(collSnap.data.documents[index].data);
 
                 return Slidable(
                   actionPane: SlidableDrawerActionPane(),

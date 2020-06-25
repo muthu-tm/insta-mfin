@@ -338,9 +338,9 @@ class Collection {
         .snapshots();
   }
 
-  Future<List<Collection>> getAllPendingCollectionByDate(String financeId,
-      String branchName, String subBranchName, int epoch) async {
-    var collDocs = await getGroupQuery()
+  Stream<QuerySnapshot> streamAllPendingCollectionByDate(
+      String financeId, String branchName, String subBranchName, int epoch) {
+    return getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
@@ -348,16 +348,24 @@ class Collection {
         .where('type', isEqualTo: 0)
         .where('is_settled', isEqualTo: false)
         .where('is_paid', isEqualTo: false)
-        .getDocuments();
+        .snapshots();
+  }
 
-    List<Collection> colls = [];
-    if (collDocs.documents.isNotEmpty) {
-      for (var doc in collDocs.documents) {
-        colls.add(Collection.fromJson(doc.data));
-      }
-    }
-
-    return colls;
+  Stream<QuerySnapshot> streamAllCollectionByDate(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      List<int> types,
+      bool isSettled,
+      int epoch) {
+    return getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('collection_date', isEqualTo: epoch)
+        .where('type', whereIn: types)
+        .where('is_settled', isEqualTo: isSettled)
+        .snapshots();
   }
 
   Future<List<Collection>> getAllCollectionByDate(
