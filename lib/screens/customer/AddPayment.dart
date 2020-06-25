@@ -955,6 +955,11 @@ class _AddPaymentState extends State<AddPayment> {
         () {
           selectedDate = DateUtils.getUTCDateEpoch(picked);
           _date.text = DateUtils.formatDate(picked);
+
+          collectionDate =
+              DateUtils.getUTCDateEpoch(picked.add(Duration(days: 1)));
+          _collectionDate.text =
+              DateUtils.formatDate(picked.add(Duration(days: 1)));
         },
       );
   }

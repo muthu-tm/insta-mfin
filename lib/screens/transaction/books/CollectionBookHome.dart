@@ -3,7 +3,13 @@ import 'package:instamfin/screens/transaction/books/CollectionBookTab.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
-class CollectionBookHome extends StatelessWidget {
+class CollectionBookHome extends StatefulWidget {
+  @override
+  _CollectionBookHomeState createState() => _CollectionBookHomeState();
+}
+
+class _CollectionBookHomeState extends State<CollectionBookHome> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +17,7 @@ class CollectionBookHome extends StatelessWidget {
       length: 3,
       initialIndex: 1,
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("Collection Book"),
           backgroundColor: CustomColors.mfinBlue,
@@ -45,14 +52,22 @@ class CollectionBookHome extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            CollectionBookTab(true,
+            CollectionBookTab(
+                _scaffoldKey,
+                true,
                 DateUtils.getUTCDateEpoch(
                     DateTime.now().subtract(Duration(days: 1))),
                 CustomColors.mfinAlertRed,
                 CustomColors.mfinGrey),
-            CollectionBookTab(false, DateUtils.getUTCDateEpoch(DateTime.now()),
-                CustomColors.mfinBlue, CustomColors.mfinGrey),
-            CollectionBookTab(false, 
+            CollectionBookTab(
+                _scaffoldKey,
+                false,
+                DateUtils.getUTCDateEpoch(DateTime.now()),
+                CustomColors.mfinBlue,
+                CustomColors.mfinGrey),
+            CollectionBookTab(
+                _scaffoldKey,
+                false,
                 DateUtils.getUTCDateEpoch(
                     DateTime.now().add(Duration(days: 1))),
                 CustomColors.mfinGrey,
