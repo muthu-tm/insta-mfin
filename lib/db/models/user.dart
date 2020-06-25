@@ -1,4 +1,3 @@
-import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
@@ -62,8 +61,8 @@ class User extends Model {
     this.password = password;
   }
 
-  setGender(Gender gender) {
-    this.gender = gender.name;
+  setGender(String gender) {
+    this.gender = gender;
   }
 
   setEmailID(String emailID) {

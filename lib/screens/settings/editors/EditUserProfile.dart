@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
@@ -256,9 +255,9 @@ class _EditUserProfileState extends State<EditUserProfile> {
   setSelectedRadio(int val) {
     this.groupValue = val;
     if (val == 0) {
-      updatedUser['gender'] = Gender.Male.name;
+      updatedUser['gender'] = "Male";
     } else {
-      updatedUser['gender'] = Gender.Female.name;
+      updatedUser['gender'] = "Female";
     }
   }
 

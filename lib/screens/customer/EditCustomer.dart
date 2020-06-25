@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -384,9 +383,9 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
   setSelectedRadio(int val) {
     this.groupValue = val;
     if (val == 0) {
-      updatedCustomer['gender'] = Gender.Male.name;
+      updatedCustomer['gender'] = "Male";
     } else {
-      updatedCustomer['gender'] = Gender.Female.name;
+      updatedCustomer['gender'] = "Female";
     }
   }
 

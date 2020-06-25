@@ -1,4 +1,3 @@
-import 'package:instamfin/db/enums/gender.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/payment.dart';
@@ -58,8 +57,8 @@ class Customer extends Model {
     this.mobileNumber = mobileNumber;
   }
 
-  setGender(Gender gender) {
-    this.gender = gender.name;
+  setGender(String gender) {
+    this.gender = gender;
   }
 
   setName(String name) {
