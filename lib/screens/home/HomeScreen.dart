@@ -606,12 +606,11 @@ class HomeScreen extends StatelessWidget {
 
   Widget getPastCollectionData(BuildContext context) {
     return FutureBuilder<List<Collection>>(
-      future: Collection().getAllCollectionByDate(
+      future: Collection().allCollectionByDate(
           _u.primaryFinance,
           _u.primaryBranch,
           _u.primarySubBranch,
           [0],
-          false,
           DateUtils.getUTCDateEpoch(
               DateTime.now().subtract(Duration(days: 1)))),
       builder:
