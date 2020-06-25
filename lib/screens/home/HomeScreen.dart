@@ -5,6 +5,7 @@ import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/settings/editors/EditPrimaryFinance.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
@@ -33,31 +34,56 @@ class HomeScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: <Widget>[
-                SizedBox(height: 50.0),
+                SizedBox(height: 40.0),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      "Welcome Back, ",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: CustomColors.mfinLightGrey,
-                        fontFamily: 'Georgia',
-                        fontWeight: FontWeight.w600,
+                    RichText(
+                      text: TextSpan(
+                        text: "Welcome Back, ",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: CustomColors.mfinLightGrey,
+                          fontFamily: 'Georgia',
+                          fontWeight: FontWeight.w600,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: '${_u.name}!',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: CustomColors.mfinLightGrey,
+                              fontFamily: 'Georgia',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Text(
-                      '${_u.name}!',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: CustomColors.mfinLightGrey,
-                        fontFamily: 'Georgia',
-                        fontWeight: FontWeight.bold,
+                    IconButton(
+                      tooltip: "Edit Primary Finance",
+                      alignment: Alignment.centerRight,
+                      icon: Icon(
+                        Icons.edit,
+                        size: 25,
+                        color: CustomColors.mfinButtonGreen,
                       ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditPrimaryFinance(
+                              _u.mobileNumber,
+                            ),
+                            settings: RouteSettings(
+                                name: '/settings/user/primary/edit'),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 10.0),
                 getFinanceDetails(context),
               ],
             ),
@@ -845,7 +871,7 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-              SizedBox(height: 15.0),
+              SizedBox(height: 10.0),
               Text(
                 fin.financeName,
                 style: TextStyle(

@@ -263,7 +263,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UserHomeScreen(),
+                          builder: (context) => Home(),
                           settings: RouteSettings(name: '/home'),
                         ),
                       ),

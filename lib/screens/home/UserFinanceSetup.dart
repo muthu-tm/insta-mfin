@@ -12,7 +12,7 @@ class UserFinanceSetup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_user.primaryFinance != null && _user.primaryFinance != "") {
-      return UserHomeScreen();
+      return Home();
     } else {
       return WillPopScope(
         onWillPop: () async => false,

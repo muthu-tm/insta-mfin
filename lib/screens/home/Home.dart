@@ -3,7 +3,7 @@ import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/home/HomeScreen.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 
-class UserHomeScreen extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(

@@ -95,7 +95,7 @@ final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UserHomeScreen(),
+                          builder: (context) => Home(),
                           settings: RouteSettings(name: '/home'),
                         ),
                       ),

@@ -159,7 +159,7 @@ class ViewCustomer extends StatelessWidget {
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UserHomeScreen(),
+                            builder: (context) => Home(),
                             settings: RouteSettings(name: '/home'),
                           ),
                         ),
