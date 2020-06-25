@@ -9,7 +9,6 @@ SubBranch _$SubBranchFromJson(Map<String, dynamic> json) {
     ..contactNumber = json['contact_number'] as String
     ..emailID = json['email'] as String
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
-    ..displayProfilePath = json['display_profile_path'] as String
     ..dateOfRegistration = json['date_of_registration'] as String
     ..addedBy = json['added_by'] as int
     ..accountsData = json['accounts_data'] == null
@@ -32,16 +31,10 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 Map<String, dynamic> _$SubBranchToJson(SubBranch instance) => <String, dynamic>{
       'sub_branch_name': instance.subBranchName,
       'address': instance.address?.toJson(),
-      'contact_number':
-          instance.contactNumber == null ? '' : instance.contactNumber,
-      'email': instance.emailID == null ? '' : instance.emailID,
-      'admins': instance.admins == null ? [instance.addedBy] : instance.admins,
-      'display_profile_path': instance.displayProfilePath == null
-          ? ''
-          : instance.displayProfilePath,
-      'date_of_registration': instance.dateOfRegistration == null
-          ? ''
-          : instance.dateOfRegistration,
+      'contact_number': instance.contactNumber ?? '',
+      'email': instance.emailID ?? '',
+      'admins': instance.admins ?? [instance.addedBy],
+      'date_of_registration': instance.dateOfRegistration ?? '',
       'accounts_data': instance.accountsData?.toJson(),
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,

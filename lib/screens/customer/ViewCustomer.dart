@@ -205,7 +205,7 @@ class ViewCustomer extends StatelessWidget {
                               builder: (context) {
                                 return Center(
                                   child: ProfilePictureUpload(
-                                      false,
+                                      1,
                                       customer.getProfilePicPath(),
                                       customer.financeID +
                                           '_' +
@@ -263,7 +263,7 @@ class ViewCustomer extends StatelessWidget {
                                     builder: (context) {
                                       return Center(
                                         child: ProfilePictureUpload(
-                                            false,
+                                            1,
                                             customer.getProfilePicPath(),
                                             customer.financeID +
                                                 '_' +

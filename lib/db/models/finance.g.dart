@@ -8,11 +8,12 @@ Finance _$FinanceFromJson(Map<String, dynamic> json) {
     ..emailID = json['email'] as String
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
     ..users = (json['users'] as List)?.map((e) => e as int)?.toList()
-    ..displayProfilePath = json['display_profile_path'] as String
     ..address = json['address'] == null
         ? null
         : Address.fromJson(json['address'] as Map<String, dynamic>)
     ..dateOfRegistration = json['date_of_registration'] as int
+    ..profilePathOrg = json['profile_path_org'] as String ?? ''
+    ..profilePath = json['profile_path'] as String ?? ''
     ..addedBy = json['added_by'] as int
     ..accountsData = json['accounts_data'] == null
         ? new AccountsData()
@@ -38,9 +39,10 @@ Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
       'email': instance.emailID ?? '',
       'admins': instance.admins ?? [instance.addedBy],
       'users': instance.users ?? [instance.addedBy],
-      'display_profile_path': instance.displayProfilePath ?? '',
       'address': instance.address?.toJson(),
       'date_of_registration': instance.dateOfRegistration,
+      'profile_path_org': instance.profilePathOrg ?? '',
+      'profile_path': instance.profilePath ?? '',
       'accounts_data': instance.accountsData?.toJson(),
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,

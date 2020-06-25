@@ -1,12 +1,8 @@
-import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
-import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
-import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
-import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 import 'package:instamfin/services/controllers/notification/n_utils.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
@@ -14,10 +10,6 @@ import 'package:instamfin/services/utils/response_utils.dart';
 UserService _userService = locator<UserService>();
 
 class UserController {
-  FinanceController _financeController = FinanceController();
-  BranchController _branchController = BranchController();
-  SubBranchController _subBranchController = SubBranchController();
-
   User getCurrentUser() {
     return _userService.cachedUser;
   }
@@ -69,23 +61,20 @@ class UserController {
     }
   }
 
-  Future<Map<String, dynamic>> getPrimaryFinanceDetails() async {
+  Future<Finance> getPrimaryFinance() async {
     try {
       String primaryFinanceID = _userService.cachedUser.primaryFinance;
 
-      Map<String, dynamic> result = new Map();
-
       if (primaryFinanceID != null && primaryFinanceID != "") {
         Finance finance =
-            await _financeController.getFinanceByID(primaryFinanceID);
-        if (finance != null) {
-          result['finance_name'] = finance.financeName;
+            await FinanceController().getFinanceByID(primaryFinanceID);
+        if (finance == null) {
+          throw 'Unable to fetch Finance Details';
         }
+        return finance;
+      } else {
+        return null;
       }
-      result['branch_name'] = _userService.cachedUser.primaryBranch;
-      result['sub_branch_name'] = _userService.cachedUser.primarySubBranch;
-
-      return result;
     } catch (err) {
       Analytics.reportError(
           {"type": 'get_primary_error', 'error': err.toString()});

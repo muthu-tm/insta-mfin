@@ -7,9 +7,9 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/storage/image_uploader.dart';
 
 class ProfilePictureUpload extends StatefulWidget {
-  ProfilePictureUpload(this.isUser, this.picPath, this.fileName, this.number);
+  ProfilePictureUpload(this.type, this.picPath, this.fileName, this.number);
 
-  final bool isUser;
+  final int type; // 0 - User, 1 - Customer, 2 - Finance
   final String picPath;
   final String fileName;
   final int number;
@@ -41,7 +41,9 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
           children: <Widget>[
             Spacer(),
             Text(
-              widget.isUser ? 'Set Profile Photo' : 'Customer Photo',
+              widget.type == 0
+                  ? 'Set Profile Photo'
+                  : widget.type == 1 ? 'Customer Photo' : "Finance Logo",
               style: TextStyle(
                   color: CustomColors.mfinBlack,
                   fontSize: 25.0,
@@ -217,13 +219,15 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
     if (path != null) {
       CustomDialogs.actionWaiting(context, "Uploading!");
       Uploader.uploadImage(
-        widget.isUser,
-        widget.isUser ? "user_profile_org" : "cust_profile_org",
+        widget.type,
+        widget.type == 0
+            ? "user_profile_org"
+            : widget.type == 1 ? "cust_profile_org" : "finance_profile_org",
         path,
         widget.fileName,
         widget.number,
         () {
-          if (widget.isUser) {
+          if (widget.type == 0) {
             Navigator.pop(context);
             Navigator.pop(context);
             Navigator.pop(context);

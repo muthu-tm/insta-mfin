@@ -39,7 +39,7 @@ Map<String, dynamic> _$JournalToJson(Journal instance) =>
       'journal_date': instance.journalDate,
       'is_expense': instance.isExpense,
       'added_by': instance.addedBy,
-      'notes': instance.notes == null ? '' : instance.notes,
+      'notes': instance.notes ?? '',
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

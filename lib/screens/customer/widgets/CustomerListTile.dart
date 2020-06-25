@@ -62,7 +62,7 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                               builder: (context) {
                                 return Center(
                                   child: ProfilePictureUpload(
-                                      false,
+                                      1,
                                       customer.getProfilePicPath(),
                                       customer.financeID +
                                           '_' +
@@ -72,28 +72,22 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                               },
                             );
                           },
-                          child: Stack(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Icon(
-                                  custIcon,
-                                  size: 35.0,
+                              Icon(
+                                custIcon,
+                                size: 35.0,
+                                color: textColor,
+                              ),
+                              Text(
+                                "Upload",
+                                style: TextStyle(
+                                  fontSize: 10.0,
+                                  fontWeight: FontWeight.w500,
                                   color: textColor,
                                 ),
                               ),
-                              Positioned(
-                                bottom: 15,
-                                left: 3,
-                                child: Text(
-                                  "Upload",
-                                  style: TextStyle(
-                                    fontSize: 10.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: textColor,
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
@@ -123,7 +117,7 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                                   builder: (context) {
                                     return Center(
                                       child: ProfilePictureUpload(
-                                          false,
+                                          1,
                                           customer.getProfilePicPath(),
                                           customer.financeID +
                                               '_' +

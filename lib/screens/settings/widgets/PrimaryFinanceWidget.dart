@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/finance.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/settings/editors/EditPrimaryFinance.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
@@ -6,7 +8,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class PrimaryFinanceWidget extends StatelessWidget {
-  final UserController _userController = UserController();
+  final User _user = UserController().getCurrentUser();
 
   PrimaryFinanceWidget(this.title, this.editEnabled);
 
@@ -15,21 +17,20 @@ class PrimaryFinanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
-        future: _userController.getPrimaryFinanceDetails(),
-        builder: (BuildContext context,
-            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+    return FutureBuilder<Finance>(
+        future: UserController().getPrimaryFinance(),
+        builder: (BuildContext context, AsyncSnapshot<Finance> snapshot) {
           List<Widget> children;
 
           if (snapshot.hasData) {
-            if (snapshot.data['finance_name'] != null) {
+            if (snapshot.data != null) {
               children = <Widget>[
                 ListTile(
                   leading: Icon(Icons.account_balance,
                       color: CustomColors.mfinBlue, size: 30.0),
                   title: TextFormField(
                     keyboardType: TextInputType.text,
-                    initialValue: snapshot.data['finance_name'],
+                    initialValue: snapshot.data.financeName,
                     decoration: InputDecoration(
                       hintText: 'Company Name',
                       fillColor: CustomColors.mfinWhite,
@@ -49,7 +50,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                       color: CustomColors.mfinBlue, size: 30.0),
                   title: TextFormField(
                     keyboardType: TextInputType.text,
-                    initialValue: snapshot.data['branch_name'],
+                    initialValue: _user.primaryBranch ?? "",
                     decoration: InputDecoration(
                       hintText: 'Branch Name',
                       fillColor: CustomColors.mfinWhite,
@@ -69,7 +70,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                       color: CustomColors.mfinBlue, size: 30.0),
                   title: TextFormField(
                     keyboardType: TextInputType.text,
-                    initialValue: snapshot.data['sub_branch_name'],
+                    initialValue: _user.primarySubBranch ?? "",
                     decoration: InputDecoration(
                       hintText: 'SubBranch Name',
                       contentPadding: new EdgeInsets.symmetric(
@@ -128,7 +129,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => EditPrimaryFinance(
-                                _userController.getCurrentUserID(),
+                                _user.mobileNumber,
                               ),
                               settings: RouteSettings(
                                   name: '/settings/user/primary/edit'),
@@ -190,7 +191,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => EditPrimaryFinance(
-                                    _userController.getCurrentUserID(),
+                                    _user.mobileNumber,
                                   ),
                                   settings: RouteSettings(
                                       name: '/settings/user/primary/edit'),

@@ -23,14 +23,16 @@ class Finance extends Model {
   List<int> admins;
   @JsonKey(name: 'users', nullable: true)
   List<int> users;
-  @JsonKey(name: 'display_profile_path', nullable: true)
-  String displayProfilePath;
   @JsonKey(name: 'address', nullable: true)
   Address address;
   @JsonKey(name: 'accounts_data', nullable: true)
   AccountsData accountsData;
   @JsonKey(name: 'date_of_registration', nullable: true)
   int dateOfRegistration;
+  @JsonKey(name: 'profile_path_org', defaultValue: "")
+  String profilePathOrg;
+  @JsonKey(name: 'profile_path', defaultValue: "")
+  String profilePath;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
@@ -76,10 +78,6 @@ class Finance extends Model {
     this.dateOfRegistration = date;
   }
 
-  setDisplayProfilePath(String profilePath) {
-    this.displayProfilePath = profilePath;
-  }
-
   setAddress(Address address) {
     this.address = address;
   }
@@ -88,8 +86,21 @@ class Finance extends Model {
     this.accountsData = accountsData;
   }
 
+  setProfilePathOrg(String displayPath) {
+    this.profilePathOrg = displayPath;
+  }
+
   setAddedBy(int mobileNumber) {
     this.addedBy = mobileNumber;
+  }
+
+  String getProfilePicPath() {
+    if (this.profilePath != "")
+      return this.profilePath;
+    else if (this.profilePathOrg != "")
+      return this.profilePathOrg;
+    else
+      return "";
   }
 
   factory Finance.fromJson(Map<String, dynamic> json) =>
@@ -113,7 +124,7 @@ class Finance extends Model {
             .where('users', arrayContains: userID)
             .getDocuments())
         .documents;
-    
+
     if (docSnapshot.isEmpty) {
       return null;
     }

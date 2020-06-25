@@ -41,7 +41,6 @@ Widget openDrawer(BuildContext context) {
                             style: BorderStyle.solid,
                             width: 2.0,
                           ),
-                          // image:
                         ),
                         child: FlatButton(
                           onPressed: () {
@@ -52,7 +51,7 @@ Widget openDrawer(BuildContext context) {
                               builder: (context) {
                                 return Center(
                                   child: ProfilePictureUpload(
-                                      true,
+                                      0,
                                       _user.getProfilePicPath(),
                                       _user.mobileNumber.toString(),
                                       _user.mobileNumber),
@@ -91,7 +90,7 @@ Widget openDrawer(BuildContext context) {
                                     builder: (context) {
                                       return Center(
                                         child: ProfilePictureUpload(
-                                            true,
+                                            0,
                                             _user.getProfilePicPath(),
                                             _user.mobileNumber.toString(),
                                             _user.mobileNumber),

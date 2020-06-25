@@ -258,7 +258,6 @@ class _RegisterFormState extends State<RegisterForm> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to register USER: " + result['message']);
       } else {
         Navigator.pop(context);
         if (_imageFile != null) {
@@ -266,7 +265,7 @@ class _RegisterFormState extends State<RegisterForm> {
               CustomSnackBar.successSnackBar("$name added Successfully!", 1));
           CustomDialogs.actionWaiting(context, "Uploading Picture!");
           print("UPLOADING image file: " + _imageFile.toString());
-          Uploader.uploadImage(true, "user_profile_org", _imageFile.path,
+          Uploader.uploadImage(0, "user_profile_org", _imageFile.path,
               mobileNumber, int.parse(mobileNumber), () {
             Navigator.pop(context);
             Navigator.pushAndRemoveUntil(
@@ -290,7 +289,6 @@ class _RegisterFormState extends State<RegisterForm> {
         }
       }
     } else {
-      print("Invalid form values");
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
     }

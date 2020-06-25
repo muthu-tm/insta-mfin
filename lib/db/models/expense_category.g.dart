@@ -31,7 +31,7 @@ Map<String, dynamic> _$ExpenseCategoryToJson(
       'sub_branch_name': instance.subBranchName,
       'category_name': instance.categoryName,
       'added_by': instance.addedBy,
-      'notes': instance.notes == null ? '' : instance.notes,
+      'notes': instance.notes ?? '',
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
+import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -287,13 +289,13 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.only(
-                          left: 10.0, right: 10.0, bottom: 5.0),
+                      padding:
+                          EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0),
                       child: getPresentCard(context),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(
-                          left: 10.0, right: 10.0, bottom: 5.0),
+                      padding:
+                          EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -320,7 +322,6 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: bottomBar(context),
     );
   }
-
 
   Widget getPresentCard(BuildContext context) {
     return Container(
@@ -553,7 +554,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                     circularStrokeCap: CircularStrokeCap.round,
                     backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
-                    progressColor: CustomColors.mfinFadedButtonGreen.withOpacity(0.9),
+                    progressColor:
+                        CustomColors.mfinFadedButtonGreen.withOpacity(0.9),
                   ),
                 ),
               ],
@@ -736,29 +738,116 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget getFinanceDetails(BuildContext context) {
-    final UserController _userController = UserController();
-
-    return FutureBuilder<Map<String, dynamic>>(
-      future: _userController.getPrimaryFinanceDetails(),
-      builder:
-          (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+    return FutureBuilder<Finance>(
+      future: UserController().getPrimaryFinance(),
+      builder: (BuildContext context, AsyncSnapshot<Finance> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
-          if (snapshot.data['finance_name'] != null) {
+          if (snapshot.data != null) {
+            Finance fin = snapshot.data;
+
             children = <Widget>[
-              CircleAvatar(
-                radius: 50.0,
-                backgroundColor: CustomColors.mfinButtonGreen,
-                child: Icon(
-                  Icons.account_balance,
-                  size: 45.0,
-                  color: CustomColors.mfinWhite,
-                ),
-              ),
+              fin.getProfilePicPath() == ""
+                  ? Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: CustomColors.mfinFadedButtonGreen,
+                          border: Border.all(
+                            style: BorderStyle.solid,
+                            width: 2.0,
+                          ),
+                        ),
+                        child: FlatButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              routeSettings:
+                                  RouteSettings(name: "/profile/upload"),
+                              builder: (context) {
+                                return Center(
+                                  child: ProfilePictureUpload(
+                                      2,
+                                      fin.getProfilePicPath(),
+                                      fin.getID(),
+                                      _u.mobileNumber),
+                                );
+                              },
+                            );
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Icon(
+                                Icons.account_balance,
+                                size: 50.0,
+                                color: CustomColors.mfinBlue,
+                              ),
+                              Text(
+                                "Upload",
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: CustomColors.mfinBlue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      width: 100,
+                      height: 100,
+                      child: Stack(
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 50.0,
+                            backgroundImage:
+                                NetworkImage(snapshot.data.getProfilePicPath()),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          Positioned(
+                            bottom: -12,
+                            left: 40,
+                            child: FlatButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  routeSettings:
+                                      RouteSettings(name: "/profile/upload"),
+                                  builder: (context) {
+                                    return Center(
+                                      child: ProfilePictureUpload(
+                                          2,
+                                          fin.getProfilePicPath(),
+                                          fin.getID(),
+                                          _u.mobileNumber),
+                                    );
+                                  },
+                                );
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: CustomColors.mfinButtonGreen,
+                                radius: 10,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: CustomColors.mfinBlue,
+                                  size: 15.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
               SizedBox(height: 15.0),
               Text(
-                snapshot.data['finance_name'],
+                fin.financeName,
                 style: TextStyle(
                   fontSize: 20.0,
                   fontFamily: 'Georgia',
