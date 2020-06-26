@@ -415,7 +415,9 @@ class CollectionListTableWidget extends StatelessWidget {
         CustomDialogs.actionWaiting(context, "Updating Collection");
         CollectionController _cc = CollectionController();
         User _user = UserController().getCurrentUser();
-        Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
+        Map<String, dynamic> collDetails = {
+          'collected_on': DateUtils.getUTCDateEpoch(DateTime.now())
+        };
         collDetails['amount'] =
             collection.collectionAmount - collection.getReceived();
         collDetails['transferred_mode'] = 0;
