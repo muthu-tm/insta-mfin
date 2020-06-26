@@ -41,6 +41,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
       appBar: new AppBar(
         backgroundColor: CustomColors.mfinBlue,
         centerTitle: true,
+        titleSpacing: 0.0,
         title: TextFormField(
           controller: _searchController,
           keyboardType: TextInputType.text,
@@ -49,10 +50,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
           ),
           decoration: new InputDecoration(
             hintText: searchMode == 0
-                ? "Customer Number here.."
+                ? "Type Customer Number here..."
                 : searchMode == 1
-                    ? "Customer Name here.."
-                    : "Payment ID here..",
+                    ? "Type Customer Name here..."
+                    : "Type Payment ID here...",
             hintStyle: new TextStyle(color: CustomColors.mfinWhite),
           ),
         ),
@@ -120,6 +121,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
               leading: InkWell(
                 onTap: () {
+                  searchMode = 0;
+                  _searchController.text = '';
+
                   setState(
                     () {
                       inOutList[0].isSelected = true;
@@ -127,15 +131,15 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       inOutList[2].isSelected = false;
                     },
                   );
-
-                  searchMode = 0;
-                  _searchController.text = '';
                 },
                 child: new SearchOptionsRadio(
                     inOutList[0], CustomColors.mfinLightBlue),
               ),
               title: InkWell(
                 onTap: () {
+                  searchMode = 1;
+                  _searchController.text = '';
+
                   setState(
                     () {
                       inOutList[0].isSelected = false;
@@ -143,15 +147,15 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       inOutList[2].isSelected = false;
                     },
                   );
-
-                  searchMode = 1;
-                  _searchController.text = '';
                 },
                 child:
                     new SearchOptionsRadio(inOutList[1], CustomColors.mfinBlue),
               ),
               trailing: InkWell(
                 onTap: () {
+                  searchMode = 2;
+                  _searchController.text = '';
+
                   setState(
                     () {
                       inOutList[0].isSelected = false;
@@ -159,9 +163,6 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       inOutList[2].isSelected = true;
                     },
                   );
-
-                  searchMode = 2;
-                  _searchController.text = '';
                 },
                 child: new SearchOptionsRadio(
                     inOutList[2], CustomColors.mfinAlertRed),
@@ -172,7 +173,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
               future: snapshot,
               builder: (BuildContext context,
                   AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.hasData && _searchController.text != '') {
                   if (snapshot.data.isNotEmpty) {
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -190,7 +191,6 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       },
                     );
                   } else {
-                    // No customers found
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
