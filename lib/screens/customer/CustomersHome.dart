@@ -7,7 +7,6 @@ import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListWidget.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/CustomTabBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
 class CustomersHome extends StatelessWidget {
@@ -38,7 +37,7 @@ class CustomersHome extends StatelessWidget {
                 padding: EdgeInsets.only(left: 5.0),
                 child: Icon(
                   Icons.menu,
-                  size: 35.0,
+                  size: 30.0,
                   color: CustomColors.mfinWhite,
                 ),
               ),
@@ -46,7 +45,7 @@ class CustomersHome extends StatelessWidget {
             actions: <Widget>[
               customIconButton(
                 Icons.search,
-                35.0,
+                30.0,
                 CustomColors.mfinWhite,
                 () {
                   Navigator.push(

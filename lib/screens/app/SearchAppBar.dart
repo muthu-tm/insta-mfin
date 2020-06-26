@@ -60,7 +60,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
           IconButton(
             icon: Icon(
               Icons.search,
-              size: 35.0,
+              size: 30.0,
               color: CustomColors.mfinWhite,
             ),
             onPressed: () {

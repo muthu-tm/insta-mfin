@@ -16,14 +16,14 @@ Widget topAppBar(BuildContext context) {
           padding: EdgeInsets.only(left: 5.0),
           child: Icon(
             Icons.menu,
-            size: 35.0,
+            size: 30.0,
             color: CustomColors.mfinWhite,
           ),
         ),
       ),
     ),
     actions: <Widget>[
-      customIconButton(Icons.search, 35.0, CustomColors.mfinWhite, () {
+      customIconButton(Icons.search, 30.0, CustomColors.mfinWhite, () {
         Navigator.push(
           context,
           MaterialPageRoute(
