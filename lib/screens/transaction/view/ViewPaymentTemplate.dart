@@ -3,11 +3,7 @@ import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class ViewPaymentTemplate extends StatelessWidget {
-  final List _tempCollectionMode = [
-    "Daily",
-    "Weekly",
-    "Monthly"
-  ];
+  final List _tempCollectionMode = ["Daily", "Weekly", "Monthly"];
   final Map<String, String> tempCollectionDays = {
     "0": "Sun",
     "1": "Mon",
@@ -25,7 +21,7 @@ class ViewPaymentTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     print(_tempCollectionMode[template.collectionMode]);
     return Container(
-      height: MediaQuery.of(context).size.height * (0.75),
+      height: MediaQuery.of(context).size.height * (0.6),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -35,7 +31,6 @@ class ViewPaymentTemplate extends StatelessWidget {
               color: CustomColors.mfinLightGrey,
               elevation: 5.0,
               margin: EdgeInsets.only(top: 5.0),
-              shadowColor: CustomColors.mfinLightBlue,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,7 +116,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                             readOnly: true,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'Amount given',
+                              labelText: 'Principal Amount',
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -279,7 +274,8 @@ class ViewPaymentTemplate extends StatelessWidget {
                         Padding(padding: EdgeInsets.all(10)),
                         Flexible(
                           child: TextFormField(
-                            initialValue: _tempCollectionMode[template.collectionMode],
+                            initialValue:
+                                _tempCollectionMode[template.collectionMode],
                             readOnly: true,
                             decoration: InputDecoration(
                               labelText: 'Collection mode',
