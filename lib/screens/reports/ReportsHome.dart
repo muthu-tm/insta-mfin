@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class ReportsHome extends StatefulWidget {
   @override
@@ -12,9 +15,12 @@ class ReportsHome extends StatefulWidget {
 }
 
 class _ReportsHomeState extends State<ReportsHome> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final User _user = UserController().getCurrentUser();
+
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {
-    "0": "All",
+    "0": "Transactions",
     "1": "Customer",
     "2": "Payment",
     "3": "Collection",
@@ -23,7 +29,8 @@ class _ReportsHomeState extends State<ReportsHome> {
   };
 
   String _selectedType = "0";
-  Map<String, String> _typesMap = {"0": "Choose Category"};
+  Map<String, String> _typesMap = {"0": "All"};
+  Map<String, String> _typesTempMap = new Map();
   String _selectedRange = "0";
   Map<String, String> _rangeMap = {
     "0": "Today",
@@ -58,13 +65,14 @@ class _ReportsHomeState extends State<ReportsHome> {
         (Route<dynamic> route) => false,
       ),
       child: Scaffold(
+        key: _scaffoldKey,
         drawer: openDrawer(context),
         appBar: topAppBar(context),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: CustomColors.mfinBlue,
           onPressed: () async {
-            // _submit();
+            _submit();
           },
           label: Text(
             "GET REPORT",
@@ -111,7 +119,10 @@ class _ReportsHomeState extends State<ReportsHome> {
                     },
                   ).toList(),
                   onChanged: (newVal) {
+                    _setTypesMap(newVal);
+
                     setState(() {
+                      _typesMap = _typesTempMap;
                       _selectedCategory = newVal;
                     });
                   },
@@ -307,6 +318,44 @@ class _ReportsHomeState extends State<ReportsHome> {
     );
   }
 
+  _setTypesMap(String cVal) {
+    List<String> types = [];
+
+    if (cVal == '0') {
+      types.add('All');
+    } else if (cVal == '1') {
+      types.add('All');
+      types.add('New');
+      types.add('Active');
+      types.add('Pending');
+      types.add('Settled');
+    } else if (cVal == '2') {
+      types.add('All');
+      types.add('Active');
+      types.add('Pending');
+      types.add('Settled');
+    } else if (cVal == '3') {
+      types.add('All');
+      types.add('Collection');
+      types.add('Doc Charge');
+      types.add('Surcharge');
+      types.add('Referral Commission');
+      types.add('Penalty');
+      types.add('Settlement');
+    } else if (cVal == '4') {
+      types.add('All');
+      types.add('Jornal In');
+      types.add('Jornal Out');
+    } else if (cVal == '5') {
+      types.add('All');
+    }
+    
+    _typesTempMap.clear();
+    for (int index = 0; index < types.length; index++) {
+      _typesTempMap[index.toString()] = types[index];
+    }
+  }
+
   Future<Null> _selectFromDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -337,5 +386,11 @@ class _ReportsHomeState extends State<ReportsHome> {
           _toDate.text = DateUtils.formatDate(picked);
         },
       );
+  }
+
+  _submit() async {
+    CustomDialogs.actionWaiting(context, "Fetching Report!");
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.pop(context);
   }
 }

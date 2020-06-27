@@ -7,6 +7,7 @@ import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/CustomersHome.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
+import 'package:instamfin/screens/reports/ReportsHome.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/statistics/StatisticsHome.dart';
@@ -190,6 +191,18 @@ Widget openDrawer(BuildContext context) {
               ),
             ),
           ],
+        ),
+        new ListTile(
+          leading:
+              new Icon(Icons.description, color: CustomColors.mfinButtonGreen),
+          title: new Text('Reports'),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ReportsHome(),
+              settings: RouteSettings(name: '/reports'),
+            ),
+          ),
         ),
         new ListTile(
           leading:
