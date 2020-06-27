@@ -198,7 +198,23 @@ class _ReportsHomeState extends State<ReportsHome> {
                     },
                   ).toList(),
                   onChanged: (newVal) {
+                    if (newVal == '0') {
+                      fromDate = DateTime.now();
+                      toDate = DateTime.now();
+                    } else if (newVal == '1') {
+                      DateTime today = DateTime.now();
+                      fromDate = today.subtract(Duration(days: today.weekday));
+                      toDate = DateTime.now();
+                    } else if (newVal == '2') {
+                      DateTime today = DateTime.now();
+                      fromDate =
+                          DateTime(today.year, today.month, 1, 0, 0, 0, 0, 0);
+                      toDate = DateTime.now();
+                    }
+
                     setState(() {
+                      _fromDate.text = DateUtils.formatDate(fromDate);
+                      _toDate.text = DateUtils.formatDate(toDate);
                       _selectedRange = newVal;
                     });
                   },
