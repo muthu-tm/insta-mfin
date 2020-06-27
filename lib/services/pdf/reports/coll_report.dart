@@ -1,9 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
-import 'package:instamfin/db/models/collection_details.dart';
-import 'package:instamfin/db/models/customer.dart';
-import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/pdf/pdf_utils.dart';
@@ -12,8 +9,9 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 
-class CollectionReceipt {
-  Future<void> generateInvoice(User _u, Payment _p, Collection _c) async {
+class CollectionReport {
+  Future<void> generateReport(User _u, List<Collection> _colls, bool isRange,
+      DateTime fromDate, DateTime toDate) async {
     final PdfDocument document = PdfDocument();
     final PdfPage page = document.pages.add();
     final Size pageSize = page.getClientSize();
@@ -21,9 +19,9 @@ class CollectionReceipt {
         bounds: Rect.fromLTWH(0, 0, pageSize.width, pageSize.height),
         pen: PdfPen(PdfColor(52, 213, 120)));
 
-    final PdfGrid grid = await getGrid(_c);
-    final PdfLayoutResult result =
-        await drawHeader(page, pageSize, grid, _p, _c);
+    final PdfGrid grid = await getGrid(_colls);
+    final PdfLayoutResult result = await drawHeader(
+        page, pageSize, grid, _colls.length, isRange, fromDate, toDate);
     drawGrid(page, grid, result);
     await PDFUtils.drawFooter(page, pageSize, _u.getFinanceDocReference());
 
@@ -32,21 +30,19 @@ class CollectionReceipt {
 
     final Directory directory = await getApplicationDocumentsDirectory();
     final String path = directory.path;
-    final File file = File('$path/collection_receipt.pdf');
+    final File file = File('$path/collection_report.pdf');
     file.writeAsBytes(bytes);
 
-    OpenFile.open('$path/collection_receipt.pdf');
+    OpenFile.open('$path/collection_report.pdf');
   }
 
   Future<PdfLayoutResult> drawHeader(PdfPage page, Size pageSize, PdfGrid grid,
-      Payment _p, Collection _c) async {
-    Customer _c = await Customer().getByMobileNumber(_p.customerNumber);
-
+      int count, bool isRange, DateTime fromDate, DateTime toDate) async {
     page.graphics.drawRectangle(
         brush: PdfSolidBrush(PdfColor(68, 138, 255)),
         bounds: Rect.fromLTWH(0, 0, pageSize.width - 115, 90));
     page.graphics.drawString(
-        'Repayment Receipt', PdfStandardFont(PdfFontFamily.timesRoman, 22),
+        'Collection Report', PdfStandardFont(PdfFontFamily.timesRoman, 22),
         brush: PdfBrushes.white,
         bounds: Rect.fromLTWH(25, 0, pageSize.width - 115, 90),
         format: PdfStringFormat(
@@ -57,8 +53,8 @@ class CollectionReceipt {
         bounds: Rect.fromLTWH(400, 0, pageSize.width - 400, 90),
         brush: PdfSolidBrush(PdfColor(25, 60, 126)));
 
-    page.graphics.drawString('Rs.' + _p.totalAmount.toString(),
-        PdfStandardFont(PdfFontFamily.timesRoman, 18),
+    page.graphics.drawString(
+        count.toString(), PdfStandardFont(PdfFontFamily.timesRoman, 18),
         bounds: Rect.fromLTWH(400, 0, pageSize.width - 400, 100),
         brush: PdfBrushes.white,
         format: PdfStringFormat(
@@ -66,7 +62,7 @@ class CollectionReceipt {
             lineAlignment: PdfVerticalAlignment.middle));
 
     final PdfFont contentFont = PdfStandardFont(PdfFontFamily.timesRoman, 9);
-    page.graphics.drawString('Total Amount', contentFont,
+    page.graphics.drawString('Total', contentFont,
         brush: PdfBrushes.white,
         bounds: Rect.fromLTWH(400, 0, pageSize.width - 400, 33),
         format: PdfStringFormat(
@@ -74,21 +70,19 @@ class CollectionReceipt {
             lineAlignment: PdfVerticalAlignment.bottom));
 
     final DateFormat format = DateFormat.yMMMMd('en_US');
-    final String payID = 'Payment ID: ${_p.paymentID}\r\n\r\nDate: ' +
-        format.format(DateTime.now());
-    final Size contentSize = contentFont.measureString(payID);
-    String address =
-        'Bill To: \r\n\r\n${_c.name}, \r\n\r\n${_c.mobileNumber}\r\n\r\n${_c.address.street}\r\n\r\n${_c.address.city}';
+    final String date = 'Generated On: ' + format.format(DateTime.now());
+    final String headerText = isRange
+        ? '$date\r\n\r\nDate From: ' +
+            format.format(fromDate) +
+            '\r\n\r\nDate To: ' +
+            format.format(toDate)
+        : '$date\r\n\r\nDate: ' + format.format(fromDate);
+    final Size contentSize = contentFont.measureString(headerText);
 
-    PdfTextElement(text: payID, font: contentFont).draw(
+    return PdfTextElement(text: headerText, font: contentFont).draw(
         page: page,
         bounds: Rect.fromLTWH(pageSize.width - (contentSize.width + 30), 120,
             contentSize.width + 30, pageSize.height - 120));
-
-    return PdfTextElement(text: address, font: contentFont).draw(
-        page: page,
-        bounds: Rect.fromLTWH(30, 120,
-            pageSize.width - (contentSize.width + 30), pageSize.height - 120));
   }
 
   //Draws the grid
@@ -107,14 +101,13 @@ class CollectionReceipt {
     result = grid.draw(
         page: page, bounds: Rect.fromLTWH(0, result.bounds.bottom + 40, 0, 0));
 
-    page.graphics.drawString('Total Paid:',
+    page.graphics.drawString('Total Pending:',
         PdfStandardFont(PdfFontFamily.helvetica, 9, style: PdfFontStyle.bold),
         bounds: Rect.fromLTWH(
             quantityCellBounds.left,
             result.bounds.bottom + 10,
             quantityCellBounds.width,
             quantityCellBounds.height));
-
     page.graphics.drawString(getTotalAmount(grid).toString(),
         PdfStandardFont(PdfFontFamily.helvetica, 9, style: PdfFontStyle.bold),
         bounds: Rect.fromLTWH(
@@ -125,7 +118,7 @@ class CollectionReceipt {
   }
 
   //Create PDF grid and return
-  Future<PdfGrid> getGrid(Collection _c) async {
+  Future<PdfGrid> getGrid(List<Collection> _colls) async {
     final PdfGrid grid = PdfGrid();
     grid.columns.add(count: 7);
     final PdfGridRow headerRow = grid.headers.add(1)[0];
@@ -136,31 +129,29 @@ class CollectionReceipt {
     headerRow.cells[0].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[1].value = 'Collection Date';
     headerRow.cells[1].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[2].value = 'Collection No';
+    headerRow.cells[2].value = 'Type';
     headerRow.cells[2].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[3].value = 'Collection Amount';
+    headerRow.cells[3].value = 'Collection No';
     headerRow.cells[3].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[4].value = 'Date Paid';
+    headerRow.cells[4].value = 'Collection Amount';
     headerRow.cells[4].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[5].value = 'Paid';
     headerRow.cells[5].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[6].value = 'Pending';
     headerRow.cells[6].stringFormat.alignment = PdfTextAlignment.center;
 
-    int received = 0;
     //Add rows
-    for (int index = 0; index < _c.collections.length; index++) {
-      CollectionDetails collDetails = _c.collections[index];
-      received += collDetails.amount;
-
+    for (int index = 0; index < _colls.length; index++) {
+      Collection _c = _colls[index];
       addRow(
           _c.paymentID,
-          DateTime.fromMillisecondsSinceEpoch(_c.collectionDate),
+          DateUtils.formatDate(
+              DateTime.fromMillisecondsSinceEpoch(_c.collectionDate)),
+          _c.getType(),
           _c.collectionNumber,
           _c.collectionAmount,
-          DateTime.fromMillisecondsSinceEpoch(collDetails.collectedOn),
-          collDetails.amount,
-          (_c.collectionAmount - received).toString(),
+          _c.getReceived(),
+          _c.getPending(),
           grid);
     }
     //Apply the table built-in style
@@ -188,23 +179,23 @@ class CollectionReceipt {
   }
 
   //Create and row for the grid.
-  void addRow(String pID, DateTime cDate, int ins, int amount,
-      DateTime paidDate, int paid, String pending, PdfGrid grid) {
+  void addRow(String pID, String cDate, String type, int ins, int amount,
+      int paid, int pending, PdfGrid grid) {
     final PdfGridRow row = grid.rows.add();
     row.cells[0].value = pID;
-    row.cells[1].value = DateUtils.formatDate(cDate);
-    row.cells[2].value = ins.toString();
-    row.cells[3].value = amount.toString();
-    row.cells[4].value = DateUtils.formatDate(paidDate);
+    row.cells[1].value = cDate;
+    row.cells[2].value = type;
+    row.cells[3].value = ins.toString();
+    row.cells[4].value = amount.toString();
     row.cells[5].value = paid.toString();
-    row.cells[6].value = pending;
+    row.cells[6].value = pending.toString();
   }
 
   //Get the total amount.
   double getTotalAmount(PdfGrid grid) {
     double total = 0;
     for (int i = 0; i < grid.rows.count; i++) {
-      final String value = grid.rows[i].cells[grid.columns.count - 2].value;
+      final String value = grid.rows[i].cells[grid.columns.count - 1].value;
       total += double.parse(value);
     }
     return total;

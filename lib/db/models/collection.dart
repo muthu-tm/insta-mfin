@@ -93,6 +93,32 @@ class Collection {
     this.isSettled = isSettled;
   }
 
+  String getType() {
+    switch (this.type) {
+      case 0:
+        return "COLLECTION";
+        break;
+      case 1:
+        return "DOC CHARGE";
+        break;
+      case 2:
+        return "SURCHARGE";
+        break;
+      case 3:
+        return "SETTLEMENT";
+        break;
+      case 4:
+        return "PENALTY";
+        break;
+      case 5:
+        return "COMMISSION";
+        break;
+      default:
+        return "COLLECTION";
+        break;
+    }
+  }
+
   int getReceived() {
     int received = 0;
     if (this.collections != null) {

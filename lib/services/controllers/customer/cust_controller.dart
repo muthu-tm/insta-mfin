@@ -141,19 +141,4 @@ class CustController {
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
-
-  Future replaceCustomer(Customer customer) async {
-    try {
-      customer = await customer.replace();
-
-      return CustomResponse.getFailureReponse(customer.toJson());
-    } catch (err) {
-      Analytics.reportError({
-        "type": 'customer_replace_error',
-        "cust_number": customer.mobileNumber,
-        'error': err.toString()
-      });
-      return CustomResponse.getFailureReponse(err.toString());
-    }
-  }
 }

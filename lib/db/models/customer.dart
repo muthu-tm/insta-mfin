@@ -220,7 +220,7 @@ class Customer extends Model {
     }
   }
 
-  Future<dynamic> getPayments(int number) async {
+  Future<List<Payment>> getPayments(int number) async {
     var snap = await Payment().getAllPaymentsForCustomer(
         user.primaryFinance, user.primaryBranch, user.primarySubBranch, number);
 
