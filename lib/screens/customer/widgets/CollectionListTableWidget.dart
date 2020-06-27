@@ -292,7 +292,7 @@ class CollectionListTableWidget extends StatelessWidget {
             ),
             DataCell(
               Text(
-                getType(coll.type),
+                coll.getType(),
                 style: TextStyle(
                   color: color,
                 ),
@@ -348,32 +348,6 @@ class CollectionListTableWidget extends StatelessWidget {
     }
 
     return rows;
-  }
-
-  String getType(int type) {
-    switch (type) {
-      case 0:
-        return "COLLECTION";
-        break;
-      case 1:
-        return "DOC CHARGE";
-        break;
-      case 2:
-        return "SURCHARGE";
-        break;
-      case 3:
-        return "SETTLEMENT";
-        break;
-      case 4:
-        return "PENALTY";
-        break;
-      case 5:
-        return "COMMISSION";
-        break;
-      default:
-        return "COLLECTION";
-        break;
-    }
   }
 
   Color getCardColor(int status) {
