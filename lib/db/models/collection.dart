@@ -164,6 +164,17 @@ class Collection {
 
     return 0;
   }
+  
+  int getPenalty() {
+    int penalty = 0;
+    if (this.collections != null) {
+      this.collections.forEach((coll) {
+        penalty += coll.penaltyAmount;
+      });
+    }
+
+    return penalty;
+  }
 
   int getCurrent() {
     if (this.collectionDate ==
