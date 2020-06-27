@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/journal.dart';
+import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/pdf/pdf_utils.dart';
@@ -9,8 +9,8 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 
-class JournalReport {
-  Future<void> generateReport(User _u, List<Journal> _journals, bool isRange,
+class ExpenseReport {
+  Future<void> generateReport(User _u, List<Expense> _expenses, bool isRange,
       DateTime fromDate, DateTime toDate) async {
     final PdfDocument document = PdfDocument();
     final PdfPage page = document.pages.add();
@@ -19,9 +19,9 @@ class JournalReport {
         bounds: Rect.fromLTWH(0, 0, pageSize.width, pageSize.height),
         pen: PdfPen(PdfColor(52, 213, 120)));
 
-    final PdfGrid grid = await getGrid(_journals);
+    final PdfGrid grid = await getGrid(_expenses);
     final PdfLayoutResult result = await drawHeader(
-        page, pageSize, grid, _journals.length, isRange, fromDate, toDate);
+        page, pageSize, grid, _expenses.length, isRange, fromDate, toDate);
     drawGrid(page, grid, result);
     await PDFUtils.drawFooter(page, pageSize, _u.getFinanceDocReference());
 
@@ -30,10 +30,10 @@ class JournalReport {
 
     final Directory directory = await getApplicationDocumentsDirectory();
     final String path = directory.path;
-    final File file = File('$path/journal_report.pdf');
+    final File file = File('$path/expense_report.pdf');
     file.writeAsBytes(bytes);
 
-    OpenFile.open('$path/journal_report.pdf');
+    OpenFile.open('$path/expense_report.pdf');
   }
 
   Future<PdfLayoutResult> drawHeader(PdfPage page, Size pageSize, PdfGrid grid,
@@ -42,7 +42,7 @@ class JournalReport {
         brush: PdfSolidBrush(PdfColor(68, 138, 255)),
         bounds: Rect.fromLTWH(0, 0, pageSize.width - 115, 90));
     page.graphics.drawString(
-        'Journal Report', PdfStandardFont(PdfFontFamily.timesRoman, 22),
+        'Expense Report', PdfStandardFont(PdfFontFamily.timesRoman, 22),
         brush: PdfBrushes.white,
         bounds: Rect.fromLTWH(25, 0, pageSize.width - 115, 90),
         format: PdfStringFormat(
@@ -93,9 +93,9 @@ class JournalReport {
   }
 
   //Create PDF grid and return
-  Future<PdfGrid> getGrid(List<Journal> _journals) async {
+  Future<PdfGrid> getGrid(List<Expense> _expenses) async {
     final PdfGrid grid = PdfGrid();
-    grid.columns.add(count: 6);
+    grid.columns.add(count: 5);
     final PdfGridRow headerRow = grid.headers.add(1)[0];
 
     headerRow.style.backgroundBrush = PdfSolidBrush(PdfColor(68, 114, 196));
@@ -104,32 +104,29 @@ class JournalReport {
     headerRow.cells[0].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[1].value = 'Name';
     headerRow.cells[1].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[2].value = 'Journal Type';
+    headerRow.cells[2].value = 'Amount';
     headerRow.cells[2].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[3].value = 'Amount';
+    headerRow.cells[3].value = 'Category';
     headerRow.cells[3].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[4].value = 'Category';
+    headerRow.cells[4].value = 'Notes';
     headerRow.cells[4].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[5].value = 'Notes';
-    headerRow.cells[5].stringFormat.alignment = PdfTextAlignment.center;
 
     //Add rows
-    for (int index = 0; index < _journals.length; index++) {
-      Journal _j = _journals[index];
+    for (int index = 0; index < _expenses.length; index++) {
+      Expense _e = _expenses[index];
       addRow(
           DateUtils.formatDate(
-              DateTime.fromMillisecondsSinceEpoch(_j.journalDate)),
-          _j.journalName,
-          _j.isExpense ? 'Expense' : 'Income',
-          _j.amount,
-          _j.category != null ? _j.category.categoryName : "-",
-          _j.notes ?? "-",
+              DateTime.fromMillisecondsSinceEpoch(_e.expenseDate)),
+          _e.expenseName,
+          _e.amount,
+          _e.category != null ? _e.category.categoryName : "-",
+          _e.notes ?? "-",
           grid);
     }
     //Apply the table built-in style
     grid.applyBuiltInStyle(PdfGridBuiltInStyle.listTable4Accent5);
     //Set gird columns width
-    grid.columns[5].width = 150;
+    grid.columns[4].width = 150;
     for (int i = 0; i < headerRow.cells.count; i++) {
       headerRow.cells[i].style.cellPadding =
           PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
@@ -138,7 +135,7 @@ class JournalReport {
       final PdfGridRow row = grid.rows[i];
       for (int j = 0; j < row.cells.count; j++) {
         final PdfGridCell cell = row.cells[j];
-        if (j < 5) {
+        if (j < 4) {
           cell.stringFormat.alignment = PdfTextAlignment.center;
         } else {
           cell.stringFormat.alignment = PdfTextAlignment.left;
@@ -151,14 +148,13 @@ class JournalReport {
   }
 
   //Create and row for the grid.
-  void addRow(String jDate, String name, String type, int jAmount,
-      String category, String notes, PdfGrid grid) {
+  void addRow(String eDate, String name, int eAmount, String category,
+      String notes, PdfGrid grid) {
     final PdfGridRow row = grid.rows.add();
-    row.cells[0].value = jDate;
+    row.cells[0].value = eDate;
     row.cells[1].value = name;
-    row.cells[2].value = type;
-    row.cells[3].value = jAmount.toString();
-    row.cells[4].value = category;
-    row.cells[5].value = notes;
+    row.cells[2].value = eAmount.toString();
+    row.cells[3].value = category;
+    row.cells[4].value = notes;
   }
 }
