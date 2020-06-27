@@ -19,6 +19,7 @@ import 'package:instamfin/services/controllers/transaction/payment_controller.da
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/reports/coll_report.dart';
 import 'package:instamfin/services/pdf/reports/customer_report.dart';
+import 'package:instamfin/services/pdf/reports/journal_report.dart';
 import 'package:instamfin/services/pdf/reports/payment_report.dart';
 
 class ReportsHome extends StatefulWidget {
@@ -582,7 +583,7 @@ class _ReportsHomeState extends State<ReportsHome> {
       if (journals.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
             "Generating your Journal Report! Please wait...", 2));
-        // await CollectionReport().generateReport(_user, journals, isRange, fromDate, toDate);
+        await JournalReport().generateReport(_user, journals, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "No Journal data found. Please try different criteria!", 2));
