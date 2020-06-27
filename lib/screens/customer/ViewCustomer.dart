@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsListWidget.dart';
 import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/pdf/cust_report.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/customer/AddPayment.dart';
@@ -27,6 +30,23 @@ class ViewCustomer extends StatelessWidget {
       appBar: AppBar(
         title: Text(customer.name),
         backgroundColor: CustomColors.mfinBlue,
+        actions: <Widget>[
+          IconButton(
+            tooltip: "Genearte Customer Report",
+            icon: Icon(
+              Icons.description,
+              size: 30,
+              color: CustomColors.mfinLightGrey,
+            ),
+            onPressed: () async {
+              User _user = UserController().getCurrentUser();
+              _scaffoldKey.currentState.showSnackBar(
+                  CustomSnackBar.successSnackBar(
+                      "Generating your Customers Report! Please wait...", 5));
+              await CustReport().generateReport(_user, customer);
+            },
+          )
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
