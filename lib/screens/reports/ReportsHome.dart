@@ -18,6 +18,8 @@ import 'package:instamfin/services/controllers/transaction/expense_controller.da
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/reports/coll_report.dart';
+import 'package:instamfin/services/pdf/reports/customer_report.dart';
+import 'package:instamfin/services/pdf/reports/payment_report.dart';
 
 class ReportsHome extends StatefulWidget {
   @override
@@ -450,6 +452,7 @@ class _ReportsHomeState extends State<ReportsHome> {
       }
     } else if (_selectedCategory == '1') {
       List<Customer> customers;
+      bool isRange = false;
 
       if (_selectedRange == '0') {
         // Todays Customer Report
@@ -459,6 +462,7 @@ class _ReportsHomeState extends State<ReportsHome> {
             _user.primarySubBranch,
             DateUtils.getUTCDateEpoch(fromDate));
       } else {
+        isRange = true;
         // Customer Report by Date Range
         customers = await Customer().getAllByDateRange(
             _user.primaryFinance,
@@ -467,9 +471,21 @@ class _ReportsHomeState extends State<ReportsHome> {
             DateUtils.getUTCDateEpoch(fromDate),
             DateUtils.getUTCDateEpoch(toDate));
       }
+
+      Navigator.pop(context);
+      if (customers.length > 0) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
+            "Generating your Customers Report! Please wait...", 2));
+        await CustomerReport()
+            .generateReport(_user, customers, isRange, fromDate, toDate);
+      } else {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No Customers data found. Please try different criteria!", 2));
+      }
     } else if (_selectedCategory == '2') {
       PaymentController _pc = PaymentController();
       List<Payment> pays;
+      bool isRange = false;
 
       if (_selectedRange == '0') {
         // Todays Payment Report
@@ -479,12 +495,24 @@ class _ReportsHomeState extends State<ReportsHome> {
             _user.primarySubBranch,
             DateUtils.getUTCDateEpoch(fromDate));
       } else {
+        isRange = true;
         // Payment Report by Date Range
         pays = await _pc.getAllPaymentsByDateRange(_user.primaryFinance,
             _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
       }
+      Navigator.pop(context);
+      if (pays.length > 0) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
+            "Generating your Payment Report! Please wait...", 2));
+        await PaymentReport()
+            .generateReport(_user, pays, isRange, fromDate, toDate);
+      } else {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No Payments data found. Please try different criteria!", 2));
+      }
     } else if (_selectedCategory == '3') {
       List<Collection> colls;
+      bool isRange = false;
 
       if (_selectedRange == '0') {
         // Todays Collection Report
@@ -497,6 +525,7 @@ class _ReportsHomeState extends State<ReportsHome> {
                 : [int.parse(_selectedType) - 1],
             DateUtils.getUTCDateEpoch(fromDate));
       } else {
+        isRange = true;
         // Collection Report by Date Range
         colls = await Collection().getAllCollectionsByDateRange(
             _user.primaryFinance,
@@ -511,37 +540,61 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (colls.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Generating you Report! Please wait...", 2));
-        await CollectionReport().generateReport(_user, colls);
+            "Generating your Colleciton Report! Please wait...", 2));
+        await CollectionReport()
+            .generateReport(_user, colls, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "No Data found. Please try different criteria!", 2));
+            "No Collection data found. Please try different criteria!", 2));
       }
     } else if (_selectedCategory == '4') {
       JournalController _jc = JournalController();
       List<Journal> journals;
+      bool isRange = false;
 
       if (_selectedRange == '0') {
         // Todays Journal Report
         journals = await _jc.getJournalByDate(_user.primaryFinance,
             _user.primaryBranch, _user.primarySubBranch, fromDate);
       } else {
+        isRange = true;
         // Journal Report by Date Range
         journals = await _jc.getAllJournalByDateRange(_user.primaryFinance,
             _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
       }
+      Navigator.pop(context);
+      if (journals.length > 0) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
+            "Generating your Journal Report! Please wait...", 2));
+        // await CollectionReport().generateReport(_user, journals, isRange, fromDate, toDate);
+      } else {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No Journal data found. Please try different criteria!", 2));
+      }
     } else if (_selectedCategory == '5') {
       ExpenseController _ec = ExpenseController();
       List<Expense> expenses;
+      bool isRange = false;
 
       if (_selectedRange == '0') {
         // Todays Expense Report
         expenses = await _ec.getExpenseByDate(_user.primaryFinance,
             _user.primaryBranch, _user.primarySubBranch, fromDate);
       } else {
+        isRange = true;
         // Expense Report by Date Range
         expenses = await _ec.getAllExpenseByDateRange(_user.primaryFinance,
             _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+      }
+
+      Navigator.pop(context);
+      if (expenses.length > 0) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
+            "Generating your Expense Report! Please wait...", 2));
+        // await CollectionReport().generateReport(_user, expenses, isRange, fromDate, toDate);
+      } else {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No Expense data found. Please try different criteria!", 2));
       }
     }
   }
