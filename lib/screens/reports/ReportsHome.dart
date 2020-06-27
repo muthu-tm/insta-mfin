@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/collection.dart';
+import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/db/models/expense.dart';
+import 'package:instamfin/db/models/journal.dart';
+import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
@@ -6,8 +11,13 @@ import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
+import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
+import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/pdf/reports/coll_report.dart';
 
 class ReportsHome extends StatefulWidget {
   @override
@@ -41,8 +51,8 @@ class _ReportsHomeState extends State<ReportsHome> {
   String _selectedFormat = "0";
   Map<String, String> _formatsMap = {"0": ".pdf", "1": ".xlsx"};
 
-  int fromDate = DateUtils.getUTCDateEpoch(DateTime.now());
-  int toDate = DateUtils.getUTCDateEpoch(DateTime.now());
+  DateTime fromDate = DateTime.now();
+  DateTime toDate = DateTime.now();
 
   TextEditingController _toDate = new TextEditingController();
   TextEditingController _fromDate = new TextEditingController();
@@ -339,17 +349,17 @@ class _ReportsHomeState extends State<ReportsHome> {
       types.add('Collection');
       types.add('Doc Charge');
       types.add('Surcharge');
-      types.add('Referral Commission');
-      types.add('Penalty');
       types.add('Settlement');
+      types.add('Penalty');
+      types.add('Referral Commission');
     } else if (cVal == '4') {
       types.add('All');
-      types.add('Jornal In');
-      types.add('Jornal Out');
+      // types.add('Jornal In');
+      // types.add('Jornal Out');
     } else if (cVal == '5') {
       types.add('All');
     }
-    
+
     _typesTempMap.clear();
     for (int index = 0; index < types.length; index++) {
       _typesTempMap[index.toString()] = types[index];
@@ -359,14 +369,14 @@ class _ReportsHomeState extends State<ReportsHome> {
   Future<Null> _selectFromDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.fromMillisecondsSinceEpoch(fromDate),
+      initialDate: fromDate,
       firstDate: DateTime(1990),
       lastDate: DateTime.now().add(Duration(days: 30)),
     );
-    if (picked != null)
+    if (picked != null && fromDate != picked)
       setState(
         () {
-          fromDate = DateUtils.getUTCDateEpoch(picked);
+          fromDate = picked;
           _fromDate.text = DateUtils.formatDate(picked);
         },
       );
@@ -375,14 +385,14 @@ class _ReportsHomeState extends State<ReportsHome> {
   Future<Null> _selectToDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.fromMillisecondsSinceEpoch(toDate),
+      initialDate: toDate,
       firstDate: DateTime(1990),
       lastDate: DateTime.now().add(Duration(days: 30)),
     );
-    if (picked != null)
+    if (picked != null && toDate != picked)
       setState(
         () {
-          toDate = DateUtils.getUTCDateEpoch(picked);
+          toDate = picked;
           _toDate.text = DateUtils.formatDate(picked);
         },
       );
@@ -390,7 +400,149 @@ class _ReportsHomeState extends State<ReportsHome> {
 
   _submit() async {
     CustomDialogs.actionWaiting(context, "Fetching Report!");
-    await Future.delayed(Duration(seconds: 2));
-    Navigator.pop(context);
+    if (_selectedCategory == '0') {
+      PaymentController _pc = PaymentController();
+      JournalController _jc = JournalController();
+      ExpenseController _ec = ExpenseController();
+      List<Payment> pays;
+      List<Collection> colls;
+      List<Journal> journals;
+      List<Expense> expenses;
+
+      if (_selectedRange == '0') {
+        // Todays Report
+        pays = await _pc.getPaymentsByDate(
+            _user.primaryFinance,
+            _user.primaryBranch,
+            _user.primarySubBranch,
+            DateUtils.getUTCDateEpoch(fromDate));
+
+        colls = await Collection().allCollectionByDate(
+            _user.primaryFinance,
+            _user.primaryBranch,
+            _user.primarySubBranch,
+            [0, 1, 2, 3, 4, 5],
+            DateUtils.getUTCDateEpoch(fromDate));
+
+        journals = await _jc.getJournalByDate(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate);
+
+        expenses = await _ec.getExpenseByDate(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate);
+      } else {
+        // Date Range Report
+        pays = await _pc.getAllPaymentsByDateRange(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+
+        colls = await Collection().getAllCollectionsByDateRange(
+            _user.primaryFinance,
+            _user.primaryBranch,
+            _user.primarySubBranch,
+            [0, 1, 2, 3, 4, 5],
+            DateUtils.getUTCDateEpoch(fromDate),
+            DateUtils.getUTCDateEpoch(toDate));
+
+        journals = await _jc.getAllJournalByDateRange(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+
+        expenses = await _ec.getAllExpenseByDateRange(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+      }
+    } else if (_selectedCategory == '1') {
+      List<Customer> customers;
+
+      if (_selectedRange == '0') {
+        // Todays Customer Report
+        customers = await Customer().getAllByDate(
+            _user.primaryFinance,
+            _user.primaryBranch,
+            _user.primarySubBranch,
+            DateUtils.getUTCDateEpoch(fromDate));
+      } else {
+        // Customer Report by Date Range
+        customers = await Customer().getAllByDateRange(
+            _user.primaryFinance,
+            _user.primaryBranch,
+            _user.primarySubBranch,
+            DateUtils.getUTCDateEpoch(fromDate),
+            DateUtils.getUTCDateEpoch(toDate));
+      }
+    } else if (_selectedCategory == '2') {
+      PaymentController _pc = PaymentController();
+      List<Payment> pays;
+
+      if (_selectedRange == '0') {
+        // Todays Payment Report
+        pays = await _pc.getPaymentsByDate(
+            _user.primaryFinance,
+            _user.primaryBranch,
+            _user.primarySubBranch,
+            DateUtils.getUTCDateEpoch(fromDate));
+      } else {
+        // Payment Report by Date Range
+        pays = await _pc.getAllPaymentsByDateRange(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+      }
+    } else if (_selectedCategory == '3') {
+      List<Collection> colls;
+
+      if (_selectedRange == '0') {
+        // Todays Collection Report
+        colls = await Collection().allCollectionByDate(
+            _user.primaryFinance,
+            _user.primaryBranch,
+            _user.primarySubBranch,
+            _selectedType == '0'
+                ? [0, 1, 2, 3, 4, 5]
+                : [int.parse(_selectedType) - 1],
+            DateUtils.getUTCDateEpoch(fromDate));
+      } else {
+        // Collection Report by Date Range
+        colls = await Collection().getAllCollectionsByDateRange(
+            _user.primaryFinance,
+            _user.primaryBranch,
+            _user.primarySubBranch,
+            _selectedType == '0'
+                ? [0, 1, 2, 3, 4, 5]
+                : [int.parse(_selectedType) - 1],
+            DateUtils.getUTCDateEpoch(fromDate),
+            DateUtils.getUTCDateEpoch(toDate));
+      }
+      Navigator.pop(context);
+      if (colls.length > 0) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
+            "Generating you Report! Please wait...", 2));
+        await CollectionReport().generateReport(_user, colls);
+      } else {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "No Data found. Please try different criteria!", 2));
+      }
+    } else if (_selectedCategory == '4') {
+      JournalController _jc = JournalController();
+      List<Journal> journals;
+
+      if (_selectedRange == '0') {
+        // Todays Journal Report
+        journals = await _jc.getJournalByDate(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate);
+      } else {
+        // Journal Report by Date Range
+        journals = await _jc.getAllJournalByDateRange(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+      }
+    } else if (_selectedCategory == '5') {
+      ExpenseController _ec = ExpenseController();
+      List<Expense> expenses;
+
+      if (_selectedRange == '0') {
+        // Todays Expense Report
+        expenses = await _ec.getExpenseByDate(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate);
+      } else {
+        // Expense Report by Date Range
+        expenses = await _ec.getAllExpenseByDateRange(_user.primaryFinance,
+            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+      }
+    }
   }
 }
