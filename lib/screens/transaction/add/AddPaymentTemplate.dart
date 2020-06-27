@@ -16,10 +16,10 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
 
   String templateName = '';
   int totalAmount = 0;
-  int givenAmount = 0;
+  int pAmount = 0;
   int documentCharge = 0;
   int surChargeAmount = 0;
-  int noOfPayments = 0;
+  int noOfInstallments = 0;
   double interestRate = 0.00;
   int collectionAmount = 0;
   String selectedCollectionModeID = "0";
@@ -174,22 +174,21 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               validator: (amount) {
                                 if (amount.trim().isNotEmpty) {
                                   this.totalAmount = int.parse(amount);
-                                } else {
-                                  this.totalAmount = 0;
                                   return null;
+                                } else {
+                                  return "Fill the Total Amount (Principal + Total interest)";
                                 }
-                                return null;
                               },
                             ),
                           ),
                           Padding(padding: EdgeInsets.all(10)),
                           Flexible(
                             child: TextFormField(
-                              initialValue: givenAmount.toString(),
+                              initialValue: pAmount.toString(),
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Amount given',
+                                labelText: 'Principal Amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -198,20 +197,20 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
+                                  borderSide: BorderSide(
+                                    color: CustomColors.mfinFadedButtonGreen,
+                                  ),
+                                ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                               ),
                               validator: (amount) {
                                 if (amount.trim().isNotEmpty) {
-                                  this.givenAmount = int.parse(amount);
-                                } else {
-                                  this.givenAmount = 0;
+                                  this.pAmount = int.parse(amount);
                                   return null;
+                                } else {
+                                  return 'Enter the Principal Amount to be given to Customer';
                                 }
-                                return null;
                               },
                             ),
                           ),
@@ -292,7 +291,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              initialValue: noOfPayments.toString(),
+                              initialValue: noOfInstallments.toString(),
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -313,9 +312,9 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               ),
                               validator: (noOfPayment) {
                                 if (noOfPayment.trim().isEmpty) {
-                                  return 'Enter the Number of Payments';
+                                  return 'Enter the Number of Installments';
                                 }
-                                this.noOfPayments = int.parse(noOfPayment);
+                                this.noOfInstallments = int.parse(noOfPayment);
                                 return null;
                               },
                             ),
@@ -427,26 +426,31 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                     ),
                     Padding(padding: EdgeInsets.all(5)),
-                    selectedCollectionModeID == '0' ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        border: Border.all(color: CustomColors.mfinGrey, width: 1.0),
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            'Scheduled collection days',
-                            style: TextStyle(
-                              color: CustomColors.mfinBlue,
+                    selectedCollectionModeID == '0'
+                        ? Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              border: Border.all(
+                                  color: CustomColors.mfinGrey, width: 1.0),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: selectedDays.toList(),
-                          ),
-                        ],
-                      ),
-                    ): Container(),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  'Scheduled collection days',
+                                  style: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: selectedDays.toList(),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
                     Padding(padding: EdgeInsets.all(35))
                   ],
                 ),
@@ -498,8 +502,8 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
       var result = await _collectionController.createTemplate(
           templateName,
           totalAmount,
-          givenAmount,
-          noOfPayments,
+          pAmount,
+          noOfInstallments,
           collectionAmount,
           int.parse(selectedCollectionModeID),
           collectionDays,

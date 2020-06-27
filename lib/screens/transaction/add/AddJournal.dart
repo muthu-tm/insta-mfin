@@ -33,12 +33,16 @@ class _AddJournalState extends State<AddJournal> {
   int amount = 0;
   bool isExpense = false;
 
+  TextEditingController _date = new TextEditingController();
+
   @override
   void initState() {
     super.initState();
     this.getCategoryData();
     inOutList.add(new CustomRadioModel(true, 'Income', ''));
     inOutList.add(new CustomRadioModel(false, 'Expense', ''));
+
+    _date.text = DateUtils.formatDate(DateTime.now());
   }
 
   @override
@@ -114,7 +118,7 @@ class _AddJournalState extends State<AddJournal> {
                 ),
                 ListTile(
                   leading: SizedBox(
-                    width: 80,
+                    width: 85,
                     child: Text(
                       "NAME:",
                       style: TextStyle(
@@ -147,7 +151,7 @@ class _AddJournalState extends State<AddJournal> {
                 ),
                 ListTile(
                   leading: SizedBox(
-                    width: 80,
+                    width: 85,
                     child: Text(
                       "AMOUNT:",
                       style: TextStyle(
@@ -180,7 +184,7 @@ class _AddJournalState extends State<AddJournal> {
                 ),
                 ListTile(
                   leading: SizedBox(
-                    width: 80,
+                    width: 85,
                     child: Text(
                       "DATE:",
                       style: TextStyle(
@@ -216,7 +220,7 @@ class _AddJournalState extends State<AddJournal> {
                 ),
                 ListTile(
                   leading: SizedBox(
-                    width: 80,
+                    width: 85,
                     child: Text(
                       "CATEGORY:",
                       style: TextStyle(
@@ -248,7 +252,7 @@ class _AddJournalState extends State<AddJournal> {
                 ),
                 ListTile(
                   leading: SizedBox(
-                    width: 80,
+                    width: 85,
                     child: Text(
                       "NOTES:",
                       style: TextStyle(
@@ -305,8 +309,6 @@ class _AddJournalState extends State<AddJournal> {
     }
   }
 
-  TextEditingController _date = new TextEditingController();
-
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -318,9 +320,7 @@ class _AddJournalState extends State<AddJournal> {
       setState(
         () {
           selectedDate = picked;
-          _date.value = TextEditingValue(
-            text: DateUtils.formatDate(picked),
-          );
+          _date.text = DateUtils.formatDate(picked);
         },
       );
   }

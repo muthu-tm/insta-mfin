@@ -13,10 +13,10 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CollectionListTableWidget extends StatelessWidget {
-  CollectionListTableWidget(this._payment, this.title, this.emptyText,
-      this.textColor, this.fetchAll, this.status);
+  CollectionListTableWidget(this._scaffoldKey, this._payment, this.title,
+      this.emptyText, this.textColor, this.fetchAll, this.status);
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey;
 
   final Payment _payment;
   final String title;
@@ -415,7 +415,9 @@ class CollectionListTableWidget extends StatelessWidget {
         CustomDialogs.actionWaiting(context, "Updating Collection");
         CollectionController _cc = CollectionController();
         User _user = UserController().getCurrentUser();
-        Map<String, dynamic> collDetails = {'collected_on': DateTime.now()};
+        Map<String, dynamic> collDetails = {
+          'collected_on': DateUtils.getUTCDateEpoch(DateTime.now())
+        };
         collDetails['amount'] =
             collection.collectionAmount - collection.getReceived();
         collDetails['transferred_mode'] = 0;

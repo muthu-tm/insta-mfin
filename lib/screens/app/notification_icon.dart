@@ -46,7 +46,7 @@ class _PushNotificationState extends State<PushNotification> {
               IconButton(
                 icon: Icon(
                   Icons.notifications,
-                  size: 35.0,
+                  size: 30.0,
                 ),
                 onPressed: () => Navigator.push(
                   context,
@@ -82,7 +82,7 @@ class _PushNotificationState extends State<PushNotification> {
           )
         : widget = IconButton(
             icon: Icon(Icons.notifications),
-            iconSize: 35.0,
+            iconSize: 30.0,
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(

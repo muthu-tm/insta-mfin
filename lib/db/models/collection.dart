@@ -332,12 +332,6 @@ class Collection {
     }
   }
 
-  Stream<QuerySnapshot> streamCollectionsForCustomer(String financeId,
-      String branchName, String subBranchName, String paymentID) {
-    return getCollectionRef(financeId, branchName, subBranchName, paymentID)
-        .snapshots();
-  }
-
   Stream<QuerySnapshot> streamAllPendingCollectionByDate(
       String financeId, String branchName, String subBranchName, int epoch) {
     return getGroupQuery()

@@ -94,8 +94,6 @@ class PaymentTemplateListWidget extends StatelessWidget {
                                               .showSnackBar(
                                                   CustomSnackBar.errorSnackBar(
                                                       result['message'], 5));
-                                          print("Unable to remove Template: " +
-                                              result['message']);
                                           _scaffoldKey.currentState.showSnackBar(
                                               CustomSnackBar.errorSnackBar(
                                                   "Unable to remove Template",
@@ -233,9 +231,6 @@ class PaymentTemplateListWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Spacer(
-                      flex: 1,
-                    ),
                     SizedBox(
                       height: 30,
                       child: Text(
@@ -247,8 +242,8 @@ class PaymentTemplateListWidget extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Spacer(
-                      flex: 1,
+                    Divider(
+                      color: CustomColors.mfinButtonGreen,
                     ),
                     SizedBox(
                       height: 30,
@@ -281,9 +276,6 @@ class PaymentTemplateListWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Spacer(
-                      flex: 1,
-                    ),
                   ],
                 ),
               ),
@@ -305,6 +297,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                           template.name,
                           style: TextStyle(
                             fontSize: 18,
+                            fontFamily: 'Georgia',
                             color: CustomColors.mfinBlue,
                             fontWeight: FontWeight.bold,
                           ),
@@ -312,9 +305,9 @@ class PaymentTemplateListWidget extends StatelessWidget {
                         subtitle: Text(
                           _collectionMode[template.collectionMode],
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
+                            fontFamily: 'Georgia',
                             color: CustomColors.mfinBlue,
-                            //fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),

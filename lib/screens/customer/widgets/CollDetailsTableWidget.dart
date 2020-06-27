@@ -5,10 +5,11 @@ import 'package:instamfin/screens/customer/AddCollectionDetails.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 
 class CollDetailsTableWidget extends StatelessWidget {
-  CollDetailsTableWidget(this.paySettled, this._scaffoldKey, this._collection,
-      this.custName);
+  CollDetailsTableWidget(
+      this.paySettled, this._scaffoldKey, this._collection, this.custName);
 
   final bool paySettled;
   final GlobalKey<ScaffoldState> _scaffoldKey;
@@ -51,6 +52,14 @@ class CollDetailsTableWidget extends StatelessWidget {
       widget = SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(columns: <DataColumn>[
+          DataColumn(
+            label: Text(
+              "Action",
+              textAlign: TextAlign.center,
+            ),
+            numeric: false,
+            tooltip: "Remove Collection",
+          ),
           DataColumn(
             label: Text(
               "Date",
@@ -99,7 +108,7 @@ class CollDetailsTableWidget extends StatelessWidget {
             numeric: false,
             tooltip: "Short Notes",
           ),
-        ], rows: getRows()),
+        ], rows: getRows(context)),
       );
     }
 
@@ -137,8 +146,8 @@ class CollDetailsTableWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddCollectionDetails(
-                            _collection, custName),
+                        builder: (context) =>
+                            AddCollectionDetails(_collection, custName),
                         settings: RouteSettings(
                             name:
                                 '/customers/payments/collections/collectiondetails/add'),
@@ -163,7 +172,7 @@ class CollDetailsTableWidget extends StatelessWidget {
     );
   }
 
-  List<DataRow> getRows() {
+  List<DataRow> getRows(BuildContext context) {
     List<DataRow> rows = [];
     int received = 0;
     for (int i = 0; i < _collection.collections.length; i++) {
@@ -172,6 +181,86 @@ class CollDetailsTableWidget extends StatelessWidget {
       rows.add(
         DataRow(
           cells: <DataCell>[
+            DataCell(IconButton(
+              color: CustomColors.mfinAlertRed,
+              icon: Icon(Icons.check_box_outline_blank),
+              onPressed: () async {
+                if (paySettled) {
+                  _scaffoldKey.currentState.showSnackBar(
+                      CustomSnackBar.errorSnackBar(
+                          "You cannot edit already 'SETTLED' Payment", 2));
+                } else {
+                  await showDialog<bool>(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: new Text(
+                          "Confirm!",
+                          style: TextStyle(
+                              color: CustomColors.mfinAlertRed,
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.start,
+                        ),
+                        content: Text(
+                          "Are you sure to remove this ${coll.amount} collection",
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                            color: CustomColors.mfinButtonGreen,
+                            child: Text(
+                              "NO",
+                              style: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.start,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          FlatButton(
+                            color: CustomColors.mfinAlertRed,
+                            child: Text(
+                              "YES",
+                              style: TextStyle(
+                                  color: CustomColors.mfinLightGrey,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.start,
+                            ),
+                            onPressed: () async {
+                              CollectionController _cc = CollectionController();
+                              var result = await _cc.updateCollectionDetails(
+                                  _collection.financeID,
+                                  _collection.branchName,
+                                  _collection.subBranchName,
+                                  _collection.paymentID,
+                                  _collection.collectionDate,
+                                  false,
+                                  false,
+                                  coll.toJson(),
+                                  (coll.penaltyAmount > 0));
+                              if (!result['is_success']) {
+                                Navigator.pop(context);
+                                _scaffoldKey.currentState.showSnackBar(
+                                    CustomSnackBar.errorSnackBar(
+                                        result['message'], 2));
+                              } else {
+                                _scaffoldKey.currentState.showSnackBar(
+                                    CustomSnackBar.errorSnackBar(
+                                        "Collection ${coll.amount} removed successfully",
+                                        2));
+                                Navigator.pop(context);
+                              }
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+            )),
             DataCell(
               Text(
                 DateUtils.getFormattedDateFromEpoch(coll.collectedOn),

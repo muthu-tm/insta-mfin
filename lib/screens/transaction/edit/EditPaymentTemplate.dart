@@ -162,7 +162,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.totalAmount.toString(),
-                                  keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Total amount',
@@ -187,11 +187,10 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                                             .toString()) {
                                   updatedTemplate['total_amount'] =
                                       int.parse(amount);
-                                } else {
-                                  updatedTemplate['total_amount'] = 0;
                                   return null;
+                                } else {
+                                  return "Fill the Total Amount (Principal + interest)";
                                 }
-                                return null;
                               },
                             ),
                           ),
@@ -200,10 +199,10 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.principalAmount.toString(),
-                                  keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Amount given',
+                                labelText: 'Principal Amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -225,11 +224,10 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                                             .toString()) {
                                   updatedTemplate['principal_amount'] =
                                       int.parse(amount);
-                                } else {
-                                  updatedTemplate['principal_amount'] = 0;
                                   return null;
+                                } else {
+                                  return 'Enter the Principal Amount to be given to Customer';
                                 }
-                                return null;
                               },
                             ),
                           ),
@@ -244,7 +242,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.docCharge.toString(),
-                                  keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Document charge',
@@ -279,7 +277,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.surcharge.toString(),
-                                  keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'SurCharge',
@@ -354,7 +352,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.interestRate.toString(),
-                                  keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Rate of interest',
@@ -395,7 +393,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                             child: TextFormField(
                               initialValue:
                                   widget.template.collectionAmount.toString(),
-                                  keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Collection amount',

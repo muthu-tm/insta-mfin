@@ -627,6 +627,7 @@ class _ViewPaymentState extends State<ViewPayment> {
               (UserController().getCurrentUser().preferences.tableView)
                   ? Container(
                       child: CollectionListTableWidget(
+                        _scaffoldKey,
                         widget.payment,
                         title,
                         emptyText,

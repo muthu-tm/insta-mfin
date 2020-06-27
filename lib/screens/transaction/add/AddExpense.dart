@@ -11,8 +11,7 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddExpense extends StatefulWidget {
   @override
-  _AddExpenseState createState() =>
-      _AddExpenseState();
+  _AddExpenseState createState() => _AddExpenseState();
 }
 
 class _AddExpenseState extends State<AddExpense> {
@@ -30,10 +29,14 @@ class _AddExpenseState extends State<AddExpense> {
   String notes = "";
   int amount = 0;
 
+  TextEditingController _date = new TextEditingController();
+
   @override
   void initState() {
     super.initState();
     this.getCategoryData();
+
+    _date.text = DateUtils.formatDate(DateTime.now());
   }
 
   @override
@@ -251,9 +254,8 @@ class _AddExpenseState extends State<AddExpense> {
   Future getCategoryData() async {
     try {
       CategoryController _cc = CategoryController();
-      List<ExpenseCategory> categories =
-          await _cc.getAllExpenseCategory(_user.primaryFinance,
-              _user.primaryBranch, _user.primarySubBranch);
+      List<ExpenseCategory> categories = await _cc.getAllExpenseCategory(
+          _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
       }
@@ -264,8 +266,6 @@ class _AddExpenseState extends State<AddExpense> {
       print("Unable to load Expense categories for ADD!");
     }
   }
-
-  TextEditingController _date = new TextEditingController();
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -278,9 +278,7 @@ class _AddExpenseState extends State<AddExpense> {
       setState(
         () {
           selectedDate = picked;
-          _date.value = TextEditingValue(
-            text: DateUtils.formatDate(picked),
-          );
+          _date.text = DateUtils.formatDate(picked);
         },
       );
   }
@@ -295,8 +293,8 @@ class _AddExpenseState extends State<AddExpense> {
       if (categoryList != null && _selectedCategory != "0") {
         _category = categoryList[int.parse(_selectedCategory) - 1];
       }
-      var result = await _ec.createNewExpense(
-          name, amount, _category, DateUtils.getUTCDateEpoch(selectedDate), notes);
+      var result = await _ec.createNewExpense(name, amount, _category,
+          DateUtils.getUTCDateEpoch(selectedDate), notes);
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState

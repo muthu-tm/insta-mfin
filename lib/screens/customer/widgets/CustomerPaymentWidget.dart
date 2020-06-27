@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/enums/collection_type.dart';
+import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/customer/ViewPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
@@ -116,7 +119,7 @@ Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
               ),
               payment.isSettled
                   ? getSettledPaymentsDetails(payment)
-                  : getPaymentsDetails(payment),
+                  : getPaymentDetails(payment),
             ],
           ),
         ),
@@ -125,20 +128,39 @@ Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
   );
 }
 
-Widget getPaymentsDetails(Payment payment) {
-  return FutureBuilder(
-    future: payment.getAmountDetails(),
-    builder: (BuildContext context, AsyncSnapshot<List<int>> paidSnap) {
+Widget getPaymentDetails(Payment payment) {
+  return StreamBuilder(
+    stream: Collection().streamCollectionsForPayment(payment.financeID,
+        payment.branchName, payment.subBranchName, payment.paymentID),
+    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> paidSnap) {
       Widget child;
 
       if (paidSnap.hasData) {
-        if (paidSnap.data.length > 0) {
+        if (paidSnap.data.documents.length > 0) {
+          int _r = 0;
+          int _p = 0;
+          int _c = 0;
+          int _u = 0;
+
+          paidSnap.data.documents.forEach((doc) {
+            Collection coll = Collection.fromJson(doc.data);
+            if (coll.type != CollectionType.DocCharge.name &&
+                coll.type != CollectionType.Surcharge.name &&
+                coll.type != CollectionType.Penalty.name &&
+                coll.type != CollectionType.Commission.name) {
+              _r += coll.getReceived();
+              _p += coll.getPending();
+              _c += coll.getCurrent();
+              _u += coll.getUpcoming();
+            }
+          });
+
           child = Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                height: 30,
+                height: 25,
                 child: ListTile(
                   leading: Text(
                     "RECEIVED",
@@ -149,7 +171,7 @@ Widget getPaymentsDetails(Payment payment) {
                     ),
                   ),
                   trailing: Text(
-                    paidSnap.data[0].toString(),
+                    '$_r',
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinPositiveGreen,
@@ -159,7 +181,7 @@ Widget getPaymentsDetails(Payment payment) {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 25,
                 child: ListTile(
                   leading: Text(
                     'PENDING',
@@ -170,7 +192,7 @@ Widget getPaymentsDetails(Payment payment) {
                     ),
                   ),
                   trailing: Text(
-                    '${paidSnap.data[1]}',
+                    '$_p',
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinAlertRed,
@@ -180,7 +202,28 @@ Widget getPaymentsDetails(Payment payment) {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 25,
+                child: ListTile(
+                  leading: Text(
+                    'TODAY',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: Text(
+                    '$_c',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 25,
                 child: ListTile(
                   leading: Text(
                     'UPCOMING',
@@ -191,7 +234,7 @@ Widget getPaymentsDetails(Payment payment) {
                     ),
                   ),
                   trailing: Text(
-                    '${paidSnap.data[3]}',
+                    '$_u',
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinGrey,

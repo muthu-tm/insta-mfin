@@ -384,6 +384,8 @@ class Payment extends Model {
 
                 accData.cashInHand -= this.principalAmount;
                 accData.cashInHand -= this.rCommission;
+                accData.cashInHand += this.alreadyCollectedAmount;
+                accData.collectionsAmount += this.alreadyCollectedAmount;
 
                 // if (accData.cashInHand < 0) {
                 //   return Future.error(
@@ -576,6 +578,7 @@ class Payment extends Model {
     int totalDocCharge = 0;
     int totalSurCharge = 0;
     int totalCommission = 0;
+    int totalCollectedAmount = 0;
     int docAdd = 0;
     int surAdd = 0;
 
@@ -608,6 +611,10 @@ class Payment extends Model {
       totalCommission =
           payment.rCommission - paymentJSON['referral_commission'];
     }
+    
+    if (paymentJSON.containsKey('already_collected_amount')) {
+      totalCollectedAmount = paymentJSON['already_collected_amount'];
+    }
 
     try {
       DocumentReference finDocRef = user.getFinanceDocReference();
@@ -620,6 +627,8 @@ class Payment extends Model {
 
               accData.cashInHand += amount;
               accData.cashInHand += totalCommission;
+              accData.cashInHand += totalCollectedAmount;
+              accData.collectionsAmount += totalCollectedAmount;
               accData.paymentsAmount += totalAmount;
               accData.totalDocCharge += docAdd;
               accData.docCharge += totalDocCharge;

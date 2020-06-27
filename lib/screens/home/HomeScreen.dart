@@ -579,7 +579,9 @@ class HomeScreen extends StatelessWidget {
                           fontSize: 17.0),
                     ),
                     circularStrokeCap: CircularStrokeCap.round,
-                    backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
+                    backgroundColor: amount == 0
+                        ? CustomColors.mfinGrey
+                        : CustomColors.mfinAlertRed.withOpacity(0.7),
                     progressColor:
                         CustomColors.mfinFadedButtonGreen.withOpacity(0.9),
                   ),
