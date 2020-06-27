@@ -39,11 +39,11 @@ class ViewCustomer extends StatelessWidget {
               color: CustomColors.mfinLightGrey,
             ),
             onPressed: () async {
-              User _user = UserController().getCurrentUser();
               _scaffoldKey.currentState.showSnackBar(
                   CustomSnackBar.successSnackBar(
                       "Generating your Customers Report! Please wait...", 5));
-              await CustReport().generateReport(_user, customer);
+              await CustReport()
+                  .generateReport(UserController().getCurrentUser(), customer);
             },
           )
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/customer/AddCollection.dart';
 import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/services/pdf/payment_receipt.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
@@ -55,6 +56,22 @@ class _ViewPaymentState extends State<ViewPayment> {
       appBar: AppBar(
         title: Text('Payment - ${widget.payment.paymentID}'),
         backgroundColor: CustomColors.mfinBlue,
+        actions: <Widget>[
+          IconButton(
+              tooltip: "Genearte Payment Report",
+              icon: Icon(
+                Icons.description,
+                size: 30,
+                color: CustomColors.mfinLightGrey,
+              ),
+              onPressed: () async {
+                _scaffoldKey.currentState.showSnackBar(
+                    CustomSnackBar.successSnackBar(
+                        "Generating your Payment Report! Please wait...", 5));
+                await PayReceipt().generateInvoice(
+                    UserController().getCurrentUser(), widget.payment);
+              }),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
