@@ -289,25 +289,6 @@ class Payment extends Model {
     }
   }
 
-  Future<List<int>> getStatus() async {
-    try {
-      List<Collection> collList = await Collection()
-          .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
-              this.subBranchName, this.paymentID);
-
-      List<int> status = [];
-      for (var coll in collList) {
-        int cstatus = coll.getStatus();
-        if (!status.contains(cstatus)) status.add(cstatus);
-      }
-
-      return status;
-    } catch (err) {
-      print("Unable to get Payment's amount details!" + err.toString());
-      return [];
-    }
-  }
-
   factory Payment.fromJson(Map<String, dynamic> json) =>
       _$PaymentFromJson(json);
   Map<String, dynamic> toJson() => _$PaymentToJson(this);
@@ -422,33 +403,6 @@ class Payment extends Model {
     }
   }
 
-  Future<Map<int, List<Payment>>> getAllActivePayments(
-      String financeId, String branchName, String subBranchName) async {
-    QuerySnapshot snap = await getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('is_settled', isEqualTo: false)
-        .getDocuments();
-
-    Map<int, List<Payment>> payMap = new Map();
-    if (snap.documents.isNotEmpty) {
-      for (int i = 0; i < snap.documents.length; i++) {
-        Payment pay = Payment.fromJson(snap.documents[i].data);
-        List<int> status = await pay.getStatus();
-        for (int _s in status) {
-          payMap.update(_s, (value) {
-            List<Payment> _e = value;
-            _e.add(pay);
-            return _e;
-          }, ifAbsent: () => [pay]);
-        }
-      }
-    }
-
-    return payMap;
-  }
-
   Future<List<Map<String, dynamic>>> getByPaymentIDRange(String minID) async {
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: user.primaryFinance)
@@ -503,6 +457,52 @@ class Payment extends Model {
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('customer_number', isEqualTo: number)
+        .getDocuments();
+
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
+    }
+
+    return payments;
+  }
+
+  Future<List<Payment>> getAllByDateStatus(String financeId, String branchName,
+      String subBranchName, int epoch, bool isSettled) async {
+    var paymentDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('date_of_payment', isEqualTo: epoch)
+        .where('is_settled', isEqualTo: isSettled)
+        .getDocuments();
+
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
+    }
+
+    return payments;
+  }
+
+  Future<List<Payment>> getAllByDateRangeStatus(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      int start,
+      int end,
+      bool isSettled) async {
+    var paymentDocs = await getGroupQuery()
+        .where('finance_id', isEqualTo: financeId)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('date_of_payment', isGreaterThanOrEqualTo: start)
+        .where('date_of_payment', isLessThanOrEqualTo: end)
+        .where('is_settled', isEqualTo: isSettled)
         .getDocuments();
 
     List<Payment> payments = [];
@@ -611,7 +611,7 @@ class Payment extends Model {
       totalCommission =
           payment.rCommission - paymentJSON['referral_commission'];
     }
-    
+
     if (paymentJSON.containsKey('already_collected_amount')) {
       totalCollectedAmount = paymentJSON['already_collected_amount'];
     }
@@ -760,6 +760,8 @@ class Payment extends Model {
                     'collection_date': paymentJSON['settled_date'],
                     'collected_on': [paymentJSON['settled_date']],
                     'collections': [collDetails],
+                    'is_paid': true,
+                    'is_settled': true,
                     'type': 3, //3 - Settlement
                     'collection_number': this.tenure,
                     'created_at': DateTime.now(),
@@ -837,6 +839,7 @@ class Payment extends Model {
               Payment payment = Payment.fromJson(snap.data);
 
               accData.cashInHand += payment.principalAmount;
+              accData.cashInHand += payment.rCommission;
               accData.paymentsAmount -= payment.totalAmount;
               accData.totalPayments -= 1;
 

@@ -19,6 +19,8 @@ import 'package:instamfin/services/controllers/transaction/payment_controller.da
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/reports/coll_report.dart';
 import 'package:instamfin/services/pdf/reports/customer_report.dart';
+import 'package:instamfin/services/pdf/reports/expense_report.dart';
+import 'package:instamfin/services/pdf/reports/journal_report.dart';
 import 'package:instamfin/services/pdf/reports/payment_report.dart';
 
 class ReportsHome extends StatefulWidget {
@@ -32,12 +34,11 @@ class _ReportsHomeState extends State<ReportsHome> {
 
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {
-    "0": "Transactions",
-    "1": "Customer",
-    "2": "Payment",
-    "3": "Collection",
-    "4": "Journal",
-    "5": "Expense"
+    "0": "Customer",
+    "1": "Payment",
+    "2": "Collection",
+    "3": "Journal",
+    "4": "Expense"
   };
 
   String _selectedType = "0";
@@ -62,6 +63,8 @@ class _ReportsHomeState extends State<ReportsHome> {
   @override
   void initState() {
     super.initState();
+    this._setTypesMap(_selectedType);
+    _typesMap = _typesTempMap;
 
     _fromDate.text = DateUtils.formatDate(DateTime.now());
     _toDate.text = DateUtils.formatDate(DateTime.now());
@@ -351,18 +354,15 @@ class _ReportsHomeState extends State<ReportsHome> {
 
     if (cVal == '0') {
       types.add('All');
-    } else if (cVal == '1') {
-      types.add('All');
       types.add('New');
       types.add('Active');
       types.add('Pending');
       types.add('Settled');
-    } else if (cVal == '2') {
+    } else if (cVal == '1') {
       types.add('All');
       types.add('Active');
-      types.add('Pending');
       types.add('Settled');
-    } else if (cVal == '3') {
+    } else if (cVal == '2') {
       types.add('All');
       types.add('Collection');
       types.add('Doc Charge');
@@ -370,11 +370,7 @@ class _ReportsHomeState extends State<ReportsHome> {
       types.add('Settlement');
       types.add('Penalty');
       types.add('Referral Commission');
-    } else if (cVal == '4') {
-      types.add('All');
-      // types.add('Jornal In');
-      // types.add('Jornal Out');
-    } else if (cVal == '5') {
+    } else {
       types.add('All');
     }
 
@@ -419,54 +415,6 @@ class _ReportsHomeState extends State<ReportsHome> {
   _submit() async {
     CustomDialogs.actionWaiting(context, "Fetching Report!");
     if (_selectedCategory == '0') {
-      PaymentController _pc = PaymentController();
-      JournalController _jc = JournalController();
-      ExpenseController _ec = ExpenseController();
-      List<Payment> pays;
-      List<Collection> colls;
-      List<Journal> journals;
-      List<Expense> expenses;
-
-      if (_selectedRange == '0') {
-        // Todays Report
-        pays = await _pc.getPaymentsByDate(
-            _user.primaryFinance,
-            _user.primaryBranch,
-            _user.primarySubBranch,
-            DateUtils.getUTCDateEpoch(fromDate));
-
-        colls = await Collection().allCollectionByDate(
-            _user.primaryFinance,
-            _user.primaryBranch,
-            _user.primarySubBranch,
-            [0, 1, 2, 3, 4, 5],
-            DateUtils.getUTCDateEpoch(fromDate));
-
-        journals = await _jc.getJournalByDate(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate);
-
-        expenses = await _ec.getExpenseByDate(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate);
-      } else {
-        // Date Range Report
-        pays = await _pc.getAllPaymentsByDateRange(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
-
-        colls = await Collection().getAllCollectionsByDateRange(
-            _user.primaryFinance,
-            _user.primaryBranch,
-            _user.primarySubBranch,
-            [0, 1, 2, 3, 4, 5],
-            DateUtils.getUTCDateEpoch(fromDate),
-            DateUtils.getUTCDateEpoch(toDate));
-
-        journals = await _jc.getAllJournalByDateRange(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
-
-        expenses = await _ec.getAllExpenseByDateRange(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
-      }
-    } else if (_selectedCategory == '1') {
       List<Customer> customers;
       bool isRange = false;
 
@@ -498,24 +446,47 @@ class _ReportsHomeState extends State<ReportsHome> {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "No Customers data found. Please try different criteria!", 2));
       }
-    } else if (_selectedCategory == '2') {
-      PaymentController _pc = PaymentController();
+    } else if (_selectedCategory == '1') {
       List<Payment> pays;
       bool isRange = false;
 
       if (_selectedRange == '0') {
         // Todays Payment Report
-        pays = await _pc.getPaymentsByDate(
-            _user.primaryFinance,
-            _user.primaryBranch,
-            _user.primarySubBranch,
-            DateUtils.getUTCDateEpoch(fromDate));
+        if (_selectedType == '0') {
+          pays = await Payment().getAllPaymentsByDate(
+              _user.primaryFinance,
+              _user.primaryBranch,
+              _user.primarySubBranch,
+              DateUtils.getUTCDateEpoch(fromDate));
+        } else {
+          pays = await Payment().getAllByDateStatus(
+              _user.primaryFinance,
+              _user.primaryBranch,
+              _user.primarySubBranch,
+              DateUtils.getUTCDateEpoch(fromDate),
+              _selectedType == '1' ? false : true);
+        }
       } else {
-        isRange = true;
         // Payment Report by Date Range
-        pays = await _pc.getAllPaymentsByDateRange(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+        isRange = true;
+        if (_selectedType == '0') {
+          pays = await Payment().getAllPaymentsByDateRange(
+              _user.primaryFinance,
+              _user.primaryBranch,
+              _user.primarySubBranch,
+              DateUtils.getUTCDateEpoch(fromDate),
+              DateUtils.getUTCDateEpoch(toDate));
+        } else {
+          pays = await Payment().getAllByDateRangeStatus(
+              _user.primaryFinance,
+              _user.primaryBranch,
+              _user.primarySubBranch,
+              DateUtils.getUTCDateEpoch(fromDate),
+              DateUtils.getUTCDateEpoch(toDate),
+              _selectedType == '1' ? false : true);
+        }
       }
+
       Navigator.pop(context);
       if (pays.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
@@ -526,7 +497,7 @@ class _ReportsHomeState extends State<ReportsHome> {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "No Payments data found. Please try different criteria!", 2));
       }
-    } else if (_selectedCategory == '3') {
+    } else if (_selectedCategory == '2') {
       List<Collection> colls;
       bool isRange = false;
 
@@ -563,7 +534,7 @@ class _ReportsHomeState extends State<ReportsHome> {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "No Collection data found. Please try different criteria!", 2));
       }
-    } else if (_selectedCategory == '4') {
+    } else if (_selectedCategory == '3') {
       JournalController _jc = JournalController();
       List<Journal> journals;
       bool isRange = false;
@@ -582,12 +553,13 @@ class _ReportsHomeState extends State<ReportsHome> {
       if (journals.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
             "Generating your Journal Report! Please wait...", 2));
-        // await CollectionReport().generateReport(_user, journals, isRange, fromDate, toDate);
+        await JournalReport()
+            .generateReport(_user, journals, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "No Journal data found. Please try different criteria!", 2));
       }
-    } else if (_selectedCategory == '5') {
+    } else if (_selectedCategory == '4') {
       ExpenseController _ec = ExpenseController();
       List<Expense> expenses;
       bool isRange = false;
@@ -607,7 +579,8 @@ class _ReportsHomeState extends State<ReportsHome> {
       if (expenses.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
             "Generating your Expense Report! Please wait...", 2));
-        // await CollectionReport().generateReport(_user, expenses, isRange, fromDate, toDate);
+        await ExpenseReport()
+            .generateReport(_user, expenses, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "No Expense data found. Please try different criteria!", 2));
