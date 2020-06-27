@@ -33,7 +33,6 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
   List<JournalCategory> categoryList;
 
   Map<String, dynamic> updatedJournal = new Map();
-  DateTime selectedDate = DateTime.now();
 
   bool isExpense;
 
@@ -46,6 +45,9 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
         .add(new CustomRadioModel(!widget.journal.isExpense, 'Income', ''));
     inOutList
         .add(new CustomRadioModel(widget.journal.isExpense, 'Expense', ''));
+
+    _date.text = DateUtils.formatDate(
+        DateTime.fromMillisecondsSinceEpoch(widget.journal.journalDate));
   }
 
   @override
@@ -54,9 +56,7 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text('Edit Journal - ${widget.journal.journalName}'),
+        title: Text('Edit - ${widget.journal.journalName}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -323,17 +323,18 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.fromMillisecondsSinceEpoch(widget.journal.journalDate),
+      initialDate:
+          DateTime.fromMillisecondsSinceEpoch(widget.journal.journalDate),
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != DateTime.fromMillisecondsSinceEpoch(widget.journal.journalDate))
+    if (picked != null &&
+        picked !=
+            DateTime.fromMillisecondsSinceEpoch(widget.journal.journalDate))
       setState(
         () {
           updatedJournal['journal_date'] = DateUtils.getUTCDateEpoch(picked);
-          _date.value = TextEditingValue(
-            text: DateUtils.formatDate(picked),
-          );
+          _date.text = DateUtils.formatDate(picked);
         },
       );
   }
@@ -363,8 +364,7 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
         CustomDialogs.actionWaiting(context, "Updating Journal!");
         JournalController _jc = JournalController();
 
-        var result =
-            await _jc.updateJournal(widget.journal, updatedJournal);
+        var result = await _jc.updateJournal(widget.journal, updatedJournal);
         if (!result['is_success']) {
           Navigator.pop(context);
           _scaffoldKey.currentState

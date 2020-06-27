@@ -16,8 +16,7 @@ class EditExpense extends StatefulWidget {
   final Expense expense;
 
   @override
-  _EditExpenseState createState() =>
-      _EditExpenseState();
+  _EditExpenseState createState() => _EditExpenseState();
 }
 
 class _EditExpenseState extends State<EditExpense> {
@@ -31,12 +30,14 @@ class _EditExpenseState extends State<EditExpense> {
   List<ExpenseCategory> categoryList;
 
   Map<String, dynamic> updatedExpense = new Map();
-  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     this.getCategoryData();
+
+    _date.text = DateUtils.formatDate(
+        DateTime.fromMillisecondsSinceEpoch(widget.expense.expenseDate));
   }
 
   @override
@@ -45,9 +46,7 @@ class _EditExpenseState extends State<EditExpense> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text('Edit Expense - ${widget.expense.expenseName}'),
+        title: Text('Edit - ${widget.expense.expenseName}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -258,9 +257,8 @@ class _EditExpenseState extends State<EditExpense> {
   Future getCategoryData() async {
     try {
       CategoryController _cc = CategoryController();
-      List<ExpenseCategory> categories =
-          await _cc.getAllExpenseCategory(_user.primaryFinance,
-              _user.primaryBranch, _user.primarySubBranch);
+      List<ExpenseCategory> categories = await _cc.getAllExpenseCategory(
+          _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
         if (widget.expense.category != null &&
@@ -281,17 +279,18 @@ class _EditExpenseState extends State<EditExpense> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.fromMillisecondsSinceEpoch(widget.expense.expenseDate),
+      initialDate:
+          DateTime.fromMillisecondsSinceEpoch(widget.expense.expenseDate),
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != DateTime.fromMillisecondsSinceEpoch(widget.expense.expenseDate))
+    if (picked != null &&
+        picked !=
+            DateTime.fromMillisecondsSinceEpoch(widget.expense.expenseDate))
       setState(
         () {
           updatedExpense['expense_date'] = DateUtils.getUTCDateEpoch(picked);
-          _date.value = TextEditingValue(
-            text: DateUtils.formatDate(picked),
-          );
+          _date.text = DateUtils.formatDate(picked);
         },
       );
   }
@@ -301,8 +300,7 @@ class _EditExpenseState extends State<EditExpense> {
 
     if (form.validate()) {
       if (categoryList != null && _selectedCategory != "0") {
-        ExpenseCategory _cat =
-            categoryList[int.parse(_selectedCategory) - 1];
+        ExpenseCategory _cat = categoryList[int.parse(_selectedCategory) - 1];
         if (widget.expense.category == null ||
             _cat.createdAt != widget.expense.category.createdAt) {
           updatedExpense['category'] = _cat.toJson();
@@ -315,9 +313,8 @@ class _EditExpenseState extends State<EditExpense> {
         Navigator.pop(context);
       } else {
         CustomDialogs.actionWaiting(context, "Updating Expense!");
-        var result = await ExpenseController().updateExpense(
-            widget.expense,
-            updatedExpense);
+        var result = await ExpenseController()
+            .updateExpense(widget.expense, updatedExpense);
         if (!result['is_success']) {
           Navigator.pop(context);
           _scaffoldKey.currentState
