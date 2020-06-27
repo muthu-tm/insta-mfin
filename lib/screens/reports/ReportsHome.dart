@@ -361,7 +361,6 @@ class _ReportsHomeState extends State<ReportsHome> {
     } else if (cVal == '1') {
       types.add('All');
       types.add('Active');
-      types.add('Pending');
       types.add('Settled');
     } else if (cVal == '2') {
       types.add('All');
@@ -448,23 +447,46 @@ class _ReportsHomeState extends State<ReportsHome> {
             "No Customers data found. Please try different criteria!", 2));
       }
     } else if (_selectedCategory == '1') {
-      PaymentController _pc = PaymentController();
       List<Payment> pays;
       bool isRange = false;
 
       if (_selectedRange == '0') {
         // Todays Payment Report
-        pays = await _pc.getPaymentsByDate(
-            _user.primaryFinance,
-            _user.primaryBranch,
-            _user.primarySubBranch,
-            DateUtils.getUTCDateEpoch(fromDate));
+        if (_selectedType == '0') {
+          pays = await Payment().getAllPaymentsByDate(
+              _user.primaryFinance,
+              _user.primaryBranch,
+              _user.primarySubBranch,
+              DateUtils.getUTCDateEpoch(fromDate));
+        } else {
+          pays = await Payment().getAllByDateStatus(
+              _user.primaryFinance,
+              _user.primaryBranch,
+              _user.primarySubBranch,
+              DateUtils.getUTCDateEpoch(fromDate),
+              _selectedType == '1' ? false : true);
+        }
       } else {
-        isRange = true;
         // Payment Report by Date Range
-        pays = await _pc.getAllPaymentsByDateRange(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+        isRange = true;
+        if (_selectedType == '0') {
+          pays = await Payment().getAllPaymentsByDateRange(
+              _user.primaryFinance,
+              _user.primaryBranch,
+              _user.primarySubBranch,
+              DateUtils.getUTCDateEpoch(fromDate),
+              DateUtils.getUTCDateEpoch(toDate));
+        } else {
+          pays = await Payment().getAllByDateRangeStatus(
+              _user.primaryFinance,
+              _user.primaryBranch,
+              _user.primarySubBranch,
+              DateUtils.getUTCDateEpoch(fromDate),
+              DateUtils.getUTCDateEpoch(toDate),
+              _selectedType == '1' ? false : true);
+        }
       }
+
       Navigator.pop(context);
       if (pays.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(

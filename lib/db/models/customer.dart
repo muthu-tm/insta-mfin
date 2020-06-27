@@ -198,7 +198,7 @@ class Customer extends Model {
           .getDocuments();
 
       if (allSnap.documents.length == 0) return 0; //New
-      int status = 3; //Closed
+      int status = 3; //Settled
 
       for (var paysnap in allSnap.documents) {
         Payment pay = Payment.fromJson(paysnap.data);
