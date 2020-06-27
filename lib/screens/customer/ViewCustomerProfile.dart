@@ -10,6 +10,7 @@ class ViewCustomerProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(customer.gender);
     return Container(
       height: MediaQuery.of(context).size.height * (0.6),
       child: SingleChildScrollView(
@@ -129,6 +130,62 @@ class ViewCustomerProfile extends StatelessWidget {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          border: Border.all(
+                              color: CustomColors.mfinGrey, width: 1.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Gender : ',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                            (customer.gender.contains('Male'))
+                                ? RichText(
+                                    text: TextSpan(
+                                      text: "\u{1F466}",
+                                      style: TextStyle(
+                                          color: CustomColors.mfinBlue),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: ' Male',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: CustomColors.mfinBlue,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : RichText(
+                                    text: TextSpan(
+                                      text: "\u{1F467}",
+                                      style: TextStyle(
+                                          color: CustomColors.mfinBlue),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: ' Female',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: CustomColors.mfinBlue,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          ],
+                        ),
                       ),
                     ),
                     Padding(

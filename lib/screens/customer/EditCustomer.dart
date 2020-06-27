@@ -26,10 +26,13 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _date = new TextEditingController();
   var groupValue = 0;
+  String gender;
 
   @override
   void initState() {
     super.initState();
+
+    gender = widget.customer['gender'];
 
     _date.value = TextEditingValue(
       text: DateUtils.getFormattedDateFromEpoch(widget.customer['joined_at']),
@@ -198,6 +201,89 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           ],
                         ),
                       ),
+                      Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          border: Border.all(
+                              color: CustomColors.mfinGrey, width: 1.0),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              'Gender',
+                              style: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Flexible(
+                                  flex: 2,
+                                  child: RadioListTile(
+                                    title: Text(
+                                      "\u{1F466}",
+                                      style: TextStyle(
+                                          color: CustomColors.mfinBlue),
+                                    ),
+                                    value: "Male",
+                                    selected: gender.contains("Male"),
+                                    groupValue: gender,
+                                    onChanged: (val) {
+                                     setState(() {
+                                        gender = val;
+                                        updatedCustomer['gender'] = val;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  child: Text(
+                                    'Male',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 2,
+                                  child: RadioListTile(
+                                    title: Text(
+                                      "\u{1F467}",
+                                      style: TextStyle(
+                                          color: CustomColors.mfinBlue),
+                                    ),
+                                    value: "Female",
+                                    selected: gender.contains("Female"),
+                                    groupValue: gender,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        gender = val;
+                                        updatedCustomer['gender'] = val;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 2,
+                                  child: Text(
+                                    'Female',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(

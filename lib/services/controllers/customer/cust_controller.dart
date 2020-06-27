@@ -13,6 +13,7 @@ class CustController {
   Future createCustomer(
       String name,
       String customerID,
+      String gender,
       String profession,
       int mobileNumber,
       int joinedAt,
@@ -30,6 +31,7 @@ class CustController {
 
       cust.setName(name);
       cust.setCustomerID(customerID);
+      cust.setGender(gender);
       cust.setMobileNumber(mobileNumber);
       cust.setJoinedAt(joinedAt);
       cust.setAddress(address);

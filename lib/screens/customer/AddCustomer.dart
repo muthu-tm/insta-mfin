@@ -27,12 +27,14 @@ class _AddCustomerState extends State<AddCustomer> {
   int guarantiedBy;
   int age = 0;
   String profession = "";
+  String gender;
 
   Address address = Address();
   @override
   void initState() {
     super.initState();
     _date.text = DateUtils.formatDate(DateTime.now());
+    gender = 'Male';
   }
 
   @override
@@ -136,6 +138,7 @@ class _AddCustomerState extends State<AddCustomer> {
                           Flexible(
                             child: TextFormField(
                               keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.sentences,
                               initialValue: name,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -191,6 +194,86 @@ class _AddCustomerState extends State<AddCustomer> {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          border: Border.all(
+                              color: CustomColors.mfinGrey, width: 1.0),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              'Gender',
+                              style: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Flexible(
+                                  flex: 2,
+                                  child: RadioListTile(
+                                    title: Text(
+                                      "\u{1F466}",
+                                      style: TextStyle(
+                                          color: CustomColors.mfinBlue),
+                                    ),
+                                    value: "Male",
+                                    selected: true,
+                                    groupValue: gender,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        gender = val;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  child: Text(
+                                    'Male',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 2,
+                                  child: RadioListTile(
+                                    title: Text(
+                                      "\u{1F467}",
+                                      style: TextStyle(
+                                          color: CustomColors.mfinBlue),
+                                    ),
+                                    value: "Female",
+                                    groupValue: gender,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        gender = val;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 2,
+                                  child: Text(
+                                    'Female',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Padding(
@@ -369,8 +452,8 @@ class _AddCustomerState extends State<AddCustomer> {
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Customer!");
       CustController _cc = CustController();
-      var result = await _cc.createCustomer(name, id, profession, number,
-          selectedDate, address, age, guarantiedBy);
+      var result = await _cc.createCustomer(name, id, gender, profession,
+          number, selectedDate, address, age, guarantiedBy);
 
       if (!result['is_success']) {
         Navigator.pop(context);
