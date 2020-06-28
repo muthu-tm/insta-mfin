@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 
 class EditPayment extends StatefulWidget {
@@ -35,7 +33,7 @@ class _EditPaymentState extends State<EditPayment> {
     "2": "GPay"
   };
 
-  List<int> collectionDays;
+  List<int> collectionDays = [];
   Map<String, String> tempCollectionDays = {
     "0": "Sun",
     "1": "Mon",
@@ -64,7 +62,7 @@ class _EditPaymentState extends State<EditPayment> {
         text: DateUtils.getFormattedDateFromEpoch(
             widget.payment.collectionStartsFrom));
 
-    collectionDays = widget.payment.collectionDays;
+    collectionDays.addAll(widget.payment.collectionDays);
   }
 
   @override
@@ -950,12 +948,14 @@ class _EditPaymentState extends State<EditPayment> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
+      if (collectionDays != widget.payment.collectionDays)
+        updatedPayment['collection_days'] = collectionDays;
+
       if (updatedPayment.length == 0) {
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "No changes detected, Skipping update!", 1));
+        Navigator.pop(context);
         Navigator.pop(context);
       } else {
-        CustomDialogs.actionWaiting(context, " Editing Payment");
+        CustomDialogs.actionWaiting(context, "Editing Payment");
         PaymentController _pc = PaymentController();
         var result = await _pc.updatePayment(widget.payment, updatedPayment);
 
@@ -966,6 +966,10 @@ class _EditPaymentState extends State<EditPayment> {
         } else {
           Navigator.pop(context);
           Navigator.pop(context);
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
+              "Please wait... We are updating your collections..!",
+              3));
         }
       }
     } else {
