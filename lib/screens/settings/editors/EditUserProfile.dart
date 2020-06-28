@@ -33,7 +33,13 @@ class _EditUserProfileState extends State<EditUserProfile> {
   DateTime selectedDate = DateTime.now();
   var _passwordVisible = false;
   var hidePassword = true;
-  var groupValue = 0;
+  String gender;
+
+  @override
+  void initState() {
+    super.initState();
+    gender = user.gender;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,40 +190,39 @@ class _EditUserProfileState extends State<EditUserProfile> {
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    ButtonBar(
-                      alignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Radio(
-                          value: 0,
-                          groupValue: groupValue,
-                          activeColor: CustomColors.mfinBlue,
-                          onChanged: (val) {
-                            setSelectedRadio(val);
-                          },
-                        ),
-                        Text(
+                    Flexible(
+                      child: RadioListTile(
+                        title: Text(
                           "Male",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black38,
-                          ),
+                          style: TextStyle(color: CustomColors.mfinBlue),
                         ),
-                        Radio(
-                          value: 1,
-                          groupValue: groupValue,
-                          activeColor: CustomColors.mfinBlue,
-                          onChanged: (val) {
-                            setSelectedRadio(val);
-                          },
-                        ),
-                        Text(
+                        value: "Male",
+                        selected: gender.contains("Male"),
+                        groupValue: gender,
+                        onChanged: (val) {
+                          setState(() {
+                            gender = val;
+                            updatedUser['gender'] = "Male";
+                          });
+                        },
+                      ),
+                    ),
+                    Flexible(
+                      child: RadioListTile(
+                        title: Text(
                           "Female",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black38,
-                          ),
+                          style: TextStyle(color: CustomColors.mfinBlue),
                         ),
-                      ],
+                        value: "Female",
+                        selected: gender.contains("Female"),
+                        groupValue: gender,
+                        onChanged: (val) {
+                          setState(() {
+                            gender = val;
+                            updatedUser['gender'] = "Female";
+                          });
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -250,15 +255,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
         selectedDate = picked;
         updatedUser['date_of_birth'] = DateUtils.formatDate(picked);
       });
-  }
-
-  setSelectedRadio(int val) {
-    this.groupValue = val;
-    if (val == 0) {
-      updatedUser['gender'] = "Male";
-    } else {
-      updatedUser['gender'] = "Female";
-    }
   }
 
   Future<void> _submit() async {
