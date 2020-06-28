@@ -28,21 +28,26 @@ class _AddBranchState extends State<AddBranch> {
   DateTime selectedDate = DateTime.now();
   var dateFormatter = DateUtils.dateFormatter;
   String branchName;
-  String registeredDate = "";
   String contactNumber = "";
   String emailID = "";
 
   Address address = new Address();
 
   @override
+  void initState() {
+    super.initState();
+    this._date.text = DateUtils.formatDate(DateTime.now());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Add Branch'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           _submit();
@@ -97,19 +102,32 @@ class _AddBranchState extends State<AddBranch> {
                 ),
                 RowHeaderText(textName: "Registered Date"),
                 ListTile(
-                  title: new TextFormField(
-                    controller: _date,
-                    decoration: InputDecoration(
-                      hintText: DateUtils.getCurrentFormattedDate(),
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
+                  title: GestureDetector(
                     onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: _date,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            size: 35,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 RowHeaderText(textName: "Contact Number"),
@@ -189,8 +207,7 @@ class _AddBranchState extends State<AddBranch> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        this.registeredDate = DateUtils.formatDate(picked);
-        _date.value = TextEditingValue(text: DateUtils.formatDate(picked));
+        _date.text = DateUtils.formatDate(picked);
       });
   }
 
@@ -200,8 +217,13 @@ class _AddBranchState extends State<AddBranch> {
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Branch!");
       BranchController _branchController = BranchController();
-      var result = await _branchController.addBranch(widget.financeID,
-          branchName, contactNumber, emailID, address, registeredDate);
+      var result = await _branchController.addBranch(
+          widget.financeID,
+          branchName,
+          contactNumber,
+          emailID,
+          address,
+          DateUtils.getUTCDateEpoch(selectedDate));
 
       if (!result['is_success']) {
         Navigator.pop(context);

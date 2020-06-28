@@ -25,7 +25,6 @@ class FinanceProfileWidget extends StatelessWidget {
             children = <Widget>[
               ListTile(
                 title: TextFormField(
-                  keyboardType: TextInputType.text,
                   initialValue: snapshot.data.financeName,
                   decoration: InputDecoration(
                     hintText: 'Finance Name',
@@ -36,13 +35,11 @@ class FinanceProfileWidget extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinGrey)),
                   ),
-                  enabled: false,
-                  autofocus: false,
+                  readOnly: true,
                 ),
               ),
               ListTile(
                 title: TextFormField(
-                  keyboardType: TextInputType.text,
                   initialValue: snapshot.data.registrationID,
                   decoration: InputDecoration(
                     hintText: 'Registered ID',
@@ -53,13 +50,11 @@ class FinanceProfileWidget extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinGrey)),
                   ),
-                  enabled: false,
-                  autofocus: false,
+                  readOnly: true,
                 ),
               ),
               ListTile(
                 title: TextFormField(
-                  keyboardType: TextInputType.text,
                   initialValue: snapshot.data.dateOfRegistration != null
                       ? DateUtils.formatDate(
                           DateTime.fromMillisecondsSinceEpoch(
@@ -74,13 +69,11 @@ class FinanceProfileWidget extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinGrey)),
                   ),
-                  enabled: false,
-                  autofocus: false,
+                  readOnly: true,
                 ),
               ),
               ListTile(
                 title: TextFormField(
-                  keyboardType: TextInputType.text,
                   initialValue: snapshot.data.contactNumber,
                   decoration: InputDecoration(
                     hintText: 'Contact Number',
@@ -91,13 +84,11 @@ class FinanceProfileWidget extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinGrey)),
                   ),
-                  enabled: false,
-                  autofocus: false,
+                  readOnly: true,
                 ),
               ),
               ListTile(
                 title: new TextFormField(
-                  keyboardType: TextInputType.text,
                   initialValue: snapshot.data.emailID,
                   decoration: InputDecoration(
                     hintText: 'Finance EmailID',
@@ -108,13 +99,11 @@ class FinanceProfileWidget extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinWhite)),
                   ),
-                  enabled: false,
-                  autofocus: false,
+                  readOnly: true,
                 ),
               ),
               ListTile(
                 title: TextFormField(
-                  keyboardType: TextInputType.text,
                   initialValue: snapshot.data.address.toString(),
                   maxLines: 4,
                   decoration: InputDecoration(
@@ -126,8 +115,7 @@ class FinanceProfileWidget extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinGrey)),
                   ),
-                  enabled: false,
-                  autofocus: false,
+                  readOnly: true,
                 ),
               ),
             ];

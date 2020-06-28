@@ -13,7 +13,7 @@ Branch _$BranchFromJson(Map<String, dynamic> json) {
     ..contactNumber = json['contact_number'] as String
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
     ..users = (json['users'] as List)?.map((e) => e as int)?.toList()
-    ..dateOfRegistration = json['date_of_registration'] as String
+    ..dateOfRegistration = json['date_of_registration'] as int
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
@@ -37,7 +37,7 @@ Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
       'email': instance.emailID ?? '',
       'admins': instance.admins ?? [instance.addedBy],
       'users': instance.users ?? [instance.addedBy],
-      'date_of_registration': instance.dateOfRegistration ?? '',
+      'date_of_registration': instance.dateOfRegistration,
       'accounts_data': instance.accountsData?.toJson(),
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,

@@ -44,6 +44,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
         title: Text('Add Finance'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           _submit();

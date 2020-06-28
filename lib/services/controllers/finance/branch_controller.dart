@@ -12,7 +12,7 @@ class BranchController {
   SubBranchController _subBranchController = SubBranchController();
 
   Future addBranch(String financeID, String branchName, String contactNumber,
-      String email, Address address, String dateOfRegistration) async {
+      String email, Address address, int dateOfRegistration) async {
     try {
       int addedBy = UserController().getCurrentUserID();
 

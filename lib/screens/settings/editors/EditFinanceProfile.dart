@@ -46,6 +46,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
         title: Text('Edit Finance Profile'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           _submit();

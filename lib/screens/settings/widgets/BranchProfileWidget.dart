@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/screens/settings/editors/EditBranchProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 
 class BranchProfileWidget extends StatelessWidget {
   BranchProfileWidget(this.financeID, this.branch);
@@ -52,7 +53,6 @@ class BranchProfileWidget extends StatelessWidget {
           ),
           ListTile(
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: branch.branchName,
               decoration: InputDecoration(
                 hintText: 'Branch Name',
@@ -63,14 +63,15 @@ class BranchProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             title: TextFormField(
-              keyboardType: TextInputType.text,
-              initialValue: branch.dateOfRegistration,
+              initialValue: branch.dateOfRegistration != null
+                  ? DateUtils.formatDate(DateTime.fromMillisecondsSinceEpoch(
+                      branch.dateOfRegistration))
+                  : "",
               decoration: InputDecoration(
                 hintText: 'Registered Date',
                 fillColor: CustomColors.mfinWhite,
@@ -79,14 +80,17 @@ class BranchProfileWidget extends StatelessWidget {
                     new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                suffixIcon: Icon(
+                  Icons.date_range,
+                  size: 35,
+                  color: CustomColors.mfinBlue,
+                ),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: branch.contactNumber,
               decoration: InputDecoration(
                 hintText: 'Contact Number',
@@ -97,13 +101,11 @@ class BranchProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             title: new TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: branch.emailID,
               decoration: InputDecoration(
                 hintText: 'Branch EmailID',
@@ -114,13 +116,11 @@ class BranchProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinWhite)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: branch.address.toString(),
               maxLines: 4,
               decoration: InputDecoration(
@@ -132,8 +132,7 @@ class BranchProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
         ],

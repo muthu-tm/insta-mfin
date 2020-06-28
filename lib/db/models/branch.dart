@@ -26,7 +26,7 @@ class Branch {
   @JsonKey(name: 'users', nullable: true)
   List<int> users;
   @JsonKey(name: 'date_of_registration', nullable: true)
-  String dateOfRegistration;
+  int dateOfRegistration;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
@@ -64,7 +64,7 @@ class Branch {
     }
   }
 
-  setDOR(String date) {
+  setDOR(int date) {
     this.dateOfRegistration = date;
   }
 
