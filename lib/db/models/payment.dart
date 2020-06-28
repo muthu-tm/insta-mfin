@@ -192,7 +192,7 @@ class Payment extends Model {
       return "Monthly";
   }
 
-  Future<int> getTotalReceived() async {
+  Future<int> getCollectionReceived() async {
     try {
       List<Collection> collList = await Collection()
           .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
@@ -208,7 +208,28 @@ class Payment extends Model {
 
       return received;
     } catch (err) {
-      print("Unable to get Payment's Total Paid amount!" + err.toString());
+      print("Unable to get Payment's Collection Received amount!" +
+          err.toString());
+      return null;
+    }
+  }
+
+  Future<int> getTotalReceived() async {
+    try {
+      List<Collection> collList = await Collection()
+          .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
+              this.subBranchName, this.paymentID);
+      int received = 0;
+      collList.forEach((coll) {
+        if (coll.type != CollectionType.DocCharge.name &&
+            coll.type != CollectionType.Surcharge.name &&
+            coll.type != CollectionType.Commission.name)
+          received += coll.getReceived();
+      });
+
+      return received;
+    } catch (err) {
+      print("Unable to get Payment's Total Received amount!" + err.toString());
       return null;
     }
   }
@@ -658,7 +679,7 @@ class Payment extends Model {
     DocumentReference docRef = getDocumentReference(
         this.financeID, this.branchName, this.subBranchName, this.paymentID);
 
-    int tReceived = await getTotalReceived();
+    int tReceived = await getCollectionReceived();
     if (tReceived == null)
       throw 'Unable to fetch Total Received Amount! Try again Later.';
     List<int> pDetails = await getPenalityDetails();

@@ -127,8 +127,6 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                             );
                                           } else {
                                             Navigator.pop(context);
-                                            print(
-                                                "Payment of ${payment.customerNumber} customer removed successfully");
                                             _scaffoldKey.currentState
                                                 .showSnackBar(
                                               CustomSnackBar.errorSnackBar(
