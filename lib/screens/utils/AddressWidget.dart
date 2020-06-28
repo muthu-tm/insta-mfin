@@ -48,7 +48,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                 Flexible(
                   child: TextFormField(
                     initialValue: widget.address.street,
-                    textAlign: TextAlign.start,
+                    textAlign: TextAlign.center,
                     maxLines: 3,
                     decoration: InputDecoration(
                       labelText: 'Building no. & street',
@@ -57,7 +57,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                         color: CustomColors.mfinBlue,
                       ),
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: CustomColors.mfinFadedButtonGreen)),

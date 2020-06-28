@@ -10,7 +10,6 @@ class ViewCustomerProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(customer.gender);
     return Container(
       height: MediaQuery.of(context).size.height * (0.6),
       child: SingleChildScrollView(
@@ -24,7 +23,6 @@ class ViewCustomerProfile extends StatelessWidget {
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
                 margin: EdgeInsets.only(top: 5.0),
-                shadowColor: CustomColors.mfinLightBlue,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -134,58 +132,41 @@ class ViewCustomerProfile extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          border: Border.all(
-                              color: CustomColors.mfinGrey, width: 1.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Gender : ',
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              "GENDER:",
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
                                 color: CustomColors.mfinBlue,
                               ),
                             ),
-                            (customer.gender.contains('Male'))
-                                ? RichText(
-                                    text: TextSpan(
-                                      text: "\u{1F466}",
-                                      style: TextStyle(
-                                          color: CustomColors.mfinBlue),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: ' Male',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: CustomColors.mfinBlue,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : RichText(
-                                    text: TextSpan(
-                                      text: "\u{1F467}",
-                                      style: TextStyle(
-                                          color: CustomColors.mfinBlue),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: ' Female',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: CustomColors.mfinBlue,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              readOnly: true,
+                              initialValue: customer.gender,
+                              decoration: InputDecoration(
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 3.0),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: CustomColors.mfinGrey,
                                   ),
-                          ],
-                        ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Padding(
@@ -346,7 +327,7 @@ class ViewCustomerProfile extends StatelessWidget {
                             child: TextFormField(
                               readOnly: true,
                               initialValue: customer.address.street,
-                              textAlign: TextAlign.start,
+                              textAlign: TextAlign.center,
                               maxLines: 3,
                               decoration: InputDecoration(
                                 labelText: 'Building no. & street',
@@ -356,7 +337,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
+                                    vertical: 10.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color:
