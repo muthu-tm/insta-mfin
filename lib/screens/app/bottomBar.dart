@@ -126,12 +126,13 @@ Widget bottomBar(BuildContext context) {
             color: CustomColors.mfinBlue,
             child: InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => StatisticsHome(),
                     settings: RouteSettings(name: '/statistics'),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: Column(
