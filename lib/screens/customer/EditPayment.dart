@@ -963,13 +963,26 @@ class _EditPaymentState extends State<EditPayment> {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+        } else if (widget.payment.totalAmount != widget.payment.tenure * widget.payment.collectionAmount) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Total amount should be equal to Collection amount * No. of collections',
+              5));
+        } else if (!(widget.payment.alreadyCollectedAmount < widget.payment.totalAmount)) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Received amount should not be greater than Total amount', 5));
+        } else if (!(widget.payment.totalAmount >= widget.payment.principalAmount + widget.payment.docCharge + widget.payment.surcharge)) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Total amount should be greater than sum of Principal + Document + Service charge',
+              5));
         } else {
           Navigator.pop(context);
           Navigator.pop(context);
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-              "Please wait... We are updating your collections..!",
-              3));
+              "Please wait... We are updating your collections..!", 3));
         }
       }
     } else {
