@@ -148,6 +148,7 @@ class CollectionStatisticsWidget extends StatelessWidget {
                                     DataLabelSettings(isVisible: true),
                                 sizeValueMapper: (CollData c, _) =>
                                     (c.amount.toString().length * 0.5),
+                                name: 'Collection',
                                 gradient: LinearGradient(
                                   colors: [
                                     CustomColors.mfinLightGrey,

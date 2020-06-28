@@ -143,6 +143,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
                                     DataLabelSettings(isVisible: true),
                                 sizeValueMapper: (PayData pay, _) =>
                                     (pay.amount.toString().length * 0.5),
+                                name: 'Payment',
                                 gradient: LinearGradient(
                                   colors: [
                                     CustomColors.mfinLightGrey,

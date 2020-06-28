@@ -144,6 +144,7 @@ class JournalStatisticsWidget extends StatelessWidget {
                                     DataLabelSettings(isVisible: true),
                                 sizeValueMapper: (JData j, _) =>
                                     (j.amount.toString().length * 0.5),
+                                name: 'Journal',
                                 gradient: LinearGradient(
                                   colors: [
                                     CustomColors.mfinLightGrey,
