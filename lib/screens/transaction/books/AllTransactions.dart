@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
+import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -270,23 +271,21 @@ class AllTransactionsBuilder extends StatelessWidget {
   }
 
   Widget getCollections() {
-    Collection _c = Collection();
-
     return FutureBuilder<List<Collection>>(
       future: byRange
-          ? _c.getAllCollectionsByDateRange(
+          ? CollectionController().getAllCollectionByDateRange(
               _user.primaryFinance,
               _user.primaryBranch,
               _user.primarySubBranch,
               [0, 1, 2, 3, 4, 5],
-              DateUtils.getUTCDateEpoch(startDate),
-              DateUtils.getUTCDateEpoch(endDate))
-          : _c.allCollectionByDate(
+              startDate,
+              endDate)
+          : Collection().getAllCollectionDetailsByDateRange(
               _user.primaryFinance,
               _user.primaryBranch,
               _user.primarySubBranch,
-              [0, 1, 2, 3, 4, 5],
-              DateUtils.getUTCDateEpoch(startDate)),
+              [DateUtils.getUTCDateEpoch(startDate)],
+              [0, 1, 2, 3, 4, 5]),
       builder:
           (BuildContext context, AsyncSnapshot<List<Collection>> snapshot) {
         Widget widget;
@@ -300,6 +299,20 @@ class AllTransactionsBuilder extends StatelessWidget {
                 primary: false,
                 itemBuilder: (context, int index) {
                   Collection coll = snapshot.data[index];
+
+                  int received = 0;
+
+                  if (coll.collections.length > 1) {
+                    coll.collections.forEach((cDetails) {
+                      if (cDetails.collectedOn >=
+                              DateUtils.getUTCDateEpoch(startDate) &&
+                          cDetails.collectedOn <=
+                              DateUtils.getUTCDateEpoch(endDate))
+                        received += cDetails.amount;
+                    });
+                  } else {
+                    received = coll.getReceived();
+                  }
 
                   return Padding(
                     padding: EdgeInsets.all(5.0),
@@ -341,17 +354,7 @@ class AllTransactionsBuilder extends StatelessWidget {
                                   ),
                                 ),
                                 trailing: Text(
-                                  coll.type == 0
-                                      ? "Collection"
-                                      : coll.type == 1
-                                          ? "Doc Charge"
-                                          : coll.type == 2
-                                              ? "SurCharge"
-                                              : coll.type == 3
-                                                  ? "Settlement"
-                                                  : coll.type == 4
-                                                      ? "Penalty"
-                                                      : "Commission",
+                                  coll.getType(),
                                   style: TextStyle(
                                     fontSize: 17,
                                     color: CustomColors.mfinLightGrey,
@@ -393,7 +396,7 @@ class AllTransactionsBuilder extends StatelessWidget {
                                   ),
                                 ),
                                 trailing: Text(
-                                  coll.getReceived().toString(),
+                                  received.toString(),
                                   style: TextStyle(
                                     fontSize: 17,
                                     color: CustomColors.mfinLightGrey,

@@ -27,6 +27,7 @@ class CollectionStatisticsWidget extends StatelessWidget {
             user.primaryFinance,
             user.primaryBranch,
             user.primarySubBranch,
+            [0],
             fDate,
             tDate),
         builder: (context, snapshot) {

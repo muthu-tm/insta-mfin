@@ -164,7 +164,7 @@ class Collection {
 
     return 0;
   }
-  
+
   int getPenalty() {
     int penalty = 0;
     if (this.collections != null) {
@@ -475,8 +475,12 @@ class Collection {
     return colls;
   }
 
-  Future<List<Collection>> getAllCollectionDetailsByDateRange(String financeId,
-      String branchName, String subBranchName, List<int> dates) async {
+  Future<List<Collection>> getAllCollectionDetailsByDateRange(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      List<int> dates,
+      List<int> type) async {
     var collectionDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
@@ -487,9 +491,7 @@ class Collection {
     List<Collection> collections = [];
     if (collectionDocs.documents.isNotEmpty) {
       for (var doc in collectionDocs.documents) {
-        if (doc.data['type'] != 1 &&
-            doc.data['type'] != 2 &&
-            doc.data['type'] != 4)
+        if (type.contains(doc.data['type']))
           collections.add(Collection.fromJson(doc.data));
       }
     }

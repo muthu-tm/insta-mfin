@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
@@ -89,6 +88,7 @@ class CollectionController {
       String financeId,
       String branchName,
       String subBranchName,
+      List<int> types,
       DateTime startDate,
       DateTime endDate) async {
     try {
@@ -103,7 +103,7 @@ class CollectionController {
           Iterable<int> rDates = dates.getRange(i, i + limit);
           List<Collection> colls = await Collection()
               .getAllCollectionDetailsByDateRange(
-                  financeId, branchName, subBranchName, rDates.toList());
+                  financeId, branchName, subBranchName, rDates.toList(), types);
 
           if (colls != null) {
             collections.addAll(colls);
@@ -115,7 +115,7 @@ class CollectionController {
               dates.getRange(dates.length - (dates.length % 10), dates.length);
           List<Collection> colls = await Collection()
               .getAllCollectionDetailsByDateRange(
-                  financeId, branchName, subBranchName, rDates.toList());
+                  financeId, branchName, subBranchName, rDates.toList(), types);
 
           if (colls != null) {
             collections.addAll(colls);
@@ -124,7 +124,7 @@ class CollectionController {
       } else {
         List<Collection> colls = await Collection()
             .getAllCollectionDetailsByDateRange(
-                financeId, branchName, subBranchName, dates);
+                financeId, branchName, subBranchName, dates, types);
 
         if (colls != null) {
           collections.addAll(colls);
@@ -145,8 +145,8 @@ class CollectionController {
       String collID,
       Map<String, dynamic> collectionJSON) async {
     try {
-      await Collection().update(financeId, branchName, subBranchName,
-          paymentID, collID, collectionJSON);
+      await Collection().update(financeId, branchName, subBranchName, paymentID,
+          collID, collectionJSON);
 
       return CustomResponse.getSuccesReponse(
           "Updated $paymentID Payment's collection $collID");
