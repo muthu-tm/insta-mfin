@@ -9,7 +9,7 @@ SubBranch _$SubBranchFromJson(Map<String, dynamic> json) {
     ..contactNumber = json['contact_number'] as String
     ..emailID = json['email'] as String
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
-    ..dateOfRegistration = json['date_of_registration'] as String
+    ..dateOfRegistration = json['date_of_registration'] as int
     ..addedBy = json['added_by'] as int
     ..accountsData = json['accounts_data'] == null
         ? new AccountsData()
@@ -34,7 +34,7 @@ Map<String, dynamic> _$SubBranchToJson(SubBranch instance) => <String, dynamic>{
       'contact_number': instance.contactNumber ?? '',
       'email': instance.emailID ?? '',
       'admins': instance.admins ?? [instance.addedBy],
-      'date_of_registration': instance.dateOfRegistration ?? '',
+      'date_of_registration': instance.dateOfRegistration,
       'accounts_data': instance.accountsData?.toJson(),
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,

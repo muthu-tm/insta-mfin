@@ -6,7 +6,6 @@ import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/EditorBottomButtons.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
@@ -30,7 +29,16 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
   final Address updatedAddress = new Address();
   final Map<String, dynamic> updatedSubBranch = new Map();
 
-  DateTime selectedDate = DateTime.now();
+  @override
+  void initState() {
+    super.initState();
+    if (widget.subBranch.dateOfRegistration != null)
+      this._date.text = DateUtils.formatDate(
+          DateTime.fromMillisecondsSinceEpoch(
+              widget.subBranch.dateOfRegistration));
+    else
+      this._date.text = DateUtils.formatDate(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +49,9 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
         title: Text('Edit Sub Branch'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },
@@ -82,8 +92,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
                     ),
-                    enabled: false,
-                    autofocus: false,
+                    readOnly: true,
                   ),
                 ),
                 RowHeaderText(textName: 'Contact Number'),
@@ -140,23 +149,32 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                 ),
                 RowHeaderText(textName: 'Registered Date'),
                 ListTile(
-                  title: new TextFormField(
-                    decoration: InputDecoration(
-                      hintText: DateUtils.formatDate(selectedDate),
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                      suffixIcon: Icon(
-                        Icons.perm_contact_calendar,
-                        color: CustomColors.mfinBlue,
-                        size: 35.0,
+                  title: GestureDetector(
+                    onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: _date,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            size: 35,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
                       ),
                     ),
-                    onTap: () => _selectDate(context),
                   ),
                 ),
                 AddressWidget("SubBranch Address", widget.subBranch.address,
@@ -166,7 +184,6 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
           ),
         ),
       ),
-      bottomSheet: EditorsActionButtons(_submit, _close),
     );
   }
 
@@ -178,17 +195,21 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
     updatedSubBranch['contact_number'] = contactNumber;
   }
 
+  TextEditingController _date = TextEditingController();
+
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.fromMillisecondsSinceEpoch(
+          widget.subBranch.dateOfRegistration),
       firstDate: DateTime(1900, 1),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null)
       setState(() {
-        selectedDate = picked;
-        updatedSubBranch['date_of_registration'] = DateUtils.formatDate(picked);
+        _date.text = DateUtils.formatDate(picked);
+        updatedSubBranch['date_of_registration'] =
+            DateUtils.getUTCDateEpoch(picked);
       });
   }
 

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/screens/settings/editors/EditSubBranchProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 
 class SubBranchProfileWidget extends StatelessWidget {
-  SubBranchProfileWidget(
-      this._scaffoldKey, this.financeID, this.branchName, this.subBranch);
+  SubBranchProfileWidget(this.financeID, this.branchName, this.subBranch);
 
-  final GlobalKey<ScaffoldState> _scaffoldKey;
   final String financeID;
   final String branchName;
   final SubBranch subBranch;
@@ -56,10 +55,9 @@ class SubBranchProfileWidget extends StatelessWidget {
           ),
           ListTile(
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: subBranch.subBranchName,
               decoration: InputDecoration(
-                hintText: 'Sub Branch Name',
+                hintText: 'SubBranch Name',
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -67,14 +65,15 @@ class SubBranchProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             title: TextFormField(
-              keyboardType: TextInputType.text,
-              initialValue: subBranch.dateOfRegistration,
+              initialValue: subBranch.dateOfRegistration != null
+                  ? DateUtils.formatDate(DateTime.fromMillisecondsSinceEpoch(
+                      subBranch.dateOfRegistration))
+                  : "",
               decoration: InputDecoration(
                 hintText: 'Registered Date',
                 fillColor: CustomColors.mfinWhite,
@@ -83,14 +82,17 @@ class SubBranchProfileWidget extends StatelessWidget {
                     new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                suffixIcon: Icon(
+                  Icons.date_range,
+                  size: 35,
+                  color: CustomColors.mfinBlue,
+                ),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: subBranch.contactNumber,
               decoration: InputDecoration(
                 hintText: 'Contact Number',
@@ -101,13 +103,11 @@ class SubBranchProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             title: new TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: subBranch.emailID,
               decoration: InputDecoration(
                 hintText: 'SubBranch EmailID',
@@ -118,13 +118,11 @@ class SubBranchProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinWhite)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             title: TextFormField(
-              keyboardType: TextInputType.text,
               initialValue: subBranch.address.toString(),
               maxLines: 4,
               decoration: InputDecoration(
@@ -136,8 +134,7 @@ class SubBranchProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
         ],

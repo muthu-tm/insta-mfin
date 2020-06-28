@@ -24,7 +24,7 @@ class SubBranch {
   @JsonKey(name: 'admins', nullable: true)
   List<int> admins;
   @JsonKey(name: 'date_of_registration', nullable: true)
-  String dateOfRegistration;
+  int dateOfRegistration;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
@@ -54,7 +54,7 @@ class SubBranch {
     }
   }
 
-  setDOR(String date) {
+  setDOR(int date) {
     this.dateOfRegistration = date;
   }
 

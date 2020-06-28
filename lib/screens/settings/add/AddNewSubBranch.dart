@@ -21,30 +21,33 @@ class AddSubBranch extends StatefulWidget {
 
 class _AddSubBranchState extends State<AddSubBranch> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FocusNode myFocusNode = FocusNode();
 
   DateTime selectedDate = DateTime.now();
-  var dateFormatter = DateUtils.dateFormatter;
   String subBranchName;
   String registeredID = "";
-  String registeredDate = "";
   String contactNumber = "";
   String emailID = "";
 
   Address address = new Address();
 
   @override
+  void initState() {
+    super.initState();
+    this._date.text = DateUtils.formatDate(DateTime.now());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Add Sub Branch'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },
@@ -98,19 +101,32 @@ class _AddSubBranchState extends State<AddSubBranch> {
                 ),
                 RowHeaderText(textName: "Registered Date"),
                 ListTile(
-                  title: new TextFormField(
-                    controller: _date,
-                    decoration: InputDecoration(
-                      hintText: DateUtils.getCurrentFormattedDate(),
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
+                  title: GestureDetector(
                     onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: _date,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            size: 35,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 RowHeaderText(textName: "Contact Number"),
@@ -190,7 +206,6 @@ class _AddSubBranchState extends State<AddSubBranch> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        this.registeredDate = DateUtils.formatDate(picked);
         _date.value = TextEditingValue(text: DateUtils.formatDate(picked));
       });
   }
@@ -208,7 +223,7 @@ class _AddSubBranchState extends State<AddSubBranch> {
           contactNumber,
           emailID,
           address,
-          registeredDate);
+          DateUtils.getUTCDateEpoch(selectedDate));
 
       if (!result['is_success']) {
         Navigator.pop(context);

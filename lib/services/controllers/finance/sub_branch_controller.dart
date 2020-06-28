@@ -14,7 +14,7 @@ class SubBranchController {
       String contactNumber,
       String email,
       Address address,
-      String dateOfRegistration) async {
+      int dateOfRegistration) async {
     try {
       SubBranch newSubBranch = SubBranch();
       if (await newSubBranch.isExist(financeID, branchName, subBranchName)) {
