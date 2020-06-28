@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -9,9 +10,9 @@ import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
 class EditCustomerProfile extends StatefulWidget {
-  EditCustomerProfile(this.customer);
+  EditCustomerProfile(this.cust);
 
-  final Map<String, dynamic> customer;
+  final Customer cust;
 
   @override
   _EditCustomerProfileState createState() => _EditCustomerProfileState();
@@ -32,26 +33,26 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
   void initState() {
     super.initState();
 
-    gender = widget.customer['gender'];
+    gender = widget.cust.gender;
 
     _date.value = TextEditingValue(
-      text: DateUtils.getFormattedDateFromEpoch(widget.customer['joined_at']),
+      text: DateUtils.getFormattedDateFromEpoch(widget.cust.joinedAt),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.customer);
-    updatedCustomer['mobile_number'] = widget.customer['mobile_number'];
+    updatedCustomer['mobile_number'] = widget.cust.mobileNumber;
 
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Edit - ${widget.customer['customer_name']}'),
+        title: Text('Edit - ${widget.cust.name}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },
@@ -112,7 +113,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                               child: TextFormField(
                                 readOnly: true,
                                 initialValue:
-                                    widget.customer['mobile_number'].toString(),
+                                    widget.cust.mobileNumber.toString(),
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Phone number',
@@ -141,7 +142,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
-                                initialValue: widget.customer['customer_name'],
+                                initialValue: widget.cust.name,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Customer name',
@@ -171,7 +172,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                             Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
-                                initialValue: widget.customer['customer_id'],
+                                initialValue: widget.cust.customerID,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Customer ID',
@@ -202,88 +203,88 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         ),
                       ),
                       Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.only(top: 5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          border: Border.all(
-                              color: CustomColors.mfinGrey, width: 1.0),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              'Gender',
-                              style: TextStyle(
-                                color: CustomColors.mfinBlue,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.only(top: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            border: Border.all(
+                                color: CustomColors.mfinGrey, width: 1.0),
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                'Gender',
+                                style: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
                               ),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Flexible(
-                                  flex: 2,
-                                  child: RadioListTile(
-                                    title: Text(
-                                      "\u{1F466}",
+                              Row(
+                                children: <Widget>[
+                                  Flexible(
+                                    flex: 2,
+                                    child: RadioListTile(
+                                      title: Text(
+                                        "\u{1F466}",
+                                        style: TextStyle(
+                                            color: CustomColors.mfinBlue),
+                                      ),
+                                      value: "Male",
+                                      selected: gender.contains("Male"),
+                                      groupValue: gender,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          gender = val;
+                                          updatedCustomer['gender'] = val;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: Text(
+                                      'Male',
                                       style: TextStyle(
-                                          color: CustomColors.mfinBlue),
-                                    ),
-                                    value: "Male",
-                                    selected: gender.contains("Male"),
-                                    groupValue: gender,
-                                    onChanged: (val) {
-                                     setState(() {
-                                        gender = val;
-                                        updatedCustomer['gender'] = val;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 1,
-                                  child: Text(
-                                    'Male',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: CustomColors.mfinBlue,
+                                        fontSize: 18,
+                                        color: CustomColors.mfinBlue,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Flexible(
-                                  flex: 2,
-                                  child: RadioListTile(
-                                    title: Text(
-                                      "\u{1F467}",
+                                  Flexible(
+                                    flex: 2,
+                                    child: RadioListTile(
+                                      title: Text(
+                                        "\u{1F467}",
+                                        style: TextStyle(
+                                            color: CustomColors.mfinBlue),
+                                      ),
+                                      value: "Female",
+                                      selected: gender.contains("Female"),
+                                      groupValue: gender,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          gender = val;
+                                          updatedCustomer['gender'] = val;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Text(
+                                      'Female',
                                       style: TextStyle(
-                                          color: CustomColors.mfinBlue),
-                                    ),
-                                    value: "Female",
-                                    selected: gender.contains("Female"),
-                                    groupValue: gender,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        gender = val;
-                                        updatedCustomer['gender'] = val;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 2,
-                                  child: Text(
-                                    'Female',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: CustomColors.mfinBlue,
+                                        fontSize: 18,
+                                        color: CustomColors.mfinBlue,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -322,8 +323,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                             Padding(padding: EdgeInsets.only(left: 10)),
                             Flexible(
                               child: TextFormField(
-                                initialValue:
-                                    widget.customer['customer_profession'],
+                                initialValue: widget.cust.profession,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Profession',
@@ -361,7 +361,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
-                                initialValue: widget.customer['age'].toString(),
+                                initialValue: widget.cust.age.toString(),
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Age',
@@ -394,7 +394,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                             Flexible(
                               child: TextFormField(
                                 initialValue:
-                                    widget.customer['guarantied_by'].toString(),
+                                    widget.cust.guarantiedBy.toString(),
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
                                   labelText: 'Guarantee by',
@@ -430,9 +430,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                   ),
                 ),
                 AddressWidget(
-                    "Address Details",
-                    Address.fromJson(widget.customer['address']),
-                    updatedAddress),
+                    "Address Details", widget.cust.address, updatedAddress),
               ],
             ),
           ),
@@ -444,14 +442,12 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate:
-          DateTime.fromMillisecondsSinceEpoch(widget.customer['joined_at']),
+      initialDate: DateTime.fromMillisecondsSinceEpoch(widget.cust.joinedAt),
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
     if (picked != null &&
-        picked !=
-            DateTime.fromMillisecondsSinceEpoch(widget.customer['joined_at']))
+        picked != DateTime.fromMillisecondsSinceEpoch(widget.cust.joinedAt))
       setState(
         () {
           updatedCustomer['joined_at'] = DateUtils.getUTCDateEpoch(picked);
@@ -466,15 +462,6 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
     updatedCustomer['guarantied_by'] = int.parse(guranteeNumber);
   }
 
-  setSelectedRadio(int val) {
-    this.groupValue = val;
-    if (val == 0) {
-      updatedCustomer['gender'] = "Male";
-    } else {
-      updatedCustomer['gender'] = "Female";
-    }
-  }
-
   Future<void> _submit() async {
     final FormState form = _formKey.currentState;
 
@@ -482,8 +469,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
       CustomDialogs.actionWaiting(context, "Updating Profile");
       CustController _cc = CustController();
       updatedCustomer['address'] = updatedAddress.toJson();
-      var result = await _cc.updateCustomer(
-          updatedCustomer, widget.customer['mobile_number']);
+      var result =
+          await _cc.updateCustomer(updatedCustomer, widget.cust.mobileNumber);
 
       if (!result['is_success']) {
         Navigator.pop(context);

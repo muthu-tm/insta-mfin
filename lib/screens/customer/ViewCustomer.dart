@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsListWidget.dart';
@@ -108,7 +107,7 @@ class ViewCustomer extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  EditCustomerProfile(customer.toJson()),
+                                  EditCustomerProfile(customer),
                               settings: RouteSettings(
                                   name: '/customers/profile/edit'),
                             ),

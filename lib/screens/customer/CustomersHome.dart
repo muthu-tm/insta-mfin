@@ -4,6 +4,7 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/notification_icon.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
+import 'package:instamfin/screens/customer/widgets/AllCustomerTab.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListWidget.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -160,11 +161,11 @@ class CustomersHome extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              CustomerListWidget(_scaffoldKey, 'All Customers', 0, true),
-              CustomerListWidget(_scaffoldKey, 'New Customers', 0, false),
-              CustomerListWidget(_scaffoldKey, 'Active Customers', 1, false),
-              CustomerListWidget(_scaffoldKey, 'Pending Customers', 2, false),
-              CustomerListWidget(_scaffoldKey, 'Settled Customers', 3, false),
+              AllCustomerTab(_scaffoldKey, 'All Customers'),
+              CustomerListWidget(_scaffoldKey, 'New Customers', 0),
+              CustomerListWidget(_scaffoldKey, 'Active Customers', 1),
+              CustomerListWidget(_scaffoldKey, 'Pending Customers', 2),
+              CustomerListWidget(_scaffoldKey, 'Settled Customers', 3),
             ],
           ),
           bottomNavigationBar: bottomBar(context),

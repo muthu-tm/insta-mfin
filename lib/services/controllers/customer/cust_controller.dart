@@ -64,8 +64,7 @@ class CustController {
     }
   }
 
-  Stream<List<Customer>> streamCustomersByStatus(
-      int status, bool fetchAll) async* {
+  Stream<List<Customer>> streamCustomersByStatus(int status) async* {
     try {
       Stream<QuerySnapshot> stream = Customer().streamAllCustomers();
 
@@ -75,22 +74,13 @@ class CustController {
 
       List<Customer> customers = [];
 
-      if (fetchAll) {
-        await for (var event in stream) {
-          for (var doc in event.documents) {
-            customers.add(Customer.fromJson(doc.data));
-          }
-          yield customers;
+      await for (var event in stream) {
+        for (var doc in event.documents) {
+          Customer cust = Customer.fromJson(doc.data);
+          if (status == await cust.getStatus(cust.mobileNumber))
+            customers.add(cust);
         }
-      } else {
-        await for (var event in stream) {
-          for (var doc in event.documents) {
-            Customer cust = Customer.fromJson(doc.data);
-            if (status == await cust.getStatus(cust.mobileNumber))
-              customers.add(cust);
-          }
-          yield customers;
-        }
+        yield customers;
       }
     } catch (err) {
       throw err;
