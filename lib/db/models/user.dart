@@ -30,7 +30,7 @@ class User extends Model {
   @JsonKey(name: 'profile_path', defaultValue: "")
   String profilePath;
   @JsonKey(name: 'date_of_birth', defaultValue: "")
-  String dateOfBirth;
+  int dateOfBirth;
   @JsonKey(name: 'address', nullable: true)
   Address address;
   @JsonKey(name: 'preferences')
@@ -74,8 +74,7 @@ class User extends Model {
   }
 
   setDOB(DateTime date) {
-    var formatter = DateUtils.dateFormatter;
-    this.dateOfBirth = formatter.format(date);
+    this.dateOfBirth = DateUtils.getUTCDateEpoch(date);
   }
 
   setLastSignInTime(DateTime dateTime) {

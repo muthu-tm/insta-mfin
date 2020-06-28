@@ -41,8 +41,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         borderSide: BorderSide(color: CustomColors.mfinGrey),
                       ),
                     ),
-                    enabled: false,
-                    autofocus: false,
+                    readOnly: true,
                   ),
                 ),
                 ListTile(
@@ -61,8 +60,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         borderSide: BorderSide(color: CustomColors.mfinGrey),
                       ),
                     ),
-                    enabled: false,
-                    autofocus: false,
+                    readOnly: true,
                   ),
                 ),
                 ListTile(
@@ -81,8 +79,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: CustomColors.mfinGrey)),
                     ),
-                    enabled: false,
-                    autofocus: false,
+                    readOnly: true,
                   ),
                 ),
               ];

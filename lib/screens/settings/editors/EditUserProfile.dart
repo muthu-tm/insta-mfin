@@ -10,9 +10,6 @@ import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
-
-final UserService _userService = locator<UserService>();
 
 class EditUserProfile extends StatefulWidget {
   @override
@@ -20,7 +17,7 @@ class EditUserProfile extends StatefulWidget {
 }
 
 class _EditUserProfileState extends State<EditUserProfile> {
-  final User user = _userService.cachedUser;
+  final User user = UserController().getCurrentUser();
   final Map<String, dynamic> updatedUser = new Map();
   final Address updatedAddress = new Address();
 
@@ -39,6 +36,11 @@ class _EditUserProfileState extends State<EditUserProfile> {
   void initState() {
     super.initState();
     gender = user.gender;
+    if (user.dateOfBirth != null)
+      this._date.text = DateUtils.formatDate(
+          DateTime.fromMillisecondsSinceEpoch(user.dateOfBirth));
+    else
+      this._date.text = DateUtils.formatDate(DateTime.now());
   }
 
   @override
@@ -165,25 +167,32 @@ class _EditUserProfileState extends State<EditUserProfile> {
                 ),
                 RowHeaderText(textName: 'Date Of Birth'),
                 ListTile(
-                  title: new TextFormField(
-                    decoration: InputDecoration(
-                      hintText: DateUtils.formatDate(selectedDate),
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                      suffixIcon: Icon(
-                        Icons.perm_contact_calendar,
-                        color: CustomColors.mfinBlue,
-                        size: 35.0,
+                  title: GestureDetector(
+                    onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: _date,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinWhite)),
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.perm_contact_calendar,
+                            size: 35,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
                       ),
                     ),
-                    enabled: false,
-                    autofocus: false,
-                    onTap: () => _selectDate(context),
                   ),
                 ),
                 RowHeaderText(textName: 'Gender'),
@@ -243,6 +252,8 @@ class _EditUserProfileState extends State<EditUserProfile> {
     updatedUser['emailID'] = emailID;
   }
 
+  TextEditingController _date = TextEditingController();
+
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -253,7 +264,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        updatedUser['date_of_birth'] = DateUtils.formatDate(picked);
+        updatedUser['date_of_birth'] = DateUtils.getUTCDateEpoch(picked);
       });
   }
 
@@ -261,7 +272,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Updating Profile!");
+      CustomDialogs.actionWaiting(context, "Updating YOU!");
       updatedUser['address'] = updatedAddress.toJson();
       var result = await _userController.updateUser(updatedUser);
 

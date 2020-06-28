@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/settings/editors/EditUSerProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class UserProfileWidget extends StatelessWidget {
@@ -62,11 +63,11 @@ class UserProfileWidget extends StatelessWidget {
           ),
           ListTile(
             leading: SizedBox(
-              width: 90,
+              width: 95,
               child: Text(
                 "NAME",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinGrey),
@@ -84,17 +85,16 @@ class UserProfileWidget extends StatelessWidget {
                   color: CustomColors.mfinGrey,
                 )),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             leading: SizedBox(
-              width: 90,
+              width: 95,
               child: Text(
                 "CONTACT",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinGrey),
@@ -110,17 +110,16 @@ class UserProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             leading: SizedBox(
-              width: 90,
+              width: 95,
               child: Text(
                 "PASSWORD",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinGrey),
@@ -136,18 +135,22 @@ class UserProfileWidget extends StatelessWidget {
                     new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                suffixIcon: Icon(
+                  Icons.visibility_off,
+                  color: CustomColors.mfinBlue,
+                  size: 35.0,
+                ),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             leading: SizedBox(
-              width: 90,
+              width: 95,
               child: Text(
                 "GENDER",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinGrey),
@@ -163,17 +166,16 @@ class UserProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             leading: SizedBox(
-              width: 90,
+              width: 95,
               child: Text(
                 "EMAILID",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinGrey),
@@ -189,24 +191,26 @@ class UserProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinWhite)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             leading: SizedBox(
-              width: 90,
+              width: 95,
               child: Text(
                 "DOB",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinGrey),
               ),
             ),
             title: TextFormField(
-              initialValue: user.dateOfBirth,
+              initialValue: user.dateOfBirth == null
+                  ? ''
+                  : DateUtils.formatDate(
+                      DateTime.fromMillisecondsSinceEpoch(user.dateOfBirth)),
               decoration: InputDecoration(
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
@@ -214,18 +218,22 @@ class UserProfileWidget extends StatelessWidget {
                     new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                suffixIcon: Icon(
+                  Icons.perm_contact_calendar,
+                  size: 35,
+                  color: CustomColors.mfinBlue,
+                ),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           ),
           ListTile(
             leading: SizedBox(
-              width: 90,
+              width: 95,
               child: Text(
                 "ADDRESS",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinGrey),
@@ -242,8 +250,7 @@ class UserProfileWidget extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              enabled: false,
-              autofocus: false,
+              readOnly: true,
             ),
           )
         ],

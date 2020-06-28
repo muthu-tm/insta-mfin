@@ -11,7 +11,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..gender = json['gender'] as String ?? ''
     ..profilePathOrg = json['profile_path_org'] as String ?? ''
     ..profilePath = json['profile_path'] as String ?? ''
-    ..dateOfBirth = json['date_of_birth'] as String ?? ''
+    ..dateOfBirth = json['date_of_birth'] as int
     ..address = json['address'] == null
         ? new Address()
         : Address.fromJson(json['address'] as Map<String, dynamic>)
@@ -41,28 +41,19 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'guid': instance.guid,
-      'user_name': instance.name == null ? '' : instance.name,
+      'user_name': instance.name ?? '',
       'mobile_number': instance.mobileNumber,
-      'emailID': instance.emailID == null ? '' : instance.emailID,
+      'emailID': instance.emailID ?? '',
       'password': instance.password,
-      'gender': instance.gender == null ? '' : instance.gender,
-      'profile_path_org': instance.profilePathOrg == null
-          ? ''
-          : instance.profilePathOrg,
-      'profile_path': instance.profilePath == null
-          ? ''
-          : instance.profilePath,
-      'date_of_birth': instance.dateOfBirth == null ? '' : instance.dateOfBirth,
+      'gender': instance.gender ?? '',
+      'profile_path_org': instance.profilePathOrg ?? '',
+      'profile_path': instance.profilePath ?? '',
+      'date_of_birth': instance.dateOfBirth,
       'address': instance.address?.toJson(),
-      'preferences': instance.preferences == null
-          ? UserPreferences().toJson()
-          : instance.preferences,
-      'primary_finance':
-          instance.primaryFinance == null ? '' : instance.primaryFinance,
-      'primary_branch':
-          instance.primaryBranch == null ? '' : instance.primaryBranch,
-      'primary_sub_branch':
-          instance.primarySubBranch == null ? '' : instance.primarySubBranch,
+      'preferences': instance.preferences ?? UserPreferences().toJson(),
+      'primary_finance': instance.primaryFinance ?? '',
+      'primary_branch': instance.primaryBranch ?? '',
+      'primary_sub_branch': instance.primarySubBranch ?? '',
       'last_signed_in_at': instance.lastSignInTime,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,

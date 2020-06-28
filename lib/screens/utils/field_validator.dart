@@ -36,8 +36,8 @@ class FieldValidator {
       String passkey, Function(String) setPasskeyState) {
     if (passkey.isEmpty) {
       return 'Password is required';
-    } else if (passkey.length < 6) {
-      return 'Password must be at least 6 characters long';
+    } else if (passkey.length != 4) {
+      return 'Password must be 4 characters long';
     }
 
     setPasskeyState(passkey);
