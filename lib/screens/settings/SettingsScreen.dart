@@ -5,6 +5,7 @@ import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/settings/AppSettings.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
+import 'package:instamfin/screens/settings/SettingsPreferences.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -58,7 +59,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             Padding(padding: EdgeInsets.all(05.0)),
                             Text(
-                              "Finance Settings",
+                              "Finance",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -98,7 +99,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             Padding(padding: EdgeInsets.all(05.0)),
                             Text(
-                              "Profile Settings",
+                              "Profile",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -125,18 +126,27 @@ class SettingsScreen extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.30,
                       height: 110,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SettingsPreferences(),
+                              settings:
+                                  RouteSettings(name: '/settings/preferences'),
+                            ),
+                          );
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Icon(
-                              Icons.notifications_active,
+                              Icons.palette,
                               size: 45.0,
                               color: CustomColors.mfinButtonGreen,
                             ),
                             Padding(padding: EdgeInsets.all(5.0)),
                             Text(
-                              "Notification Settings",
+                              "Preferences",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,

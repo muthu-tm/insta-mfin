@@ -137,13 +137,16 @@ class UserController {
     }
   }
 
-  Future updateTransactionSettings(Map<String, dynamic> settingsJSON) async {
+  Future updateTransactionSettings(
+      Map<String, dynamic> userPref, Map<String, dynamic> accPref) async {
     try {
-      User user = User(getCurrentUserID());
-      await user.update({'preferences': settingsJSON});
+      await getCurrentUser().update({'preferences': userPref});
 
-      _userService.cachedUser.preferences =
-          UserPreferences.fromJson(settingsJSON);
+      await getCurrentUser()
+          .getFinanceDocReference()
+          .updateData({'preferences': accPref});
+
+      _userService.cachedUser.preferences = UserPreferences.fromJson(userPref);
 
       return CustomResponse.getSuccesReponse(
           "Successfully updated preferences");

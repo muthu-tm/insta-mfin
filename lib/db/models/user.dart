@@ -125,12 +125,13 @@ class User extends Model {
     return this.mobileNumber.toString();
   }
 
-  create() async {
+  Future<User> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
 
-    dynamic result = await super.add(this.toJson());
-    print(result);
+    await super.add(this.toJson());
+
+    return this;
   }
 
   Future<User> replace() async {
