@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -179,7 +178,7 @@ class _AppSettingsState extends State<AppSettings> {
     CustomDialogs.actionWaiting(context, "Updating Preferences!");
     UserController _uc = UserController();
 
-    var result = await _uc.updateTransactionSettings(preferencesJSON);
+    var result = await _uc.updateTransactionSettings(preferencesJSON, {});
     if (!result['is_success']) {
       Navigator.pop(context);
       _scaffoldKey.currentState

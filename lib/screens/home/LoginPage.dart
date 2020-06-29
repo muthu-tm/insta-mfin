@@ -289,13 +289,21 @@ class _LoginPageState extends State<LoginPage> {
       final SharedPreferences prefs = await _prefs;
       prefs.setString("mobile_number", number);
 
-      User(int.parse(number)).update({'guid': authResult.user.uid});
-
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (BuildContext context) => UserFinanceSetup()),
-        (Route<dynamic> route) => false,
-      );
+      var result = await _authController.signInWithMobileNumber(_user);
+      
+      if (!result['is_success']) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "Unable to Login, Something went wrong!", 2));
+        _scaffoldKey.currentState
+            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => UserFinanceSetup()),
+          (Route<dynamic> route) => false,
+        );
+      }
     }).catchError((error) {
       Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(

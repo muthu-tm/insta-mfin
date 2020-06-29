@@ -25,10 +25,10 @@ class AuthService {
       user.setPassword(password);
       user.setName(name);
       user.setGuid(uid);
-      await user.create();
+      user = await user.create();
 
       Analytics.signupEvent(mobileNumber.toString());
-      return User.fromJson(await user.getByID(mobileNumber.toString()));
+      return user;
     } catch (err) {
       Analytics.reportError({
         "type": 'sign_up_error',

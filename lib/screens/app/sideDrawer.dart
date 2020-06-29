@@ -11,6 +11,9 @@ import 'package:instamfin/screens/reports/ReportsHome.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/statistics/StatisticsHome.dart';
+import 'package:instamfin/screens/transaction/ExpenseHome.dart';
+import 'package:instamfin/screens/transaction/JournalEntryHome.dart';
+import 'package:instamfin/screens/transaction/books/BooksHome.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
@@ -136,12 +139,13 @@ Widget openDrawer(BuildContext context) {
         new ListTile(
           leading: new Icon(Icons.home, color: CustomColors.mfinButtonGreen),
           title: new Text('Home'),
-          onTap: () => Navigator.push(
+          onTap: () => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => Home(),
               settings: RouteSettings(name: '/home'),
             ),
+            (Route<dynamic> route) => false,
           ),
         ),
         new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
@@ -151,14 +155,37 @@ Widget openDrawer(BuildContext context) {
               new Icon(Icons.content_copy, color: CustomColors.mfinButtonGreen),
           children: <Widget>[
             new ListTile(
-              title: new Text('Make a Transaction'),
+              title: new Text('My NoteBooks'),
               trailing: new Icon(Icons.keyboard_arrow_right),
-              onTap: () => null,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BooksHome(),
+                  settings: RouteSettings(name: '/transactions/books'),
+                ),
+              ),
             ),
             new ListTile(
-              title: new Text('View Transactions'),
+              title: new Text('Expenses'),
               trailing: new Icon(Icons.keyboard_arrow_right),
-              onTap: () => null,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExpenseHome(),
+                  settings: RouteSettings(name: '/transactions/expenses'),
+                ),
+              ),
+            ),
+            new ListTile(
+              title: new Text('Journals'),
+              trailing: new Icon(Icons.keyboard_arrow_right),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => JournalEntryHome(),
+                  settings: RouteSettings(name: '/transactions/journals'),
+                ),
+              ),
             ),
           ],
         ),
@@ -196,24 +223,26 @@ Widget openDrawer(BuildContext context) {
           leading:
               new Icon(Icons.description, color: CustomColors.mfinButtonGreen),
           title: new Text('Reports'),
-          onTap: () => Navigator.push(
+          onTap: () => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => ReportsHome(),
               settings: RouteSettings(name: '/reports'),
             ),
+            (Route<dynamic> route) => false,
           ),
         ),
         new ListTile(
           leading:
               new Icon(Icons.assessment, color: CustomColors.mfinButtonGreen),
           title: new Text('Statistics'),
-          onTap: () => Navigator.push(
+          onTap: () => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => StatisticsHome(),
               settings: RouteSettings(name: '/statistics'),
             ),
+            (Route<dynamic> route) => false,
           ),
         ),
         new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),

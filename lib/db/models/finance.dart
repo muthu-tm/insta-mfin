@@ -1,6 +1,7 @@
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/accounts_data.dart';
+import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -27,6 +28,8 @@ class Finance extends Model {
   Address address;
   @JsonKey(name: 'accounts_data', nullable: true)
   AccountsData accountsData;
+  @JsonKey(name: 'preferences')
+  AccountPreferences preferences;
   @JsonKey(name: 'date_of_registration', nullable: true)
   int dateOfRegistration;
   @JsonKey(name: 'profile_path_org', defaultValue: "")

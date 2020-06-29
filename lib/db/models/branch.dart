@@ -4,6 +4,7 @@ import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/accounts_data.dart';
+import 'package:instamfin/db/models/account_preferences.dart';
 
 part 'branch.g.dart';
 
@@ -17,6 +18,8 @@ class Branch {
   Address address;
   @JsonKey(name: 'accounts_data', nullable: true)
   AccountsData accountsData;
+  @JsonKey(name: 'preferences')
+  AccountPreferences preferences;
   @JsonKey(name: 'email', nullable: true)
   String emailID;
   @JsonKey(name: 'contact_number', nullable: true)

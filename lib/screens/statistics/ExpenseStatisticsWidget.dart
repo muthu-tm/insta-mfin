@@ -144,6 +144,7 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                                     DataLabelSettings(isVisible: true),
                                 sizeValueMapper: (EData e, _) =>
                                     (e.amount.toString().length * 0.5),
+                                name: 'Expense',
                                 gradient: LinearGradient(
                                   colors: [
                                     CustomColors.mfinLightGrey,
