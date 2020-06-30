@@ -31,15 +31,16 @@ Widget contactAndSupportDialog() {
           Divider(
             color: CustomColors.mfinButtonGreen,
           ),
-          SizedBox(height: 20),
-          Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Material(
-              elevation: 10.0,
-              child: Image.asset("images/icons/logo.png", height: 50),
-            ),
-          ),
           SizedBox(height: 10),
+          ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.asset(
+                "images/icons/logo.png",
+                height: 50,
+                width: 50,
+              ),
+            ),
+          SizedBox(height: 15),
           Text(
             "Get Lost? Need Some Help?",
             style: TextStyle(
@@ -48,7 +49,7 @@ Widget contactAndSupportDialog() {
                 fontWeight: FontWeight.bold),
           ),
           Text(
-            "We are happy to help you",
+            "We are happy to help you!",
             style: TextStyle(
                 color: CustomColors.mfinPositiveGreen,
                 fontSize: 14.0,

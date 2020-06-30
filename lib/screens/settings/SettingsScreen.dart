@@ -179,14 +179,17 @@ class SettingsScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Icon(
-                              Icons.phonelink_setup,
-                              size: 45.0,
-                              color: CustomColors.mfinButtonGreen,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.asset(
+                                "images/icons/logo.png",
+                                height: 45,
+                                width: 45,
+                              ),
                             ),
                             Padding(padding: EdgeInsets.all(05.0)),
                             Text(
-                              "App Settings",
+                              "iFIN",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: 'Georgia',
