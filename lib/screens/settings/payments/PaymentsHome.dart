@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/settings/payments/PlansWidget.dart';
 import 'package:instamfin/screens/settings/payments/SubscriptionStatusWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -24,6 +25,7 @@ class PaymentsHome extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SubscriptionStatusWidget(_user),
+                PlansWidget(),
               ]),
         ),
       ),
