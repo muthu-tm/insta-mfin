@@ -4,6 +4,7 @@ import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
+import 'package:instamfin/screens/settings/payments/PaymentsHome.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class AppSettings extends StatelessWidget {
@@ -18,6 +19,15 @@ class AppSettings extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentsHome(),
+                      settings: RouteSettings(name: '/settings/app/payments'),
+                    ),
+                  );
+                },
                 leading: Icon(
                   Icons.payment,
                   size: 40.0,
