@@ -12,6 +12,10 @@ part 'sub_branch.g.dart';
 class SubBranch {
   Branch branch = Branch();
 
+  @JsonKey(name: 'finance_id', nullable: true)
+  String financeID;
+  @JsonKey(name: 'branch_name', nullable: true)
+  String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
   @JsonKey(name: 'address', nullable: true)
@@ -36,6 +40,14 @@ class SubBranch {
   DateTime updatedAt;
 
   SubBranch();
+
+  setFinanceID(String financeID) {
+    this.financeID = financeID;
+  }
+
+  setBranchName(String branchName) {
+    this.branchName = branchName;
+  }
 
   setSubBranchName(String subBranchName) {
     this.subBranchName = subBranchName;
@@ -105,6 +117,8 @@ class SubBranch {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.accountsData = new AccountsData();
+    this.financeID = financeID;
+    this.branchName = branchName;
 
     await getDocumentReference(financeID, branchName, this.subBranchName)
         .setData(this.toJson());

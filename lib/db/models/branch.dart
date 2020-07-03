@@ -12,6 +12,8 @@ part 'branch.g.dart';
 class Branch {
   Finance finance = Finance();
 
+  @JsonKey(name: 'finance_id', nullable: true)
+  String financeID;
   @JsonKey(name: 'branch_name', nullable: true)
   String branchName;
   @JsonKey(name: 'address', nullable: true)
@@ -38,6 +40,10 @@ class Branch {
   DateTime updatedAt;
 
   Branch();
+
+  setFinanceID(String financeID) {
+    this.financeID = financeID;
+  }
 
   setBranchName(String branchName) {
     this.branchName = branchName;
@@ -114,6 +120,7 @@ class Branch {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.accountsData = new AccountsData();
+    this.financeID = financeID;
 
     await getDocumentReference(financeID, this.branchName)
         .setData(this.toJson());

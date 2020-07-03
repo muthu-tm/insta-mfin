@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/plans.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/settings/payments/SubscriptionStatusWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class PaymentsHome extends StatefulWidget {
   @override
@@ -18,7 +16,6 @@ class _PaymentsHomeState extends State<PaymentsHome> {
 
   @override
   Widget build(BuildContext context) {
-    User _user = UserController().getCurrentUser();
 
     return Scaffold(
       backgroundColor: CustomColors.mfinWhite,
@@ -61,7 +58,8 @@ class _PaymentsHomeState extends State<PaymentsHome> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SubscriptionStatusWidget(_user),
+            SubscriptionStatusWidget(),
+            Padding(padding: EdgeInsets.only(top: 20)),
             getPlansWidget(),
             Padding(padding: EdgeInsets.only(top: 35, bottom: 35)),
           ],

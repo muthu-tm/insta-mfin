@@ -2,6 +2,8 @@ part of 'sub_branch.dart';
 
 SubBranch _$SubBranchFromJson(Map<String, dynamic> json) {
   return SubBranch()
+    ..financeID = json['finance_id'] as String
+    ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
     ..address = json['address'] == null
         ? new Address()
@@ -16,7 +18,8 @@ SubBranch _$SubBranchFromJson(Map<String, dynamic> json) {
         : AccountsData.fromJson(json['accounts_data'] as Map<String, dynamic>)
     ..preferences = json['preferences'] == null
         ? new AccountPreferences()
-        : AccountPreferences.fromJson(json['preferences'] as Map<String, dynamic>)
+        : AccountPreferences.fromJson(
+            json['preferences'] as Map<String, dynamic>)
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -32,6 +35,8 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$SubBranchToJson(SubBranch instance) => <String, dynamic>{
+      'finance_id': instance.financeID,
+      'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
       'address': instance.address?.toJson(),
       'contact_number': instance.contactNumber ?? '',

@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/subscriptions.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
 class SubscriptionStatusWidget extends StatelessWidget {
-  SubscriptionStatusWidget(this._user);
-
-  final User _user;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Subscriptions>(
-      future: Subscriptions().getSubscriptions(
-          _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
+      future: Subscriptions().getSubscriptions(),
       builder: (BuildContext context, AsyncSnapshot<Subscriptions> snapshot) {
         Widget widget;
 
