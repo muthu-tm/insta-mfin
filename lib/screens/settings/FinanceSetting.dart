@@ -6,33 +6,29 @@ import 'package:instamfin/screens/settings/widgets/FinanceBranchWidget.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceProfileWidget.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceUsersWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class FinanceSetting extends StatelessWidget {
-  final UserService _userService = locator<UserService>();
 
   @override
   Widget build(BuildContext context) {
-    User _user = _userService.cachedUser;
+    User _user = UserController().getCurrentUser();
 
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Finance Settings'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
-        child: new Container(
-          child: new Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                // TODO: if the user has empty financeID, alert him/her to select finance
-
-                FinanceProfileWidget(_user.primaryFinance),
-                FinanceBranchWidget(_user.primaryFinance),
-                FinanceUsersWidget(_user.primaryFinance)
-              ]),
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              FinanceProfileWidget(_user.primaryFinance),
+              FinanceBranchWidget(_user.primaryFinance),
+              FinanceUsersWidget(_user.primaryFinance)
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: bottomBar(context),

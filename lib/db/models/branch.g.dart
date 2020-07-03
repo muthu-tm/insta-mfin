@@ -2,6 +2,7 @@ part of 'branch.dart';
 
 Branch _$BranchFromJson(Map<String, dynamic> json) {
   return Branch()
+    ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..address = json['address'] == null
         ? new Address()
@@ -34,7 +35,7 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
-      'finance': instance.finance?.toJson(),
+      'finance_id': instance.financeID,
       'branch_name': instance.branchName ?? '',
       'address': instance.address?.toJson(),
       'contact_number': instance.contactNumber ?? '',

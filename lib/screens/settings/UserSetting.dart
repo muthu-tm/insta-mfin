@@ -5,14 +5,13 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
 import 'package:instamfin/screens/settings/widgets/UserProfileWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class UserSetting extends StatelessWidget {
-  final UserService _userService = locator<UserService>();
 
   @override
   Widget build(BuildContext context) {
-    User _user = _userService.cachedUser;
+    User _user = UserController().getCurrentUser();
 
     return new Scaffold(
       backgroundColor: CustomColors.mfinWhite,
@@ -20,10 +19,9 @@ class UserSetting extends StatelessWidget {
         title: Text('Profile Settings'),
         backgroundColor: CustomColors.mfinBlue,
       ),
-      body: new Center(
-        child: SingleChildScrollView(
-          child: new Container(
-            child: new Column(
+      body: SingleChildScrollView(
+          child: Container(
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   PrimaryFinanceWidget("Finance Details", true),
@@ -31,7 +29,6 @@ class UserSetting extends StatelessWidget {
                 ]),
           ),
         ),
-      ),
       bottomNavigationBar: bottomBar(context),
     );
   }

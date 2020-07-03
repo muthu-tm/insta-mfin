@@ -8,8 +8,6 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class FinanceController {
-  BranchController _branchController = BranchController();
-
   Future createFinance(String name, String registeredID, String contactNumber,
       String email, Address address, int dateOfRegistration) async {
     try {
@@ -157,6 +155,7 @@ class FinanceController {
   Future<void> updateBranchAdmins(bool isAdd, List<Branch> branches,
       List<int> userList, String financeID) async {
     if (branches != null) {
+      BranchController _branchController = BranchController();
       for (var index = 0; index < branches.length; index++) {
         Branch branch = branches[index];
         String branchName = branch.branchName;
