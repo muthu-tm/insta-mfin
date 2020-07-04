@@ -84,7 +84,7 @@ class FinanceUsersWidget extends StatelessWidget {
                           CustomDialogs.confirm(
                             context,
                             "Confirm",
-                            "Are you sure to remove $userID from $financeName}",
+                            "Are you sure to remove $userID from $financeName",
                             () async {
                               FinanceController _fc = FinanceController();
                               await _fc.updateFinanceAdmins(

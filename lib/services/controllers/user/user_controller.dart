@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
@@ -23,8 +24,28 @@ class UserController {
     return _userService.cachedUser.mobileNumber;
   }
 
-  Future<User> refreshUser() async {
-    return await _userService.getUser(getCurrentUserID());
+  Future<void> refreshUser() async {
+    DocumentSnapshot snap =
+        await _userService.cachedUser.getFinanceDocReference().get();
+    if (snap.exists) {
+      Map<String, dynamic> doc = snap.data;
+      if (!doc['is_active']) {
+        emptyPrimary();
+      } else {
+        List<dynamic> admins = doc['admins'];
+        if (!admins.contains(getCurrentUserID())) {
+          emptyPrimary();
+        }
+      }
+    } else {
+      emptyPrimary();
+    }
+  }
+
+  emptyPrimary() {
+    _userService.cachedUser.primary.financeID = "";
+    _userService.cachedUser.primary.branchName = "";
+    _userService.cachedUser.primary.subBranchName = "";
   }
 
   Future<User> getUserByID(String number) async {

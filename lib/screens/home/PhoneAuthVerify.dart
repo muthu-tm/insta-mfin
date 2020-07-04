@@ -6,6 +6,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PhoneAuthVerify extends StatefulWidget {
@@ -203,6 +204,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
         } else {
+          await UserController().refreshUser();
           await _success();
         }
       }
