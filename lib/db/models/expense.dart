@@ -148,27 +148,8 @@ class Expense extends Model {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
+        .orderBy('expense_date', descending: true)
         .snapshots();
-  }
-
-  Future<List<Expense>> getAllExpenses(
-      String financeId, String branchName, String subBranchName) async {
-    QuerySnapshot snapDocs = await getCollectionRef()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
-        .getDocuments();
-
-    if (snapDocs.documents.isEmpty) {
-      return [];
-    }
-
-    List<Expense> expenses = [];
-    snapDocs.documents.forEach((e) {
-      expenses.add(Expense.fromJson(e.data));
-    });
-
-    return expenses;
   }
 
   Future<List<Expense>> getAllExpensesByDate(
@@ -205,6 +186,7 @@ class Expense extends Model {
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('expense_date', isGreaterThanOrEqualTo: start)
         .where('expense_date', isLessThanOrEqualTo: end)
+        .orderBy('expense_date', descending: true)
         .getDocuments();
 
     List<Expense> expenses = [];
@@ -225,11 +207,9 @@ class Expense extends Model {
         expense.branchName, expense.subBranchName, expense.createdAt);
 
     int amount = 0;
-    int expenseAmount = 0;
 
     if (expenseJSON.containsKey('amount')) {
       amount = expense.amount - expenseJSON['amount'];
-      expenseAmount = expenseJSON['amount'] - expense.amount;
     }
 
     try {

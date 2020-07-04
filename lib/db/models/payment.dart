@@ -467,6 +467,7 @@ class Payment extends Model {
         .where('branch_name', isEqualTo: user.primary.branchName)
         .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('customer_number', isEqualTo: number)
+        .orderBy('date_of_payment', descending: true)
         .snapshots();
   }
 

@@ -23,16 +23,6 @@ class ExpenseController {
     }
   }
 
-  Future<List<Expense>> getAllExpenses(
-      String financeId, String branchName, String subBranchName) async {
-    try {
-      Expense _me = Expense();
-      return _me.getAllExpenses(financeId, branchName, subBranchName);
-    } catch (err) {
-      throw err;
-    }
-  }
-
   Future<List<Expense>> getExpenseByDate(String financeId, String branchName,
       String subBranchName, DateTime date) async {
     try {
@@ -100,22 +90,6 @@ class ExpenseController {
       }
 
       return expenses;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  Future<int> getTotalExpenseAmount(
-      String financeId, String branchName, String subBranchName) async {
-    try {
-      List<Expense> expenses =
-          await getAllExpenses(financeId, branchName, subBranchName);
-      int total = 0;
-      expenses.forEach((expense) {
-        total += expense.amount;
-      });
-
-      return total;
     } catch (err) {
       throw err;
     }

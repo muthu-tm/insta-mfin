@@ -159,6 +159,7 @@ class Journal extends Model {
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
+        .orderBy('journal_date', descending: true)
         .snapshots();
   }
 
@@ -217,6 +218,7 @@ class Journal extends Model {
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('journal_date', isGreaterThanOrEqualTo: start)
         .where('journal_date', isLessThanOrEqualTo: end)
+        .orderBy('journal_date', descending: true)
         .getDocuments();
 
     List<Journal> journals = [];

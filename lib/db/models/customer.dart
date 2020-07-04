@@ -139,6 +139,7 @@ class Customer extends Model {
         .where('finance_id', isEqualTo: user.primary.financeID)
         .where('branch_name', isEqualTo: user.primary.branchName)
         .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .orderBy('joined_at', descending: true)
         .snapshots();
   }
 
