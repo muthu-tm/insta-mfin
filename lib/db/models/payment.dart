@@ -351,9 +351,9 @@ class Payment extends Model {
   Future create(int number) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = user.primaryFinance;
-    this.branchName = user.primaryBranch;
-    this.subBranchName = user.primarySubBranch;
+    this.financeID = user.primary.financeID;
+    this.branchName = user.primary.branchName;
+    this.subBranchName = user.primary.subBranchName;
     try {
       bool isExist = await this.isExist();
 
@@ -426,9 +426,9 @@ class Payment extends Model {
 
   Future<List<Map<String, dynamic>>> getByPaymentIDRange(String minID) async {
     QuerySnapshot snap = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primaryFinance)
-        .where('branch_name', isEqualTo: user.primaryBranch)
-        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('payment_id', isGreaterThanOrEqualTo: minID)
         .getDocuments();
 
@@ -461,22 +461,20 @@ class Payment extends Model {
     return payList;
   }
 
-  Stream<QuerySnapshot> streamPayments(
-      String financeId, String branchName, String subBranchName, int number) {
+  Stream<QuerySnapshot> streamPayments(int number) {
     return getCollectionRef()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('customer_number', isEqualTo: number)
         .snapshots();
   }
 
-  Future<List<Payment>> getAllPaymentsForCustomer(String financeId,
-      String branchName, String subBranchName, int number) async {
+  Future<List<Payment>> getAllPaymentsForCustomer(int number) async {
     var paymentDocs = await getCollectionRef()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('customer_number', isEqualTo: number)
         .getDocuments();
 
@@ -490,12 +488,11 @@ class Payment extends Model {
     return payments;
   }
 
-  Future<List<Payment>> getAllByDateStatus(String financeId, String branchName,
-      String subBranchName, int epoch, bool isSettled) async {
+  Future<List<Payment>> getAllByDateStatus(int epoch, bool isSettled) async {
     var paymentDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('finance_id', isEqualTo: user.primary..financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('date_of_payment', isEqualTo: epoch)
         .where('is_settled', isEqualTo: isSettled)
         .getDocuments();
@@ -511,16 +508,11 @@ class Payment extends Model {
   }
 
   Future<List<Payment>> getAllByDateRangeStatus(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int start,
-      int end,
-      bool isSettled) async {
+      int start, int end, bool isSettled) async {
     var paymentDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('date_of_payment', isGreaterThanOrEqualTo: start)
         .where('date_of_payment', isLessThanOrEqualTo: end)
         .where('is_settled', isEqualTo: isSettled)
@@ -536,12 +528,11 @@ class Payment extends Model {
     return payments;
   }
 
-  Future<List<Payment>> getAllPaymentsByDate(String financeId,
-      String branchName, String subBranchName, int epoch) async {
+  Future<List<Payment>> getAllPaymentsByDate(int epoch) async {
     var paymentDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('date_of_payment', isEqualTo: epoch)
         .getDocuments();
 
@@ -555,12 +546,11 @@ class Payment extends Model {
     return payments;
   }
 
-  Future<List<Payment>> getAllPaymentsByDateRange(String financeId,
-      String branchName, String subBranchName, int start, int end) async {
+  Future<List<Payment>> getAllPaymentsByDateRange(int start, int end) async {
     var paymentDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('date_of_payment', isGreaterThanOrEqualTo: start)
         .where('date_of_payment', isLessThanOrEqualTo: end)
         .getDocuments();
@@ -575,10 +565,12 @@ class Payment extends Model {
     return payments;
   }
 
-  Future<Payment> getPaymentByID(String financeId, String branchName,
-      String subBranchName, String paymentID) async {
-    Map<String, dynamic> payment = await getByID(
-        getDocumentID(financeId, branchName, subBranchName, paymentID));
+  Future<Payment> getPaymentByID(String paymentID) async {
+    Map<String, dynamic> payment = await getByID(getDocumentID(
+        user.primary.financeID,
+        user.primary.branchName,
+        user.primary.subBranchName,
+        paymentID));
 
     if (payment != null) {
       return Payment.fromJson(payment);

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -184,6 +184,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: CustomColors.mfinBlue,
             onPressed: () {
               _submit();
             },
@@ -318,7 +319,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
         
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (BuildContext context) => Home(),
+        builder: (BuildContext context) => UserFinanceSetup(),
       ),
       (Route<dynamic> route) => false,
     );

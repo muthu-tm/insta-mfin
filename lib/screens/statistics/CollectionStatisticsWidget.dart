@@ -24,9 +24,9 @@ class CollectionStatisticsWidget extends StatelessWidget {
       elevation: 5.0,
       child: FutureBuilder<List<Collection>>(
         future: CollectionController().getAllCollectionByDateRange(
-            user.primaryFinance,
-            user.primaryBranch,
-            user.primarySubBranch,
+            user.primary.financeID,
+            user.primary.branchName,
+            user.primary.subBranchName,
             [0],
             fDate,
             tDate),

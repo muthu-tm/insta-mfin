@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
@@ -14,13 +15,16 @@ class TransactionJournalBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Journal>>(
       future: _user.preferences.transactionGroupBy == 0
-          ? _jc.getJournalByDate(_user.primaryFinance, _user.primaryBranch,
-              _user.primarySubBranch, DateTime.now())
+          ? _jc.getJournalByDate(
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
+              DateTime.now())
           : _user.preferences.transactionGroupBy == 1
-              ? _jc.getThisWeekExpenses(_user.primaryFinance,
-                  _user.primaryBranch, _user.primarySubBranch)
-              : _jc.getThisMonthExpenses(_user.primaryFinance,
-                  _user.primaryBranch, _user.primarySubBranch),
+              ? _jc.getThisWeekExpenses(_user.primary.financeID,
+                  _user.primary.branchName, _user.primary.subBranchName)
+              : _jc.getThisMonthExpenses(_user.primary.financeID,
+                  _user.primary.branchName, _user.primary.subBranchName),
       builder: (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
         Widget widget;
 

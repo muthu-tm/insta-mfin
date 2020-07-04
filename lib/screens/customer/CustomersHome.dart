@@ -6,9 +6,10 @@ import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/widgets/AllCustomerTab.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListWidget.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CustomersHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -16,14 +17,18 @@ class CustomersHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (BuildContext context) => Home(),
-        ),
-        (Route<dynamic> route) => false,
-      ),
+      onWillPop: () async {
+        await UserController().refreshUser();
+        return Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => UserFinanceSetup(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      },
       child: DefaultTabController(
         length: 5,
+        initialIndex: 0,
         child: Scaffold(
           key: _scaffoldKey,
           drawer: openDrawer(context),

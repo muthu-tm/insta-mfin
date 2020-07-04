@@ -106,9 +106,9 @@ class Expense extends Model {
   Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = user.primaryFinance;
-    this.branchName = user.primaryBranch;
-    this.subBranchName = user.primarySubBranch;
+    this.financeID = user.primary.financeID;
+    this.branchName = user.primary.branchName;
+    this.subBranchName = user.primary.subBranchName;
     this.addedBy = user.mobileNumber;
 
     try {

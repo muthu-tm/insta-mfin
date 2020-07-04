@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PaymentStatisticsWidget extends StatelessWidget {
   PaymentStatisticsWidget(this.type, this.mode, [this.fDate, this.tDate]);
-
-  final User user = UserController().getCurrentUser();
 
   final int type;
   final int mode;
@@ -24,9 +20,6 @@ class PaymentStatisticsWidget extends StatelessWidget {
       elevation: 5.0,
       child: FutureBuilder<List<Payment>>(
         future: Payment().getAllPaymentsByDateRange(
-            user.primaryFinance,
-            user.primaryBranch,
-            user.primarySubBranch,
             DateUtils.getUTCDateEpoch(fDate),
             DateUtils.getUTCDateEpoch(tDate)),
         builder: (context, snapshot) {

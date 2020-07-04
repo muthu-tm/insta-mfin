@@ -1,6 +1,7 @@
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
+import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/notification/n_utils.dart';
@@ -14,8 +15,16 @@ class UserController {
     return _userService.cachedUser;
   }
 
+  UserPrimary getUserPrimary() {
+    return _userService.cachedUser.primary;
+  }
+
   int getCurrentUserID() {
     return _userService.cachedUser.mobileNumber;
+  }
+
+  Future<User> refreshUser() async {
+    return await _userService.getUser(getCurrentUserID());
   }
 
   Future<User> getUserByID(String number) async {
@@ -63,7 +72,7 @@ class UserController {
 
   Future<Finance> getPrimaryFinance() async {
     try {
-      String primaryFinanceID = _userService.cachedUser.primaryFinance;
+      String primaryFinanceID = _userService.cachedUser.primary.financeID;
 
       if (primaryFinanceID != null && primaryFinanceID != "") {
         Finance finance =
@@ -88,14 +97,16 @@ class UserController {
       User user = User(userNumber);
 
       await user.update({
-        'primary_finance': financeID,
-        'primary_branch': branchName,
-        'primary_sub_branch': subBranchName
+        'primary': {
+          'finance_id': financeID,
+          'branch_name': branchName,
+          'sub_branch_name': subBranchName
+        }
       });
 
-      _userService.cachedUser.primaryFinance = financeID;
-      _userService.cachedUser.primaryBranch = branchName;
-      _userService.cachedUser.primarySubBranch = subBranchName;
+      _userService.cachedUser.primary.financeID = financeID;
+      _userService.cachedUser.primary.branchName = branchName;
+      _userService.cachedUser.primary.subBranchName = subBranchName;
 
       NUtils.alertNotify(
           "", "PRIMARY FINANCE CHANGED", "Your Primary Finance modified...!");

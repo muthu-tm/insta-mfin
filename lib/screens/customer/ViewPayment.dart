@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/customer/AddCollection.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/services/pdf/payment_receipt.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/db/models/payment.dart';
@@ -277,13 +277,16 @@ class _ViewPaymentState extends State<ViewPayment> {
                         Icons.home,
                         color: CustomColors.mfinBlue,
                       ),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Home(),
-                          settings: RouteSettings(name: '/home'),
-                        ),
-                      ),
+                      onTap: () async {
+                        await UserController().refreshUser();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserFinanceSetup(),
+                            settings: RouteSettings(name: '/home'),
+                          ),
+                        );
+                      },
                     )
                   ],
                 ),

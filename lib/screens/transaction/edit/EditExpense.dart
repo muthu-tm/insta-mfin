@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/expense_category.dart';
 import 'package:instamfin/db/models/expense.dart';
-import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -23,7 +23,6 @@ class _EditExpenseState extends State<EditExpense> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final User _user = UserController().getCurrentUser();
 
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {"0": "Choose Category"};
@@ -256,9 +255,10 @@ class _EditExpenseState extends State<EditExpense> {
 
   Future getCategoryData() async {
     try {
+      UserPrimary _primary = UserController().getUserPrimary();
       CategoryController _cc = CategoryController();
       List<ExpenseCategory> categories = await _cc.getAllExpenseCategory(
-          _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch);
+          _primary.financeID, _primary.branchName, _primary.subBranchName);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
         if (widget.expense.category != null &&

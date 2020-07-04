@@ -297,7 +297,9 @@ class _AddJournalState extends State<AddJournal> {
     try {
       CategoryController _cc = CategoryController();
       List<JournalCategory> categories = await _cc.getAllJournalCategory(
-          _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch);
+          _user.primary.financeID,
+          _user.primary.branchName,
+          _user.primary.subBranchName);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
       }

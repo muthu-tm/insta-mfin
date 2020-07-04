@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/transaction/books/BooksHome.dart';
 import 'package:instamfin/screens/transaction/configuration/TransactionConfigHome.dart';
 import 'package:instamfin/screens/transaction/JournalEntryHome.dart';
@@ -20,12 +20,15 @@ class TransactionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (BuildContext context) => Home(),
-        ),
-        (Route<dynamic> route) => false,
-      ),
+      onWillPop: () async {
+        await UserController().refreshUser();
+        return Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => UserFinanceSetup(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      },
       child: Scaffold(
         appBar: topAppBar(context),
         drawer: openDrawer(context),
@@ -43,8 +46,7 @@ class TransactionScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => BooksHome(),
-                        settings:
-                            RouteSettings(name: "/transactions/books"),
+                        settings: RouteSettings(name: "/transactions/books"),
                       ),
                     );
                   },
@@ -253,8 +255,7 @@ class TransactionScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TransactionConfigHome(),
-                          settings:
-                              RouteSettings(name: '/transactions/config'),
+                          settings: RouteSettings(name: '/transactions/config'),
                         ),
                       );
                     },

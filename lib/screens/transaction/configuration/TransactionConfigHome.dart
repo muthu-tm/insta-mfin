@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/transaction/add/AddExpenseCategory.dart';
 import 'package:instamfin/screens/transaction/add/AddJournalCategory.dart';
 import 'package:instamfin/screens/transaction/add/AddPaymentTemplate.dart';
@@ -7,11 +7,11 @@ import 'package:instamfin/screens/transaction/configuration/ExpenseCategoryListW
 import 'package:instamfin/screens/transaction/configuration/JournalCategoryListWidget.dart';
 import 'package:instamfin/screens/transaction/configuration/PaymentTemplateListWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TransactionConfigHome extends StatelessWidget {
-
-final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();	
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -92,13 +92,16 @@ final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
                         Icons.home,
                         color: CustomColors.mfinBlue,
                       ),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Home(),
-                          settings: RouteSettings(name: '/home'),
-                        ),
-                      ),
+                      onTap: () async {
+                        await UserController().refreshUser();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserFinanceSetup(),
+                            settings: RouteSettings(name: '/home'),
+                          ),
+                        );
+                      },
                     )
                   ],
                 ),

@@ -14,13 +14,22 @@ class TransactionExpenseBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Expense>>(
       future: _user.preferences.transactionGroupBy == 0
-          ? _ec.getExpenseByDate(_user.primaryFinance, _user.primaryBranch,
-              _user.primarySubBranch, DateTime.now())
+          ? _ec.getExpenseByDate(
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
+              DateTime.now())
           : _user.preferences.transactionGroupBy == 1
-              ? _ec.getThisWeekExpenses(_user.primaryFinance,
-                  _user.primaryBranch, _user.primarySubBranch)
-              : _ec.getThisMonthExpenses(_user.primaryFinance,
-                  _user.primaryBranch, _user.primarySubBranch),
+              ? _ec.getThisWeekExpenses(
+                  _user.primary.financeID,
+                  _user.primary.branchName,
+                  _user.primary.subBranchName,
+                )
+              : _ec.getThisMonthExpenses(
+                  _user.primary.financeID,
+                  _user.primary.branchName,
+                  _user.primary.subBranchName,
+                ),
       builder: (BuildContext context, AsyncSnapshot<List<Expense>> snapshot) {
         List<Widget> children;
 

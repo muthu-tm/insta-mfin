@@ -25,15 +25,15 @@ class UserService {
 
   void setCachedUser(User user) {
     print("USER STATE chage occurred: " + user.toJson().toString());
-    
+
     this.cachedUser = user;
   }
 
-  Future<User> getUser(String id) async {
-    DocumentSnapshot doc = await _ref.document(id).get();
+  Future<User> getUser(int number) async {
+    DocumentSnapshot doc = await _ref.document(number.toString()).get();
 
     if (!doc.exists) {
-      print("UserService.getUser(): Empty user ($id)");
+      print("UserService.getUser(): Empty user ($number)");
       return null;
     }
 

@@ -24,9 +24,9 @@ class ExpenseStatisticsWidget extends StatelessWidget {
       elevation: 5.0,
       child: FutureBuilder<List<Expense>>(
         future: Expense().getAllExpensesByDateRange(
-            user.primaryFinance,
-            user.primaryBranch,
-            user.primarySubBranch,
+            user.primary.financeID,
+            user.primary.branchName,
+            user.primary.subBranchName,
             DateUtils.getUTCDateEpoch(fDate),
             DateUtils.getUTCDateEpoch(tDate)),
         builder: (context, snapshot) {

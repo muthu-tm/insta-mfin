@@ -124,7 +124,9 @@ class Customer extends Model {
 
   String getDocumentID(int mobileNumber) {
     return HashGenerator.hmacGenerator(
-        user.primaryFinance + user.primaryBranch + user.primarySubBranch,
+        user.primary.financeID +
+            user.primary.branchName +
+            user.primary.subBranchName,
         mobileNumber.toString());
   }
 
@@ -134,26 +136,25 @@ class Customer extends Model {
 
   Stream<QuerySnapshot> streamAllCustomers() {
     return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primaryFinance)
-        .where('branch_name', isEqualTo: user.primaryBranch)
-        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .snapshots();
   }
 
   Future<QuerySnapshot> getAllCustomers() {
     return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primaryFinance)
-        .where('branch_name', isEqualTo: user.primaryBranch)
-        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .getDocuments();
   }
 
-  Future<List<Customer>> getAllByDate(String financeId,
-      String branchName, String subBranchName, int epoch) async {
+  Future<List<Customer>> getAllByDate(int epoch) async {
     var custDocs = await getCollectionRef()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('joined_at', isEqualTo: epoch)
         .getDocuments();
 
@@ -167,12 +168,11 @@ class Customer extends Model {
     return customers;
   }
 
-  Future<List<Customer>> getAllByDateRange(String financeId,
-      String branchName, String subBranchName, int start, int end) async {
+  Future<List<Customer>> getAllByDateRange(int start, int end) async {
     var custDocs = await getCollectionRef()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('joined_at', isGreaterThanOrEqualTo: start)
         .where('joined_at', isLessThanOrEqualTo: end)
         .getDocuments();
@@ -191,9 +191,9 @@ class Customer extends Model {
     try {
       QuerySnapshot allSnap = await Payment()
           .getGroupQuery()
-          .where('finance_id', isEqualTo: user.primaryFinance)
-          .where('branch_name', isEqualTo: user.primaryBranch)
-          .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+          .where('finance_id', isEqualTo: user.primary.financeID)
+          .where('branch_name', isEqualTo: user.primary.branchName)
+          .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
           .where('customer_number', isEqualTo: number)
           .getDocuments();
 
@@ -221,8 +221,7 @@ class Customer extends Model {
   }
 
   Future<List<Payment>> getPayments(int number) async {
-    var snap = await Payment().getAllPaymentsForCustomer(
-        user.primaryFinance, user.primaryBranch, user.primarySubBranch, number);
+    var snap = await Payment().getAllPaymentsForCustomer(number);
 
     if (snap.length == 0) {
       return null;
@@ -233,9 +232,9 @@ class Customer extends Model {
 
   Future<Customer> getByMobileNumber(int number) async {
     QuerySnapshot snap = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primaryFinance)
-        .where('branch_name', isEqualTo: user.primaryBranch)
-        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('mobile_number', isEqualTo: number)
         .getDocuments();
 
@@ -249,9 +248,9 @@ class Customer extends Model {
   Future<List<Map<String, dynamic>>> getByRange(
       int minNumber, int maxNumber) async {
     QuerySnapshot snap = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primaryFinance)
-        .where('branch_name', isEqualTo: user.primaryBranch)
-        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('mobile_number', isGreaterThanOrEqualTo: minNumber)
         .where('mobile_number', isLessThanOrEqualTo: maxNumber)
         .getDocuments();
@@ -268,9 +267,9 @@ class Customer extends Model {
 
   Future<List<Map<String, dynamic>>> getByNameRange(String startsWith) async {
     QuerySnapshot snap = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primaryFinance)
-        .where('branch_name', isEqualTo: user.primaryBranch)
-        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('customer_name', isGreaterThanOrEqualTo: startsWith)
         .getDocuments();
 
@@ -286,9 +285,9 @@ class Customer extends Model {
 
   Stream<QuerySnapshot> streamCustomersByRange(int minNumber, int maxNumber) {
     return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primaryFinance)
-        .where('branch_name', isEqualTo: user.primaryBranch)
-        .where('sub_branch_name', isEqualTo: user.primarySubBranch)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('mobile_number', isGreaterThanOrEqualTo: minNumber)
         .where('mobile_number', isLessThanOrEqualTo: maxNumber)
         .snapshots();

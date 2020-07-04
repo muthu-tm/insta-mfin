@@ -24,9 +24,9 @@ class JournalStatisticsWidget extends StatelessWidget {
       elevation: 5.0,
       child: FutureBuilder<List<Journal>>(
         future: Journal().getAllJournalsByDateRange(
-            user.primaryFinance,
-            user.primaryBranch,
-            user.primarySubBranch,
+            user.primary.financeID,
+            user.primary.branchName,
+            user.primary.subBranchName,
             DateUtils.getUTCDateEpoch(fDate),
             DateUtils.getUTCDateEpoch(tDate)),
         builder: (context, snapshot) {

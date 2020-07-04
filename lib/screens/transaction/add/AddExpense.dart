@@ -255,7 +255,9 @@ class _AddExpenseState extends State<AddExpense> {
     try {
       CategoryController _cc = CategoryController();
       List<ExpenseCategory> categories = await _cc.getAllExpenseCategory(
-          _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch);
+          _user.primary.financeID,
+          _user.primary.branchName,
+          _user.primary.subBranchName);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
       }

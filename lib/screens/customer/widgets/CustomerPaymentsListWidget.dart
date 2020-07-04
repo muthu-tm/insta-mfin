@@ -2,18 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CustomerPaymentsListWidget extends StatelessWidget {
   CustomerPaymentsListWidget(this.number, this._scaffoldKey);
-  final User _user = UserController().getCurrentUser();
 
   final int number;
   final GlobalKey<ScaffoldState> _scaffoldKey;
@@ -21,8 +18,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: Payment().streamPayments(_user.primaryFinance,
-          _user.primaryBranch, _user.primarySubBranch, number),
+      stream: Payment().streamPayments(number),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
