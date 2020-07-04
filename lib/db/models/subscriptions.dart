@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/db/models/plans.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/models/user_primary.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:instamfin/db/models/subscription_data.dart';
 
@@ -14,10 +17,16 @@ class Subscriptions extends Model {
   String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
+  @JsonKey(name: 'payment_id', nullable: true)
+  String paymentID;
   @JsonKey(name: 'chit', nullable: true)
   SubscriptionData chit;
   @JsonKey(name: 'service', nullable: true)
   SubscriptionData service;
+  @JsonKey(name: 'recently_purchased_plans', nullable: true)
+  List<int> recentlyPurchasedPlans;
+  @JsonKey(name: 'recently_paid', nullable: true)
+  int recentlyPaid;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -29,21 +38,115 @@ class Subscriptions extends Model {
       _$SubscriptionsFromJson(json);
   Map<String, dynamic> toJson() => _$SubscriptionsToJson(this);
 
+  CollectionReference getCollectionRef() {
+    return getUser().getFinanceDocReference().collection('subscriptions');
+  }
+
   User getUser() {
     return super.user;
   }
 
+  Map<String, dynamic> getSubscriptionJSON(
+      List<int> planIDs,
+      int tAmount,
+      sValidity,
+      sSmsCredit,
+      cValidity,
+      cSmsCredit,
+      String payID) {
+    UserPrimary _primary = user.primary;
+    return {
+      "payment_id": payID,
+      "recently_purchased_plans": planIDs,
+      "recently_paid": tAmount,
+      "finance_id": _primary.financeID,
+      "branch_name": _primary.branchName,
+      "sub_branch_name": _primary.subBranchName,
+      "chit": {
+        "valid_till":
+            DateUtils.getUTCDateEpoch(DateTime.now()) + (cValidity * 86400000),
+        "notes": "",
+        "available_sms_credit": cSmsCredit,
+        "type": 1,
+      },
+      "service": {
+        "valid_till":
+            DateUtils.getUTCDateEpoch(DateTime.now()) + (sValidity * 86400000),
+        "notes": "",
+        "available_sms_credit": sSmsCredit,
+        "type": 0,
+      },
+      "created_at": DateTime.now(),
+      "updated_at": DateTime.now()
+    };
+  }
+
   Future<Subscriptions> getSubscriptions() async {
     try {
-      QuerySnapshot subSnap = await getUser()
-          .getFinanceDocReference()
-          .collection('subscriptions')
-          .getDocuments();
+      QuerySnapshot subSnap = await getCollectionRef().getDocuments();
 
       if (subSnap.documents.isEmpty) {
         throw 'No Subscriptions for this account!';
       } else {
         return Subscriptions.fromJson(subSnap.documents[0].data);
+      }
+    } catch (err) {
+      print(err.toString());
+      throw err;
+    }
+  }
+
+  Stream<QuerySnapshot> streamSubscriptions() {
+    try {
+      return getCollectionRef().snapshots();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<bool> updateSubscriptions(List<int> planIDs, List<Plans> plans,
+      int tAmount, String payID) async {
+    try {
+      QuerySnapshot subSnap = await getCollectionRef().getDocuments();
+
+      int cVal = 0;
+      int sVal = 0;
+      int sSMS = 0;
+      int cSMS = 0;
+      plans.forEach((p) {
+        if (p.type == "SERVICE") {
+          sVal += p.validFor;
+          sSMS += p.smsCredits;
+        } else if (p.type == "CHIT") {
+          cVal += p.validFor;
+          cSMS += p.smsCredits;
+        } else if (p.type == "SERVICE SMS") {
+          sSMS += p.smsCredits;
+        } else if (p.type == "CHIT SMS") {
+          cSMS += p.smsCredits;
+        }
+      });
+
+      if (subSnap.documents.isEmpty) {
+        await getCollectionRef().document().setData(getSubscriptionJSON(
+            planIDs, tAmount, sVal, sSMS, cVal, cSMS, payID));
+
+        return true;
+      } else {
+        DocumentSnapshot snap = subSnap.documents[0];
+        Subscriptions sub = Subscriptions.fromJson(snap.data);
+        Map<String, dynamic> subJSON = {
+          "payment_id": payID,
+          "recently_purchased_plans": planIDs,
+          "recently_paid": tAmount,
+          "chit.valid_till": sub.chit.validTill + (cVal * 86400000),
+          "chit.available_sms_credit": sub.chit.smsCredit + cSMS,
+          "service.valid_till": sub.service.validTill + (sVal * 86400000),
+          "service.available_sms_credit": sub.service.smsCredit + sSMS,
+          "updated_at": DateTime.now()
+        };
+        await snap.reference.updateData(subJSON);
+        return true;
       }
     } catch (err) {
       print(err.toString());
