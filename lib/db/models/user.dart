@@ -43,6 +43,10 @@ class User extends Model {
   String primarySubBranch;
   @JsonKey(name: 'last_signed_in_at', nullable: true)
   DateTime lastSignInTime;
+  @JsonKey(name: 'is_active', defaultValue: true)
+  bool isActive;
+  @JsonKey(name: 'deactivated_at', nullable: true)
+  DateTime deactivatedAt;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -128,6 +132,7 @@ class User extends Model {
   Future<User> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
+    this.isActive = true;
 
     await super.add(this.toJson());
 

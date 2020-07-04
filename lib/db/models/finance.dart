@@ -38,6 +38,10 @@ class Finance extends Model {
   String profilePath;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
+  @JsonKey(name: 'is_active', defaultValue: true)
+  bool isActive;
+  @JsonKey(name: 'deactivated_at', nullable: true)
+  DateTime deactivatedAt;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -125,6 +129,7 @@ class Finance extends Model {
   Future<List<Finance>> getFinanceByUserID(int userID) async {
     List<DocumentSnapshot> docSnapshot = (await getCollectionRef()
             .where('users', arrayContains: userID)
+            .where('is_active', isEqualTo: true)
             .getDocuments())
         .documents;
 
@@ -146,6 +151,7 @@ class Finance extends Model {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.accountsData = new AccountsData();
+    this.isActive = true;
 
     dynamic result = await super.add(this.toJson());
     print(result);

@@ -25,6 +25,11 @@ User _$UserFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
             _getMillisecondsSinceEpoch(json['last_signed_in_at'] as Timestamp))
+    ..isActive = json['is_active'] as bool ?? true
+    ..deactivatedAt = json['deactivated_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['deactivated_at'] as Timestamp))
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -55,6 +60,8 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'primary_branch': instance.primaryBranch ?? '',
       'primary_sub_branch': instance.primarySubBranch ?? '',
       'last_signed_in_at': instance.lastSignInTime,
+      'is_active': instance.isActive,
+      'deactivated_at': instance.deactivatedAt,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };
