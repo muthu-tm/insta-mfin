@@ -35,7 +35,7 @@ class BranchSetting extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     BranchProfileWidget(financeID, branch),
-                    SubBranchesWidget(_scaffoldKey, financeID, branch.branchName),
+                    SubBranchesWidget(financeID, branch.branchName),
                     BranchUsersWidget(_scaffoldKey, financeID, branch),
                   ],
                 ),

@@ -162,6 +162,16 @@ class Branch {
     return data;
   }
 
+  Stream<QuerySnapshot> streamAllBranches(String financeID) {
+    try {
+      return getBranchCollectionRef(financeID)
+          .where('is_active', isEqualTo: true)
+          .snapshots();
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future<List<Branch>> getAllBranches(String financeID) async {
     var branchDocs = await getBranchCollectionRef(financeID)
         .where('is_active', isEqualTo: true)

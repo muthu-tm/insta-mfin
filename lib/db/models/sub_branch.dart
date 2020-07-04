@@ -157,6 +157,16 @@ class SubBranch {
     return data;
   }
 
+  Stream<QuerySnapshot> streamAllSubBranches(String financeID, String branchName) {
+    try {
+      return getSubBranchCollectionRef(financeID, branchName)
+          .where('is_active', isEqualTo: true)
+          .snapshots();
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future<List<SubBranch>> getAllSubBranches(
       String financeID, String branchName) async {
     var subBranchDocs = await getSubBranchCollectionRef(financeID, branchName)
