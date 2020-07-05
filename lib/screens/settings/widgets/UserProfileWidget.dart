@@ -5,6 +5,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 
 class UserProfileWidget extends StatelessWidget {
   final UserController _uc = UserController();
@@ -113,37 +114,50 @@ class UserProfileWidget extends StatelessWidget {
               readOnly: true,
             ),
           ),
-          ListTile(
-            leading: SizedBox(
-              width: 95,
-              child: Text(
-                "PASSWORD",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Georgia",
-                    fontWeight: FontWeight.bold,
-                    color: CustomColors.mfinGrey),
-              ),
-            ),
-            title: TextFormField(
-              initialValue: user.password,
-              obscureText: true,
-              decoration: InputDecoration(
-                fillColor: CustomColors.mfinWhite,
-                filled: true,
-                contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: CustomColors.mfinGrey)),
-                suffixIcon: Icon(
-                  Icons.visibility_off,
-                  color: CustomColors.mfinBlue,
-                  size: 35.0,
-                ),
-              ),
-              readOnly: true,
-            ),
-          ),
+          (user.mobileNumber == _uc.getCurrentUser().mobileNumber)
+              ? ListTile(
+                  leading: SizedBox(
+                    width: 95,
+                    child: Text(
+                      "PASSWORD",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinGrey),
+                    ),
+                  ),
+                  title: TextFormField(
+                    initialValue: "****",
+                    textAlign: TextAlign.center,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 1.0, horizontal: 1.0),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                    ),
+                    readOnly: true,
+                  ),
+                  trailing: IconButton(
+                    highlightColor: CustomColors.mfinAlertRed.withOpacity(0.5),
+                    tooltip: "Change Password",
+                    icon: Icon(
+                      Icons.edit,
+                      size: 25.0,
+                      color: CustomColors.mfinAlertRed.withOpacity(0.7),
+                    ),
+                    onPressed: () {
+                      if (user.mobileNumber ==
+                          _uc.getCurrentUser().mobileNumber) {
+                        print("Edit password");
+                      }
+                    },
+                  ),
+                )
+              : Container(),
           ListTile(
             leading: SizedBox(
               width: 95,

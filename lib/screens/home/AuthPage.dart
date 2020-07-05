@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthPage extends StatefulWidget {
@@ -259,28 +260,32 @@ class _AuthPageState extends State<AuthPage> {
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Enter Your Secret KEY", 2));
       return;
-    } else if (_pController.text != _user.password) {
-      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          "Wrong Secret KEY. Please, Try Again Later!", 2));
-      return;
     } else {
-      CustomDialogs.actionWaiting(context, "Logging In");
-
-      var result = await _authController.signInWithMobileNumber(_user);
-
-      if (!result['is_success']) {
-        Navigator.pop(context);
+      String hashKey = HashGenerator.hmacGenerator(
+          _pController.text, _user.mobileNumber.toString());
+      if (hashKey != _user.password) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "Unable to Login, Something went wrong!", 2));
-        _scaffoldKey.currentState
-            .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
+            "Wrong Secret KEY. Please try again!", 2));
+        return;
       } else {
-        await UserController().refreshUser();
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (BuildContext context) => UserFinanceSetup()),
-          (Route<dynamic> route) => false,
-        );
+        CustomDialogs.actionWaiting(context, "Logging In");
+
+        var result = await _authController.signInWithMobileNumber(_user);
+
+        if (!result['is_success']) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              "Unable to Login, Something went wrong!", 2));
+          _scaffoldKey.currentState
+              .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
+        } else {
+          await UserController().refreshUser();
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => UserFinanceSetup()),
+            (Route<dynamic> route) => false,
+          );
+        }
       }
     }
   }
