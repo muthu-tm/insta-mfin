@@ -19,14 +19,14 @@ class Subscriptions extends Model {
   String subBranchName;
   @JsonKey(name: 'payment_id', nullable: true)
   String paymentID;
+  @JsonKey(name: 'purchase_id', nullable: true)
+  String purchaseID;
+  @JsonKey(name: 'recently_paid', nullable: true)
+  int recentlyPaid;
   @JsonKey(name: 'chit', nullable: true)
   SubscriptionData chit;
   @JsonKey(name: 'service', nullable: true)
   SubscriptionData service;
-  @JsonKey(name: 'recently_purchased_plans', nullable: true)
-  List<int> recentlyPurchasedPlans;
-  @JsonKey(name: 'recently_paid', nullable: true)
-  int recentlyPaid;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -46,18 +46,12 @@ class Subscriptions extends Model {
     return super.user;
   }
 
-  Map<String, dynamic> getSubscriptionJSON(
-      List<int> planIDs,
-      int tAmount,
-      sValidity,
-      sSmsCredit,
-      cValidity,
-      cSmsCredit,
-      String payID) {
+  Map<String, dynamic> getSubscriptionJSON(String pDocID, int tAmount,
+      sValidity, sSmsCredit, cValidity, cSmsCredit, String payID) {
     UserPrimary _primary = user.primary;
     return {
       "payment_id": payID,
-      "recently_purchased_plans": planIDs,
+      "purchase_id": pDocID,
       "recently_paid": tAmount,
       "finance_id": _primary.financeID,
       "branch_name": _primary.branchName,
@@ -104,8 +98,8 @@ class Subscriptions extends Model {
     }
   }
 
-  Future<bool> updateSubscriptions(List<int> planIDs, List<Plans> plans,
-      int tAmount, String payID) async {
+  Future<bool> updateSuccessStatus(
+      String purchaseID, List<Plans> plans, int tAmount, String payID) async {
     try {
       QuerySnapshot subSnap = await getCollectionRef().getDocuments();
 
@@ -129,7 +123,7 @@ class Subscriptions extends Model {
 
       if (subSnap.documents.isEmpty) {
         await getCollectionRef().document().setData(getSubscriptionJSON(
-            planIDs, tAmount, sVal, sSMS, cVal, cSMS, payID));
+            purchaseID, tAmount, sVal, sSMS, cVal, cSMS, payID));
 
         return true;
       } else {
@@ -137,7 +131,7 @@ class Subscriptions extends Model {
         Subscriptions sub = Subscriptions.fromJson(snap.data);
         Map<String, dynamic> subJSON = {
           "payment_id": payID,
-          "recently_purchased_plans": planIDs,
+          "purchase_id": purchaseID,
           "recently_paid": tAmount,
           "chit.valid_till": sub.chit.validTill + (cVal * 86400000),
           "chit.available_sms_credit": sub.chit.smsCredit + cSMS,
@@ -149,7 +143,6 @@ class Subscriptions extends Model {
         return true;
       }
     } catch (err) {
-      print(err.toString());
       throw err;
     }
   }

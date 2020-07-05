@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/plans.dart';
+import 'package:instamfin/db/models/purchases.dart';
 import 'package:instamfin/screens/settings/payments/PurchaseScreen.dart';
 import 'package:instamfin/screens/settings/payments/SubscriptionStatusWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 
 class PaymentsHome extends StatefulWidget {
@@ -31,17 +33,21 @@ class _PaymentsHomeState extends State<PaymentsHome> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: CustomColors.mfinPositiveGreen,
-        onPressed: () {
+        onPressed: () async {
           if (selectedID.length > 0 && tAmount > 0) {
+            CustomDialogs.actionWaiting(context, "Loading...");
+
             List<Plans> _p = [];
             plans.forEach((p) {
               if (selectedID.contains(p.planID)) _p.add(p);
             });
-            print(plans.toString());
-            Navigator.push(
+
+            String docID = await Purchases().create(_p, tAmount);
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => PuchasePlan(selectedID, _p, tAmount),
+                builder: (context) =>
+                    PuchasePlan(docID, selectedID, _p, tAmount),
                 settings:
                     RouteSettings(name: '/settings/app/payments/checkout'),
               ),
