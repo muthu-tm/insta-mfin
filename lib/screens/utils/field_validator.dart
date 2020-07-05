@@ -35,9 +35,9 @@ class FieldValidator {
   static String passwordValidator(
       String passkey, Function(String) setPasskeyState) {
     if (passkey.isEmpty) {
-      return 'Password is required';
+      return 'Secret KEY is required';
     } else if (passkey.length != 4) {
-      return 'Password must be 4 characters long';
+      return 'Secret KEY must be 4 characters long';
     }
 
     setPasskeyState(passkey);

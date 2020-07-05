@@ -117,6 +117,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               child: TextFormField(
                 controller: _passKeyController,
                 obscureText: _passwordVisible,
+                keyboardType: TextInputType.number,
                 decoration: new InputDecoration(
                   hintText: "4 digit Secret Key",
                   fillColor: CustomColors.mfinWhite,
@@ -229,9 +230,9 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
       _scaffoldKey.currentState.showSnackBar(
           CustomSnackBar.errorSnackBar("Please Enter Your Name", 2));
       return;
-    } else if (_nameController.text.length < 4) {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Enter 4 or more digit Secret Key", 2));
+    } else if (_passKeyController.text.length != 4) {
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          "Secret Key must be 4 digits in length", 2));
       return;
     } else {
       CustomDialogs.actionWaiting(context, "Checking User");

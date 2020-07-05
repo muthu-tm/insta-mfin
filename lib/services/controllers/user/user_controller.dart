@@ -7,6 +7,7 @@ import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/notification/n_utils.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 UserService _userService = locator<UserService>();
@@ -163,6 +164,27 @@ class UserController {
       Analytics.reportError({
         "type": 'user_get_error',
         'user_id': mobileNumber,
+        'error': err.toString()
+      });
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future updateSecretKey(String key) async {
+    try {
+      String hashKey =
+          HashGenerator.hmacGenerator(key, getCurrentUserID().toString());
+
+      await getCurrentUser()
+          .update({'password': hashKey, 'updated_at': DateTime.now()});
+
+      _userService.cachedUser.password = hashKey;
+
+      return CustomResponse.getSuccesReponse("Successfully updated Secret KEY");
+    } catch (err) {
+      Analytics.reportError({
+        "type": 'secret_update_error',
+        'user_id': getCurrentUserID(),
         'error': err.toString()
       });
       return CustomResponse.getFailureReponse(err.toString());

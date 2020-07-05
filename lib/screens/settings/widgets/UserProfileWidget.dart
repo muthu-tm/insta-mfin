@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/settings/editors/ChangeSecret.dart';
 import 'package:instamfin/screens/settings/editors/EditUSerProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
-import 'package:instamfin/services/utils/hash_generator.dart';
 
 class UserProfileWidget extends StatelessWidget {
   final UserController _uc = UserController();
@@ -80,7 +80,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
+                    new EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(
                   color: CustomColors.mfinGrey,
@@ -107,7 +107,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
@@ -129,13 +129,13 @@ class UserProfileWidget extends StatelessWidget {
                   ),
                   title: TextFormField(
                     initialValue: "****",
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                     obscureText: true,
                     decoration: InputDecoration(
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
-                          vertical: 1.0, horizontal: 1.0),
+                          vertical: 1.0, horizontal: 5.0),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: CustomColors.mfinGrey)),
                     ),
@@ -152,7 +152,14 @@ class UserProfileWidget extends StatelessWidget {
                     onPressed: () {
                       if (user.mobileNumber ==
                           _uc.getCurrentUser().mobileNumber) {
-                        print("Edit password");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangeSecret(),
+                            settings: RouteSettings(
+                                name: '/settings/user/secret/edit'),
+                          ),
+                        );
                       }
                     },
                   ),
@@ -176,7 +183,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
@@ -201,7 +208,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinWhite)),
               ),
@@ -229,7 +236,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
                 suffixIcon: Icon(
@@ -260,7 +267,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
