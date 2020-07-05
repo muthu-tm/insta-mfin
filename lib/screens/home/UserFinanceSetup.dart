@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/AuthPage.dart';
+import 'package:instamfin/screens/home/HomeScreen.dart';
 import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class UserFinanceSetup extends StatelessWidget {
@@ -11,8 +13,21 @@ class UserFinanceSetup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_user.primaryFinance != null && _user.primaryFinance != "") {
-      return Home();
+    if (_user.primary.financeID != null && _user.primary.financeID != "") {
+      return WillPopScope(
+        onWillPop: () => CustomDialogs.confirm(
+            context, "Warning!", "Do you really want to exit?", () async {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AuthPage(),
+              settings: RouteSettings(name: '/close'),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        }, () => Navigator.pop(context, false)),
+        child: HomeScreen(),
+      );
     } else {
       return WillPopScope(
         onWillPop: () async => false,
@@ -43,9 +58,13 @@ class UserFinanceSetup extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.all(10),
-                  child: Material(
-                    elevation: 10.0,
-                    child: Image.asset("images/icons/logo.png", height: 50),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Image.asset(
+                      "images/icons/logo.png",
+                      height: 50,
+                      width: 50,
+                    ),
                   ),
                 ),
                 PrimaryFinanceWidget("Finance Setup", false),

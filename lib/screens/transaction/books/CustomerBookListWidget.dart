@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListTile.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CustomerBookListWidget extends StatelessWidget {
   CustomerBookListWidget(this.isRange, this.startDate, this.endDate);
@@ -17,18 +15,13 @@ class CustomerBookListWidget extends StatelessWidget {
   final Customer _cust = Customer();
   @override
   Widget build(BuildContext context) {
-    User _user = UserController().getCurrentUser();
 
     return FutureBuilder<List<Customer>>(
       future: isRange
           ? _cust.getAllByDateRange(
-              _user.primaryFinance,
-              _user.primaryBranch,
-              _user.primarySubBranch,
               DateUtils.getUTCDateEpoch(startDate),
               DateUtils.getUTCDateEpoch(endDate))
-          : _cust.getAllByDate(_user.primaryFinance, _user.primaryBranch,
-              _user.primarySubBranch, DateUtils.getUTCDateEpoch(startDate)),
+          : _cust.getAllByDate(DateUtils.getUTCDateEpoch(startDate)),
       builder: (BuildContext context, AsyncSnapshot<List<Customer>> snapshot) {
         List<Widget> children;
 

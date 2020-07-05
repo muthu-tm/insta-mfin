@@ -15,6 +15,11 @@ Finance _$FinanceFromJson(Map<String, dynamic> json) {
     ..profilePathOrg = json['profile_path_org'] as String ?? ''
     ..profilePath = json['profile_path'] as String ?? ''
     ..addedBy = json['added_by'] as int
+    ..isActive = json['is_active'] as bool ?? true
+    ..deactivatedAt = json['deactivated_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['deactivated_at'] as Timestamp))
     ..accountsData = json['accounts_data'] == null
         ? new AccountsData()
         : AccountsData.fromJson(json['accounts_data'] as Map<String, dynamic>)
@@ -50,6 +55,8 @@ Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
       'accounts_data': instance.accountsData?.toJson(),
       'preferences': instance.preferences ?? AccountPreferences().toJson(),
       'added_by': instance.addedBy,
+      'is_active': instance.isActive,
+      'deactivated_at': instance.deactivatedAt,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/plans.dart';
+import 'package:instamfin/db/models/purchases.dart';
+import 'package:instamfin/screens/settings/payments/PurchaseScreen.dart';
 import 'package:instamfin/screens/settings/payments/SubscriptionStatusWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 
 class PaymentsHome extends StatefulWidget {
   @override
@@ -11,13 +15,16 @@ class PaymentsHome extends StatefulWidget {
 }
 
 class _PaymentsHomeState extends State<PaymentsHome> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   List<int> selectedID = [];
+  List<Plans> plans = [];
   int tAmount = 0;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
         title: Text('Payments'),
@@ -26,13 +33,34 @@ class _PaymentsHomeState extends State<PaymentsHome> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: CustomColors.mfinPositiveGreen,
-        onPressed: () {
-          print("Clicked checkout page");
+        onPressed: () async {
+          if (selectedID.length > 0 && tAmount > 0) {
+            CustomDialogs.actionWaiting(context, "Loading...");
+
+            List<Plans> _p = [];
+            plans.forEach((p) {
+              if (selectedID.contains(p.planID)) _p.add(p);
+            });
+
+            String docID = await Purchases().create(_p, tAmount);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PuchasePlan(docID, selectedID, _p, tAmount),
+                settings:
+                    RouteSettings(name: '/settings/app/payments/checkout'),
+              ),
+            );
+          } else {
+            _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+                "Please select a Plan to checkout!", 2));
+          }
         },
         label: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: " Recharge for ",
+            text: " Checkout ",
             style: TextStyle(
               color: CustomColors.mfinWhite,
               fontSize: 16.0,
@@ -76,6 +104,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
 
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
+            plans = snapshot.data;
             widget = ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
@@ -148,7 +177,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                                   Text(
                                     plan.name,
                                     style: TextStyle(
-                                        fontFamily: 'Quicksand',
+                                        fontFamily: "Georgia",
                                         fontSize: 18.0,
                                         color: textColor,
                                         fontWeight: FontWeight.bold),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
@@ -22,7 +23,9 @@ class AuthService {
         return null;
       }
 
-      user.setPassword(password);
+      String hKey =
+          HashGenerator.hmacGenerator(password, user.mobileNumber.toString());
+      user.setPassword(hKey);
       user.setName(name);
       user.setGuid(uid);
       user = await user.create();

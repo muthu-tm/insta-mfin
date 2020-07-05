@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -290,7 +291,7 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setString("mobile_number", number);
 
       var result = await _authController.signInWithMobileNumber(_user);
-      
+
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
@@ -298,6 +299,7 @@ class _LoginPageState extends State<LoginPage> {
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
       } else {
+        await UserController().refreshUser();
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) => UserFinanceSetup()),

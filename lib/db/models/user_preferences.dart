@@ -7,6 +7,8 @@ class UserPreferences {
   
   @JsonKey(name: 'transaction_group_by', defaultValue: 0)
   int transactionGroupBy;
+  @JsonKey(name: 'support_language', defaultValue: "English")
+  String prefLanguage;
   @JsonKey(name: 'enable_table_view', defaultValue: false)
   bool tableView;
 

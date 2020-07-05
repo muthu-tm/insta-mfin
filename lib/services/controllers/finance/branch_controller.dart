@@ -132,21 +132,6 @@ class BranchController {
     }
   }
 
-  Future<Branch> getBranchByID(String financeID, String branchID) async {
-    try {
-      Branch branch = Branch();
-      return await branch.getBranchByID(financeID, branchID);
-    } catch (err) {
-      Analytics.reportError({
-        "type": 'branch_get_error',
-        "finance_id": financeID,
-        'branach_id': branchID,
-        'error': err.toString()
-      });
-      return null;
-    }
-  }
-
   Future<Branch> getBranchByName(String financeID, String branchName) async {
     try {
       Branch branch = Branch();

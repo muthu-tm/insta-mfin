@@ -120,23 +120,6 @@ class SubBranchController {
     }
   }
 
-  Future<SubBranch> getSubBranchByID(
-      String financeID, String branchName, String subBranchID) async {
-    try {
-      return await SubBranch()
-          .getSubBranchByID(financeID, branchName, subBranchID);
-    } catch (err) {
-      Analytics.reportError({
-        "type": 'branch_get_error',
-        "finance_id": financeID,
-        'branach_name': branchName,
-        "sub_branch_id": subBranchID,
-        'error': err.toString()
-      });
-      return null;
-    }
-  }
-
   Future updateSubBranch(String financeID, String branchName,
       String subBranchName, Map<String, dynamic> subBranchJSON) async {
     try {

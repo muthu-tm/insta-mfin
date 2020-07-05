@@ -34,6 +34,10 @@ class SubBranch {
   int dateOfRegistration;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
+  @JsonKey(name: 'is_active', defaultValue: true)
+  bool isActive;
+  @JsonKey(name: 'deactivated_at', nullable: true)
+  DateTime deactivatedAt;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -119,6 +123,7 @@ class SubBranch {
     this.accountsData = new AccountsData();
     this.financeID = financeID;
     this.branchName = branchName;
+    this.isActive = true;
 
     await getDocumentReference(financeID, branchName, this.subBranchName)
         .setData(this.toJson());
@@ -147,21 +152,26 @@ class SubBranch {
       }
     });
 
-    String docId = getDocumentID(branchName, subBranchName);
-
-    if (docId != null || docId != "") {
-      docId = docId;
-    }
-
     await getDocumentReference(financeID, branchName, subBranchName)
         .updateData(fields);
     return data;
   }
 
+  Stream<QuerySnapshot> streamAllSubBranches(String financeID, String branchName) {
+    try {
+      return getSubBranchCollectionRef(financeID, branchName)
+          .where('is_active', isEqualTo: true)
+          .snapshots();
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future<List<SubBranch>> getAllSubBranches(
       String financeID, String branchName) async {
-    var subBranchDocs =
-        await getSubBranchCollectionRef(financeID, branchName).getDocuments();
+    var subBranchDocs = await getSubBranchCollectionRef(financeID, branchName)
+        .where('is_active', isEqualTo: true)
+        .getDocuments();
 
     if (subBranchDocs.documents.isEmpty) {
       return null;
@@ -177,24 +187,12 @@ class SubBranch {
     return subBranches;
   }
 
-  Future<SubBranch> getSubBranchByName(
-      String financeID, String branchName, String subBranchName) async {
-    var subBranchSnap = await getSubBranchCollectionRef(financeID, branchName)
-        .where('sub_brach_name', isEqualTo: subBranchName)
-        .snapshots()
-        .toList();
-    if (subBranchSnap.isEmpty || subBranchSnap.first.documents.isEmpty) {
-      return null;
-    }
-
-    return SubBranch.fromJson(subBranchSnap.first.documents.first.data);
-  }
-
   Future<List<SubBranch>> getSubBranchByUserID(
       String financeID, String branchName, int userID) async {
     List<DocumentSnapshot> docSnapshot =
         (await getSubBranchCollectionRef(financeID, branchName)
                 .where('admins', arrayContains: userID)
+                .where('is_active', isEqualTo: true)
                 .getDocuments())
             .documents;
 
@@ -210,20 +208,6 @@ class SubBranch {
     }
 
     return subBranches;
-  }
-
-  Future<SubBranch> getSubBranchByID(
-      String financeID, String branchName, String subBranchID) async {
-    DocumentSnapshot snapshot =
-        await getSubBranchCollectionRef(financeID, branchName)
-            .document(subBranchID)
-            .get();
-
-    if (snapshot.exists) {
-      return SubBranch.fromJson(snapshot.data);
-    } else {
-      return null;
-    }
   }
 
   Future<void> update(String financeID, String branchName, String subBranchName,

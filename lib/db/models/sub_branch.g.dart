@@ -13,6 +13,11 @@ SubBranch _$SubBranchFromJson(Map<String, dynamic> json) {
     ..admins = (json['admins'] as List)?.map((e) => e as int)?.toList()
     ..dateOfRegistration = json['date_of_registration'] as int
     ..addedBy = json['added_by'] as int
+    ..isActive = json['is_active'] as bool ?? true
+    ..deactivatedAt = json['deactivated_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['deactivated_at'] as Timestamp))
     ..accountsData = json['accounts_data'] == null
         ? new AccountsData()
         : AccountsData.fromJson(json['accounts_data'] as Map<String, dynamic>)
@@ -46,6 +51,8 @@ Map<String, dynamic> _$SubBranchToJson(SubBranch instance) => <String, dynamic>{
       'accounts_data': instance.accountsData?.toJson(),
       'preferences': instance.preferences ?? AccountPreferences().toJson(),
       'added_by': instance.addedBy,
+      'is_active': instance.isActive,
+      'deactivated_at': instance.deactivatedAt,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

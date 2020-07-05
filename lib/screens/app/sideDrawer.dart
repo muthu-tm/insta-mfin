@@ -5,8 +5,8 @@ import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/AddCustomer.dart';
 import 'package:instamfin/screens/customer/CustomersHome.dart';
-import 'package:instamfin/screens/home/Home.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/reports/ReportsHome.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
@@ -137,17 +137,19 @@ Widget openDrawer(BuildContext context) {
           ),
         ),
         new ListTile(
-          leading: new Icon(Icons.home, color: CustomColors.mfinButtonGreen),
-          title: new Text('Home'),
-          onTap: () => Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Home(),
-              settings: RouteSettings(name: '/home'),
-            ),
-            (Route<dynamic> route) => false,
-          ),
-        ),
+            leading: new Icon(Icons.home, color: CustomColors.mfinButtonGreen),
+            title: new Text('Home'),
+            onTap: () async {
+              await UserController().refreshUser();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserFinanceSetup(),
+                  settings: RouteSettings(name: '/home'),
+                ),
+                (Route<dynamic> route) => false,
+              );
+            }),
         new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
         new ExpansionTile(
           title: new Text("Transactions"),

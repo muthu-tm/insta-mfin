@@ -63,19 +63,16 @@ class PaymentController {
       String subBranchName, String paymentID) async {
     try {
       Payment payment = Payment();
-      return await payment.getPaymentByID(
-          financeId, branchName, subBranchName, paymentID);
+      return await payment.getPaymentByID(paymentID);
     } catch (err) {
       print("Error while retrieving Payment $paymentID}: " + err.toString());
       return null;
     }
   }
 
-  Future<List<Payment>> getAllPaymentsForCustomer(String financeId,
-      String branchName, String subBranchName, int custNumber) async {
+  Future<List<Payment>> getAllPaymentsForCustomer(int custNumber) async {
     try {
-      List<Payment> payments = await Payment().getAllPaymentsForCustomer(
-          financeId, branchName, subBranchName, custNumber);
+      List<Payment> payments = await Payment().getAllPaymentsForCustomer(custNumber);
 
       if (payments == null) {
         return [];
@@ -87,11 +84,10 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getPaymentsByDate(String financeId, String branchName,
-      String subBranchName, int epoch) async {
+  Future<List<Payment>> getPaymentsByDate(int epoch) async {
     try {
       List<Payment> payments = await Payment()
-          .getAllPaymentsByDate(financeId, branchName, subBranchName, epoch);
+          .getAllPaymentsByDate(epoch);
 
       if (payments == null) {
         return [];
@@ -103,15 +99,11 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getThisWeekPayments(
-      String financeId, String branchName, String subBranchName) {
+  Future<List<Payment>> getThisWeekPayments() {
     try {
       DateTime today = DateUtils.getCurrentDate();
 
       return getAllPaymentsByDateRange(
-          financeId,
-          branchName,
-          subBranchName,
           today.subtract(Duration(days: today.weekday)),
           today.add(Duration(days: 1)));
     } catch (err) {
@@ -119,15 +111,11 @@ class PaymentController {
     }
   }
 
-  Future<List<Payment>> getThisMonthPayments(
-      String financeId, String branchName, String subBranchName) {
+  Future<List<Payment>> getThisMonthPayments() {
     try {
       DateTime today = DateUtils.getCurrentDate();
 
       return getAllPaymentsByDateRange(
-          financeId,
-          branchName,
-          subBranchName,
           DateTime(today.year, today.month, 1, 0, 0, 0, 0),
           today.add(Duration(days: 1)));
     } catch (err) {
@@ -136,16 +124,10 @@ class PaymentController {
   }
 
   Future<List<Payment>> getAllPaymentsByDateRange(
-      String financeId,
-      String branchName,
-      String subBranchName,
       DateTime startDate,
       DateTime endDate) async {
     try {
       List<Payment> payments = await Payment().getAllPaymentsByDateRange(
-          financeId,
-          branchName,
-          subBranchName,
           DateUtils.getUTCDateEpoch(startDate),
           DateUtils.getUTCDateEpoch(endDate));
 

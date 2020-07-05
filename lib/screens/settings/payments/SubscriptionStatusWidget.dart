@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/subscriptions.dart';
@@ -6,16 +7,16 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
 class SubscriptionStatusWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Subscriptions>(
-      future: Subscriptions().getSubscriptions(),
-      builder: (BuildContext context, AsyncSnapshot<Subscriptions> snapshot) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Subscriptions().streamSubscriptions(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         Widget widget;
 
         if (snapshot.hasData) {
-          Subscriptions sub = snapshot.data;
+          Subscriptions sub =
+              Subscriptions.fromJson(snapshot.data.documents[0].data);
 
           widget = Card(
             color: CustomColors.mfinButtonGreen.withOpacity(0.1),

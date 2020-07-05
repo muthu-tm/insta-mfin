@@ -2,24 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/settings/AppSettings.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/SettingsPreferences.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (BuildContext context) => Home(),
-        ),
-        (Route<dynamic> route) => false,
-      ),
+      onWillPop: () async {
+        await UserController().refreshUser();
+        return Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => UserFinanceSetup(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      },
       child: Scaffold(
         drawer: openDrawer(context),
         appBar: topAppBar(context),

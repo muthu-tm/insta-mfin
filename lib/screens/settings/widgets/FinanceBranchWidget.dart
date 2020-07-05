@@ -9,14 +9,13 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 
 class FinanceBranchWidget extends StatelessWidget {
   FinanceBranchWidget(this.financeID);
-  final Branch _branch = Branch();
 
   final String financeID;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _branch.getBranchCollectionRef(financeID).snapshots(),
+      stream: Branch().streamAllBranches(financeID),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 

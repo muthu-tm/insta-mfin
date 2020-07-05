@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -24,14 +25,14 @@ class CollectionBookTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User _u = UserController().getCurrentUser();
+    final UserPrimary _primary = UserController().getUserPrimary();
 
     return StreamBuilder(
       stream: isPending
-          ? Collection().streamAllPendingCollectionByDate(
-              _u.primaryFinance, _u.primaryBranch, _u.primarySubBranch, epoch)
-          : Collection().streamAllCollectionByDate(_u.primaryFinance,
-              _u.primaryBranch, _u.primarySubBranch, [0], false, epoch),
+          ? Collection().streamAllPendingCollectionByDate(_primary.financeID,
+              _primary.branchName, _primary.subBranchName, epoch)
+          : Collection().streamAllCollectionByDate(_primary.financeID,
+              _primary.branchName, _primary.subBranchName, [0], false, epoch),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> collSnap) {
         Widget child;
 

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/journal.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/db/models/user_primary.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/transaction/add/AddJournal.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -17,7 +17,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 class JournalEntryHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  final User _user = UserController().getCurrentUser();
+  final UserPrimary _primary = UserController().getUserPrimary();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,13 +70,16 @@ class JournalEntryHome extends StatelessWidget {
                             Icons.home,
                             color: CustomColors.mfinBlue,
                           ),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Home(),
-                              settings: RouteSettings(name: '/home'),
-                            ),
-                          ),
+                          onTap: () async {
+                            await UserController().refreshUser();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserFinanceSetup(),
+                                settings: RouteSettings(name: '/home'),
+                              ),
+                            );
+                          },
                         )
                       ],
                     )),
@@ -87,7 +90,7 @@ class JournalEntryHome extends StatelessWidget {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: Journal().streamJournals(
-            _user.primaryFinance, _user.primaryBranch, _user.primarySubBranch),
+            _primary.financeID, _primary.branchName, _primary.subBranchName),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           Widget widget;
 

@@ -15,13 +15,10 @@ class TransactionCollectionBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Payment>>(
       future: _user.preferences.transactionGroupBy == 0
-          ? _pc.getPaymentsByDate(_user.primaryFinance, _user.primaryBranch,
-              _user.primarySubBranch, DateUtils.getUTCDateEpoch(DateTime.now()))
+          ? _pc.getPaymentsByDate(DateUtils.getUTCDateEpoch(DateTime.now()))
           : _user.preferences.transactionGroupBy == 1
-              ? _pc.getThisWeekPayments(_user.primaryFinance,
-                  _user.primaryBranch, _user.primarySubBranch)
-              : _pc.getThisMonthPayments(_user.primaryFinance,
-                  _user.primaryBranch, _user.primarySubBranch),
+              ? _pc.getThisWeekPayments()
+              : _pc.getThisMonthPayments(),
       builder: (BuildContext context, AsyncSnapshot<List<Payment>> snapshot) {
         int tAmount = 0;
         int pAmount = 0;

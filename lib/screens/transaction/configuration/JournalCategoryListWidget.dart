@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/journal_category.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/transaction/edit/EditJournalCategory.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -15,12 +16,12 @@ class JournalCategoryListWidget extends StatelessWidget {
 
   JournalCategoryListWidget(this._scaffoldKey);
 
-  final User _u = UserController().getCurrentUser();
+  final UserPrimary _primary = UserController().getUserPrimary();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: JournalCategory().streamCategories(
-            _u.primaryFinance, _u.primaryBranch, _u.primarySubBranch),
+            _primary.financeID, _primary.branchName, _primary.subBranchName),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           List<Widget> children;
 

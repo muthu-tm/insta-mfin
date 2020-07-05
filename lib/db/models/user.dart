@@ -1,4 +1,5 @@
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/model.dart';
@@ -35,14 +36,14 @@ class User extends Model {
   Address address;
   @JsonKey(name: 'preferences')
   UserPreferences preferences;
-  @JsonKey(name: 'primary_finance', defaultValue: "")
-  String primaryFinance;
-  @JsonKey(name: 'primary_branch', defaultValue: "")
-  String primaryBranch;
-  @JsonKey(name: 'primary_sub_branch', defaultValue: "")
-  String primarySubBranch;
+  @JsonKey(name: 'primary')
+  UserPrimary primary;
   @JsonKey(name: 'last_signed_in_at', nullable: true)
   DateTime lastSignInTime;
+  @JsonKey(name: 'is_active', defaultValue: true)
+  bool isActive;
+  @JsonKey(name: 'deactivated_at', nullable: true)
+  DateTime deactivatedAt;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -85,16 +86,8 @@ class User extends Model {
     this.profilePathOrg = displayPath;
   }
 
-  setPrimaryFinance(String financeID) {
-    this.primaryFinance = financeID;
-  }
-
-  setPrimaryBranch(String branchID) {
-    this.primaryBranch = branchID;
-  }
-
-  setPrimarySubBranchID(String subBranchID) {
-    this.primarySubBranch = subBranchID;
+  setPrimaryFinance(UserPrimary primary) {
+    this.primary = primary;
   }
 
   setAddress(Address address) {
@@ -128,6 +121,7 @@ class User extends Model {
   Future<User> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
+    this.isActive = true;
 
     await super.add(this.toJson());
 
@@ -143,14 +137,14 @@ class User extends Model {
   }
 
   DocumentReference getFinanceDocReference() {
-    if (this.primarySubBranch != "") {
+    if (this.primary.subBranchName != "") {
       return SubBranch().getDocumentReference(
-          this.primaryFinance, this.primaryBranch, this.primarySubBranch);
-    } else if (this.primaryBranch != "") {
+          this.primary.financeID, this.primary.branchName, this.primary.subBranchName);
+    } else if (this.primary.branchName != "") {
       return Branch()
-          .getDocumentReference(this.primaryFinance, this.primaryBranch);
+          .getDocumentReference(this.primary.financeID, this.primary.branchName);
     } else {
-      return Finance().getDocumentRef(this.primaryFinance);
+      return Finance().getDocumentRef(this.primary.financeID);
     }
   }
 

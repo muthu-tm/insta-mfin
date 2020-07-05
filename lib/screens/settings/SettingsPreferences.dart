@@ -27,11 +27,21 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   Map<String, dynamic> userPreferencesJSON = new Map();
   Map<String, dynamic> accountPreferencesJSON = new Map();
 
+  String _selectedLang = 'English';
+  List<String> _prefSupportLangList = [
+    "English",
+    "Tamil",
+    "Hindi",
+    "Kannada",
+    "Telugu"
+  ];
+
   @override
   void initState() {
     super.initState();
     this.setAccountDetails();
     this.transctionGroupValue = _user.preferences.transactionGroupBy;
+    this._selectedLang = _user.preferences.prefLanguage;
     if (_user.preferences.tableView) {
       isSelectedView = [true, false];
       isTableView = true;
@@ -93,7 +103,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
               child: Card(
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
@@ -144,7 +154,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
               child: Card(
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
@@ -166,6 +176,52 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                     Divider(
                       color: CustomColors.mfinButtonGreen,
                     ),
+                    Row(children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: new EdgeInsets.only(left: 15.0, top: 10),
+                          child: Text(
+                            "SUPPORT Language",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: "Georgia",
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.mfinGrey,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              items: _prefSupportLangList.map(
+                                (f) {
+                                  return DropdownMenuItem<String>(
+                                    value: f,
+                                    child: Text(f),
+                                  );
+                                },
+                              ).toList(),
+                              value: _selectedLang,
+                              onChanged: (newVal) {
+                                _setSelectedLang(newVal);
+                              }),
+                        ),
+                      ),
+                    ]),
                     RowHeaderText(textName: "TRANSACTIONS GROUP BY"),
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -275,6 +331,12 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     );
   }
 
+  _setSelectedLang(String newVal) {
+    setState(() {
+      _selectedLang = newVal;
+    });
+  }
+
   setTransaction(int val) {
     setState(() {
       this.transctionGroupValue = val;
@@ -298,6 +360,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     } else {
       userPreferencesJSON['enable_table_view'] = false;
     }
+
+    userPreferencesJSON['support_language'] = _selectedLang;
 
     UserController _uc = UserController();
     var result = await _uc.updateTransactionSettings(

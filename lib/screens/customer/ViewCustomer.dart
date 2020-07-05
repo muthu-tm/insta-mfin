@@ -3,7 +3,7 @@ import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsListWidget.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/cust_report.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -175,13 +175,16 @@ class ViewCustomer extends StatelessWidget {
                           Icons.home,
                           color: CustomColors.mfinBlue,
                         ),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Home(),
-                            settings: RouteSettings(name: '/home'),
-                          ),
-                        ),
+                        onTap: () async {
+                          await UserController().refreshUser();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserFinanceSetup(),
+                              settings: RouteSettings(name: '/home'),
+                            ),
+                          );
+                        },
                       )
                     ],
                   ),

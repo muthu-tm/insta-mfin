@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/customer/ViewPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class PaymentListWidget extends StatelessWidget {
   PaymentListWidget(this.isRange, this.startDate, this.endDate);
@@ -18,14 +16,11 @@ class PaymentListWidget extends StatelessWidget {
   final PaymentController _pc = PaymentController();
   @override
   Widget build(BuildContext context) {
-    User _user = UserController().getCurrentUser();
 
     return FutureBuilder<List<Payment>>(
       future: isRange
-          ? _pc.getAllPaymentsByDateRange(_user.primaryFinance,
-              _user.primaryBranch, _user.primarySubBranch, startDate, endDate)
-          : _pc.getPaymentsByDate(_user.primaryFinance, _user.primaryBranch,
-              _user.primarySubBranch, DateUtils.getUTCDateEpoch(startDate)),
+          ? _pc.getAllPaymentsByDateRange(startDate, endDate)
+          : _pc.getPaymentsByDate(DateUtils.getUTCDateEpoch(startDate)),
       builder: (BuildContext context, AsyncSnapshot<List<Payment>> snapshot) {
         List<Widget> children;
 

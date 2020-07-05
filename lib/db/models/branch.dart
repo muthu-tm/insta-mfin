@@ -34,6 +34,10 @@ class Branch {
   int dateOfRegistration;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
+  @JsonKey(name: 'is_active', defaultValue: true)
+  bool isActive;
+  @JsonKey(name: 'deactivated_at', nullable: true)
+  DateTime deactivatedAt;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -121,6 +125,7 @@ class Branch {
     this.updatedAt = DateTime.now();
     this.accountsData = new AccountsData();
     this.financeID = financeID;
+    this.isActive = true;
 
     await getDocumentReference(financeID, this.branchName)
         .setData(this.toJson());
@@ -157,8 +162,20 @@ class Branch {
     return data;
   }
 
+  Stream<QuerySnapshot> streamAllBranches(String financeID) {
+    try {
+      return getBranchCollectionRef(financeID)
+          .where('is_active', isEqualTo: true)
+          .snapshots();
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future<List<Branch>> getAllBranches(String financeID) async {
-    var branchDocs = await getBranchCollectionRef(financeID).getDocuments();
+    var branchDocs = await getBranchCollectionRef(financeID)
+        .where('is_active', isEqualTo: true)
+        .getDocuments();
 
     if (branchDocs.documents.isEmpty) {
       throw 'No branch found for $financeID';
@@ -186,11 +203,11 @@ class Branch {
     return Branch.fromJson(branchSnap.data);
   }
 
-  Future<List<Branch>> getBranchByUserID(
-      String financeID, int userID) async {
+  Future<List<Branch>> getBranchByUserID(String financeID, int userID) async {
     List<DocumentSnapshot> docSnapshot =
         (await getBranchCollectionRef(financeID)
                 .where('users', arrayContains: userID)
+                .where('is_active', isEqualTo: true)
                 .getDocuments())
             .documents;
 
@@ -206,17 +223,6 @@ class Branch {
     }
 
     return branches;
-  }
-
-  Future<Branch> getBranchByID(String financeID, String branchID) async {
-    DocumentSnapshot snapshot =
-        await getBranchCollectionRef(financeID).document(branchID).get();
-
-    if (snapshot.exists) {
-      return Branch.fromJson(snapshot.data);
-    } else {
-      return null;
-    }
   }
 
   Future<void> update(String financeID, String branchName,

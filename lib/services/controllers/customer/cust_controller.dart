@@ -42,9 +42,9 @@ class CustController {
       } else {
         cust.setGuarantiedBy(guarantiedBy);
       }
-      cust.setFinanceID(user.primaryFinance);
-      cust.setBranchName(user.primaryBranch);
-      cust.setSubBranchName(user.primarySubBranch);
+      cust.setFinanceID(user.primary.financeID);
+      cust.setBranchName(user.primary.branchName);
+      cust.setSubBranchName(user.primary.subBranchName);
       cust.setAddedBy(user.mobileNumber);
 
       await cust.create();

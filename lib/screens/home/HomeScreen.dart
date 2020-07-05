@@ -83,13 +83,12 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 10.0),
                 getFinanceDetails(context),
               ],
             ),
           ),
           Positioned(
-            top: 250,
+            top: 270,
             bottom: 0,
             width: MediaQuery.of(context).size.width,
             child: Container(
@@ -500,9 +499,9 @@ class HomeScreen extends StatelessWidget {
   Widget getTodayCollectionData(BuildContext context) {
     return FutureBuilder<List<Collection>>(
       future: Collection().getAllCollectionByDate(
-          _u.primaryFinance,
-          _u.primaryBranch,
-          _u.primarySubBranch,
+          _u.primary.financeID,
+          _u.primary.branchName,
+          _u.primary.subBranchName,
           [0],
           false,
           DateUtils.getUTCDateEpoch(DateTime.now())),
@@ -609,9 +608,9 @@ class HomeScreen extends StatelessWidget {
   Widget getPastCollectionData(BuildContext context) {
     return FutureBuilder<List<Collection>>(
       future: Collection().allCollectionByDate(
-          _u.primaryFinance,
-          _u.primaryBranch,
-          _u.primarySubBranch,
+          _u.primary.financeID,
+          _u.primary.branchName,
+          _u.primary.subBranchName,
           [0],
           DateUtils.getUTCDateEpoch(
               DateTime.now().subtract(Duration(days: 1)))),
@@ -688,9 +687,9 @@ class HomeScreen extends StatelessWidget {
   Widget getUpcomingCollectionData(BuildContext context) {
     return FutureBuilder<List<Collection>>(
       future: Collection().getAllCollectionByDate(
-          _u.primaryFinance,
-          _u.primaryBranch,
-          _u.primarySubBranch,
+          _u.primary.financeID,
+          _u.primary.branchName,
+          _u.primary.subBranchName,
           [0],
           false,
           DateUtils.getUTCDateEpoch(DateTime.now().add(Duration(days: 1)))),
@@ -872,11 +871,26 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-              SizedBox(height: 10.0),
               Text(
                 fin.financeName,
                 style: TextStyle(
                   fontSize: 20.0,
+                  fontFamily: 'Georgia',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                _u.primary.branchName,
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontFamily: 'Georgia',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                _u.primary.subBranchName,
+                style: TextStyle(
+                  fontSize: 14.0,
                   fontFamily: 'Georgia',
                   fontWeight: FontWeight.bold,
                 ),

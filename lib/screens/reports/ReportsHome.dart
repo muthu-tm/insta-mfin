@@ -8,7 +8,7 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -72,12 +72,15 @@ class _ReportsHomeState extends State<ReportsHome> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (BuildContext context) => Home(),
-        ),
-        (Route<dynamic> route) => false,
-      ),
+      onWillPop: () async {
+        await UserController().refreshUser();
+        return Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => UserFinanceSetup(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      },
       child: Scaffold(
         key: _scaffoldKey,
         drawer: openDrawer(context),
@@ -419,18 +422,12 @@ class _ReportsHomeState extends State<ReportsHome> {
 
       if (_selectedRange == '0') {
         // Todays Customer Report
-        customers = await Customer().getAllByDate(
-            _user.primaryFinance,
-            _user.primaryBranch,
-            _user.primarySubBranch,
-            DateUtils.getUTCDateEpoch(fromDate));
+        customers =
+            await Customer().getAllByDate(DateUtils.getUTCDateEpoch(fromDate));
       } else {
         isRange = true;
         // Customer Report by Date Range
         customers = await Customer().getAllByDateRange(
-            _user.primaryFinance,
-            _user.primaryBranch,
-            _user.primarySubBranch,
             DateUtils.getUTCDateEpoch(fromDate),
             DateUtils.getUTCDateEpoch(toDate));
       }
@@ -452,16 +449,10 @@ class _ReportsHomeState extends State<ReportsHome> {
       if (_selectedRange == '0') {
         // Todays Payment Report
         if (_selectedType == '0') {
-          pays = await Payment().getAllPaymentsByDate(
-              _user.primaryFinance,
-              _user.primaryBranch,
-              _user.primarySubBranch,
-              DateUtils.getUTCDateEpoch(fromDate));
+          pays = await Payment()
+              .getAllPaymentsByDate(DateUtils.getUTCDateEpoch(fromDate));
         } else {
           pays = await Payment().getAllByDateStatus(
-              _user.primaryFinance,
-              _user.primaryBranch,
-              _user.primarySubBranch,
               DateUtils.getUTCDateEpoch(fromDate),
               _selectedType == '1' ? false : true);
         }
@@ -470,16 +461,10 @@ class _ReportsHomeState extends State<ReportsHome> {
         isRange = true;
         if (_selectedType == '0') {
           pays = await Payment().getAllPaymentsByDateRange(
-              _user.primaryFinance,
-              _user.primaryBranch,
-              _user.primarySubBranch,
               DateUtils.getUTCDateEpoch(fromDate),
               DateUtils.getUTCDateEpoch(toDate));
         } else {
           pays = await Payment().getAllByDateRangeStatus(
-              _user.primaryFinance,
-              _user.primaryBranch,
-              _user.primarySubBranch,
               DateUtils.getUTCDateEpoch(fromDate),
               DateUtils.getUTCDateEpoch(toDate),
               _selectedType == '1' ? false : true);
@@ -503,9 +488,9 @@ class _ReportsHomeState extends State<ReportsHome> {
       if (_selectedRange == '0') {
         // Todays Collection Report
         colls = await Collection().allCollectionByDate(
-            _user.primaryFinance,
-            _user.primaryBranch,
-            _user.primarySubBranch,
+            _user.primary.financeID,
+            _user.primary.branchName,
+            _user.primary.subBranchName,
             _selectedType == '0'
                 ? [0, 1, 2, 3, 4, 5]
                 : [int.parse(_selectedType) - 1],
@@ -514,9 +499,9 @@ class _ReportsHomeState extends State<ReportsHome> {
         isRange = true;
         // Collection Report by Date Range
         colls = await Collection().getAllCollectionsByDateRange(
-            _user.primaryFinance,
-            _user.primaryBranch,
-            _user.primarySubBranch,
+            _user.primary.financeID,
+            _user.primary.branchName,
+            _user.primary.subBranchName,
             _selectedType == '0'
                 ? [0, 1, 2, 3, 4, 5]
                 : [int.parse(_selectedType) - 1],
@@ -540,13 +525,17 @@ class _ReportsHomeState extends State<ReportsHome> {
 
       if (_selectedRange == '0') {
         // Todays Journal Report
-        journals = await _jc.getJournalByDate(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate);
+        journals = await _jc.getJournalByDate(_user.primary.financeID,
+            _user.primary.branchName, _user.primary.subBranchName, fromDate);
       } else {
         isRange = true;
         // Journal Report by Date Range
-        journals = await _jc.getAllJournalByDateRange(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+        journals = await _jc.getAllJournalByDateRange(
+            _user.primary.financeID,
+            _user.primary.branchName,
+            _user.primary.subBranchName,
+            fromDate,
+            toDate);
       }
       Navigator.pop(context);
       if (journals.length > 0) {
@@ -565,13 +554,17 @@ class _ReportsHomeState extends State<ReportsHome> {
 
       if (_selectedRange == '0') {
         // Todays Expense Report
-        expenses = await _ec.getExpenseByDate(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate);
+        expenses = await _ec.getExpenseByDate(_user.primary.financeID,
+            _user.primary.branchName, _user.primary.subBranchName, fromDate);
       } else {
         isRange = true;
         // Expense Report by Date Range
-        expenses = await _ec.getAllExpenseByDateRange(_user.primaryFinance,
-            _user.primaryBranch, _user.primarySubBranch, fromDate, toDate);
+        expenses = await _ec.getAllExpenseByDateRange(
+            _user.primary.financeID,
+            _user.primary.branchName,
+            _user.primary.subBranchName,
+            fromDate,
+            toDate);
       }
 
       Navigator.pop(context);

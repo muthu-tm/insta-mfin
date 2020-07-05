@@ -18,13 +18,18 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..preferences = json['preferences'] == null
         ? new UserPreferences()
         : UserPreferences.fromJson(json['preferences'] as Map<String, dynamic>)
-    ..primaryFinance = json['primary_finance'] as String ?? ''
-    ..primaryBranch = json['primary_branch'] as String ?? ''
-    ..primarySubBranch = json['primary_sub_branch'] as String ?? ''
+    ..primary = json['primary'] == null
+        ? new UserPrimary()
+        : UserPrimary.fromJson(json['primary'] as Map<String, dynamic>)
     ..lastSignInTime = json['last_signed_in_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
             _getMillisecondsSinceEpoch(json['last_signed_in_at'] as Timestamp))
+    ..isActive = json['is_active'] as bool ?? true
+    ..deactivatedAt = json['deactivated_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['deactivated_at'] as Timestamp))
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -51,10 +56,10 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'date_of_birth': instance.dateOfBirth,
       'address': instance.address?.toJson(),
       'preferences': instance.preferences ?? UserPreferences().toJson(),
-      'primary_finance': instance.primaryFinance ?? '',
-      'primary_branch': instance.primaryBranch ?? '',
-      'primary_sub_branch': instance.primarySubBranch ?? '',
+      'primary': instance.primary ?? UserPrimary().toJson(),
       'last_signed_in_at': instance.lastSignInTime,
+      'is_active': instance.isActive,
+      'deactivated_at': instance.deactivatedAt,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

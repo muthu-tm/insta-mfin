@@ -4,6 +4,7 @@ import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/customer/ViewPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
@@ -18,7 +19,7 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 class AllTransactionsBuilder extends StatelessWidget {
   AllTransactionsBuilder(this.byRange, this.startDate, this.endDate);
 
-  final User _user = UserController().getCurrentUser();
+  final UserPrimary _primary = UserController().getUserPrimary();
 
   final bool byRange;
   final DateTime startDate;
@@ -109,10 +110,8 @@ class AllTransactionsBuilder extends StatelessWidget {
 
     return FutureBuilder<List<Payment>>(
       future: byRange
-          ? _pc.getAllPaymentsByDateRange(_user.primaryFinance,
-              _user.primaryBranch, _user.primarySubBranch, startDate, endDate)
-          : _pc.getPaymentsByDate(_user.primaryFinance, _user.primaryBranch,
-              _user.primarySubBranch, DateUtils.getUTCDateEpoch(startDate)),
+          ? _pc.getAllPaymentsByDateRange(startDate, endDate)
+          : _pc.getPaymentsByDate(DateUtils.getUTCDateEpoch(startDate)),
       builder: (BuildContext context, AsyncSnapshot<List<Payment>> snapshot) {
         Widget widget;
 
@@ -274,16 +273,16 @@ class AllTransactionsBuilder extends StatelessWidget {
     return FutureBuilder<List<Collection>>(
       future: byRange
           ? CollectionController().getAllCollectionByDateRange(
-              _user.primaryFinance,
-              _user.primaryBranch,
-              _user.primarySubBranch,
+              _primary.financeID,
+              _primary.branchName,
+              _primary.subBranchName,
               [0, 1, 2, 3, 4, 5],
               startDate,
               endDate)
           : Collection().getAllCollectionDetailsByDateRange(
-              _user.primaryFinance,
-              _user.primaryBranch,
-              _user.primarySubBranch,
+              _primary.financeID,
+              _primary.branchName,
+              _primary.subBranchName,
               [DateUtils.getUTCDateEpoch(startDate)],
               [0, 1, 2, 3, 4, 5]),
       builder:
@@ -449,10 +448,10 @@ class AllTransactionsBuilder extends StatelessWidget {
 
     return FutureBuilder<List<Journal>>(
       future: byRange
-          ? _jc.getAllJournalByDateRange(_user.primaryFinance,
-              _user.primaryBranch, _user.primarySubBranch, startDate, endDate)
-          : _jc.getJournalByDate(_user.primaryFinance, _user.primaryBranch,
-              _user.primarySubBranch, startDate),
+          ? _jc.getAllJournalByDateRange(_primary.financeID,
+              _primary.branchName, _primary.subBranchName, startDate, endDate)
+          : _jc.getJournalByDate(_primary.financeID, _primary.branchName,
+              _primary.subBranchName, startDate),
       builder: (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
         Widget widget;
 
@@ -562,10 +561,10 @@ class AllTransactionsBuilder extends StatelessWidget {
 
     return FutureBuilder<List<Expense>>(
       future: byRange
-          ? _ec.getAllExpenseByDateRange(_user.primaryFinance,
-              _user.primaryBranch, _user.primarySubBranch, startDate, endDate)
-          : _ec.getExpenseByDate(_user.primaryFinance, _user.primaryBranch,
-              _user.primarySubBranch, startDate),
+          ? _ec.getAllExpenseByDateRange(_primary.financeID,
+              _primary.branchName, _primary.subBranchName, startDate, endDate)
+          : _ec.getExpenseByDate(_primary.financeID, _primary.branchName,
+              _primary.subBranchName, startDate),
       builder: (BuildContext context, AsyncSnapshot<List<Expense>> snapshot) {
         Widget widget;
 

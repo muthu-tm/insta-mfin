@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/settings/editors/ChangeSecret.dart';
 import 'package:instamfin/screens/settings/editors/EditUSerProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -79,7 +80,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
+                    new EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(
                   color: CustomColors.mfinGrey,
@@ -106,44 +107,64 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
               readOnly: true,
             ),
           ),
-          ListTile(
-            leading: SizedBox(
-              width: 95,
-              child: Text(
-                "PASSWORD",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Georgia",
-                    fontWeight: FontWeight.bold,
-                    color: CustomColors.mfinGrey),
-              ),
-            ),
-            title: TextFormField(
-              initialValue: user.password,
-              obscureText: true,
-              decoration: InputDecoration(
-                fillColor: CustomColors.mfinWhite,
-                filled: true,
-                contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: CustomColors.mfinGrey)),
-                suffixIcon: Icon(
-                  Icons.visibility_off,
-                  color: CustomColors.mfinBlue,
-                  size: 35.0,
-                ),
-              ),
-              readOnly: true,
-            ),
-          ),
+          (user.mobileNumber == _uc.getCurrentUser().mobileNumber)
+              ? ListTile(
+                  leading: SizedBox(
+                    width: 95,
+                    child: Text(
+                      "PASSWORD",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Georgia",
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinGrey),
+                    ),
+                  ),
+                  title: TextFormField(
+                    initialValue: "****",
+                    textAlign: TextAlign.start,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      fillColor: CustomColors.mfinWhite,
+                      filled: true,
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 1.0, horizontal: 5.0),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: CustomColors.mfinGrey)),
+                    ),
+                    readOnly: true,
+                  ),
+                  trailing: IconButton(
+                    highlightColor: CustomColors.mfinAlertRed.withOpacity(0.5),
+                    tooltip: "Change Password",
+                    icon: Icon(
+                      Icons.edit,
+                      size: 25.0,
+                      color: CustomColors.mfinAlertRed.withOpacity(0.7),
+                    ),
+                    onPressed: () {
+                      if (user.mobileNumber ==
+                          _uc.getCurrentUser().mobileNumber) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangeSecret(),
+                            settings: RouteSettings(
+                                name: '/settings/user/secret/edit'),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                )
+              : Container(),
           ListTile(
             leading: SizedBox(
               width: 95,
@@ -162,7 +183,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
@@ -187,7 +208,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinWhite)),
               ),
@@ -215,7 +236,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
                 suffixIcon: Icon(
@@ -246,7 +267,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),

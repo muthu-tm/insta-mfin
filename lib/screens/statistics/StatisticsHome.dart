@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/SearchAppBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
-import 'package:instamfin/screens/home/Home.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/statistics/DailyStatistics.dart';
 import 'package:instamfin/screens/statistics/MonthlyStatistics.dart';
 import 'package:instamfin/screens/statistics/WeeklyStatistics.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomTabBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class StatisticsHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -15,12 +16,15 @@ class StatisticsHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (BuildContext context) => Home(),
-        ),
-        (Route<dynamic> route) => false,
-      ),
+      onWillPop: () async {
+        await UserController().refreshUser();
+        return Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => UserFinanceSetup(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      },
       child: DefaultTabController(
         length: 3,
         child: Scaffold(

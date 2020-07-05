@@ -25,11 +25,8 @@ class _EditUserProfileState extends State<EditUserProfile> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserController _userController = UserController();
-  TextEditingController passwordController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
-  var _passwordVisible = false;
-  var hidePassword = true;
   String gender;
 
   @override
@@ -53,7 +50,9 @@ class _EditUserProfileState extends State<EditUserProfile> {
         title: Text('Edit Profile'),
         backgroundColor: CustomColors.mfinBlue,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },
@@ -75,177 +74,146 @@ class _EditUserProfileState extends State<EditUserProfile> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Container(
-            color: CustomColors.mfinLightGrey,
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                RowHeaderText(textName: 'Name'),
-                ListTile(
-                  title: TextFormField(
-                    keyboardType: TextInputType.text,
-                    initialValue: user.name,
-                    decoration: InputDecoration(
-                      hintText: 'User Name',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Enter your Name';
-                      }
-                      updatedUser['user_name'] = value;
-                      return null;
-                    },
-                  ),
-                ),
-                RowHeaderText(textName: 'Password'),
-                ListTile(
-                  title: new TextFormField(
-                    keyboardType: TextInputType.text,
-                    obscureText: hidePassword,
-                    initialValue: user.password,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your new Password',
-                      fillColor: CustomColors.mfinWhite,
-                      filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors.mfinWhite)),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: CustomColors.mfinBlue,
-                          size: 35.0,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _passwordVisible = !_passwordVisible;
-                            hidePassword = !hidePassword;
-                          });
-                        },
-                      ),
-                    ),
-                    validator: (passkey) =>
-                        FieldValidator.passwordValidator(passkey, setPassKey),
-                  ),
-                ),
-                RowHeaderText(textName: 'Email'),
-                ListTile(
-                  title: new TextFormField(
-                      keyboardType: TextInputType.text,
-                      initialValue: user.emailID,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your EmailID',
-                        fillColor: CustomColors.mfinWhite,
-                        filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 3.0),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinWhite)),
-                      ),
-                      validator: (email) {
-                        if (email.trim().isEmpty) {
-                          setEmailID("");
-                          return null;
-                        } else {
-                          return FieldValidator.emailValidator(
-                              email.trim(), setEmailID);
-                        }
-                      }),
-                ),
-                RowHeaderText(textName: 'Date Of Birth'),
-                ListTile(
-                  title: GestureDetector(
-                    onTap: () => _selectDate(context),
-                    child: AbsorbPointer(
-                      child: TextFormField(
-                        controller: _date,
-                        keyboardType: TextInputType.datetime,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Card(
+                color: CustomColors.mfinLightGrey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    RowHeaderText(textName: 'Name'),
+                    ListTile(
+                      title: TextFormField(
+                        keyboardType: TextInputType.text,
+                        initialValue: user.name,
                         decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 10.0),
+                          hintText: 'User Name',
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
                           border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: CustomColors.mfinWhite)),
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          suffixIcon: Icon(
-                            Icons.perm_contact_calendar,
-                            size: 35,
-                            color: CustomColors.mfinBlue,
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Enter your Name';
+                          }
+                          updatedUser['user_name'] = value;
+                          return null;
+                        },
+                      ),
+                    ),
+                    RowHeaderText(textName: 'Email'),
+                    ListTile(
+                      title: new TextFormField(
+                          keyboardType: TextInputType.text,
+                          initialValue: user.emailID,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your EmailID',
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 3.0),
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: CustomColors.mfinWhite)),
+                          ),
+                          validator: (email) {
+                            if (email.trim().isEmpty) {
+                              setEmailID("");
+                              return null;
+                            } else {
+                              return FieldValidator.emailValidator(
+                                  email.trim(), setEmailID);
+                            }
+                          }),
+                    ),
+                    RowHeaderText(textName: 'Date Of Birth'),
+                    ListTile(
+                      title: GestureDetector(
+                        onTap: () => _selectDate(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            controller: _date,
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              suffixIcon: Icon(
+                                Icons.perm_contact_calendar,
+                                size: 35,
+                                color: CustomColors.mfinBlue,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                RowHeaderText(textName: 'Gender'),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Flexible(
-                      child: RadioListTile(
-                        title: Text(
-                          "Male",
-                          style: TextStyle(color: CustomColors.mfinBlue),
+                    RowHeaderText(textName: 'Gender'),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Flexible(
+                          child: RadioListTile(
+                            title: Text(
+                              "Male",
+                              style: TextStyle(color: CustomColors.mfinBlue),
+                            ),
+                            value: "Male",
+                            selected: gender.contains("Male"),
+                            groupValue: gender,
+                            onChanged: (val) {
+                              setState(() {
+                                gender = val;
+                                updatedUser['gender'] = "Male";
+                              });
+                            },
+                          ),
                         ),
-                        value: "Male",
-                        selected: gender.contains("Male"),
-                        groupValue: gender,
-                        onChanged: (val) {
-                          setState(() {
-                            gender = val;
-                            updatedUser['gender'] = "Male";
-                          });
-                        },
-                      ),
-                    ),
-                    Flexible(
-                      child: RadioListTile(
-                        title: Text(
-                          "Female",
-                          style: TextStyle(color: CustomColors.mfinBlue),
+                        Flexible(
+                          child: RadioListTile(
+                            title: Text(
+                              "Female",
+                              style: TextStyle(color: CustomColors.mfinBlue),
+                            ),
+                            value: "Female",
+                            selected: gender.contains("Female"),
+                            groupValue: gender,
+                            onChanged: (val) {
+                              setState(() {
+                                gender = val;
+                                updatedUser['gender'] = "Female";
+                              });
+                            },
+                          ),
                         ),
-                        value: "Female",
-                        selected: gender.contains("Female"),
-                        groupValue: gender,
-                        onChanged: (val) {
-                          setState(() {
-                            gender = val;
-                            updatedUser['gender'] = "Female";
-                          });
-                        },
-                      ),
+                      ],
                     ),
                   ],
                 ),
-                AddressWidget("Address", user.address, updatedAddress),
-              ],
-            ),
+              ),
+              AddressWidget("Address", user.address, updatedAddress),
+              Padding(padding: EdgeInsets.only(top: 30, bottom: 30)),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  setPassKey(String passkey) {
-    updatedUser['password'] = passkey;
   }
 
   setEmailID(String emailID) {

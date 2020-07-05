@@ -24,9 +24,9 @@ class FinanceSetting extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              FinanceProfileWidget(_user.primaryFinance),
-              FinanceBranchWidget(_user.primaryFinance),
-              FinanceUsersWidget(_user.primaryFinance)
+              FinanceProfileWidget(_user.primary.financeID),
+              FinanceBranchWidget(_user.primary.financeID),
+              FinanceUsersWidget(_user.primary.financeID)
             ],
           ),
         ),

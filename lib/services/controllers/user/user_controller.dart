@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
+import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/notification/n_utils.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 UserService _userService = locator<UserService>();
@@ -14,8 +17,36 @@ class UserController {
     return _userService.cachedUser;
   }
 
+  UserPrimary getUserPrimary() {
+    return _userService.cachedUser.primary;
+  }
+
   int getCurrentUserID() {
     return _userService.cachedUser.mobileNumber;
+  }
+
+  Future<void> refreshUser() async {
+    DocumentSnapshot snap =
+        await _userService.cachedUser.getFinanceDocReference().get();
+    if (snap.exists) {
+      Map<String, dynamic> doc = snap.data;
+      if (!doc['is_active']) {
+        emptyPrimary();
+      } else {
+        List<dynamic> admins = doc['admins'];
+        if (!admins.contains(getCurrentUserID())) {
+          emptyPrimary();
+        }
+      }
+    } else {
+      emptyPrimary();
+    }
+  }
+
+  emptyPrimary() {
+    _userService.cachedUser.primary.financeID = "";
+    _userService.cachedUser.primary.branchName = "";
+    _userService.cachedUser.primary.subBranchName = "";
   }
 
   Future<User> getUserByID(String number) async {
@@ -63,7 +94,7 @@ class UserController {
 
   Future<Finance> getPrimaryFinance() async {
     try {
-      String primaryFinanceID = _userService.cachedUser.primaryFinance;
+      String primaryFinanceID = _userService.cachedUser.primary.financeID;
 
       if (primaryFinanceID != null && primaryFinanceID != "") {
         Finance finance =
@@ -88,14 +119,16 @@ class UserController {
       User user = User(userNumber);
 
       await user.update({
-        'primary_finance': financeID,
-        'primary_branch': branchName,
-        'primary_sub_branch': subBranchName
+        'primary': {
+          'finance_id': financeID,
+          'branch_name': branchName,
+          'sub_branch_name': subBranchName
+        }
       });
 
-      _userService.cachedUser.primaryFinance = financeID;
-      _userService.cachedUser.primaryBranch = branchName;
-      _userService.cachedUser.primarySubBranch = subBranchName;
+      _userService.cachedUser.primary.financeID = financeID;
+      _userService.cachedUser.primary.branchName = branchName;
+      _userService.cachedUser.primary.subBranchName = subBranchName;
 
       NUtils.alertNotify(
           "", "PRIMARY FINANCE CHANGED", "Your Primary Finance modified...!");
@@ -131,6 +164,27 @@ class UserController {
       Analytics.reportError({
         "type": 'user_get_error',
         'user_id': mobileNumber,
+        'error': err.toString()
+      });
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+
+  Future updateSecretKey(String key) async {
+    try {
+      String hashKey =
+          HashGenerator.hmacGenerator(key, getCurrentUserID().toString());
+
+      await getCurrentUser()
+          .update({'password': hashKey, 'updated_at': DateTime.now()});
+
+      _userService.cachedUser.password = hashKey;
+
+      return CustomResponse.getSuccesReponse("Successfully updated Secret KEY");
+    } catch (err) {
+      Analytics.reportError({
+        "type": 'secret_update_error',
+        'user_id': getCurrentUserID(),
         'error': err.toString()
       });
       return CustomResponse.getFailureReponse(err.toString());
