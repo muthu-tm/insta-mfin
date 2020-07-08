@@ -57,8 +57,15 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
             padding: EdgeInsets.all(5.0),
             child: Material(
               elevation: 10.0,
-              child: Image.asset("images/icons/logo.png",
-                  height: MediaQuery.of(context).size.height * 0.1),
+              borderRadius: BorderRadius.circular(10.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.asset(
+                  "images/icons/logo.png",
+                  height: 70,
+                  width: 70,
+                ),
+              ),
             ),
           ),
           Padding(
@@ -195,7 +202,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Container(
-                child: const Text(
+                child: Text(
                   'Already have an account?',
                   style: TextStyle(
                     fontSize: 13,
@@ -207,7 +214,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               ),
               FlatButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text(
+                child: Text(
                   'LOGIN',
                   style: TextStyle(
                     fontSize: 18,

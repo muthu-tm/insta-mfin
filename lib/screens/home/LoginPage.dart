@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
             child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.5,
+              height: 350,
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -82,8 +82,16 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: EdgeInsets.all(5),
                     child: Material(
+                      borderRadius: BorderRadius.circular(10.0),
                       elevation: 10.0,
-                      child: Image.asset("images/icons/logo.png", height: 50),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.asset(
+                          "images/icons/logo.png",
+                          height: 60,
+                          width: 60,
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
@@ -100,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
                           suffixIcon: Icon(
-                            Icons.phone,
+                            Icons.phone_android,
                             color: CustomColors.mfinFadedButtonGreen,
                             size: 35.0,
                           ),
@@ -175,13 +183,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          SizedBox(
+            height: 20.0,
+          ),
           Container(
             child: Row(
               children: <Widget>[
                 Text(
                   "Don't have an account? ",
                   style: new TextStyle(
-                    fontSize: 16.0,
+                    fontSize: 13.0,
+                    fontFamily: 'Georgia',
                     color: CustomColors.mfinAlertRed,
                     fontWeight: FontWeight.bold,
                   ),
@@ -208,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           SizedBox(
-            height: 20.0,
+            height: 30.0,
           ),
           Align(
             alignment: FractionalOffset.bottomCenter,
