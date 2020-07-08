@@ -47,6 +47,7 @@ class _AddCustomerState extends State<AddCustomer> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },
@@ -76,7 +77,6 @@ class _AddCustomerState extends State<AddCustomer> {
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
                 margin: EdgeInsets.all(5.0),
-                shadowColor: CustomColors.mfinLightBlue,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -107,6 +107,11 @@ class _AddCustomerState extends State<AddCustomer> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
+                                prefixText: " +91 ",
+                                prefixStyle: TextStyle(
+                                  fontSize: 16.0,
+                                  color: CustomColors.mfinBlue,
+                                ),
                                 labelText: 'Mobile Number',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -419,6 +424,7 @@ class _AddCustomerState extends State<AddCustomer> {
                 ),
               ),
               AddressWidget("Address Details", Address(), address),
+              Padding(padding: EdgeInsets.all(35))
             ],
           ),
         ),

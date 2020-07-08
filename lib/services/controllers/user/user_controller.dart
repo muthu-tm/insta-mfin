@@ -149,15 +149,15 @@ class UserController {
     try {
       User user = User(mobileNumber);
       var userJson = await user.getByID(mobileNumber.toString());
-      if (userJson == null) {
-        Analytics.reportError({
-          "type": 'user_get_error',
-          'user_id': mobileNumber,
-          'error': "No user found for this mobile number!"
-        });
-        return CustomResponse.getFailureReponse(
-            "No user found for this mobile number!");
-      }
+      // if (userJson == null) {
+      //   Analytics.reportError({
+      //     "type": 'user_get_error',
+      //     'user_id': mobileNumber,
+      //     'error': "No user found for this mobile number!"
+      //   });
+      //   return CustomResponse.getFailureReponse(
+      //       "No user found for this mobile number!");
+      // }
 
       return CustomResponse.getSuccesReponse(userJson);
     } catch (err) {
