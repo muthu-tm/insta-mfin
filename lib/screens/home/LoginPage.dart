@@ -104,6 +104,11 @@ class _LoginPageState extends State<LoginPage> {
                         autofocus: false,
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
+                          prefixText: " +91 ",
+                          prefixStyle: TextStyle(
+                            fontSize: 16.0,
+                            color: CustomColors.mfinBlue,
+                          ),
                           hintText: 'Mobile Number',
                           fillColor: CustomColors.mfinWhite,
                           filled: true,

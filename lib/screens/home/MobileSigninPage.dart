@@ -88,6 +88,13 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                       keyboardType: TextInputType.phone,
                       key: Key('EnterPhone-TextFormField'),
                       decoration: InputDecoration(
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        suffixIcon: Icon(
+                          Icons.phone_android,
+                          color: CustomColors.mfinFadedButtonGreen,
+                          size: 35.0,
+                        ),
                         hintText: "Enter Mobile Number",
                         border: InputBorder.none,
                         errorMaxLines: 1,
