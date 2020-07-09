@@ -136,10 +136,6 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
                           controller: _fDate,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
-                            hintText: 'Date of Payment',
-                            labelStyle: TextStyle(
-                              color: CustomColors.mfinBlue,
-                            ),
                             contentPadding: new EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 3.0),
                             border: OutlineInputBorder(
