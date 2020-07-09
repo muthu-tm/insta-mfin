@@ -31,7 +31,7 @@ class ViewCustomer extends StatelessWidget {
         backgroundColor: CustomColors.mfinBlue,
         actions: <Widget>[
           IconButton(
-            tooltip: "Genearte Customer Report",
+            tooltip: "Generate Customer Report",
             icon: Icon(
               Icons.description,
               size: 30,
