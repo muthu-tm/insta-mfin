@@ -42,14 +42,10 @@ class ExpenseController {
   Future<List<Expense>> getThisWeekExpenses(
       String financeId, String branchName, String subBranchName) {
     try {
-      DateTime today = DateUtils.getCurrentDate();
+      DateTime today = DateTime.now();
 
-      return getAllExpenseByDateRange(
-          financeId,
-          branchName,
-          subBranchName,
-          today.subtract(Duration(days: today.weekday)),
-          today.add(Duration(days: 1)));
+      return getAllExpenseByDateRange(financeId, branchName, subBranchName,
+          today.subtract(Duration(days: today.weekday)), today);
     } catch (err) {
       throw err;
     }
@@ -58,14 +54,10 @@ class ExpenseController {
   Future<List<Expense>> getThisMonthExpenses(
       String financeId, String branchName, String subBranchName) {
     try {
-      DateTime today = DateUtils.getCurrentDate();
+      DateTime today = DateTime.now();
 
-      return getAllExpenseByDateRange(
-          financeId,
-          branchName,
-          subBranchName,
-          DateTime(today.year, today.month, 1, 0, 0, 0, 0),
-          today.add(Duration(days: 1)));
+      return getAllExpenseByDateRange(financeId, branchName, subBranchName,
+          DateTime(today.year, today.month, 1, 0, 0, 0, 0), today);
     } catch (err) {
       throw err;
     }

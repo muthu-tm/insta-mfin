@@ -29,7 +29,7 @@ class CustomersBook extends StatelessWidget {
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         primary: false,
-        itemCount: 7,
+        itemCount: 6,
         itemBuilder: (BuildContext context, int index) {
           DateTime date = DateTime.now().subtract(Duration(days: index));
           String text = DateUtils.formatDate(date);

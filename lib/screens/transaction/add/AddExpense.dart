@@ -50,6 +50,7 @@ class _AddExpenseState extends State<AddExpense> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () async {
           _submit();
         },

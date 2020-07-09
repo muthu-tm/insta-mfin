@@ -56,6 +56,7 @@ class _AddJournalState extends State<AddJournal> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () async {
           _submit();
         },

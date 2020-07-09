@@ -142,21 +142,28 @@ class Expense extends Model {
     }
   }
 
-  Stream<QuerySnapshot> streamExpenses(
-      String financeId, String branchName, String subBranchName) {
-    return getCollectionRef()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+  Stream<QuerySnapshot> streamExpensesByDate(int epoch) {
+    return getGroupQuery()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('expense_date', isEqualTo: epoch)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> streamExpensesByDateRange(int start, int end) {
+    return getGroupQuery()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('expense_date', isGreaterThanOrEqualTo: start)
+        .where('expense_date', isLessThanOrEqualTo: end)
         .orderBy('expense_date', descending: true)
         .snapshots();
   }
 
-  Future<List<Expense>> getAllExpensesByDate(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int epoch) async {
+  Future<List<Expense>> getAllExpensesByDate(String financeId,
+      String branchName, String subBranchName, int epoch) async {
     var expenseDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
@@ -174,12 +181,8 @@ class Expense extends Model {
     return expenses;
   }
 
-  Future<List<Expense>> getAllExpensesByDateRange(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int start,
-      int end) async {
+  Future<List<Expense>> getAllExpensesByDateRange(String financeId,
+      String branchName, String subBranchName, int start, int end) async {
     var expenseDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
