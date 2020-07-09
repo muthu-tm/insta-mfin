@@ -211,6 +211,7 @@ class SettingsScreen extends StatelessWidget {
               AddFinanceWidget(),
             ],
           ),
+          padding: const EdgeInsets.only(bottom: 30),
         ),
         bottomSheet: bottomBar(context),
       ),

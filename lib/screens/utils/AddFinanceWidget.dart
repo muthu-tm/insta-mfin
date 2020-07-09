@@ -8,6 +8,7 @@ class AddFinanceWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
               "Wish to be a Complete Financier?",
