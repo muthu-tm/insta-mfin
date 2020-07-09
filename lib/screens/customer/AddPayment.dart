@@ -1029,7 +1029,22 @@ class _AddPaymentState extends State<AddPayment> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-      } else if (totalAmount != tenure * collectionAmount) {
+      } else if (!(selectedCollectionModeID == "0" &&
+          (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday <= 6 &&
+              collectionDays.contains(
+                  DateTime.fromMillisecondsSinceEpoch(collectionDate)
+                      .weekday)))) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Payment start date should be in collection day', 5));
+      } else if (!(selectedCollectionModeID == "0" &&
+          (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday == 7 &&
+              collectionDays.contains(0)))) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Payment start date should be in collection day', 5));
+      }
+      else if (totalAmount != tenure * collectionAmount) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             'Total amount should be equal to Collection amount * No. of collections',
@@ -1041,7 +1056,8 @@ class _AddPaymentState extends State<AddPayment> {
       } else if (!(totalAmount >= principalAmount + docCharge + surCharge)) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Total amount should be greater than sum of Principal + Document + Service charge', 5));
+            'Total amount should be greater than sum of Principal + Document + Service charge',
+            5));
       } else {
         Navigator.pop(context);
         Navigator.pop(context);
