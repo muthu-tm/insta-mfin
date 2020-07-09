@@ -153,16 +153,6 @@ class Journal extends Model {
     }
   }
 
-  Stream<QuerySnapshot> streamJournals(
-      String financeId, String branchName, String subBranchName) {
-    return getCollectionRef()
-        .where('finance_id', isEqualTo: financeId)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
-        .orderBy('journal_date', descending: true)
-        .snapshots();
-  }
-
   Future<List<Journal>> getAllJournals(
       String financeId, String branchName, String subBranchName) async {
     QuerySnapshot snapDocs = await getCollectionRef()
@@ -183,12 +173,28 @@ class Journal extends Model {
     return expenses;
   }
 
+  Stream<QuerySnapshot> streamJournalsByDate(int epoch) {
+    return getGroupQuery()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('journal_date', isEqualTo: epoch)
+        .snapshots();
+  }
 
-  Future<List<Journal>> getAllJournalsByDate(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int epoch) async {
+  Stream<QuerySnapshot> streamJournalsByDateRange(int start, int end) {
+    return getGroupQuery()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('journal_date', isGreaterThanOrEqualTo: start)
+        .where('journal_date', isLessThanOrEqualTo: end)
+        .orderBy('journal_date', descending: true)
+        .snapshots();
+  }
+
+  Future<List<Journal>> getAllJournalsByDate(String financeId,
+      String branchName, String subBranchName, int epoch) async {
     var journalDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
@@ -206,12 +212,8 @@ class Journal extends Model {
     return journals;
   }
 
-  Future<List<Journal>> getAllJournalsByDateRange(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int start,
-      int end) async {
+  Future<List<Journal>> getAllJournalsByDateRange(String financeId,
+      String branchName, String subBranchName, int start, int end) async {
     var journalDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
         .where('branch_name', isEqualTo: branchName)
@@ -231,7 +233,7 @@ class Journal extends Model {
     return journals;
   }
 
-//Removing Journal update For now; not implemented fully, please test while enabling this feature
+//!Removing Journal update For now; not implemented fully, please test while enabling this feature
   // Future<void> updateJournal(
   //     Journal journal, Map<String, dynamic> journalJSON) async {
   //   journalJSON['updated_at'] = DateTime.now();

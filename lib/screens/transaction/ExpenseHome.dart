@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/expense.dart';
-import 'package:instamfin/db/models/user_primary.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/transaction/add/AddExpense.dart';
 import 'package:instamfin/screens/transaction/edit/EditExpense.dart';
@@ -18,7 +18,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 class ExpenseHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  final UserPrimary _primary = UserController().getUserPrimary();
+  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +91,18 @@ class ExpenseHome extends StatelessWidget {
         },
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: Expense().streamExpenses(
-            _primary.financeID, _primary.branchName, _primary.subBranchName),
+        stream: _user.preferences.transactionGroupBy == 0
+            ? Expense()
+                .streamExpensesByDate(DateUtils.getUTCDateEpoch(DateTime.now()))
+            : _user.preferences.transactionGroupBy == 1
+                ? Expense().streamExpensesByDateRange(
+                    DateUtils.getUTCDateEpoch(DateTime.now()
+                        .subtract(Duration(days: DateTime.now().weekday))),
+                    DateUtils.getUTCDateEpoch(DateTime.now()))
+                : Expense().streamExpensesByDateRange(
+                    DateUtils.getUTCDateEpoch(DateTime(DateTime.now().year,
+                        DateTime.now().month, 1, 0, 0, 0, 0, 0)),
+                    DateUtils.getUTCDateEpoch(DateTime.now())),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           Widget widget;
 

@@ -3,7 +3,6 @@ import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/customer/ViewPayment.dart';
@@ -211,7 +210,7 @@ class AllTransactionsBuilder extends StatelessWidget {
                                     children: <TextSpan>[
                                       TextSpan(
                                         text: ' x ',
-                                        style: TextStyle(
+                                        style: TextStyle( 
                                           color: CustomColors.mfinBlack,
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
@@ -32,7 +31,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
   bool searchTriggered = false;
   bool showSearch = false;
 
-  var mobileNumber;
+  String mobileNumber = "";
   bool mobileNumberValid = true;
 
   @override
@@ -41,7 +40,6 @@ class _AddAdminPageState extends State<AddAdminPage> {
 
     return new Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Add Admin'),
         backgroundColor: CustomColors.mfinBlue,
@@ -68,94 +66,157 @@ class _AddAdminPageState extends State<AddAdminPage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: new Container(
-          color: CustomColors.mfinLightGrey,
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              new Card(
-                child: new Container(
-                  color: CustomColors.mfinBlue,
-                  padding: EdgeInsets.all(10),
-                  child: new Text(
-                    " Important! \nThis user will get ADMIN access over your selected $_groupName. And the user would have full WRITE access over this $_groupName",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: CustomColors.mfinAlertRed,
-                      fontSize: 16.0,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 4,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) => mobileNumber = value,
-                  decoration: InputDecoration(
-                    fillColor: CustomColors.mfinGrey,
-                    filled: true,
-                    hintText: "Type USER's mobile number...",
-                    errorText: !mobileNumberValid
-                        ? 'Enter the valid 10 digit MobileNumber'
-                        : null,
-                    suffixIcon: customIconButton(
-                        Icons.search, 30.0, CustomColors.mfinBlue, _onSearch),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(25.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Card(
+              elevation: 5.0,
+              color: CustomColors.mfinLightGrey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinAlertRed.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Text(
+                        "Important! \nThis user will get ADMIN access over your selected $_groupName. And the user will have full access over this $_groupName",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: CustomColors.mfinLightGrey,
+                          fontSize: 16.0,
+                          fontFamily: 'Georgia',
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 4,
                       ),
                     ),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: TextField(
+                      keyboardType: TextInputType.phone,
+                      onChanged: (value) => mobileNumber = value,
+                      decoration: InputDecoration(
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        hintText: "Type USER's mobile number...",
+                        errorText: !mobileNumberValid
+                            ? 'Enter the valid 10 digit MobileNumber'
+                            : null,
+                        suffixIcon: Icon(
+                          Icons.search,
+                          size: 35.0,
+                          color: CustomColors.mfinBlue,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  FlatButton.icon(
+                      color: CustomColors.mfinBlue,
+                      icon: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Icon(
+                          Icons.search,
+                          size: 30.0,
+                          color: CustomColors.mfinButtonGreen,
+                        ),
+                      ),
+                      label: Text(
+                        "Search",
+                        style: TextStyle(
+                          color: CustomColors.mfinLightGrey,
+                          fontSize: 16.0,
+                          fontFamily: 'Georgia',
+                        ),
+                      ),
+                      onPressed: () => _onSearch()),
+                ],
               ),
-              new Card(
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                decoration: BoxDecoration(
+                  color: CustomColors.mfinBlue,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
                 child: searchTriggered
-                    ? new Container(
-                        color: CustomColors.mfinBlue,
-                        child: new ListTile(
-                          leading: Icon(
-                            Icons.person,
-                            color: CustomColors.mfinButtonGreen,
-                            size: 50,
+                    ? ListTile(
+                        leading: Icon(
+                          Icons.person,
+                          color: CustomColors.mfinButtonGreen,
+                          size: 50,
+                        ),
+                        title: Text(
+                          _userDetails['user_name'],
+                          style: TextStyle(
+                            color: CustomColors.mfinLightGrey,
                           ),
-                          title: new Text(
-                            _userDetails['user_name'],
-                            style: TextStyle(
-                              color: CustomColors.mfinLightGrey,
-                            ),
-                          ),
-                          subtitle: new Text(
-                            _userDetails['mobile_number'].toString(),
-                            style: TextStyle(
-                              color: CustomColors.mfinLightGrey,
-                            ),
+                        ),
+                        subtitle: Text(
+                          _userDetails['mobile_number'].toString(),
+                          style: TextStyle(
+                            color: CustomColors.mfinLightGrey,
                           ),
                         ),
                       )
-                    : new Container(),
+                    : Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Text(
+                          "No Users Selected!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: CustomColors.mfinLightGrey,
+                            fontSize: 16.0,
+                            fontFamily: 'Georgia',
+                          ),
+                        ),
+                      ),
               ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
   }
 
   _onSearch() async {
-    if (mobileNumber.length == 10) {
+    if (mobileNumber != "" &&
+        int.parse(mobileNumber) == UserController().getCurrentUserID()) {
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          "You are already an Admin for this Account!", 3));
+      return;
+    }
+
+    if (mobileNumber != null && mobileNumber.length == 10) {
       Map<String, dynamic> apiResponse =
           await _userController.getByMobileNumber(int.parse(mobileNumber));
       if (apiResponse['is_success']) {
+        Map<String, dynamic> resp = {};
+        if (apiResponse['message'] == null) {
+          resp['mobile_number'] = int.parse(mobileNumber);
+          resp['user_name'] = "<Unknown_User>";
+        } else {
+          resp = apiResponse['message'];
+        }
         setState(() {
-          _userDetails = apiResponse['message'];
-          userList.add(_userDetails['mobile_number']);
+          _userDetails = resp;
+          userList = [_userDetails['mobile_number']];
           mobileNumberValid = true;
         });
-        print(_userDetails.toString());
         searchTriggered = true;
       } else {
         setState(() {
@@ -166,6 +227,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
         });
       }
     } else {
+      userList = [];
       setState(() {
         mobileNumberValid = false;
         searchTriggered = false;
@@ -176,8 +238,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
   Future<void> _submit() async {
     if (userList.length == 0) {
       _scaffoldKey.currentState
-          .showSnackBar(CustomSnackBar.errorSnackBar("No User Selected!", 2));
-      Navigator.pop(context);
+          .showSnackBar(CustomSnackBar.errorSnackBar("No Users Selected!", 2));
     } else {
       String groupName = widget.groupName;
       CustomDialogs.actionWaiting(context, "Updating Admin!");
