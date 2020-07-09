@@ -136,10 +136,6 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
                           controller: _fDate,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
-                            hintText: 'Date of Payment',
-                            labelStyle: TextStyle(
-                              color: CustomColors.mfinBlue,
-                            ),
                             contentPadding: new EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 3.0),
                             border: OutlineInputBorder(
@@ -198,7 +194,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
     );
   }
 
-  Future<Null> _selectFDate(BuildContext context) async {
+  Future<void> _selectFDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedF,

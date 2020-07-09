@@ -14,10 +14,36 @@ import 'package:instamfin/services/controllers/transaction/Journal_controller.da
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class JournalEntryHome extends StatelessWidget {
+class JournalEntryHome extends StatefulWidget {
+  @override
+  _JournalEntryHomeState createState() => _JournalEntryHomeState();
+}
+
+class _JournalEntryHomeState extends State<JournalEntryHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final User _user = UserController().getCurrentUser();
+
+  DateTime _selectedFrom = DateTime.now();
+  TextEditingController _fromDate = new TextEditingController();
+  DateTime _selectedTo = DateTime.now();
+  TextEditingController _toDate = new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _user.preferences.transactionGroupBy == 0
+        ? _selectedFrom = DateTime.now()
+        : _user.preferences.transactionGroupBy == 1
+            ? _selectedFrom =
+                DateTime.now().subtract(Duration(days: DateTime.now().weekday))
+            : _selectedFrom = DateTime(
+                DateTime.now().year, DateTime.now().month, 1, 0, 0, 0, 0, 0);
+
+    _fromDate.text = DateUtils.formatDate(_selectedFrom);
+    _toDate.text = DateUtils.formatDate(_selectedTo);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,127 +114,225 @@ class JournalEntryHome extends StatelessWidget {
           );
         },
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: _user.preferences.transactionGroupBy == 0
-            ? Journal()
-                .streamJournalsByDate(DateUtils.getUTCDateEpoch(DateTime.now()))
-            : _user.preferences.transactionGroupBy == 1
-                ? Journal().streamJournalsByDateRange(
-                    DateUtils.getUTCDateEpoch(DateTime.now()
-                        .subtract(Duration(days: DateTime.now().weekday))),
-                    DateUtils.getUTCDateEpoch(DateTime.now()))
-                : Journal().streamJournalsByDateRange(
-                    DateUtils.getUTCDateEpoch(DateTime(DateTime.now().year,
-                        DateTime.now().month, 1, 0, 0, 0, 0, 0)),
-                    DateUtils.getUTCDateEpoch(DateTime.now())),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          Widget widget;
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: SizedBox(
+                      width: 90,
+                      child: TextFormField(
+                        initialValue: "FROM",
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                        ),
+                        enabled: false,
+                        autofocus: false,
+                      ),
+                    ),
+                    title: GestureDetector(
+                      onTap: () => _selectFromDate(context),
+                      child: AbsorbPointer(
+                        child: TextFormField(
+                          controller: _fromDate,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 3.0),
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: CustomColors.mfinWhite)),
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            suffixIcon: Icon(
+                              Icons.date_range,
+                              size: 35,
+                              color: CustomColors.mfinBlue,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    leading: SizedBox(
+                      width: 90,
+                      child: TextFormField(
+                        initialValue: "TO",
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                        ),
+                        enabled: false,
+                        autofocus: false,
+                      ),
+                    ),
+                    title: GestureDetector(
+                      onTap: () => _selectToDate(context),
+                      child: AbsorbPointer(
+                        child: TextFormField(
+                          controller: _toDate,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 3.0),
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: CustomColors.mfinWhite)),
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            suffixIcon: Icon(
+                              Icons.date_range,
+                              size: 35,
+                              color: CustomColors.mfinBlue,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Card(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: Journal().streamJournalsByDateRange(
+                    DateUtils.getUTCDateEpoch(_selectedFrom),
+                    DateUtils.getUTCDateEpoch(_selectedTo)),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  Widget widget;
 
-          if (snapshot.hasData) {
-            if (snapshot.data.documents.isNotEmpty) {
-              widget = ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (BuildContext context, int index) {
-                  String categoryName = "";
-                  String journalText = "INCOME";
+                  if (snapshot.hasData) {
+                    if (snapshot.data.documents.isNotEmpty) {
+                      widget = ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: snapshot.data.documents.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          String categoryName = "";
+                          String journalText = "INCOME";
 
-                  if (snapshot.data.documents[index].data['category'] != null) {
-                    categoryName = snapshot.data.documents[index]
-                        .data['category']['category_name'];
+                          if (snapshot.data.documents[index].data['category'] !=
+                              null) {
+                            categoryName = snapshot.data.documents[index]
+                                .data['category']['category_name'];
+                          }
+
+                          if (snapshot
+                              .data.documents[index].data['is_expense']) {
+                            journalText = "EXPENSE";
+                          }
+                          Color cardColor = CustomColors.mfinGrey;
+                          Color textColor = CustomColors.mfinBlue;
+                          if (index % 2 == 0) {
+                            cardColor = CustomColors.mfinBlue;
+                            textColor = CustomColors.mfinGrey;
+                          }
+                          return SimpleFoldingCell(
+                              frontWidget: _buildFrontWidget(
+                                  context,
+                                  snapshot.data.documents[index].data,
+                                  journalText,
+                                  cardColor,
+                                  textColor),
+                              innerTopWidget: _buildInnerTopWidget(
+                                  snapshot.data.documents[index]
+                                      .data['journal_name'],
+                                  snapshot.data.documents[index].data['amount'],
+                                  journalText),
+                              innerBottomWidget: _buildInnerBottomWidget(
+                                  context,
+                                  snapshot.data.documents[index].data['notes'],
+                                  DateTime.fromMillisecondsSinceEpoch(snapshot
+                                      .data
+                                      .documents[index]
+                                      .data['journal_date']),
+                                  categoryName),
+                              cellSize:
+                                  Size(MediaQuery.of(context).size.width, 170),
+                              padding: EdgeInsets.only(
+                                  left: 15.0,
+                                  top: 5.0,
+                                  right: 15.0,
+                                  bottom: 5.0),
+                              animationDuration: Duration(milliseconds: 300),
+                              borderRadius: 10,
+                              onOpen: () => print('$index cell opened'),
+                              onClose: () => print('$index cell closed'));
+                        },
+                      );
+                    } else {
+                      // No Journal Entry added yet
+                      widget = Container(
+                        alignment: Alignment.center,
+                        height: 90,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            new Spacer(),
+                            Text(
+                              "No Adjustments Entries so far!",
+                              style: TextStyle(
+                                color: CustomColors.mfinAlertRed,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            new Spacer(
+                              flex: 2,
+                            ),
+                            Text(
+                              "Add and Manage your Adjustments here!",
+                              style: TextStyle(
+                                color: CustomColors.mfinBlue,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            new Spacer(),
+                          ],
+                        ),
+                      );
+                    }
+                  } else if (snapshot.hasError) {
+                    widget = Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: AsyncWidgets.asyncError(),
+                      ),
+                    );
+                  } else {
+                    widget = Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: AsyncWidgets.asyncWaiting(),
+                      ),
+                    );
                   }
 
-                  if (snapshot.data.documents[index].data['is_expense']) {
-                    journalText = "EXPENSE";
-                  }
-                  Color cardColor = CustomColors.mfinGrey;
-                  Color textColor = CustomColors.mfinBlue;
-                  if (index % 2 == 0) {
-                    cardColor = CustomColors.mfinBlue;
-                    textColor = CustomColors.mfinGrey;
-                  }
-                  return SimpleFoldingCell(
-                      frontWidget: _buildFrontWidget(
-                          context,
-                          snapshot.data.documents[index].data,
-                          journalText,
-                          cardColor,
-                          textColor),
-                      innerTopWidget: _buildInnerTopWidget(
-                          snapshot.data.documents[index].data['journal_name'],
-                          snapshot.data.documents[index].data['amount'],
-                          journalText),
-                      innerBottomWidget: _buildInnerBottomWidget(
-                          context,
-                          snapshot.data.documents[index].data['notes'],
-                          DateTime.fromMillisecondsSinceEpoch(snapshot
-                              .data.documents[index].data['journal_date']),
-                          categoryName),
-                      cellSize: Size(MediaQuery.of(context).size.width, 170),
-                      padding: EdgeInsets.only(
-                          left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
-                      animationDuration: Duration(milliseconds: 300),
-                      borderRadius: 10,
-                      onOpen: () => print('$index cell opened'),
-                      onClose: () => print('$index cell closed'));
+                  return widget;
                 },
-              );
-            } else {
-              // No Journal Entry added yet
-              widget = Container(
-                alignment: Alignment.center,
-                height: 90,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    new Spacer(),
-                    Text(
-                      "No Adjustments Entries so far!",
-                      style: TextStyle(
-                        color: CustomColors.mfinAlertRed,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    new Spacer(
-                      flex: 2,
-                    ),
-                    Text(
-                      "Add and Manage your Adjustments here!",
-                      style: TextStyle(
-                        color: CustomColors.mfinBlue,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    new Spacer(),
-                  ],
-                ),
-              );
-            }
-          } else if (snapshot.hasError) {
-            widget = Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: AsyncWidgets.asyncError(),
               ),
-            );
-          } else {
-            widget = Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: AsyncWidgets.asyncWaiting(),
-              ),
-            );
-          }
-
-          return widget;
-        },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -518,5 +642,37 @@ class JournalEntryHome extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _selectFromDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedFrom,
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != _selectedFrom)
+      setState(
+        () {
+          _selectedFrom = picked;
+          _fromDate.text = DateUtils.formatDate(picked);
+        },
+      );
+  }
+
+  Future<void> _selectToDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedTo,
+      firstDate: _selectedFrom,
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != _selectedTo)
+      setState(
+        () {
+          _selectedTo = picked;
+          _toDate.text = DateUtils.formatDate(picked);
+        },
+      );
   }
 }

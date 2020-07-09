@@ -36,10 +36,10 @@ class TransactionScreen extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
+                padding: EdgeInsets.only(top: 10.0),
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
@@ -57,7 +57,7 @@ class TransactionScreen extends StatelessWidget {
                         elevation: 10.0,
                         borderRadius: BorderRadius.circular(10.0),
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.33,
+                          width: MediaQuery.of(context).size.width * 0.35,
                           height: 110,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +88,7 @@ class TransactionScreen extends StatelessWidget {
                         elevation: 10.0,
                         borderRadius: BorderRadius.circular(10.0),
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.57,
+                          width: MediaQuery.of(context).size.width * 0.60,
                           height: 110,
                           child: TransactionCollectionBuilder(),
                         ),
@@ -98,7 +98,7 @@ class TransactionScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
+                padding: EdgeInsets.only(top: 10.0),
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
@@ -116,7 +116,7 @@ class TransactionScreen extends StatelessWidget {
                         elevation: 10.0,
                         borderRadius: BorderRadius.circular(10.0),
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.33,
+                          width: MediaQuery.of(context).size.width * 0.35,
                           height: 120,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +161,7 @@ class TransactionScreen extends StatelessWidget {
                         elevation: 10.0,
                         borderRadius: BorderRadius.circular(10.0),
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.57,
+                          width: MediaQuery.of(context).size.width * 0.60,
                           height: 120,
                           child: TransactionExpenseBuilder(),
                         ),
@@ -171,7 +171,7 @@ class TransactionScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
+                padding: EdgeInsets.only(top: 10.0),
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
@@ -189,7 +189,7 @@ class TransactionScreen extends StatelessWidget {
                         elevation: 10.0,
                         borderRadius: BorderRadius.circular(10.0),
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.33,
+                          width: MediaQuery.of(context).size.width * 0.35,
                           height: 140,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -234,7 +234,7 @@ class TransactionScreen extends StatelessWidget {
                         elevation: 10.0,
                         borderRadius: BorderRadius.circular(10.0),
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.57,
+                          width: MediaQuery.of(context).size.width * 0.60,
                           height: 140,
                           child: TransactionJournalBuilder(),
                         ),
@@ -244,7 +244,7 @@ class TransactionScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
+                padding: EdgeInsets.only(top: 10.0),
                 child: Material(
                   color: CustomColors.mfinLightGrey,
                   elevation: 10.0,
@@ -260,7 +260,7 @@ class TransactionScreen extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.90,
+                      width: MediaQuery.of(context).size.width * 0.95,
                       height: 80,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
