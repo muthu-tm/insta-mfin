@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/widgets/SubBranchProfileWidget.dart';
 import 'package:instamfin/screens/settings/widgets/SubBranchUsersWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -24,7 +23,7 @@ class SubBranchSetting extends StatelessWidget {
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
-        child: new Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SubBranchProfileWidget(financeID, branchName, subBranch),
@@ -33,7 +32,6 @@ class SubBranchSetting extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: bottomBar(context),
     );
   }
 }

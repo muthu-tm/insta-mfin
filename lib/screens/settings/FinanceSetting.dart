@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceBranchWidget.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceProfileWidget.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceUsersWidget.dart';
@@ -31,7 +30,6 @@ class FinanceSetting extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: bottomBar(context),
     );
   }
 }

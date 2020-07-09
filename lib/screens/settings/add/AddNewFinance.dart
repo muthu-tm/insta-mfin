@@ -27,19 +27,19 @@ class _AddFinancePageState extends State<AddFinancePage> {
   String contactNumber = "";
   String emailID = "";
 
-  Address address = new Address();
+  Address address = Address();
 
   @override
   void initState() {
     super.initState();
-    this._date.text = DateUtils.formatDate(DateTime.now());
+    this._date.text = DateUtils.formatDate(selectedDate);
+    this.registeredDate = DateUtils.getUTCDateEpoch(selectedDate);
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Add Finance'),
         backgroundColor: CustomColors.mfinBlue,
@@ -68,9 +68,9 @@ class _AddFinancePageState extends State<AddFinancePage> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Container(
+          child: Container(
             color: CustomColors.mfinLightGrey,
-            child: new Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -82,7 +82,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
                       hintText: 'Finance Name',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
@@ -130,7 +130,6 @@ class _AddFinancePageState extends State<AddFinancePage> {
                         controller: _date,
                         keyboardType: TextInputType.datetime,
                         decoration: InputDecoration(
-                          // labelText: 'Finance Registrated On',
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelStyle: TextStyle(
                             color: CustomColors.mfinBlue,
@@ -154,13 +153,13 @@ class _AddFinancePageState extends State<AddFinancePage> {
                 ),
                 RowHeaderText(textName: "Contact Number"),
                 ListTile(
-                  title: new TextFormField(
+                  title: TextFormField(
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       hintText: 'Finance Contact Number',
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
@@ -198,7 +197,8 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     },
                   ),
                 ),
-                AddressWidget("Office Address", new Address(), address),
+                AddressWidget("Office Address", Address(), address),
+                Padding(padding: EdgeInsets.only(top: 35.0, bottom: 35.0))
               ],
             ),
           ),
