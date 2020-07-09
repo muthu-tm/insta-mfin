@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/branch.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/settings/widgets/BranchProfileWidget.dart';
 import 'package:instamfin/screens/settings/widgets/BranchUsersWidget.dart';
 import 'package:instamfin/screens/settings/widgets/SubBranchesWidget.dart';
@@ -28,17 +27,15 @@ class BranchSetting extends StatelessWidget {
 
         if (snapshot.hasData) {
           branch = Branch.fromJson(snapshot.data.data);
-          body = new Center(
-            child: new SingleChildScrollView(
-              child: new Container(
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    BranchProfileWidget(financeID, branch),
-                    SubBranchesWidget(financeID, branch.branchName),
-                    BranchUsersWidget(_scaffoldKey, financeID, branch),
-                  ],
-                ),
+          body = SingleChildScrollView(
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  BranchProfileWidget(financeID, branch),
+                  SubBranchesWidget(financeID, branch.branchName),
+                  BranchUsersWidget(_scaffoldKey, financeID, branch),
+                ],
               ),
             ),
           );
@@ -71,13 +68,10 @@ class BranchSetting extends StatelessWidget {
         return new Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
             title: Text(branchName),
             backgroundColor: CustomColors.mfinBlue,
           ),
           body: body,
-          bottomNavigationBar: bottomBar(context),
         );
       },
     );

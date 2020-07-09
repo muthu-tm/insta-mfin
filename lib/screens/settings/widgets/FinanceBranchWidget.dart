@@ -65,14 +65,6 @@ class FinanceBranchWidget extends StatelessWidget {
                         ),
                       );
                     },
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.remove_circle,
-                        size: 35.0,
-                        color: CustomColors.mfinAlertRed,
-                      ),
-                      onPressed: () {},
-                    ),
                   );
                 },
               ),
