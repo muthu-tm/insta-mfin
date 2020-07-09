@@ -23,6 +23,8 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
   @override
   void initState() {
     super.initState();
+
+    _fDate.text = DateUtils.formatDate(selectedF);
   }
 
   @override

@@ -7,8 +7,7 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 
 class PaymentSettlementDialog extends StatefulWidget {
-  PaymentSettlementDialog(
-      this._scaffoldKey, this._p, this.pDetails);
+  PaymentSettlementDialog(this._scaffoldKey, this._p, this.pDetails);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final Payment _p;
@@ -38,202 +37,323 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
   @override
   Widget build(BuildContext context) {
     return Builder(
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        width: MediaQuery.of(context).size.width * 0.95,
-        child: Card(
-          elevation: 5.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
-                child: Text(
-                  "SETTLEMENT",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: CustomColors.mfinPositiveGreen,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
+      builder: (context) => SingleChildScrollView(
+        child: Container(
+          height: 500,
+          width: MediaQuery.of(context).size.width * 0.95,
+          child: Card(
+            elevation: 5.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
+                  child: Text(
+                    "SETTLEMENT",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: CustomColors.mfinPositiveGreen,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Divider(
-                color: CustomColors.mfinButtonGreen,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.end,
-                        initialValue: widget._p.totalAmount.toString(),
-                        decoration: InputDecoration(
-                          labelText: 'Total Amount',
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
-                          ),
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinBlue),
-                          ),
-                        ),
-                        enabled: false,
-                        autofocus: false,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.end,
-                        initialValue: widget._p.principalAmount.toString(),
-                        decoration: InputDecoration(
-                          labelText: 'Amount Given',
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
-                          ),
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinBlue),
-                          ),
-                        ),
-                        enabled: false,
-                        autofocus: false,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.end,
-                        initialValue: widget.pDetails[0].toString(),
-                        decoration: InputDecoration(
-                          labelText: 'Total Received',
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinPositiveGreen,
-                          ),
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinBlue),
-                          ),
-                        ),
-                        enabled: false,
-                        autofocus: false,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.end,
-                        initialValue: widget.pDetails[1].toString(),
-                        decoration: InputDecoration(
-                          labelText: 'Pending Amount',
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinAlertRed,
-                          ),
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinBlue),
-                          ),
-                        ),
-                        enabled: false,
-                        autofocus: false,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: Text(
-                        "Total Remaining",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "Georgia",
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinBlue,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.end,
-                        initialValue:
-                            (widget._p.totalAmount - widget.pDetails[0])
-                                .toString(),
-                        decoration: InputDecoration(
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 3.0),
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: CustomColors.mfinBlue),
-                          ),
-                        ),
-                        enabled: false,
-                        autofocus: false,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Divider(
-                color: CustomColors.mfinButtonGreen,
-              ),
-              Spacer(),
-              Form(
-                key: _formKey,
-                child: Column(
+                Divider(
+                  color: CustomColors.mfinButtonGreen,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          textAlign: TextAlign.end,
+                          initialValue: widget._p.totalAmount.toString(),
+                          decoration: InputDecoration(
+                            labelText: 'Total Amount',
+                            labelStyle: TextStyle(
+                              color: CustomColors.mfinBlue,
+                            ),
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 3.0),
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinBlue),
+                            ),
+                          ),
+                          enabled: false,
+                          autofocus: false,
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          textAlign: TextAlign.end,
+                          initialValue: widget._p.principalAmount.toString(),
+                          decoration: InputDecoration(
+                            labelText: 'Amount Given',
+                            labelStyle: TextStyle(
+                              color: CustomColors.mfinBlue,
+                            ),
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 3.0),
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinBlue),
+                            ),
+                          ),
+                          enabled: false,
+                          autofocus: false,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          textAlign: TextAlign.end,
+                          initialValue: widget.pDetails[0].toString(),
+                          decoration: InputDecoration(
+                            labelText: 'Total Received',
+                            labelStyle: TextStyle(
+                              color: CustomColors.mfinPositiveGreen,
+                            ),
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 3.0),
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinBlue),
+                            ),
+                          ),
+                          enabled: false,
+                          autofocus: false,
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          textAlign: TextAlign.end,
+                          initialValue: widget.pDetails[1].toString(),
+                          decoration: InputDecoration(
+                            labelText: 'Pending Amount',
+                            labelStyle: TextStyle(
+                              color: CustomColors.mfinAlertRed,
+                            ),
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 3.0),
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinBlue),
+                            ),
+                          ),
+                          enabled: false,
+                          autofocus: false,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: Text(
+                          "Total Remaining",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinBlue,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          textAlign: TextAlign.end,
+                          initialValue:
+                              (widget._p.totalAmount - widget.pDetails[0])
+                                  .toString(),
+                          decoration: InputDecoration(
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 3.0),
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: CustomColors.mfinBlue),
+                            ),
+                          ),
+                          enabled: false,
+                          autofocus: false,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: CustomColors.mfinButtonGreen,
+                ),
+                Spacer(),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              child: Text(
+                                "Settlement Amount",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "Georgia",
+                                  fontWeight: FontWeight.bold,
+                                  color: CustomColors.mfinBlue,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: TextFormField(
+                                textAlign: TextAlign.end,
+                                initialValue:
+                                    (widget._p.totalAmount - widget.pDetails[0])
+                                        .toString(),
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 3.0),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinBlue),
+                                  ),
+                                ),
+                                autofocus: false,
+                                validator: (amount) {
+                                  if (int.tryParse(amount.trim()) == null) {
+                                    return "Please enter valid settlement amount";
+                                  } else if (amount.trim() == "") {
+                                    sAmount = 0;
+                                  } else {
+                                    sAmount = int.parse(amount.trim());
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Flexible(
+                            child: Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: TextFormField(
+                                textAlign: TextAlign.start,
+                                initialValue: widget._p.custName,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  labelText: "Received From",
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 3.0),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinBlue),
+                                  ),
+                                ),
+                                autofocus: false,
+                                validator: (rFrom) {
+                                  if (rFrom.trim() == "") {
+                                    return "Received from should not be empty!";
+                                  }
+                                  rFrom = rFrom.trim();
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: GestureDetector(
+                                onTap: () => _selectDate(),
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                    controller: _date,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      labelText: 'Settlement On',
+                                      labelStyle: TextStyle(
+                                        color: CustomColors.mfinBlue,
+                                      ),
+                                      contentPadding: new EdgeInsets.symmetric(
+                                          vertical: 3.0, horizontal: 3.0),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: CustomColors.mfinWhite)),
+                                      fillColor: CustomColors.mfinWhite,
+                                      filled: true,
+                                      suffixIcon: Icon(
+                                        Icons.date_range,
+                                        size: 35,
+                                        color: CustomColors.mfinBlue,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(5.0),
                             child: Text(
-                              "Settlement Amount",
+                              "Notes:",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: "Georgia",
@@ -242,228 +362,109 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                               ),
                             ),
                           ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              textAlign: TextAlign.end,
-                              initialValue:
-                                  (widget._p.totalAmount - widget.pDetails[0])
-                                      .toString(),
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 3.0),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: CustomColors.mfinBlue),
-                                ),
-                              ),
-                              autofocus: false,
-                              validator: (amount) {
-                                if (int.tryParse(amount.trim()) == null) {
-                                  return "Please enter valid settlement amount";
-                                } else if (amount.trim() == "") {
-                                  sAmount = 0;
-                                } else {
-                                  sAmount = int.parse(amount.trim());
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Flexible(
-                          child: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              textAlign: TextAlign.end,
-                              initialValue: widget._p.custName,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                labelText: "Received From",
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 3.0),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: CustomColors.mfinBlue),
-                                ),
-                              ),
-                              autofocus: false,
-                              validator: (rFrom) {
-                                if (rFrom.trim() == "") {
-                                  return "Received from should not be empty!";
-                                }
-                                rFrom = rFrom.trim();
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: GestureDetector(
-                              onTap: () => _selectDate(),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _date,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    labelText: 'Settlement On',
-                                    labelStyle: TextStyle(
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: new EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 3.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
+                          Flexible(
+                            child: Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: TextFormField(
+                                textAlign: TextAlign.end,
+                                initialValue: "",
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 3.0),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinBlue),
                                   ),
                                 ),
+                                autofocus: false,
+                                validator: (notes) {
+                                  if (notes.trim() == "") {
+                                    notes = "";
+                                  } else {
+                                    notes = notes.trim();
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Spacer(
+                  flex: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Material(
+                        elevation: 10.0,
+                        shadowColor: CustomColors.mfinBlue,
+                        color: CustomColors.mfinAlertRed,
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: InkWell(
+                          splashColor: CustomColors.mfinWhite,
+                          child: Container(
+                            height: 40,
+                            width: 150,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "CLOSE",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinWhite,
+                              ),
+                            ),
+                          ),
+                          onTap: () => Navigator.pop(context),
                         ),
-                      ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Text(
-                            "Notes:",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Georgia",
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinBlue,
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              textAlign: TextAlign.end,
-                              initialValue: "",
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 3.0),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: CustomColors.mfinBlue),
-                                ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Material(
+                        elevation: 10.0,
+                        shadowColor: CustomColors.mfinBlue,
+                        color: CustomColors.mfinPositiveGreen,
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: InkWell(
+                          splashColor: CustomColors.mfinWhite,
+                          child: Container(
+                            height: 40,
+                            width: 150,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "SETTLEMENT",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinWhite,
                               ),
-                              autofocus: false,
-                              validator: (notes) {
-                                if (notes.trim() == "") {
-                                  notes = "";
-                                } else {
-                                  notes = notes.trim();
-                                }
-                                return null;
-                              },
                             ),
                           ),
+                          onTap: () async {
+                            final FormState form = _formKey.currentState;
+
+                            if (form.validate()) {
+                              _submit();
+                            }
+                          },
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-              Spacer(
-                flex: 2,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Material(
-                      elevation: 10.0,
-                      shadowColor: CustomColors.mfinBlue,
-                      color: CustomColors.mfinAlertRed,
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: InkWell(
-                        splashColor: CustomColors.mfinWhite,
-                        child: Container(
-                          height: 40,
-                          width: 150,
-                          alignment: Alignment.center,
-                          child: Text(
-                            "CLOSE",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinWhite,
-                            ),
-                          ),
-                        ),
-                        onTap: () => Navigator.pop(context),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Material(
-                      elevation: 10.0,
-                      shadowColor: CustomColors.mfinBlue,
-                      color: CustomColors.mfinPositiveGreen,
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: InkWell(
-                        splashColor: CustomColors.mfinWhite,
-                        child: Container(
-                          height: 40,
-                          width: 150,
-                          alignment: Alignment.center,
-                          child: Text(
-                            "SETTLEMENT",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinWhite,
-                            ),
-                          ),
-                        ),
-                        onTap: () async {
-                          final FormState form = _formKey.currentState;
-
-                          if (form.validate()) {
-                            _submit();
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Spacer(
-                flex: 2,
-              ),
-            ],
+                Spacer(
+                  flex: 2,
+                ),
+              ],
+            ),
           ),
         ),
       ),

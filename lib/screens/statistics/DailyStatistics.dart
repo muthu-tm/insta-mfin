@@ -23,6 +23,8 @@ class _DailyStatisticsState extends State<DailyStatistics> {
   @override
   void initState() {
     super.initState();
+
+    _fDate.text = DateUtils.formatDate(selectedF);
   }
 
   @override

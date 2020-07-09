@@ -185,14 +185,28 @@ class CollectionStatisticsWidget extends StatelessWidget {
             } else {
               widget = Container(
                 alignment: Alignment.center,
-                height: 90,
+                height: 100,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Flexible(
                       child: Text(
+                        "Collections",
+                        style: TextStyle(
+                          color: CustomColors.mfinBlue,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      color: CustomColors.mfinButtonGreen,
+                    ),
+                    Flexible(
+                      child: Text(
                         "No Entries during the selected Range!",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CustomColors.mfinAlertRed,
                           fontSize: 18.0,

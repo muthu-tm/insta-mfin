@@ -23,6 +23,8 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
   @override
   void initState() {
     super.initState();
+
+    _fDate.text = DateUtils.formatDate(selectedF);
   }
 
   @override
