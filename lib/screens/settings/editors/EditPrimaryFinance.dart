@@ -24,7 +24,7 @@ class EditPrimaryFinance extends StatefulWidget {
 
 class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  FinanceController financeController = new FinanceController();
+  FinanceController financeController = FinanceController();
   Map<String, String> _finances = {"0": "Choose your Finance"};
   Map<String, String> _branches = {"0": "Choose your Branch"};
   Map<String, String> _subBranches = {"0": "Choose your subBranch"};
@@ -60,7 +60,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
                   ),
                 ),
                 ListTile(
-                  leading: new Text(""),
+                  leading: Text(""),
                   title: DropdownButton<String>(
                     isExpanded: true,
                     items: _finances.entries.map(
@@ -81,13 +81,13 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
                     color: CustomColors.mfinButtonGreen,
                     size: 35.0,
                   ),
-                  title: new Text(
+                  title: Text(
                     "Branch",
                     style: TextStyle(color: CustomColors.mfinGrey),
                   ),
                 ),
                 ListTile(
-                  leading: new Text(""),
+                  leading: Text(""),
                   title: DropdownButton<String>(
                     isExpanded: true,
                     items: _branches.entries.map(
@@ -108,13 +108,13 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
                     color: CustomColors.mfinButtonGreen,
                     size: 35.0,
                   ),
-                  title: new Text(
+                  title: Text(
                     "Sub Branch",
                     style: TextStyle(color: CustomColors.mfinGrey),
                   ),
                 ),
                 ListTile(
-                  leading: new Text(""),
+                  leading: Text(""),
                   title: DropdownButton<String>(
                     isExpanded: true,
                     items: _subBranches.entries.map(
@@ -129,19 +129,23 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
                     value: _selectedSubBranch,
                   ),
                 ),
-                new Card(
-                  child: new Container(
-                    color: CustomColors.mfinBlue,
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Container(
                     padding: EdgeInsets.all(10),
-                    child: new Text(
-                      "The selected Finance/Branch/Sub Branch will be set as Primary. And you will be permitted to perform actions only with the selected group",
+                    decoration: BoxDecoration(
+                      color: CustomColors.mfinBlue,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Text(
+                      "IMPORTANT!\nThe selected Finance/Branch/SubBranch will be set as Primary. YOU will permitted to perform actions only on the selected GROUP!",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: CustomColors.mfinButtonGreen,
                         fontSize: 16.0,
                       ),
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 4,
+                      maxLines: 6,
                     ),
                   ),
                 ),
@@ -316,7 +320,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
     UserController _uc = UserController();
     await _uc.updatePrimaryFinance(
         userID, financeID, branchName, subBranchName);
-        
+
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (BuildContext context) => UserFinanceSetup(),
