@@ -249,14 +249,14 @@ class HomeScreen extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 70, left: 5, right: 5),
+                                        padding: EdgeInsets.only(top: 70),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
                                               "Outstanding",
+                                              textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 17.0,
                                                 fontFamily: "Georgia",
@@ -313,27 +313,16 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                    getPresentCard(context),
                     Padding(
-                      padding:
-                          EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0),
-                      child: getPresentCard(context),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0),
+                      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: 5.0, right: 5.0, bottom: 5.0),
-                            child: getPastCard(context),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: 5.0, right: 5.0, bottom: 5.0),
-                            child: getUpcomingCard(context),
-                          ),
+                          getPastCard(context),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.03),
+                          getUpcomingCard(context),
                         ],
                       ),
                     ),
@@ -350,7 +339,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget getPresentCard(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.92,
+      width: MediaQuery.of(context).size.width * 0.98,
       decoration: BoxDecoration(
         color: CustomColors.mfinBlue,
         borderRadius: const BorderRadius.all(
@@ -364,7 +353,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget getPastCard(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.45,
+      width: MediaQuery.of(context).size.width * 0.475,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: <Color>[
@@ -374,7 +363,7 @@ class HomeScreen extends StatelessWidget {
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
         ),
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(3.0),
           bottomLeft: Radius.circular(25.0),
           topLeft: Radius.circular(3.0),
@@ -388,7 +377,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget getUpcomingCard(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.45,
+      width: MediaQuery.of(context).size.width * 0.475,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: <Color>[
@@ -398,7 +387,7 @@ class HomeScreen extends StatelessWidget {
           begin: Alignment.bottomRight,
           end: Alignment.topLeft,
         ),
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(25.0),
           bottomLeft: Radius.circular(3.0),
           topLeft: Radius.circular(25.0),
@@ -462,6 +451,7 @@ class HomeScreen extends StatelessWidget {
           children = <Widget>[
             Text(
               '$tPay',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.0,
                 fontFamily: "Georgia",
@@ -471,6 +461,7 @@ class HomeScreen extends StatelessWidget {
             ),
             Text(
               'Rs.${pAmount - cAmount}',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17.0,
                 fontFamily: "Georgia",
