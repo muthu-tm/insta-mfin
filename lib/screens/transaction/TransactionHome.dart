@@ -33,14 +33,10 @@ class TransactionScreen extends StatelessWidget {
         appBar: topAppBar(context),
         drawer: openDrawer(context),
         body: SingleChildScrollView(
-          padding: EdgeInsets.all(10),
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: Column(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: InkWell(
+              InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -51,6 +47,7 @@ class TransactionScreen extends StatelessWidget {
                     );
                   },
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Material(
                         color: CustomColors.mfinBlue,
@@ -96,7 +93,6 @@ class TransactionScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
                 child: InkWell(
@@ -110,6 +106,7 @@ class TransactionScreen extends StatelessWidget {
                     );
                   },
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Material(
                         color: CustomColors.mfinBlue,
@@ -183,6 +180,7 @@ class TransactionScreen extends StatelessWidget {
                     );
                   },
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Material(
                         color: CustomColors.mfinBlue,

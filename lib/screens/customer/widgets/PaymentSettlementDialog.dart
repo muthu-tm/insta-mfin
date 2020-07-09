@@ -403,17 +403,16 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Material(
                         elevation: 10.0,
-                        shadowColor: CustomColors.mfinBlue,
                         color: CustomColors.mfinAlertRed,
                         borderRadius: BorderRadius.circular(10.0),
                         child: InkWell(
                           splashColor: CustomColors.mfinWhite,
                           child: Container(
                             height: 40,
-                            width: 150,
+                            width: 120,
                             alignment: Alignment.center,
                             child: Text(
                               "CLOSE",
@@ -428,17 +427,16 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Material(
                         elevation: 10.0,
-                        shadowColor: CustomColors.mfinBlue,
                         color: CustomColors.mfinPositiveGreen,
                         borderRadius: BorderRadius.circular(10.0),
                         child: InkWell(
                           splashColor: CustomColors.mfinWhite,
                           child: Container(
                             height: 40,
-                            width: 150,
+                            width: 120,
                             alignment: Alignment.center,
                             child: Text(
                               "SETTLEMENT",
