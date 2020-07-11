@@ -26,8 +26,7 @@ class UserController {
   }
 
   Future<void> refreshUser() async {
-    DocumentSnapshot snap =
-        await _userService.cachedUser.getFinanceDocReference().get();
+    DocumentSnapshot snap = await _userService.cachedUser.getFinanceDocReference().get();
     if (snap.exists) {
       Map<String, dynamic> doc = snap.data;
       if (!doc['is_active']) {

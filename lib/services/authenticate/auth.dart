@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instamfin/db/models/user_preferences.dart';
+import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
@@ -28,6 +30,8 @@ class AuthService {
       user.setPassword(hKey);
       user.setName(name);
       user.setGuid(uid);
+      user.setPreferences(UserPreferences.fromJson(UserPreferences().toJson()));
+      user.setPrimary(UserPrimary.fromJson(UserPrimary().toJson()));
       user = await user.create();
 
       Analytics.signupEvent(mobileNumber.toString());

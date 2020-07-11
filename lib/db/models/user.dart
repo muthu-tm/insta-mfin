@@ -86,7 +86,7 @@ class User extends Model {
     this.profilePathOrg = displayPath;
   }
 
-  setPrimaryFinance(UserPrimary primary) {
+  setPrimary(UserPrimary primary) {
     this.primary = primary;
   }
 
