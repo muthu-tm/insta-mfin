@@ -550,6 +550,17 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+        } else if (totalAmount != noOfPayments * collectionAmount) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Total amount should be equal to Collection amount * No. of collections',
+              5));
+        } else if (!(totalAmount >=
+             givenAmount + documentCharge + surChargeAmount)) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Total amount should be greater than sum of Principal + Document + Service charge',
+              5));
         } else {
           Navigator.pop(context);
           Navigator.pop(context);

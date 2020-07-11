@@ -231,7 +231,7 @@ class _AddPaymentState extends State<AddPayment> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
-                              textAlign: TextAlign.start,
+                              textAlign: TextAlign.center,
                               keyboardType: TextInputType.text,
                               initialValue: paymentID,
                               decoration: InputDecoration(
@@ -630,8 +630,8 @@ class _AddPaymentState extends State<AddPayment> {
                                   return "Cannot be empty!";
                                 } else {
                                   this.totalAmount = int.parse(amount.trim());
-                                  return null;
                                 }
+                                return null;
                               },
                             ),
                           ),
@@ -727,10 +727,12 @@ class _AddPaymentState extends State<AddPayment> {
                                         color: CustomColors.mfinWhite)),
                               ),
                               validator: (tenure) {
-                                if (tenure.trim().isEmpty) {
+                                if (tenure.trim().isEmpty ||
+                                    tenure.trim() == '0') {
                                   return 'Cannot be empty!';
+                                } else {
+                                  this.tenure = int.parse(tenure);
                                 }
-                                this.tenure = int.parse(tenure);
                                 return null;
                               },
                             ),
@@ -1027,6 +1029,35 @@ class _AddPaymentState extends State<AddPayment> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
+      } else if (!(selectedCollectionModeID == "0" &&
+          (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday <= 6 &&
+              collectionDays.contains(
+                  DateTime.fromMillisecondsSinceEpoch(collectionDate)
+                      .weekday)))) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Payment start date should be in collection day', 5));
+      } else if (!(selectedCollectionModeID == "0" &&
+          (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday == 7 &&
+              collectionDays.contains(0)))) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Payment start date should be in collection day', 5));
+      }
+      else if (totalAmount != tenure * collectionAmount) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Total amount should be equal to Collection amount * No. of collections',
+            5));
+      } else if (!(alreadyReceivedAmount < totalAmount)) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Received amount should not be greater than Total amount', 5));
+      } else if (!(totalAmount >= principalAmount + docCharge + surCharge)) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Total amount should be greater than sum of Principal + Document + Service charge',
+            5));
       } else {
         Navigator.pop(context);
         Navigator.pop(context);

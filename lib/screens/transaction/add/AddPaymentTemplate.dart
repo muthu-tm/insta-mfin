@@ -515,7 +515,17 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-      } else {
+      } else if (totalAmount != noOfInstallments * collectionAmount) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Total amount should be equal to Collection amount * No. of collections',
+            5));
+      } else if (!(totalAmount >=  pAmount + documentCharge + surChargeAmount)) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Total amount should be greater than sum of Principal + Document + Service charge', 5));
+      } 
+      else {
         Navigator.pop(context);
         Navigator.pop(context);
       }
