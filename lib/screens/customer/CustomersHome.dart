@@ -27,7 +27,7 @@ class CustomersHome extends StatelessWidget {
         );
       },
       child: DefaultTabController(
-        length: 5,
+        length: 4,
         initialIndex: 0,
         child: Scaffold(
           key: _scaffoldKey,
@@ -87,18 +87,18 @@ class CustomersHome extends StatelessWidget {
                     ),
                   ),
                 ),
-                Tab(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "New",
-                      style: TextStyle(
-                        color: CustomColors.mfinWhite,
-                      ),
-                    ),
-                  ),
-                ),
+                // Tab(
+                //   child: Container(
+                //     width: MediaQuery.of(context).size.width * 0.25,
+                //     alignment: Alignment.center,
+                //     child: Text(
+                //       "New",
+                //       style: TextStyle(
+                //         color: CustomColors.mfinWhite,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Tab(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.25,
@@ -169,9 +169,9 @@ class CustomersHome extends StatelessWidget {
               SingleChildScrollView(
                 child: AllCustomerTab(_scaffoldKey, 'All Customers'),
               ),
-              SingleChildScrollView(
-                child: CustomerListWidget(_scaffoldKey, 'New Customers', 0),
-              ),
+              // SingleChildScrollView(
+              //   child: CustomerListWidget(_scaffoldKey, 'New Customers', 0),
+              // ),
               SingleChildScrollView(
                 child: CustomerListWidget(_scaffoldKey, 'Active Customers', 1),
               ),
