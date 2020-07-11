@@ -104,13 +104,13 @@ class _AddPaymentState extends State<AddPayment> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Add Payment'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },
@@ -140,7 +140,6 @@ class _AddPaymentState extends State<AddPayment> {
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
                 margin: EdgeInsets.only(top: 5.0),
-                shadowColor: CustomColors.mfinLightBlue,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,7 +159,7 @@ class _AddPaymentState extends State<AddPayment> {
                       ),
                     ),
                     Divider(
-                      color: CustomColors.mfinBlue,
+                      color: CustomColors.mfinAlertRed,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -575,9 +574,8 @@ class _AddPaymentState extends State<AddPayment> {
                 ),
               ),
               Card(
-                shadowColor: CustomColors.mfinAlertRed,
                 color: CustomColors.mfinLightGrey,
-                elevation: 15.0,
+                elevation: 5.0,
                 margin: EdgeInsets.only(top: 5.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -598,10 +596,10 @@ class _AddPaymentState extends State<AddPayment> {
                       ),
                     ),
                     Divider(
-                      color: CustomColors.mfinBlue,
+                      color: CustomColors.mfinAlertRed,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -879,10 +877,10 @@ class _AddPaymentState extends State<AddPayment> {
                         ],
                       ),
                     ),
-                    Padding(padding: EdgeInsets.all(30))
                   ],
                 ),
               ),
+              Padding(padding: EdgeInsets.all(40))
             ],
           ),
         ),
@@ -929,7 +927,7 @@ class _AddPaymentState extends State<AddPayment> {
     }
   }
 
-  Future<Null> _selectCollectionDate(BuildContext context) async {
+  Future<void> _selectCollectionDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now().add(Duration(days: 1)),
@@ -945,7 +943,7 @@ class _AddPaymentState extends State<AddPayment> {
       );
   }
 
-  Future<Null> _selectPaymentDate(BuildContext context) async {
+  Future<void> _selectPaymentDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -1001,7 +999,34 @@ class _AddPaymentState extends State<AddPayment> {
   _submit() async {
     final FormState form = _formKey.currentState;
 
+    if (selectedCollectionModeID == "0") {
+      if (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday <= 6 &&
+          !collectionDays.contains(
+              DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday)) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Collection Start Date must be in collection days', 2));
+        return;
+      } else if (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday ==
+              7 &&
+          !collectionDays.contains(0)) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Collection Start Date should be in collection days', 2));
+        return;
+      }
+    }
+
     if (form.validate()) {
+      if (totalAmount != tenure * collectionAmount) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Total amount should be equal to Collection amount * No. of collections',
+            3));
+        return;
+      } else if (!(alreadyReceivedAmount < totalAmount)) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Amount Received should be lesser than Total Amount', 3));
+        return;
+      }
+
       CustomDialogs.actionWaiting(context, "Adding Payment");
       PaymentController _pc = PaymentController();
       var result = await _pc.createPayment(
@@ -1029,35 +1054,6 @@ class _AddPaymentState extends State<AddPayment> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-      } else if (!(selectedCollectionModeID == "0" &&
-          (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday <= 6 &&
-              collectionDays.contains(
-                  DateTime.fromMillisecondsSinceEpoch(collectionDate)
-                      .weekday)))) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Payment start date should be in collection day', 5));
-      } else if (!(selectedCollectionModeID == "0" &&
-          (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday == 7 &&
-              collectionDays.contains(0)))) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Payment start date should be in collection day', 5));
-      }
-      else if (totalAmount != tenure * collectionAmount) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Total amount should be equal to Collection amount * No. of collections',
-            5));
-      } else if (!(alreadyReceivedAmount < totalAmount)) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Received amount should not be greater than Total amount', 5));
-      } else if (!(totalAmount >= principalAmount + docCharge + surCharge)) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Total amount should be greater than sum of Principal + Document + Service charge',
-            5));
       } else {
         Navigator.pop(context);
         Navigator.pop(context);

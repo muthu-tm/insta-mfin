@@ -33,7 +33,7 @@ class _EditPaymentState extends State<EditPayment> {
     "2": "GPay"
   };
 
-  List<int> collectionDays = [];
+  List<int> collectionDays = [1, 2, 3, 4, 5];
   Map<String, String> tempCollectionDays = {
     "0": "Sun",
     "1": "Mon",
@@ -54,28 +54,26 @@ class _EditPaymentState extends State<EditPayment> {
     super.initState();
     selectedCollectionModeID = widget.payment.collectionMode.toString();
 
-    _date.value = TextEditingValue(
-      text: DateUtils.getFormattedDateFromEpoch(widget.payment.dateOfPayment),
-    );
+    _date.text =
+        DateUtils.getFormattedDateFromEpoch(widget.payment.dateOfPayment);
 
-    _collectionDate.value = TextEditingValue(
-        text: DateUtils.getFormattedDateFromEpoch(
-            widget.payment.collectionStartsFrom));
-
-    collectionDays.addAll(widget.payment.collectionDays);
+    _collectionDate.text = DateUtils.getFormattedDateFromEpoch(
+        widget.payment.collectionStartsFrom);
+    if (widget.payment.collectionMode == 0)
+      collectionDays.addAll(widget.payment.collectionDays);
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text('Edit Payment'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },
@@ -105,7 +103,6 @@ class _EditPaymentState extends State<EditPayment> {
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
                 margin: EdgeInsets.only(top: 5.0),
-                shadowColor: CustomColors.mfinLightBlue,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,10 +122,10 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Divider(
-                      color: CustomColors.mfinBlue,
+                      color: CustomColors.mfinAlertRed,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -519,9 +516,8 @@ class _EditPaymentState extends State<EditPayment> {
                 ),
               ),
               Card(
-                shadowColor: CustomColors.mfinAlertRed,
                 color: CustomColors.mfinLightGrey,
-                elevation: 15.0,
+                elevation: 5.0,
                 margin: EdgeInsets.only(top: 5.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -542,10 +538,10 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Divider(
-                      color: CustomColors.mfinBlue,
+                      color: CustomColors.mfinAlertRed,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -849,10 +845,10 @@ class _EditPaymentState extends State<EditPayment> {
                         ],
                       ),
                     ),
-                    Padding(padding: EdgeInsets.all(30))
                   ],
                 ),
               ),
+              Padding(padding: EdgeInsets.all(40))
             ],
           ),
         ),
@@ -900,7 +896,7 @@ class _EditPaymentState extends State<EditPayment> {
     }
   }
 
-  Future<Null> _selectCollectionDate(BuildContext context) async {
+  Future<void> _selectCollectionDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: DateTime.fromMillisecondsSinceEpoch(
@@ -916,14 +912,12 @@ class _EditPaymentState extends State<EditPayment> {
         () {
           updatedPayment['collection_starts_from'] =
               DateUtils.getUTCDateEpoch(picked);
-          _collectionDate.value = TextEditingValue(
-            text: DateUtils.formatDate(picked),
-          );
+          _collectionDate.text = DateUtils.formatDate(picked);
         },
       );
   }
 
-  Future<Null> _selectPaymentDate(BuildContext context) async {
+  Future<void> _selectPaymentDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate:
@@ -937,9 +931,12 @@ class _EditPaymentState extends State<EditPayment> {
       setState(
         () {
           updatedPayment['date_of_payment'] = DateUtils.getUTCDateEpoch(picked);
-          _date.value = TextEditingValue(
-            text: DateUtils.formatDate(picked),
-          );
+          _date.text = DateUtils.formatDate(picked);
+
+          updatedPayment['collection_starts_from'] =
+              DateUtils.getUTCDateEpoch(picked.add(Duration(days: 1)));
+          _collectionDate.text =
+              DateUtils.formatDate(picked.add(Duration(days: 1)));
         },
       );
   }
@@ -947,9 +944,56 @@ class _EditPaymentState extends State<EditPayment> {
   _submit() async {
     final FormState form = _formKey.currentState;
 
+    if (selectedCollectionModeID == "0") {
+      int collectionDate = updatedPayment.containsKey('collection_starts_from')
+          ? updatedPayment['collection_starts_from']
+          : widget.payment.collectionStartsFrom;
+      if (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday <= 6 &&
+          !collectionDays.contains(
+              DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday)) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Collection Start Date must be in collection days', 2));
+        return;
+      } else if (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday ==
+              7 &&
+          !collectionDays.contains(0)) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Collection Start Date should be in collection days', 2));
+        return;
+      }
+    }
+
     if (form.validate()) {
       if (collectionDays != widget.payment.collectionDays)
         updatedPayment['collection_days'] = collectionDays;
+
+      int totalAmount = updatedPayment.containsKey('total_amount')
+          ? updatedPayment['total_amount']
+          : widget.payment.totalAmount;
+
+      int tenure = updatedPayment.containsKey('tenure')
+          ? updatedPayment['tenure']
+          : widget.payment.tenure;
+
+      int collectionAmount = updatedPayment.containsKey('collection_amount')
+          ? updatedPayment['collection_amount']
+          : widget.payment.collectionAmount;
+
+      int alreadyReceivedAmount =
+          updatedPayment.containsKey('already_collected_amount')
+              ? updatedPayment['already_collected_amount']
+              : widget.payment.alreadyCollectedAmount;
+
+      if (totalAmount != tenure * collectionAmount) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Total amount should be equal to Collection amount * No. of collections',
+            3));
+        return;
+      } else if (!(alreadyReceivedAmount < totalAmount)) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Amount Received should be lesser than Total Amount', 3));
+        return;
+      }
 
       if (updatedPayment.length == 0) {
         Navigator.pop(context);
@@ -963,39 +1007,6 @@ class _EditPaymentState extends State<EditPayment> {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        } else if (!(selectedCollectionModeID == "0" &&
-            (DateTime.fromMillisecondsSinceEpoch(widget.payment.collectionStartsFrom).weekday <= 6 &&
-                collectionDays.contains(
-                    DateTime.fromMillisecondsSinceEpoch(widget.payment.collectionStartsFrom)
-                        .weekday)))) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Payment start date should be in collection day', 5));
-        } else if (!(selectedCollectionModeID == "0" &&
-            (DateTime.fromMillisecondsSinceEpoch(widget.payment.collectionStartsFrom).weekday == 7 &&
-                collectionDays.contains(0)))) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Payment start date should be in collection day', 5));
-        } else if (widget.payment.totalAmount !=
-            widget.payment.tenure * widget.payment.collectionAmount) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Total amount should be equal to Collection amount * No. of collections',
-              5));
-        } else if (!(widget.payment.alreadyCollectedAmount <
-            widget.payment.totalAmount)) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Received amount should not be greater than Total amount', 5));
-        } else if (!(widget.payment.totalAmount >=
-            widget.payment.principalAmount +
-                widget.payment.docCharge +
-                widget.payment.surcharge)) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Total amount should be greater than sum of Principal + Document + Service charge',
-              5));
         } else {
           Navigator.pop(context);
           Navigator.pop(context);
