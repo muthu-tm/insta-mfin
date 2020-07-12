@@ -62,7 +62,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Add Collection Details'),
@@ -70,6 +70,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },

@@ -83,7 +83,6 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                   color: CustomColors.mfinLightGrey,
                   elevation: 5.0,
                   margin: EdgeInsets.all(5.0),
-                  shadowColor: CustomColors.mfinLightBlue,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -431,6 +430,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                 ),
                 AddressWidget(
                     "Address Details", widget.cust.address, updatedAddress),
+                Padding(padding: EdgeInsets.all(35))
               ],
             ),
           ),
