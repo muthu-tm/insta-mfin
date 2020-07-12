@@ -83,8 +83,14 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
             padding: EdgeInsets.all(_fixedPadding),
             child: Material(
               elevation: 10.0,
-              child:
-                  Image.asset("images/icons/logo.png", height: _height * 0.1),
+              borderRadius: BorderRadius.circular(10.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.asset(
+                  "images/icons/logo.png",
+                  height: _height * 0.1,
+                ),
+              ),
             ),
           ),
           Text('iFIN',

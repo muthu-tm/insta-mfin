@@ -269,16 +269,21 @@ class _LoginPageState extends State<LoginPage> {
       CustomDialogs.actionWaiting(context, "Checking User");
 
       number = _nController.text;
-      Map<String, dynamic> _uJSON =
-          await User(int.parse(number)).getByID(number);
-      if (_uJSON == null) {
-        Navigator.pop(context);
+      try {
+        Map<String, dynamic> _uJSON =
+            await User(int.parse(number)).getByID(number);
+        if (_uJSON == null) {
+          Navigator.pop(context);
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              "No USER found for this Number, please 'SIGN UP'", 2));
+          return;
+        } else {
+          this._user = User.fromJson(_uJSON);
+          _verifyPhoneNumber();
+        }
+      } catch (err) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "No USER found for this Number, please 'SIGN UP'", 2));
-        return;
-      } else {
-        this._user = User.fromJson(_uJSON);
-        _verifyPhoneNumber();
+            "Error while Login: " + err.toString(), 2));
       }
     }
   }

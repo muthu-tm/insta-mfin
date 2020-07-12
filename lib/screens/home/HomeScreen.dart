@@ -5,6 +5,7 @@ import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/settings/editors/EditPrimaryFinance.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -17,12 +18,16 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _scaffoldKey =
+        new GlobalKey<ScaffoldState>();
+
     return Scaffold(
       backgroundColor: CustomColors.mfinBlue,
+      key: _scaffoldKey,
+      drawer: openDrawer(context),
       body: Stack(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
             decoration: BoxDecoration(
               color: CustomColors.mfinBlue,
               borderRadius: BorderRadius.only(
@@ -38,6 +43,14 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.menu,
+                        size: 30.0,
+                        color: CustomColors.mfinWhite,
+                      ),
+                      onPressed: () => _scaffoldKey.currentState.openDrawer(),
+                    ),
                     RichText(
                       text: TextSpan(
                         text: "Welcome Back, ",
@@ -249,7 +262,8 @@ class HomeScreen extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Padding(
-                                        padding: EdgeInsets.only(top: 70),
+                                        padding: EdgeInsets.only(
+                                            top: 70, left: 5, right: 5),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,

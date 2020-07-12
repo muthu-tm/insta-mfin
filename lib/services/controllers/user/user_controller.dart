@@ -26,19 +26,24 @@ class UserController {
   }
 
   Future<void> refreshUser() async {
-    DocumentSnapshot snap = await _userService.cachedUser.getFinanceDocReference().get();
-    if (snap.exists) {
-      Map<String, dynamic> doc = snap.data;
-      if (!doc['is_active']) {
-        emptyPrimary();
-      } else {
-        List<dynamic> admins = doc['admins'];
-        if (!admins.contains(getCurrentUserID())) {
+    if (_userService.cachedUser.primary != null &&
+        _userService.cachedUser.primary.financeID != null &&
+        _userService.cachedUser.primary.financeID != "") {
+      DocumentSnapshot snap =
+          await _userService.cachedUser.getFinanceDocReference().get();
+      if (snap.exists) {
+        Map<String, dynamic> doc = snap.data;
+        if (!doc['is_active']) {
           emptyPrimary();
+        } else {
+          List<dynamic> admins = doc['admins'];
+          if (!admins.contains(getCurrentUserID())) {
+            emptyPrimary();
+          }
         }
+      } else {
+        emptyPrimary();
       }
-    } else {
-      emptyPrimary();
     }
   }
 
