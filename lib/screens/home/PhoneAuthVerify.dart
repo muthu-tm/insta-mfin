@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/app/update_app.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -229,7 +230,11 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
     prefs.setString("mobile_number", widget.number.toString());
 
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => UserFinanceSetup()),
+      MaterialPageRoute(
+        builder: (BuildContext context) => UpdateApp(
+          child: UserFinanceSetup(),
+        ),
+      ),
       (Route<dynamic> route) => false,
     );
   }

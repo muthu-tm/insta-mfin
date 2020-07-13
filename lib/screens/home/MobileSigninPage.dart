@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/app/update_app.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -293,7 +294,10 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
 
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (BuildContext context) => UserFinanceSetup()),
+            builder: (BuildContext context) => UpdateApp(
+              child: UserFinanceSetup(),
+            ),
+          ),
           (Route<dynamic> route) => false,
         );
       }

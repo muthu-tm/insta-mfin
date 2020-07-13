@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
+import 'package:instamfin/screens/app/update_app.dart';
 import 'package:instamfin/screens/home/MobileSigninPage.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
@@ -324,7 +325,10 @@ class _LoginPageState extends State<LoginPage> {
         await UserController().refreshUser();
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (BuildContext context) => UserFinanceSetup()),
+            builder: (BuildContext context) => UpdateApp(
+              child: UserFinanceSetup(),
+            ),
+          ),
           (Route<dynamic> route) => false,
         );
       }
