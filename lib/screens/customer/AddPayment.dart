@@ -86,13 +86,14 @@ class _AddPaymentState extends State<AddPayment> {
     super.initState();
     this.getCollectionTemp();
     givenBy = _user.name;
-    collectionDays = <int>[1, 2, 3, 4, 5];
+    selectedCollectionModeID = _user.accPreferences.collectionMode.toString() ?? '0';
+    collectionDays = _user.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
     totalAmountController.text = "0";
     principalAmountController.text = "0";
     docChargeController.text = '0';
     surChargeController.text = '0';
     tenureController.text = '0';
-    intrestRateController.text = '0';
+    intrestRateController.text = _user.accPreferences.interestRate.toString() ?? '0.00';
     collectionAmountController.text = '0';
 
     _date.text = DateUtils.formatDate(DateTime.now());

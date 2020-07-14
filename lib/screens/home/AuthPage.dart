@@ -280,7 +280,7 @@ class _AuthPageState extends State<AuthPage> {
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
         } else {
-          await UserController().refreshUser();
+          await UserController().refreshUser(true);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (BuildContext context) => UpdateApp(

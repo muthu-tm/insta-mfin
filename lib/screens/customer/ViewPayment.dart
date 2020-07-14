@@ -278,7 +278,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         color: CustomColors.mfinBlue,
                       ),
                       onTap: () async {
-                        await UserController().refreshUser();
+                        await UserController().refreshUser(false);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

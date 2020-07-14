@@ -211,7 +211,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
         } else {
-          await UserController().refreshUser();
+          await UserController().refreshUser(true);
           await _success();
         }
       }

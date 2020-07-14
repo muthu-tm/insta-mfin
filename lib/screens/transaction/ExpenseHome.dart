@@ -98,7 +98,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                             color: CustomColors.mfinBlue,
                           ),
                           onTap: () async {
-                            await UserController().refreshUser();
+                            await UserController().refreshUser(false);
                             Navigator.push(
                               context,
                               MaterialPageRoute(

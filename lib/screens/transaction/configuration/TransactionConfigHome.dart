@@ -42,7 +42,7 @@ class TransactionConfigHome extends StatelessWidget {
                         color: CustomColors.mfinBlue,
                       ),
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => AddPaymentTemplate(),
@@ -60,7 +60,7 @@ class TransactionConfigHome extends StatelessWidget {
                         color: CustomColors.mfinBlue,
                       ),
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => AddExpenseCategory(),
@@ -77,7 +77,7 @@ class TransactionConfigHome extends StatelessWidget {
                           color: CustomColors.mfinBlue,
                         ),
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => AddJournalCategory(),
@@ -93,8 +93,8 @@ class TransactionConfigHome extends StatelessWidget {
                         color: CustomColors.mfinBlue,
                       ),
                       onTap: () async {
-                        await UserController().refreshUser();
-                        Navigator.push(
+                        await UserController().refreshUser(false);
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => UserFinanceSetup(),

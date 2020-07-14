@@ -19,7 +19,7 @@ class _AddJournalCategoryState extends State<AddJournalCategory> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
@@ -28,6 +28,7 @@ class _AddJournalCategoryState extends State<AddJournalCategory> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () async {
           _submit();
         },

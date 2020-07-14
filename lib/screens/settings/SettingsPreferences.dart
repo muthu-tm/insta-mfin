@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -16,25 +15,37 @@ class SettingsPreferences extends StatefulWidget {
 
 class _SettingsPreferencesState extends State<SettingsPreferences> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  User _user = UserController().getCurrentUser();
+  final User _user = UserController().getCurrentUser();
 
   var transctionGroupValue = 0;
   List<bool> isSelectedView = [false, true];
   bool isTableView = false;
 
   TextEditingController _textEditingController = TextEditingController();
+  TextEditingController intrestRateController = TextEditingController();
 
   Map<String, dynamic> userPreferencesJSON = new Map();
   Map<String, dynamic> accountPreferencesJSON = new Map();
 
   String _selectedLang = 'English';
-  List<String> _prefSupportLangList = [
-    "English",
-    "Tamil",
-    "Hindi",
-    "Kannada",
-    "Telugu"
-  ];
+  List<String> _prefSupportLangList = ["English", "Tamil", "Hindi", "Kannada"];
+  String selectedCollectionModeID = "0";
+  Map<String, String> _tempCollectionMode = {
+    "0": "Daily",
+    "1": "Weekly",
+    "2": "Monthly"
+  };
+
+  List<int> collectionDays;
+  Map<String, String> tempCollectionDays = {
+    "0": "Sun",
+    "1": "Mon",
+    "2": "Tue",
+    "3": "Wed",
+    "4": "Thu",
+    "5": "Fri",
+    "6": "Sat",
+  };
 
   @override
   void initState() {
@@ -48,6 +59,12 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     }
 
     this.userPreferencesJSON = _user.preferences.toJson();
+    this.intrestRateController.text =
+        _user.accPreferences.interestRate.toString() ?? '0.00';
+    this.selectedCollectionModeID =
+        _user.accPreferences.collectionMode.toString() ?? '0';
+    this.collectionDays =
+        _user.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
   }
 
   Future setAccountDetails() async {
@@ -56,10 +73,9 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
           (await _user.getFinanceDocReference().get()).data;
 
       this.accountPreferencesJSON = data['preferences'];
-      AccountPreferences aPref =
-          AccountPreferences.fromJson(accountPreferencesJSON);
-      if (aPref.reportSignature != null && aPref.reportSignature != "")
-        _textEditingController.text = aPref.reportSignature;
+      if (_user.accPreferences.reportSignature != null &&
+          _user.accPreferences.reportSignature != "")
+        _textEditingController.text = _user.accPreferences.reportSignature;
       else {
         Address add = Address.fromJson(data['address']);
         _textEditingController.text = add.toString();
@@ -71,7 +87,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Preferences"),
@@ -98,107 +114,116 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
           color: CustomColors.mfinFadedButtonGreen,
         ),
       ),
-      body: new SingleChildScrollView(
-        child: new Column(
+      body: SingleChildScrollView(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
-              child: Card(
-                color: CustomColors.mfinLightGrey,
-                elevation: 5.0,
-                child: new Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        "Finance Preferences",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "Georgia",
-                          color: CustomColors.mfinBlue,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Card(
+              color: CustomColors.mfinLightGrey,
+              elevation: 5.0,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      "Finance Preferences",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: "Georgia",
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Divider(
-                      color: CustomColors.mfinButtonGreen,
+                  ),
+                  Divider(
+                    color: CustomColors.mfinButtonGreen,
+                  ),
+                  RowHeaderText(textName: "REPORT's SIGNATURE"),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: TextFormField(
+                      textAlign: TextAlign.start,
+                      keyboardType: TextInputType.multiline,
+                      controller: _textEditingController,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(
+                          color: CustomColors.mfinBlue,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 10.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
+                      ),
+                      autofocus: false,
                     ),
-                    RowHeaderText(textName: "REPORT's SIGNATURE"),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: TextFormField(
-                        textAlign: TextAlign.start,
-                        keyboardType: TextInputType.multiline,
-                        controller: _textEditingController,
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
+                  ),
+                  Row(children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 15.0, top: 10),
+                        child: Text(
+                          "Interest Rate",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinGrey,
                           ),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          fillColor: CustomColors.mfinWhite,
-                          filled: true,
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 3.0, horizontal: 10.0),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: CustomColors.mfinWhite)),
-                        ),
-                        autofocus: false,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
-              child: Card(
-                color: CustomColors.mfinLightGrey,
-                elevation: 5.0,
-                child: new Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        "User Preferences",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "Georgia",
-                          color: CustomColors.mfinBlue,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    Divider(
-                      color: CustomColors.mfinButtonGreen,
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: TextFormField(
+                          controller: intrestRateController,
+                          textAlign: TextAlign.start,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: 'Rate in 0.00',
+                            fillColor: CustomColors.mfinWhite,
+                            filled: true,
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 10.0),
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: CustomColors.mfinWhite)),
+                          ),
+                        ),
+                      ),
                     ),
-                    Row(children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: new EdgeInsets.only(left: 15.0, top: 10),
-                          child: Text(
-                            "SUPPORT Language",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Georgia",
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinGrey,
+                  ]),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
+                              "Collection Mode",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinGrey,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: DropdownButtonFormField(
+                        Flexible(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                                 contentPadding: EdgeInsets.symmetric(
@@ -207,128 +232,221 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
-                              items: _prefSupportLangList.map(
+                              items: _tempCollectionMode.entries.map(
                                 (f) {
                                   return DropdownMenuItem<String>(
-                                    value: f,
-                                    child: Text(f),
+                                    value: f.key,
+                                    child: Text(f.value),
                                   );
                                 },
                               ).toList(),
-                              value: _selectedLang,
                               onChanged: (newVal) {
-                                _setSelectedLang(newVal);
-                              }),
-                        ),
-                      ),
-                    ]),
-                    RowHeaderText(textName: "TRANSACTIONS GROUP BY"),
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Radio(
-                          value: 0,
-                          groupValue: transctionGroupValue,
-                          activeColor: CustomColors.mfinBlue,
-                          onChanged: (val) {
-                            setTransaction(val);
-                          },
-                        ),
-                        Text(
-                          "Daily",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Georgia",
-                            color: CustomColors.mfinBlue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Radio(
-                          value: 1,
-                          groupValue: transctionGroupValue,
-                          activeColor: CustomColors.mfinBlue,
-                          onChanged: (val) {
-                            setTransaction(val);
-                          },
-                        ),
-                        Text(
-                          "Weekly",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Georgia",
-                            color: CustomColors.mfinBlue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Radio(
-                          value: 2,
-                          groupValue: transctionGroupValue,
-                          activeColor: CustomColors.mfinBlue,
-                          onChanged: (val) {
-                            setTransaction(val);
-                          },
-                        ),
-                        Text(
-                          "Monthly",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Georgia",
-                            color: CustomColors.mfinBlue,
-                            fontWeight: FontWeight.bold,
+                                _setSelectedCollectionMode(newVal);
+                              },
+                              value: selectedCollectionModeID,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    RowHeaderText(textName: "COLLECTION VIEW"),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ToggleButtons(
-                        borderColor: CustomColors.mfinButtonGreen,
-                        selectedBorderColor: CustomColors.mfinBlue,
-                        fillColor: CustomColors.mfinButtonGreen,
-                        textStyle: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "Georgia",
-                          color: CustomColors.mfinButtonGreen,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        borderWidth: 2,
-                        selectedColor: CustomColors.mfinBlue,
-                        borderRadius: BorderRadius.circular(5),
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                right: 15, left: 15, bottom: 5, top: 5),
-                            child: Text(
-                              'Table View',
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                right: 15, left: 15, bottom: 5, top: 5),
-                            child: Text(
-                              'List View',
-                            ),
-                          ),
-                        ],
-                        onPressed: (int index) {
-                          setState(() {
-                            for (int i = 0; i < isSelectedView.length; i++) {
-                              isSelectedView[i] = i == index;
-                            }
-                          });
-                        },
-                        isSelected: isSelectedView,
+                  ),
+                  RowHeaderText(textName: "Collection Days"),
+                  Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: CustomColors.mfinGrey, width: 1.0),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: selectedDays.toList(),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+            Card(
+              color: CustomColors.mfinLightGrey,
+              elevation: 5.0,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      "User Preferences",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: "Georgia",
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    color: CustomColors.mfinButtonGreen,
+                  ),
+                  Row(children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 15.0, top: 10),
+                        child: Text(
+                          "SUPPORT Language",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "Georgia",
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.mfinGrey,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CustomColors.mfinWhite)),
+                            ),
+                            items: _prefSupportLangList.map(
+                              (f) {
+                                return DropdownMenuItem<String>(
+                                  value: f,
+                                  child: Text(f),
+                                );
+                              },
+                            ).toList(),
+                            value: _selectedLang,
+                            onChanged: (newVal) {
+                              _setSelectedLang(newVal);
+                            }),
+                      ),
+                    ),
+                  ]),
+                  RowHeaderText(textName: "TRANSACTIONS GROUP BY"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio(
+                        value: 0,
+                        groupValue: transctionGroupValue,
+                        activeColor: CustomColors.mfinBlue,
+                        onChanged: (val) {
+                          setTransaction(val);
+                        },
+                      ),
+                      Text(
+                        "Daily",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Georgia",
+                          color: CustomColors.mfinBlue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Radio(
+                        value: 1,
+                        groupValue: transctionGroupValue,
+                        activeColor: CustomColors.mfinBlue,
+                        onChanged: (val) {
+                          setTransaction(val);
+                        },
+                      ),
+                      Text(
+                        "Weekly",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Georgia",
+                          color: CustomColors.mfinBlue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Radio(
+                        value: 2,
+                        groupValue: transctionGroupValue,
+                        activeColor: CustomColors.mfinBlue,
+                        onChanged: (val) {
+                          setTransaction(val);
+                        },
+                      ),
+                      Text(
+                        "Monthly",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Georgia",
+                          color: CustomColors.mfinBlue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  RowHeaderText(textName: "COLLECTION VIEW"),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: ToggleButtons(
+                      borderColor: CustomColors.mfinButtonGreen,
+                      selectedBorderColor: CustomColors.mfinBlue,
+                      fillColor: CustomColors.mfinButtonGreen,
+                      textStyle: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "Georgia",
+                        color: CustomColors.mfinButtonGreen,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      borderWidth: 2,
+                      selectedColor: CustomColors.mfinBlue,
+                      borderRadius: BorderRadius.circular(5),
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: 15, left: 15, bottom: 5, top: 5),
+                          child: Text(
+                            'Table View',
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: 15, left: 15, bottom: 5, top: 5),
+                          child: Text(
+                            'List View',
+                          ),
+                        ),
+                      ],
+                      onPressed: (int index) {
+                        setState(() {
+                          for (int i = 0; i < isSelectedView.length; i++) {
+                            isSelectedView[i] = i == index;
+                          }
+                        });
+                      },
+                      isSelected: isSelectedView,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(padding: EdgeInsets.all(35)),
           ],
         ),
       ),
     );
+  }
+
+  _setSelectedCollectionMode(String newVal) {
+    setState(() {
+      selectedCollectionModeID = newVal;
+    });
   }
 
   _setSelectedLang(String newVal) {
@@ -345,6 +463,30 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     userPreferencesJSON['transaction_group_by'] = val;
   }
 
+  Iterable<Widget> get selectedDays sync* {
+    for (MapEntry days in tempCollectionDays.entries) {
+      yield Transform(
+        transform: Matrix4.identity()..scale(0.9),
+        child: ChoiceChip(
+            label: Text(days.value),
+            selected: collectionDays.contains(int.parse(days.key)),
+            elevation: 5.0,
+            selectedColor: CustomColors.mfinBlue,
+            backgroundColor: CustomColors.mfinWhite,
+            labelStyle: TextStyle(color: CustomColors.mfinButtonGreen),
+            onSelected: (selected) {
+              setState(() {
+                if (selected) {
+                  collectionDays.add(int.parse(days.key));
+                } else {
+                  collectionDays.remove(int.parse(days.key));
+                }
+              });
+            }),
+      );
+    }
+  }
+
   _submit() async {
     if (_textEditingController.text.isEmpty) {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
@@ -353,6 +495,19 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     } else {
       accountPreferencesJSON['report_signature'] = _textEditingController.text;
     }
+
+    if (intrestRateController.text.isEmpty) {
+      _scaffoldKey.currentState.showSnackBar(
+          CustomSnackBar.errorSnackBar("Please Enter Interest Rate!", 2));
+      return;
+    } else {
+      accountPreferencesJSON['interest_rate'] =
+          double.parse(intrestRateController.text);
+    }
+
+    accountPreferencesJSON['collection_mode'] =
+        int.parse(selectedCollectionModeID);
+    accountPreferencesJSON['collection_days'] = collectionDays;
 
     CustomDialogs.actionWaiting(context, "Updating Preferences!");
     if (isSelectedView[0]) {

@@ -8,6 +8,7 @@ import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/account_preferences.dart';
 part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -48,6 +49,8 @@ class User extends Model {
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
   DateTime updatedAt;
+
+  AccountPreferences accPreferences;
 
   User(int mobileNumber) {
     this.mobileNumber = mobileNumber;

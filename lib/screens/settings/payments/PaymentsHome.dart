@@ -8,6 +8,7 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentsHome extends StatefulWidget {
   @override
@@ -34,6 +35,15 @@ class _PaymentsHomeState extends State<PaymentsHome> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: CustomColors.mfinPositiveGreen,
         onPressed: () async {
+          SharedPreferences sPref = await SharedPreferences.getInstance();
+
+          bool rEnabled = sPref.getBool('recharge_enabled');
+          if (rEnabled != null && rEnabled == false) {
+            _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+                "Recharge disabled for sometime! Please contact support for more info. Thanks for your support!",
+                3));
+            return;
+          }
           if (selectedID.length > 0 && tAmount > 0) {
             CustomDialogs.actionWaiting(context, "Loading...");
 

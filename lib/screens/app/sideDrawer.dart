@@ -140,7 +140,7 @@ Widget openDrawer(BuildContext context) {
             leading: new Icon(Icons.home, color: CustomColors.mfinButtonGreen),
             title: new Text('Home'),
             onTap: () async {
-              await UserController().refreshUser();
+              await UserController().refreshUser(false);
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(

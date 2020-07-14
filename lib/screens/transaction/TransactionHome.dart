@@ -21,7 +21,7 @@ class TransactionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        await UserController().refreshUser();
+        await UserController().refreshUser(false);
         return Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (BuildContext context) => UserFinanceSetup(),

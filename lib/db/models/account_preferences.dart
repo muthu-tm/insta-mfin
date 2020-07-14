@@ -3,11 +3,17 @@ part 'account_preferences.g.dart';
 
 @JsonSerializable()
 class AccountPreferences {
-  
   @JsonKey(name: 'report_signature', nullable: true)
   String reportSignature;
+  @JsonKey(name: 'interest_rate', nullable: true)
+  double interestRate;
+  @JsonKey(name: 'collection_mode', nullable: true)
+  int collectionMode;
+  @JsonKey(name: 'collection_days', nullable: true)
+  List<int> collectionDays;
 
-  factory AccountPreferences.fromJson(Map<String, dynamic> json) => _$AccountPreferencesFromJson(json);
+  factory AccountPreferences.fromJson(Map<String, dynamic> json) =>
+      _$AccountPreferencesFromJson(json);
   Map<String, dynamic> toJson() => _$AccountPreferencesToJson(this);
 
   AccountPreferences();

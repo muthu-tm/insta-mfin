@@ -14,6 +14,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewCustomer extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -67,7 +68,18 @@ class ViewCustomer extends StatelessWidget {
                           Icons.monetization_on,
                           color: CustomColors.mfinBlue,
                         ),
-                        onTap: () {
+                        onTap: () async {
+                          SharedPreferences sPref =
+                              await SharedPreferences.getInstance();
+
+                          bool pEnabled = sPref.getBool('payment_enabled');
+                          if (pEnabled != null && pEnabled == false) {
+                            _scaffoldKey.currentState.showSnackBar(
+                                CustomSnackBar.errorSnackBar(
+                                    "ADD Payment disabled for sometime! Please contact support for more info. Thanks for your support!",
+                                    3));
+                            return;
+                          }
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -176,7 +188,7 @@ class ViewCustomer extends StatelessWidget {
                           color: CustomColors.mfinBlue,
                         ),
                         onTap: () async {
-                          await UserController().refreshUser();
+                          await UserController().refreshUser(false);
                           Navigator.push(
                             context,
                             MaterialPageRoute(

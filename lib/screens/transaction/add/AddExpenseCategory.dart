@@ -20,7 +20,7 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
@@ -29,6 +29,7 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () async {
           _submit();
         },

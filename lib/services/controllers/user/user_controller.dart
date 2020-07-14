@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
@@ -25,7 +26,7 @@ class UserController {
     return _userService.cachedUser.mobileNumber;
   }
 
-  Future<void> refreshUser() async {
+  Future<void> refreshUser(bool updatePref) async {
     if (_userService.cachedUser.primary != null &&
         _userService.cachedUser.primary.financeID != null &&
         _userService.cachedUser.primary.financeID != "") {
@@ -39,6 +40,11 @@ class UserController {
           List<dynamic> admins = doc['admins'];
           if (!admins.contains(getCurrentUserID())) {
             emptyPrimary();
+          }
+
+          if (updatePref) {
+            _userService.cachedUser.accPreferences =
+                AccountPreferences.fromJson(doc['preferences']);
           }
         }
       } else {
@@ -82,8 +88,12 @@ class UserController {
       User user = User(userJson['mobile_number']);
       var result = await user.update(userJson);
 
+      AccountPreferences accPref = getCurrentUser().accPreferences;
+
       _userService.setCachedUser(
           User.fromJson(await user.getByID(user.mobileNumber.toString())));
+
+      _userService.cachedUser.accPreferences = accPref;
 
       return CustomResponse.getSuccesReponse(result);
     } catch (err) {
@@ -133,6 +143,8 @@ class UserController {
       _userService.cachedUser.primary.financeID = financeID;
       _userService.cachedUser.primary.branchName = branchName;
       _userService.cachedUser.primary.subBranchName = subBranchName;
+
+      await refreshUser(true);
 
       NUtils.alertNotify(
           "", "PRIMARY FINANCE CHANGED", "Your Primary Finance modified...!");
@@ -205,6 +217,8 @@ class UserController {
           .updateData({'preferences': accPref});
 
       _userService.cachedUser.preferences = UserPreferences.fromJson(userPref);
+      _userService.cachedUser.accPreferences =
+          AccountPreferences.fromJson(accPref);
 
       return CustomResponse.getSuccesReponse(
           "Successfully updated preferences");

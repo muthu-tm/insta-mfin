@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddPaymentTemplate extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class AddPaymentTemplate extends StatefulWidget {
 
 class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final User _user = UserController().getCurrentUser();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -45,7 +48,11 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   @override
   void initState() {
     super.initState();
-    collectionDays = <int>[1, 2, 3, 4, 5];
+
+    selectedCollectionModeID =
+        _user.accPreferences.collectionMode.toString() ?? '0';
+    collectionDays = _user.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
+    interestRate = _user.accPreferences.interestRate ?? 0.00;
   }
 
   @override
@@ -58,6 +65,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },
@@ -87,7 +95,6 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                 color: CustomColors.mfinLightGrey,
                 elevation: 5.0,
                 margin: EdgeInsets.only(top: 5.0),
-                shadowColor: CustomColors.mfinLightBlue,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -428,6 +435,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                     Padding(padding: EdgeInsets.all(5)),
                     selectedCollectionModeID == '0'
                         ? Container(
+                          padding: EdgeInsets.only(top: 5),
                             decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5)),
@@ -437,9 +445,10 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                  'Scheduled collection days',
+                                  'Collection Days',
                                   style: TextStyle(
                                     color: CustomColors.mfinBlue,
+                                    fontSize: 16.0
                                   ),
                                 ),
                                 Row(
@@ -451,10 +460,10 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                             ),
                           )
                         : Container(),
-                    Padding(padding: EdgeInsets.all(35))
                   ],
                 ),
-              )
+              ),
+              Padding(padding: EdgeInsets.all(35))
             ],
           ),
         ),
@@ -520,12 +529,12 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             'Total amount should be equal to Collection amount * No. of collections',
             5));
-      } else if (!(totalAmount >=  pAmount + documentCharge + surChargeAmount)) {
+      } else if (!(totalAmount >= pAmount + documentCharge + surChargeAmount)) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Total amount should be greater than sum of Principal + Document + Service charge', 5));
-      } 
-      else {
+            'Total amount should be greater than sum of Principal + Document + Service charge',
+            5));
+      } else {
         Navigator.pop(context);
         Navigator.pop(context);
       }

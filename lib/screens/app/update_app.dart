@@ -21,14 +21,20 @@ class _UpdateAppState extends State<UpdateApp> {
   @override
   void initState() {
     super.initState();
-    print(" -- Update App InitState -- ");
 
     checkLatestVersion(context);
   }
 
   checkLatestVersion(context) async {
+    SharedPreferences sPref =
+          await SharedPreferences.getInstance();
+
     IfinConfig conf =
         await IfinConfig().getConfigByPlatform(Platform.operatingSystem);
+
+    await sPref.setBool('payment_enabled', conf.payEnabled ?? true);
+    await sPref.setBool('recharge_enabled', conf.rechargeEnabled ?? true);
+
     Version minAppVersion = Version.parse(conf.minVersion);
     Version latestAppVersion = Version.parse(conf.cVersion);
 
@@ -41,10 +47,7 @@ class _UpdateAppState extends State<UpdateApp> {
         "Please update the app to continue\n",
       );
     } else if (latestAppVersion > currentVersion) {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-
-      bool showUpdates = sharedPreferences.getBool('update_do_not_ask');
+      bool showUpdates = sPref.getBool('update_do_not_ask');
       if (showUpdates != null && showUpdates == false) {
         return;
       }

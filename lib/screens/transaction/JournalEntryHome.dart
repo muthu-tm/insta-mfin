@@ -97,7 +97,7 @@ class _JournalEntryHomeState extends State<JournalEntryHome> {
                             color: CustomColors.mfinBlue,
                           ),
                           onTap: () async {
-                            await UserController().refreshUser();
+                            await UserController().refreshUser(false);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
