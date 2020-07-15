@@ -13,7 +13,7 @@ Widget bottomBar(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 5), 100),
+          size: Size(screenWidth(context, dividedBy: 6), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -39,7 +39,7 @@ Widget bottomBar(BuildContext context) {
                     "Customers",
                     style: TextStyle(
                       fontFamily: "Georgia",
-                      fontSize: 11,
+                      fontSize: 10,
                       color: CustomColors.mfinGrey,
                     ),
                   ),
@@ -49,7 +49,7 @@ Widget bottomBar(BuildContext context) {
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 5), 100),
+          size: Size(screenWidth(context, dividedBy: 6), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -75,7 +75,7 @@ Widget bottomBar(BuildContext context) {
                     "Transactions",
                     style: TextStyle(
                       fontFamily: "Georgia",
-                      fontSize: 11,
+                      fontSize: 9,
                       color: CustomColors.mfinGrey,
                     ),
                   ),
@@ -85,7 +85,43 @@ Widget bottomBar(BuildContext context) {
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 5), 100),
+          size: Size(screenWidth(context, dividedBy: 6), 100),
+          child: Material(
+            color: CustomColors.mfinBlue,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                    settings: RouteSettings(name: '/chit'),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.transfer_within_a_station,
+                    size: 30.0,
+                    color: CustomColors.mfinButtonGreen,
+                  ),
+                  Text(
+                    "Chit Fund",
+                    style: TextStyle(
+                      fontFamily: "Georgia",
+                      fontSize: 10,
+                      color: CustomColors.mfinGrey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox.fromSize(
+          size: Size(screenWidth(context, dividedBy: 6), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -111,7 +147,7 @@ Widget bottomBar(BuildContext context) {
                     "Reports",
                     style: TextStyle(
                       fontFamily: "Georgia",
-                      fontSize: 11,
+                      fontSize: 10,
                       color: CustomColors.mfinGrey,
                     ),
                   ),
@@ -121,7 +157,7 @@ Widget bottomBar(BuildContext context) {
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 5), 100),
+          size: Size(screenWidth(context, dividedBy: 6), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -147,7 +183,7 @@ Widget bottomBar(BuildContext context) {
                     "Statistics",
                     style: TextStyle(
                       fontFamily: "Georgia",
-                      fontSize: 11,
+                      fontSize: 10,
                       color: CustomColors.mfinGrey,
                     ),
                   ), // text
@@ -157,7 +193,7 @@ Widget bottomBar(BuildContext context) {
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 5), 100),
+          size: Size(screenWidth(context, dividedBy: 6), 100),
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -183,7 +219,7 @@ Widget bottomBar(BuildContext context) {
                     "Settings",
                     style: TextStyle(
                       fontFamily: "Georgia",
-                      fontSize: 11,
+                      fontSize: 10,
                       color: CustomColors.mfinGrey,
                     ),
                   ),

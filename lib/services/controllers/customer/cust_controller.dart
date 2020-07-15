@@ -64,9 +64,9 @@ class CustController {
     }
   }
 
-  Stream<List<Customer>> streamCustomersByStatus(int status) async* {
+  Stream<List<Customer>> streamPendingCustomers() async* {
     try {
-      Stream<QuerySnapshot> stream = Customer().streamAllCustomers();
+      Stream<QuerySnapshot> stream = Customer().streamCustomersByStatus(1);
 
       if (await stream.isEmpty) {
         yield [];
@@ -77,7 +77,7 @@ class CustController {
       await for (var event in stream) {
         for (var doc in event.documents) {
           Customer cust = Customer.fromJson(doc.data);
-          if (status == await cust.getStatus(cust.mobileNumber))
+          if (2 == await cust.getStatus(cust.mobileNumber))
             customers.add(cust);
         }
         yield customers;

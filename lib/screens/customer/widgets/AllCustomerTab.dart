@@ -11,15 +11,18 @@ import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AllCustomerTab extends StatelessWidget {
-  AllCustomerTab(this._scaffoldKey, this.title);
+  AllCustomerTab(this._scaffoldKey, this.title, this.status);
 
   final String title;
+  final int status;
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Customer().streamAllCustomers(),
+      stream: status != 0
+          ? Customer().streamCustomersByStatus(status)
+          : Customer().streamAllCustomers(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 

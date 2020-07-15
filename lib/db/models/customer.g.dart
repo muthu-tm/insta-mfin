@@ -17,6 +17,7 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
     ..profession = json['customer_profession'] as String ?? ''
     ..guarantiedBy = json['guarantied_by'] as int
     ..addedBy = json['added_by'] as int
+    ..status = json['status'] as int ?? 0
     ..profilePathOrg = json['profile_path_org'] as String ?? ''
     ..profilePath = json['profile_path'] as String ?? ''
     ..createdAt = json['created_at'] == null
@@ -49,6 +50,7 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'sub_branch_name': instance.subBranchName ?? '',
       'guarantied_by': instance.guarantiedBy ?? instance.addedBy,
       'added_by': instance.addedBy,
+      'status': instance.status ?? 0,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

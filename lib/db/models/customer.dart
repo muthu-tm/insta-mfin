@@ -38,6 +38,8 @@ class Customer extends Model {
   int guarantiedBy;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
+  @JsonKey(name: 'status', nullable: true)
+  int status;
   @JsonKey(name: 'profile_path_org', defaultValue: "")
   String profilePathOrg;
   @JsonKey(name: 'profile_path', defaultValue: "")
@@ -105,6 +107,10 @@ class Customer extends Model {
     this.addedBy = mobileNumber;
   }
 
+  setStatus(int status) {
+    this.status = status;
+  }
+
   String getProfilePicPath() {
     if (this.profilePath != "")
       return this.profilePath;
@@ -139,6 +145,16 @@ class Customer extends Model {
         .where('finance_id', isEqualTo: user.primary.financeID)
         .where('branch_name', isEqualTo: user.primary.branchName)
         .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .orderBy('joined_at', descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> streamCustomersByStatus(int status) {
+    return getCollectionRef()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('status', isEqualTo: status)
         .orderBy('joined_at', descending: true)
         .snapshots();
   }

@@ -19,7 +19,7 @@ class CustomerListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Customer>>(
-      stream: CustController().streamCustomersByStatus(userStatus),
+      stream: CustController().streamPendingCustomers(),
       builder: (BuildContext context, AsyncSnapshot<List<Customer>> snapshot) {
         List<Widget> children;
 
@@ -61,8 +61,8 @@ class CustomerListWidget extends StatelessWidget {
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EditCustomerProfile(
-                                snapshot.data[index]),
+                            builder: (context) =>
+                                EditCustomerProfile(snapshot.data[index]),
                             settings:
                                 RouteSettings(name: '/customers/profile/edit'),
                           ),

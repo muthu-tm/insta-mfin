@@ -7,20 +7,17 @@ class AddFinanceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Wish to be a Complete Financier?",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Georgia',
-                fontSize: 17,
-                color: CustomColors.mfinBlue,
-                fontWeight: FontWeight.bold,
-              ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Wish to be a Complete Financier?",
+            style: TextStyle(
+              fontFamily: 'Georgia',
+              fontSize: 16,
+              color: CustomColors.mfinBlue,
+              fontWeight: FontWeight.bold,
             ),
-          ],
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(10.0),
