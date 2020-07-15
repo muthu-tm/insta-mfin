@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/finance.dart';
+import 'package:instamfin/db/models/subscriptions.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/db/models/user_primary.dart';
@@ -89,11 +90,15 @@ class UserController {
       var result = await user.update(userJson);
 
       AccountPreferences accPref = getCurrentUser().accPreferences;
+      int finValidTill = getCurrentUser().financeSubscription;
+      int chitValidTill = getCurrentUser().chitSubscription;
 
       _userService.setCachedUser(
           User.fromJson(await user.getByID(user.mobileNumber.toString())));
 
       _userService.cachedUser.accPreferences = accPref;
+      _userService.cachedUser.financeSubscription = finValidTill;
+      _userService.cachedUser.chitSubscription = chitValidTill;
 
       return CustomResponse.getSuccesReponse(result);
     } catch (err) {
@@ -127,6 +132,32 @@ class UserController {
     }
   }
 
+  Future refreshCacheSubscription() async {
+    try {
+      if (_userService.cachedUser.primary != null &&
+          _userService.cachedUser.primary.financeID != null &&
+          _userService.cachedUser.primary.financeID != "") {
+        QuerySnapshot querySnap = await _userService.cachedUser
+            .getFinanceDocReference()
+            .collection("subscriptions")
+            .getDocuments();
+        int finSubscription;
+        int chitSubscription;
+        if (querySnap.documents.isNotEmpty) {
+          DocumentSnapshot docSnap = querySnap.documents.first;
+          Subscriptions sub = Subscriptions.fromJson(docSnap.data);
+          finSubscription = sub.service.validTill;
+          chitSubscription = sub.chit.validTill;
+        }
+
+        _userService.cachedUser.financeSubscription = finSubscription;
+        _userService.cachedUser.chitSubscription = chitSubscription;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future updatePrimaryFinance(int userNumber, String financeID,
       String branchName, String subBranchName) async {
     try {
@@ -144,6 +175,7 @@ class UserController {
       _userService.cachedUser.primary.branchName = branchName;
       _userService.cachedUser.primary.subBranchName = subBranchName;
 
+      await refreshCacheSubscription();
       await refreshUser(true);
 
       NUtils.alertNotify(

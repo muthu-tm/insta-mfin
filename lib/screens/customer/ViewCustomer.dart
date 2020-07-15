@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsListWidget.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/cust_report.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -18,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewCustomer extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final User _user = UserController().getCurrentUser();
 
   ViewCustomer(this.customer);
 
@@ -74,9 +77,20 @@ class ViewCustomer extends StatelessWidget {
 
                           bool pEnabled = sPref.getBool('payment_enabled');
                           if (pEnabled != null && pEnabled == false) {
+                            Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
                                     "ADD Payment disabled for sometime! Please contact support for more info. Thanks for your support!",
+                                    3));
+                            return;
+                          }
+
+                          if (_user.financeSubscription <
+                              DateUtils.getUTCDateEpoch(DateTime.now())) {
+                            Navigator.pop(context);
+                            _scaffoldKey.currentState.showSnackBar(
+                                CustomSnackBar.errorSnackBar(
+                                    "Your Finance subscription has expired. Please Recharge to continue!",
                                     3));
                             return;
                           }

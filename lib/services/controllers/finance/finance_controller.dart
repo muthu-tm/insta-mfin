@@ -27,6 +27,8 @@ class FinanceController {
 
       financeCompany = await financeCompany.create();
 
+      await Future.delayed(Duration(seconds: 3));
+
       await _userController.updatePrimaryFinance(addedBy,
           financeCompany.createdAt.millisecondsSinceEpoch.toString(), "", "");
 

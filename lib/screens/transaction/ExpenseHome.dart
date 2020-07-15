@@ -81,6 +81,17 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                             color: CustomColors.mfinBlue,
                           ),
                           onTap: () {
+                            if (_user.financeSubscription <
+                                    DateUtils.getUTCDateEpoch(DateTime.now()) &&
+                                _user.chitSubscription <
+                                    DateUtils.getUTCDateEpoch(DateTime.now())) {
+                              _scaffoldKey.currentState.showSnackBar(
+                                  CustomSnackBar.errorSnackBar(
+                                      "Your subscription has expired. Please Recharge to continue!",
+                                      3));
+                              return;
+                            }
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(

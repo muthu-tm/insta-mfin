@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/SearchAppBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/notification_icon.dart';
@@ -8,11 +9,14 @@ import 'package:instamfin/screens/customer/widgets/AllCustomerTab.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListWidget.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CustomersHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
@@ -138,10 +142,19 @@ class CustomersHome extends StatelessWidget {
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton.extended(
+          floatingActionButton: FloatingActionButton(
             backgroundColor: CustomColors.mfinBlue,
             tooltip: "Add Customer",
             onPressed: () {
+              if (_user.financeSubscription <
+                      DateUtils.getUTCDateEpoch(DateTime.now()) &&
+                  _user.chitSubscription <
+                      DateUtils.getUTCDateEpoch(DateTime.now())) {
+                _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+                    "Your subscription has expired. Please Recharge to continue!",
+                    3));
+                return;
+              }
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -151,14 +164,7 @@ class CustomersHome extends StatelessWidget {
               );
             },
             elevation: 5.0,
-            label: Text(
-              'Add',
-              style: TextStyle(
-                color: CustomColors.mfinWhite,
-                fontSize: 16,
-              ),
-            ),
-            icon: Icon(
+            child: Icon(
               Icons.add,
               size: 40,
               color: CustomColors.mfinButtonGreen,

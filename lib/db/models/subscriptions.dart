@@ -4,6 +4,7 @@ import 'package:instamfin/db/models/plans.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:instamfin/db/models/subscription_data.dart';
 
@@ -129,17 +130,22 @@ class Subscriptions extends Model {
       } else {
         DocumentSnapshot snap = subSnap.documents[0];
         Subscriptions sub = Subscriptions.fromJson(snap.data);
+        int today = DateUtils.getUTCDateEpoch(DateTime.now());
+        int finValidTill = (sub.service.validTill < today) ? today : sub.service.validTill;
+        int chitValidTill = (sub.chit.validTill < today) ? today : sub.chit.validTill;
         Map<String, dynamic> subJSON = {
           "payment_id": payID,
           "purchase_id": purchaseID,
           "recently_paid": tAmount,
-          "chit.valid_till": sub.chit.validTill + (cVal * 86400000),
+          "chit.valid_till": chitValidTill + (cVal * 86400000),
           "chit.available_sms_credit": sub.chit.smsCredit + cSMS,
-          "service.valid_till": sub.service.validTill + (sVal * 86400000),
+          "service.valid_till": finValidTill + (sVal * 86400000),
           "service.available_sms_credit": sub.service.smsCredit + sSMS,
           "updated_at": DateTime.now()
         };
         await snap.reference.updateData(subJSON);
+
+        await UserController().refreshCacheSubscription();
         return true;
       }
     } catch (err) {

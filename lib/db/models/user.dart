@@ -51,6 +51,8 @@ class User extends Model {
   DateTime updatedAt;
 
   AccountPreferences accPreferences;
+  int financeSubscription;
+  int chitSubscription;
 
   User(int mobileNumber) {
     this.mobileNumber = mobileNumber;

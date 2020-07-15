@@ -115,7 +115,7 @@ class SubscriptionStatusWidget extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text: "Please recharge to resume your connection!",
+              text: ". Please recharge to resume your connection!",
               style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 16.0,

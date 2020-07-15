@@ -211,7 +211,15 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
         } else {
-          await UserController().refreshUser(true);
+          try {
+            await UserController().refreshCacheSubscription();
+            await UserController().refreshUser(true);
+          } catch (err) {
+            _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+                "Unable to Login, Something went wrong. Please try again Later!",
+                2));
+            return;
+          }
           await _success();
         }
       }

@@ -318,11 +318,20 @@ class _LoginPageState extends State<LoginPage> {
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "Unable to Login, Something went wrong!", 2));
+            "Unable to Login, Something went wrong. Please try again Later!",
+            2));
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
       } else {
-        await UserController().refreshUser(true);
+        try {
+          await UserController().refreshCacheSubscription();
+          await UserController().refreshUser(true);
+        } catch (err) {
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              "Unable to Login, Something went wrong. Please try again Later!",
+              2));
+          return;
+        }
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (BuildContext context) => UpdateApp(
