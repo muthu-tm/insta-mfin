@@ -376,7 +376,7 @@ class Collection {
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
         .where('collection_date', isLessThanOrEqualTo: epoch)
-        .where('type', isEqualTo: 0)
+        .where('type', whereIn: [0, 3])
         .where('is_settled', isEqualTo: false)
         .where('is_paid', isEqualTo: false)
         .snapshots();
