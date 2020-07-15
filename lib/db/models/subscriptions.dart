@@ -122,17 +122,31 @@ class Subscriptions extends Model {
         }
       });
 
+      WriteBatch bWrite = Model.db.batch();
       if (subSnap.documents.isEmpty) {
-        await getCollectionRef().document().setData(getSubscriptionJSON(
-            purchaseID, tAmount, sVal, sSMS, cVal, cSMS, payID));
+        bWrite.setData(
+            getCollectionRef().document(),
+            getSubscriptionJSON(
+                purchaseID, tAmount, sVal, sSMS, cVal, cSMS, payID));
 
-        return true;
+        Map<String, dynamic> purchaseJSON = {
+          "payment_id": payID,
+          "total_paid": tAmount,
+          "is_success": true,
+          "updated_at": DateTime.now()
+        };
+
+        bWrite.updateData(Model.db.collection('purchases').document(purchaseID),
+            purchaseJSON);
       } else {
         DocumentSnapshot snap = subSnap.documents[0];
         Subscriptions sub = Subscriptions.fromJson(snap.data);
         int today = DateUtils.getUTCDateEpoch(DateTime.now());
-        int finValidTill = (sub.service.validTill < today) ? today : sub.service.validTill;
-        int chitValidTill = (sub.chit.validTill < today) ? today : sub.chit.validTill;
+        int finValidTill =
+            (sub.service.validTill < today) ? today : sub.service.validTill;
+        int chitValidTill =
+            (sub.chit.validTill < today) ? today : sub.chit.validTill;
+            
         Map<String, dynamic> subJSON = {
           "payment_id": payID,
           "purchase_id": purchaseID,
@@ -143,11 +157,22 @@ class Subscriptions extends Model {
           "service.available_sms_credit": sub.service.smsCredit + sSMS,
           "updated_at": DateTime.now()
         };
-        await snap.reference.updateData(subJSON);
 
-        await UserController().refreshCacheSubscription();
-        return true;
+        bWrite.updateData(snap.reference, subJSON);
+        Map<String, dynamic> purchaseJSON = {
+          "payment_id": payID,
+          "total_paid": tAmount,
+          "is_success": true,
+          "updated_at": DateTime.now()
+        };
+
+        bWrite.updateData(Model.db.collection('purchases').document(purchaseID),
+            purchaseJSON);
       }
+
+      await bWrite.commit();
+      await UserController().refreshCacheSubscription();
+      return true;
     } catch (err) {
       throw err;
     }

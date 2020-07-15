@@ -4,8 +4,10 @@ import 'package:instamfin/db/models/plans.dart';
 import 'package:instamfin/db/models/purchases.dart';
 import 'package:instamfin/db/models/subscriptions.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/settings/payments/ResponseDialog.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
@@ -250,29 +252,63 @@ class _PuchasePlanState extends State<PuchasePlan> {
     String payID = response.paymentId;
     String orderID = response.orderId;
     String sign = response.signature;
+    CustomDialogs.actionWaiting(context, "Loading...");
 
     bool isSuccess = await Subscriptions().updateSuccessStatus(
         widget.purchaseID, widget.plans, widget.amount, payID);
 
-    if (isSuccess)
-      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-          "SUCCESS Payment ID: ${response.paymentId}", 4));
-    else
+    if (isSuccess) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      _showDialog(1, id: payID);
+    } else {
+      Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
           "Successfull Payment ID: ${response.paymentId} - However error occurred while updating your subscription. please contact support!",
           5));
+    }
   }
 
-  void _handlePaymentError(PaymentFailureResponse response) {
-    Purchases().updateError(widget.purchaseID, response.message, response.code);
+  void _handlePaymentError(PaymentFailureResponse response) async {
+    await Purchases()
+        .updateError(widget.purchaseID, response.message, response.code);
+    _showDialog(2);
 
     _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
         "ERROR - Message: ${response.message}", 4));
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
+    _showDialog(3);
+
     _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
         "EXTERNAL_WALLET: ${response.walletName}", 4));
+  }
+
+  void _showDialog(int task, {String id}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return task == 1
+            ? ResponseDialog(
+                color: CustomColors.mfinButtonGreen,
+                icon: Icons.check_circle,
+                message: "Transaction\nSuccessfull",
+                id: id,
+              )
+            : task == 2
+                ? ResponseDialog(
+                    color: CustomColors.mfinAlertRed,
+                    icon: Icons.cancel,
+                    message: "Transaction\nFailed",
+                  )
+                : ResponseDialog(
+                    color: CustomColors.mfinGrey,
+                    icon: Icons.account_balance_wallet,
+                    message: "Selected\nExternal Wallet",
+                  );
+      },
+    );
   }
 
   void openCheckout(String pSec) {
