@@ -5,7 +5,7 @@ IfinConfig _$IfinConfigFromJson(Map<String, dynamic> json) {
     ..cVersion = json['current_version'] as String
     ..minVersion = json['min_version'] as String
     ..platform = json['platform'] as String
-    ..forceUpdateURL = json['force_update_url'] as String
+    ..appURL = json['app_url'] as String
     ..rechargeEnabled = json['recharge_enabled'] as bool ?? true
     ..payEnabled = json['payment_enabled'] as bool ?? true;
 }
@@ -15,7 +15,7 @@ Map<String, dynamic> _$IfinConfigToJson(IfinConfig instance) =>
       'current_version': instance.cVersion,
       'min_version': instance.minVersion,
       'platform': instance.platform,
-      'force_update_url': instance.forceUpdateURL,
+      'app_url': instance.appURL,
       'recharge_enabled': instance.rechargeEnabled,
       'payment_enabled': instance.payEnabled,
     };

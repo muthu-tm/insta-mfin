@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DoNotAskAgainDialog extends StatefulWidget {
   final String title, subTitle, positiveButtonText, negativeButtonText;
-  final Function onPositiveButtonClicked;
   final String doNotAskAgainText;
+  final String url;
   final String dialogKeyName;
 
   DoNotAskAgainDialog(
@@ -17,7 +19,7 @@ class DoNotAskAgainDialog extends StatefulWidget {
     this.subTitle,
     this.positiveButtonText,
     this.negativeButtonText,
-    this.onPositiveButtonClicked, {
+    this.url, {
     this.doNotAskAgainText = 'Never ask again',
   });
 
@@ -33,6 +35,15 @@ class _DoNotAskAgainDialogState extends State<DoNotAskAgainDialog> {
     await sharedPreferences.setBool('update_do_not_ask', false);
   }
 
+  Future<void> _onUpdateNowClicked() async {
+    try {
+      await UrlLauncherUtils.launchURL(widget.url);
+    } catch (err) {
+      CustomDialogs.waiting(context, "Error!",
+          "Unable to open update URL now. Please update manually!");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (Platform.isIOS) {
@@ -44,7 +55,9 @@ class _DoNotAskAgainDialogState extends State<DoNotAskAgainDialog> {
             child: Text(
               widget.positiveButtonText,
             ),
-            onPressed: widget.onPositiveButtonClicked,
+            onPressed: () async {
+              await _onUpdateNowClicked();
+            },
           ),
           CupertinoDialogAction(
             child: Text(
@@ -109,7 +122,11 @@ class _DoNotAskAgainDialogState extends State<DoNotAskAgainDialog> {
       actions: <Widget>[
         FlatButton(
           child: Text(widget.positiveButtonText),
-          onPressed: doNotAskAgain ? null : widget.onPositiveButtonClicked,
+          onPressed: doNotAskAgain
+              ? null
+              : () async {
+                  await _onUpdateNowClicked();
+                },
         ),
         FlatButton(
           child: Text(

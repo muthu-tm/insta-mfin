@@ -27,4 +27,12 @@ class UrlLauncherUtils {
       throw 'Could not send Email to $to';
     }
   }
+  
+  static Future<void> launchURL(String url) async {
+    if (await UrlLauncher.canLaunch(url)) {
+      await UrlLauncher.launch(url);
+    } else {
+      throw 'Could not launch URL $url';
+    }
+  }
 }

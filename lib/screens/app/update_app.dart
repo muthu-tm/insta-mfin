@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/ifin_config.dart';
 import 'package:instamfin/screens/app/do_not_show_again_dialog.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
+import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:package_info/package_info.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +20,8 @@ class UpdateApp extends StatefulWidget {
 }
 
 class _UpdateAppState extends State<UpdateApp> {
+  String url = "";
+
   @override
   void initState() {
     super.initState();
@@ -26,11 +30,11 @@ class _UpdateAppState extends State<UpdateApp> {
   }
 
   checkLatestVersion(context) async {
-    SharedPreferences sPref =
-          await SharedPreferences.getInstance();
+    SharedPreferences sPref = await SharedPreferences.getInstance();
 
     IfinConfig conf =
         await IfinConfig().getConfigByPlatform(Platform.operatingSystem);
+    url = conf.appURL;
 
     await sPref.setBool('payment_enabled', conf.payEnabled ?? true);
     await sPref.setBool('recharge_enabled', conf.rechargeEnabled ?? true);
@@ -43,9 +47,7 @@ class _UpdateAppState extends State<UpdateApp> {
 
     if (minAppVersion > currentVersion) {
       _showCompulsoryUpdateDialog(
-        context,
-        "Please update the app to continue\n",
-      );
+          context, "Please update the app to continue\n");
     } else if (latestAppVersion > currentVersion) {
       bool showUpdates = sPref.getBool('update_do_not_ask');
       if (showUpdates != null && showUpdates == false) {
@@ -53,12 +55,7 @@ class _UpdateAppState extends State<UpdateApp> {
       }
 
       _showOptionalUpdateDialog(
-        context,
-        "A newer version of the app is available\n",
-      );
-      print('Update available');
-    } else {
-      print('App is up to date');
+          context, "A newer version of the app is available\n");
     }
   }
 
@@ -77,7 +74,7 @@ class _UpdateAppState extends State<UpdateApp> {
           message,
           btnLabel,
           btnLabelCancel,
-          _onUpdateNowClicked,
+          url,
           doNotAskAgainText:
               Platform.isIOS ? btnLabelDontAskAgain : 'Never ask again',
         );
@@ -85,8 +82,13 @@ class _UpdateAppState extends State<UpdateApp> {
     );
   }
 
-  _onUpdateNowClicked() {
-    print('On update app clicked');
+  Future<void> _onUpdateNowClicked() async {
+    try {
+      await UrlLauncherUtils.launchURL(url);
+    } catch (err) {
+      CustomDialogs.waiting(context, "Error!",
+          "Unable to open update URL now. Please update manually!");
+    }
   }
 
   _showCompulsoryUpdateDialog(context, String message) async {
@@ -97,7 +99,7 @@ class _UpdateAppState extends State<UpdateApp> {
         String title = "App Update Available";
         String btnLabel = "Update Now";
         return Platform.isIOS
-            ? new CupertinoAlertDialog(
+            ? CupertinoAlertDialog(
                 title: Text(title),
                 content: Text(message),
                 actions: <Widget>[
@@ -106,11 +108,13 @@ class _UpdateAppState extends State<UpdateApp> {
                       btnLabel,
                     ),
                     isDefaultAction: true,
-                    onPressed: _onUpdateNowClicked,
+                    onPressed: () async {
+                      await _onUpdateNowClicked();
+                    },
                   ),
                 ],
               )
-            : new AlertDialog(
+            : AlertDialog(
                 title: Text(
                   title,
                   style: TextStyle(fontSize: 22),
@@ -119,7 +123,9 @@ class _UpdateAppState extends State<UpdateApp> {
                 actions: <Widget>[
                   FlatButton(
                     child: Text(btnLabel),
-                    onPressed: _onUpdateNowClicked,
+                    onPressed: () async {
+                      await _onUpdateNowClicked();
+                    },
                   ),
                 ],
               );

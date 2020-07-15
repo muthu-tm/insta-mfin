@@ -14,8 +14,8 @@ class IfinConfig {
   String minVersion;
   @JsonKey(name: 'platform')
   String platform;
-  @JsonKey(name: 'force_update_url', nullable: true)
-  String forceUpdateURL;
+  @JsonKey(name: 'app_url', nullable: true)
+  String appURL;
   @JsonKey(name: 'recharge_enabled', defaultValue: true)
   bool rechargeEnabled;
   @JsonKey(name: 'payment_enabled', defaultValue: true)
