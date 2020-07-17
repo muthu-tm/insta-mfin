@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
+import 'package:instamfin/screens/transaction/add/AddChitTemplate.dart';
 import 'package:instamfin/screens/transaction/add/AddExpenseCategory.dart';
 import 'package:instamfin/screens/transaction/add/AddJournalCategory.dart';
 import 'package:instamfin/screens/transaction/add/AddPaymentTemplate.dart';
+import 'package:instamfin/screens/transaction/configuration/ChitTemplateListWidget.dart';
 import 'package:instamfin/screens/transaction/configuration/ExpenseCategoryListWidget.dart';
 import 'package:instamfin/screens/transaction/configuration/JournalCategoryListWidget.dart';
 import 'package:instamfin/screens/transaction/configuration/PaymentTemplateListWidget.dart';
@@ -48,11 +50,28 @@ class TransactionConfigHome extends StatelessWidget {
                             builder: (context) => AddPaymentTemplate(),
                             settings: RouteSettings(
                                 name:
-                                    '/transactions/collectionbook/template/add'),
+                                    '/transactions/config/payment/template/add'),
                           ),
                         );
                       },
                     ),
+                    ListTile(
+                        title: Text('Add Chit Template'),
+                        leading: Icon(
+                          Icons.transfer_within_a_station,
+                          color: CustomColors.mfinBlue,
+                        ),
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddChitTemplate(),
+                              settings: RouteSettings(
+                                  name:
+                                      '/transactions/config/chit/template/add'),
+                            ),
+                          );
+                        }),
                     ListTile(
                       title: Text('Add Expense Categories'),
                       leading: Icon(
@@ -65,7 +84,8 @@ class TransactionConfigHome extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => AddExpenseCategory(),
                             settings: RouteSettings(
-                                name: '/transactions/expenses/categories/add'),
+                                name:
+                                    '/transactions/config/expenses/categories/add'),
                           ),
                         );
                       },
@@ -82,7 +102,8 @@ class TransactionConfigHome extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => AddJournalCategory(),
                               settings: RouteSettings(
-                                  name: '/transactions/journal/categories/add'),
+                                  name:
+                                      '/transactions/config/journal/categories/add'),
                             ),
                           );
                         }),
@@ -126,7 +147,6 @@ class TransactionConfigHome extends StatelessWidget {
               color: CustomColors.mfinLightGrey,
               elevation: 5.0,
               margin: EdgeInsets.all(5.0),
-              shadowColor: CustomColors.mfinLightBlue,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
@@ -156,7 +176,35 @@ class TransactionConfigHome extends StatelessWidget {
               color: CustomColors.mfinLightGrey,
               elevation: 5.0,
               margin: EdgeInsets.all(5.0),
-              shadowColor: CustomColors.mfinLightBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Chit Fund Templates",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    color: CustomColors.mfinBlue,
+                  ),
+                  ChitTemplateListWidget(_scaffoldKey)
+                ],
+              ),
+            ),
+            Card(
+              color: CustomColors.mfinLightGrey,
+              elevation: 5.0,
+              margin: EdgeInsets.all(5.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
@@ -186,7 +234,6 @@ class TransactionConfigHome extends StatelessWidget {
               color: CustomColors.mfinLightGrey,
               elevation: 5.0,
               margin: EdgeInsets.all(5.0),
-              shadowColor: CustomColors.mfinLightBlue,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),

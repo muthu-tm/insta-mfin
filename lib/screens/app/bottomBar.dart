@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/chit/ChitHome.dart';
 import 'package:instamfin/screens/customer/CustomersHome.dart';
 import 'package:instamfin/screens/reports/ReportsHome.dart';
 import 'package:instamfin/screens/statistics/StatisticsHome.dart';
@@ -93,7 +94,7 @@ Widget bottomBar(BuildContext context) {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsScreen(),
+                    builder: (context) => ChitHome(),
                     settings: RouteSettings(name: '/chit'),
                   ),
                   (Route<dynamic> route) => false,

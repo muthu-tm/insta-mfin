@@ -1,25 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/payment_template.dart';
+import 'package:instamfin/db/models/chit_template.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:instamfin/screens/transaction/edit/EditPaymentTemplate.dart';
-import 'package:instamfin/screens/transaction/view/ViewPaymentTemplate.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class PaymentTemplateListWidget extends StatelessWidget {
-  final List _collectionMode = ["Daily", "Weekly", "Monthly"];
+class ChitTemplateListWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
-  PaymentTemplateListWidget(this._scaffoldKey);
+  ChitTemplateListWidget(this._scaffoldKey);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: PaymentTemplate().streamTemplates(),
+      stream: ChitTemplate().streamChitTemplates(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
@@ -32,8 +29,9 @@ class PaymentTemplateListWidget extends StatelessWidget {
                   primary: false,
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (BuildContext context, int index) {
-                    PaymentTemplate temp = PaymentTemplate.fromJson(
+                    ChitTemplate temp = ChitTemplate.fromJson(
                         snapshot.data.documents[index].data);
+
                     return Slidable(
                       actionPane: SlidableDrawerActionPane(),
                       actionExtentRatio: 0.20,
@@ -122,15 +120,14 @@ class PaymentTemplateListWidget extends StatelessWidget {
                           caption: 'Edit',
                           color: CustomColors.mfinBlue,
                           icon: Icons.edit,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditPaymentTemplate(temp),
-                              settings: RouteSettings(
-                                  name:
-                                      '/transactions/payment/template/edit'),
-                            ),
-                          ),
+                          // onTap: () => Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => EditPaymentTemplate(temp),
+                          //     settings: RouteSettings(
+                          //         name: '/transactions/chit/template/edit'),
+                          //   ),
+                          // ),
                         ),
                       ],
                       child: _paymentList(context, index, temp),
@@ -148,7 +145,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                 children: <Widget>[
                   new Spacer(),
                   Text(
-                    "No Payment Templates!",
+                    "No Chit Templates!",
                     style: TextStyle(
                       color: CustomColors.mfinAlertRed,
                       fontSize: 18.0,
@@ -159,7 +156,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                     flex: 2,
                   ),
                   Text(
-                    "Add your Templates and make your Payment faster!",
+                    "Add your Chit Fund Templates here!",
                     style: TextStyle(
                       color: CustomColors.mfinBlue,
                       fontSize: 18.0,
@@ -201,7 +198,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
     );
   }
 
-  _paymentList(BuildContext context, int index, PaymentTemplate template) {
+  _paymentList(BuildContext context, int index, ChitTemplate template) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
@@ -214,7 +211,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
               ),
               context: context,
               builder: (context, scrollController) {
-                return ViewPaymentTemplate(template);
+                // return ViewPaymentTemplate(template);
               });
         },
         child: Row(
@@ -234,7 +231,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                     SizedBox(
                       height: 30,
                       child: Text(
-                        template.totalAmount.toString(),
+                        template.chitAmount.toString(),
                         style: TextStyle(
                             color: CustomColors.mfinAlertRed,
                             fontFamily: 'Georgia',
@@ -247,32 +244,12 @@ class PaymentTemplateListWidget extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 30,
-                      child: RichText(
-                        text: TextSpan(
-                          text: '${template.tenure}',
-                          style: TextStyle(
-                            color: CustomColors.mfinWhite,
-                            fontFamily: 'Georgia',
-                            fontSize: 18.0,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: ' x ',
-                              style: TextStyle(
-                                color: CustomColors.mfinBlack,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '${template.collectionAmount}',
-                              style: TextStyle(
-                                color: CustomColors.mfinFadedButtonGreen,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                      child: Text(
+                        '${template.tenure}',
+                        style: TextStyle(
+                          color: CustomColors.mfinWhite,
+                          fontFamily: 'Georgia',
+                          fontSize: 18.0,
                         ),
                       ),
                     ),
@@ -303,7 +280,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                           ),
                         ),
                         subtitle: Text(
-                          _collectionMode[template.collectionMode],
+                          template.collectionDay.toString(),
                           style: TextStyle(
                             fontSize: 16,
                             fontFamily: 'Georgia',

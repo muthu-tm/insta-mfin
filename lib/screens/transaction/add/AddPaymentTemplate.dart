@@ -506,9 +506,9 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Template!");
-      PaymentTemplateController _collectionController =
+      PaymentTemplateController _tempController =
           PaymentTemplateController();
-      var result = await _collectionController.createTemplate(
+      var result = await _tempController.createTemplate(
           templateName,
           totalAmount,
           pAmount,
