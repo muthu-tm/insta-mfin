@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_template.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:instamfin/screens/transaction/edit/EditChitTemplate.dart';
+import 'package:instamfin/screens/transaction/view/ViewChitTemplate.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/services/controllers/chit/chit_template_controller.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -83,23 +86,23 @@ class ChitTemplateListWidget extends StatelessWidget {
                                       ),
                                       onPressed: () async {
                                         Navigator.pop(context);
-                                        PaymentTemplateController _ctc =
-                                            PaymentTemplateController();
+                                        ChitTemplateController _ctc =
+                                            ChitTemplateController();
                                         var result = await _ctc
                                             .removeTemp(temp.getDocumentID());
                                         if (!result['is_success']) {
                                           _scaffoldKey.currentState
                                               .showSnackBar(
                                                   CustomSnackBar.errorSnackBar(
-                                                      result['message'], 5));
+                                                      result['message'], 2));
                                           _scaffoldKey.currentState.showSnackBar(
                                               CustomSnackBar.errorSnackBar(
-                                                  "Unable to remove Template",
+                                                  "Unable to remove Chit Template",
                                                   2));
                                         } else {
                                           _scaffoldKey.currentState.showSnackBar(
-                                              CustomSnackBar.errorSnackBar(
-                                                  "Template removed successfully",
+                                              CustomSnackBar.successSnackBar(
+                                                  "Chit Template removed successfully",
                                                   2));
                                         }
                                       },
@@ -120,17 +123,17 @@ class ChitTemplateListWidget extends StatelessWidget {
                           caption: 'Edit',
                           color: CustomColors.mfinBlue,
                           icon: Icons.edit,
-                          // onTap: () => Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => EditPaymentTemplate(temp),
-                          //     settings: RouteSettings(
-                          //         name: '/transactions/chit/template/edit'),
-                          //   ),
-                          // ),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditChitTemplate(temp),
+                              settings: RouteSettings(
+                                  name: '/transactions/chit/template/edit'),
+                            ),
+                          ),
                         ),
                       ],
-                      child: _paymentList(context, index, temp),
+                      child: _chitTempList(context, index, temp),
                     );
                   })
             ];
@@ -198,7 +201,7 @@ class ChitTemplateListWidget extends StatelessWidget {
     );
   }
 
-  _paymentList(BuildContext context, int index, ChitTemplate template) {
+  _chitTempList(BuildContext context, int index, ChitTemplate template) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
@@ -211,7 +214,7 @@ class ChitTemplateListWidget extends StatelessWidget {
               ),
               context: context,
               builder: (context, scrollController) {
-                // return ViewPaymentTemplate(template);
+                return ViewChitTemplate(template);
               });
         },
         child: Row(
@@ -222,7 +225,7 @@ class ChitTemplateListWidget extends StatelessWidget {
               elevation: 10.0,
               borderRadius: BorderRadius.circular(10.0),
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.36,
+                width: MediaQuery.of(context).size.width * 0.35,
                 height: 90,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -262,7 +265,7 @@ class ChitTemplateListWidget extends StatelessWidget {
               elevation: 10.0,
               borderRadius: BorderRadius.circular(10.0),
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.56,
+                width: MediaQuery.of(context).size.width * 0.55,
                 height: 90,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -280,7 +283,7 @@ class ChitTemplateListWidget extends StatelessWidget {
                           ),
                         ),
                         subtitle: Text(
-                          template.collectionDay.toString(),
+                          'Chit Day: ${template.collectionDay}',
                           style: TextStyle(
                             fontSize: 16,
                             fontFamily: 'Georgia',

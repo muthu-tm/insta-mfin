@@ -18,6 +18,8 @@ class ChitTemplate extends Model {
   String branchName;
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
+  @JsonKey(name: 'type', nullable: true)
+  String type;
   @JsonKey(name: 'chit_amount', nullable: true)
   int chitAmount;
   @JsonKey(name: 'tenure', nullable: true)
@@ -62,6 +64,14 @@ class ChitTemplate extends Model {
   setCollectionDay(int cDay) {
     this.collectionDay = cDay;
   }
+  
+  setType(String type) {
+    this.type = type;
+  }
+  
+  setFundDetails(List<ChitFundDetails> fundDetails) {
+    this.fundDetails = fundDetails;
+  }
 
   setNotes(String notes) {
     this.notes = notes;
@@ -73,6 +83,16 @@ class ChitTemplate extends Model {
 
   setUpdatedAt(DateTime updatedAt) {
     this.updatedAt = updatedAt;
+  }
+
+  int getProfitAmount() {
+    int profit = 0;
+
+    for (ChitFundDetails chit in this.fundDetails) {
+      profit += chit.profit;
+    }
+
+    return profit;
   }
 
   factory ChitTemplate.fromJson(Map<String, dynamic> json) =>

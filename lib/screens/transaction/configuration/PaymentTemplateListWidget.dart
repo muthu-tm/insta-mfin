@@ -85,23 +85,23 @@ class PaymentTemplateListWidget extends StatelessWidget {
                                       ),
                                       onPressed: () async {
                                         Navigator.pop(context);
-                                        PaymentTemplateController _ctc =
+                                        PaymentTemplateController _ptc =
                                             PaymentTemplateController();
-                                        var result = await _ctc
+                                        var result = await _ptc
                                             .removeTemp(temp.getDocumentID());
                                         if (!result['is_success']) {
                                           _scaffoldKey.currentState
                                               .showSnackBar(
                                                   CustomSnackBar.errorSnackBar(
-                                                      result['message'], 5));
+                                                      result['message'], 2));
                                           _scaffoldKey.currentState.showSnackBar(
                                               CustomSnackBar.errorSnackBar(
-                                                  "Unable to remove Template",
+                                                  "Unable to remove Payment Template",
                                                   2));
                                         } else {
                                           _scaffoldKey.currentState.showSnackBar(
-                                              CustomSnackBar.errorSnackBar(
-                                                  "Template removed successfully",
+                                              CustomSnackBar.successSnackBar(
+                                                  "Payment Template removed successfully",
                                                   2));
                                         }
                                       },

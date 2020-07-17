@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
+import 'package:instamfin/db/models/chit_template.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/chit/chit_template_controller.dart';
 
-class AddChitTemplate extends StatefulWidget {
+class EditChitTemplate extends StatefulWidget {
+  EditChitTemplate(this.temp);
+
+  final ChitTemplate temp;
   @override
-  _AddChitTemplateState createState() => _AddChitTemplateState();
+  _EditChitTemplateState createState() => _EditChitTemplateState();
 }
 
-class _AddChitTemplateState extends State<AddChitTemplate> {
+class _EditChitTemplateState extends State<EditChitTemplate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String templateName = '';
-  int totalAmount = 0;
-  int tenure = 10;
-  String notes = "";
+  List<ChitFundDetails> fundDetails = [];
+  Map<String, dynamic> updatedTempJSON = {};
+
   String chitType = 'Custom';
   List<String> chitTypes = ['Custom', 'Fixed'];
-  List<int> cAmount = [];
-  List<int> tAmount = [];
-  List<int> aAmount = [];
-  List<int> pAmount = [];
+  int tenure;
 
   int collectionDay = 1;
   List<int> collectionDays = [
@@ -58,9 +57,20 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
     28
   ];
 
+  List<int> cAmount = [];
+  List<int> tAmount = [];
+  List<int> aAmount = [];
+  List<int> pAmount = [];
+
   @override
   void initState() {
     super.initState();
+
+    this.chitType = widget.temp.type;
+    this.tenure = widget.temp.tenure;
+    this.fundDetails = widget.temp.fundDetails;
+    this.collectionDay = widget.temp.collectionDay;
+    this.updatedTempJSON = widget.temp.toJson();
   }
 
   @override
@@ -68,7 +78,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Chit Template'),
+        title: Text('Edit Chit Template'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -130,7 +140,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              initialValue: templateName,
+                              initialValue: widget.temp.name,
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -153,7 +163,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                 if (name.trim().isEmpty) {
                                   return 'Enter the Template Name';
                                 }
-                                this.templateName = name.trim();
+                                updatedTempJSON['template_name'] = name.trim();
                                 return null;
                               },
                             ),
@@ -167,7 +177,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              initialValue: totalAmount.toString(),
+                              initialValue: widget.temp.chitAmount.toString(),
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -188,7 +198,8 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                               ),
                               validator: (amount) {
                                 if (amount.trim().isNotEmpty) {
-                                  this.totalAmount = int.parse(amount);
+                                  updatedTempJSON['chit_amount'] =
+                                      int.parse(amount);
                                   return null;
                                 } else {
                                   return "Fill the Chit Amount";
@@ -239,7 +250,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              initialValue: tenure.toString(),
+                              initialValue: widget.temp.tenure.toString(),
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -268,6 +279,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                 if (tenure.trim().isNotEmpty &&
                                     tenure.trim() != '0') {
                                   this.tenure = int.parse(tenure);
+                                  updatedTempJSON['tenure'] = this.tenure;
                                   return null;
                                 } else {
                                   return 'Enter the Total Months of the Chit';
@@ -320,7 +332,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
-                              initialValue: notes,
+                              initialValue: widget.temp.notes,
                               maxLines: 3,
                               decoration: InputDecoration(
                                 hintText: 'Notes',
@@ -340,9 +352,9 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                               ),
                               validator: (notes) {
                                 if (notes.trim().isEmpty) {
-                                  this.notes = "";
+                                  updatedTempJSON['notes'] = "";
                                 } else {
-                                  this.notes = notes.trim();
+                                  updatedTempJSON['notes'] = notes.trim();
                                 }
                                 return null;
                               },
@@ -385,6 +397,12 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                           children: <Widget>[
                                             Flexible(
                                               child: TextFormField(
+                                                initialValue:
+                                                    (index < fundDetails.length)
+                                                        ? fundDetails[index]
+                                                            .collectionAmount
+                                                            .toString()
+                                                        : '',
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -431,6 +449,12 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                             Padding(padding: EdgeInsets.all(5)),
                                             Flexible(
                                               child: TextFormField(
+                                                initialValue:
+                                                    (index < fundDetails.length)
+                                                        ? fundDetails[index]
+                                                            .totalAmount
+                                                            .toString()
+                                                        : '',
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -482,6 +506,12 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                           children: <Widget>[
                                             Flexible(
                                               child: TextFormField(
+                                                initialValue:
+                                                    (index < fundDetails.length)
+                                                        ? fundDetails[index]
+                                                            .allocationAmount
+                                                            .toString()
+                                                        : '',
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -528,6 +558,12 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                             Padding(padding: EdgeInsets.all(5)),
                                             Flexible(
                                               child: TextFormField(
+                                                initialValue:
+                                                    (index < fundDetails.length)
+                                                        ? fundDetails[index]
+                                                            .profit
+                                                            .toString()
+                                                        : '',
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -605,9 +641,9 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Creating Template!");
+      CustomDialogs.actionWaiting(context, "Updating Template!");
       ChitTemplateController _chitTemp = ChitTemplateController();
-      List<ChitFundDetails> fundDetails = [];
+      List<ChitFundDetails> _fundDetails = [];
       for (var i = 0; i < tenure; i++) {
         ChitFundDetails fDetails = ChitFundDetails();
         fDetails.allocationAmount = aAmount[i];
@@ -615,10 +651,15 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
         fDetails.totalAmount = tAmount[i];
         fDetails.collectionAmount = cAmount[i];
         fDetails.chitNumber = i + 1;
-        fundDetails.insert(i, fDetails);
+        _fundDetails.insert(i, fDetails);
       }
-      var result = await _chitTemp.createTemplate(
-          templateName, totalAmount, tenure, collectionDay, chitType, notes, fundDetails);
+
+      updatedTempJSON['collection_day'] = collectionDay;
+      updatedTempJSON['type'] = chitType;
+      updatedTempJSON['fund_details'] =
+          _fundDetails?.map((e) => e?.toJson())?.toList();
+      var result = await _chitTemp.updateTemp(
+          widget.temp.getDocumentID(), updatedTempJSON);
 
       if (!result['is_success']) {
         Navigator.pop(context);
