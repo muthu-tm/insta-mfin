@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
+import 'package:instamfin/screens/chit/ViewChitFund.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
@@ -27,92 +28,104 @@ class ActiveChitWidget extends StatelessWidget {
 
                   return Padding(
                     padding: EdgeInsets.all(5),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      decoration: BoxDecoration(
-                        color: CustomColors.mfinBlue,
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          ListTile(
-                            leading: Text(
-                              chit.chitName,
-                              style: TextStyle(
-                                color: CustomColors.mfinLightGrey,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            trailing: Text(
-                              chit.chitID,
-                              style: TextStyle(
-                                color: CustomColors.mfinLightGrey,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewChitFund(chit),
+                            settings:
+                                RouteSettings(name: '/chit/active/'),
                           ),
-                          Divider(
-                            color: CustomColors.mfinButtonGreen,
-                          ),
-                          ListTile(
-                            leading: Text(
-                              'Published On:',
-                              style: TextStyle(
-                                color: CustomColors.mfinGrey,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        decoration: BoxDecoration(
+                          color: CustomColors.mfinBlue,
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              leading: Text(
+                                chit.chitName,
+                                style: TextStyle(
+                                  color: CustomColors.mfinLightGrey,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                chit.chitID,
+                                style: TextStyle(
+                                  color: CustomColors.mfinLightGrey,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            trailing: Text(
-                              DateUtils.formatDate(
-                                  DateTime.fromMillisecondsSinceEpoch(
-                                      chit.datePublished)),
-                              style: TextStyle(
-                                color: CustomColors.mfinLightGrey,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                            Divider(
+                              color: CustomColors.mfinButtonGreen,
+                            ),
+                            ListTile(
+                              leading: Text(
+                                'Published On:',
+                                style: TextStyle(
+                                  color: CustomColors.mfinGrey,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                DateUtils.formatDate(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        chit.datePublished)),
+                                style: TextStyle(
+                                  color: CustomColors.mfinLightGrey,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          ListTile(
-                            leading: Text(
-                              'Amount:',
-                              style: TextStyle(
-                                color: CustomColors.mfinGrey,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                            ListTile(
+                              leading: Text(
+                                'Amount:',
+                                style: TextStyle(
+                                  color: CustomColors.mfinGrey,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                chit.chitAmount.toString(),
+                                style: TextStyle(
+                                  color: CustomColors.mfinLightGrey,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            trailing: Text(
-                              chit.chitAmount.toString(),
-                              style: TextStyle(
-                                color: CustomColors.mfinLightGrey,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                            ListTile(
+                              leading: Text(
+                                'Chit Day:',
+                                style: TextStyle(
+                                  color: CustomColors.mfinGrey,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ),
-                          ListTile(
-                            leading: Text(
-                              'Chit Day:',
-                              style: TextStyle(
-                                color: CustomColors.mfinGrey,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                              trailing: Text(
+                                chit.collectionDate.toString(),
+                                style: TextStyle(
+                                  color: CustomColors.mfinLightGrey,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            trailing: Text(
-                              chit.collectionDate.toString(),
-                              style: TextStyle(
-                                color: CustomColors.mfinLightGrey,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );

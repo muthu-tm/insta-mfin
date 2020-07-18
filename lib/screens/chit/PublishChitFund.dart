@@ -31,6 +31,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
   List<int> tAmount = [];
   List<int> aAmount = [];
   List<int> pAmount = [];
+  List<DateTime> chitDates = [];
+  List<TextEditingController> dateController = <TextEditingController>[];
 
   List<ChitFundDetails> fundDetails = [];
 
@@ -76,6 +78,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
       fundDetails = widget.temp.fundDetails;
       collectionDay = widget.temp.collectionDay;
     }
+
+    setChitDates(collectionDay);
   }
 
   @override
@@ -455,13 +459,77 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                   color: CustomColors.mfinLightGrey,
                                   child: Column(
                                     children: <Widget>[
-                                      Text(
-                                        "Chit Number ${index + 1}",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: "Georgia",
-                                          fontWeight: FontWeight.bold,
-                                          color: CustomColors.mfinBlue,
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Flexible(
+                                              child: TextFormField(
+                                                initialValue: '${index + 1}',
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                textAlign: TextAlign.start,
+                                                decoration: InputDecoration(
+                                                  labelText: 'Chit Number',
+                                                  floatingLabelBehavior:
+                                                      FloatingLabelBehavior
+                                                          .always,
+                                                  labelStyle: TextStyle(
+                                                    color:
+                                                        CustomColors.mfinBlue,
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          vertical: 3.0,
+                                                          horizontal: 10.0),
+                                                  border: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                      color: CustomColors
+                                                          .mfinFadedButtonGreen,
+                                                    ),
+                                                  ),
+                                                  fillColor:
+                                                      CustomColors.mfinWhite,
+                                                  filled: true,
+                                                ),
+                                                readOnly: true,
+                                              ),
+                                            ),
+                                            Padding(padding: EdgeInsets.all(5)),
+                                            Flexible(
+                                              child: TextFormField(
+                                                controller:
+                                                    dateController[index],
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                textAlign: TextAlign.start,
+                                                decoration: InputDecoration(
+                                                  labelText: 'Chit Date',
+                                                  floatingLabelBehavior:
+                                                      FloatingLabelBehavior
+                                                          .always,
+                                                  labelStyle: TextStyle(
+                                                    color:
+                                                        CustomColors.mfinBlue,
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          vertical: 3.0,
+                                                          horizontal: 10.0),
+                                                  border: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                      color: CustomColors
+                                                          .mfinFadedButtonGreen,
+                                                    ),
+                                                  ),
+                                                  fillColor:
+                                                      CustomColors.mfinWhite,
+                                                  filled: true,
+                                                ),
+                                                readOnly: true,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Padding(
@@ -698,7 +766,24 @@ class _PublishChitFundState extends State<PublishChitFund> {
     );
   }
 
+  void setChitDates(int day) {
+    DateTime today = DateTime.now();
+    DateTime startDate = DateTime(today.year, today.month, day);
+    if (DateUtils.getUTCDateEpoch(startDate) < DateUtils.getUTCDateEpoch(today)) {
+      startDate = DateTime(today.year, today.month + 1, day);
+    }
+
+    for (int i = 0; i < tenure; i++) {
+      TextEditingController controller = TextEditingController();
+      controller.text = DateUtils.formatDate(startDate);
+      chitDates.insert(i, startDate);
+      dateController.insert(i, controller);
+      startDate = DateTime(startDate.year, startDate.month + 1, day);
+    }
+  }
+
   void _setSelectedCollectionDay(int newVal) {
+    setChitDates(newVal);
     setState(() {
       collectionDay = newVal;
     });
@@ -723,11 +808,11 @@ class _PublishChitFundState extends State<PublishChitFund> {
         fDetails.totalAmount = tAmount[i];
         fDetails.collectionAmount = cAmount[i];
         fDetails.chitNumber = i + 1;
+        fDetails.chitDate = DateUtils.getUTCDateEpoch(chitDates[i]);
         _fundDetails.insert(i, fDetails);
       }
 
       _chitFund.setChitName(name);
-      _chitFund.setChitID("chitID");
       _chitFund.setCollectionDate(collectionDay);
       _chitFund.setchitAmount(amount);
       _chitFund.setDatePublished(DateUtils.getUTCDateEpoch(DateTime.now()));

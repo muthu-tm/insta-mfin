@@ -6,6 +6,8 @@ part 'chit_fund_details.g.dart';
 class ChitFundDetails {
   @JsonKey(name: 'chit_number')
   int chitNumber;
+  @JsonKey(name: 'chit_date')
+  int chitDate;
   @JsonKey(name: 'total_amount')
   int totalAmount;
   @JsonKey(name: 'allocation_amount')

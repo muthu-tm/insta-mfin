@@ -9,7 +9,6 @@ import 'package:instamfin/screens/chit/widgets/PublishDialogWidget.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class ChitHome extends StatefulWidget {
