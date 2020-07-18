@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 
 class ClosedChitWidget extends StatelessWidget {
   @override
@@ -20,7 +21,102 @@ class ClosedChitWidget extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 itemCount: snapshot.data.documents.length,
-                itemBuilder: (BuildContext context, int index) {},
+                itemBuilder: (BuildContext context, int index) {
+                  ChitFund chit =
+                      ChitFund.fromJson(snapshot.data.documents[index].data);
+
+                  return Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinBlue,
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            leading: Text(
+                              chit.chitName,
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              chit.chitID,
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            color: CustomColors.mfinButtonGreen,
+                          ),
+                          ListTile(
+                            leading: Text(
+                              'Published On:',
+                              style: TextStyle(
+                                color: CustomColors.mfinGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              DateUtils.formatDate(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      chit.datePublished)),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: Text(
+                              'Amount:',
+                              style: TextStyle(
+                                color: CustomColors.mfinGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              chit.chitAmount.toString(),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: Text(
+                              'Chit Day:',
+                              style: TextStyle(
+                                color: CustomColors.mfinGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              chit.collectionDate.toString(),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
               )
             ];
           } else {

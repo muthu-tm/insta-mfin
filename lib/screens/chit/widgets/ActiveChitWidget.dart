@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 
 class ActiveChitWidget extends StatelessWidget {
   @override
@@ -36,14 +37,6 @@ class ActiveChitWidget extends StatelessWidget {
                         children: <Widget>[
                           ListTile(
                             leading: Text(
-                              chit.chitID,
-                              style: TextStyle(
-                                color: CustomColors.mfinButtonGreen,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            title: Text(
                               chit.chitName,
                               style: TextStyle(
                                 color: CustomColors.mfinLightGrey,
@@ -52,7 +45,66 @@ class ActiveChitWidget extends StatelessWidget {
                               ),
                             ),
                             trailing: Text(
-                              chit.tenure.toString(),
+                              chit.chitID,
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            color: CustomColors.mfinButtonGreen,
+                          ),
+                          ListTile(
+                            leading: Text(
+                              'Published On:',
+                              style: TextStyle(
+                                color: CustomColors.mfinGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              DateUtils.formatDate(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      chit.datePublished)),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: Text(
+                              'Amount:',
+                              style: TextStyle(
+                                color: CustomColors.mfinGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              chit.chitAmount.toString(),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: Text(
+                              'Chit Day:',
+                              style: TextStyle(
+                                color: CustomColors.mfinGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              chit.collectionDate.toString(),
                               style: TextStyle(
                                 color: CustomColors.mfinLightGrey,
                                 fontSize: 18.0,
