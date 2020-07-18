@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/chit_template.dart';
 import 'package:instamfin/screens/app/appBar.dart';
+import 'package:instamfin/screens/app/bottomBar.dart';
+import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/chit/widgets/ActiveChitWidget.dart';
 import 'package:instamfin/screens/chit/widgets/ClosedChitWidget.dart';
+import 'package:instamfin/screens/chit/widgets/PublishDialogWidget.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -29,70 +34,29 @@ class _ChitHomeState extends State<ChitHome> {
       },
       child: Scaffold(
         key: _scaffoldKey,
+        drawer: openDrawer(context),
         appBar: topAppBar(context),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showMaterialModalBottomSheet(
-                expand: false,
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (context, scrollController) {
-                  return Material(
-                      child: SafeArea(
-                    top: false,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                          title: Text('Publish New Chit'),
-                          leading: Icon(
-                            Icons.add_box,
-                            color: CustomColors.mfinBlue,
-                          ),
-                          onTap: () async {},
-                        ),
-                        ListTile(
-                            title: Text('Add Chit Template'),
-                            leading: Icon(
-                              Icons.add,
-                              color: CustomColors.mfinBlue,
-                            ),
-                            onTap: () {}),
-                        ListTile(
-                          title: Text('View Chit Template'),
-                          leading: Icon(
-                            Icons.remove_red_eye,
-                            color: CustomColors.mfinBlue,
-                          ),
-                          onTap: () {},
-                        ),
-                        ListTile(
-                          title: Text('Home'),
-                          leading: Icon(
-                            Icons.home,
-                            color: CustomColors.mfinBlue,
-                          ),
-                          onTap: () async {
-                            await UserController().refreshUser(false);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UserFinanceSetup(),
-                                settings: RouteSettings(name: '/home'),
-                              ),
-                            );
-                          },
-                        )
-                      ],
-                    ),
-                  ));
-                });
+          onPressed: () async {
+            CustomDialogs.actionWaiting(context, "Loading...");
+            List<ChitTemplate> temps =
+                await ChitTemplate().getAllChitTemplates();
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              routeSettings: RouteSettings(name: "/chit/publish/dialog"),
+              builder: (context) {
+                return Center(
+                  child: chitPublishDialog(context, temps),
+                );
+              },
+            );
           },
           backgroundColor: CustomColors.mfinBlue,
           splashColor: CustomColors.mfinWhite,
           child: Icon(
-            Icons.navigation,
+            Icons.add,
             size: 30,
             color: CustomColors.mfinButtonGreen,
           ),
@@ -109,6 +73,7 @@ class _ChitHomeState extends State<ChitHome> {
             ],
           ),
         ),
+        bottomNavigationBar: bottomBar(context),
       ),
     );
   }

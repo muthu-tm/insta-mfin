@@ -140,6 +140,24 @@ class ChitTemplate extends Model {
         .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .snapshots();
   }
+  
+  Future<List<ChitTemplate>> getAllChitTemplates() async {
+    QuerySnapshot snap = await getCollectionRef()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .getDocuments();
+      
+      List<ChitTemplate> temps = [];
+
+      if (snap.documents.isNotEmpty) {
+        snap.documents.forEach((tempData) {
+          temps.add(ChitTemplate.fromJson(tempData.data));
+        });
+      }
+
+      return temps;
+  }
 
   Future<ChitTemplate> getTemplateByID(String tempID) async {
     DocumentSnapshot snapshot = await getCollectionRef().document(tempID).get();

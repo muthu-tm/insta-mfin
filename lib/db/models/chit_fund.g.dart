@@ -2,16 +2,25 @@ part of 'chit_fund.dart';
 
 ChitFund _$ChitFundFromJson(Map<String, dynamic> json) {
   return ChitFund()
+    ..chitName = json['name'] as String
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
     ..chitID = json['chit_id'] as String
-    ..customerNumbers =
-        (json['customers'] as List)?.map((e) => e as int)?.toList()
+    ..customers = (json['customers'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ChitCustomers.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..requesters = (json['requesters'] as List)?.map((e) => e as int)?.toList()
-    ..datePublished = json['date_publishes'] as int
+    ..datePublished = json['date_published'] as int
     ..chitAmount = json['chit_amount'] as int
     ..tenure = json['tenure'] as int
+    ..fundDetails = (json['fund_details'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ChitFundDetails.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..alreadyCompletedMonths = json['already_completed_months'] as int
     ..interestRate = (json['interest_rate'] as num)?.toDouble()
     ..collectionDate = json['collection_date'] as int
@@ -35,14 +44,16 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 }
 
 Map<String, dynamic> _$ChitFundToJson(ChitFund instance) => <String, dynamic>{
+      'name': instance.chitName,
       'finance_id': instance.financeID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
       'chit_id': instance.chitID,
-      'customers': instance.customerNumbers,
+      'customers': instance.customers?.map((e) => e?.toJson())?.toList(),
       'requesters': instance.requesters,
-      'date_publishes': instance.datePublished,
+      'date_published': instance.datePublished,
       'chit_amount': instance.chitAmount,
+      'fund_details': instance.fundDetails?.map((e) => e?.toJson())?.toList(),
       'tenure': instance.tenure,
       'already_completed_months': instance.alreadyCompletedMonths,
       'interest_rate': instance.interestRate,

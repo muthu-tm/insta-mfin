@@ -29,7 +29,17 @@ class ChitTemplateController {
       ChitTemplate temp = ChitTemplate();
       return await temp.getTemplateByID(tempID);
     } catch (err) {
-      print("Error while retrieving Payment template for ID $tempID: " +
+      print("Error while retrieving Chit template for ID $tempID: " +
+          err.toString());
+      return null;
+    }
+  }
+
+  Future<List<ChitTemplate>> getAllTemplates() async {
+    try {
+      return await ChitTemplate().getAllChitTemplates();
+    } catch (err) {
+      print("Error while retrieving ALL Chit templates: " +
           err.toString());
       return null;
     }

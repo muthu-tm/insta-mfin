@@ -20,7 +20,51 @@ class ActiveChitWidget extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 itemCount: snapshot.data.documents.length,
-                itemBuilder: (BuildContext context, int index) {},
+                itemBuilder: (BuildContext context, int index) {
+                  ChitFund chit =
+                      ChitFund.fromJson(snapshot.data.documents[index].data);
+
+                  return Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinBlue,
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            leading: Text(
+                              chit.chitID,
+                              style: TextStyle(
+                                color: CustomColors.mfinButtonGreen,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            title: Text(
+                              chit.chitName,
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              chit.tenure.toString(),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
               )
             ];
           } else {

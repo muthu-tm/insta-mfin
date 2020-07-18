@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/chit_customers.dart';
+import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -7,8 +9,10 @@ part 'chit_fund.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ChitFund extends Model {
-  static CollectionReference _chitCollRef = Model.db.collection("chit_fund");
+  static CollectionReference _chitCollRef = Model.db.collection("chit_funds");
 
+  @JsonKey(name: 'name', nullable: true)
+  String chitName;
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
   @JsonKey(name: 'branch_name', nullable: true)
@@ -18,10 +22,10 @@ class ChitFund extends Model {
   @JsonKey(name: 'chit_id', nullable: true)
   String chitID;
   @JsonKey(name: 'customers', nullable: true)
-  List<int> customerNumbers;
+  List<ChitCustomers> customers;
   @JsonKey(name: 'requesters', nullable: true)
   List<int> requesters;
-  @JsonKey(name: 'date_publishes', nullable: true)
+  @JsonKey(name: 'date_published', nullable: true)
   int datePublished;
   @JsonKey(name: 'chit_amount', nullable: true)
   int chitAmount;
@@ -33,6 +37,8 @@ class ChitFund extends Model {
   double interestRate;
   @JsonKey(name: 'collection_date', nullable: true)
   int collectionDate;
+  @JsonKey(name: 'fund_details')
+  List<ChitFundDetails> fundDetails;
   @JsonKey(name: 'closed_date', nullable: true)
   int closedDate;
   @JsonKey(name: 'is_closed', defaultValue: false)
@@ -49,6 +55,10 @@ class ChitFund extends Model {
   DateTime updatedAt;
 
   ChitFund();
+
+  setChitName(String name) {
+    this.chitName = name;
+  }
 
   setFinanceID(String financeID) {
     this.financeID = financeID;
@@ -72,6 +82,10 @@ class ChitFund extends Model {
 
   setTenure(int tenure) {
     this.tenure = tenure;
+  }
+
+  setFundDetails(List<ChitFundDetails> fundDetails) {
+    this.fundDetails = fundDetails;
   }
 
   setInterestRate(double iRate) {
@@ -121,7 +135,7 @@ class ChitFund extends Model {
   }
 
   Query getGroupQuery() {
-    return Model.db.collectionGroup('chit_fund');
+    return Model.db.collectionGroup('chit_funds');
   }
 
   String getDocumentID(String financeId, String branchName,
@@ -144,7 +158,7 @@ class ChitFund extends Model {
     return chitSnap.exists;
   }
 
-  Future create(int number) async {
+  Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.financeID = user.primary.financeID;
@@ -154,8 +168,10 @@ class ChitFund extends Model {
       bool isExist = await this.isExist();
 
       if (isExist) {
-        throw 'Already a Payment exist with this PAYMENT ID - ${this.chitID}';
-      } else {}
+        throw 'Already a Chit exist with this Chit ID - ${this.chitID}';
+      } else {
+        await super.add(this.toJson());
+      }
     } catch (err) {
       print('Chit Publish failure:' + err.toString());
       throw err;
