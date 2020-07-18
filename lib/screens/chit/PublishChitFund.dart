@@ -822,6 +822,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
       _chitFund.setFundDetails(_fundDetails);
       _chitFund.setChitID(chitID);
       _chitFund.setInterestRate(commission);
+      _chitFund.requesters = [];
 
       Navigator.push(
         context,

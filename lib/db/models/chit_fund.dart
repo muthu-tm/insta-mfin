@@ -21,8 +21,10 @@ class ChitFund extends Model {
   String subBranchName;
   @JsonKey(name: 'chit_id', nullable: true)
   String chitID;
+  @JsonKey(name: 'customers_details', nullable: true)
+  List<ChitCustomers> customerDetails;
   @JsonKey(name: 'customers', nullable: true)
-  List<ChitCustomers> customers;
+  List<int> customers;
   @JsonKey(name: 'requesters', nullable: true)
   List<int> requesters;
   @JsonKey(name: 'date_published', nullable: true)
@@ -86,6 +88,14 @@ class ChitFund extends Model {
 
   setFundDetails(List<ChitFundDetails> fundDetails) {
     this.fundDetails = fundDetails;
+  }
+
+  setRequesters(List<int> requesters) {
+    this.requesters = requesters;
+  }
+
+  setCustomers(List<int> customers) {
+    this.customers = customers;
   }
 
   setInterestRate(double iRate) {
@@ -164,6 +174,7 @@ class ChitFund extends Model {
     this.financeID = user.primary.financeID;
     this.branchName = user.primary.branchName;
     this.subBranchName = user.primary.subBranchName;
+    this.publishedBy = user.mobileNumber;
     try {
       bool isExist = await this.isExist();
 
@@ -191,6 +202,25 @@ class ChitFund extends Model {
     if (snap.documents.isNotEmpty) {
       snap.documents.forEach((chit) {
         chitList.add(chit.data);
+      });
+    }
+
+    return chitList;
+  }
+
+  Future<List<ChitFund>> getByCustNumber(String financeID, String branchName,
+      String subBranchName, int custNumber) async {
+    QuerySnapshot snap = await getCollectionRef()
+        .where('finance_id', isEqualTo: financeID)
+        .where('branch_name', isEqualTo: branchName)
+        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('customers', arrayContains: custNumber)
+        .getDocuments();
+
+    List<ChitFund> chitList = [];
+    if (snap.documents.isNotEmpty) {
+      snap.documents.forEach((chit) {
+        chitList.add(ChitFund.fromJson(chit.data));
       });
     }
 

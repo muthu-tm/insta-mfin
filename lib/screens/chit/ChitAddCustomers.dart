@@ -287,7 +287,15 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
           "Not all chits allocated to customers!", 2));
     } else {
       CustomDialogs.actionWaiting(context, "Publishing Chit!");
-      widget.chit.customers = customers;
+      widget.chit.customerDetails = customers;
+      List<int> customerNumbers = [];
+
+      for (var cust in _custList) {
+        customerNumbers.add(cust.mobileNumber);
+      }
+
+      widget.chit.customers = customerNumbers;
+
       var result = await ChitController().create(widget.chit);
       if (!result['is_success']) {
         Navigator.pop(context);

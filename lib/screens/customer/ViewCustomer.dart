@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
+import 'package:instamfin/screens/chit/widgets/CustomerChitWidget.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentsListWidget.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
@@ -354,6 +355,8 @@ class ViewCustomer extends StatelessWidget {
                 ),
               ),
               CustomerPaymentsListWidget(customer.mobileNumber, _scaffoldKey),
+              if (_user.accPreferences.chitEnabled)
+                CustomerChitsWidget(customer.mobileNumber),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 40, 0, 40),
               ),

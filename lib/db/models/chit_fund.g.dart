@@ -7,11 +7,12 @@ ChitFund _$ChitFundFromJson(Map<String, dynamic> json) {
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
     ..chitID = json['chit_id'] as String
-    ..customers = (json['customers'] as List)
+    ..customerDetails = (json['customer_details'] as List)
         ?.map((e) => e == null
             ? null
             : ChitCustomers.fromJson(e as Map<String, dynamic>))
         ?.toList()
+    ..customers = (json['customers'] as List)?.map((e) => e as int)?.toList()
     ..requesters = (json['requesters'] as List)?.map((e) => e as int)?.toList()
     ..datePublished = json['date_published'] as int
     ..chitAmount = json['chit_amount'] as int
@@ -49,8 +50,10 @@ Map<String, dynamic> _$ChitFundToJson(ChitFund instance) => <String, dynamic>{
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
       'chit_id': instance.chitID,
-      'customers': instance.customers?.map((e) => e?.toJson())?.toList(),
-      'requesters': instance.requesters,
+      'customer_details':
+          instance.customerDetails?.map((e) => e?.toJson())?.toList(),
+      'customers': instance.customers,
+      'requesters': instance.requesters ?? [],
       'date_published': instance.datePublished,
       'chit_amount': instance.chitAmount,
       'fund_details': instance.fundDetails?.map((e) => e?.toJson())?.toList(),

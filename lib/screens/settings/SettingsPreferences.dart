@@ -30,6 +30,9 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   String _selectedLang = 'English';
   List<String> _prefSupportLangList = ["English", "Tamil", "Hindi", "Kannada"];
   String selectedCollectionModeID = "0";
+  bool chitEnabled = false;
+  List<String> chits = ['YES', 'NO'];
+
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
     "1": "Weekly",
@@ -57,7 +60,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
       isSelectedView = [true, false];
       isTableView = true;
     }
-
+    this.chitEnabled = _user.accPreferences.chitEnabled;
     this.userPreferencesJSON = _user.preferences.toJson();
     this.intrestRateController.text =
         _user.accPreferences.interestRate.toString() ?? '0.00';
@@ -168,7 +171,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 15.0, top: 10),
                         child: Text(
-                          "Interest Rate",
+                          "Chit Fund",
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 16,
@@ -182,12 +185,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                     Flexible(
                       child: Padding(
                         padding: EdgeInsets.only(right: 10),
-                        child: TextFormField(
-                          controller: intrestRateController,
-                          textAlign: TextAlign.start,
-                          keyboardType: TextInputType.number,
+                        child: DropdownButtonFormField<String>(
                           decoration: InputDecoration(
-                            hintText: 'Rate in 0.00',
                             fillColor: CustomColors.mfinWhite,
                             filled: true,
                             contentPadding: EdgeInsets.symmetric(
@@ -196,10 +195,64 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                                 borderSide:
                                     BorderSide(color: CustomColors.mfinWhite)),
                           ),
+                          items: chits.map(
+                            (f) {
+                              return DropdownMenuItem<String>(
+                                value: f,
+                                child: Text(f),
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (newVal) {
+                            _setChitOption(newVal);
+                          },
+                          value: chitEnabled ? "YES" : "NO",
                         ),
                       ),
                     ),
                   ]),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
+                              "Interest Rate",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinGrey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: TextFormField(
+                              controller: intrestRateController,
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: 'Rate in 0.00',
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Row(
@@ -443,6 +496,15 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     );
   }
 
+  _setChitOption(String newVal) {
+    setState(() {
+      if (newVal == "YES")
+        chitEnabled = true;
+      else
+        chitEnabled = false;
+    });
+  }
+
   _setSelectedCollectionMode(String newVal) {
     setState(() {
       selectedCollectionModeID = newVal;
@@ -508,6 +570,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     accountPreferencesJSON['collection_mode'] =
         int.parse(selectedCollectionModeID);
     accountPreferencesJSON['collection_days'] = collectionDays;
+    accountPreferencesJSON['chit_enabled'] = chitEnabled;
 
     CustomDialogs.actionWaiting(context, "Updating Preferences!");
     if (isSelectedView[0]) {
