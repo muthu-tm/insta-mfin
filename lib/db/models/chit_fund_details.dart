@@ -8,10 +8,12 @@ class ChitFundDetails {
   int chitNumber;
   @JsonKey(name: 'chit_date')
   int chitDate;
+  @JsonKey(name: 'total_amount')
+  int totalAmount;
   @JsonKey(name: 'allocation_amount')
   int allocationAmount;
-  @JsonKey(name: 'chit_amount')
-  int chitAmount;
+  @JsonKey(name: 'collection_amount')
+  int collectionAmount;
   @JsonKey(name: 'profit')
   int profit;
 

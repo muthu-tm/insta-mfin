@@ -53,9 +53,12 @@ class ViewChitFund extends StatelessWidget {
                               ),
                             ),
                           ),
+                          Divider(
+                            color: CustomColors.mfinButtonGreen,
+                          ),
                           ListTile(
                             leading: Text(
-                              'Total Collection',
+                              'Chit Amount',
                               style: TextStyle(
                                 color: CustomColors.mfinBlue,
                                 fontSize: 18.0,
@@ -63,7 +66,7 @@ class ViewChitFund extends StatelessWidget {
                               ),
                             ),
                             trailing: Text(
-                              'Rs.${_fund.chitAmount}',
+                              'Rs.${_fund.totalAmount}',
                               style: TextStyle(
                                 color: CustomColors.mfinBlue,
                                 fontSize: 18.0,
@@ -107,6 +110,43 @@ class ViewChitFund extends StatelessWidget {
                               ),
                             ),
                           ),
+                          ListTile(
+                            leading: Text(
+                              'Collection Amount',
+                              style: TextStyle(
+                                color: CustomColors.mfinBlue,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              'Rs.${_fund.collectionAmount}',
+                              style: TextStyle(
+                                color: CustomColors.mfinBlue,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            color: CustomColors.mfinAlertRed,
+                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                FlatButton.icon(
+                                    onPressed: () {
+                                      print("Clicked Chit Payments");
+                                    },
+                                    icon: Icon(Icons.payment),
+                                    label: Text("Payments")),
+                                FlatButton.icon(
+                                    onPressed: () {
+                                      print("Clicked Chit Allocation");
+                                    },
+                                    icon: Icon(Icons.monetization_on),
+                                    label: Text("Allocation"))
+                              ]),
                         ],
                       ),
                     ),

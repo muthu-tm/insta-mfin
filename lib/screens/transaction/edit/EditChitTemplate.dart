@@ -400,7 +400,7 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                 initialValue:
                                                     (index < fundDetails.length)
                                                         ? fundDetails[index]
-                                                            .chitAmount
+                                                            .collectionAmount
                                                             .toString()
                                                         : '',
                                                 keyboardType:
@@ -408,7 +408,7 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
                                                   labelText:
-                                                      'Chit Amount',
+                                                      'Collection Amount',
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -447,6 +447,57 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                               ),
                                             ),
                                             Padding(padding: EdgeInsets.all(5)),
+                                                                                        Flexible(
+                                              child: TextFormField(
+                                                initialValue:
+                                                    (index < fundDetails.length)
+                                                        ? fundDetails[index]
+                                                            .totalAmount
+                                                            .toString()
+                                                        : '',
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                textAlign: TextAlign.start,
+                                                decoration: InputDecoration(
+                                                  labelText: 'Total Amount',
+                                                  floatingLabelBehavior:
+                                                      FloatingLabelBehavior
+                                                          .always,
+                                                  labelStyle: TextStyle(
+                                                    color:
+                                                        CustomColors.mfinBlue,
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          vertical: 3.0,
+                                                          horizontal: 10.0),
+                                                  border: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                      color: CustomColors
+                                                          .mfinFadedButtonGreen,
+                                                    ),
+                                                  ),
+                                                  fillColor:
+                                                      CustomColors.mfinWhite,
+                                                  filled: true,
+                                                ),
+                                                validator: (amount) {
+                                                  if (amount
+                                                          .trim()
+                                                          .isNotEmpty &&
+                                                      amount.trim() != '0') {
+                                                    tAmount.insert(
+                                                        index,
+                                                        int.parse(
+                                                            amount.trim()));
+                                                    return null;
+                                                  } else {
+                                                    return 'Enter the Total Amount of the Chit';
+                                                  }
+                                                },
+                                              ),
+                                            ),
+
                                           ],
                                         ),
                                       ),
@@ -598,7 +649,9 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
         ChitFundDetails fDetails = ChitFundDetails();
         fDetails.allocationAmount = aAmount[i];
         fDetails.profit = pAmount[i];
-        fDetails.chitAmount = cAmount[i];
+        fDetails.totalAmount = tAmount[i];
+        fDetails.collectionAmount = cAmount[i];
+
         fDetails.chitNumber = i + 1;
         _fundDetails.insert(i, fDetails);
       }
