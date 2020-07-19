@@ -104,9 +104,9 @@ class User extends Model {
   }
 
   String getProfilePicPath() {
-    if (this.profilePath != "")
+    if (this.profilePath != null && this.profilePath != "")
       return this.profilePath;
-    else if (this.profilePathOrg != "")
+    else if (this.profilePathOrg != null && this.profilePathOrg != "")
       return this.profilePathOrg;
     else
       return "";
