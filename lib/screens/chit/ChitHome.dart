@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/chit_template.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';

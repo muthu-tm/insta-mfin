@@ -28,7 +28,6 @@ class _PublishChitFundState extends State<PublishChitFund> {
   String chitType = 'Custom';
   List<String> chitTypes = ['Custom', 'Fixed'];
   List<int> cAmount = [];
-  List<int> tAmount = [];
   List<int> aAmount = [];
   List<int> pAmount = [];
   List<DateTime> chitDates = [];
@@ -541,7 +540,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                 initialValue:
                                                     (index < fundDetails.length)
                                                         ? fundDetails[index]
-                                                            .collectionAmount
+                                                            .chitAmount
                                                             .toString()
                                                         : '',
                                                 keyboardType:
@@ -549,7 +548,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
                                                   labelText:
-                                                      'collection Amount',
+                                                      'chit Amount',
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -588,56 +587,6 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                               ),
                                             ),
                                             Padding(padding: EdgeInsets.all(5)),
-                                            Flexible(
-                                              child: TextFormField(
-                                                initialValue:
-                                                    (index < fundDetails.length)
-                                                        ? fundDetails[index]
-                                                            .totalAmount
-                                                            .toString()
-                                                        : '',
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                textAlign: TextAlign.start,
-                                                decoration: InputDecoration(
-                                                  labelText: 'Total Amount',
-                                                  floatingLabelBehavior:
-                                                      FloatingLabelBehavior
-                                                          .always,
-                                                  labelStyle: TextStyle(
-                                                    color:
-                                                        CustomColors.mfinBlue,
-                                                  ),
-                                                  contentPadding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 3.0,
-                                                          horizontal: 10.0),
-                                                  border: OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: CustomColors
-                                                          .mfinFadedButtonGreen,
-                                                    ),
-                                                  ),
-                                                  fillColor:
-                                                      CustomColors.mfinWhite,
-                                                  filled: true,
-                                                ),
-                                                validator: (amount) {
-                                                  if (amount
-                                                          .trim()
-                                                          .isNotEmpty &&
-                                                      amount.trim() != '0') {
-                                                    tAmount.insert(
-                                                        index,
-                                                        int.parse(
-                                                            amount.trim()));
-                                                    return null;
-                                                  } else {
-                                                    return 'Enter the Total Amount of the Chit';
-                                                  }
-                                                },
-                                              ),
-                                            ),
                                           ],
                                         ),
                                       ),
@@ -805,8 +754,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
         ChitFundDetails fDetails = ChitFundDetails();
         fDetails.allocationAmount = aAmount[i];
         fDetails.profit = pAmount[i];
-        fDetails.totalAmount = tAmount[i];
-        fDetails.collectionAmount = cAmount[i];
+        fDetails.chitAmount = cAmount[i];
         fDetails.chitNumber = i + 1;
         fDetails.chitDate = DateUtils.getUTCDateEpoch(chitDates[i]);
         _fundDetails.insert(i, fDetails);
@@ -822,7 +770,6 @@ class _PublishChitFundState extends State<PublishChitFund> {
       _chitFund.setFundDetails(_fundDetails);
       _chitFund.setChitID(chitID);
       _chitFund.setInterestRate(commission);
-      _chitFund.requesters = [];
 
       Navigator.push(
         context,

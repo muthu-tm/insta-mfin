@@ -63,7 +63,7 @@ class ViewChitFund extends StatelessWidget {
                               ),
                             ),
                             trailing: Text(
-                              'Rs.${_fund.collectionAmount}',
+                              'Rs.${_fund.chitAmount}',
                               style: TextStyle(
                                 color: CustomColors.mfinBlue,
                                 fontSize: 18.0,

@@ -25,8 +25,6 @@ class ChitFund extends Model {
   List<ChitCustomers> customerDetails;
   @JsonKey(name: 'customers', nullable: true)
   List<int> customers;
-  @JsonKey(name: 'requesters', nullable: true)
-  List<int> requesters;
   @JsonKey(name: 'date_published', nullable: true)
   int datePublished;
   @JsonKey(name: 'chit_amount', nullable: true)
@@ -88,10 +86,6 @@ class ChitFund extends Model {
 
   setFundDetails(List<ChitFundDetails> fundDetails) {
     this.fundDetails = fundDetails;
-  }
-
-  setRequesters(List<int> requesters) {
-    this.requesters = requesters;
   }
 
   setCustomers(List<int> customers) {

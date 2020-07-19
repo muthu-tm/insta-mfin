@@ -84,7 +84,7 @@ class ChitAllocations {
         .document(getDocumentID(chitNumber));
   }
 
-  Future createTemplate(int number) async {
+  Future create(int number) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     try {} catch (err) {

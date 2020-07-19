@@ -249,8 +249,7 @@ class ViewChitTemplate extends StatelessWidget {
                                           Flexible(
                                             child: TextFormField(
                                               initialValue: temp
-                                                  .fundDetails[index]
-                                                  .collectionAmount
+                                                  .fundDetails[index].chitAmount
                                                   .toString(),
                                               textAlign: TextAlign.start,
                                               decoration: InputDecoration(
@@ -279,38 +278,6 @@ class ViewChitTemplate extends StatelessWidget {
                                             ),
                                           ),
                                           Padding(padding: EdgeInsets.all(5)),
-                                          Flexible(
-                                            child: TextFormField(
-                                              initialValue: temp
-                                                  .fundDetails[index]
-                                                  .totalAmount
-                                                  .toString(),
-                                              textAlign: TextAlign.start,
-                                              decoration: InputDecoration(
-                                                labelText: 'Total Amount',
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior
-                                                        .always,
-                                                labelStyle: TextStyle(
-                                                  color: CustomColors.mfinBlue,
-                                                ),
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 3.0,
-                                                        horizontal: 10.0),
-                                                border: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: CustomColors
-                                                        .mfinFadedButtonGreen,
-                                                  ),
-                                                ),
-                                                fillColor:
-                                                    CustomColors.mfinWhite,
-                                                filled: true,
-                                              ),
-                                              readOnly: true,
-                                            ),
-                                          ),
                                         ],
                                       ),
                                     ),
