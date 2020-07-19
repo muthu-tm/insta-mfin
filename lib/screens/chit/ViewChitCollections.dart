@@ -3,23 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/db/models/user_primary.dart';
+import 'package:instamfin/screens/chit/AddChitCollectionDetails.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class ViewChitCollections extends StatelessWidget {
+class ViewChitCollections extends StatefulWidget {
   ViewChitCollections(this.chitID, this.fundDetails);
 
   final String chitID;
   final ChitFundDetails fundDetails;
+
+  @override
+  _ViewChitCollectionsState createState() => _ViewChitCollectionsState();
+}
+
+class _ViewChitCollectionsState extends State<ViewChitCollections> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final UserPrimary _primary = UserController().getUserPrimary();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Chit $chitID - ${fundDetails.chitNumber}'),
+        title: Text('Chit ${widget.chitID} - ${widget.fundDetails.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(child: _getBody()),
@@ -32,8 +42,8 @@ class ViewChitCollections extends StatelessWidget {
           _primary.financeID,
           _primary.branchName,
           _primary.subBranchName,
-          chitID,
-          fundDetails.chitNumber),
+          widget.chitID,
+          widget.fundDetails.chitNumber),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
@@ -90,7 +100,7 @@ class ViewChitCollections extends StatelessWidget {
                             ),
                             ListTile(
                               leading: Text(
-                                'Recived:',
+                                'Received:',
                                 style: TextStyle(
                                   color: CustomColors.mfinGrey,
                                   fontSize: 18.0,
@@ -117,7 +127,7 @@ class ViewChitCollections extends StatelessWidget {
                                     // Navigator.push(
                                     //   context,
                                     //   MaterialPageRoute(
-                                    //     builder: (context) => ViewChitCollections(
+                                    //     builder: (context) => AddChitCollectionDetails(
                                     //         chit.chitID, _fund),
                                     //     settings: RouteSettings(
                                     //         name: '/chit/collections'),
@@ -129,17 +139,29 @@ class ViewChitCollections extends StatelessWidget {
                                 ),
                                 FlatButton.icon(
                                   onPressed: () {
-                                    print("Clicked Collected");
+                                    if (chitColl.isPaid) {
+                                      _scaffoldKey.currentState.showSnackBar(
+                                        CustomSnackBar.errorSnackBar(
+                                            "Already collected full CHIT amount from customer!",
+                                            2),
+                                      );
+                                      return;
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddChitCollectionDetails(
+                                                  chitColl),
+                                          settings: RouteSettings(
+                                              name:
+                                                  '/chit/collections/collectionDetails'),
+                                        ),
+                                      );
+                                    }
                                   },
                                   icon: Icon(Icons.monetization_on),
-                                  label: Text("Mark As Collected"),
-                                ),
-                                FlatButton.icon(
-                                  onPressed: () {
-                                    print("Clicked Collection Edit");
-                                  },
-                                  icon: Icon(Icons.edit),
-                                  label: Text("Edit"),
+                                  label: Text("Add Collection"),
                                 ),
                               ],
                             ),
@@ -193,7 +215,7 @@ class ViewChitCollections extends StatelessWidget {
                 ),
                 trailing: Text(
                   DateUtils.formatDate(DateTime.fromMillisecondsSinceEpoch(
-                      fundDetails.chitDate)),
+                      widget.fundDetails.chitDate)),
                   style: TextStyle(
                     color: CustomColors.mfinGrey,
                     fontSize: 18.0,
@@ -211,7 +233,7 @@ class ViewChitCollections extends StatelessWidget {
                   ),
                 ),
                 trailing: Text(
-                  'Rs.${fundDetails.totalAmount}',
+                  'Rs.${widget.fundDetails.totalAmount}',
                   style: TextStyle(
                     color: CustomColors.mfinGrey,
                     fontSize: 18.0,
