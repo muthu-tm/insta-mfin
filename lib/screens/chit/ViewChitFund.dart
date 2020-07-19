@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
+import 'package:instamfin/screens/chit/ViewChitCollections.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
@@ -132,21 +133,32 @@ class ViewChitFund extends StatelessWidget {
                             color: CustomColors.mfinAlertRed,
                           ),
                           Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                FlatButton.icon(
-                                    onPressed: () {
-                                      print("Clicked Chit Payments");
-                                    },
-                                    icon: Icon(Icons.payment),
-                                    label: Text("Payments")),
-                                FlatButton.icon(
-                                    onPressed: () {
-                                      print("Clicked Chit Allocation");
-                                    },
-                                    icon: Icon(Icons.monetization_on),
-                                    label: Text("Allocation"))
-                              ]),
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              FlatButton.icon(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ViewChitCollections(
+                                          chit.chitID, _fund),
+                                      settings: RouteSettings(
+                                          name: '/chit/collections'),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.payment),
+                                label: Text("Collections"),
+                              ),
+                              FlatButton.icon(
+                                onPressed: () {
+                                  print("Clicked Chit Allocation");
+                                },
+                                icon: Icon(Icons.monetization_on),
+                                label: Text("Allocation"),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),

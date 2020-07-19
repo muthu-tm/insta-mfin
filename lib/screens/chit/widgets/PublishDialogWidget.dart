@@ -46,11 +46,13 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            title: Text(temps[index].name,
-                             style: TextStyle(
+                            title: Text(
+                              temps[index].name,
+                              style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold,
-                              ),),
+                              ),
+                            ),
                             subtitle: Text(
                                 'Amount: ${temps[index].chitAmount}, Profit: ${temps[index].getProfitAmount()}'),
                             onTap: () {
@@ -70,7 +72,14 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
                     },
                   )
                 : Container(
-                    child: Text(" No Templates"),
+                    child: Text(
+                      "No Templates",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinAlertRed,
+                      ),
+                    ),
                   ),
             Divider(
               color: CustomColors.mfinButtonGreen,
@@ -78,7 +87,7 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
             SizedBox(height: 15),
             RaisedButton.icon(
               icon: Icon(
-                Icons.email,
+                Icons.fiber_new,
                 color: CustomColors.mfinLightGrey,
               ),
               elevation: 15.0,

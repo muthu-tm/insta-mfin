@@ -26,8 +26,8 @@ class ChitCollection {
   int chitDate;
   @JsonKey(name: 'collected_on', defaultValue: '')
   List<int> collectedOn;
-  @JsonKey(name: 'chit_amount')
-  int chitAmount;
+  @JsonKey(name: 'collection_amount')
+  int collectionAmount;
   @JsonKey(name: 'collections')
   List<CollectionDetails> collections;
   @JsonKey(name: 'is_paid', nullable: true)
@@ -75,8 +75,8 @@ class ChitCollection {
     }
   }
 
-  setChitAmount(int amount) {
-    this.chitAmount = amount;
+  setCollecitonAmount(int amount) {
+    this.collectionAmount = amount;
   }
 
   setIsPaid(bool isPaid) {
@@ -126,7 +126,7 @@ class ChitCollection {
 
   int getPending() {
     if (this.chitDate < DateUtils.getCurrentUTCDate().millisecondsSinceEpoch) {
-      return chitAmount - getReceived();
+      return collectionAmount - getReceived();
     }
 
     return 0;
@@ -145,7 +145,7 @@ class ChitCollection {
 
   int getCurrent() {
     if (this.chitDate == DateUtils.getCurrentUTCDate().millisecondsSinceEpoch) {
-      return chitAmount - getReceived();
+      return collectionAmount - getReceived();
     }
 
     return 0;
@@ -153,7 +153,7 @@ class ChitCollection {
 
   int getUpcoming() {
     if (this.chitDate > DateUtils.getCurrentUTCDate().millisecondsSinceEpoch) {
-      return chitAmount - getReceived();
+      return collectionAmount - getReceived();
     }
 
     return 0;
@@ -352,7 +352,7 @@ class ChitCollection {
       int chitNumber) async {
     var collectionDocs = await getCollectionRef(
             financeID, branchName, subBranchName, chitID, chitNumber)
-        .where('collection_number', isEqualTo: cNumber)
+        .where('chit_number', isEqualTo: cNumber)
         .getDocuments();
 
     ChitCollection coll;

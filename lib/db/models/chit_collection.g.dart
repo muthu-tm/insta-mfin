@@ -13,7 +13,7 @@ ChitCollection _$ChitCollectionFromJson(Map<String, dynamic> json) {
             ?.map((e) => e == null ? null : e as int)
             ?.toList() ??
         []
-    ..chitAmount = json['chit_amount'] as int
+    ..collectionAmount = json['collection_amount'] as int
     ..collections = (json['collections'] as List)
         ?.map((e) => e == null
             ? null
@@ -41,7 +41,7 @@ Map<String, dynamic> _$ChitCollectionToJson(ChitCollection instance) =>
       'chit_number': instance.chitNumber,
       'chit_date': instance.chitDate,
       'collected_on': instance.collectedOn == null ? [] : instance.collectedOn,
-      'chit_amount': instance.chitAmount,
+      'collection_amount': instance.collectionAmount,
       'collections': instance.collections?.map((e) => e?.toJson())?.toList(),
       'is_paid': instance.isPaid,
       'is_closed': instance.isClosed,
