@@ -4,6 +4,7 @@ import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/chit/AddChitCollectionDetails.dart';
+import 'package:instamfin/screens/chit/ViewChitCollectionDetails.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -61,112 +62,99 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
 
                   return Padding(
                     padding: EdgeInsets.all(5),
-                    child: InkWell(
-                      onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => ViewChitFund(chit),
-                        //     settings:
-                        //         RouteSettings(name: '/chit/collection/view'),
-                        //   ),
-                        // );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        decoration: BoxDecoration(
-                          color: CustomColors.mfinBlue,
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            ListTile(
-                              leading: Text(
-                                chitColl.collectionAmount.toString(),
-                                style: TextStyle(
-                                  color: CustomColors.mfinLightGrey,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              trailing: Text(
-                                chitColl.customerNumber.toString(),
-                                style: TextStyle(
-                                  color: CustomColors.mfinLightGrey,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinBlue,
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            leading: Text(
+                              chitColl.collectionAmount.toString(),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            ListTile(
-                              leading: Text(
-                                'Received:',
-                                style: TextStyle(
-                                  color: CustomColors.mfinGrey,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              trailing: Text(
-                                chitColl.getReceived().toString(),
-                                style: TextStyle(
-                                  color: CustomColors.mfinLightGrey,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            trailing: Text(
+                              chitColl.customerNumber.toString(),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Divider(
-                              color: CustomColors.mfinButtonGreen,
+                          ),
+                          ListTile(
+                            leading: Text(
+                              'Received:',
+                              style: TextStyle(
+                                color: CustomColors.mfinGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                FlatButton.icon(
-                                  onPressed: () {
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => AddChitCollectionDetails(
-                                    //         chit.chitID, _fund),
-                                    //     settings: RouteSettings(
-                                    //         name: '/chit/collections'),
-                                    //   ),
-                                    // );
-                                  },
-                                  icon: Icon(Icons.remove_red_eye),
-                                  label: Text("View"),
-                                ),
-                                FlatButton.icon(
-                                  onPressed: () {
-                                    if (chitColl.isPaid) {
-                                      _scaffoldKey.currentState.showSnackBar(
-                                        CustomSnackBar.errorSnackBar(
-                                            "Already collected full CHIT amount from customer!",
-                                            2),
-                                      );
-                                      return;
-                                    } else {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              AddChitCollectionDetails(
-                                                  chitColl),
-                                          settings: RouteSettings(
-                                              name:
-                                                  '/chit/collections/collectionDetails'),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  icon: Icon(Icons.monetization_on),
-                                  label: Text("Add Collection"),
-                                ),
-                              ],
+                            trailing: Text(
+                              chitColl.getReceived().toString(),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                          Divider(
+                            color: CustomColors.mfinButtonGreen,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              FlatButton.icon(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ViewChitCollectionDetails(chitColl),
+                                      settings: RouteSettings(
+                                          name: '/chit/collections/collectionDetails'),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.remove_red_eye),
+                                label: Text("View"),
+                              ),
+                              FlatButton.icon(
+                                onPressed: () {
+                                  if (chitColl.isPaid) {
+                                    _scaffoldKey.currentState.showSnackBar(
+                                      CustomSnackBar.errorSnackBar(
+                                          "Already collected full CHIT amount from customer!",
+                                          2),
+                                    );
+                                    return;
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddChitCollectionDetails(chitColl),
+                                        settings: RouteSettings(
+                                            name:
+                                                '/chit/collections/collectionDetails/add'),
+                                      ),
+                                    );
+                                  }
+                                },
+                                icon: Icon(Icons.monetization_on),
+                                label: Text("Add Collection"),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   );

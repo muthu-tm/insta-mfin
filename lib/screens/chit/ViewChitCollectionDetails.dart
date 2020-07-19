@@ -1,149 +1,184 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
-import 'package:instamfin/db/models/collection.dart';
+import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/collection_details.dart';
-import 'package:instamfin/screens/customer/AddCollectionDetails.dart';
+import 'package:instamfin/screens/chit/AddChitCollectionDetails.dart';
+import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
+import 'package:instamfin/services/controllers/chit/chit_controller.dart';
 
-class CollectionDetailsWidget extends StatelessWidget {
-  CollectionDetailsWidget(
-      this.paySettled, this._scaffoldKey, this._collection, this.custName);
+class ViewChitCollectionDetails extends StatefulWidget {
+  ViewChitCollectionDetails(this.collection);
 
-  final bool paySettled;
-  final GlobalKey<ScaffoldState> _scaffoldKey;
-  final Collection _collection;
-  final String custName;
+  final ChitCollection collection;
+  @override
+  _ViewChitCollectionDetailsState createState() =>
+      _ViewChitCollectionDetailsState();
+}
+
+class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> widget;
-    if (_collection.collections == null ||
-        _collection.collections.length == 0) {
-      widget = <Widget>[
-        Text(
-          "No Collection received yet!",
-          style: TextStyle(
-            color: CustomColors.mfinAlertRed,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
-          child: Text(
-            "Add collection using '+' button",
-            style: TextStyle(
-              color: CustomColors.mfinBlue,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        )
-      ];
-    } else {
-      widget = <Widget>[
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          primary: false,
-          itemCount: _collection.collections == null
-              ? 0
-              : _collection.collections.length,
-          itemBuilder: (BuildContext context, int index) {
-            CollectionDetails _collectionDetails =
-                _collection.collections[index];
-
-            Color cardColor = CustomColors.mfinGrey;
-            Color textColor = CustomColors.mfinBlue;
-            if (index % 2 == 0) {
-              cardColor = CustomColors.mfinBlue;
-              textColor = CustomColors.mfinGrey;
-            }
-            return SimpleFoldingCell(
-                frontWidget: _buildFrontWidget(
-                    context, _collectionDetails, cardColor, textColor),
-                innerTopWidget: _buildInnerTopWidget(_collectionDetails),
-                innerBottomWidget:
-                    _buildInnerBottomWidget(context, _collectionDetails),
-                cellSize: Size(MediaQuery.of(context).size.width, 170),
-                padding: EdgeInsets.only(
-                    left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
-                animationDuration: Duration(milliseconds: 300),
-                borderRadius: 10,
-                onOpen: () => print('$index cell opened'),
-                onClose: () => print('$index cell closed'));
-          },
-        ),
-      ];
-    }
-
-    return Card(
-      color: CustomColors.mfinLightGrey,
-      child: new Column(
-        children: <Widget>[
-          ListTile(
-            leading: Icon(
-              Icons.collections_bookmark,
-              size: 35.0,
-              color: CustomColors.mfinButtonGreen,
-            ),
-            title: new Text(
-              "Collection Details",
-              style: TextStyle(
-                color: CustomColors.mfinBlue,
-                fontSize: 18.0,
-              ),
-            ),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.add_box,
-                size: 35.0,
-                color: CustomColors.mfinBlue,
-              ),
-              onPressed: () {
-                if (paySettled) {
-                  _scaffoldKey.currentState.showSnackBar(
-                      CustomSnackBar.errorSnackBar(
-                          "You cannot edit already 'SETTLED' Payment", 2));
-                } else {
-                  if (_collection.getReceived() <
-                      _collection.collectionAmount) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddCollectionDetails(
-                            _collection, custName),
-                        settings: RouteSettings(
-                            name:
-                                '/customers/payments/collections/collectiondetails/add'),
-                      ),
-                    );
-                  } else {
-                    _scaffoldKey.currentState.showSnackBar(
-                        CustomSnackBar.errorSnackBar(
-                            "Collection AMOUNT already collected Fully", 2));
-                  }
-                }
-              },
-            ),
-          ),
-          new Divider(
-            color: CustomColors.mfinBlue,
-            thickness: 1,
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: widget,
-            ),
-          ),
-        ],
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text(
+            'Chit ${widget.collection.chitID} - ${widget.collection.chitNumber}'),
+        backgroundColor: CustomColors.mfinBlue,
       ),
+      body: SingleChildScrollView(child: _getBody()),
+    );
+  }
+
+  Widget _getBody() {
+    return StreamBuilder(
+      stream: ChitCollection().streamCollectionByID(
+          widget.collection.financeID,
+          widget.collection.branchName,
+          widget.collection.subBranchName,
+          widget.collection.chitID,
+          widget.collection.customerNumber,
+          widget.collection.chitNumber),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        List<Widget> children;
+
+        if (snapshot.hasData) {
+          if (snapshot.data.exists && snapshot.data.data.isNotEmpty) {
+            ChitCollection _coll = ChitCollection.fromJson(snapshot.data.data);
+
+            if (_coll.collections != null || _coll.collections.length != 0) {
+              children = <Widget>[
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: _coll.collections.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    CollectionDetails _collectionDetails =
+                        _coll.collections[index];
+
+                    Color cardColor = CustomColors.mfinGrey;
+                    Color textColor = CustomColors.mfinBlue;
+                    if (index % 2 == 0) {
+                      cardColor = CustomColors.mfinBlue;
+                      textColor = CustomColors.mfinGrey;
+                    }
+                    return SimpleFoldingCell(
+                      frontWidget: _buildFrontWidget(
+                          context, _collectionDetails, cardColor, textColor),
+                      innerTopWidget: _buildInnerTopWidget(_collectionDetails),
+                      innerBottomWidget:
+                          _buildInnerBottomWidget(context, _collectionDetails),
+                      cellSize: Size(MediaQuery.of(context).size.width, 170),
+                      padding: EdgeInsets.only(
+                          left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
+                      animationDuration: Duration(milliseconds: 300),
+                      borderRadius: 10,
+                    );
+                  },
+                ),
+              ];
+            } else {
+              children = <Widget>[
+                Text(
+                  "No Collection received yet!",
+                  style: TextStyle(
+                    color: CustomColors.mfinAlertRed,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                  child: Text(
+                    "Add collection using '+' button",
+                    style: TextStyle(
+                      color: CustomColors.mfinBlue,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ];
+            }
+          }
+        } else if (snapshot.hasError) {
+          children = AsyncWidgets.asyncError();
+        } else {
+          children = AsyncWidgets.asyncWaiting();
+        }
+
+        return Card(
+          color: CustomColors.mfinLightGrey,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(
+                  Icons.collections_bookmark,
+                  size: 35.0,
+                  color: CustomColors.mfinButtonGreen,
+                ),
+                title: Text(
+                  "Collection Details",
+                  style: TextStyle(
+                    color: CustomColors.mfinBlue,
+                    fontSize: 18.0,
+                  ),
+                ),
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.add_box,
+                    size: 35.0,
+                    color: CustomColors.mfinBlue,
+                  ),
+                  onPressed: () {
+                    if (widget.collection.isClosed) {
+                      _scaffoldKey.currentState.showSnackBar(
+                          CustomSnackBar.errorSnackBar(
+                              "You cannot edit already 'CLOSED' Chit Fund", 2));
+                    } else {
+                      if (!widget.collection.isPaid) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AddChitCollectionDetails(widget.collection),
+                            settings: RouteSettings(
+                                name:
+                                    '/chits/collections/collectiondetails/add'),
+                          ),
+                        );
+                      } else {
+                        _scaffoldKey.currentState.showSnackBar(
+                            CustomSnackBar.errorSnackBar(
+                                "Chit AMOUNT already collected Fully", 2));
+                      }
+                    }
+                  },
+                ),
+              ),
+              Divider(
+                color: CustomColors.mfinBlue,
+                thickness: 1,
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: children,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -160,10 +195,10 @@ class CollectionDetailsWidget extends StatelessWidget {
           color: CustomColors.mfinAlertRed,
           icon: Icons.delete_forever,
           onTap: () async {
-            if (paySettled) {
+            if (widget.collection.isClosed) {
               _scaffoldKey.currentState.showSnackBar(
                   CustomSnackBar.errorSnackBar(
-                      "You cannot edit already 'SETTLED' Payment", 2));
+                      "You cannot edit already 'CLOSED' Chit Fund", 2));
             } else {
               var state = Slidable.of(context);
               var dismiss = await showDialog<bool>(
@@ -205,17 +240,17 @@ class CollectionDetailsWidget extends StatelessWidget {
                           textAlign: TextAlign.start,
                         ),
                         onPressed: () async {
-                          CollectionController _cc = CollectionController();
+                          ChitController _cc = ChitController();
                           var result = await _cc.updateCollectionDetails(
-                              _collection.financeID,
-                              _collection.branchName,
-                              _collection.subBranchName,
-                              _collection.paymentID,
-                              _collection.collectionDate,
+                              widget.collection.financeID,
+                              widget.collection.branchName,
+                              widget.collection.subBranchName,
+                              widget.collection.chitID,
+                              widget.collection.customerNumber,
+                              widget.collection.chitNumber,
                               false,
                               false,
-                              _collectionDetails.toJson(),
-                              (_collectionDetails.penaltyAmount > 0));
+                              _collectionDetails.toJson());
                           if (!result['is_success']) {
                             Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
@@ -224,7 +259,7 @@ class CollectionDetailsWidget extends StatelessWidget {
                           } else {
                             _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.successSnackBar(
-                                    "Collection ${_collectionDetails.amount} removed successfully",
+                                    "Chit Collection ${_collectionDetails.amount} removed successfully",
                                     2));
                             Navigator.pop(context);
                           }
