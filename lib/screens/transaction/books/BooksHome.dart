@@ -33,7 +33,7 @@ class BooksHome extends StatelessWidget {
             padding: EdgeInsets.all(10),
             child: InkWell(
               onTap: () {
-                if (hasValidSubscription) {
+                if (!hasValidSubscription) {
                   _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
                           "Your subscription has expired. Please Recharge to continue!",
