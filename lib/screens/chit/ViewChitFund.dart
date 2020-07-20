@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/screens/chit/ViewChitCollections.dart';
-import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/chit/chit_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ViewChitFund extends StatefulWidget {
   ViewChitFund(this.chit);

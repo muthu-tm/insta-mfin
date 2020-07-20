@@ -72,7 +72,7 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: TextField(
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.number,
                       onChanged: (value) => mobileNumber = value,
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
@@ -162,7 +162,7 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
                                             BorderRadius.circular(5.0),
                                       ),
                                       width: MediaQuery.of(context).size.width *
-                                          0.3,
+                                          0.5,
                                       child: ListTile(
                                         leading: IconButton(
                                           icon: Icon(Icons.remove_circle,
@@ -185,6 +185,7 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
                                         ),
                                         title: Text(
                                           ' ${customers[index].chits} ',
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                             color: CustomColors.mfinWhite,
                                             fontSize: 16.0,
@@ -252,24 +253,36 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
   }
 
   _onSearch() async {
+    bool isExist = false;
+    customers.forEach((c) {
+      if (c.number == int.parse(mobileNumber)) {
+        isExist = true;
+      }
+    });
+
+    if (isExist) {
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          "The customer $mobileNumber already in the list!", 2));
+      return;
+    }
     if (mobileNumber != null && mobileNumber.length == 10) {
       Customer _cust =
           await Customer().getByMobileNumber(int.parse(mobileNumber));
       if (_cust != null) {
+        ChitCustomers _c = ChitCustomers();
+        _c.chits = 1;
+        _c.number = _cust.mobileNumber;
         setState(() {
           _custList.add(_cust);
-          ChitCustomers _c = ChitCustomers();
-          _c.chits = 1;
-          _c.number = _cust.mobileNumber;
           customers.add(_c);
           mobileNumberValid = true;
         });
       } else {
         setState(() {
           mobileNumberValid = true;
-          _scaffoldKey.currentState.showSnackBar(
-              CustomSnackBar.errorSnackBar("Error, No Customers Found!", 2));
         });
+        _scaffoldKey.currentState.showSnackBar(
+            CustomSnackBar.errorSnackBar("Error, No Customers Found!", 2));
       }
     } else {
       setState(() {
@@ -287,13 +300,16 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
           "Not all chits allocated to customers!", 2));
     } else {
       CustomDialogs.actionWaiting(context, "Publishing Chit!");
-      widget.chit.customerDetails = customers;
+      List<ChitCustomers> _chitCustList = [];
       List<int> customerNumbers = [];
+      customers.forEach((c) {
+        if (c.chits > 0) {
+          _chitCustList.add(c);
+          customerNumbers.add(c.number);
+        }
+      });
 
-      for (var cust in _custList) {
-        customerNumbers.add(cust.mobileNumber);
-      }
-
+      widget.chit.customerDetails = _chitCustList;
       widget.chit.customers = customerNumbers;
 
       var result = await ChitController().create(widget.chit);
