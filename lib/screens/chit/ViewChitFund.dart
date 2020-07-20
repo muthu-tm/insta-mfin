@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/chit_allocations.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
+import 'package:instamfin/screens/chit/ViewChitAllocations.dart';
 import 'package:instamfin/screens/chit/ViewChitCollections.dart';
+import 'package:instamfin/screens/chit/widgets/ChitCustomerAllocation.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
@@ -119,24 +122,6 @@ class _ViewChitFundState extends State<ViewChitFund> {
                               ),
                             ),
                           ),
-                          ListTile(
-                            leading: Text(
-                              'Collection Amount',
-                              style: TextStyle(
-                                color: CustomColors.mfinBlue,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            trailing: Text(
-                              'Rs.${_fund.collectionAmount}',
-                              style: TextStyle(
-                                color: CustomColors.mfinBlue,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
                           Divider(
                             color: CustomColors.mfinAlertRed,
                           ),
@@ -159,8 +144,42 @@ class _ViewChitFundState extends State<ViewChitFund> {
                                 label: Text("Collections"),
                               ),
                               FlatButton.icon(
-                                onPressed: () {
-                                  print("Clicked Chit Allocation");
+                                onPressed: () async {
+                                  ChitAllocations chitAlloc =
+                                      await ChitAllocations()
+                                          .getAllocationsByNumber(
+                                              widget.chit.financeID,
+                                              widget.chit.branchName,
+                                              widget.chit.subBranchName,
+                                              widget.chit.chitID,
+                                              _fund.chitNumber);
+                                  if (chitAlloc == null) {
+                                    showDialog(
+                                      context: context,
+                                      routeSettings: RouteSettings(
+                                          name: "/chit/allocations/customer"),
+                                      builder: (context) {
+                                        return Center(
+                                          child: chitCustomerAllocationDialog(
+                                              context,
+                                              _scaffoldKey,
+                                              widget.chit,
+                                              _fund),
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ViewChitAllocations(
+                                                chitAlloc, _fund),
+                                        settings: RouteSettings(
+                                            name: '/chit/allocations/view'),
+                                      ),
+                                    );
+                                  }
                                 },
                                 icon: Icon(Icons.monetization_on),
                                 label: Text("Allocation"),

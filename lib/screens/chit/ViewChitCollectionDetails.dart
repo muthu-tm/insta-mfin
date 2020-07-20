@@ -53,7 +53,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
           if (snapshot.data.exists && snapshot.data.data.isNotEmpty) {
             ChitCollection _coll = ChitCollection.fromJson(snapshot.data.data);
 
-            if (_coll.collections != null || _coll.collections.length != 0) {
+            if (_coll.collections != null && _coll.collections.length != 0) {
               children = <Widget>[
                 ListView.builder(
                   scrollDirection: Axis.vertical,

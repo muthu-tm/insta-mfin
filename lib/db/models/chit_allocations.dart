@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/chit_allocation_details.dart';
-import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'chit_allocations.g.dart';
@@ -25,8 +26,8 @@ class ChitAllocations {
   List<ChitAllocationDetails> allocations;
   @JsonKey(name: 'is_paid', defaultValue: false)
   bool isPaid;
-  @JsonKey(name: 'profit_amount', defaultValue: 0)
-  int profitAmount;
+  @JsonKey(name: 'allocation_amount', defaultValue: 0)
+  int allocationAmount;
   @JsonKey(name: 'notes', defaultValue: '')
   String notes;
   @JsonKey(name: 'created_at', nullable: true)
@@ -52,12 +53,27 @@ class ChitAllocations {
     this.notes = notes;
   }
 
+  setAllocationAmount(int amount) {
+    this.allocationAmount = amount;
+  }
+
   setCreatedAt(DateTime createdAt) {
     this.createdAt = createdAt;
   }
 
   setUpdatedAt(DateTime updatedAt) {
     this.updatedAt = updatedAt;
+  }
+
+  int getTotalPaid() {
+    int received = 0;
+    if (this.allocations != null) {
+      this.allocations.forEach((coll) {
+        received += coll.amount;
+      });
+    }
+
+    return received;
   }
 
   factory ChitAllocations.fromJson(Map<String, dynamic> json) =>
@@ -85,10 +101,16 @@ class ChitAllocations {
         .document(getDocumentID(chitNumber));
   }
 
-  Future create(int number) async {
+  Future<ChitAllocations> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    try {} catch (err) {
+    this.allocations = this.allocations ?? [];
+    try {
+      await getDocumentReference(this.financeID, this.branchName,
+              this.subBranchName, this.chitID, this.chitNumber)
+          .setData(this.toJson());
+      return this;
+    } catch (err) {
       print('Chit Publish failure:' + err.toString());
       throw err;
     }
@@ -116,6 +138,30 @@ class ChitAllocations {
     return colls;
   }
 
+  Future<ChitAllocations> getAllocationsByNumber(
+      String financeID,
+      String branchName,
+      String subBranchName,
+      String chitID,
+      int chitNumber) async {
+    DocumentSnapshot snap = await getDocumentReference(
+            financeID, branchName, subBranchName, chitID, chitNumber)
+        .get();
+
+    if (!snap.exists)
+      return null;
+    else {
+      return ChitAllocations.fromJson(snap.data);
+    }
+  }
+
+  Stream<DocumentSnapshot> streamAllocationsByNumber(String financeID,
+      String branchName, String subBranchName, String chitID, int chitNumber) {
+    return getDocumentReference(
+            financeID, branchName, subBranchName, chitID, chitNumber)
+        .snapshots();
+  }
+
   Future removeChitAllocation(String financeID, String branchName,
       String subBranchName, String chitID, int chitNumber) async {
     DocumentReference docRef = getDocumentReference(
@@ -127,5 +173,84 @@ class ChitAllocations {
       print('Chit Allocation DELETE failure:' + err.toString());
       throw err;
     }
+  }
+
+  Future updateAllocationDetails(
+      String financeId,
+      String branchName,
+      String subBranchName,
+      String chitID,
+      int chitNumer,
+      bool isPaid,
+      bool isAdd,
+      Map<String, dynamic> data) async {
+    Map<String, dynamic> fields = Map();
+
+    DocumentReference docRef = this.getDocumentReference(
+        financeId, branchName, subBranchName, chitID, chitNumer);
+
+    Map<String, dynamic> _coll = (await docRef.get()).data;
+    List<dynamic> colls = _coll['allocations'];
+    int index = 0;
+    bool isMatched = false;
+    if (colls != null) {
+      for (index = 0; index < colls.length; index++) {
+        Map<String, dynamic> collDetail = colls[index];
+        ChitAllocationDetails collDetails =
+            ChitAllocationDetails.fromJson(collDetail);
+        if (collDetails.givenOn == data['given_on']) {
+          isMatched = true;
+          break;
+        }
+      }
+    }
+
+    fields['is_paid'] = isPaid;
+
+    if (isAdd) {
+      if (isMatched) {
+        throw 'Found a Allocation on this date. Edit that one, Please!';
+      } else {
+        fields['updated_at'] = DateTime.now();
+        fields['given_on'] = FieldValue.arrayUnion([data['given_on']]);
+        fields['allocations'] = FieldValue.arrayUnion([data]);
+      }
+    } else {
+      if (isMatched) colls.removeAt(index);
+      fields['allocations'] = colls;
+      fields['given_on'] = FieldValue.arrayRemove([data['given_on']]);
+      fields['updated_at'] = DateTime.now();
+    }
+
+    try {
+      DocumentReference finDocRef =
+          UserController().getCurrentUser().getFinanceDocReference();
+
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              if (isAdd) {
+                accData.cashInHand -= data['amount'];
+              } else {
+                accData.cashInHand += data['amount'];
+              }
+
+              Map<String, dynamic> aData = {'accounts_data': accData.toJson()};
+              Model().txUpdate(tx, finDocRef, aData);
+              Model().txUpdate(tx, docRef, fields);
+            },
+          );
+        },
+      );
+    } catch (err) {
+      print('Allocation ADD/REMOVE Transaction failure:' + err.toString());
+      throw err;
+    }
+
+    return data;
   }
 }

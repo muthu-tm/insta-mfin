@@ -14,7 +14,7 @@ ChitAllocations _$ChitAllocationsFromJson(Map<String, dynamic> json) {
             : ChitAllocationDetails.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..isPaid = json['is_paid'] as bool ?? false
-    ..profitAmount = json['profit_amount'] as int ?? 0
+    ..allocationAmount = json['allocation_amount'] as int ?? 0
     ..notes = json['notes'] as String ?? ''
     ..createdAt = json['created_at'] == null
         ? null
@@ -40,7 +40,7 @@ Map<String, dynamic> _$ChitAllocationsToJson(ChitAllocations instance) =>
       'customer': instance.customer,
       'allocations': instance.allocations?.map((e) => e?.toJson())?.toList(),
       'is_paid': instance.isPaid,
-      'profit_amount': instance.profitAmount,
+      'allocation_amount': instance.allocationAmount,
       'notes': instance.notes,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
