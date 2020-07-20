@@ -2,19 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/screens/chit/ViewChitCollections.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/chit/chit_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class ViewChitFund extends StatelessWidget {
+class ViewChitFund extends StatefulWidget {
   ViewChitFund(this.chit);
 
   final ChitFund chit;
 
   @override
+  _ViewChitFundState createState() => _ViewChitFundState();
+}
+
+class _ViewChitFundState extends State<ViewChitFund> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Chit - ${chit.chitID}'),
+        title: Text('Chit - ${widget.chit.chitID}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -25,9 +38,9 @@ class ViewChitFund extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 primary: false,
-                itemCount: chit.fundDetails.length,
+                itemCount: widget.chit.fundDetails.length,
                 itemBuilder: (BuildContext context, int index) {
-                  ChitFundDetails _fund = chit.fundDetails[index];
+                  ChitFundDetails _fund = widget.chit.fundDetails[index];
                   return Padding(
                     padding: EdgeInsets.all(5),
                     child: Container(
@@ -141,7 +154,7 @@ class ViewChitFund extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ViewChitCollections(
-                                          chit.chitID, _fund),
+                                          widget.chit.chitID, _fund),
                                       settings: RouteSettings(
                                           name: '/chit/collections'),
                                     ),

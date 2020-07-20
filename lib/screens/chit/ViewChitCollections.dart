@@ -120,7 +120,8 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                                       builder: (context) =>
                                           ViewChitCollectionDetails(chitColl),
                                       settings: RouteSettings(
-                                          name: '/chit/collections/collectionDetails'),
+                                          name:
+                                              '/chit/collections/collectionDetails'),
                                     ),
                                   );
                                 },

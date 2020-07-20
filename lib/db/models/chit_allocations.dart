@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/chit_allocation_details.dart';
+import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -97,6 +98,22 @@ class ChitAllocations {
       String branchName, String subBranchName, String chitID) {
     return getCollectionRef(financeID, branchName, subBranchName, chitID)
         .snapshots();
+  }
+
+  Future<List<ChitAllocations>> getChitAllocations(String financeID,
+      String branchName, String subBranchName, String chitID) async {
+    QuerySnapshot snap =
+        await getCollectionRef(financeID, branchName, subBranchName, chitID)
+            .getDocuments();
+
+    List<ChitAllocations> colls = [];
+    if (snap.documents.isNotEmpty) {
+      snap.documents.forEach((doc) {
+        colls.add(ChitAllocations.fromJson(doc.data));
+      });
+    }
+
+    return colls;
   }
 
   Future removeChitAllocation(String financeID, String branchName,

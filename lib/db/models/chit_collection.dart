@@ -343,25 +343,24 @@ class ChitCollection {
         .snapshots();
   }
 
-  Future<ChitCollection> getByCollectionNumber(
+  Future<List<ChitCollection>> getByCollectionNumber(
       String financeID,
       String branchName,
       String subBranchName,
       String chitID,
-      int cNumber,
       int chitNumber) async {
     var collectionDocs = await getCollectionRef(
             financeID, branchName, subBranchName, chitID, chitNumber)
-        .where('chit_number', isEqualTo: cNumber)
         .getDocuments();
 
-    ChitCollection coll;
+    List<ChitCollection> chits = [];
     if (collectionDocs.documents.isNotEmpty) {
-      coll = ChitCollection.fromJson(collectionDocs.documents[0].data);
-      return coll;
-    } else {
-      return null;
+      for (var doc in collectionDocs.documents) {
+        chits.add(ChitCollection.fromJson(doc.data));
+      }
     }
+
+    return chits;
   }
 
   Future<List<ChitCollection>> getAllCollections() async {

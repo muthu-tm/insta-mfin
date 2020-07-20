@@ -12,8 +12,10 @@ class ChitRequesters {
   int chitNumber;
   @JsonKey(name: 'requested_at')
   int requestedAt;
-  @JsonKey(name: 'requested_chits')
-  int requestedChits;
+  @JsonKey(name: 'notes')
+  String notes;
+  @JsonKey(name: 'is_allocated')
+  bool isAllocated;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -32,14 +34,55 @@ class ChitRequesters {
         .collection("chit_requesters");
   }
 
-  Future<void> create(bool cAlready, Map<String, dynamic> collDetails) async {
+  String getDocumentID(DateTime createdAt) {
+    return createdAt.millisecondsSinceEpoch.toString();
+  }
+
+  Future<void> create(String financeId, String branchName, String subBranchName,
+      String chitID) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
 
     try {
-      
+      await getCollectionRef(financeId, branchName, subBranchName, chitID)
+          .document(getDocumentID(this.createdAt))
+          .setData(this.toJson());
     } catch (err) {
       print('Chit Requesters CREATE failure:' + err.toString());
+      throw err;
+    }
+  }
+
+  Stream<QuerySnapshot> streamRequesters(String financeId, String branchName,
+      String subBranchName, String chitID) {
+    try {
+      return getCollectionRef(financeId, branchName, subBranchName, chitID)
+          .snapshots();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<void> update(String financeId, String branchName, String subBranchName,
+      String chitID, DateTime createdAt, Map<String, dynamic> data) async {
+    try {
+      await getCollectionRef(financeId, branchName, subBranchName, chitID)
+          .document(getDocumentID(createdAt))
+          .updateData(data);
+    } catch (err) {
+      print('Chit Requesters Update failure:' + err.toString());
+      throw err;
+    }
+  }
+
+  Future<void> remove(String financeId, String branchName, String subBranchName,
+      String chitID, DateTime createdAt) async {
+    try {
+      await getCollectionRef(financeId, branchName, subBranchName, chitID)
+          .document(getDocumentID(createdAt))
+          .delete();
+    } catch (err) {
+      print('Chit Requesters DELETE failure:' + err.toString());
       throw err;
     }
   }

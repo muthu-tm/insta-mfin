@@ -75,7 +75,7 @@ class _ChitHomeState extends State<ChitHome> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(padding: EdgeInsets.all(5)),
-              ActiveChitWidget(),
+              ActiveChitWidget(_scaffoldKey),
               Padding(padding: EdgeInsets.all(5)),
               ClosedChitWidget(),
               Padding(padding: EdgeInsets.all(35)),

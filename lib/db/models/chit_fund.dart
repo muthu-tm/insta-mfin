@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/chit_customers.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/db/models/model.dart';
@@ -183,23 +184,18 @@ class ChitFund extends Model {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getByChitID(String financeID,
-      String branchName, String subBranchName, String chitID) async {
+  Future<ChitFund> getByChitID(String chitID) async {
     QuerySnapshot snap = await getCollectionRef()
-        .where('finance_id', isEqualTo: financeID)
-        .where('branch_name', isEqualTo: branchName)
-        .where('sub_branch_name', isEqualTo: subBranchName)
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('chit_id', isEqualTo: chitID)
         .getDocuments();
 
-    List<Map<String, dynamic>> chitList = [];
-    if (snap.documents.isNotEmpty) {
-      snap.documents.forEach((chit) {
-        chitList.add(chit.data);
-      });
-    }
+    if (snap.documents.isNotEmpty)
+      return ChitFund.fromJson(snap.documents.first.data);
 
-    return chitList;
+    return null;
   }
 
   Future<List<ChitFund>> getByCustNumber(String financeID, String branchName,
@@ -257,18 +253,68 @@ class ChitFund extends Model {
         .snapshots();
   }
 
-  Future removeChit(String financeId, String branchName, String subBranchName,
-      String chitID) async {
-    DocumentReference docRef =
-        getDocumentReference(financeId, branchName, subBranchName, chitID);
+  Future<bool> isChitReceived(String chitID) async {
+    try {
+      ChitFund chit = await getByChitID(chitID);
+
+      if (chit == null) {
+        throw 'No ChitFund found for this chitID $chitID';
+      }
+
+      bool received = false;
+      for (int i = 0; i < chit.tenure; i++) {
+        if (received) break;
+
+        List<ChitCollection> colls = await ChitCollection()
+            .getByCollectionNumber(chit.financeID, chit.branchName,
+                chit.subBranchName, chit.chitID, i + 1);
+
+        for (int index = 0; index < colls.length; index++) {
+          if (colls[index].getReceived() > 0) {
+            received = true;
+            break;
+          }
+        }
+      }
+
+      return received;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future removeChit(String chitID) async {
+    DocumentReference docRef = getDocumentReference(user.primary.financeID,
+        user.primary.branchName, user.primary.subBranchName, chitID);
 
     try {
       QuerySnapshot snapshot =
-          await docRef.collection('chit_collections').getDocuments();
+          await docRef.collection("chit_requesters").getDocuments();
 
       for (int i = 0; i < snapshot.documents.length; i++) {
         await snapshot.documents[i].reference.delete();
       }
+
+      snapshot = await docRef.collection("chit_allocations").getDocuments();
+
+      for (int i = 0; i < snapshot.documents.length; i++) {
+        await snapshot.documents[i].reference.delete();
+      }
+
+      snapshot = await docRef.collection("chits").getDocuments();
+
+      for (int i = 0; i < snapshot.documents.length; i++) {
+        QuerySnapshot snap = await snapshot.documents[i].reference
+            .collection("chit_collections")
+            .getDocuments();
+        for (int i = 0; i < snap.documents.length; i++) {
+          await snap.documents[i].reference.delete();
+        }
+
+        await snapshot.documents[i].reference.delete();
+      }
+
+      await docRef.delete();
     } catch (err) {
       print('Chit Fund DELETE failure:' + err.toString());
       throw err;

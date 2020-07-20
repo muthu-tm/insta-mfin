@@ -5,7 +5,8 @@ ChitRequesters _$ChitRequestersFromJson(Map<String, dynamic> json) {
     ..chitNumber = json['chit_number'] as int
     ..custNumber = json['customer_number'] as int
     ..requestedAt = json['requested_at'] as int
-    ..requestedChits = json['requested_chits'] as int
+    ..notes = json['notes'] as String
+    ..isAllocated = json['is_allocated'] as bool
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -25,7 +26,8 @@ Map<String, dynamic> _$ChitRequestersToJson(ChitRequesters instance) =>
       'chit_number': instance.chitNumber,
       'customer_number': instance.custNumber,
       'requested_at': instance.requestedAt,
-      'requested_chits': instance.requestedChits,
+      'is_allocated': instance.isAllocated,
+      'notes': instance.notes,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };
