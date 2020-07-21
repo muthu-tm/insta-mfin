@@ -89,6 +89,14 @@ class CustController {
   Future updateCustomer(Map<String, dynamic> customerJson, int custUUID) async {
     try {
       Customer customer = Customer();
+      if (customerJson.containsKey('mobile_number') && customerJson['mobile_number'] != null) {
+        Customer cust =
+            await customer.getByMobileNumber(customerJson['mobile_number']);
+        if (cust != null) {
+          throw 'Unable to create! Found an existing customer ${customer.name} with this contact number!';
+        }
+      }
+
       String docID = customer.getDocumentID(custUUID);
       var result = await customer.updateByID(customerJson, docID);
 

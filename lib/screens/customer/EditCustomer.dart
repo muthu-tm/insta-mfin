@@ -114,6 +114,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                     ? widget.cust.mobileNumber.toString()
                                     : '',
                                 textAlign: TextAlign.start,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   prefixText: " +91 ",
                                   prefixStyle: TextStyle(
@@ -139,6 +140,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   if (value.isNotEmpty) {
                                     updatedCustomer['mobile_number'] =
                                         int.parse(value);
+                                  } else {
+                                    updatedCustomer['mobile_number'] = null;
                                   }
                                   return null;
                                 },
@@ -204,6 +207,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 validator: (value) {
                                   if (value.isNotEmpty) {
                                     updatedCustomer['customer_id'] = value;
+                                  } else {
+                                    updatedCustomer['customer_id'] = null;
                                   }
                                   return null;
                                 },

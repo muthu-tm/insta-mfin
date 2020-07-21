@@ -147,8 +147,19 @@ class ViewCustomer extends StatelessWidget {
                           Icons.phone,
                           color: CustomColors.mfinBlue,
                         ),
-                        onTap: () => UrlLauncherUtils.makePhoneCall(
-                            customer.mobileNumber),
+                        onTap: () {
+                          if (customer.mobileNumber != null) {
+                            UrlLauncherUtils.makePhoneCall(
+                                customer.mobileNumber);
+                          } else {
+                            Navigator.pop(context);
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                  "Customer doesn't have valid mobile number!",
+                                  3),
+                            );
+                          }
+                        },
                       ),
                       ListTile(
                         title: Text('Text Customer'),
@@ -156,8 +167,18 @@ class ViewCustomer extends StatelessWidget {
                           Icons.textsms,
                           color: CustomColors.mfinBlue,
                         ),
-                        onTap: () =>
-                            UrlLauncherUtils.makeSMS(customer.mobileNumber),
+                        onTap: () {
+                          if (customer.mobileNumber != null) {
+                            UrlLauncherUtils.makeSMS(customer.mobileNumber);
+                          } else {
+                            Navigator.pop(context);
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                  "Customer doesn't have valid mobile number!",
+                                  3),
+                            );
+                          }
+                        },
                       ),
                       ListTile(
                           title: Text('Delete Customer'),
