@@ -8,7 +8,7 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class Uploader {
   static void uploadImage(int type, String fileDir, String originalFile,
-      String fileName, int number, Function onUploaded) async {
+      String fileName, int id, Function onUploaded) async {
     File fileToUpload = new File(originalFile);
 
     String filePath = '$fileDir/$fileName.png';
@@ -19,17 +19,17 @@ class Uploader {
     storageTaskSnapshot.ref.getDownloadURL().then((profilePathUrl) {
       print("Image uploaded; downloadURL - " + profilePathUrl);
       if (type == 0)
-        updateUserData('profile_path_org', number, profilePathUrl);
+        updateUserData('profile_path_org', id, profilePathUrl);
       else if (type == 1)
-        updateCustData('profile_path_org', number, profilePathUrl);
+        updateCustData('profile_path_org', id, profilePathUrl);
       else if (type == 2)
-        updateFinanceData('profile_path_org', fileName, number, profilePathUrl);
+        updateFinanceData('profile_path_org', fileName, id, profilePathUrl);
 
       UserController().getCurrentUser().profilePathOrg = profilePathUrl;
     }).catchError((err) {
       Analytics.reportError({
         "type": 'image_upload_error',
-        'user_id': number,
+        'user_id': id,
         'error': err.toString()
       });
     });
@@ -43,18 +43,18 @@ class Uploader {
     reference.getDownloadURL().then((profilePathUrl) {
       print("Resized image downloadURL - " + profilePathUrl);
       if (type == 0)
-        updateUserData('profile_path', number, profilePathUrl);
+        updateUserData('profile_path', id, profilePathUrl);
       else if (type == 1)
-        updateCustData('profile_path', number, profilePathUrl);
+        updateCustData('profile_path', id, profilePathUrl);
       else if (type == 2)
-        updateFinanceData('profile_path', fileName, number, profilePathUrl);
+        updateFinanceData('profile_path', fileName, id, profilePathUrl);
 
       UserController().getCurrentUser().profilePath = profilePathUrl;
     }).catchError((err) {
       print(err.toString());
       Analytics.reportError({
         "type": 'image_resize_error',
-        'user_id': number,
+        'user_id': id,
         'error': err.toString()
       });
     });
@@ -77,16 +77,15 @@ class Uploader {
     }
   }
 
-  static void updateCustData(
-      String field, int mobileNumber, String profilePathUrl) {
+  static void updateCustData(String field, int id, String profilePathUrl) {
     try {
       Customer cust = Customer();
-      cust.setMobileNumber(mobileNumber);
+      cust.id = id;
       cust.update({field: profilePathUrl});
     } catch (err) {
       Analytics.reportError({
         "type": 'url_update_error',
-        'cust_number': mobileNumber,
+        'cust_id': id,
         'path': profilePathUrl,
         'error': err.toString()
       });

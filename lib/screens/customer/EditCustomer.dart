@@ -42,6 +42,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
 
   @override
   Widget build(BuildContext context) {
+    updatedCustomer['id'] = widget.cust.id;
     updatedCustomer['mobile_number'] = widget.cust.mobileNumber;
 
     return Scaffold(
@@ -469,8 +470,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
       CustomDialogs.actionWaiting(context, "Updating Profile");
       CustController _cc = CustController();
       updatedCustomer['address'] = updatedAddress.toJson();
-      var result =
-          await _cc.updateCustomer(updatedCustomer, widget.cust.mobileNumber);
+      var result = await _cc.updateCustomer(updatedCustomer, widget.cust.id);
 
       if (!result['is_success']) {
         Navigator.pop(context);

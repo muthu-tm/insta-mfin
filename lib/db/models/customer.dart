@@ -139,7 +139,7 @@ class Customer extends Model {
   }
 
   String getID() {
-    return getDocumentID(this.createdAt.microsecondsSinceEpoch);
+    return getDocumentID(this.id);
   }
 
   Stream<QuerySnapshot> streamAllCustomers() {
