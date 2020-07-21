@@ -157,7 +157,9 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      customer.mobileNumber.toString(),
+                      customer.mobileNumber != null
+                          ? customer.mobileNumber.toString()
+                          : "",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           fontFamily: 'Quicksand',

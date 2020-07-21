@@ -127,6 +127,10 @@ class Finance extends Model {
   }
 
   Future<List<Finance>> getFinanceByUserID(int userID) async {
+    if (userID == null) {
+      return null;
+    }
+
     List<DocumentSnapshot> docSnapshot = (await getCollectionRef()
             .where('users', arrayContains: userID)
             .where('is_active', isEqualTo: true)
