@@ -157,7 +157,8 @@ class SubBranch {
     return data;
   }
 
-  Stream<QuerySnapshot> streamAllSubBranches(String financeID, String branchName) {
+  Stream<QuerySnapshot> streamAllSubBranches(
+      String financeID, String branchName) {
     try {
       return getSubBranchCollectionRef(financeID, branchName)
           .where('is_active', isEqualTo: true)
@@ -189,6 +190,10 @@ class SubBranch {
 
   Future<List<SubBranch>> getSubBranchByUserID(
       String financeID, String branchName, int userID) async {
+    if (userID == null) {
+      return null;
+    }
+
     List<DocumentSnapshot> docSnapshot =
         (await getSubBranchCollectionRef(financeID, branchName)
                 .where('admins', arrayContains: userID)

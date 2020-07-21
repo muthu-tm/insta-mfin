@@ -5,9 +5,10 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..custName = json['customer_name'] as String
     ..financeID = json['finance_id'] as String
     ..paymentID = json['payment_id'] as String
+    ..id = json['id'] as int
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
-    ..customerNumber = json['customer_number'] as int
+    ..customerID= json['customer_id'] as int
     ..dateOfPayment = json['date_of_payment'] as int
     ..collectionStartsFrom = json['collection_starts_from'] as int
     ..settledDate = json['settled_date'] as int
@@ -52,9 +53,10 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'customer_name': instance.custName,
       'finance_id': instance.financeID,
       'payment_id': instance.paymentID,
+      'id': instance.id,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
-      'customer_number': instance.customerNumber,
+      'customer_id': instance.customerID,
       'date_of_payment': instance.dateOfPayment,
       'collection_starts_from': instance.collectionStartsFrom,
       'settled_date': instance.settledDate,

@@ -144,7 +144,7 @@ class CollectionReport {
     for (int index = 0; index < _colls.length; index++) {
       Collection _c = _colls[index];
       addRow(
-          _c.paymentID,
+          _c.payID ?? "",
           DateUtils.formatDate(
               DateTime.fromMillisecondsSinceEpoch(_c.collectionDate)),
           _c.getType(),

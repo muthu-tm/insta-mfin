@@ -128,8 +128,12 @@ class _AddCustomerState extends State<AddCustomer> {
                                 filled: true,
                               ),
                               validator: (number) {
-                                return FieldValidator.mobileValidator(
-                                    number.trim(), setContactNumber);
+                                if (number.isEmpty) {
+                                  this.number = null;
+                                } else {
+                                  this.number = int.parse(number.trim());
+                                }
+                                return null;
                               },
                             ),
                           ),
@@ -191,9 +195,10 @@ class _AddCustomerState extends State<AddCustomer> {
                               ),
                               validator: (id) {
                                 if (id.isEmpty) {
-                                  return 'Enter Customer ID';
+                                  this.id = null;
+                                } else {
+                                  this.id = id.trim();
                                 }
-                                this.id = id.trim();
                                 return null;
                               },
                             ),
@@ -446,10 +451,6 @@ class _AddCustomerState extends State<AddCustomer> {
           _date.text = DateUtils.formatDate(picked);
         },
       );
-  }
-
-  setContactNumber(String number) {
-    this.number = int.parse(number);
   }
 
   _submit() async {

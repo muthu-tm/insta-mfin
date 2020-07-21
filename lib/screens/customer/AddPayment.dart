@@ -1031,7 +1031,7 @@ class _AddPaymentState extends State<AddPayment> {
       CustomDialogs.actionWaiting(context, "Adding Payment");
       PaymentController _pc = PaymentController();
       var result = await _pc.createPayment(
-          widget.customer.mobileNumber,
+          widget.customer.id,
           widget.customer.name,
           paymentID.toString(),
           selectedDate,

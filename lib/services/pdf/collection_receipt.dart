@@ -40,7 +40,7 @@ class CollectionReceipt {
 
   Future<PdfLayoutResult> drawHeader(PdfPage page, Size pageSize, PdfGrid grid,
       Payment _p, Collection _c) async {
-    Customer _c = await Customer().getByMobileNumber(_p.customerNumber);
+    Customer _c = await Customer().getByCustomerID(_p.customerID);
 
     page.graphics.drawRectangle(
         brush: PdfSolidBrush(PdfColor(68, 138, 255)),
@@ -154,7 +154,7 @@ class CollectionReceipt {
       received += collDetails.amount;
 
       addRow(
-          _c.paymentID,
+          _c.paymentID ?? "",
           DateTime.fromMillisecondsSinceEpoch(_c.collectionDate),
           _c.collectionNumber,
           _c.collectionAmount,

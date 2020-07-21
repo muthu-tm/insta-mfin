@@ -256,7 +256,7 @@ class ViewCollection extends StatelessWidget {
 
         return new Scaffold(
           appBar: AppBar(
-            title: Text('Collection - ${_collection.customerNumber}'),
+            title: Text('View Collection'),
             backgroundColor: CustomColors.mfinBlue,
           ),
           key: _scaffoldKey,
