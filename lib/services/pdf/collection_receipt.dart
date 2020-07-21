@@ -154,7 +154,7 @@ class CollectionReceipt {
       received += collDetails.amount;
 
       addRow(
-          _c.paymentID,
+          _c.paymentID ?? "",
           DateTime.fromMillisecondsSinceEpoch(_c.collectionDate),
           _c.collectionNumber,
           _c.collectionAmount,

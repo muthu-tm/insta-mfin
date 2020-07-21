@@ -111,7 +111,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                               payment.financeID,
                                               payment.branchName,
                                               payment.subBranchName,
-                                              payment.paymentID);
+                                              payment.id);
                                           if (!result['is_success']) {
                                             Navigator.pop(context);
                                             _scaffoldKey.currentState

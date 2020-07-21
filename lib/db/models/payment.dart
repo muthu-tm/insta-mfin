@@ -24,6 +24,8 @@ class Payment extends Model {
   String subBranchName;
   @JsonKey(name: 'payment_id', nullable: true)
   String paymentID;
+  @JsonKey(name: 'id', nullable: true)
+  int id;
   @JsonKey(name: 'customer_id', nullable: true)
   int customerID;
   @JsonKey(name: 'date_of_payment', nullable: true)
@@ -89,6 +91,10 @@ class Payment extends Model {
 
   setPaymentID(String paymentID) {
     this.paymentID = paymentID;
+  }
+
+  setID(int id) {
+    this.id = id;
   }
 
   setBranchName(String branchName) {
@@ -195,8 +201,8 @@ class Payment extends Model {
   Future<int> getCollectionReceived() async {
     try {
       List<Collection> collList = await Collection()
-          .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
-              this.subBranchName, this.paymentID);
+          .getAllCollectionsForCustomerPayment(
+              this.financeID, this.branchName, this.subBranchName, this.id);
       int received = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
@@ -217,8 +223,8 @@ class Payment extends Model {
   Future<int> getTotalReceived() async {
     try {
       List<Collection> collList = await Collection()
-          .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
-              this.subBranchName, this.paymentID);
+          .getAllCollectionsForCustomerPayment(
+              this.financeID, this.branchName, this.subBranchName, this.id);
       int received = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
@@ -237,8 +243,8 @@ class Payment extends Model {
   Future<int> getTotalPending() async {
     try {
       List<Collection> collList = await Collection()
-          .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
-              this.subBranchName, this.paymentID);
+          .getAllCollectionsForCustomerPayment(
+              this.financeID, this.branchName, this.subBranchName, this.id);
       int pending = 0;
       collList.forEach((coll) {
         if (coll.type != CollectionType.DocCharge.name &&
@@ -261,7 +267,7 @@ class Payment extends Model {
           this.financeID,
           this.branchName,
           this.subBranchName,
-          this.paymentID,
+          this.id,
           CollectionType.Penalty.name);
 
       int tPenalty = 0;
@@ -281,8 +287,8 @@ class Payment extends Model {
   Future<List<int>> getAmountDetails() async {
     try {
       List<Collection> collList = await Collection()
-          .getAllCollectionsForCustomerPayment(this.financeID, this.branchName,
-              this.subBranchName, this.paymentID);
+          .getAllCollectionsForCustomerPayment(
+              this.financeID, this.branchName, this.subBranchName, this.id);
 
       int _r = 0;
       int _p = 0;
@@ -321,28 +327,28 @@ class Payment extends Model {
   String getID() {
     String value = this.financeID + this.branchName + this.subBranchName;
 
-    return HashGenerator.hmacGenerator(value, this.paymentID);
+    return HashGenerator.hmacGenerator(value, this.id.toString());
   }
 
   Query getGroupQuery() {
     return Model.db.collectionGroup('customer_payments');
   }
 
-  String getDocumentID(String financeId, String branchName,
-      String subBranchName, String paymentID) {
+  String getDocumentID(
+      String financeId, String branchName, String subBranchName, int id) {
     String value = financeId + branchName + subBranchName;
-    return HashGenerator.hmacGenerator(value, paymentID);
+    return HashGenerator.hmacGenerator(value, id.toString());
   }
 
-  DocumentReference getDocumentReference(String financeId, String branchName,
-      String subBranchName, String paymentID) {
-    return getCollectionRef().document(
-        getDocumentID(financeId, branchName, subBranchName, paymentID));
+  DocumentReference getDocumentReference(
+      String financeId, String branchName, String subBranchName, int id) {
+    return getCollectionRef()
+        .document(getDocumentID(financeId, branchName, subBranchName, id));
   }
 
   Future<bool> isExist() async {
     var branchSnap = await getDocumentReference(
-            this.financeID, this.branchName, this.subBranchName, this.paymentID)
+            this.financeID, this.branchName, this.subBranchName, this.id)
         .get();
 
     return branchSnap.exists;
@@ -354,10 +360,12 @@ class Payment extends Model {
     this.financeID = user.primary.financeID;
     this.branchName = user.primary.branchName;
     this.subBranchName = user.primary.subBranchName;
-    try {
-      bool isExist = await this.isExist();
+    this.id = this.createdAt.microsecondsSinceEpoch;
 
-      if (isExist) {
+    try {
+      Payment isExist = await this.getPaymentByID(this.paymentID);
+
+      if (isExist != null) {
         throw 'Already a Payment exist with this PAYMENT ID - ${this.paymentID}';
       } else {
         DocumentReference finDocRef = user.getFinanceDocReference();
@@ -410,7 +418,7 @@ class Payment extends Model {
                 return txCreate(
                   tx,
                   this.getDocumentReference(this.financeID, this.branchName,
-                      this.subBranchName, this.paymentID),
+                      this.subBranchName, this.id),
                   this.toJson(),
                 );
               },
@@ -443,12 +451,12 @@ class Payment extends Model {
   }
 
   Future<List<Map<String, dynamic>>> getByPaymentID(String financeID,
-      String branchName, String subBranchName, String payID) async {
+      String branchName, String subBranchName, int payID) async {
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: financeID)
         .where('branch_name', isEqualTo: branchName)
         .where('sub_branch_name', isEqualTo: subBranchName)
-        .where('payment_id', isEqualTo: payID)
+        .where('id', isEqualTo: payID)
         .getDocuments();
 
     List<Map<String, dynamic>> payList = [];
@@ -567,14 +575,15 @@ class Payment extends Model {
   }
 
   Future<Payment> getPaymentByID(String paymentID) async {
-    Map<String, dynamic> payment = await getByID(getDocumentID(
-        user.primary.financeID,
-        user.primary.branchName,
-        user.primary.subBranchName,
-        paymentID));
+    QuerySnapshot paymentDocs = await getCollectionRef()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('payment_id', isEqualTo: paymentID)
+        .getDocuments();
 
-    if (payment != null) {
-      return Payment.fromJson(payment);
+    if (paymentDocs.documents.isNotEmpty && paymentDocs.documents.length != 0) {
+      return Payment.fromJson(paymentDocs.documents.first.data);
     } else {
       return null;
     }
@@ -585,7 +594,7 @@ class Payment extends Model {
     paymentJSON['updated_at'] = DateTime.now();
 
     DocumentReference docRef = getDocumentReference(payment.financeID,
-        payment.branchName, payment.subBranchName, payment.paymentID);
+        payment.branchName, payment.subBranchName, payment.id);
 
     int amount = 0;
     int totalAmount = 0;
@@ -670,7 +679,7 @@ class Payment extends Model {
     };
 
     DocumentReference docRef = getDocumentReference(
-        this.financeID, this.branchName, this.subBranchName, this.paymentID);
+        this.financeID, this.branchName, this.subBranchName, this.id);
 
     int tReceived = await getCollectionReceived();
     if (tReceived == null)
@@ -742,7 +751,8 @@ class Payment extends Model {
                       'finance_id': this.financeID,
                       'branch_name': this.branchName,
                       'sub_branch_name': this.subBranchName,
-                      'payment_id': this.paymentID,
+                      'payment_id': this.id,
+                      "pay_id": this.paymentID,
                       'collection_amount': paymentJSON['settlement_amount'],
                       'is_paid': true,
                       'is_settled': true,
@@ -760,7 +770,7 @@ class Payment extends Model {
                             this.financeID,
                             this.branchName,
                             this.subBranchName,
-                            this.paymentID,
+                            this.id,
                             paymentJSON['settled_date']),
                         data);
                   }
@@ -771,6 +781,8 @@ class Payment extends Model {
                     'sub_branch_name': this.subBranchName,
                     'collection_amount': paymentJSON['settlement_amount'],
                     'customer_id': this.customerID,
+                    'payment_id': this.id,
+                    "pay_id": this.paymentID,
                     'collection_date': paymentJSON['settled_date'],
                     'collected_on': [paymentJSON['settled_date']],
                     'collections': [collDetails],
@@ -786,7 +798,7 @@ class Payment extends Model {
                           this.financeID,
                           this.branchName,
                           this.subBranchName,
-                          this.paymentID,
+                          this.id,
                           paymentJSON['settled_date']),
                       data);
                 }
@@ -831,7 +843,7 @@ class Payment extends Model {
   }
 
   Future removePayment(String financeId, String branchName,
-      String subBranchName, String paymentID) async {
+      String subBranchName, int paymentID) async {
     DocumentReference docRef =
         getDocumentReference(financeId, branchName, subBranchName, paymentID);
 

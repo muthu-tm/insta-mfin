@@ -160,7 +160,7 @@ class CollectionBookTab extends StatelessWidget {
                     SizedBox(
                       height: 30,
                       child: Text(
-                        coll.paymentID ?? " - ",
+                        coll.payID ?? " - ",
                         style: TextStyle(
                             color: textColor,
                             fontFamily: 'Georgia',
@@ -208,7 +208,7 @@ class CollectionBookTab extends StatelessWidget {
                           ),
                         ),
                         trailing: Text(
-                          coll.paymentID,
+                          coll.payID ?? "",
                           style: TextStyle(
                             fontSize: 17,
                             fontFamily: 'Georgia',

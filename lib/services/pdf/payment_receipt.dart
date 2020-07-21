@@ -144,7 +144,7 @@ class PayReceipt {
 
     List<Collection> _colls = await Collection()
         .getAllCollectionsForCustomerPayment(
-            _p.financeID, _p.branchName, _p.subBranchName, _p.paymentID);
+            _p.financeID, _p.branchName, _p.subBranchName, _p.id);
 
     for (int i = 0; i < _colls.length; i++) {
       Collection coll = _colls[i];

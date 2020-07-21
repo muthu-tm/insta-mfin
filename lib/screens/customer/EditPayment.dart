@@ -196,7 +196,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
-                              initialValue: widget.payment.paymentID,
+                              initialValue: widget.payment.paymentID ?? "",
                               decoration: InputDecoration(
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,

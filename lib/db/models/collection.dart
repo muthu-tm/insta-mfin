@@ -18,8 +18,10 @@ class Collection {
   String subBranchName;
   @JsonKey(name: 'customer_id', nullable: true)
   int customerID;
+  @JsonKey(name: 'pay_id', nullable: true)
+  String payID;
   @JsonKey(name: 'payment_id', nullable: true)
-  String paymentID;
+  int paymentID;
   @JsonKey(name: 'collection_number', nullable: true)
   int collectionNumber;
   @JsonKey(name: 'collection_date', defaultValue: '')
@@ -57,7 +59,11 @@ class Collection {
     this.customerID = customerID;
   }
 
-  setPaymentID(String paymentID) {
+  setPayID(String payID) {
+    this.payID = payID;
+  }
+
+  setPaymentID(int paymentID) {
     this.paymentID = paymentID;
   }
 
@@ -221,7 +227,7 @@ class Collection {
   Map<String, dynamic> toJson() => _$CollectionToJson(this);
 
   CollectionReference getCollectionRef(String financeId, String branchName,
-      String subBranchName, String paymentID) {
+      String subBranchName, int paymentID) {
     return Payment()
         .getDocumentReference(financeId, branchName, subBranchName, paymentID)
         .collection("customer_collections");
@@ -236,7 +242,7 @@ class Collection {
   }
 
   DocumentReference getDocumentReference(String financeId, String branchName,
-      String subBranchName, String paymentID, int collectionDate) {
+      String subBranchName, int paymentID, int collectionDate) {
     return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .document(getDocumentID(collectionDate));
   }
@@ -245,7 +251,7 @@ class Collection {
       String financeId,
       String branchName,
       String subBranchName,
-      String paymentID,
+      int paymentID,
       int collectionDate) {
     return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .document(getDocumentID(collectionDate + 4));
@@ -315,6 +321,7 @@ class Collection {
                     "is_paid": true,
                     "is_settled": false,
                     "customer_id": this.customerID,
+                    "pay_id": this.payID,
                     "payment_id": this.paymentID,
                     "collected_on": [collDetails['collected_on']],
                     "collection_date": collDetails['collected_on'],
@@ -500,13 +507,13 @@ class Collection {
   }
 
   Stream<QuerySnapshot> streamCollectionsForPayment(String financeId,
-      String branchName, String subBranchName, String paymentID) {
+      String branchName, String subBranchName, int paymentID) {
     return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .snapshots();
   }
 
   Stream<QuerySnapshot> streamUpcomingForPayment(String financeId,
-      String branchName, String subBranchName, String paymentID) {
+      String branchName, String subBranchName, int paymentID) {
     return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .where('collection_date',
             isGreaterThan: DateUtils.getUTCDateEpoch(DateTime.now()))
@@ -514,7 +521,7 @@ class Collection {
   }
 
   Stream<QuerySnapshot> streamTodaysForPayment(String financeId,
-      String branchName, String subBranchName, String paymentID) {
+      String branchName, String subBranchName, int paymentID) {
     return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .where('collection_date',
             isEqualTo: DateUtils.getUTCDateEpoch(DateTime.now()))
@@ -523,7 +530,7 @@ class Collection {
   }
 
   Stream<QuerySnapshot> streamPastForPayment(String financeId,
-      String branchName, String subBranchName, String paymentID) {
+      String branchName, String subBranchName, int paymentID) {
     return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .where('collection_date',
             isLessThan: DateUtils.getUTCDateEpoch(DateTime.now()))
@@ -531,7 +538,7 @@ class Collection {
   }
 
   Future<Collection> getByCollectionNumber(String financeID, String branchName,
-      String subBranchName, String paymentID, int cNumber) async {
+      String subBranchName, int paymentID, int cNumber) async {
     var collectionDocs =
         await getCollectionRef(financeID, branchName, subBranchName, paymentID)
             .where('collection_number', isEqualTo: cNumber)
@@ -547,12 +554,8 @@ class Collection {
     }
   }
 
-  Future<List<Collection>> getByCollectionType(
-      String financeID,
-      String branchName,
-      String subBranchName,
-      String paymentID,
-      int type) async {
+  Future<List<Collection>> getByCollectionType(String financeID,
+      String branchName, String subBranchName, int paymentID, int type) async {
     var collectionDocs =
         await getCollectionRef(financeID, branchName, subBranchName, paymentID)
             .where('type', isEqualTo: type)
@@ -569,7 +572,7 @@ class Collection {
   }
 
   Future<List<Collection>> getAllCollectionsForCustomerPayment(String financeId,
-      String branchName, String subBranchName, String paymentID) async {
+      String branchName, String subBranchName, int paymentID) async {
     var collectionDocs =
         await getCollectionRef(financeId, branchName, subBranchName, paymentID)
             .getDocuments();
@@ -598,7 +601,7 @@ class Collection {
   }
 
   Future<Collection> getCollectionByID(String financeId, String branchName,
-      String subBranchName, String paymentID, String docID) async {
+      String subBranchName, int paymentID, String docID) async {
     DocumentSnapshot snapshot =
         await getCollectionRef(financeId, branchName, subBranchName, paymentID)
             .document(docID)
@@ -615,7 +618,7 @@ class Collection {
       String financeId,
       String branchName,
       String subBranchName,
-      String paymentID,
+      int paymentID,
       int collectionDate) {
     return getCollectionRef(financeId, branchName, subBranchName, paymentID)
         .document(getDocumentID(collectionDate))
@@ -623,7 +626,7 @@ class Collection {
   }
 
   Future<void> update(String financeId, String branchName, String subBranchName,
-      String paymentID, String docID, Map<String, dynamic> collJSON) async {
+      int paymentID, String docID, Map<String, dynamic> collJSON) async {
     collJSON['updated_at'] = DateTime.now();
 
     await getCollectionRef(financeId, branchName, subBranchName, paymentID)
@@ -635,7 +638,7 @@ class Collection {
       String financeId,
       String branchName,
       String subBranchName,
-      String paymentID,
+      int paymentID,
       int collectionDate,
       bool isPaid,
       bool isAdd,
@@ -707,6 +710,7 @@ class Collection {
                     "is_settled": false,
                     "customer_id": _c.customerID,
                     "payment_id": _c.paymentID,
+                    "pay_id": _c.payID,
                     "collected_on": [data['collected_on']],
                     "collection_date": data['collected_on'],
                     "type": 4, // Penalty

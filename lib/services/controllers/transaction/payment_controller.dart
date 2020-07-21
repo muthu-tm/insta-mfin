@@ -59,17 +59,6 @@ class PaymentController {
     }
   }
 
-  Future<Payment> getPaymentByID(String financeId, String branchName,
-      String subBranchName, String paymentID) async {
-    try {
-      Payment payment = Payment();
-      return await payment.getPaymentByID(paymentID);
-    } catch (err) {
-      print("Error while retrieving Payment $paymentID}: " + err.toString());
-      return null;
-    }
-  }
-
   Future<List<Payment>> getAllPaymentsForCustomer(int custID) async {
     try {
       List<Payment> payments = await Payment().getAllPaymentsForCustomer(custID);
@@ -162,7 +151,7 @@ class PaymentController {
           payment.financeID,
           payment.branchName,
           payment.subBranchName,
-          payment.paymentID,
+          payment.id,
           paymentJSON['settled_date'].toString());
 
       if (coll != null && coll.getReceived() > 0) {
@@ -184,7 +173,7 @@ class PaymentController {
     String financeId,
     String branchName,
     String subBranchName,
-    String paymentID,
+    int paymentID,
   ) async {
     try {
       await Payment()
