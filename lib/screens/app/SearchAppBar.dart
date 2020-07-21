@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomRadioModel.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 
+import '../../app_localizations.dart';
+
 class SearchAppBar extends StatefulWidget {
   @override
   _SearchAppBarState createState() => new _SearchAppBarState();
@@ -197,8 +199,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       children: <Widget>[
                         Text(
                           inOutList[2].isSelected == true
-                              ? "No Payment found!"
-                              : "No Cusomters Found!",
+                              ? AppLocalizations.of(context).translate('no_payment_found')
+                              : AppLocalizations.of(context).translate('no_customers_found'),
                           textAlign: TextAlign.center,
                           style: new TextStyle(
                             color: CustomColors.mfinAlertRed,
@@ -208,7 +210,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                         ),
                         new Divider(),
                         Text(
-                          "Please try with different Search Key!",
+                          AppLocalizations.of(context).translate('different_search_key'),
                           textAlign: TextAlign.center,
                           style: new TextStyle(
                             color: CustomColors.mfinBlue,

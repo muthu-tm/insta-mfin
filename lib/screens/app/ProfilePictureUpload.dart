@@ -6,6 +6,8 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/storage/image_uploader.dart';
 
+import '../../app_localizations.dart';
+
 class ProfilePictureUpload extends StatefulWidget {
   ProfilePictureUpload(this.type, this.picPath, this.fileName, this.id);
 
@@ -42,8 +44,10 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
             Spacer(),
             Text(
               widget.type == 0
-                  ? 'Set Profile Photo'
-                  : widget.type == 1 ? 'Customer Photo' : "Finance Logo",
+                  ? AppLocalizations.of(context).translate('set_profile_photo')
+                  : widget.type == 1
+                      ? AppLocalizations.of(context).translate('customer_photo')
+                      : AppLocalizations.of(context).translate('finance_logo'),
               style: TextStyle(
                   color: CustomColors.mfinBlack,
                   fontSize: 25.0,
@@ -92,7 +96,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 padding: EdgeInsets.all(5),
                                 color: CustomColors.mfinBlue,
                                 child: Text(
-                                  "Select Image",
+                                  AppLocalizations.of(context).translate('select_image'),
                                   style: TextStyle(
                                       color: CustomColors.mfinButtonGreen,
                                       fontSize: 14.0,
@@ -110,7 +114,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 padding: EdgeInsets.all(5),
                                 color: CustomColors.mfinAlertRed,
                                 child: Text(
-                                  "Cancel",
+                                  AppLocalizations.of(context).translate('cancel'),
                                   style: TextStyle(
                                       color: CustomColors.mfinWhite,
                                       fontSize: 14.0,
@@ -151,7 +155,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 padding: EdgeInsets.all(5),
                                 color: CustomColors.mfinBlue,
                                 child: Text(
-                                  "Change",
+                                  AppLocalizations.of(context).translate('change'),
                                   style: TextStyle(
                                       color: CustomColors.mfinButtonGreen,
                                       fontSize: 14.0,
@@ -169,7 +173,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 padding: EdgeInsets.all(5),
                                 color: CustomColors.mfinBlue,
                                 child: Text(
-                                  "Upload",
+                                  AppLocalizations.of(context).translate('upload'),
                                   style: TextStyle(
                                       color: CustomColors.mfinButtonGreen,
                                       fontSize: 14.0,
@@ -186,7 +190,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                         FlatButton(
                           color: CustomColors.mfinAlertRed,
                           child: Text(
-                            "Cancel",
+                            AppLocalizations.of(context).translate('cancel'),
                             style: TextStyle(
                                 color: CustomColors.mfinWhite,
                                 fontSize: 14.0,

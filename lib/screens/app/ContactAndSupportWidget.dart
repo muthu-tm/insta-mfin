@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 
-Widget contactAndSupportDialog() {
+import '../../app_localizations.dart';
+
+Widget contactAndSupportDialog(context) {
   return Container(
     height: 350,
     width: 300,
@@ -21,7 +23,7 @@ Widget contactAndSupportDialog() {
               color: CustomColors.mfinBlue,
             ),
             title: Text(
-              "HELP & SUPPORT",
+              AppLocalizations.of(context).translate('help_and_support'),
               style: TextStyle(
                   color: CustomColors.mfinPositiveGreen,
                   fontSize: 18.0,
@@ -42,14 +44,14 @@ Widget contactAndSupportDialog() {
             ),
           SizedBox(height: 15),
           Text(
-            "Get Lost? Need Some Help?",
+            AppLocalizations.of(context).translate('lost_need_help'),
             style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold),
           ),
           Text(
-            "We are happy to help you!",
+            AppLocalizations.of(context).translate('happy_to_help'),
             style: TextStyle(
                 color: CustomColors.mfinPositiveGreen,
                 fontSize: 14.0,
@@ -57,7 +59,7 @@ Widget contactAndSupportDialog() {
           ),
           SizedBox(height: 40),
           Text(
-            "Contact Us",
+            AppLocalizations.of(context).translate('contact_us'),
             style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 20.0,
@@ -85,7 +87,7 @@ Widget contactAndSupportDialog() {
                 label: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text(
-                    'Email',
+                    AppLocalizations.of(context).translate('email'),
                     style: TextStyle(
                       color: CustomColors.mfinButtonGreen,
                       fontSize: 18.0,
@@ -113,7 +115,7 @@ Widget contactAndSupportDialog() {
                 label: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text(
-                    'Phone',
+                    AppLocalizations.of(context).translate('phone'),
                     style: TextStyle(
                       color: CustomColors.mfinButtonGreen,
                       fontSize: 18.0,

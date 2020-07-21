@@ -7,6 +7,8 @@ import 'package:instamfin/screens/transaction/TransactionHome.dart';
 import 'package:instamfin/screens/settings/SettingsScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import '../../app_localizations.dart';
+
 Widget bottomBar(BuildContext context) {
   return Container(
     height: 70,
@@ -37,7 +39,7 @@ Widget bottomBar(BuildContext context) {
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
-                    "Customers",
+                    AppLocalizations.of(context).translate('customers'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 10,
@@ -73,7 +75,7 @@ Widget bottomBar(BuildContext context) {
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
-                    "Transactions",
+                    AppLocalizations.of(context).translate('transactions'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 9,
@@ -109,7 +111,7 @@ Widget bottomBar(BuildContext context) {
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
-                    "Chit Fund",
+                    AppLocalizations.of(context).translate('chit_fund'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 10,
@@ -145,7 +147,7 @@ Widget bottomBar(BuildContext context) {
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
-                    "Reports",
+                    AppLocalizations.of(context).translate('reports'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 10,
@@ -181,7 +183,7 @@ Widget bottomBar(BuildContext context) {
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
-                    "Statistics",
+                    AppLocalizations.of(context).translate('statistics'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 10,
@@ -217,7 +219,7 @@ Widget bottomBar(BuildContext context) {
                     color: CustomColors.mfinButtonGreen,
                   ),
                   Text(
-                    "Settings",
+                    AppLocalizations.of(context).translate('settings'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 10,
