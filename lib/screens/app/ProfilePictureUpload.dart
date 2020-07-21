@@ -7,12 +7,12 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/storage/image_uploader.dart';
 
 class ProfilePictureUpload extends StatefulWidget {
-  ProfilePictureUpload(this.type, this.picPath, this.fileName, this.number);
+  ProfilePictureUpload(this.type, this.picPath, this.fileName, this.id);
 
   final int type; // 0 - User, 1 - Customer, 2 - Finance
   final String picPath;
   final String fileName;
-  final int number;
+  final int id;
 
   @override
   _ProfilePictureUploadState createState() => _ProfilePictureUploadState();
@@ -225,7 +225,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
             : widget.type == 1 ? "cust_profile_org" : "finance_profile_org",
         path,
         widget.fileName,
-        widget.number,
+        widget.id,
         () {
           if (widget.type == 0) {
             Navigator.pop(context);

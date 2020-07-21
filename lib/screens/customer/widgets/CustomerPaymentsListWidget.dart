@@ -10,15 +10,15 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 
 class CustomerPaymentsListWidget extends StatelessWidget {
-  CustomerPaymentsListWidget(this.number, this._scaffoldKey);
+  CustomerPaymentsListWidget(this.id, this._scaffoldKey);
 
-  final int number;
+  final int id;
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: Payment().streamPayments(number),
+      stream: Payment().streamPayments(id),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
@@ -111,7 +111,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                               payment.financeID,
                                               payment.branchName,
                                               payment.subBranchName,
-                                              payment.paymentID);
+                                              payment.id);
                                           if (!result['is_success']) {
                                             Navigator.pop(context);
                                             _scaffoldKey.currentState

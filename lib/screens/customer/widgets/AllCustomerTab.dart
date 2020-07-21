@@ -48,15 +48,33 @@ class AllCustomerTab extends StatelessWidget {
                         caption: 'Phone',
                         color: CustomColors.mfinPositiveGreen,
                         icon: Icons.call,
-                        onTap: () =>
-                            UrlLauncherUtils.makePhoneCall(cust.mobileNumber),
+                        onTap: () {
+                          if (cust.mobileNumber != null) {
+                            UrlLauncherUtils.makePhoneCall(cust.mobileNumber);
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                  "Customer doesn't have valid mobile number!",
+                                  3),
+                            );
+                          }
+                        },
                       ),
                       IconSlideAction(
                         caption: 'Message',
                         color: CustomColors.mfinGrey,
                         icon: Icons.message,
-                        onTap: () =>
-                            UrlLauncherUtils.makeSMS(cust.mobileNumber),
+                        onTap: () {
+                          if (cust.mobileNumber != null) {
+                            UrlLauncherUtils.makeSMS(cust.mobileNumber);
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                  "Customer doesn't have valid mobile number!",
+                                  3),
+                            );
+                          }
+                        },
                       ),
                     ],
                     secondaryActions: <Widget>[
@@ -118,10 +136,8 @@ class AllCustomerTab extends StatelessWidget {
                                     ),
                                     onPressed: () async {
                                       CustController _cc = CustController();
-                                      var result = await _cc.removeCustomer(
-                                        cust.mobileNumber,
-                                        false,
-                                      );
+                                      var result =
+                                          await _cc.removeCustomer(cust.id);
                                       if (result == null) {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(
@@ -132,9 +148,8 @@ class AllCustomerTab extends StatelessWidget {
                                         );
                                       } else {
                                         Navigator.pop(context);
-                                        print("Customer removed successfully");
                                         _scaffoldKey.currentState.showSnackBar(
-                                          CustomSnackBar.errorSnackBar(
+                                          CustomSnackBar.successSnackBar(
                                               "Customer removed successfully",
                                               2),
                                         );

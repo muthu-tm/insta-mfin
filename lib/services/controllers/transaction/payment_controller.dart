@@ -6,7 +6,7 @@ import 'package:instamfin/services/utils/response_utils.dart';
 
 class PaymentController {
   Future createPayment(
-      int custNumber,
+      int custID,
       String custName,
       String paymentID,
       int dateOfPay,
@@ -28,7 +28,7 @@ class PaymentController {
     try {
       UserController _uc = UserController();
       Payment pay = Payment();
-      pay.setCustomerNumber(custNumber);
+      pay.setCustomerID(custID);
       pay.setCustomerName(custName);
       pay.setPaymentID(paymentID);
       pay.setDOP(dateOfPay);
@@ -50,7 +50,7 @@ class PaymentController {
       pay.setIsSettled(false);
       pay.setCSF(collectionDate);
 
-      await pay.create(custNumber);
+      await pay.create();
 
       return CustomResponse.getSuccesReponse(
           "Created new Payment successfully");
@@ -59,20 +59,9 @@ class PaymentController {
     }
   }
 
-  Future<Payment> getPaymentByID(String financeId, String branchName,
-      String subBranchName, String paymentID) async {
+  Future<List<Payment>> getAllPaymentsForCustomer(int custID) async {
     try {
-      Payment payment = Payment();
-      return await payment.getPaymentByID(paymentID);
-    } catch (err) {
-      print("Error while retrieving Payment $paymentID}: " + err.toString());
-      return null;
-    }
-  }
-
-  Future<List<Payment>> getAllPaymentsForCustomer(int custNumber) async {
-    try {
-      List<Payment> payments = await Payment().getAllPaymentsForCustomer(custNumber);
+      List<Payment> payments = await Payment().getAllPaymentsForCustomer(custID);
 
       if (payments == null) {
         return [];
@@ -147,10 +136,10 @@ class PaymentController {
       await Payment().updatePayment(payment, paymentJSON);
 
       return CustomResponse.getSuccesReponse(
-          "Updated ${payment.customerNumber} customer's Payment");
+          "Updated ${payment.custName} customer's Payment");
     } catch (err) {
       print(
-          "Error while updating ${payment.customerNumber}customer's Payment: " +
+          "Error while updating ${payment.custName}customer's Payment: " +
               err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -162,7 +151,7 @@ class PaymentController {
           payment.financeID,
           payment.branchName,
           payment.subBranchName,
-          payment.paymentID,
+          payment.id,
           paymentJSON['settled_date'].toString());
 
       if (coll != null && coll.getReceived() > 0) {
@@ -174,7 +163,7 @@ class PaymentController {
       await payment.settlement(paymentJSON);
 
       return CustomResponse.getSuccesReponse(
-          "Updated ${payment.customerNumber} customer's Payment");
+          "Updated ${payment.custName} customer's Payment");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -184,7 +173,7 @@ class PaymentController {
     String financeId,
     String branchName,
     String subBranchName,
-    String paymentID,
+    int paymentID,
   ) async {
     try {
       await Payment()

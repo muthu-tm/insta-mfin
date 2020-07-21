@@ -131,7 +131,7 @@ Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
 Widget getPaymentDetails(Payment payment) {
   return StreamBuilder(
     stream: Collection().streamCollectionsForPayment(payment.financeID,
-        payment.branchName, payment.subBranchName, payment.paymentID),
+        payment.branchName, payment.subBranchName, payment.id),
     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> paidSnap) {
       Widget child;
 

@@ -42,7 +42,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
 
   @override
   Widget build(BuildContext context) {
-    updatedCustomer['mobile_number'] = widget.cust.mobileNumber;
+    updatedCustomer['id'] = widget.cust.id;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -110,12 +110,18 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
-                                readOnly: true,
-                                initialValue:
-                                    widget.cust.mobileNumber.toString(),
+                                initialValue: widget.cust.mobileNumber != null
+                                    ? widget.cust.mobileNumber.toString()
+                                    : '',
                                 textAlign: TextAlign.start,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                  labelText: 'Phone number',
+                                  prefixText: " +91 ",
+                                  prefixStyle: TextStyle(
+                                    fontSize: 16.0,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  labelText: 'Mobile number',
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -127,9 +133,18 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
+                                validator: (value) {
+                                  if (value.isNotEmpty) {
+                                    updatedCustomer['mobile_number'] =
+                                        int.parse(value);
+                                  } else {
+                                    updatedCustomer['mobile_number'] = null;
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                           ],
@@ -190,10 +205,11 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   filled: true,
                                 ),
                                 validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Enter Customer ID';
+                                  if (value.isNotEmpty) {
+                                    updatedCustomer['customer_id'] = value;
+                                  } else {
+                                    updatedCustomer['customer_id'] = null;
                                   }
-                                  updatedCustomer['customer_id'] = value;
                                   return null;
                                 },
                               ),
@@ -469,8 +485,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
       CustomDialogs.actionWaiting(context, "Updating Profile");
       CustController _cc = CustController();
       updatedCustomer['address'] = updatedAddress.toJson();
-      var result =
-          await _cc.updateCustomer(updatedCustomer, widget.cust.mobileNumber);
+      var result = await _cc.updateCustomer(updatedCustomer, widget.cust.id);
 
       if (!result['is_success']) {
         Navigator.pop(context);

@@ -31,24 +31,24 @@ class CollectionListWidget extends StatelessWidget {
     return StreamBuilder(
       stream: fetchAll
           ? Collection().streamCollectionsForPayment(_payment.financeID,
-              _payment.branchName, _payment.subBranchName, _payment.paymentID)
+              _payment.branchName, _payment.subBranchName, _payment.id)
           : status == 0
               ? Collection().streamUpcomingForPayment(
                   _payment.financeID,
                   _payment.branchName,
                   _payment.subBranchName,
-                  _payment.paymentID)
+                  _payment.id)
               : status == 3
                   ? Collection().streamTodaysForPayment(
                       _payment.financeID,
                       _payment.branchName,
                       _payment.subBranchName,
-                      _payment.paymentID)
+                      _payment.id)
                   : Collection().streamPastForPayment(
                       _payment.financeID,
                       _payment.branchName,
                       _payment.subBranchName,
-                      _payment.paymentID),
+                      _payment.id),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 

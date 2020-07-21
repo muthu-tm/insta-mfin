@@ -14,7 +14,9 @@ class Customer extends Model {
 
   @JsonKey(name: 'customer_id', nullable: true)
   String customerID;
-  @JsonKey(name: 'mobile_number', nullable: false)
+  @JsonKey(name: 'id', nullable: true)
+  int id;
+  @JsonKey(name: 'mobile_number', nullable: true)
   int mobileNumber;
   @JsonKey(name: 'customer_name', nullable: true)
   String name;
@@ -128,16 +130,16 @@ class Customer extends Model {
     return _customerCollRef;
   }
 
-  String getDocumentID(int mobileNumber) {
+  String getDocumentID(int custUUID) {
     return HashGenerator.hmacGenerator(
         user.primary.financeID +
             user.primary.branchName +
             user.primary.subBranchName,
-        mobileNumber.toString());
+        custUUID.toString());
   }
 
   String getID() {
-    return getDocumentID(this.mobileNumber);
+    return getDocumentID(this.id);
   }
 
   Stream<QuerySnapshot> streamAllCustomers() {
@@ -204,14 +206,14 @@ class Customer extends Model {
     return customers;
   }
 
-  Future<int> getStatus(int number) async {
+  Future<int> getStatus(int custUUID) async {
     try {
       QuerySnapshot allSnap = await Payment()
           .getGroupQuery()
           .where('finance_id', isEqualTo: user.primary.financeID)
           .where('branch_name', isEqualTo: user.primary.branchName)
           .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
-          .where('customer_number', isEqualTo: number)
+          .where('customer_id', isEqualTo: custUUID)
           .getDocuments();
 
       if (allSnap.documents.length == 0) return 0; //New
@@ -237,8 +239,8 @@ class Customer extends Model {
     }
   }
 
-  Future<List<Payment>> getPayments(int number) async {
-    var snap = await Payment().getAllPaymentsForCustomer(number);
+  Future<List<Payment>> getPayments(int custUUID) async {
+    var snap = await Payment().getAllPaymentsForCustomer(custUUID);
 
     if (snap.length == 0) {
       return null;
@@ -253,6 +255,21 @@ class Customer extends Model {
         .where('branch_name', isEqualTo: user.primary.branchName)
         .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
         .where('mobile_number', isEqualTo: number)
+        .getDocuments();
+
+    if (snap.documents.isEmpty) {
+      return null;
+    }
+
+    return Customer.fromJson(snap.documents.first.data);
+  }
+
+  Future<Customer> getByCustomerID(int custID) async {
+    QuerySnapshot snap = await getCollectionRef()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('id', isEqualTo: custID)
         .getDocuments();
 
     if (snap.documents.isEmpty) {
@@ -313,19 +330,13 @@ class Customer extends Model {
   create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
+    this.id = this.createdAt.microsecondsSinceEpoch;
 
-    dynamic result = await super.add(this.toJson());
-    print(result);
+    await super.add(this.toJson());
   }
 
-  replace() async {
-    var user = await getByID("");
-    dynamic result = await super.upsert(this.toJson(), user['created_at']);
-    print(result);
-  }
-
-  remove(int number) async {
-    String docID = getDocumentID(number);
+  remove(int custUUID) async {
+    String docID = getDocumentID(custUUID);
     await delete(docID);
   }
 }

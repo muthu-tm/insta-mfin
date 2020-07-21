@@ -77,8 +77,7 @@ class CustController {
       await for (var event in stream) {
         for (var doc in event.documents) {
           Customer cust = Customer.fromJson(doc.data);
-          if (2 == await cust.getStatus(cust.mobileNumber))
-            customers.add(cust);
+          if (2 == await cust.getStatus(cust.id)) customers.add(cust);
         }
         yield customers;
       }
@@ -87,47 +86,43 @@ class CustController {
     }
   }
 
-  Future updateCustomer(
-      Map<String, dynamic> customerJson, int mobileNumber) async {
+  Future updateCustomer(Map<String, dynamic> customerJson, int custUUID) async {
     try {
       Customer customer = Customer();
-      String docID = customer.getDocumentID(mobileNumber);
+      if (customerJson.containsKey('mobile_number') && customerJson['mobile_number'] != null) {
+        Customer cust =
+            await customer.getByMobileNumber(customerJson['mobile_number']);
+        if (cust != null) {
+          throw 'Unable to create! Found an existing customer ${customer.name} with this contact number!';
+        }
+      }
+
+      String docID = customer.getDocumentID(custUUID);
       var result = await customer.updateByID(customerJson, docID);
 
       return CustomResponse.getSuccesReponse(result);
     } catch (err) {
-      Analytics.reportError({
-        "type": 'customer_update_error',
-        "cust_number": mobileNumber,
-        'error': err.toString()
-      });
+      Analytics.reportError(
+          {"type": 'customer_update_error', 'error': err.toString()});
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
-  Future removeCustomer(int mobileNumber, bool isForce) async {
+  Future removeCustomer(int custUUID) async {
     try {
       Customer customer = Customer();
-      if (!isForce) {
-        var payments = await customer.getPayments(mobileNumber);
+      var payments = await customer.getPayments(custUUID);
 
-        if (payments != null) {
-          return null;
-        }
+      if (payments != null) {
+        return null;
       }
 
-      await customer.remove(mobileNumber);
-
-      NUtils.financeNotify(
-          "", "Customer Removed!", "Customer $mobileNumber removed!");
+      await customer.remove(custUUID);
 
       return CustomResponse.getSuccesReponse("Successfully removed customer!");
     } catch (err) {
-      Analytics.reportError({
-        "type": 'customer_remove_error',
-        "cust_number": mobileNumber,
-        'error': err.toString()
-      });
+      Analytics.reportError(
+          {"type": 'customer_remove_error', 'error': err.toString()});
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

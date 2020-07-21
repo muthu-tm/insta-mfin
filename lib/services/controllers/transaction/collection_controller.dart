@@ -7,8 +7,9 @@ class CollectionController {
     String financeID,
     String branchName,
     String subBranchName,
-    int custNumber,
-    String paymentID,
+    int custID,
+    int paymentID,
+    String payID,
     int cNumber,
     int type,
     int collAmount,
@@ -36,8 +37,9 @@ class CollectionController {
       coll.setSubBranchName(subBranchName);
       coll.setCollectionAmount(collAmount);
       coll.setIsPaid(isPaid);
-      coll.setCustomerNumber(custNumber);
+      coll.setCustomerID(custID);
       coll.setPaymentID(paymentID);
+      coll.setPayID(payID);
       coll.setcollectionNumber(cNumber);
       coll.setType(type);
       coll.setCollectionDate(collDate);
@@ -57,7 +59,7 @@ class CollectionController {
   }
 
   Future<Collection> getCollectionByID(String financeId, String branchName,
-      String subBranchName, String paymentID, String collID) async {
+      String subBranchName, int paymentID, String collID) async {
     try {
       Collection collection = Collection();
       return await collection.getCollectionByID(
@@ -68,7 +70,7 @@ class CollectionController {
   }
 
   Future<List<Collection>> getAllCollectionsForPayment(String financeId,
-      String branchName, String subBranchName, String paymentID) async {
+      String branchName, String subBranchName, int paymentID) async {
     try {
       List<Collection> payments = await Collection()
           .getAllCollectionsForCustomerPayment(
@@ -141,7 +143,7 @@ class CollectionController {
       String financeId,
       String branchName,
       String subBranchName,
-      String paymentID,
+      int paymentID,
       String collID,
       Map<String, dynamic> collectionJSON) async {
     try {
@@ -159,7 +161,7 @@ class CollectionController {
     String financeId,
     String branchName,
     String subBranchName,
-    String paymentID,
+    int paymentID,
     int collDate,
     bool isPaid,
     bool isAdd,

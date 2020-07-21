@@ -204,6 +204,10 @@ class Branch {
   }
 
   Future<List<Branch>> getBranchByUserID(String financeID, int userID) async {
+    if (userID == null) {
+      return null;
+    }
+
     List<DocumentSnapshot> docSnapshot =
         (await getBranchCollectionRef(financeID)
                 .where('users', arrayContains: userID)

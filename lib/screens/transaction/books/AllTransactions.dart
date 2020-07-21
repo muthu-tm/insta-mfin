@@ -158,7 +158,7 @@ class AllTransactionsBuilder extends StatelessWidget {
                                   ),
                                 ),
                                 trailing: Text(
-                                  payment.customerNumber.toString(),
+                                  payment.custName,
                                   style: TextStyle(
                                     fontSize: 17,
                                     color: CustomColors.mfinBlue,

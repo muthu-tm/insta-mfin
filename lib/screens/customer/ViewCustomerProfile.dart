@@ -51,7 +51,9 @@ class ViewCustomerProfile extends StatelessWidget {
                           Flexible(
                             child: TextFormField(
                               readOnly: true,
-                              initialValue: customer.mobileNumber.toString(),
+                              initialValue: customer.mobileNumber != null
+                                  ? customer.mobileNumber.toString()
+                                  : "",
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Mobile Number',

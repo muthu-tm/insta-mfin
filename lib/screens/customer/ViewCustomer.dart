@@ -147,8 +147,19 @@ class ViewCustomer extends StatelessWidget {
                           Icons.phone,
                           color: CustomColors.mfinBlue,
                         ),
-                        onTap: () => UrlLauncherUtils.makePhoneCall(
-                            customer.mobileNumber),
+                        onTap: () {
+                          if (customer.mobileNumber != null) {
+                            UrlLauncherUtils.makePhoneCall(
+                                customer.mobileNumber);
+                          } else {
+                            Navigator.pop(context);
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                  "Customer doesn't have valid mobile number!",
+                                  3),
+                            );
+                          }
+                        },
                       ),
                       ListTile(
                         title: Text('Text Customer'),
@@ -156,8 +167,18 @@ class ViewCustomer extends StatelessWidget {
                           Icons.textsms,
                           color: CustomColors.mfinBlue,
                         ),
-                        onTap: () =>
-                            UrlLauncherUtils.makeSMS(customer.mobileNumber),
+                        onTap: () {
+                          if (customer.mobileNumber != null) {
+                            UrlLauncherUtils.makeSMS(customer.mobileNumber);
+                          } else {
+                            Navigator.pop(context);
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                  "Customer doesn't have valid mobile number!",
+                                  3),
+                            );
+                          }
+                        },
                       ),
                       ListTile(
                           title: Text('Delete Customer'),
@@ -175,8 +196,8 @@ class ViewCustomer extends StatelessWidget {
                                 CustomDialogs.actionWaiting(
                                     context, "Removing Customer");
                                 CustController _cc = CustController();
-                                var result = await _cc.removeCustomer(
-                                    customer.mobileNumber, false);
+                                var result =
+                                    await _cc.removeCustomer(customer.id);
                                 if (result == null) {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
@@ -258,8 +279,8 @@ class ViewCustomer extends StatelessWidget {
                                       customer.getProfilePicPath(),
                                       customer.financeID +
                                           '_' +
-                                          customer.mobileNumber.toString(),
-                                      customer.mobileNumber),
+                                          customer.id.toString(),
+                                      customer.id),
                                 );
                               },
                             );
@@ -316,9 +337,8 @@ class ViewCustomer extends StatelessWidget {
                                             customer.getProfilePicPath(),
                                             customer.financeID +
                                                 '_' +
-                                                customer.mobileNumber
-                                                    .toString(),
-                                            customer.mobileNumber),
+                                                customer.id.toString(),
+                                            customer.id),
                                       );
                                     },
                                   );
@@ -347,14 +367,16 @@ class ViewCustomer extends StatelessWidget {
                 ),
               ),
               Text(
-                customer.mobileNumber.toString(),
+                customer.mobileNumber != null
+                    ? customer.mobileNumber.toString()
+                    : "",
                 style: TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold,
                   color: CustomColors.mfinBlue,
                 ),
               ),
-              CustomerPaymentsListWidget(customer.mobileNumber, _scaffoldKey),
+              CustomerPaymentsListWidget(customer.id, _scaffoldKey),
               if (_user.accPreferences.chitEnabled)
                 CustomerChitsWidget(customer.mobileNumber),
               Padding(

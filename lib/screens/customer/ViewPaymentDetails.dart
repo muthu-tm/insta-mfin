@@ -128,7 +128,7 @@ class ViewPaymentDetails extends StatelessWidget {
                           child: TextFormField(
                             readOnly: true,
                             textAlign: TextAlign.start,
-                            initialValue: payment.paymentID,
+                            initialValue: payment.paymentID ?? "",
                             decoration: InputDecoration(
                               labelText: 'Payment ID',
                               floatingLabelBehavior:

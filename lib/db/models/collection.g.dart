@@ -11,8 +11,9 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
-    ..customerNumber = json['customer_number'] as int
-    ..paymentID = json['payment_id'] as String
+    ..customerID = json['customer_id'] as int
+    ..paymentID = json['payment_id'] as int
+    ..payID = json['pay_id'] as String
     ..collectionNumber = json['collection_number'] as int
     ..collectionDate = json['collection_date'] as int
     ..collectedOn = (json['collected_on'] as List)
@@ -43,8 +44,9 @@ Map<String, dynamic> _$CollectionToJson(Collection instance) =>
       'finance_id': instance.financeID,
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
-      'customer_number': instance.customerNumber,
+      'customer_id': instance.customerID,
       'payment_id': instance.paymentID,
+      'pay_id': instance.payID,
       'collection_number': instance.collectionNumber,
       'collection_date': instance.collectionDate,
       'collected_on': instance.collectedOn == null ? [] : instance.collectedOn,

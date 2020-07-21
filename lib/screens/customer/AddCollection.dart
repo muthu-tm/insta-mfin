@@ -158,7 +158,7 @@ class _AddCollectionState extends State<AddCollection> {
                       ),
                       title: TextFormField(
                         readOnly: true,
-                        initialValue: widget.payment.paymentID.toString(),
+                        initialValue: widget.payment.paymentID ?? "",
                         textAlign: TextAlign.end,
                         decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -658,7 +658,7 @@ class _AddCollectionState extends State<AddCollection> {
             widget.payment.financeID,
             widget.payment.branchName,
             widget.payment.subBranchName,
-            widget.payment.paymentID,
+            widget.payment.id,
             cNumber);
 
         if (res != null) {
@@ -675,7 +675,7 @@ class _AddCollectionState extends State<AddCollection> {
                 widget.payment.financeID,
                 widget.payment.branchName,
                 widget.payment.subBranchName,
-                widget.payment.paymentID);
+                widget.payment.id);
 
         int cAmount = 0;
         allColl.forEach((c) {
@@ -705,8 +705,7 @@ class _AddCollectionState extends State<AddCollection> {
       bool isPaid = false;
       if (int.parse(_aCollectedController.text) > 0) {
         int cAmount = int.parse(_aCollectedController.text);
-        if(cAmount >= collAmount)
-          isPaid = true;
+        if (cAmount >= collAmount) isPaid = true;
         collDetails['amount'] = cAmount;
         collDetails['collected_from'] = widget.payment.custName;
         collDetails['collected_by'] = _user.name;
@@ -722,7 +721,8 @@ class _AddCollectionState extends State<AddCollection> {
           widget.payment.financeID,
           widget.payment.branchName,
           widget.payment.subBranchName,
-          widget.payment.customerNumber,
+          widget.payment.customerID,
+          widget.payment.id,
           widget.payment.paymentID,
           cNumber,
           type,

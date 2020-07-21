@@ -171,45 +171,6 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              // FlatButton.icon(
-                              //   onPressed: () async {
-                              //     CustomDialogs.actionWaiting(
-                              //         context, "Updating...");
-                              //     try {
-                              //       await ChitAllocationController()
-                              //           .updateAllocationDetails(
-                              //               chitAlloc.financeID,
-                              //               chitAlloc.branchName,
-                              //               chitAlloc.subBranchName,
-                              //               chitAlloc.chitID,
-                              //               chitAlloc.chitNumber,
-                              //               true,
-                              //               true, {
-                              //         'given_on': DateUtils.getUTCDateEpoch(
-                              //             DateTime.now()),
-                              //         'amount': chitAlloc.allocationAmount -
-                              //             chitAlloc.getTotalPaid(),
-                              //         'transferred_mode': 0,
-                              //         'given_to': '',
-                              //         'given_by': _user.name,
-                              //         'added_by': _user.mobileNumber,
-                              //         'created_at': DateTime.now()
-                              //       });
-                              //       Navigator.pop(context);
-                              //       _scaffoldKey.currentState.showSnackBar(
-                              //           CustomSnackBar.successSnackBar(
-                              //               "'Marked As Allocated' successfully",
-                              //               2));
-                              //     } catch (err) {
-                              //       Navigator.pop(context);
-                              //       _scaffoldKey.currentState.showSnackBar(
-                              //           CustomSnackBar.errorSnackBar(
-                              //               "Error, Unable to update now!", 2));
-                              //     }
-                              //   },
-                              //   icon: Icon(Icons.edit),
-                              //   label: Text("Mark As Given"),
-                              // ),
                               FlatButton.icon(
                                 onPressed: () async {
                                   CustomDialogs.actionWaiting(

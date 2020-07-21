@@ -200,6 +200,10 @@ class ChitFund extends Model {
 
   Future<List<ChitFund>> getByCustNumber(String financeID, String branchName,
       String subBranchName, int custNumber) async {
+    if (custNumber == null) {
+      return [];
+    }
+
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: financeID)
         .where('branch_name', isEqualTo: branchName)
@@ -227,6 +231,10 @@ class ChitFund extends Model {
   }
 
   Future<List<ChitFund>> getAllChitsForCustomer(int number) async {
+    if (number == null) {
+      return [];
+    }
+
     var chitDocs = await getCollectionRef()
         .where('finance_id', isEqualTo: user.primary.financeID)
         .where('branch_name', isEqualTo: user.primary.branchName)

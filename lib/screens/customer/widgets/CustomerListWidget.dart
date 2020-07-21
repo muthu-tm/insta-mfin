@@ -42,16 +42,35 @@ class CustomerListWidget extends StatelessWidget {
                         caption: 'Phone',
                         color: CustomColors.mfinPositiveGreen,
                         icon: Icons.call,
-                        onTap: () => UrlLauncherUtils.makePhoneCall(
-                            snapshot.data[index].mobileNumber),
+                        onTap: () {
+                          if (snapshot.data[index].mobileNumber != null) {
+                            UrlLauncherUtils.makePhoneCall(
+                                snapshot.data[index].mobileNumber);
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(
+                              CustomSnackBar.errorSnackBar(
+                                  "Customer doesn't have valid mobile number!",
+                                  3),
+                            );
+                          }
+                        },
                       ),
                       IconSlideAction(
-                        caption: 'Message',
-                        color: CustomColors.mfinGrey,
-                        icon: Icons.message,
-                        onTap: () => UrlLauncherUtils.makeSMS(
-                            snapshot.data[index].mobileNumber),
-                      ),
+                          caption: 'Message',
+                          color: CustomColors.mfinGrey,
+                          icon: Icons.message,
+                          onTap: () {
+                            if (snapshot.data[index].mobileNumber != null) {
+                              UrlLauncherUtils.makeSMS(
+                                  snapshot.data[index].mobileNumber);
+                            } else {
+                              _scaffoldKey.currentState.showSnackBar(
+                                CustomSnackBar.errorSnackBar(
+                                    "Customer doesn't have valid mobile number!",
+                                    3),
+                              );
+                            }
+                          }),
                     ],
                     secondaryActions: <Widget>[
                       IconSlideAction(
@@ -114,9 +133,7 @@ class CustomerListWidget extends StatelessWidget {
                                     onPressed: () async {
                                       CustController _cc = CustController();
                                       var result = await _cc.removeCustomer(
-                                        snapshot.data[index].mobileNumber,
-                                        false,
-                                      );
+                                          snapshot.data[index].id);
                                       if (result == null) {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(

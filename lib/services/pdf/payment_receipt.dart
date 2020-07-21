@@ -38,7 +38,7 @@ class PayReceipt {
 
   Future<PdfLayoutResult> drawHeader(
       PdfPage page, Size pageSize, PdfGrid grid, Payment _p) async {
-    Customer _c = await Customer().getByMobileNumber(_p.customerNumber);
+    Customer _c = await Customer().getByCustomerID(_p.customerID);
 
     page.graphics.drawRectangle(
         brush: PdfSolidBrush(PdfColor(68, 138, 255)),
@@ -144,7 +144,7 @@ class PayReceipt {
 
     List<Collection> _colls = await Collection()
         .getAllCollectionsForCustomerPayment(
-            _p.financeID, _p.branchName, _p.subBranchName, _p.paymentID);
+            _p.financeID, _p.branchName, _p.subBranchName, _p.id);
 
     for (int i = 0; i < _colls.length; i++) {
       Collection coll = _colls[i];
