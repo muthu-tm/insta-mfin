@@ -316,8 +316,7 @@ class ViewCustomer extends StatelessWidget {
                                             customer.getProfilePicPath(),
                                             customer.financeID +
                                                 '_' +
-                                                customer.id
-                                                    .toString(),
+                                                customer.id.toString(),
                                             customer.id),
                                       );
                                     },
@@ -347,7 +346,9 @@ class ViewCustomer extends StatelessWidget {
                 ),
               ),
               Text(
-                customer.mobileNumber.toString(),
+                customer.mobileNumber != null
+                    ? customer.mobileNumber.toString()
+                    : "",
                 style: TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold,
