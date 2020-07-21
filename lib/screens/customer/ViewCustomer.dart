@@ -355,7 +355,7 @@ class ViewCustomer extends StatelessWidget {
                   color: CustomColors.mfinBlue,
                 ),
               ),
-              CustomerPaymentsListWidget(customer.mobileNumber, _scaffoldKey),
+              CustomerPaymentsListWidget(customer.id, _scaffoldKey),
               if (_user.accPreferences.chitEnabled)
                 CustomerChitsWidget(customer.mobileNumber),
               Padding(

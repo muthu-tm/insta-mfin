@@ -43,7 +43,6 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
   @override
   Widget build(BuildContext context) {
     updatedCustomer['id'] = widget.cust.id;
-    updatedCustomer['mobile_number'] = widget.cust.mobileNumber;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -111,12 +110,17 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
-                                readOnly: true,
-                                initialValue:
-                                    widget.cust.mobileNumber.toString(),
+                                initialValue: widget.cust.mobileNumber != null
+                                    ? widget.cust.mobileNumber.toString()
+                                    : '',
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
-                                  labelText: 'Phone number',
+                                  prefixText: " +91 ",
+                                  prefixStyle: TextStyle(
+                                    fontSize: 16.0,
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  labelText: 'Mobile number',
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -128,9 +132,16 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                       borderSide: BorderSide(
                                           color: CustomColors
                                               .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinLightGrey,
+                                  fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
+                                validator: (value) {
+                                  if (value.isNotEmpty) {
+                                    updatedCustomer['mobile_number'] =
+                                        int.parse(value);
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                           ],
@@ -191,10 +202,9 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   filled: true,
                                 ),
                                 validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Enter Customer ID';
+                                  if (value.isNotEmpty) {
+                                    updatedCustomer['customer_id'] = value;
                                   }
-                                  updatedCustomer['customer_id'] = value;
                                   return null;
                                 },
                               ),
