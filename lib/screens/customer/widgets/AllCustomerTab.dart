@@ -118,10 +118,8 @@ class AllCustomerTab extends StatelessWidget {
                                     ),
                                     onPressed: () async {
                                       CustController _cc = CustController();
-                                      var result = await _cc.removeCustomer(
-                                        cust.mobileNumber,
-                                        false,
-                                      );
+                                      var result =
+                                          await _cc.removeCustomer(cust.id);
                                       if (result == null) {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(

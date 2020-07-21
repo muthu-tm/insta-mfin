@@ -24,8 +24,8 @@ class Payment extends Model {
   String subBranchName;
   @JsonKey(name: 'payment_id', nullable: true)
   String paymentID;
-  @JsonKey(name: 'customer_number', nullable: true)
-  int customerNumber;
+  @JsonKey(name: 'customer_id', nullable: true)
+  int customerID;
   @JsonKey(name: 'date_of_payment', nullable: true)
   int dateOfPayment;
   @JsonKey(name: 'total_amount', nullable: true)
@@ -99,8 +99,8 @@ class Payment extends Model {
     this.subBranchName = subBranchName;
   }
 
-  setCustomerNumber(int number) {
-    this.customerNumber = number;
+  setCustomerID(int custID) {
+    this.customerID = custID;
   }
 
   setTotalAmount(int amount) {
@@ -348,7 +348,7 @@ class Payment extends Model {
     return branchSnap.exists;
   }
 
-  Future create(int number) async {
+  Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
     this.financeID = user.primary.financeID;
@@ -461,22 +461,22 @@ class Payment extends Model {
     return payList;
   }
 
-  Stream<QuerySnapshot> streamPayments(int number) {
+  Stream<QuerySnapshot> streamPayments(int customerID) {
     return getCollectionRef()
         .where('finance_id', isEqualTo: user.primary.financeID)
         .where('branch_name', isEqualTo: user.primary.branchName)
         .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
-        .where('customer_number', isEqualTo: number)
+        .where('customer_id', isEqualTo: customerID)
         .orderBy('date_of_payment', descending: true)
         .snapshots();
   }
 
-  Future<List<Payment>> getAllPaymentsForCustomer(int number) async {
+  Future<List<Payment>> getAllPaymentsForCustomer(int customerID) async {
     var paymentDocs = await getCollectionRef()
         .where('finance_id', isEqualTo: user.primary.financeID)
         .where('branch_name', isEqualTo: user.primary.branchName)
         .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
-        .where('customer_number', isEqualTo: number)
+        .where('customer_id', isEqualTo: customerID)
         .getDocuments();
 
     List<Payment> payments = [];
@@ -746,7 +746,7 @@ class Payment extends Model {
                       'collection_amount': paymentJSON['settlement_amount'],
                       'is_paid': true,
                       'is_settled': true,
-                      'customer_number': this.customerNumber,
+                      'customer_id': this.customerID,
                       'collection_date': paymentJSON['settled_date'],
                       'collected_on': [paymentJSON['settled_date']],
                       'collections': [collDetails],
@@ -770,7 +770,7 @@ class Payment extends Model {
                     'branch_name': this.branchName,
                     'sub_branch_name': this.subBranchName,
                     'collection_amount': paymentJSON['settlement_amount'],
-                    'customer_number': this.customerNumber,
+                    'customer_id': this.customerID,
                     'collection_date': paymentJSON['settled_date'],
                     'collected_on': [paymentJSON['settled_date']],
                     'collections': [collDetails],

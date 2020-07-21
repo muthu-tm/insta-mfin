@@ -175,8 +175,8 @@ class ViewCustomer extends StatelessWidget {
                                 CustomDialogs.actionWaiting(
                                     context, "Removing Customer");
                                 CustController _cc = CustController();
-                                var result = await _cc.removeCustomer(
-                                    customer.mobileNumber, false);
+                                var result =
+                                    await _cc.removeCustomer(customer.id);
                                 if (result == null) {
                                   Navigator.pop(context);
                                   Navigator.pop(context);

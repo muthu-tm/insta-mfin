@@ -199,7 +199,7 @@ class CollectionBookTab extends StatelessWidget {
                       height: 25,
                       child: ListTile(
                         leading: Text(
-                          "Number",
+                          "Pay ID",
                           style: TextStyle(
                             fontSize: 16,
                             fontFamily: 'Georgia',
@@ -208,7 +208,7 @@ class CollectionBookTab extends StatelessWidget {
                           ),
                         ),
                         trailing: Text(
-                          coll.customerNumber.toString(),
+                          coll.paymentID,
                           style: TextStyle(
                             fontSize: 17,
                             fontFamily: 'Georgia',

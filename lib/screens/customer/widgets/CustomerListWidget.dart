@@ -114,9 +114,7 @@ class CustomerListWidget extends StatelessWidget {
                                     onPressed: () async {
                                       CustController _cc = CustController();
                                       var result = await _cc.removeCustomer(
-                                        snapshot.data[index].mobileNumber,
-                                        false,
-                                      );
+                                          snapshot.data[index].id);
                                       if (result == null) {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(
