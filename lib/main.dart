@@ -1,11 +1,14 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:syncfusion_flutter_core/core.dart';
+
+import 'package:instamfin/app_localizations.dart';
 
 void main() {
   SyncfusionLicense.registerLicense(
@@ -37,6 +40,24 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('ta', 'IN'),
+      ],
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode &&
+              supportedLocale.countryCode == locale.countryCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
       navigatorObservers: <NavigatorObserver>[observer],
       home: AuthPage(),
     );

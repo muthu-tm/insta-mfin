@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/app_localizations.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/update_app.dart';
 import 'package:instamfin/screens/home/LoginPage.dart';
@@ -202,7 +203,7 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       child: new Center(
                         child: new Text(
-                          'LOGIN',
+                          AppLocalizations.of(context).translate('auth_page_login_text'),
                           style: new TextStyle(
                             fontSize: 18.0,
                             fontFamily: 'Georgia',

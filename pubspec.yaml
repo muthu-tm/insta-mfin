@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   firebase_auth: ^0.15.5+3
   cloud_firestore: ^0.13.4+2
@@ -70,6 +72,8 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - images/icons/logo.png
+    - lang/en.json
+    - lang/ta.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
