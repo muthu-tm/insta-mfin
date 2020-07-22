@@ -73,6 +73,32 @@ class ViewCustomerProfile extends StatelessWidget {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: customer.customerID,
+                              textAlign: TextAlign.start,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                labelText: 'Customer ID',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinLightGrey,
+                                filled: true,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -82,11 +108,11 @@ class ViewCustomerProfile extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              initialValue: customer.name,
+                              initialValue: customer.firstName,
                               textAlign: TextAlign.start,
                               readOnly: true,
                               decoration: InputDecoration(
-                                labelText: 'Customer name',
+                                labelText: 'First name',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -108,11 +134,11 @@ class ViewCustomerProfile extends StatelessWidget {
                           ),
                           Flexible(
                             child: TextFormField(
-                              initialValue: customer.customerID,
+                              initialValue: customer.lastName,
                               textAlign: TextAlign.start,
                               readOnly: true,
                               decoration: InputDecoration(
-                                labelText: 'Customer ID',
+                                labelText: 'Last Name',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(

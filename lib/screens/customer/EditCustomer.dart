@@ -6,7 +6,6 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
 class EditCustomerProfile extends StatefulWidget {
@@ -47,7 +46,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Edit - ${widget.cust.name}'),
+        title: Text('Edit - ${widget.cust.firstName}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -137,48 +136,15 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   filled: true,
                                 ),
                                 validator: (value) {
-                                  if (value.isNotEmpty) {
-                                    updatedCustomer['mobile_number'] =
-                                        int.parse(value);
-                                  } else {
-                                    updatedCustomer['mobile_number'] = null;
+                                  if (widget.cust.mobileNumber !=
+                                      int.parse(value)) {
+                                    if (value.isNotEmpty) {
+                                      updatedCustomer['mobile_number'] =
+                                          int.parse(value);
+                                    } else {
+                                      updatedCustomer['mobile_number'] = null;
+                                    }
                                   }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: TextFormField(
-                                initialValue: widget.cust.name,
-                                textAlign: TextAlign.start,
-                                decoration: InputDecoration(
-                                  labelText: 'Customer name',
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  labelStyle: TextStyle(
-                                    color: CustomColors.mfinBlue,
-                                  ),
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 3.0, horizontal: 10.0),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: CustomColors
-                                              .mfinFadedButtonGreen)),
-                                  fillColor: CustomColors.mfinWhite,
-                                  filled: true,
-                                ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Enter Customer Name';
-                                  }
-                                  updatedCustomer['customer_name'] = value;
                                   return null;
                                 },
                               ),
@@ -209,6 +175,73 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                     updatedCustomer['customer_id'] = value;
                                   } else {
                                     updatedCustomer['customer_id'] = null;
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: TextFormField(
+                                initialValue: widget.cust.firstName,
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'First Name',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Enter Customer Name';
+                                  }
+                                  updatedCustomer['first_name'] = value;
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Flexible(
+                              child: TextFormField(
+                                initialValue: widget.cust.lastName,
+                                textAlign: TextAlign.start,
+                                decoration: InputDecoration(
+                                  labelText: 'Last Name',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  labelStyle: TextStyle(
+                                    color: CustomColors.mfinBlue,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 3.0, horizontal: 10.0),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: CustomColors
+                                              .mfinFadedButtonGreen)),
+                                  fillColor: CustomColors.mfinWhite,
+                                  filled: true,
+                                ),
+                                validator: (value) {
+                                  if (value.isNotEmpty) {
+                                    updatedCustomer['last_name'] = value;
+                                  } else {
+                                    updatedCustomer['last_name'] = "";
                                   }
                                   return null;
                                 },
@@ -431,7 +464,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   if (val.trim().isEmpty) {
                                     updatedCustomer['guarantied_by'] = '';
                                   } else {
-                                    updatedCustomer['guarantied_by'] = val.trim();
+                                    updatedCustomer['guarantied_by'] =
+                                        val.trim();
                                   }
                                   return null;
                                 },

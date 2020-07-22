@@ -407,9 +407,9 @@ class ViewPaymentDetails extends StatelessWidget {
                           child: TextFormField(
                             readOnly: true,
                             textAlign: TextAlign.start,
-                            initialValue: payment.interestRate.toString(),
+                            initialValue: payment.interestAmount.toString(),
                             decoration: InputDecoration(
-                              labelText: 'Rate of interest',
+                              labelText: 'Interest Amount',
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle:

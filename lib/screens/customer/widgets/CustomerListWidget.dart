@@ -106,7 +106,7 @@ class CustomerListWidget extends StatelessWidget {
                                   textAlign: TextAlign.start,
                                 ),
                                 content: Text(
-                                    'Are you sure to remove ${snapshot.data[index].name} Customer?'),
+                                    'Are you sure to remove ${snapshot.data[index].firstName} ${snapshot.data[index].lastName} Customer?'),
                                 actions: <Widget>[
                                   FlatButton(
                                     color: CustomColors.mfinButtonGreen,

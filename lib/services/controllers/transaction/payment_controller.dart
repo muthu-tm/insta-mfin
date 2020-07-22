@@ -22,7 +22,7 @@ class PaymentController {
       int docCharge,
       int surcharge,
       int rCommission,
-      double iRate,
+      int iAmount,
       String givenBy,
       String notes) async {
     try {
@@ -45,7 +45,7 @@ class PaymentController {
       pay.setDocumentCharge(docCharge);
       pay.setSurcharge(surcharge);
       pay.setCommission(rCommission);
-      pay.setInterestRate(iRate);
+      pay.setInterestAmount(iAmount);
       pay.setNotes(notes);
       pay.setIsSettled(false);
       pay.setCSF(collectionDate);

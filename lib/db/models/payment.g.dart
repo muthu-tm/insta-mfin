@@ -23,7 +23,7 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
             ?.map((e) => e == null ? null : e as int)
             ?.toList() ??
         []
-    ..interestRate = (json['interest_rate'] as num)?.toDouble()
+    ..interestAmount= json['interest_amount'] as int
     ..collectionAmount = json['collection_amount'] as int
     ..alreadyCollectedAmount = json['already_collected_amount'] as int
     ..transferredMode = json['transferred_mode'] as int
@@ -74,7 +74,7 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'collection_days': instance.collectionDays,
       'already_collected_amount': instance.alreadyCollectedAmount,
       'transferred_mode': instance.transferredMode,
-      'interest_rate': instance.interestRate ?? 0,
+      'interest_amount': instance.interestAmount ?? 0,
       'collection_amount': instance.collectionAmount,
       'is_settled': instance.isSettled,
       'given_by': instance.givenBy ?? '',

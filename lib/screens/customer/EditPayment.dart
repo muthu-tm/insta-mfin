@@ -19,6 +19,8 @@ class _EditPaymentState extends State<EditPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  TextEditingController principalAmountController = TextEditingController();
+
   String selectedCollectionModeID = "0";
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
@@ -53,6 +55,7 @@ class _EditPaymentState extends State<EditPayment> {
   void initState() {
     super.initState();
     selectedCollectionModeID = widget.payment.collectionMode.toString();
+    principalAmountController.text = widget.payment.principalAmount.toString();
 
     _date.text =
         DateUtils.getFormattedDateFromEpoch(widget.payment.dateOfPayment);
@@ -584,10 +587,10 @@ class _EditPaymentState extends State<EditPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               initialValue:
-                                  widget.payment.interestRate.toString(),
+                                  widget.payment.interestAmount.toString(),
                               decoration: InputDecoration(
-                                hintText: 'Rate in 0.00%',
-                                labelText: 'Rate of interest',
+                                hintText: 'Interest Amount',
+                                labelText: 'Interest Amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -600,15 +603,27 @@ class _EditPaymentState extends State<EditPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                int tAmount =
+                                    updatedPayment.containsKey('total_amount')
+                                        ? updatedPayment['total_amount']
+                                        : widget.payment.totalAmount;
+
+                                int iAmount =
+                                    tAmount > 0 ? tAmount - int.parse(val) : 0;
+                                setState(() {
+                                  principalAmountController.text =
+                                      iAmount.toString();
+                                });
+                              },
                               validator: (iRate) {
                                 if (iRate.trim() !=
-                                    widget.payment.interestRate.toString()) {
+                                    widget.payment.interestAmount.toString()) {
                                   if (iRate.trim().isEmpty) {
-                                    updatedPayment['interest_rate'] =
-                                        double.parse('0');
+                                    updatedPayment['interest_amount'] = 0;
                                   } else {
-                                    updatedPayment['interest_rate'] =
-                                        double.parse(iRate.trim());
+                                    updatedPayment['interest_amount'] =
+                                        int.parse(iRate.trim());
                                   }
                                 }
 
@@ -627,8 +642,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue:
-                                  widget.payment.principalAmount.toString(),
+                              controller: principalAmountController,
                               decoration: InputDecoration(
                                 hintText: 'Principal amount',
                                 labelText: 'Principal amount',

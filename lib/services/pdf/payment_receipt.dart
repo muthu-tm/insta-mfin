@@ -76,7 +76,7 @@ class PayReceipt {
         format.format(DateTime.fromMillisecondsSinceEpoch(_p.dateOfPayment));
     final Size contentSize = contentFont.measureString(payID);
     String address =
-        'Bill To: \r\n\r\n${_c.name}, \r\n\r\n${_c.mobileNumber}\r\n\r\n${_c.address.street}\r\n\r\n${_c.address.city}';
+        'Bill To: \r\n\r\n${_c.firstName} ${_c.lastName}, \r\n\r\n${_c.mobileNumber}\r\n\r\n${_c.address.street}\r\n\r\n${_c.address.city}';
 
     PdfTextElement(text: payID, font: contentFont).draw(
         page: page,

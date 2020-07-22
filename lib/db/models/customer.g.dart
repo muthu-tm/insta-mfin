@@ -5,7 +5,8 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
     ..customerID = json['customer_id'] as String ?? ''
     ..id = json['id'] as int
     ..mobileNumber = json['mobile_number'] as int
-    ..name = json['customer_name'] as String
+    ..firstName = json['first_name'] as String ?? ''
+    ..lastName = json['last_name'] as String ?? ''
     ..gender = json['gender'] as String
     ..address = json['address'] == null
         ? null
@@ -39,7 +40,8 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'customer_id': instance.customerID ?? '',
       'id': instance.id ?? instance.createdAt.microsecondsSinceEpoch,
       'mobile_number': instance.mobileNumber,
-      'customer_name': instance.name ?? '',
+      'first_name': instance.firstName ?? '',
+      'last_name': instance.lastName ?? '',
       'gender': instance.gender ?? '',
       'profile_path_org': instance.profilePathOrg ?? '',
       'profile_path': instance.profilePath ?? '',

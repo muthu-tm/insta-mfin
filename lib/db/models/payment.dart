@@ -50,8 +50,8 @@ class Payment extends Model {
   int collectionMode;
   @JsonKey(name: 'collection_days', nullable: true)
   List<int> collectionDays;
-  @JsonKey(name: 'interest_rate', nullable: true)
-  double interestRate;
+  @JsonKey(name: 'interest_amount', nullable: true)
+  int interestAmount;
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;
   @JsonKey(name: 'collection_starts_from', nullable: true)
@@ -153,8 +153,8 @@ class Payment extends Model {
     this.alreadyCollectedAmount = collectedAmount;
   }
 
-  setInterestRate(double iRate) {
-    this.interestRate = iRate;
+  setInterestAmount(int iAmount) {
+    this.interestAmount= iAmount;
   }
 
   setAddedBy(int mobileNumber) {

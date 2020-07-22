@@ -18,8 +18,10 @@ class Customer extends Model {
   int id;
   @JsonKey(name: 'mobile_number', nullable: true)
   int mobileNumber;
-  @JsonKey(name: 'customer_name', nullable: true)
-  String name;
+  @JsonKey(name: 'first_name', nullable: true)
+  String firstName;
+  @JsonKey(name: 'last_name', nullable: true)
+  String lastName;
   @JsonKey(name: 'gender', nullable: true)
   String gender;
   @JsonKey(name: 'address', nullable: true)
@@ -65,8 +67,12 @@ class Customer extends Model {
     this.gender = gender;
   }
 
-  setName(String name) {
-    this.name = name;
+  setFirstName(String fName) {
+    this.firstName = fName;
+  }
+
+  setLastName(String lName) {
+    this.lastName = lName;
   }
 
   setAge(int age) {

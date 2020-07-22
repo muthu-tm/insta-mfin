@@ -21,7 +21,8 @@ class _AddCustomerState extends State<AddCustomer> {
   TextEditingController _date = TextEditingController();
   int selectedDate = DateUtils.getUTCDateEpoch(DateTime.now());
 
-  String name = "";
+  String firstname = "";
+  String lastname = "";
   String id = "";
   int number;
   String guarantiedBy;
@@ -137,40 +138,6 @@ class _AddCustomerState extends State<AddCustomer> {
                               },
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              keyboardType: TextInputType.text,
-                              textCapitalization: TextCapitalization.sentences,
-                              initialValue: name,
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Customer name',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              validator: (name) =>
-                                  FieldValidator.customerNameValidator(
-                                      name, setCustomerNameState),
-                            ),
-                          ),
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
@@ -198,6 +165,72 @@ class _AddCustomerState extends State<AddCustomer> {
                                   this.id = null;
                                 } else {
                                   this.id = id.trim();
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.sentences,
+                              initialValue: firstname,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'First name',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                              ),
+                              validator: (name) =>
+                                  FieldValidator.customerNameValidator(
+                                      name, setCustomerNameState),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: lastname,
+                              keyboardType: TextInputType.text,
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                labelText: 'Last name',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                              ),
+                              validator: (lName) {
+                                if (lName.isEmpty) {
+                                  this.lastname = "";
+                                } else {
+                                  this.lastname = lName.trim();
                                 }
                                 return null;
                               },
@@ -459,8 +492,8 @@ class _AddCustomerState extends State<AddCustomer> {
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Customer!");
       CustController _cc = CustController();
-      var result = await _cc.createCustomer(name, id, gender, profession,
-          number, selectedDate, address, age, guarantiedBy);
+      var result = await _cc.createCustomer(firstname, lastname, id, gender,
+          profession, number, selectedDate, address, age, guarantiedBy);
 
       if (!result['is_success']) {
         Navigator.pop(context);
@@ -484,7 +517,7 @@ class _AddCustomerState extends State<AddCustomer> {
 
   setCustomerNameState(name) {
     setState(() {
-      this.name = name.trim();
+      this.firstname = name.trim();
     });
   }
 }
