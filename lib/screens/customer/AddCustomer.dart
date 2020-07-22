@@ -24,7 +24,7 @@ class _AddCustomerState extends State<AddCustomer> {
   String name = "";
   String id = "";
   int number;
-  int guarantiedBy;
+  String guarantiedBy;
   int age = 0;
   String profession = "";
   String gender;
@@ -394,7 +394,7 @@ class _AddCustomerState extends State<AddCustomer> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Guarantee by',
@@ -414,9 +414,9 @@ class _AddCustomerState extends State<AddCustomer> {
                               ),
                               validator: (val) {
                                 if (val.trim().isNotEmpty) {
-                                  this.guarantiedBy = int.parse(val);
+                                  this.guarantiedBy = val;
                                 } else {
-                                  this.guarantiedBy = 0;
+                                  this.guarantiedBy = '';
                                 }
                                 return null;
                               },

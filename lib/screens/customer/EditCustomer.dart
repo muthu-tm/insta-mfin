@@ -430,11 +430,11 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 validator: (val) {
                                   if (val.trim().isEmpty) {
                                     updatedCustomer['guarantied_by'] = '';
-                                    return null;
                                   } else {
-                                    return FieldValidator.mobileValidator(
-                                        val.trim(), setGuarantiedBy);
+                                    return updatedCustomer['guarantied_by'] =
+                                        val.trim();
                                   }
+                                  return null;
                                 },
                               ),
                             ),

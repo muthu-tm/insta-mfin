@@ -19,7 +19,7 @@ class CustController {
       int joinedAt,
       Address address,
       int age,
-      int guarantiedBy) async {
+      String guarantiedBy) async {
     try {
       Customer cust = Customer();
       User user = uc.getCurrentUser();
@@ -37,11 +37,7 @@ class CustController {
       cust.setAddress(address);
       cust.setAge(age);
       cust.setProfession(profession);
-      if (guarantiedBy == 0) {
-        cust.setGuarantiedBy(user.mobileNumber);
-      } else {
-        cust.setGuarantiedBy(guarantiedBy);
-      }
+      cust.setGuarantiedBy(guarantiedBy);
       cust.setFinanceID(user.primary.financeID);
       cust.setBranchName(user.primary.branchName);
       cust.setSubBranchName(user.primary.subBranchName);
@@ -89,7 +85,8 @@ class CustController {
   Future updateCustomer(Map<String, dynamic> customerJson, int custUUID) async {
     try {
       Customer customer = Customer();
-      if (customerJson.containsKey('mobile_number') && customerJson['mobile_number'] != null) {
+      if (customerJson.containsKey('mobile_number') &&
+          customerJson['mobile_number'] != null) {
         Customer cust =
             await customer.getByMobileNumber(customerJson['mobile_number']);
         if (cust != null) {
