@@ -149,7 +149,7 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      customer.name,
+                      '${customer.firstName} ${customer.lastName}',
                       style: TextStyle(
                           fontFamily: 'Quicksand',
                           fontSize: 18.0,
@@ -165,6 +165,17 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                           fontFamily: 'Quicksand',
                           fontSize: 14.0,
                           color: textColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      customer.address.street != null
+                          ? customer.address.street
+                          : "",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 12.0,
+                          color: CustomColors.mfinAlertRed.withOpacity(0.5),
                           fontWeight: FontWeight.bold),
                     ),
                   ],

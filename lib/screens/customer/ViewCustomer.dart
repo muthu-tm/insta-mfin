@@ -32,7 +32,7 @@ class ViewCustomer extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(customer.name),
+        title: Text(customer.firstName),
         backgroundColor: CustomColors.mfinBlue,
         actions: <Widget>[
           IconButton(
@@ -190,7 +190,7 @@ class ViewCustomer extends StatelessWidget {
                             CustomDialogs.confirm(
                               context,
                               "Confirm",
-                              "Are you sure to remove ${customer.name} Customer?",
+                              "Are you sure to remove ${customer.firstName} ${customer.lastName} Customer?",
                               () async {
                                 Navigator.pop(context);
                                 CustomDialogs.actionWaiting(
@@ -359,7 +359,7 @@ class ViewCustomer extends StatelessWidget {
                       ),
               ),
               Text(
-                customer.name,
+                '${customer.firstName} ${customer.lastName}',
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w500,
@@ -375,6 +375,15 @@ class ViewCustomer extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: CustomColors.mfinBlue,
                 ),
+              ),
+              Text(
+                customer.address.street != null ? customer.address.street : "",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontFamily: 'Quicksand',
+                    fontSize: 12.0,
+                    color: CustomColors.mfinAlertRed.withOpacity(0.5),
+                    fontWeight: FontWeight.bold),
               ),
               CustomerPaymentsListWidget(customer.id, _scaffoldKey),
               if (_user.accPreferences.chitEnabled)

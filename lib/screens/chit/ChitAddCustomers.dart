@@ -145,7 +145,7 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
                                   ),
                                   child: ListTile(
                                     title: Text(
-                                      _cust.name,
+                                      '${_cust.firstName} ${_cust.lastName}',
                                       style: TextStyle(
                                         color: CustomColors.mfinLightGrey,
                                       ),

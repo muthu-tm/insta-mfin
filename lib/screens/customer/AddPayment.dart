@@ -75,7 +75,7 @@ class _AddPaymentState extends State<AddPayment> {
   int commission = 0;
   int tenure = 0;
   String paymentID = '';
-  double intrestRate = 0.0;
+  int interestAmount = 0;
   int collectionAmount = 0;
   String givenBy = '';
   String notes = '';
@@ -86,14 +86,16 @@ class _AddPaymentState extends State<AddPayment> {
     super.initState();
     this.getCollectionTemp();
     givenBy = _user.name;
-    selectedCollectionModeID = _user.accPreferences.collectionMode.toString() ?? '0';
+    selectedCollectionModeID =
+        _user.accPreferences.collectionMode.toString() ?? '0';
     collectionDays = _user.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
     totalAmountController.text = "0";
     principalAmountController.text = "0";
     docChargeController.text = '0';
     surChargeController.text = '0';
     tenureController.text = '0';
-    intrestRateController.text = _user.accPreferences.interestRate.toString() ?? '0.00';
+    intrestRateController.text =
+        _user.accPreferences.interestRate.toString() ?? '0.00';
     collectionAmountController.text = '0';
 
     _date.text = DateUtils.formatDate(DateTime.now());
@@ -170,7 +172,8 @@ class _AddPaymentState extends State<AddPayment> {
                           Flexible(
                             child: TextFormField(
                               readOnly: true,
-                              initialValue: widget.customer.name,
+                              initialValue:
+                                  '${widget.customer.firstName} ${widget.customer.lastName}',
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Customer name',
@@ -641,8 +644,8 @@ class _AddPaymentState extends State<AddPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: 'Rate in 0.00%',
-                                labelText: 'Rate of interest',
+                                hintText: 'Interest Amount',
+                                labelText: 'Interest Amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -655,11 +658,23 @@ class _AddPaymentState extends State<AddPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                int pAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? int.parse(
+                                                totalAmountController.text) -
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
                               validator: (tenure) {
                                 if (tenure.trim().isEmpty) {
-                                  this.intrestRate = double.parse('0');
+                                  this.interestAmount = 0;
                                 } else {
-                                  this.intrestRate = double.parse(tenure);
+                                  this.interestAmount = int.parse(tenure);
                                 }
                                 return null;
                               },
@@ -725,6 +740,18 @@ class _AddPaymentState extends State<AddPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                int cAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? (int.parse(
+                                                totalAmountController.text)) ~/
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  collectionAmountController.text =
+                                      cAmount.toString();
+                                });
+                              },
                               validator: (tenure) {
                                 if (tenure.trim().isEmpty ||
                                     tenure.trim() == '0') {
@@ -1032,7 +1059,7 @@ class _AddPaymentState extends State<AddPayment> {
       PaymentController _pc = PaymentController();
       var result = await _pc.createPayment(
           widget.customer.id,
-          widget.customer.name,
+          '${widget.customer.firstName} ${widget.customer.lastName}',
           paymentID.toString(),
           selectedDate,
           totalAmount,
@@ -1047,7 +1074,7 @@ class _AddPaymentState extends State<AddPayment> {
           docCharge,
           surCharge,
           commission,
-          intrestRate,
+          interestAmount,
           givenBy,
           notes);
 

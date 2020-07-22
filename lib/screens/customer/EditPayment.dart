@@ -19,6 +19,10 @@ class _EditPaymentState extends State<EditPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  TextEditingController totalAmountController = TextEditingController();
+  TextEditingController principalAmountController = TextEditingController();
+  TextEditingController collectionAmountController = TextEditingController();
+
   String selectedCollectionModeID = "0";
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
@@ -53,6 +57,10 @@ class _EditPaymentState extends State<EditPayment> {
   void initState() {
     super.initState();
     selectedCollectionModeID = widget.payment.collectionMode.toString();
+    totalAmountController.text = widget.payment.totalAmount.toString();
+    principalAmountController.text = widget.payment.principalAmount.toString();
+    collectionAmountController.text =
+        widget.payment.collectionAmount.toString();
 
     _date.text =
         DateUtils.getFormattedDateFromEpoch(widget.payment.dateOfPayment);
@@ -548,8 +556,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue:
-                                  widget.payment.totalAmount.toString(),
+                              controller: totalAmountController,
                               decoration: InputDecoration(
                                 hintText: 'Total amount',
                                 labelText: 'Total amount',
@@ -584,10 +591,10 @@ class _EditPaymentState extends State<EditPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               initialValue:
-                                  widget.payment.interestRate.toString(),
+                                  widget.payment.interestAmount.toString(),
                               decoration: InputDecoration(
-                                hintText: 'Rate in 0.00%',
-                                labelText: 'Rate of interest',
+                                hintText: 'Interest Amount',
+                                labelText: 'Interest Amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -600,15 +607,26 @@ class _EditPaymentState extends State<EditPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                int pAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? int.parse(
+                                                totalAmountController.text) -
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
                               validator: (iRate) {
                                 if (iRate.trim() !=
-                                    widget.payment.interestRate.toString()) {
+                                    widget.payment.interestAmount.toString()) {
                                   if (iRate.trim().isEmpty) {
-                                    updatedPayment['interest_rate'] =
-                                        double.parse('0');
+                                    updatedPayment['interest_amount'] = 0;
                                   } else {
-                                    updatedPayment['interest_rate'] =
-                                        double.parse(iRate.trim());
+                                    updatedPayment['interest_amount'] =
+                                        int.parse(iRate.trim());
                                   }
                                 }
 
@@ -627,8 +645,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue:
-                                  widget.payment.principalAmount.toString(),
+                              controller: principalAmountController,
                               decoration: InputDecoration(
                                 hintText: 'Principal amount',
                                 labelText: 'Principal amount',
@@ -678,6 +695,18 @@ class _EditPaymentState extends State<EditPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                int cAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? (int.parse(
+                                                totalAmountController.text)) ~/
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  collectionAmountController.text =
+                                      cAmount.toString();
+                                });
+                              },
                               validator: (tenure) {
                                 if (tenure.trim().isEmpty) {
                                   return 'Enter the Number of Collections';
@@ -701,8 +730,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue:
-                                  widget.payment.collectionAmount.toString(),
+                              controller: collectionAmountController,
                               decoration: InputDecoration(
                                 hintText: 'Each Collection Amount',
                                 labelText: 'Collection amount',

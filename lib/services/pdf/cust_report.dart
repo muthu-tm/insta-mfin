@@ -73,7 +73,7 @@ class CustReport {
     final String custID = 'Date: ' + format.format(DateTime.now());
     final Size contentSize = contentFont.measureString(custID);
     String address =
-        'Report For: \r\n\r\n${_c.name}, \r\n\r\n${_c.mobileNumber}\r\n\r\n${_c.address.street}\r\n\r\n${_c.address.city}';
+        'Report For: \r\n\r\n${_c.firstName} ${_c.lastName}, \r\n\r\n${_c.mobileNumber}\r\n\r\n${_c.address.street}\r\n\r\n${_c.address.city}';
 
     PdfTextElement(text: custID, font: contentFont).draw(
         page: page,
