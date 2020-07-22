@@ -250,6 +250,10 @@ class Customer extends Model {
   }
 
   Future<Customer> getByMobileNumber(int number) async {
+    if (number == null) {
+      return null;
+    }
+
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: user.primary.financeID)
         .where('branch_name', isEqualTo: user.primary.branchName)
