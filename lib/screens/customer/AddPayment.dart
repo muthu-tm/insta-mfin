@@ -659,12 +659,15 @@ class _AddPaymentState extends State<AddPayment> {
                                         color: CustomColors.mfinWhite)),
                               ),
                               onChanged: (val) {
-                                int iAmount = this.totalAmount > 0
-                                    ? this.totalAmount - int.parse(val)
-                                    : 0;
+                                int pAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? int.parse(
+                                                totalAmountController.text) -
+                                            int.parse(val)
+                                        : 0;
                                 setState(() {
                                   principalAmountController.text =
-                                      iAmount.toString();
+                                      pAmount.toString();
                                 });
                               },
                               validator: (tenure) {
@@ -737,6 +740,18 @@ class _AddPaymentState extends State<AddPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                int cAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? (int.parse(
+                                                totalAmountController.text)) ~/
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  collectionAmountController.text =
+                                      cAmount.toString();
+                                });
+                              },
                               validator: (tenure) {
                                 if (tenure.trim().isEmpty ||
                                     tenure.trim() == '0') {

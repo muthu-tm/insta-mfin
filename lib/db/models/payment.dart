@@ -154,7 +154,7 @@ class Payment extends Model {
   }
 
   setInterestAmount(int iAmount) {
-    this.interestAmount= iAmount;
+    this.interestAmount = iAmount;
   }
 
   setAddedBy(int mobileNumber) {
@@ -363,7 +363,11 @@ class Payment extends Model {
     this.id = this.createdAt.microsecondsSinceEpoch;
 
     try {
-      Payment isExist = await this.getPaymentByID(this.paymentID);
+      Payment isExist;
+
+      if (this.paymentID != null && this.paymentID != "") {
+        isExist = await this.getPaymentByID(this.paymentID);
+      }
 
       if (isExist != null) {
         throw 'Already a Payment exist with this PAYMENT ID - ${this.paymentID}';

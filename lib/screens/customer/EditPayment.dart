@@ -19,7 +19,9 @@ class _EditPaymentState extends State<EditPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  TextEditingController totalAmountController = TextEditingController();
   TextEditingController principalAmountController = TextEditingController();
+  TextEditingController collectionAmountController = TextEditingController();
 
   String selectedCollectionModeID = "0";
   Map<String, String> _tempCollectionMode = {
@@ -55,7 +57,10 @@ class _EditPaymentState extends State<EditPayment> {
   void initState() {
     super.initState();
     selectedCollectionModeID = widget.payment.collectionMode.toString();
+    totalAmountController.text = widget.payment.totalAmount.toString();
     principalAmountController.text = widget.payment.principalAmount.toString();
+    collectionAmountController.text =
+        widget.payment.collectionAmount.toString();
 
     _date.text =
         DateUtils.getFormattedDateFromEpoch(widget.payment.dateOfPayment);
@@ -551,8 +556,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue:
-                                  widget.payment.totalAmount.toString(),
+                              controller: totalAmountController,
                               decoration: InputDecoration(
                                 hintText: 'Total amount',
                                 labelText: 'Total amount',
@@ -604,16 +608,15 @@ class _EditPaymentState extends State<EditPayment> {
                                         color: CustomColors.mfinWhite)),
                               ),
                               onChanged: (val) {
-                                int tAmount =
-                                    updatedPayment.containsKey('total_amount')
-                                        ? updatedPayment['total_amount']
-                                        : widget.payment.totalAmount;
-
-                                int iAmount =
-                                    tAmount > 0 ? tAmount - int.parse(val) : 0;
+                                int pAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? int.parse(
+                                                totalAmountController.text) -
+                                            int.parse(val)
+                                        : 0;
                                 setState(() {
                                   principalAmountController.text =
-                                      iAmount.toString();
+                                      pAmount.toString();
                                 });
                               },
                               validator: (iRate) {
@@ -692,6 +695,18 @@ class _EditPaymentState extends State<EditPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                int cAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? (int.parse(
+                                                totalAmountController.text)) ~/
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  collectionAmountController.text =
+                                      cAmount.toString();
+                                });
+                              },
                               validator: (tenure) {
                                 if (tenure.trim().isEmpty) {
                                   return 'Enter the Number of Collections';
@@ -715,8 +730,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue:
-                                  widget.payment.collectionAmount.toString(),
+                              controller: collectionAmountController,
                               decoration: InputDecoration(
                                 hintText: 'Each Collection Amount',
                                 labelText: 'Collection amount',
