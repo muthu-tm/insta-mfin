@@ -90,7 +90,7 @@ class CustController {
         Customer cust =
             await customer.getByMobileNumber(customerJson['mobile_number']);
         if (cust != null) {
-          throw 'Unable to create! Found an existing customer ${customer.name} with this contact number!';
+          throw 'Unable to create! Found an existing customer ${cust.name} with this contact number!';
         }
       }
 

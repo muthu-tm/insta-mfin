@@ -431,8 +431,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   if (val.trim().isEmpty) {
                                     updatedCustomer['guarantied_by'] = '';
                                   } else {
-                                    return updatedCustomer['guarantied_by'] =
-                                        val.trim();
+                                    updatedCustomer['guarantied_by'] = val.trim();
                                   }
                                   return null;
                                 },
