@@ -145,8 +145,9 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                         Spacer(),
                         CircleAvatar(
                           radius: 70.0,
-                          backgroundImage:
-                              Image.file(File(selectedImagePath)).image,
+                          backgroundImage: Image.memory(
+                                  File(selectedImagePath).readAsBytesSync())
+                              .image,
                           backgroundColor: Colors.transparent,
                         ),
                         Spacer(),
@@ -219,10 +220,10 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
   }
 
   Future<void> _showCamera(String filePath) async {
-    final cameras = await availableCameras();
-    final camera = cameras.first;
+    List<CameraDescription> cameras = await availableCameras();
+    CameraDescription camera = cameras.first;
 
-    final result = await Navigator.push(
+    var result = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => TakePicturePage(
@@ -231,7 +232,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                 )));
     if (result != null) {
       setState(() {
-        selectedImagePath = result;
+        selectedImagePath = result.toString();
       });
     }
   }

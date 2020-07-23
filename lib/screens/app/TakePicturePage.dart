@@ -48,7 +48,7 @@ class _TakePicturePageState extends State<TakePicturePage> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.6),
         onPressed: () async {
-          _takePicture(context);
+          await _takePicture(context);
         },
         label: Text(
           "Capture",
@@ -76,7 +76,7 @@ class _TakePicturePageState extends State<TakePicturePage> {
     );
   }
 
-  void _takePicture(BuildContext context) async {
+  Future<void> _takePicture(BuildContext context) async {
     try {
       await _initializeCameraControllerFuture;
       await _cameraController.takePicture(widget.path);
