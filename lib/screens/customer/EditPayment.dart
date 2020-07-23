@@ -1015,38 +1015,38 @@ class _EditPaymentState extends State<EditPayment> {
       if (collectionDays != widget.payment.collectionDays)
         updatedPayment['collection_days'] = collectionDays;
 
-      int totalAmount = updatedPayment.containsKey('total_amount')
-          ? updatedPayment['total_amount']
-          : widget.payment.totalAmount;
-
-      int tenure = updatedPayment.containsKey('tenure')
-          ? updatedPayment['tenure']
-          : widget.payment.tenure;
-
-      int collectionAmount = updatedPayment.containsKey('collection_amount')
-          ? updatedPayment['collection_amount']
-          : widget.payment.collectionAmount;
-
-      int alreadyReceivedAmount =
-          updatedPayment.containsKey('already_collected_amount')
-              ? updatedPayment['already_collected_amount']
-              : widget.payment.alreadyCollectedAmount;
-
-      if (totalAmount != tenure * collectionAmount) {
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Total amount should be equal to Collection amount * No. of collections',
-            3));
-        return;
-      } else if (!(alreadyReceivedAmount < totalAmount)) {
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Amount Received should be lesser than Total Amount', 3));
-        return;
-      }
-
       if (updatedPayment.length == 0) {
         Navigator.pop(context);
         Navigator.pop(context);
       } else {
+        int totalAmount = updatedPayment.containsKey('total_amount')
+            ? updatedPayment['total_amount']
+            : widget.payment.totalAmount;
+
+        int tenure = updatedPayment.containsKey('tenure')
+            ? updatedPayment['tenure']
+            : widget.payment.tenure;
+
+        int collectionAmount = updatedPayment.containsKey('collection_amount')
+            ? updatedPayment['collection_amount']
+            : widget.payment.collectionAmount;
+
+        int alreadyReceivedAmount =
+            updatedPayment.containsKey('already_collected_amount')
+                ? updatedPayment['already_collected_amount']
+                : widget.payment.alreadyCollectedAmount;
+
+        if (totalAmount != tenure * collectionAmount) {
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Total amount should be equal to Collection amount * No. of collections',
+              3));
+          return;
+        } else if (!(alreadyReceivedAmount < totalAmount)) {
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Amount Received should be lesser than Total Amount', 3));
+          return;
+        }
+
         CustomDialogs.actionWaiting(context, "Editing Payment");
         PaymentController _pc = PaymentController();
         var result = await _pc.updatePayment(widget.payment, updatedPayment);

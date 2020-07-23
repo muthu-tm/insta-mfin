@@ -24,13 +24,6 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
   final Map<String, dynamic> updatedTemplate = new Map();
 
   String templateName;
-  int totalAmount;
-  int givenAmount;
-  int documentCharge;
-  int surChargeAmount;
-  int noOfPayments;
-  double interestRate;
-  int collectionAmount;
   String selectedCollectionModeID = "0";
 
   Map<String, String> _tempCollectionMode = {
@@ -597,6 +590,25 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
             "No changes detected, Skipping update!", 1));
         Navigator.pop(context);
       } else {
+        int totalAmount = updatedTemplate.containsKey('total_amount')
+            ? updatedTemplate['total_amount']
+            : widget.template.totalAmount;
+
+        int tenure = updatedTemplate.containsKey('tenure')
+            ? updatedTemplate['tenure']
+            : widget.template.tenure;
+
+        int collectionAmount = updatedTemplate.containsKey('collection_amount')
+            ? updatedTemplate['collection_amount']
+            : widget.template.collectionAmount;
+
+        if (totalAmount != tenure * collectionAmount) {
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Total amount should be equal to Collection amount * No. of collections',
+              3));
+          return;
+        }
+
         CustomDialogs.actionWaiting(context, "Updating Template");
         PaymentTemplateController _collectionController =
             PaymentTemplateController();
@@ -607,17 +619,6 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
           Navigator.pop(context);
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        } else if (totalAmount != noOfPayments * collectionAmount) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Total amount should be equal to Collection amount * No. of collections',
-              5));
-        } else if (!(totalAmount >=
-            givenAmount + documentCharge + surChargeAmount)) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Total amount should be greater than sum of Principal + Document + Service charge',
-              5));
         } else {
           Navigator.pop(context);
           Navigator.pop(context);

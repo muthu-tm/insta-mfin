@@ -560,6 +560,13 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
+      if (totalAmount != noOfInstallments * collectionAmount) {
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            'Total amount should be equal to Collection amount * No. of collections',
+            3));
+        return;
+      }
+
       CustomDialogs.actionWaiting(context, "Creating Template!");
       PaymentTemplateController _tempController = PaymentTemplateController();
       var result = await _tempController.createTemplate(
@@ -578,16 +585,6 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-      } else if (totalAmount != noOfInstallments * collectionAmount) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Total amount should be equal to Collection amount * No. of collections',
-            5));
-      } else if (!(totalAmount >= pAmount + documentCharge + surChargeAmount)) {
-        Navigator.pop(context);
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Total amount should be greater than sum of Principal + Document + Service charge',
-            5));
       } else {
         Navigator.pop(context);
         Navigator.pop(context);
