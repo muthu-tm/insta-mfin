@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class MobileSignInPage extends StatefulWidget {
   @override
@@ -96,7 +97,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                           color: CustomColors.mfinFadedButtonGreen,
                           size: 35.0,
                         ),
-                        hintText: "Enter Mobile Number",
+                        hintText: AppLocalizations.of(context).translate('enter_phone_number'),
                         border: InputBorder.none,
                         errorMaxLines: 1,
                       ),
@@ -114,7 +115,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 autofocus: false,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
-                  hintText: 'Name',
+                  hintText:  AppLocalizations.of(context).translate('name'),
                   fillColor: CustomColors.mfinWhite,
                   filled: true,
                   suffixIcon: Icon(
@@ -134,7 +135,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 obscureText: _passwordVisible,
                 keyboardType: TextInputType.number,
                 decoration: new InputDecoration(
-                  hintText: "4 digit Secret Key",
+                  hintText: AppLocalizations.of(context).translate('four_digit_secret'),
                   fillColor: CustomColors.mfinWhite,
                   filled: true,
                   suffixIcon: IconButton(
@@ -166,18 +167,18 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 child: RichText(
                     text: TextSpan(children: [
                   TextSpan(
-                      text: 'We will send ',
+                      text: AppLocalizations.of(context).translate('we_will_send'),
                       style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontWeight: FontWeight.w400)),
                   TextSpan(
-                      text: 'One Time Password',
+                      text: AppLocalizations.of(context).translate('one_time_password'),
                       style: TextStyle(
                           color: CustomColors.mfinAlertRed,
                           fontSize: 16.0,
                           fontWeight: FontWeight.w700)),
                   TextSpan(
-                      text: ' to this Mobile Number',
+                      text: AppLocalizations.of(context).translate('to_mobile_no'),
                       style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontWeight: FontWeight.w400)),
@@ -193,7 +194,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'GET OTP',
+                AppLocalizations.of(context).translate('get_otp'),
                 style: TextStyle(
                   color: CustomColors.mfinButtonGreen,
                   fontSize: 18.0,
@@ -211,7 +212,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
             children: <Widget>[
               Container(
                 child: Text(
-                  'Already have an account?',
+                  AppLocalizations.of(context).translate('alreay_account'),
                   style: TextStyle(
                     fontSize: 13,
                     fontFamily: 'Georgia',
@@ -223,7 +224,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               FlatButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  'LOGIN',
+                  AppLocalizations.of(context).translate('login'),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -239,18 +240,18 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
   startPhoneAuth() async {
     if (_phoneNumberController.text.length != 10) {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Oops! Number seems invaild", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('invalid_number'), 2));
       return;
     } else if (_nameController.text.length <= 2) {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please Enter Your Name", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('enter_your_name'), 2));
       return;
     } else if (_passKeyController.text.length != 4) {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          "Secret Key must be 4 digits in length", 2));
+          AppLocalizations.of(context).translate('secret_key_validation'), 2));
       return;
     } else {
-      CustomDialogs.actionWaiting(context, "Checking User");
+      CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('checking_user'));
 
       this.number = _phoneNumberController.text;
       await _verifyPhoneNumber();
@@ -287,7 +288,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print("Unable to register USER: " + result['message']);
+        print(AppLocalizations.of(context).translate('unable_to_register') + result['message']);
       } else {
         final SharedPreferences prefs = await _prefs;
         prefs.setString("mobile_number", number.toString());
@@ -304,7 +305,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
     }).catchError((error) {
       Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          "Something has gone wrong, please try later(signInWithPhoneNumber)",
+          AppLocalizations.of(context).translate('try_later'),
           2));
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar("${error.toString()}", 2));
@@ -313,11 +314,11 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
 
   _smsCodeSent(String verificationId, List<int> code) {
     _scaffoldKey.currentState
-        .showSnackBar(CustomSnackBar.successSnackBar("OTP sent", 1));
+        .showSnackBar(CustomSnackBar.successSnackBar(AppLocalizations.of(context).translate('otp_send'), 1));
 
     _smsVerificationCode = verificationId;
     Navigator.pop(context);
-    CustomDialogs.actionWaiting(context, "Verifying User");
+    CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('verify_user'));
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {

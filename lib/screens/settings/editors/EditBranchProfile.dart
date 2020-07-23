@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class EditBranchProfile extends StatefulWidget {
   EditBranchProfile(this.financeID, this.branch);
@@ -45,7 +46,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
-        title: Text('Edit Branch Profile'),
+        title: Text(AppLocalizations.of(context).translate('edit_branch_profile')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -55,7 +56,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -76,13 +77,13 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                RowHeaderText(textName: 'Branch Name'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('branch_name')),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.branch.branchName,
                     decoration: InputDecoration(
-                      hintText: 'Branch Name',
+                      hintText: AppLocalizations.of(context).translate('branch_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -95,13 +96,13 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
                     autofocus: false,
                   ),
                 ),
-                RowHeaderText(textName: 'Contact Number'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('contact_number')),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.phone,
                     initialValue: widget.branch.contactNumber,
                     decoration: InputDecoration(
-                      hintText: 'Contact Number',
+                      hintText: AppLocalizations.of(context).translate('contact_number'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -121,13 +122,13 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: 'Branch EmailID'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('branch_emailid')),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.branch.emailID,
                     decoration: InputDecoration(
-                      hintText: 'Enter your EmailID',
+                      hintText: AppLocalizations.of(context).translate('enter_email_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -147,7 +148,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: 'Registered Date'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('registered_date')),
                 ListTile(
                   title: GestureDetector(
                     onTap: () => _selectDate(context),
@@ -233,7 +234,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 5));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('required_fields'), 5));
     }
   }
 }

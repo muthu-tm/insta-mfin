@@ -8,6 +8,7 @@ import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AddFinancePage extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Finance'),
+        title: Text(AppLocalizations.of(context).translate('add_finance')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -51,7 +52,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -74,12 +75,12 @@ class _AddFinancePageState extends State<AddFinancePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RowHeaderText(textName: "Finance Name"),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('finance_name')),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: 'Finance Name',
+                      hintText: AppLocalizations.of(context).translate('finance_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: EdgeInsets.symmetric(
@@ -90,7 +91,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     ),
                     validator: (name) {
                       if (name.trim().isEmpty) {
-                        return 'Enter the Finance Name';
+                        return AppLocalizations.of(context).translate('enter_finance_name');
                       }
 
                       this.financeName = name.trim();
@@ -98,12 +99,12 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: "Registration ID"),
+                RowHeaderText(textName: AppLocalizations.of(context).translate("registration_id")),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: 'Registration ID',
+                      hintText: AppLocalizations.of(context).translate("registration_id"),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -121,7 +122,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: "Registered Date"),
+                RowHeaderText(textName: AppLocalizations.of(context).translate("registered_date")),
                 ListTile(
                   title: GestureDetector(
                     onTap: () => _selectDate(context),
@@ -151,12 +152,12 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     ),
                   ),
                 ),
-                RowHeaderText(textName: "Contact Number"),
+                RowHeaderText(textName: AppLocalizations.of(context).translate("finance_contact_number")),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                      hintText: 'Finance Contact Number',
+                      hintText: AppLocalizations.of(context).translate("finance_contact_number"),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: EdgeInsets.symmetric(
@@ -174,12 +175,12 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: "Finance EmailID"),
+                RowHeaderText(textName: AppLocalizations.of(context).translate("finance_email_id")),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: 'Finance EmailID',
+                      hintText: AppLocalizations.of(context).translate("finance_email_id"),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -251,7 +252,7 @@ class _AddFinancePageState extends State<AddFinancePage> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate("required_fields"), 2));
     }
   }
 }

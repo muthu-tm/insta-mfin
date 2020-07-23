@@ -6,6 +6,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class ChangeSecret extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _ChangeSecretState extends State<ChangeSecret> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Change Secret KEY"),
+        title: Text(AppLocalizations.of(context).translate('change_secret_key')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -34,7 +35,7 @@ class _ChangeSecretState extends State<ChangeSecret> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -58,7 +59,7 @@ class _ChangeSecretState extends State<ChangeSecret> {
               elevation: 5.0,
               child: Column(
                 children: <Widget>[
-                  RowHeaderText(textName: "New Secret KEY"),
+                  RowHeaderText(textName: AppLocalizations.of(context).translate('new_secret_key')),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: TextFormField(
@@ -84,7 +85,7 @@ class _ChangeSecretState extends State<ChangeSecret> {
                       },
                     ),
                   ),
-                  RowHeaderText(textName: "Confirm Secret KEY"),
+                  RowHeaderText(textName: AppLocalizations.of(context).translate('confirm_secret_key')),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: TextFormField(
@@ -107,10 +108,10 @@ class _ChangeSecretState extends State<ChangeSecret> {
                       autofocus: false,
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Re-Enter your New KEY';
+                          return AppLocalizations.of(context).translate('reenter_secret_key');
                         } else {
                           if (secretKey != value) {
-                            return "Error! Secret KEY mismatch!";
+                            return AppLocalizations.of(context).translate('secret_key_mismatch');
                           }
                           confirmKey = value;
                           return null;
@@ -146,7 +147,7 @@ class _ChangeSecretState extends State<ChangeSecret> {
       } else {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Your Secret KEY updated successfully", 2));
+            AppLocalizations.of(context).translate('secret_key_updated_successfully'), 2));
         await Future.delayed(Duration(seconds: 1));
         Navigator.pop(context);
       }

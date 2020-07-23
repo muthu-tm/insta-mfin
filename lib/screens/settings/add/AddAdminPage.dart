@@ -6,6 +6,7 @@ import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AddAdminPage extends StatefulWidget {
   AddAdminPage(this.title, this.groupName,
@@ -41,7 +42,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Admin'),
+        title: Text(AppLocalizations.of(context).translate('add_admin')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -51,7 +52,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -106,9 +107,9 @@ class _AddAdminPageState extends State<AddAdminPage> {
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
-                        hintText: "Type USER's mobile number...",
+                        hintText: AppLocalizations.of(context).translate('type_user_mobile_no'),
                         errorText: !mobileNumberValid
-                            ? 'Enter the valid 10 digit MobileNumber'
+                            ? AppLocalizations.of(context).translate('enter_valid_phone')
                             : null,
                         suffixIcon: Icon(
                           Icons.search,
@@ -134,7 +135,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
                         ),
                       ),
                       label: Text(
-                        "Search",
+                        AppLocalizations.of(context).translate('search'),
                         style: TextStyle(
                           color: CustomColors.mfinLightGrey,
                           fontSize: 16.0,
@@ -176,7 +177,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
                     : Padding(
                         padding: EdgeInsets.all(5),
                         child: Text(
-                          "No Users Selected!",
+                          AppLocalizations.of(context).translate('no_user_select'),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: CustomColors.mfinLightGrey,
@@ -197,7 +198,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
     if (mobileNumber != "" &&
         int.parse(mobileNumber) == UserController().getCurrentUserID()) {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          "You are already an Admin for this Account!", 3));
+        AppLocalizations.of(context).translate('type_user_mobile_no'), 3));
       return;
     }
 
@@ -238,10 +239,10 @@ class _AddAdminPageState extends State<AddAdminPage> {
   Future<void> _submit() async {
     if (userList.length == 0) {
       _scaffoldKey.currentState
-          .showSnackBar(CustomSnackBar.errorSnackBar("No Users Selected!", 2));
+          .showSnackBar(CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('no_user_select'), 2));
     } else {
       String groupName = widget.groupName;
-      CustomDialogs.actionWaiting(context, "Updating Admin!");
+      CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('updating_admin'));
       var response;
 
       try {

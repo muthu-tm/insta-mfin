@@ -12,6 +12,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   final User _u = UserController().getCurrentUser();
@@ -53,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     RichText(
                       text: TextSpan(
-                        text: "Welcome Back, ",
+                        text: AppLocalizations.of(context).translate('welcome_back'),
                         style: TextStyle(
                           fontSize: 16.0,
                           color: CustomColors.mfinLightGrey,
@@ -74,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      tooltip: "Edit Primary Finance",
+                      tooltip: AppLocalizations.of(context).translate('edit_primary_finance'),
                       alignment: Alignment.centerRight,
                       icon: Icon(
                         Icons.edit,
@@ -167,7 +168,7 @@ class HomeScreen extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              "Cash In Hand",
+                                              AppLocalizations.of(context).translate('cash_in_hand'),
                                               style: TextStyle(
                                                 fontSize: 17.0,
                                                 fontFamily: "Georgia",
@@ -269,7 +270,7 @@ class HomeScreen extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              "Outstanding",
+                                              AppLocalizations.of(context).translate('outstanding'),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 17.0,
@@ -534,7 +535,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Todays Collection',
+                      AppLocalizations.of(context).translate('today_collection'),
                       style: TextStyle(
                         fontSize: 22.0,
                         fontFamily: "Georgia",
@@ -635,7 +636,7 @@ class HomeScreen extends StatelessWidget {
 
           children = <Widget>[
             Text(
-              'Yesterday',
+              AppLocalizations.of(context).translate('yesterday'),
               style: TextStyle(
                 fontSize: 22.0,
                 fontFamily: "Georgia",
@@ -714,7 +715,7 @@ class HomeScreen extends StatelessWidget {
 
           children = <Widget>[
             Text(
-              'Tomorrow',
+              AppLocalizations.of(context).translate('tomorrow'),
               style: TextStyle(
                 fontSize: 22.0,
                 fontFamily: "Georgia",
@@ -819,7 +820,7 @@ class HomeScreen extends StatelessWidget {
                                 color: CustomColors.mfinBlue,
                               ),
                               Text(
-                                "Upload",
+                                AppLocalizations.of(context).translate('upload'),
                                 style: TextStyle(
                                   fontSize: 12.0,
                                   fontWeight: FontWeight.w500,

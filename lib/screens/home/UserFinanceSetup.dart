@@ -7,6 +7,7 @@ import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class UserFinanceSetup extends StatelessWidget {
   final User _user = UserController().getCurrentUser();
@@ -16,7 +17,7 @@ class UserFinanceSetup extends StatelessWidget {
     if (_user.primary.financeID != null && _user.primary.financeID != "") {
       return WillPopScope(
         onWillPop: () => CustomDialogs.confirm(
-            context, "Warning!", "Do you really want to exit?", () async {
+            context, AppLocalizations.of(context).translate('warning'), AppLocalizations.of(context).translate('exit_confirmation'), () async {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -90,7 +91,7 @@ class UserFinanceSetup extends StatelessWidget {
                 color: CustomColors.mfinBlue,
               ),
               label: Text(
-                ' Help & Support ',
+                AppLocalizations.of(context).translate('help_support'),
                 style: new TextStyle(
                   fontWeight: FontWeight.bold,
                   color: CustomColors.mfinBlue,

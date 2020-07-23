@@ -12,6 +12,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage(this.isNewScaffold, this._scaffoldKey);
@@ -110,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 16.0,
                             color: CustomColors.mfinBlue,
                           ),
-                          hintText: 'Mobile Number',
+                          hintText: AppLocalizations.of(context).translate('mobile_number'),
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
                           suffixIcon: Icon(
@@ -174,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: new Center(
                         child: new Text(
-                          'GET OTP',
+                          AppLocalizations.of(context).translate('get_otp'),
                           style: new TextStyle(
                             fontSize: 20.0,
                             color: CustomColors.mfinBlue,
@@ -196,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Row(
               children: <Widget>[
                 Text(
-                  "Don't have an account? ",
+                  AppLocalizations.of(context).translate('no_account'),
                   style: new TextStyle(
                     fontSize: 13.0,
                     fontFamily: 'Georgia',
@@ -213,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                   child: Text(
-                    'SIGN UP',
+                    AppLocalizations.of(context).translate('sign_up'),
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
                       color: CustomColors.mfinBlue,
@@ -247,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: CustomColors.mfinBlue,
               ),
               label: Text(
-                ' Help & Support ',
+                AppLocalizations.of(context).translate('help_support'),
                 style: new TextStyle(
                   fontWeight: FontWeight.bold,
                   color: CustomColors.mfinBlue,
@@ -264,10 +265,10 @@ class _LoginPageState extends State<LoginPage> {
   void _submit() async {
     if (_nController.text.length != 10) {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Enter valid Mobile Number", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('enter_valid_phone'), 2));
       return;
     } else {
-      CustomDialogs.actionWaiting(context, "Checking User");
+      CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('checking_user'));
 
       number = _nController.text;
       try {
@@ -276,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
         if (_uJSON == null) {
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              "No USER found for this Number, please 'SIGN UP'", 2));
+              AppLocalizations.of(context).translate('invalid_user_signup'), 2));
           return;
         } else {
           this._user = User.fromJson(_uJSON);
@@ -284,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       } catch (err) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "Error while Login: " + err.toString(), 2));
+            AppLocalizations.of(context).translate('login_error') + err.toString(), 2));
       }
     }
   }
@@ -318,7 +319,7 @@ class _LoginPageState extends State<LoginPage> {
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "Unable to Login, Something went wrong. Please try again Later!",
+          AppLocalizations.of(context).translate('unable_to_login'),
             2));
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
@@ -328,7 +329,7 @@ class _LoginPageState extends State<LoginPage> {
           await UserController().refreshUser(true);
         } catch (err) {
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              "Unable to Login, Something went wrong. Please try again Later!",
+              AppLocalizations.of(context).translate('unable_to_login'),
               2));
           return;
         }
@@ -344,7 +345,7 @@ class _LoginPageState extends State<LoginPage> {
     }).catchError((error) {
       Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          "Something has gone wrong, please try later(signInWithPhoneNumber)",
+          AppLocalizations.of(context).translate('try_later'),
           2));
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar("${error.toString()}", 2));
@@ -357,13 +358,13 @@ class _LoginPageState extends State<LoginPage> {
 
     _smsVerificationCode = verificationId;
     Navigator.pop(context);
-    CustomDialogs.actionWaiting(context, "Verifying User");
+    CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('verify_user'));
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
     Navigator.pop(context);
     _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-        "Verification Failed:" + authException.message.toString(), 2));
+        AppLocalizations.of(context).translate('verification_failed') + authException.message.toString(), 2));
   }
 
   _codeAutoRetrievalTimeout(String verificationId) {

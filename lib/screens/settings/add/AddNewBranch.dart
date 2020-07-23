@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AddBranch extends StatefulWidget {
   AddBranch(this.financeID);
@@ -44,7 +45,7 @@ class _AddBranchState extends State<AddBranch> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Branch'),
+        title: Text(AppLocalizations.of(context).translate('add_branch')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -54,7 +55,7 @@ class _AddBranchState extends State<AddBranch> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -77,12 +78,12 @@ class _AddBranchState extends State<AddBranch> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RowHeaderText(textName: "Branch Name"),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('branch_name')),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: 'Branch Name',
+                      hintText: AppLocalizations.of(context).translate('branch_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -93,7 +94,7 @@ class _AddBranchState extends State<AddBranch> {
                     ),
                     validator: (name) {
                       if (name.trim().isEmpty) {
-                        return 'Enter the Branch Name';
+                        return AppLocalizations.of(context).translate('enter_branch_name');
                       }
 
                       this.branchName = name.trim();
@@ -101,7 +102,7 @@ class _AddBranchState extends State<AddBranch> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: "Registered Date"),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('registered_date')),
                 ListTile(
                   title: GestureDetector(
                     onTap: () => _selectDate(context),
@@ -131,12 +132,12 @@ class _AddBranchState extends State<AddBranch> {
                     ),
                   ),
                 ),
-                RowHeaderText(textName: "Contact Number"),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('contact_number')),
                 ListTile(
                   title: new TextFormField(
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                        hintText: 'Contact Number',
+                        hintText: AppLocalizations.of(context).translate('contact_number'),
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
                         contentPadding: new EdgeInsets.symmetric(
@@ -155,12 +156,12 @@ class _AddBranchState extends State<AddBranch> {
                         }
                       }),
                 ),
-                RowHeaderText(textName: "Branch EmailID"),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('branch_emailid')),
                 ListTile(
                   title: new TextFormField(
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: 'Branch EmailID',
+                        hintText: AppLocalizations.of(context).translate('branch_emailid'),
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
                         contentPadding: new EdgeInsets.symmetric(
@@ -236,7 +237,7 @@ class _AddBranchState extends State<AddBranch> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('required_fields'), 2));
     }
   }
 }

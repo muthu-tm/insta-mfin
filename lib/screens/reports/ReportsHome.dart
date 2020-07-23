@@ -21,6 +21,8 @@ import 'package:instamfin/services/pdf/reports/customer_report.dart';
 import 'package:instamfin/services/pdf/reports/expense_report.dart';
 import 'package:instamfin/services/pdf/reports/journal_report.dart';
 import 'package:instamfin/services/pdf/reports/payment_report.dart';
+import 'package:instamfin/app_localizations.dart';
+
 
 class ReportsHome extends StatefulWidget {
   @override
@@ -92,7 +94,7 @@ class _ReportsHomeState extends State<ReportsHome> {
             _submit();
           },
           label: Text(
-            "GET REPORT",
+            AppLocalizations.of(context).translate('get_report'),
             style: TextStyle(
               fontSize: 17,
               fontFamily: "Georgia",
@@ -115,7 +117,7 @@ class _ReportsHomeState extends State<ReportsHome> {
                 leading: SizedBox(
                   width: 85,
                   child: Text(
-                    "CATEGORY:",
+                    AppLocalizations.of(context).translate('category'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -150,7 +152,7 @@ class _ReportsHomeState extends State<ReportsHome> {
                 leading: SizedBox(
                   width: 85,
                   child: Text(
-                    "TYPE:",
+                    AppLocalizations.of(context).translate('type'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -182,7 +184,7 @@ class _ReportsHomeState extends State<ReportsHome> {
                 leading: SizedBox(
                   width: 85,
                   child: Text(
-                    "RANGE:",
+                    AppLocalizations.of(context).translate('range'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -230,7 +232,7 @@ class _ReportsHomeState extends State<ReportsHome> {
                 leading: SizedBox(
                   width: 85,
                   child: Text(
-                    "FROM:",
+                    AppLocalizations.of(context).translate('from'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -243,7 +245,7 @@ class _ReportsHomeState extends State<ReportsHome> {
                   onTap: () => {
                     _selectedRange == '3'
                         ? _selectFromDate(context)
-                        : print('Not in custom Range!'),
+                        : print(AppLocalizations.of(context).translate('not_in_range')),
                   },
                   child: AbsorbPointer(
                     child: TextFormField(
@@ -251,7 +253,7 @@ class _ReportsHomeState extends State<ReportsHome> {
                       controller: _fromDate,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                        hintText: 'Reports From',
+                        hintText: AppLocalizations.of(context).translate('report_from'),
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -273,7 +275,7 @@ class _ReportsHomeState extends State<ReportsHome> {
                 leading: SizedBox(
                   width: 85,
                   child: Text(
-                    "To:",
+                    AppLocalizations.of(context).translate('to'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -286,14 +288,14 @@ class _ReportsHomeState extends State<ReportsHome> {
                   onTap: () => {
                     _selectedRange == '3'
                         ? _selectToDate(context)
-                        : print('Not in custom Range!'),
+                        : print(AppLocalizations.of(context).translate('not_in_range')),
                   },
                   child: AbsorbPointer(
                     child: TextFormField(
                       controller: _toDate,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                        hintText: 'Reports till',
+                        hintText: AppLocalizations.of(context).translate('reports_till'),
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -315,7 +317,7 @@ class _ReportsHomeState extends State<ReportsHome> {
                 leading: SizedBox(
                   width: 85,
                   child: Text(
-                    "FORMAT:",
+                    AppLocalizations.of(context).translate('format'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -435,12 +437,12 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (customers.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Generating your Customers Report! Please wait...", 2));
+            AppLocalizations.of(context).translate('format'), 2));
         await CustomerReport()
             .generateReport(_user, customers, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "No Customers data found. Please try different criteria!", 2));
+          AppLocalizations.of(context).translate('generating_report'), 2));
       }
     } else if (_selectedCategory == '1') {
       List<Payment> pays;
@@ -474,12 +476,12 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (pays.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Generating your Payment Report! Please wait...", 2));
+          AppLocalizations.of(context).translate('generating_payment_report'), 2));
         await PaymentReport()
             .generateReport(_user, pays, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "No Payments data found. Please try different criteria!", 2));
+          AppLocalizations.of(context).translate('no_payment_report'), 2));
       }
     } else if (_selectedCategory == '2') {
       List<Collection> colls;
@@ -511,12 +513,12 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (colls.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Generating your Colleciton Report! Please wait...", 2));
+          AppLocalizations.of(context).translate('no_collection_report'), 2));
         await CollectionReport()
             .generateReport(_user, colls, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "No Collection data found. Please try different criteria!", 2));
+          AppLocalizations.of(context).translate('no_collection_data'), 2));
       }
     } else if (_selectedCategory == '3') {
       JournalController _jc = JournalController();
@@ -540,12 +542,12 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (journals.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Generating your Journal Report! Please wait...", 2));
+          AppLocalizations.of(context).translate('generating_journal_report'), 2));
         await JournalReport()
             .generateReport(_user, journals, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "No Journal data found. Please try different criteria!", 2));
+          AppLocalizations.of(context).translate('no_journal_data'), 2));
       }
     } else if (_selectedCategory == '4') {
       ExpenseController _ec = ExpenseController();
@@ -570,12 +572,12 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (expenses.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Generating your Expense Report! Please wait...", 2));
+          AppLocalizations.of(context).translate('generating_expense_report'), 2));
         await ExpenseReport()
             .generateReport(_user, expenses, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "No Expense data found. Please try different criteria!", 2));
+          AppLocalizations.of(context).translate('no_expense_data'), 2));
       }
     }
   }

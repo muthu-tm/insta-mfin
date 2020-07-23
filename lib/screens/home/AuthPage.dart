@@ -158,7 +158,7 @@ class _AuthPageState extends State<AuthPage> {
                         autofocus: false,
                         controller: _pController,
                         decoration: InputDecoration(
-                          hintText: 'Secret KEY',
+                          hintText: AppLocalizations.of(context).translate('secret_key'),
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
                         ),
@@ -178,7 +178,7 @@ class _AuthPageState extends State<AuthPage> {
                           );
                         },
                         child: Text(
-                          'Not You! or Forgot KEY?',
+                          AppLocalizations.of(context).translate('forget_key'),
                           textAlign: TextAlign.end,
                           style: new TextStyle(
                             fontWeight: FontWeight.bold,
@@ -203,7 +203,7 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       child: new Center(
                         child: new Text(
-                          AppLocalizations.of(context).translate('auth_page_login_text'),
+                          AppLocalizations.of(context).translate('login'),
                           style: new TextStyle(
                             fontSize: 18.0,
                             fontFamily: 'Georgia',
@@ -224,7 +224,7 @@ class _AuthPageState extends State<AuthPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  "Don't have an account?",
+                  AppLocalizations.of(context).translate('no_account'),
                   style: new TextStyle(
                     fontSize: 13.0,
                     fontFamily: 'Georgia',
@@ -241,7 +241,7 @@ class _AuthPageState extends State<AuthPage> {
                     );
                   },
                   child: Text(
-                    'SIGN UP',
+                    AppLocalizations.of(context).translate('sign_up'),
                     style: new TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
@@ -260,24 +260,24 @@ class _AuthPageState extends State<AuthPage> {
   void _submit(User _user) async {
     if (_pController.text.length == 0) {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Enter Your Secret KEY", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('your_secret_key'), 2));
       return;
     } else {
       String hashKey = HashGenerator.hmacGenerator(
           _pController.text, _user.mobileNumber.toString());
       if (hashKey != _user.password) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "Wrong Secret KEY. Please try again!", 2));
+           AppLocalizations.of(context).translate('wrong_secret_key'), 2));
         return;
       } else {
-        CustomDialogs.actionWaiting(context, "Logging In");
+        CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('logging_in'));
 
         var result = await _authController.signInWithMobileNumber(_user);
 
         if (!result['is_success']) {
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              "Unable to Login, Something went wrong. Please try again Later!",
+              AppLocalizations.of(context).translate('unable_to_login'),
               2));
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));

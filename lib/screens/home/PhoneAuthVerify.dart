@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class PhoneAuthVerify extends StatefulWidget {
   PhoneAuthVerify(this.isRegister, this.number, this.passKey, this.name,
@@ -157,7 +158,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'VERIFY',
+                AppLocalizations.of(context).translate('verify'),
                 style: TextStyle(
                   color: CustomColors.mfinButtonGreen,
                   fontSize: 18.0,
@@ -174,9 +175,9 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
   signIn() {
     if (code.length != 6) {
       _scaffoldKey.currentState
-          .showSnackBar(CustomSnackBar.errorSnackBar("Invalid OTP", 2));
+          .showSnackBar(CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('invalid_otp'), 2));
     } else {
-      CustomDialogs.actionWaiting(context, "Verifying User");
+      CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('verify_user'));
       verifyOTPAndLogin(code.join());
     }
   }
@@ -216,7 +217,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
             await UserController().refreshUser(true);
           } catch (err) {
             _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-                "Unable to Login, Something went wrong. Please try again Later!",
+              AppLocalizations.of(context).translate('unable_to_login'),
                 2));
             return;
           }
@@ -226,7 +227,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
     }).catchError((error) {
       Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          "Something has gone wrong, please try later(signInWithPhoneNumber)",
+        AppLocalizations.of(context).translate('try_later'),
           2));
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar("${error.toString()}", 2));
