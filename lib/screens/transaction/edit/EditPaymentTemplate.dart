@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class EditPaymentTemplate extends StatefulWidget {
   EditPaymentTemplate(this.template);
@@ -16,6 +18,8 @@ class EditPaymentTemplate extends StatefulWidget {
 class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AccountPreferences accPref =
+      UserController().getCurrentUser().accPreferences;
 
   final Map<String, dynamic> updatedTemplate = new Map();
 
@@ -46,11 +50,24 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
     "6": "Sat",
   };
 
+  TextEditingController totalAmountController = TextEditingController();
+  TextEditingController principalAmountController = TextEditingController();
+  TextEditingController interestAmountController = TextEditingController();
+  TextEditingController tenureController = TextEditingController();
+  TextEditingController collectionAmountController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     selectedCollectionModeID = widget.template.collectionMode.toString();
     collectionDays = widget.template.collectionDays;
+
+    totalAmountController.text = widget.template.totalAmount.toString();
+    principalAmountController.text = widget.template.principalAmount.toString();
+    tenureController.text = widget.template.tenure.toString();
+    interestAmountController.text = widget.template.interestAmount.toString();
+    collectionAmountController.text =
+        widget.template.collectionAmount.toString();
   }
 
   @override
@@ -63,6 +80,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinBlue,
         onPressed: () {
           _submit();
         },
@@ -160,8 +178,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              initialValue:
-                                  widget.template.totalAmount.toString(),
+                              controller: totalAmountController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -180,6 +197,19 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                               ),
+                              onChanged: (val) {
+                                double iAmount = accPref.interestRate > 0
+                                    ? (int.parse(val) ~/ 100) *
+                                        accPref.interestRate
+                                    : 0;
+                                int pAmount = int.parse(val) - iAmount.round();
+                                setState(() {
+                                  interestAmountController.text =
+                                      iAmount.round().toString();
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
                               validator: (amount) {
                                 if (amount.trim().isNotEmpty ||
                                     amount.trim() !=
@@ -197,8 +227,59 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                           Padding(padding: EdgeInsets.all(10)),
                           Flexible(
                             child: TextFormField(
-                              initialValue:
-                                  widget.template.principalAmount.toString(),
+                              controller: interestAmountController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Interest Amount',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                              ),
+                              onChanged: (val) {
+                                int pAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? int.parse(
+                                                totalAmountController.text) -
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
+                              validator: (interest) {
+                                if (interest.trim().isEmpty) {
+                                  return 'Enter the Interest Amount';
+                                } else if (interest.trim() !=
+                                    widget.template.interestAmount.toString()) {
+                                  updatedTemplate['interest_amount'] =
+                                      int.parse(interest);
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              controller: principalAmountController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -228,6 +309,93 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                                 } else {
                                   return 'Enter the Principal Amount to be given to Customer';
                                 }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: widget.template.tenure.toString(),
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'No. of Collections',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                              ),
+                              onChanged: (val) {
+                                int cAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? (int.parse(
+                                                totalAmountController.text)) ~/
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  collectionAmountController.text =
+                                      cAmount.toString();
+                                });
+                              },
+                              validator: (noOfPayment) {
+                                if (noOfPayment.trim().isEmpty) {
+                                  return 'Enter the Number of Installments';
+                                } else if (noOfPayment.trim() !=
+                                    widget.template.tenure.toString()) {
+                                  updatedTemplate['tenure'] =
+                                      int.parse(noOfPayment);
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              controller: collectionAmountController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Collection amount',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                              ),
+                              validator: (collectionAmount) {
+                                if (collectionAmount.trim().isEmpty) {
+                                  return 'Enter the Collection Amount';
+                                } else if (collectionAmount.trim() !=
+                                    widget.template.collectionAmount
+                                        .toString()) {
+                                  updatedTemplate['collection_amount'] =
+                                      int.parse(collectionAmount);
+                                }
+                                return null;
                               },
                             ),
                           ),
@@ -314,117 +482,6 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              initialValue: widget.template.tenure.toString(),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'No. of Collections',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              validator: (noOfPayment) {
-                                if (noOfPayment.trim().isEmpty) {
-                                  return 'Enter the Number of Payments';
-                                } else if (noOfPayment.trim() !=
-                                    widget.template.tenure.toString()) {
-                                  updatedTemplate['tenure'] =
-                                      int.parse(noOfPayment);
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.all(10)),
-                          Flexible(
-                            child: TextFormField(
-                              initialValue:
-                                  widget.template.interestAmount.toString(),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Rate of interest',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              validator: (interest) {
-                                if (interest.trim().isEmpty) {
-                                  return 'Enter the Interest Amount';
-                                } else if (interest.trim() !=
-                                    widget.template.interestAmount.toString()) {
-                                  updatedTemplate['interest_amount'] =
-                                      int.parse(interest);
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              initialValue:
-                                  widget.template.collectionAmount.toString(),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Collection amount',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              validator: (collectionAmount) {
-                                if (collectionAmount.trim().isEmpty) {
-                                  return 'Enter the Collection Amount';
-                                } else if (collectionAmount.trim() !=
-                                    widget.template.collectionAmount
-                                        .toString()) {
-                                  updatedTemplate['collection_amount'] =
-                                      int.parse(collectionAmount);
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.all(10)),
                           Flexible(
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
@@ -556,7 +613,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
               'Total amount should be equal to Collection amount * No. of collections',
               5));
         } else if (!(totalAmount >=
-             givenAmount + documentCharge + surChargeAmount)) {
+            givenAmount + documentCharge + surChargeAmount)) {
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
               'Total amount should be greater than sum of Principal + Document + Service charge',
