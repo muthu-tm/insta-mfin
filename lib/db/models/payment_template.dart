@@ -26,8 +26,8 @@ class PaymentTemplate {
   List<int> collectionDays;
   @JsonKey(name: 'collection_amount', nullable: true)
   int collectionAmount;
-  @JsonKey(name: 'interest_rate', nullable: true)
-  double interestRate;
+  @JsonKey(name: 'interest_amount', nullable: true)
+  int interestAmount;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
@@ -73,8 +73,8 @@ class PaymentTemplate {
     this.collectionDays = collectionDay;
   }
 
-  setInterestRate(double iRate) {
-    this.interestRate = iRate;
+  setInterestAmount(int iAmount) {
+    this.interestAmount = iAmount;
   }
 
   setAddedBy(int mobileNumber) {

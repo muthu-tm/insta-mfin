@@ -23,7 +23,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   int documentCharge = 0;
   int surChargeAmount = 0;
   int noOfInstallments = 0;
-  double interestRate = 0.00;
+  int interestAmount = 0;
   int collectionAmount = 0;
   String selectedCollectionModeID = "0";
 
@@ -52,7 +52,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
     selectedCollectionModeID =
         _user.accPreferences.collectionMode.toString() ?? '0';
     collectionDays = _user.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
-    interestRate = _user.accPreferences.interestRate ?? 0.00;
+    interestAmount = 0;
   }
 
   @override
@@ -329,11 +329,11 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Padding(padding: EdgeInsets.all(10)),
                           Flexible(
                             child: TextFormField(
-                              initialValue: interestRate.toString(),
+                              initialValue: interestAmount.toString(),
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Rate of interest',
+                                labelText: 'Interest Amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -350,9 +350,9 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               ),
                               validator: (interest) {
                                 if (interest.trim().isEmpty) {
-                                  return 'Enter the Interest Rate';
+                                  return 'Enter the Interest Amount';
                                 }
-                                this.interestRate = double.parse(interest);
+                                this.interestAmount = int.parse(interest);
                                 return null;
                               },
                             ),
@@ -518,7 +518,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
           collectionDays,
           documentCharge,
           surChargeAmount,
-          interestRate);
+          interestAmount);
 
       if (!result['is_success']) {
         Navigator.pop(context);

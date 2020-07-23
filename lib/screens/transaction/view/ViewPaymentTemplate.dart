@@ -220,11 +220,11 @@ class ViewPaymentTemplate extends StatelessWidget {
                         Padding(padding: EdgeInsets.all(10)),
                         Flexible(
                           child: TextFormField(
-                            initialValue: template.interestRate.toString(),
+                            initialValue: template.interestAmount.toString(),
                             readOnly: true,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'Rate of interest',
+                              labelText: 'Interest Amount',
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(

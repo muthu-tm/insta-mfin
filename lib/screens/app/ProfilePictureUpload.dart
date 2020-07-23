@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:exif/exif.dart';
+import 'package:image/image.dart' as img;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -187,8 +188,9 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.start,
                                 ),
-                                onPressed: () =>
-                                    _uploadImage(selectedImagePath),
+                                onPressed: () async {
+                                  await _uploadImage(selectedImagePath);
+                                },
                               ),
                             ),
                           ],
@@ -248,13 +250,16 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
 
   Future _uploadImage(String path) async {
     if (path != null) {
+      CustomDialogs.actionWaiting(context, "Checking..");
+      File imageFile = await fixExifRotation(path);
+      Navigator.pop(context);
       CustomDialogs.actionWaiting(context, "Uploading!");
       Uploader.uploadImage(
         widget.type,
         widget.type == 0
             ? "user_profile_org"
             : widget.type == 1 ? "cust_profile_org" : "finance_profile_org",
-        path,
+        imageFile,
         widget.fileName,
         widget.id,
         () {
@@ -269,5 +274,38 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         },
       );
     }
+  }
+
+  Future<File> fixExifRotation(String imagePath) async {
+    final originalFile = File(imagePath);
+    List<int> imageBytes = await originalFile.readAsBytes();
+
+    final originalImage = img.decodeImage(imageBytes);
+
+    final height = originalImage.height;
+    final width = originalImage.width;
+
+    if (height >= width) {
+      return originalFile;
+    }
+    final exifData = await readExifFromBytes(imageBytes);
+    img.Image fixedImage;
+
+    print('Rotating image necessary' + exifData['Image Orientation'].printable);
+    if (exifData['Image Orientation'].printable.contains('90 CW') ||
+        exifData['Image Orientation'].printable.contains('Horizontal')) {
+      fixedImage = img.copyRotate(originalImage, 90);
+    } else if (exifData['Image Orientation'].printable.contains('180')) {
+      fixedImage = img.copyRotate(originalImage, -90);
+    } else if (exifData['Image Orientation'].printable.contains('CCW')) {
+      fixedImage = img.copyRotate(originalImage, 180);
+    } else {
+      fixedImage = img.copyRotate(originalImage, 0);
+    }
+
+    final fixedFile =
+        await originalFile.writeAsBytes(img.encodePng(fixedImage));
+
+    return fixedFile;
   }
 }

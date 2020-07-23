@@ -351,7 +351,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                           Flexible(
                             child: TextFormField(
                               initialValue:
-                                  widget.template.interestRate.toString(),
+                                  widget.template.interestAmount.toString(),
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -372,11 +372,11 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               ),
                               validator: (interest) {
                                 if (interest.trim().isEmpty) {
-                                  return 'Enter the Interest Rate';
+                                  return 'Enter the Interest Amount';
                                 } else if (interest.trim() !=
-                                    widget.template.interestRate.toString()) {
-                                  updatedTemplate['interest_rate'] =
-                                      double.parse(interest);
+                                    widget.template.interestAmount.toString()) {
+                                  updatedTemplate['interest_amount'] =
+                                      int.parse(interest);
                                 }
                                 return null;
                               },
