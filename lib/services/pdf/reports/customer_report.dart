@@ -159,7 +159,7 @@ class CustomerReport {
         });
       }
       addRow(
-          _c.name,
+          '${_c.firstName} ${_c.lastName}',
           _c.customerID,
           _c.mobileNumber.toString(),
           DateTime.fromMillisecondsSinceEpoch(_c.joinedAt),

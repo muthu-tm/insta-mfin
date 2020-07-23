@@ -18,8 +18,10 @@ class Customer extends Model {
   int id;
   @JsonKey(name: 'mobile_number', nullable: true)
   int mobileNumber;
-  @JsonKey(name: 'customer_name', nullable: true)
-  String name;
+  @JsonKey(name: 'first_name', nullable: true)
+  String firstName;
+  @JsonKey(name: 'last_name', nullable: true)
+  String lastName;
   @JsonKey(name: 'gender', nullable: true)
   String gender;
   @JsonKey(name: 'address', nullable: true)
@@ -37,7 +39,7 @@ class Customer extends Model {
   @JsonKey(name: 'customer_profession', defaultValue: "")
   String profession;
   @JsonKey(name: 'guarantied_by', nullable: true)
-  int guarantiedBy;
+  String guarantiedBy;
   @JsonKey(name: 'added_by', nullable: true)
   int addedBy;
   @JsonKey(name: 'status', nullable: true)
@@ -65,8 +67,12 @@ class Customer extends Model {
     this.gender = gender;
   }
 
-  setName(String name) {
-    this.name = name;
+  setFirstName(String fName) {
+    this.firstName = fName;
+  }
+
+  setLastName(String lName) {
+    this.lastName = lName;
   }
 
   setAge(int age) {
@@ -81,7 +87,7 @@ class Customer extends Model {
     this.profession = profession;
   }
 
-  setGuarantiedBy(int guarantiedBy) {
+  setGuarantiedBy(String guarantiedBy) {
     this.guarantiedBy = guarantiedBy;
   }
 
@@ -250,6 +256,10 @@ class Customer extends Model {
   }
 
   Future<Customer> getByMobileNumber(int number) async {
+    if (number == null) {
+      return null;
+    }
+
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: user.primary.financeID)
         .where('branch_name', isEqualTo: user.primary.branchName)

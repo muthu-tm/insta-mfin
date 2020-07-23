@@ -110,7 +110,7 @@ class AllCustomerTab extends StatelessWidget {
                                   textAlign: TextAlign.start,
                                 ),
                                 content: Text(
-                                    'Are you sure to remove ${cust.name} Customer?'),
+                                    'Are you sure to remove ${cust.firstName} ${cust.lastName} Customer?'),
                                 actions: <Widget>[
                                   FlatButton(
                                     color: CustomColors.mfinButtonGreen,

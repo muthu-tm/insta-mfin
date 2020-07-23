@@ -6,6 +6,8 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomTabBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
+import '../../app_localizations.dart';
+
 class NotificationHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -18,7 +20,9 @@ class NotificationHome extends StatelessWidget {
         drawer: openDrawer(context),
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Notifications"),
+          title: Text(
+            AppLocalizations.of(context).translate('notifications'),
+          ),
           backgroundColor: CustomColors.mfinBlue,
           automaticallyImplyLeading: false,
           leading: InkWell(
@@ -72,35 +76,45 @@ class NotificationHome extends StatelessWidget {
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
-                    child: Text("All"),
+                    child: Text(
+                      AppLocalizations.of(context).translate('all'),
+                    ),
                   ),
                 ),
                 Tab(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
-                    child: Text("Finance"),
+                    child: Text(
+                      AppLocalizations.of(context).translate('finance'),
+                    ),
                   ),
                 ),
                 Tab(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
-                    child: Text("Alert"),
+                    child: Text(
+                      AppLocalizations.of(context).translate('alert'),
+                    ),
                   ),
                 ),
                 Tab(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
-                    child: Text("Personal"),
+                    child: Text(
+                      AppLocalizations.of(context).translate('personal'),
+                    ),
                   ),
                 ),
                 Tab(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
-                    child: Text("Promotions"),
+                    child: Text(
+                      AppLocalizations.of(context).translate('promotions'),
+                    ),
                   ),
                 ),
               ],

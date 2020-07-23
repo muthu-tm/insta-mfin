@@ -11,7 +11,8 @@ class CustController {
   UserController uc = UserController();
 
   Future createCustomer(
-      String name,
+      String firstName,
+      String lastName,
       String customerID,
       String gender,
       String profession,
@@ -19,17 +20,18 @@ class CustController {
       int joinedAt,
       Address address,
       int age,
-      int guarantiedBy) async {
+      String guarantiedBy) async {
     try {
       Customer cust = Customer();
       User user = uc.getCurrentUser();
 
       Customer customer = await cust.getByMobileNumber(mobileNumber);
       if (customer != null) {
-        throw 'Unable to create! Found an existing customer ${customer.name} with this contact number!';
+        throw 'Unable to create! Found an existing customer ${customer.firstName} ${customer.lastName} with this contact number!';
       }
 
-      cust.setName(name);
+      cust.setFirstName(firstName);
+      cust.setLastName(lastName);
       cust.setCustomerID(customerID);
       cust.setGender(gender);
       cust.setMobileNumber(mobileNumber);
@@ -37,11 +39,7 @@ class CustController {
       cust.setAddress(address);
       cust.setAge(age);
       cust.setProfession(profession);
-      if (guarantiedBy == 0) {
-        cust.setGuarantiedBy(user.mobileNumber);
-      } else {
-        cust.setGuarantiedBy(guarantiedBy);
-      }
+      cust.setGuarantiedBy(guarantiedBy);
       cust.setFinanceID(user.primary.financeID);
       cust.setBranchName(user.primary.branchName);
       cust.setSubBranchName(user.primary.subBranchName);
@@ -50,14 +48,14 @@ class CustController {
       await cust.create();
 
       NUtils.financeNotify("", "NEW Customer OnBoard",
-          "New Customer $name onboarded by ${user.mobileNumber}.!");
+          "New Customer $firstName $lastName onboarded by ${user.mobileNumber}.!");
 
       return CustomResponse.getSuccesReponse(cust.toJson());
     } catch (err) {
       Analytics.reportError({
         "type": 'customer_create_error',
         "cust_number": mobileNumber,
-        'name': name,
+        'name': '$firstName $lastName',
         'error': err.toString()
       });
       return CustomResponse.getFailureReponse(err.toString());
@@ -89,11 +87,12 @@ class CustController {
   Future updateCustomer(Map<String, dynamic> customerJson, int custUUID) async {
     try {
       Customer customer = Customer();
-      if (customerJson.containsKey('mobile_number') && customerJson['mobile_number'] != null) {
+      if (customerJson.containsKey('mobile_number') &&
+          customerJson['mobile_number'] != null) {
         Customer cust =
             await customer.getByMobileNumber(customerJson['mobile_number']);
         if (cust != null) {
-          throw 'Unable to create! Found an existing customer ${customer.name} with this contact number!';
+          throw 'Unable to create! Found an existing customer ${cust.firstName} ${cust.lastName} with this contact number!';
         }
       }
 

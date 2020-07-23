@@ -22,7 +22,7 @@ class PaymentController {
       int docCharge,
       int surcharge,
       int rCommission,
-      double iRate,
+      int iAmount,
       String givenBy,
       String notes) async {
     try {
@@ -45,7 +45,7 @@ class PaymentController {
       pay.setDocumentCharge(docCharge);
       pay.setSurcharge(surcharge);
       pay.setCommission(rCommission);
-      pay.setInterestRate(iRate);
+      pay.setInterestAmount(iAmount);
       pay.setNotes(notes);
       pay.setIsSettled(false);
       pay.setCSF(collectionDate);
@@ -61,7 +61,8 @@ class PaymentController {
 
   Future<List<Payment>> getAllPaymentsForCustomer(int custID) async {
     try {
-      List<Payment> payments = await Payment().getAllPaymentsForCustomer(custID);
+      List<Payment> payments =
+          await Payment().getAllPaymentsForCustomer(custID);
 
       if (payments == null) {
         return [];
@@ -75,8 +76,7 @@ class PaymentController {
 
   Future<List<Payment>> getPaymentsByDate(int epoch) async {
     try {
-      List<Payment> payments = await Payment()
-          .getAllPaymentsByDate(epoch);
+      List<Payment> payments = await Payment().getAllPaymentsByDate(epoch);
 
       if (payments == null) {
         return [];
@@ -113,8 +113,7 @@ class PaymentController {
   }
 
   Future<List<Payment>> getAllPaymentsByDateRange(
-      DateTime startDate,
-      DateTime endDate) async {
+      DateTime startDate, DateTime endDate) async {
     try {
       List<Payment> payments = await Payment().getAllPaymentsByDateRange(
           DateUtils.getUTCDateEpoch(startDate),
@@ -133,14 +132,19 @@ class PaymentController {
   Future updatePayment(
       Payment payment, Map<String, dynamic> paymentJSON) async {
     try {
+      if (paymentJSON.containsKey('payment_id')) {
+        Payment pay = await Payment().getPaymentByID(paymentJSON['payment_id']);
+        if (pay != null) {
+          throw 'Already a Payment exist with this PAYMENT ID - ${paymentJSON["payment_id"]}';
+        }
+      }
       await Payment().updatePayment(payment, paymentJSON);
 
       return CustomResponse.getSuccesReponse(
           "Updated ${payment.custName} customer's Payment");
     } catch (err) {
-      print(
-          "Error while updating ${payment.custName}customer's Payment: " +
-              err.toString());
+      print("Error while updating ${payment.custName}customer's Payment: " +
+          err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

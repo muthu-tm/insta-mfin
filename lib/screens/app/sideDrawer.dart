@@ -19,12 +19,14 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 Widget openDrawer(BuildContext context) {
   final User _user = UserController().getCurrentUser();
   final AuthController _authController = AuthController();
 
-  return new Drawer(
-    child: new ListView(
+  return Drawer(
+    child: ListView(
       children: <Widget>[
         DrawerHeader(
           decoration: BoxDecoration(
@@ -64,7 +66,7 @@ Widget openDrawer(BuildContext context) {
                             );
                           },
                           child: Text(
-                            "Upload",
+                            AppLocalizations.of(context).translate('upload'),
                             style: TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w500,
@@ -136,9 +138,11 @@ Widget openDrawer(BuildContext context) {
             ],
           ),
         ),
-        new ListTile(
-            leading: new Icon(Icons.home, color: CustomColors.mfinButtonGreen),
-            title: new Text('Home'),
+        ListTile(
+            leading: Icon(Icons.home, color: CustomColors.mfinButtonGreen),
+            title: Text(
+              AppLocalizations.of(context).translate('home'),
+            ),
             onTap: () async {
               await UserController().refreshUser(false);
               Navigator.pushAndRemoveUntil(
@@ -150,15 +154,19 @@ Widget openDrawer(BuildContext context) {
                 (Route<dynamic> route) => false,
               );
             }),
-        new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
-        new ExpansionTile(
-          title: new Text("Transactions"),
+        Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
+        ExpansionTile(
+          title: Text(
+            AppLocalizations.of(context).translate('transactions'),
+          ),
           leading:
-              new Icon(Icons.content_copy, color: CustomColors.mfinButtonGreen),
+              Icon(Icons.content_copy, color: CustomColors.mfinButtonGreen),
           children: <Widget>[
-            new ListTile(
-              title: new Text('My NoteBooks'),
-              trailing: new Icon(Icons.keyboard_arrow_right),
+            ListTile(
+              title: Text(
+                AppLocalizations.of(context).translate('my_notebooks'),
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -167,9 +175,11 @@ Widget openDrawer(BuildContext context) {
                 ),
               ),
             ),
-            new ListTile(
-              title: new Text('Expenses'),
-              trailing: new Icon(Icons.keyboard_arrow_right),
+            ListTile(
+              title: Text(
+                AppLocalizations.of(context).translate('expenses'),
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -178,9 +188,11 @@ Widget openDrawer(BuildContext context) {
                 ),
               ),
             ),
-            new ListTile(
-              title: new Text('Journals'),
-              trailing: new Icon(Icons.keyboard_arrow_right),
+            ListTile(
+              title: Text(
+                AppLocalizations.of(context).translate('journals'),
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -191,14 +203,18 @@ Widget openDrawer(BuildContext context) {
             ),
           ],
         ),
-        new ExpansionTile(
-          leading: new Icon(Icons.supervisor_account,
+        ExpansionTile(
+          leading: Icon(Icons.supervisor_account,
               color: CustomColors.mfinButtonGreen),
-          title: new Text('My Customers'),
+          title: Text(
+            AppLocalizations.of(context).translate('my_customers'),
+          ),
           children: <Widget>[
-            new ListTile(
-              title: new Text('Add a Customer'),
-              trailing: new Icon(Icons.keyboard_arrow_right),
+            ListTile(
+              title: Text(
+                AppLocalizations.of(context).translate('add_a_customer'),
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -207,9 +223,11 @@ Widget openDrawer(BuildContext context) {
                 ),
               ),
             ),
-            new ListTile(
-              title: new Text('View Customers'),
-              trailing: new Icon(Icons.keyboard_arrow_right),
+            ListTile(
+              title: Text(
+                AppLocalizations.of(context).translate('view_customers'),
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () => Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
@@ -221,10 +239,11 @@ Widget openDrawer(BuildContext context) {
             ),
           ],
         ),
-        new ListTile(
-          leading:
-              new Icon(Icons.description, color: CustomColors.mfinButtonGreen),
-          title: new Text('Reports'),
+        ListTile(
+          leading: Icon(Icons.description, color: CustomColors.mfinButtonGreen),
+          title: Text(
+            AppLocalizations.of(context).translate('reports'),
+          ),
           onTap: () => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -234,10 +253,11 @@ Widget openDrawer(BuildContext context) {
             (Route<dynamic> route) => false,
           ),
         ),
-        new ListTile(
-          leading:
-              new Icon(Icons.assessment, color: CustomColors.mfinButtonGreen),
-          title: new Text('Statistics'),
+        ListTile(
+          leading: Icon(Icons.assessment, color: CustomColors.mfinButtonGreen),
+          title: Text(
+            AppLocalizations.of(context).translate('statistics'),
+          ),
           onTap: () => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -247,11 +267,13 @@ Widget openDrawer(BuildContext context) {
             (Route<dynamic> route) => false,
           ),
         ),
-        new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
-        new ListTile(
-          leading: new Icon(Icons.notifications_active,
+        Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
+        ListTile(
+          leading: Icon(Icons.notifications_active,
               color: CustomColors.mfinButtonGreen),
-          title: new Text('Notifications'),
+          title: Text(
+            AppLocalizations.of(context).translate('notifications'),
+          ),
           onTap: () {
             Navigator.push(
               context,
@@ -262,11 +284,13 @@ Widget openDrawer(BuildContext context) {
             );
           },
         ),
-        new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
-        new ListTile(
-          leading: new Icon(Icons.account_balance,
-              color: CustomColors.mfinButtonGreen),
-          title: new Text('Finance Settings'),
+        Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
+        ListTile(
+          leading:
+              Icon(Icons.account_balance, color: CustomColors.mfinButtonGreen),
+          title: Text(
+            AppLocalizations.of(context).translate('finance_settings'),
+          ),
           onTap: () {
             Navigator.push(
               context,
@@ -277,10 +301,11 @@ Widget openDrawer(BuildContext context) {
             );
           },
         ),
-        new ListTile(
-          leading:
-              new Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
-          title: new Text('Profile Settings'),
+        ListTile(
+          leading: Icon(Icons.settings, color: CustomColors.mfinButtonGreen),
+          title: Text(
+            AppLocalizations.of(context).translate('profile_settings'),
+          ),
           onTap: () {
             Navigator.push(
               context,
@@ -291,28 +316,34 @@ Widget openDrawer(BuildContext context) {
             );
           },
         ),
-        new Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
-        new ListTile(
-          leading:
-              new Icon(Icons.headset_mic, color: CustomColors.mfinButtonGreen),
-          title: new Text('Help & Support'),
+        Divider(indent: 15.0, color: CustomColors.mfinBlue, thickness: 1.0),
+        ListTile(
+          leading: Icon(Icons.headset_mic, color: CustomColors.mfinButtonGreen),
+          title: Text(
+            AppLocalizations.of(context).translate('help_and_support'),
+          ),
           onTap: () {
             showDialog(
               context: context,
               routeSettings: RouteSettings(name: "/home/help"),
               builder: (context) {
                 return Center(
-                  child: contactAndSupportDialog(),
+                  child: contactAndSupportDialog(context),
                 );
               },
             );
           },
         ),
-        new ListTile(
-          leading: new Icon(Icons.error, color: CustomColors.mfinAlertRed),
-          title: new Text('Logout'),
+        ListTile(
+          leading: Icon(Icons.error, color: CustomColors.mfinAlertRed),
+          title: Text(
+            AppLocalizations.of(context).translate('logout'),
+          ),
           onTap: () => CustomDialogs.confirm(
-              context, "Warning!", "Do you really want to Logout?", () async {
+              context,
+              AppLocalizations.of(context).translate('warning'),
+              AppLocalizations.of(context).translate('logout_message'),
+              () async {
             await _authController.signOut();
             Navigator.pushAndRemoveUntil(
               context,
@@ -341,10 +372,13 @@ Widget openDrawer(BuildContext context) {
                 ),
               ),
             ),
-            applicationName: 'iFIN',
-            applicationVersion: '0.5.0 (beta)',
-            applicationLegalese: '© 2020 iFIN Private Ltd.',
-            child: new ListTile(
+            applicationName:
+                AppLocalizations.of(context).translate('company_name'),
+            applicationVersion:
+                AppLocalizations.of(context).translate('version'),
+            applicationLegalese:
+                AppLocalizations.of(context).translate('copyright'),
+            child: ListTile(
               leading: RichText(
                 textAlign: TextAlign.justify,
                 text: TextSpan(
@@ -379,7 +413,8 @@ Widget openDrawer(BuildContext context) {
               trailing: RichText(
                 textAlign: TextAlign.justify,
                 text: TextSpan(
-                  text: 'v0.5.0',
+                  text:
+                      AppLocalizations.of(context).translate('version_number'),
                   style: TextStyle(
                     color: CustomColors.mfinButtonGreen,
                     fontFamily: 'Georgia',
@@ -388,7 +423,8 @@ Widget openDrawer(BuildContext context) {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: ' (Beta)',
+                      text: AppLocalizations.of(context)
+                          .translate('version_code'),
                       style: TextStyle(
                         color: CustomColors.mfinGrey,
                         fontSize: 13.0,
@@ -428,7 +464,7 @@ Widget openDrawer(BuildContext context) {
                 ),
                 title: RichText(
                   text: TextSpan(
-                    text: 'Built For Micro Finance Industry Network ',
+                    text: AppLocalizations.of(context).translate('company_tag'),
                     style: TextStyle(
                       color: CustomColors.mfinPositiveGreen,
                       fontSize: 18.0,
@@ -436,7 +472,8 @@ Widget openDrawer(BuildContext context) {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: '(MFIN)',
+                        text: AppLocalizations.of(context)
+                            .translate('micro_company'),
                         style: TextStyle(
                           color: CustomColors.mfinButtonGreen,
                           fontSize: 18.0,
@@ -457,7 +494,8 @@ Widget openDrawer(BuildContext context) {
                   size: 35.0,
                 ),
                 title: Text(
-                  'Terms & Conditions',
+                  AppLocalizations.of(context)
+                      .translate('terms_and_conditions'),
                   style: TextStyle(
                     color: CustomColors.mfinLightBlue,
                     fontSize: 18.0,
