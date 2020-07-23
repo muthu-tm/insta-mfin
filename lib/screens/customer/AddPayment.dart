@@ -59,11 +59,11 @@ class _AddPaymentState extends State<AddPayment> {
 
   TextEditingController totalAmountController = TextEditingController();
   TextEditingController principalAmountController = TextEditingController();
+  TextEditingController intrestRateController = TextEditingController();
+  TextEditingController tenureController = TextEditingController();
+  TextEditingController collectionAmountController = TextEditingController();
   TextEditingController docChargeController = TextEditingController();
   TextEditingController surChargeController = TextEditingController();
-  TextEditingController tenureController = TextEditingController();
-  TextEditingController intrestRateController = TextEditingController();
-  TextEditingController collectionAmountController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
   DateTime collectionDate = DateTime.now().add(Duration(days: 1));
@@ -93,8 +93,7 @@ class _AddPaymentState extends State<AddPayment> {
     docChargeController.text = '0';
     surChargeController.text = '0';
     tenureController.text = '0';
-    intrestRateController.text =
-        _user.accPreferences.interestRate.toString() ?? '0.00';
+    intrestRateController.text = '0';
     collectionAmountController.text = '0';
 
     _date.text = DateUtils.formatDate(DateTime.now());
@@ -625,6 +624,20 @@ class _AddPaymentState extends State<AddPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                double iAmount =
+                                    _user.accPreferences.interestRate > 0
+                                        ? (int.parse(val) ~/ 100) *
+                                            _user.accPreferences.interestRate
+                                        : 0;
+                                int pAmount = int.parse(val) - iAmount.round();
+                                setState(() {
+                                  intrestRateController.text =
+                                      iAmount.round().toString();
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
                               validator: (amount) {
                                 if (amount.trim().isEmpty ||
                                     amount.trim() == "0") {

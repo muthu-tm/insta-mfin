@@ -45,6 +45,12 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
 
   List<int> collectionDays;
 
+  TextEditingController totalAmountController = TextEditingController();
+  TextEditingController principalAmountController = TextEditingController();
+  TextEditingController interestAmountController = TextEditingController();
+  TextEditingController tenureController = TextEditingController();
+  TextEditingController collectionAmountController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +59,12 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
         _user.accPreferences.collectionMode.toString() ?? '0';
     collectionDays = _user.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
     interestAmount = 0;
+
+    totalAmountController.text = "0";
+    principalAmountController.text = "0";
+    tenureController.text = '0';
+    interestAmountController.text = '0';
+    collectionAmountController.text = '0';
   }
 
   @override
@@ -159,7 +171,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              initialValue: totalAmount.toString(),
+                              controller: totalAmountController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -178,6 +190,20 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                               ),
+                              onChanged: (val) {
+                                double iAmount =
+                                    _user.accPreferences.interestRate > 0
+                                        ? (int.parse(val) ~/ 100) *
+                                            _user.accPreferences.interestRate
+                                        : 0;
+                                int pAmount = int.parse(val) - iAmount.round();
+                                setState(() {
+                                  interestAmountController.text =
+                                      iAmount.round().toString();
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
                               validator: (amount) {
                                 if (amount.trim().isNotEmpty) {
                                   this.totalAmount = int.parse(amount);
@@ -191,7 +217,56 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Padding(padding: EdgeInsets.all(10)),
                           Flexible(
                             child: TextFormField(
-                              initialValue: pAmount.toString(),
+                              controller: interestAmountController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Interest Amount',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                              ),
+                              onChanged: (val) {
+                                int pAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? int.parse(
+                                                totalAmountController.text) -
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
+                              validator: (interest) {
+                                if (interest.trim().isEmpty) {
+                                  return 'Enter the Interest Amount';
+                                }
+                                this.interestAmount = int.parse(interest);
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              controller: principalAmountController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -218,6 +293,87 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                                 } else {
                                   return 'Enter the Principal Amount to be given to Customer';
                                 }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextFormField(
+                              controller: tenureController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'No. of Collections',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                              ),
+                              onChanged: (val) {
+                                int cAmount =
+                                    int.parse(totalAmountController.text) > 0
+                                        ? (int.parse(
+                                                totalAmountController.text)) ~/
+                                            int.parse(val)
+                                        : 0;
+                                setState(() {
+                                  collectionAmountController.text =
+                                      cAmount.toString();
+                                });
+                              },
+                              validator: (noOfPayment) {
+                                if (noOfPayment.trim().isEmpty) {
+                                  return 'Enter the Number of Installments';
+                                }
+                                this.noOfInstallments = int.parse(noOfPayment);
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              controller: collectionAmountController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Collection amount',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                              ),
+                              validator: (collectionAmount) {
+                                if (collectionAmount.trim().isEmpty) {
+                                  return 'Enter the Collection Amount';
+                                }
+                                this.collectionAmount =
+                                    int.parse(collectionAmount);
+                                return null;
                               },
                             ),
                           ),
@@ -297,106 +453,6 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       child: Row(
                         children: <Widget>[
                           Flexible(
-                            child: TextFormField(
-                              initialValue: noOfInstallments.toString(),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'No. of Collections',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              validator: (noOfPayment) {
-                                if (noOfPayment.trim().isEmpty) {
-                                  return 'Enter the Number of Installments';
-                                }
-                                this.noOfInstallments = int.parse(noOfPayment);
-                                return null;
-                              },
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.all(10)),
-                          Flexible(
-                            child: TextFormField(
-                              initialValue: interestAmount.toString(),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Interest Amount',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              validator: (interest) {
-                                if (interest.trim().isEmpty) {
-                                  return 'Enter the Interest Amount';
-                                }
-                                this.interestAmount = int.parse(interest);
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              initialValue: collectionAmount.toString(),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.start,
-                              decoration: InputDecoration(
-                                labelText: 'Collection amount',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color:
-                                            CustomColors.mfinFadedButtonGreen)),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                              ),
-                              validator: (collectionAmount) {
-                                if (collectionAmount.trim().isEmpty) {
-                                  return 'Enter the Collection Amount';
-                                }
-                                this.collectionAmount =
-                                    int.parse(collectionAmount);
-                                return null;
-                              },
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.all(10)),
-                          Flexible(
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                 labelText: 'Collection mode',
@@ -435,7 +491,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                     Padding(padding: EdgeInsets.all(5)),
                     selectedCollectionModeID == '0'
                         ? Container(
-                          padding: EdgeInsets.only(top: 5),
+                            padding: EdgeInsets.only(top: 5),
                             decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5)),
@@ -447,9 +503,8 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                                 Text(
                                   'Collection Days',
                                   style: TextStyle(
-                                    color: CustomColors.mfinBlue,
-                                    fontSize: 16.0
-                                  ),
+                                      color: CustomColors.mfinBlue,
+                                      fontSize: 16.0),
                                 ),
                                 Row(
                                   mainAxisAlignment:
@@ -506,8 +561,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Template!");
-      PaymentTemplateController _tempController =
-          PaymentTemplateController();
+      PaymentTemplateController _tempController = PaymentTemplateController();
       var result = await _tempController.createTemplate(
           templateName,
           totalAmount,
