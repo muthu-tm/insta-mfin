@@ -7,7 +7,6 @@ import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
-import 'package:instamfin/services/controllers/notification/n_utils.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
@@ -138,16 +137,22 @@ class UserController {
           _userService.cachedUser.primary.financeID != null &&
           _userService.cachedUser.primary.financeID != "") {
         QuerySnapshot querySnap = await _userService.cachedUser
-            .getFinanceDocReference()
+            .getDocumentReference()
             .collection("subscriptions")
+            .where('finance_id',
+                isEqualTo: _userService.cachedUser.primary.financeID)
             .getDocuments();
         int finSubscription;
         int chitSubscription;
         if (querySnap.documents.isNotEmpty) {
-          DocumentSnapshot docSnap = querySnap.documents.first;
-          Subscriptions sub = Subscriptions.fromJson(docSnap.data);
-          finSubscription = sub.service.validTill;
-          chitSubscription = sub.chit.validTill;
+          List<DocumentSnapshot> docsSnap = querySnap.documents;
+          for (int i = 0; i < docsSnap.length; i++) {
+            Subscriptions sub = Subscriptions.fromJson(docsSnap[i].data);
+            if (_userService.cachedUser.primary.financeID == sub.financeID) {
+              finSubscription = sub.finValidTill;
+              chitSubscription = sub.chitValidTill;
+            }
+          }
         }
 
         _userService.cachedUser.financeSubscription = finSubscription;
@@ -158,18 +163,13 @@ class UserController {
     }
   }
 
-  Future updatePrimaryFinance(int userNumber, String financeID,
-      String branchName, String subBranchName) async {
+  Future updatePrimaryFinance(
+      String financeID, String branchName, String subBranchName) async {
     try {
-      User user = User(userNumber);
+      User user = User(_userService.cachedUser.mobileNumber);
 
-      await user.update({
-        'primary': {
-          'finance_id': financeID,
-          'branch_name': branchName,
-          'sub_branch_name': subBranchName
-        }
-      });
+      await user.updatePrimaryDetails(_userService.cachedUser.mobileNumber,
+          _userService.cachedUser.guid, financeID, branchName, subBranchName);
 
       _userService.cachedUser.primary.financeID = financeID;
       _userService.cachedUser.primary.branchName = branchName;
@@ -177,13 +177,10 @@ class UserController {
 
       await refreshCacheSubscription();
       await refreshUser(true);
-
-      NUtils.alertNotify(
-          "", "PRIMARY FINANCE CHANGED", "Your Primary Finance modified...!");
     } catch (err) {
       Analytics.reportError({
         "type": 'update_primary_error',
-        'user_id': userNumber,
+        'user_id': _userService.cachedUser.mobileNumber,
         "finance_id": financeID,
         'branach_name': branchName,
         "sub_branch_name": subBranchName,

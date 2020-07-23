@@ -6,17 +6,25 @@ import 'package:instamfin/screens/statistics/StatisticsHome.dart';
 import 'package:instamfin/screens/transaction/TransactionHome.dart';
 import 'package:instamfin/screens/settings/SettingsScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 import '../../app_localizations.dart';
 
 Widget bottomBar(BuildContext context) {
+  Size size = Size(screenWidth(context, dividedBy: 5), 100);
+  bool chitEnabled = false;
+  if (UserController().getCurrentUser().accPreferences.chitEnabled) {
+    size = Size(screenWidth(context, dividedBy: 6), 100);
+    chitEnabled = true;
+  }
+
   return Container(
     height: 70,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 6), 100),
+          size: size,
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -52,7 +60,7 @@ Widget bottomBar(BuildContext context) {
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 6), 100),
+          size: size,
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -87,6 +95,7 @@ Widget bottomBar(BuildContext context) {
             ),
           ),
         ),
+<<<<<<< HEAD
         SizedBox.fromSize(
           size: Size(screenWidth(context, dividedBy: 6), 100),
           child: Material(
@@ -116,15 +125,48 @@ Widget bottomBar(BuildContext context) {
                       fontFamily: "Georgia",
                       fontSize: 10,
                       color: CustomColors.mfinGrey,
+=======
+        chitEnabled
+            ? SizedBox.fromSize(
+                size: size,
+                child: Material(
+                  color: CustomColors.mfinBlue,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChitHome(),
+                          settings: RouteSettings(name: '/chit'),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.transfer_within_a_station,
+                          size: 30.0,
+                          color: CustomColors.mfinButtonGreen,
+                        ),
+                        Text(
+                          "Chit Fund",
+                          style: TextStyle(
+                            fontFamily: "Georgia",
+                            fontSize: 10,
+                            color: CustomColors.mfinGrey,
+                          ),
+                        ),
+                      ],
+>>>>>>> 0c7b73a70bcca488bb640ec0d2051c2c54294b3f
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
+                ),
+              )
+            : Container(),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 6), 100),
+          size: size,
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -160,7 +202,7 @@ Widget bottomBar(BuildContext context) {
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 6), 100),
+          size: size,
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(
@@ -196,7 +238,7 @@ Widget bottomBar(BuildContext context) {
           ),
         ),
         SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 6), 100),
+          size: size,
           child: Material(
             color: CustomColors.mfinBlue,
             child: InkWell(

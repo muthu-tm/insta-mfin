@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class EditPayment extends StatefulWidget {
   EditPayment(this.payment);
@@ -18,9 +20,13 @@ class EditPayment extends StatefulWidget {
 class _EditPaymentState extends State<EditPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AccountPreferences accPref =
+      UserController().getCurrentUser().accPreferences;
 
   TextEditingController totalAmountController = TextEditingController();
   TextEditingController principalAmountController = TextEditingController();
+  TextEditingController interestRateController = TextEditingController();
+  TextEditingController tenureController = TextEditingController();
   TextEditingController collectionAmountController = TextEditingController();
 
   String selectedCollectionModeID = "0";
@@ -58,7 +64,9 @@ class _EditPaymentState extends State<EditPayment> {
     super.initState();
     selectedCollectionModeID = widget.payment.collectionMode.toString();
     totalAmountController.text = widget.payment.totalAmount.toString();
+    interestRateController.text = widget.payment.interestAmount.toString();
     principalAmountController.text = widget.payment.principalAmount.toString();
+    tenureController.text = widget.payment.tenure.toString();
     collectionAmountController.text =
         widget.payment.collectionAmount.toString();
 
@@ -572,6 +580,19 @@ class _EditPaymentState extends State<EditPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                double iAmount = accPref.interestRate > 0
+                                    ? (int.parse(val) ~/ 100) *
+                                        accPref.interestRate
+                                    : 0;
+                                int pAmount = int.parse(val) - iAmount.round();
+                                setState(() {
+                                  interestRateController.text =
+                                      iAmount.round().toString();
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
                               validator: (amount) {
                                 if (amount.trim().isEmpty ||
                                     amount.trim() == "0") {
@@ -590,8 +611,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue:
-                                  widget.payment.interestAmount.toString(),
+                              controller: interestRateController,
                               decoration: InputDecoration(
                                 hintText: 'Interest Amount',
                                 labelText: 'Interest Amount',
@@ -679,7 +699,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue: widget.payment.tenure.toString(),
+                              controller: tenureController,
                               decoration: InputDecoration(
                                 hintText: 'Number of Collections',
                                 labelText: 'No. of collections',
@@ -995,38 +1015,38 @@ class _EditPaymentState extends State<EditPayment> {
       if (collectionDays != widget.payment.collectionDays)
         updatedPayment['collection_days'] = collectionDays;
 
-      int totalAmount = updatedPayment.containsKey('total_amount')
-          ? updatedPayment['total_amount']
-          : widget.payment.totalAmount;
-
-      int tenure = updatedPayment.containsKey('tenure')
-          ? updatedPayment['tenure']
-          : widget.payment.tenure;
-
-      int collectionAmount = updatedPayment.containsKey('collection_amount')
-          ? updatedPayment['collection_amount']
-          : widget.payment.collectionAmount;
-
-      int alreadyReceivedAmount =
-          updatedPayment.containsKey('already_collected_amount')
-              ? updatedPayment['already_collected_amount']
-              : widget.payment.alreadyCollectedAmount;
-
-      if (totalAmount != tenure * collectionAmount) {
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Total amount should be equal to Collection amount * No. of collections',
-            3));
-        return;
-      } else if (!(alreadyReceivedAmount < totalAmount)) {
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Amount Received should be lesser than Total Amount', 3));
-        return;
-      }
-
       if (updatedPayment.length == 0) {
         Navigator.pop(context);
         Navigator.pop(context);
       } else {
+        int totalAmount = updatedPayment.containsKey('total_amount')
+            ? updatedPayment['total_amount']
+            : widget.payment.totalAmount;
+
+        int tenure = updatedPayment.containsKey('tenure')
+            ? updatedPayment['tenure']
+            : widget.payment.tenure;
+
+        int collectionAmount = updatedPayment.containsKey('collection_amount')
+            ? updatedPayment['collection_amount']
+            : widget.payment.collectionAmount;
+
+        int alreadyReceivedAmount =
+            updatedPayment.containsKey('already_collected_amount')
+                ? updatedPayment['already_collected_amount']
+                : widget.payment.alreadyCollectedAmount;
+
+        if (totalAmount != tenure * collectionAmount) {
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Total amount should be equal to Collection amount * No. of collections',
+              3));
+          return;
+        } else if (!(alreadyReceivedAmount < totalAmount)) {
+          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+              'Amount Received should be lesser than Total Amount', 3));
+          return;
+        }
+
         CustomDialogs.actionWaiting(context, "Editing Payment");
         PaymentController _pc = PaymentController();
         var result = await _pc.updatePayment(widget.payment, updatedPayment);

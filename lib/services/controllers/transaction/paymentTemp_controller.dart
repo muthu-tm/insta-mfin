@@ -12,7 +12,7 @@ class PaymentTemplateController {
       List<int> collectionDays,
       int docCharge,
       int surcharge,
-      double iRate) async {
+      int iAmount) async {
     try {
       PaymentTemplate temp = PaymentTemplate();
       temp.setTempName(name);
@@ -24,7 +24,7 @@ class PaymentTemplateController {
       temp.setCollectionDays(collectionDays);
       temp.setDocumentCharge(docCharge);
       temp.setSurcharge(surcharge);
-      temp.setInterestRate(iRate);
+      temp.setInterestAmount(iAmount);
 
       await temp.createTemplate();
 

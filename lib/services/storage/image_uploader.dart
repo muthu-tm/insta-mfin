@@ -7,10 +7,8 @@ import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class Uploader {
-  static void uploadImage(int type, String fileDir, String originalFile,
+  static void uploadImage(int type, String fileDir, File fileToUpload,
       String fileName, int id, Function onUploaded) async {
-    File fileToUpload = new File(originalFile);
-
     String filePath = '$fileDir/$fileName.png';
     StorageReference reference = FirebaseStorage.instance.ref().child(filePath);
     StorageUploadTask uploadTask = reference.putFile(fileToUpload);
@@ -33,7 +31,7 @@ class Uploader {
         'error': err.toString()
       });
     });
-    await Future.delayed(Duration(seconds: 10));
+    await Future.delayed(Duration(seconds: 8));
 
     filePath = '${fileDir.replaceAll('_org', "")}/$fileName.png';
     reference = FirebaseStorage.instance.ref().child(filePath);

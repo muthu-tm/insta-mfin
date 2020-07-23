@@ -19,7 +19,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
 
   var transctionGroupValue = 0;
   List<bool> isSelectedView = [false, true];
-  bool isTableView = false;
+  List<bool> isSelectedAuth = [false, true];
 
   TextEditingController _textEditingController = TextEditingController();
   TextEditingController intrestRateController = TextEditingController();
@@ -58,7 +58,9 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     this._selectedLang = _user.preferences.prefLanguage;
     if (_user.preferences.tableView) {
       isSelectedView = [true, false];
-      isTableView = true;
+    }
+    if (_user.preferences.isfingerAuthEnabled) {
+      isSelectedAuth = [true, false];
     }
     this.chitEnabled = _user.accPreferences.chitEnabled;
     this.userPreferencesJSON = _user.preferences.toJson();
@@ -444,6 +446,48 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       ),
                     ],
                   ),
+                  RowHeaderText(textName: "FingerPrint Auth"),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: ToggleButtons(
+                      borderColor: CustomColors.mfinButtonGreen,
+                      selectedBorderColor: CustomColors.mfinBlue,
+                      fillColor: CustomColors.mfinButtonGreen,
+                      textStyle: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "Georgia",
+                        color: CustomColors.mfinButtonGreen,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      borderWidth: 2,
+                      selectedColor: CustomColors.mfinBlue,
+                      borderRadius: BorderRadius.circular(5),
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: 15, left: 15, bottom: 2, top: 2),
+                          child: Text(
+                            ' Enable ',
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: 15, left: 15, bottom: 2, top: 2),
+                          child: Text(
+                            ' Disable ',
+                          ),
+                        ),
+                      ],
+                      onPressed: (int index) {
+                        setState(() {
+                          for (int i = 0; i < isSelectedAuth.length; i++) {
+                            isSelectedAuth[i] = i == index;
+                          }
+                        });
+                      },
+                      isSelected: isSelectedAuth,
+                    ),
+                  ),
                   RowHeaderText(textName: "COLLECTION VIEW"),
                   Padding(
                     padding: EdgeInsets.all(10),
@@ -578,8 +622,13 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     } else {
       userPreferencesJSON['enable_table_view'] = false;
     }
+    if (isSelectedAuth[0]) {
+      userPreferencesJSON['enable_fingerprint_auth'] = true;
+    } else {
+      userPreferencesJSON['enable_fingerprint_auth'] = false;
+    }
 
-    userPreferencesJSON['support_language'] = _selectedLang;
+    userPreferencesJSON['language'] = _selectedLang;
 
     UserController _uc = UserController();
     var result = await _uc.updateTransactionSettings(

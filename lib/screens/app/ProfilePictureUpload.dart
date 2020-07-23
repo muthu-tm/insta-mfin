@@ -1,10 +1,14 @@
 import 'dart:io';
-
+import 'package:exif/exif.dart';
+import 'package:image/image.dart' as img;
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instamfin/screens/app/TakePicturePage.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/storage/image_uploader.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../app_localizations.dart';
 
@@ -36,7 +40,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Container(
-        height: 250,
+        height: 300,
         width: MediaQuery.of(context).size.width * 0.75,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -57,15 +61,15 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
             Spacer(),
             selectedImagePath == ""
                 ? Container(
-                    height: 200,
+                    height: 250,
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         widget.picPath == ""
                             ? Container(
-                                width: 80,
-                                height: 80,
+                                width: 120,
+                                height: 120,
                                 margin: EdgeInsets.only(bottom: 5),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
@@ -73,7 +77,6 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                       color: CustomColors.mfinFadedButtonGreen,
                                       style: BorderStyle.solid,
                                       width: 2.0),
-                                  // image:
                                 ),
                                 child: Icon(
                                   Icons.person,
@@ -82,7 +85,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 ),
                               )
                             : CircleAvatar(
-                                radius: 45.0,
+                                radius: 70.0,
                                 backgroundImage: NetworkImage(widget.picPath),
                                 backgroundColor: Colors.transparent,
                               ),
@@ -112,17 +115,27 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                               padding: EdgeInsets.all(5),
                               child: FlatButton(
                                 padding: EdgeInsets.all(5),
-                                color: CustomColors.mfinAlertRed,
+                                color:
+                                    CustomColors.mfinAlertRed.withOpacity(0.5),
                                 child: Text(
+<<<<<<< HEAD
                                   AppLocalizations.of(context).translate('cancel'),
+=======
+                                  "Take Picture",
+>>>>>>> 0c7b73a70bcca488bb640ec0d2051c2c54294b3f
                                   style: TextStyle(
-                                      color: CustomColors.mfinWhite,
+                                      color: CustomColors.mfinBlack,
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.start,
                                 ),
-                                onPressed: () {
-                                  Navigator.pop(context);
+                                onPressed: () async {
+                                  String tempPath =
+                                      (await getTemporaryDirectory()).path;
+                                  String filePath = '$tempPath/ifin_image.png';
+                                  if (File(filePath).existsSync())
+                                    await File(filePath).delete();
+                                  await _showCamera(filePath);
                                 },
                               ),
                             ),
@@ -133,16 +146,17 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                     ),
                   )
                 : Container(
-                    height: 200,
+                    height: 250,
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Spacer(),
                         CircleAvatar(
-                          radius: 45.0,
-                          backgroundImage:
-                              Image.file(File(selectedImagePath)).image,
+                          radius: 70.0,
+                          backgroundImage: Image.memory(
+                                  File(selectedImagePath).readAsBytesSync())
+                              .image,
                           backgroundColor: Colors.transparent,
                         ),
                         Spacer(),
@@ -163,7 +177,9 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                   textAlign: TextAlign.start,
                                 ),
                                 onPressed: () {
-                                  _previewImage(ImageSource.gallery);
+                                  setState(() {
+                                    selectedImagePath = "";
+                                  });
                                 },
                               ),
                             ),
@@ -180,8 +196,9 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.start,
                                 ),
-                                onPressed: () =>
-                                    _uploadImage(selectedImagePath),
+                                onPressed: () async {
+                                  await _uploadImage(selectedImagePath);
+                                },
                               ),
                             ),
                           ],
@@ -201,13 +218,33 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                             Navigator.pop(context);
                           },
                         ),
+                        Spacer(),
                       ],
                     ),
                   ),
+            Spacer(),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _showCamera(String filePath) async {
+    List<CameraDescription> cameras = await availableCameras();
+    CameraDescription camera = cameras.first;
+
+    var result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => TakePicturePage(
+                  camera: camera,
+                  path: filePath,
+                )));
+    if (result != null) {
+      setState(() {
+        selectedImagePath = result.toString();
+      });
+    }
   }
 
   Future _previewImage(ImageSource source) async {
@@ -221,13 +258,16 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
 
   Future _uploadImage(String path) async {
     if (path != null) {
+      CustomDialogs.actionWaiting(context, "Checking..");
+      File imageFile = await fixExifRotation(path);
+      Navigator.pop(context);
       CustomDialogs.actionWaiting(context, "Uploading!");
       Uploader.uploadImage(
         widget.type,
         widget.type == 0
             ? "user_profile_org"
             : widget.type == 1 ? "cust_profile_org" : "finance_profile_org",
-        path,
+        imageFile,
         widget.fileName,
         widget.id,
         () {
@@ -242,5 +282,38 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         },
       );
     }
+  }
+
+  Future<File> fixExifRotation(String imagePath) async {
+    final originalFile = File(imagePath);
+    List<int> imageBytes = await originalFile.readAsBytes();
+
+    final originalImage = img.decodeImage(imageBytes);
+
+    final height = originalImage.height;
+    final width = originalImage.width;
+
+    if (height >= width) {
+      return originalFile;
+    }
+    final exifData = await readExifFromBytes(imageBytes);
+    img.Image fixedImage;
+
+    print('Rotating image necessary' + exifData['Image Orientation'].printable);
+    if (exifData['Image Orientation'].printable.contains('90 CW') ||
+        exifData['Image Orientation'].printable.contains('Horizontal')) {
+      fixedImage = img.copyRotate(originalImage, 90);
+    } else if (exifData['Image Orientation'].printable.contains('180')) {
+      fixedImage = img.copyRotate(originalImage, -90);
+    } else if (exifData['Image Orientation'].printable.contains('CCW')) {
+      fixedImage = img.copyRotate(originalImage, 180);
+    } else {
+      fixedImage = img.copyRotate(originalImage, 0);
+    }
+
+    final fixedFile =
+        await originalFile.writeAsBytes(img.encodePng(fixedImage));
+
+    return fixedFile;
   }
 }

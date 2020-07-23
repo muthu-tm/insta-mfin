@@ -318,8 +318,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
     Navigator.pop(context);
     CustomDialogs.actionWaiting(context, "Updating Primary!");
     UserController _uc = UserController();
-    await _uc.updatePrimaryFinance(
-        userID, financeID, branchName, subBranchName);
+    await _uc.updatePrimaryFinance(financeID, branchName, subBranchName);
 
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(

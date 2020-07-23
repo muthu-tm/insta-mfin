@@ -59,15 +59,14 @@ class _AddPaymentState extends State<AddPayment> {
 
   TextEditingController totalAmountController = TextEditingController();
   TextEditingController principalAmountController = TextEditingController();
+  TextEditingController interestRateController = TextEditingController();
+  TextEditingController tenureController = TextEditingController();
+  TextEditingController collectionAmountController = TextEditingController();
   TextEditingController docChargeController = TextEditingController();
   TextEditingController surChargeController = TextEditingController();
-  TextEditingController tenureController = TextEditingController();
-  TextEditingController intrestRateController = TextEditingController();
-  TextEditingController collectionAmountController = TextEditingController();
 
-  int selectedDate = DateUtils.getUTCDateEpoch(DateTime.now());
-  int collectionDate =
-      DateUtils.getUTCDateEpoch(DateTime.now().add(Duration(days: 1)));
+  DateTime selectedDate = DateTime.now();
+  DateTime collectionDate = DateTime.now().add(Duration(days: 1));
   int totalAmount = 0;
   int principalAmount = 0;
   int docCharge = 0;
@@ -94,8 +93,7 @@ class _AddPaymentState extends State<AddPayment> {
     docChargeController.text = '0';
     surChargeController.text = '0';
     tenureController.text = '0';
-    intrestRateController.text =
-        _user.accPreferences.interestRate.toString() ?? '0.00';
+    interestRateController.text = '0';
     collectionAmountController.text = '0';
 
     _date.text = DateUtils.formatDate(DateTime.now());
@@ -626,6 +624,20 @@ class _AddPaymentState extends State<AddPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                double iAmount =
+                                    _user.accPreferences.interestRate > 0
+                                        ? (int.parse(val) ~/ 100) *
+                                            _user.accPreferences.interestRate
+                                        : 0;
+                                int pAmount = int.parse(val) - iAmount.round();
+                                setState(() {
+                                  interestRateController.text =
+                                      iAmount.round().toString();
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
                               validator: (amount) {
                                 if (amount.trim().isEmpty ||
                                     amount.trim() == "0") {
@@ -640,7 +652,7 @@ class _AddPaymentState extends State<AddPayment> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
-                              controller: intrestRateController,
+                              controller: interestRateController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -962,10 +974,10 @@ class _AddPaymentState extends State<AddPayment> {
       firstDate: DateTime(1990),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
-    if (picked != null)
+    if (picked != null && picked != collectionDate)
       setState(
         () {
-          collectionDate = DateUtils.getUTCDateEpoch(picked);
+          collectionDate = picked;
           _collectionDate.text = DateUtils.formatDate(picked);
         },
       );
@@ -978,16 +990,25 @@ class _AddPaymentState extends State<AddPayment> {
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null)
+    if (picked != null && picked != selectedDate)
       setState(
         () {
-          selectedDate = DateUtils.getUTCDateEpoch(picked);
+          selectedDate = picked;
           _date.text = DateUtils.formatDate(picked);
-
-          collectionDate =
-              DateUtils.getUTCDateEpoch(picked.add(Duration(days: 1)));
-          _collectionDate.text =
-              DateUtils.formatDate(picked.add(Duration(days: 1)));
+          if (selectedCollectionModeID == "0") {
+            collectionDate = selectedDate.add(Duration(days: 1));
+            _collectionDate.text =
+                DateUtils.formatDate(selectedDate.add(Duration(days: 1)));
+          } else if (selectedCollectionModeID == "1") {
+            collectionDate = selectedDate.add(Duration(days: 7));
+            _collectionDate.text =
+                DateUtils.formatDate(selectedDate.add(Duration(days: 7)));
+          } else if (selectedCollectionModeID == "2") {
+            collectionDate = DateTime(
+                selectedDate.year, selectedDate.month + 1, selectedDate.day);
+            _collectionDate.text = DateUtils.formatDate(DateTime(
+                selectedDate.year, selectedDate.month + 1, selectedDate.day));
+          }
         },
       );
   }
@@ -999,6 +1020,21 @@ class _AddPaymentState extends State<AddPayment> {
   }
 
   _setSelectedCollectionMode(String newVal) {
+    if (newVal == "0") {
+      collectionDate = selectedDate.add(Duration(days: 1));
+      _collectionDate.text =
+          DateUtils.formatDate(selectedDate.add(Duration(days: 1)));
+    } else if (newVal == "1") {
+      collectionDate = selectedDate.add(Duration(days: 7));
+      _collectionDate.text =
+          DateUtils.formatDate(selectedDate.add(Duration(days: 7)));
+    } else if (newVal == "2") {
+      collectionDate =
+          DateTime(selectedDate.year, selectedDate.month + 1, selectedDate.day);
+      _collectionDate.text = DateUtils.formatDate(DateTime(
+          selectedDate.year, selectedDate.month + 1, selectedDate.day));
+    }
+
     setState(() {
       selectedCollectionModeID = newVal;
     });
@@ -1017,7 +1053,7 @@ class _AddPaymentState extends State<AddPayment> {
         docChargeController.text = selectedTemp.docCharge.toString();
         surChargeController.text = selectedTemp.surcharge.toString();
         tenureController.text = selectedTemp.tenure.toString();
-        intrestRateController.text = selectedTemp.interestRate.toString();
+        interestRateController.text = selectedTemp.interestAmount.toString();
         collectionAmountController.text =
             selectedTemp.collectionAmount.toString();
       });
@@ -1028,15 +1064,12 @@ class _AddPaymentState extends State<AddPayment> {
     final FormState form = _formKey.currentState;
 
     if (selectedCollectionModeID == "0") {
-      if (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday <= 6 &&
-          !collectionDays.contains(
-              DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday)) {
+      if (collectionDate.weekday <= 6 &&
+          !collectionDays.contains(collectionDate.weekday)) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             'Collection Start Date must be in collection days', 2));
         return;
-      } else if (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday ==
-              7 &&
-          !collectionDays.contains(0)) {
+      } else if (collectionDate.weekday == 7 && !collectionDays.contains(0)) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             'Collection Start Date should be in collection days', 2));
         return;
@@ -1061,7 +1094,7 @@ class _AddPaymentState extends State<AddPayment> {
           widget.customer.id,
           '${widget.customer.firstName} ${widget.customer.lastName}',
           paymentID.toString(),
-          selectedDate,
+          DateUtils.getUTCDateEpoch(selectedDate),
           totalAmount,
           principalAmount,
           tenure,
@@ -1070,7 +1103,7 @@ class _AddPaymentState extends State<AddPayment> {
           collectionDays,
           int.parse(transferredMode),
           alreadyReceivedAmount,
-          collectionDate,
+          DateUtils.getUTCDateEpoch(collectionDate),
           docCharge,
           surCharge,
           commission,

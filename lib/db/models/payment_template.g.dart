@@ -14,7 +14,7 @@ PaymentTemplate _$PaymentTemplateFromJson(Map<String, dynamic> json) {
             ?.toList() ??
         []
     ..collectionAmount = json['collection_amount'] as int
-    ..interestRate = (json['interest_rate'] as num)?.toDouble()
+    ..interestAmount = json['interest_amount'] as int
     ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
@@ -33,18 +33,15 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 Map<String, dynamic> _$PaymentTemplateToJson(PaymentTemplate instance) =>
     <String, dynamic>{
       'template_name': instance.name,
-      'total_amount': instance.totalAmount == null ? 0 : instance.totalAmount,
-      'principal_amount':
-          instance.principalAmount == null ? 0 : instance.principalAmount,
-      'doc_charge': instance.docCharge == null ? 0 : instance.docCharge,
-      'surcharge': instance.surcharge == null ? 0 : instance.surcharge,
-      'tenure': instance.tenure == null ? 0 : instance.tenure,
-      'collection_mode': instance.collectionMode == null ? 0 : instance.collectionMode,
+      'total_amount': instance.totalAmount ?? 0,
+      'principal_amount': instance.principalAmount ?? 0,
+      'doc_charge': instance.docCharge ?? 0,
+      'surcharge': instance.surcharge ?? 0,
+      'tenure': instance.tenure ?? 0,
+      'collection_mode': instance.collectionMode ?? 0,
       'collection_days': instance.collectionDays,
-      'collection_amount':
-          instance.collectionAmount == null ? 0 : instance.collectionAmount,
-      'interest_rate':
-          instance.interestRate == null ? 0.0 : instance.interestRate,
+      'collection_amount': instance.collectionAmount ?? 0,
+      'interest_amount': instance.interestAmount ?? 0,
       'added_by': instance.addedBy,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,

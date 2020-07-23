@@ -112,11 +112,95 @@ class ViewPaymentTemplate extends StatelessWidget {
                         Padding(padding: EdgeInsets.all(10)),
                         Flexible(
                           child: TextFormField(
+                            initialValue: template.interestAmount.toString(),
+                            readOnly: true,
+                            textAlign: TextAlign.start,
+                            decoration: InputDecoration(
+                              labelText: 'Interest Amount',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          CustomColors.mfinFadedButtonGreen)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: TextFormField(
                             initialValue: template.principalAmount.toString(),
                             readOnly: true,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
                               labelText: 'Principal Amount',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          CustomColors.mfinFadedButtonGreen)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: TextFormField(
+                            initialValue: template.tenure.toString(),
+                            readOnly: true,
+                            textAlign: TextAlign.start,
+                            decoration: InputDecoration(
+                              labelText: 'No. of Collections',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              labelStyle: TextStyle(
+                                color: CustomColors.mfinBlue,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 3.0, horizontal: 10.0),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          CustomColors.mfinFadedButtonGreen)),
+                              fillColor: CustomColors.mfinWhite,
+                              filled: true,
+                            ),
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.all(10)),
+                        Flexible(
+                          child: TextFormField(
+                            initialValue: template.collectionAmount.toString(),
+                            readOnly: true,
+                            textAlign: TextAlign.start,
+                            decoration: InputDecoration(
+                              labelText: 'Collection amount',
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -194,84 +278,6 @@ class ViewPaymentTemplate extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: <Widget>[
-                        Flexible(
-                          child: TextFormField(
-                            initialValue: template.tenure.toString(),
-                            readOnly: true,
-                            textAlign: TextAlign.start,
-                            decoration: InputDecoration(
-                              labelText: 'No. of Collections',
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          CustomColors.mfinFadedButtonGreen)),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                            ),
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.all(10)),
-                        Flexible(
-                          child: TextFormField(
-                            initialValue: template.interestRate.toString(),
-                            readOnly: true,
-                            textAlign: TextAlign.start,
-                            decoration: InputDecoration(
-                              labelText: 'Rate of interest',
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          CustomColors.mfinFadedButtonGreen)),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: TextFormField(
-                            initialValue: template.collectionAmount.toString(),
-                            readOnly: true,
-                            textAlign: TextAlign.start,
-                            decoration: InputDecoration(
-                              labelText: 'Collection amount',
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 10.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          CustomColors.mfinFadedButtonGreen)),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                            ),
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.all(10)),
                         Flexible(
                           child: TextFormField(
                             initialValue:
