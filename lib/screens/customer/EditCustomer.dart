@@ -120,7 +120,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                     fontSize: 16.0,
                                     color: CustomColors.mfinBlue,
                                   ),
-                                  labelText: 'Mobile number',
+                                  labelText: 'Mobile',
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(

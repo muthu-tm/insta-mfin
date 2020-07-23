@@ -113,7 +113,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   fontSize: 16.0,
                                   color: CustomColors.mfinBlue,
                                 ),
-                                labelText: 'Number',
+                                labelText: 'Mobile',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
