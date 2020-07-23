@@ -27,10 +27,7 @@ class FinanceController {
 
       financeCompany = await financeCompany.create();
 
-      await Future.delayed(Duration(seconds: 3));
-
-      await _userController.updatePrimaryFinance(addedBy,
-          financeCompany.createdAt.millisecondsSinceEpoch.toString(), "", "");
+      await _userController.updatePrimaryFinance(financeCompany.createdAt.millisecondsSinceEpoch.toString(), "", "");
 
       NUtils.financeNotify("", "NEW FINANCE",
           "Hurray! Created a new Finance $name in iFIN. All the Best!");

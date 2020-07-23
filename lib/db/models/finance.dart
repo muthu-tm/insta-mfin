@@ -2,6 +2,8 @@ import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/account_preferences.dart';
+import 'package:instamfin/db/models/subscriptions.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -157,14 +159,37 @@ class Finance extends Model {
     this.accountsData = new AccountsData();
     this.isActive = true;
 
-    dynamic result = await super.add(this.toJson());
-    print(result);
-    return this;
-  }
+    Subscriptions sub = Subscriptions();
 
-  replace() async {
-    var finance = await getByID("");
-    dynamic result = await super.upsert(this.toJson(), finance['created_at']);
-    print(result);
+    QuerySnapshot subSnap = await sub.getCollectionRef().getDocuments();
+    int validityDays = 1;
+    int smsCredits = 0;
+    if (subSnap.documents.isEmpty) {
+      validityDays = 28;
+      smsCredits = 100;
+    }
+    var data = {
+      "user_number": user.mobileNumber,
+      "guid": user.guid,
+      "payment_id": "",
+      "purchase_id": "",
+      "recently_paid": 0,
+      "available_sms_credit": smsCredits,
+      "finance_id": this.getID(),
+      "chit_valid_till":
+          DateUtils.getUTCDateEpoch(DateTime.now()) + (validityDays * 86400000),
+      "notes": "",
+      "finance_valid_till":
+          DateUtils.getUTCDateEpoch(DateTime.now()) + (validityDays * 86400000),
+      "created_at": DateTime.now(),
+      "updated_at": DateTime.now()
+    };
+
+    WriteBatch bWrite = Model.db.batch();
+    bWrite.setData(getCollectionRef().document(), data);
+    bWrite.setData(
+        this.getCollectionRef().document(this.getID()), this.toJson());
+    await bWrite.commit();
+    return this;
   }
 }

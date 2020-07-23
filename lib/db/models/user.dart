@@ -1,4 +1,5 @@
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/db/models/subscriptions.dart';
 import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
@@ -119,6 +120,10 @@ class User extends Model {
     return _userCollRef;
   }
 
+  DocumentReference getDocumentReference() {
+    return _userCollRef.document(this.mobileNumber.toString());
+  }
+  
   String getID() {
     return this.mobileNumber.toString();
   }
@@ -143,11 +148,11 @@ class User extends Model {
 
   DocumentReference getFinanceDocReference() {
     if (this.primary.subBranchName != "") {
-      return SubBranch().getDocumentReference(
-          this.primary.financeID, this.primary.branchName, this.primary.subBranchName);
+      return SubBranch().getDocumentReference(this.primary.financeID,
+          this.primary.branchName, this.primary.subBranchName);
     } else if (this.primary.branchName != "") {
-      return Branch()
-          .getDocumentReference(this.primary.financeID, this.primary.branchName);
+      return Branch().getDocumentReference(
+          this.primary.financeID, this.primary.branchName);
     } else {
       return Finance().getDocumentRef(this.primary.financeID);
     }
@@ -155,5 +160,61 @@ class User extends Model {
 
   Future updatePlatformDetails(Map<String, dynamic> data) async {
     this.update(data);
+  }
+
+  Future updatePrimaryDetails(int mobileNumber, String guid, String financeID,
+      String branchName, String subBranchName) async {
+    var data = {
+      'primary': {
+        'finance_id': financeID,
+        'branch_name': branchName,
+        'sub_branch_name': subBranchName
+      }
+    };
+    // get batch instance
+    WriteBatch bWrite = Model.db.batch();
+
+    Subscriptions sub = Subscriptions();
+    QuerySnapshot subSnap = await sub.getCollectionRef().getDocuments();
+    int validityDays = 1;
+    int smsCredits = 0;
+    bool isExist = false;
+
+    if (subSnap.documents.isEmpty) {
+      validityDays = 28;
+      smsCredits = 100;
+    } else {
+      for (int i = 0; i < subSnap.documents.length; i++) {
+        Subscriptions _sub = Subscriptions.fromJson(subSnap.documents[i].data);
+        if (financeID == _sub.financeID) {
+          isExist = true;
+          break;
+        }
+      }
+    }
+
+    if (!isExist) {
+      var subData = {
+        "user_number": mobileNumber,
+        "guid": guid,
+        "payment_id": "",
+        "purchase_id": "",
+        "recently_paid": 0,
+        "available_sms_credit": smsCredits,
+        "finance_id": financeID,
+        "chit_valid_till": DateUtils.getUTCDateEpoch(DateTime.now()) +
+            (validityDays * 86400000),
+        "notes": "",
+        "finance_valid_till": DateUtils.getUTCDateEpoch(DateTime.now()) +
+            (validityDays * 86400000),
+        "created_at": DateTime.now(),
+        "updated_at": DateTime.now()
+      };
+      bWrite.setData(sub.getCollectionRef().document(), subData);
+    }
+
+    bWrite.updateData(
+        getCollectionRef().document(mobileNumber.toString()), data);
+    await bWrite.commit();
   }
 }

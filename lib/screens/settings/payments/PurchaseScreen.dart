@@ -256,6 +256,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
 
     bool isSuccess = await Subscriptions().updateSuccessStatus(
         widget.purchaseID, widget.plans, widget.amount, payID);
+    await UserController().refreshCacheSubscription();
 
     if (isSuccess) {
       Navigator.pop(context);
