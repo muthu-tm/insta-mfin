@@ -72,7 +72,7 @@ class AppSettings extends StatelessWidget {
                     routeSettings: RouteSettings(name: "/home/help"),
                     builder: (context) {
                       return Center(
-                        child: contactAndSupportDialog(),
+                        child: contactAndSupportDialog(context),
                       );
                     },
                   );

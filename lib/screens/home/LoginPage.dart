@@ -238,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
                   routeSettings: RouteSettings(name: "/home/help"),
                   builder: (context) {
                     return Center(
-                      child: contactAndSupportDialog(),
+                      child: contactAndSupportDialog(context),
                     );
                   },
                 );

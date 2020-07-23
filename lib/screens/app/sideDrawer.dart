@@ -240,13 +240,6 @@ Widget openDrawer(BuildContext context) {
             ),
           ],
         ),
-<<<<<<< HEAD
-        ListTile(
-          leading: Icon(Icons.description, color: CustomColors.mfinButtonGreen),
-          title: Text(
-            AppLocalizations.of(context).translate('reports'),
-          ),
-=======
         _user.accPreferences.chitEnabled
             ? new ListTile(
                 leading: new Icon(Icons.transfer_within_a_station,
@@ -270,7 +263,6 @@ Widget openDrawer(BuildContext context) {
           leading:
               new Icon(Icons.description, color: CustomColors.mfinButtonGreen),
           title: new Text('Reports'),
->>>>>>> 0c7b73a70bcca488bb640ec0d2051c2c54294b3f
           onTap: () => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(

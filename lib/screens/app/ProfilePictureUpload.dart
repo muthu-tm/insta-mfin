@@ -118,11 +118,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 color:
                                     CustomColors.mfinAlertRed.withOpacity(0.5),
                                 child: Text(
-<<<<<<< HEAD
-                                  AppLocalizations.of(context).translate('cancel'),
-=======
                                   "Take Picture",
->>>>>>> 0c7b73a70bcca488bb640ec0d2051c2c54294b3f
                                   style: TextStyle(
                                       color: CustomColors.mfinBlack,
                                       fontSize: 14.0,

@@ -95,37 +95,6 @@ Widget bottomBar(BuildContext context) {
             ),
           ),
         ),
-<<<<<<< HEAD
-        SizedBox.fromSize(
-          size: Size(screenWidth(context, dividedBy: 6), 100),
-          child: Material(
-            color: CustomColors.mfinBlue,
-            child: InkWell(
-              onTap: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChitHome(),
-                    settings: RouteSettings(name: '/chit'),
-                  ),
-                  (Route<dynamic> route) => false,
-                );
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.transfer_within_a_station,
-                    size: 30.0,
-                    color: CustomColors.mfinButtonGreen,
-                  ),
-                  Text(
-                    AppLocalizations.of(context).translate('chit_fund'),
-                    style: TextStyle(
-                      fontFamily: "Georgia",
-                      fontSize: 10,
-                      color: CustomColors.mfinGrey,
-=======
         chitEnabled
             ? SizedBox.fromSize(
                 size: size,
@@ -159,7 +128,6 @@ Widget bottomBar(BuildContext context) {
                           ),
                         ),
                       ],
->>>>>>> 0c7b73a70bcca488bb640ec0d2051c2c54294b3f
                     ),
                   ),
                 ),
