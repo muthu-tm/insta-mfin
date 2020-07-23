@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class EditPayment extends StatefulWidget {
   EditPayment(this.payment);
@@ -18,9 +20,13 @@ class EditPayment extends StatefulWidget {
 class _EditPaymentState extends State<EditPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AccountPreferences accPref =
+      UserController().getCurrentUser().accPreferences;
 
   TextEditingController totalAmountController = TextEditingController();
   TextEditingController principalAmountController = TextEditingController();
+  TextEditingController interestRateController = TextEditingController();
+  TextEditingController tenureController = TextEditingController();
   TextEditingController collectionAmountController = TextEditingController();
 
   String selectedCollectionModeID = "0";
@@ -58,7 +64,9 @@ class _EditPaymentState extends State<EditPayment> {
     super.initState();
     selectedCollectionModeID = widget.payment.collectionMode.toString();
     totalAmountController.text = widget.payment.totalAmount.toString();
+    interestRateController.text = widget.payment.interestAmount.toString();
     principalAmountController.text = widget.payment.principalAmount.toString();
+    tenureController.text = widget.payment.tenure.toString();
     collectionAmountController.text =
         widget.payment.collectionAmount.toString();
 
@@ -572,6 +580,19 @@ class _EditPaymentState extends State<EditPayment> {
                                     borderSide: BorderSide(
                                         color: CustomColors.mfinWhite)),
                               ),
+                              onChanged: (val) {
+                                double iAmount = accPref.interestRate > 0
+                                    ? (int.parse(val) ~/ 100) *
+                                        accPref.interestRate
+                                    : 0;
+                                int pAmount = int.parse(val) - iAmount.round();
+                                setState(() {
+                                  interestRateController.text =
+                                      iAmount.round().toString();
+                                  principalAmountController.text =
+                                      pAmount.toString();
+                                });
+                              },
                               validator: (amount) {
                                 if (amount.trim().isEmpty ||
                                     amount.trim() == "0") {
@@ -590,8 +611,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue:
-                                  widget.payment.interestAmount.toString(),
+                              controller: interestRateController,
                               decoration: InputDecoration(
                                 hintText: 'Interest Amount',
                                 labelText: 'Interest Amount',
@@ -679,7 +699,7 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              initialValue: widget.payment.tenure.toString(),
+                              controller: tenureController,
                               decoration: InputDecoration(
                                 hintText: 'Number of Collections',
                                 labelText: 'No. of collections',

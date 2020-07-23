@@ -59,7 +59,7 @@ class _AddPaymentState extends State<AddPayment> {
 
   TextEditingController totalAmountController = TextEditingController();
   TextEditingController principalAmountController = TextEditingController();
-  TextEditingController intrestRateController = TextEditingController();
+  TextEditingController interestRateController = TextEditingController();
   TextEditingController tenureController = TextEditingController();
   TextEditingController collectionAmountController = TextEditingController();
   TextEditingController docChargeController = TextEditingController();
@@ -93,7 +93,7 @@ class _AddPaymentState extends State<AddPayment> {
     docChargeController.text = '0';
     surChargeController.text = '0';
     tenureController.text = '0';
-    intrestRateController.text = '0';
+    interestRateController.text = '0';
     collectionAmountController.text = '0';
 
     _date.text = DateUtils.formatDate(DateTime.now());
@@ -632,7 +632,7 @@ class _AddPaymentState extends State<AddPayment> {
                                         : 0;
                                 int pAmount = int.parse(val) - iAmount.round();
                                 setState(() {
-                                  intrestRateController.text =
+                                  interestRateController.text =
                                       iAmount.round().toString();
                                   principalAmountController.text =
                                       pAmount.toString();
@@ -652,7 +652,7 @@ class _AddPaymentState extends State<AddPayment> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
-                              controller: intrestRateController,
+                              controller: interestRateController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -1053,7 +1053,7 @@ class _AddPaymentState extends State<AddPayment> {
         docChargeController.text = selectedTemp.docCharge.toString();
         surChargeController.text = selectedTemp.surcharge.toString();
         tenureController.text = selectedTemp.tenure.toString();
-        intrestRateController.text = selectedTemp.interestAmount.toString();
+        interestRateController.text = selectedTemp.interestAmount.toString();
         collectionAmountController.text =
             selectedTemp.collectionAmount.toString();
       });

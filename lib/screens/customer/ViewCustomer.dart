@@ -95,7 +95,7 @@ class ViewCustomer extends StatelessWidget {
                                     3));
                             return;
                           }
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => AddPayment(customer),
@@ -130,7 +130,7 @@ class ViewCustomer extends StatelessWidget {
                           color: CustomColors.mfinBlue,
                         ),
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
