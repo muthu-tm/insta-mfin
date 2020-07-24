@@ -10,6 +10,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/chit/chit_controller.dart';
 
+import '../../../app_localizations.dart';
+
 class ActiveChitWidget extends StatelessWidget {
   ActiveChitWidget(this._scaffoldKey);
 
@@ -88,7 +90,8 @@ class ActiveChitWidget extends StatelessWidget {
                           ),
                           ListTile(
                             leading: Text(
-                              AppLocalizations.of(context).translate('amount_colon'),
+                              AppLocalizations.of(context)
+                                  .translate('amount_colon'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -106,7 +109,8 @@ class ActiveChitWidget extends StatelessWidget {
                           ),
                           ListTile(
                             leading: Text(
-                              AppLocalizations.of(context).translate('chit_day_colon'),
+                              AppLocalizations.of(context)
+                                  .translate('chit_day_colon'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -159,7 +163,10 @@ class ActiveChitWidget extends StatelessWidget {
                                   });
                                 },
                                 icon: Icon(Icons.payment),
-                                label: Text("Remove"),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('remove'),
+                                ),
                               ),
                               FlatButton.icon(
                                 onPressed: () {
@@ -173,7 +180,10 @@ class ActiveChitWidget extends StatelessWidget {
                                   );
                                 },
                                 icon: Icon(Icons.payment),
-                                label: Text("View"),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('view'),
+                                ),
                               ),
                               FlatButton.icon(
                                 onPressed: () {
@@ -188,7 +198,10 @@ class ActiveChitWidget extends StatelessWidget {
                                   );
                                 },
                                 icon: Icon(Icons.monetization_on),
-                                label: Text("Requesters"),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('requesters'),
+                                ),
                               ),
                             ],
                           ),
@@ -207,7 +220,7 @@ class ActiveChitWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Active Chits!",
+                      AppLocalizations.of(context).translate('no_active_chits'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -218,7 +231,8 @@ class ActiveChitWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Publish new chit from template!",
+                      AppLocalizations.of(context)
+                          .translate('publish_new_chit'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
@@ -244,7 +258,7 @@ class ActiveChitWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: Text(
-                  "Active Chits",
+                  AppLocalizations.of(context).translate('active_chits'),
                   style: TextStyle(
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
@@ -254,7 +268,7 @@ class ActiveChitWidget extends StatelessWidget {
                 ),
                 trailing: RichText(
                   text: TextSpan(
-                    text: "Total: ",
+                    text: AppLocalizations.of(context).translate('total_colon'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontWeight: FontWeight.bold,

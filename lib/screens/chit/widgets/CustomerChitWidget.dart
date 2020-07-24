@@ -5,6 +5,8 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
+import '../../../app_localizations.dart';
+
 class CustomerChitsWidget extends StatelessWidget {
   CustomerChitsWidget(this.number);
 
@@ -71,7 +73,8 @@ class CustomerChitsWidget extends StatelessWidget {
                             ),
                             ListTile(
                               leading: Text(
-                                'Published On:',
+                                AppLocalizations.of(context)
+                                    .translate('published_on'),
                                 style: TextStyle(
                                   color: CustomColors.mfinGrey,
                                   fontSize: 18.0,
@@ -91,7 +94,8 @@ class CustomerChitsWidget extends StatelessWidget {
                             ),
                             ListTile(
                               leading: Text(
-                                'Amount:',
+                                AppLocalizations.of(context)
+                                    .translate('amount'),
                                 style: TextStyle(
                                   color: CustomColors.mfinGrey,
                                   fontSize: 18.0,
@@ -109,7 +113,8 @@ class CustomerChitsWidget extends StatelessWidget {
                             ),
                             ListTile(
                               leading: Text(
-                                'Chit Day:',
+                                AppLocalizations.of(context)
+                                    .translate('chit_day'),
                                 style: TextStyle(
                                   color: CustomColors.mfinGrey,
                                   fontSize: 18.0,
@@ -142,7 +147,7 @@ class CustomerChitsWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Chits!",
+                      AppLocalizations.of(context).translate('no_chits'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -153,7 +158,8 @@ class CustomerChitsWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Add this customer's Chits!",
+                      AppLocalizations.of(context)
+                          .translate('add_customer_chit'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
@@ -179,7 +185,7 @@ class CustomerChitsWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: Text(
-                  "CHITS",
+                  AppLocalizations.of(context).translate('chits_cap'),
                   style: TextStyle(
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
@@ -189,7 +195,7 @@ class CustomerChitsWidget extends StatelessWidget {
                 ),
                 trailing: RichText(
                   text: TextSpan(
-                    text: "Total: ",
+                    text: AppLocalizations.of(context).translate('total_colon'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontWeight: FontWeight.bold,

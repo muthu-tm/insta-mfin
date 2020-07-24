@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/chit/chit_allocation_controller.dart';
 
+import '../../../app_localizations.dart';
+
 Widget chitCustomerAllocationDialog(
     BuildContext context,
     GlobalKey<ScaffoldState> _scaffoldKey,
@@ -26,7 +28,7 @@ Widget chitCustomerAllocationDialog(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Select from Customer List",
+              AppLocalizations.of(context).translate('customer_list'),
               style: TextStyle(
                 fontSize: 16.0,
                 color: CustomColors.mfinBlue,
@@ -105,7 +107,7 @@ Widget chitCustomerAllocationDialog(
                   )
                 : Container(
                     child: Text(
-                      "No Customers",
+                      AppLocalizations.of(context).translate('no_customers'),
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
@@ -135,7 +137,7 @@ Widget chitCustomerAllocationDialog(
               label: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
-                  'Custom',
+                  AppLocalizations.of(context).translate('custom'),
                   style: TextStyle(
                     color: CustomColors.mfinButtonGreen,
                     fontSize: 18.0,
