@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_referees.dart';
-import 'package:instamfin/screens/settings/payments/ReferAndEarnScreen.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,6 +53,10 @@ class _WalletHomeState extends State<WalletHome> {
                     child: getBonusWidget(),
                   )
                 : Container(),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: getReferralsWidget(),
+            ),
           ],
         ),
       ),
@@ -84,7 +88,7 @@ class _WalletHomeState extends State<WalletHome> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Text(
-                        "Available Amount",
+                        "Available Balance: ",
                         style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontSize: 18.0,
@@ -105,7 +109,6 @@ class _WalletHomeState extends State<WalletHome> {
               ),
             );
           } else {
-            // No plans available
             widget = Card(
               elevation: 5.0,
               shadowColor: CustomColors.mfinAlertRed.withOpacity(0.7),
@@ -194,7 +197,7 @@ class _WalletHomeState extends State<WalletHome> {
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: RaisedButton.icon(
-                      label: Text("CLaim Bonus"),
+                      label: Text("Claim Your Bonus $amount!"),
                       icon: Icon(Icons.card_giftcard),
                       onPressed: () async {
                         try {
@@ -234,7 +237,7 @@ class _WalletHomeState extends State<WalletHome> {
             children: <Widget>[
               ListTile(
                 leading: Icon(
-                  Icons.card_giftcard,
+                  Icons.account_balance_wallet,
                   size: 35.0,
                   color: CustomColors.mfinBlue.withOpacity(0.5),
                 ),
@@ -250,6 +253,184 @@ class _WalletHomeState extends State<WalletHome> {
                 ),
               ),
               new Divider(
+                color: CustomColors.mfinBlue,
+              ),
+              widget,
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget getReferralsWidget() {
+    return StreamBuilder(
+      stream: UserReferees().streamReferees(_user.mobileNumber.toString()),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        Widget widget;
+
+        if (snapshot.hasData) {
+          if (snapshot.data.documents.length > 0) {
+            widget = ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              primary: false,
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (BuildContext context, int index) {
+                UserReferees referee =
+                    UserReferees.fromJson(snapshot.data.documents[index].data);
+
+                Color tileColor = CustomColors.mfinBlue;
+                Color textColor = CustomColors.mfinWhite;
+
+                if (index % 2 == 0) {
+                  tileColor = CustomColors.mfinWhite;
+                  textColor = CustomColors.mfinBlue;
+                }
+
+                return Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Material(
+                    color: tileColor,
+                    elevation: 3.0,
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Container(
+                      height: MediaQuery.of(context).size.width / 5,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: tileColor,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Icon(
+                              Icons.local_offer,
+                              size: 35.0,
+                              color:
+                                  CustomColors.mfinLightBlue.withOpacity(0.6),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 5, top: 5.0),
+                            width: MediaQuery.of(context).size.width / 1.5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  referee.userNumber.toString(),
+                                  style: TextStyle(
+                                      fontFamily: "Georgia",
+                                      fontSize: 18.0,
+                                      color: textColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Rewarded At: ${DateUtils.formatDate(referee.createdAt)}',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      color: textColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  referee.type == 0
+                                      ? "Registration Bonus"
+                                      : "Referral Bonus",
+                                  style: TextStyle(
+                                      fontSize: 10.0,
+                                      color: CustomColors.mfinAlertRed
+                                          .withOpacity(0.7),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Text(
+                              '${referee.amount}/-',
+                              style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: textColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          } else {
+            widget = Container(
+              padding: EdgeInsets.all(10),
+              height: 75,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "No Rewards so far!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: CustomColors.mfinAlertRed,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Divider(
+                    color: CustomColors.mfinBlue,
+                  ),
+                  Text(
+                    "Refer your code & Earn rewards!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: CustomColors.mfinButtonGreen,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        } else if (snapshot.hasError) {
+          widget = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncError());
+        } else {
+          widget = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncWaiting());
+        }
+
+        return Card(
+          color: CustomColors.mfinLightGrey,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(
+                  Icons.all_inclusive,
+                  size: 35.0,
+                  color: CustomColors.mfinBlue.withOpacity(0.6),
+                ),
+                title: Text(
+                  "Your Rewards",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinPositiveGreen,
+                    fontSize: 17.0,
+                  ),
+                ),
+              ),
+              Divider(
                 color: CustomColors.mfinBlue,
               ),
               widget,

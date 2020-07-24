@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/db/models/user_referees.dart';
+import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,10 +26,13 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
   @override
   void initState() {
     super.initState();
+    int expiredAt = DateUtils.getUTCDateEpoch(_user.createdAt) + (7 * 86400000);
 
     _textEditingController.text =
         _user.referrerNumber != null ? _user.referrerNumber.toString() : "";
-    isReadOnly = _user.referrerNumber != null;
+    if (_user.referrerNumber != null ||
+        (DateUtils.getUTCDateEpoch(DateTime.now()) >= expiredAt))
+      isReadOnly = true;
   }
 
   @override
@@ -34,7 +41,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
-        title: Text('Referred by'),
+        title: Text('Refer & Earn'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -50,7 +57,6 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
               padding: EdgeInsets.all(5),
               child: getReferredByWidget(),
             ),
-            Padding(padding: EdgeInsets.only(top: 35, bottom: 35)),
           ],
         ),
       ),
@@ -59,10 +65,11 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
 
   Widget getReferralCode() {
     return Container(
-      height: 120,
+      height: 150,
       color: CustomColors.mfinLightGrey,
       padding: EdgeInsets.all(10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             "Your Referral Code",
@@ -70,6 +77,18 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
               color: CustomColors.mfinBlue,
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 5),
+            child: Text(
+              "Refer iFIN with this code and get rewards in your iFIN Wallet!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: CustomColors.mfinBlack,
+                fontSize: 12.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Padding(
@@ -96,10 +115,11 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
 
   Widget getReferredByWidget() {
     return Container(
-      height: isReadOnly ? 120 : 180,
+      height: isReadOnly ? 150 : 180,
       color: CustomColors.mfinLightGrey,
       padding: EdgeInsets.all(10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             "Referred by",
@@ -117,6 +137,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
               textAlign: TextAlign.start,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
+                hintText: isReadOnly ? "No Referral" : "Enter the code here",
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -177,4 +198,5 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
       ),
     );
   }
+
 }

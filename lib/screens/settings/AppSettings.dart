@@ -74,7 +74,7 @@ class AppSettings extends StatelessWidget {
               ),
               ListTile(
                 leading: new Icon(
-                  Icons.lock,
+                  Icons.account_balance_wallet,
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
