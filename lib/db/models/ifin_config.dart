@@ -16,6 +16,10 @@ class IfinConfig {
   String platform;
   @JsonKey(name: 'app_url', nullable: true)
   String appURL;
+  @JsonKey(name: 'referral_bonus', defaultValue: 0)
+  int referralBonus;
+  @JsonKey(name: 'registration_bonus', defaultValue: 0)
+  int registrationBonus;
   @JsonKey(name: 'recharge_enabled', defaultValue: true)
   bool rechargeEnabled;
   @JsonKey(name: 'payment_enabled', defaultValue: true)
