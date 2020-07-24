@@ -8,13 +8,16 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/chit/chit_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class AddChitCollectionDetails extends StatefulWidget {
   AddChitCollectionDetails(this.collection);
 
   final ChitCollection collection;
 
   @override
-  _AddChitCollectionDetailsState createState() => _AddChitCollectionDetailsState();
+  _AddChitCollectionDetailsState createState() =>
+      _AddChitCollectionDetailsState();
 }
 
 class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
@@ -60,7 +63,9 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Chit Collection Details'),
+        title: Text(
+          AppLocalizations.of(context).translate('chit_collection_details'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -70,7 +75,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -150,8 +155,10 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                                   controller: _date,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    hintText: 'Date Collected',
-                                    labelText: "Collected On",
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('date_collected'),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('collected_on'),
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
@@ -179,8 +186,10 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                               keyboardType: TextInputType.number,
                               initialValue: totalAmount.toString(),
                               decoration: InputDecoration(
-                                hintText: 'Collected Amount',
-                                labelText: 'Collected Amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collected_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_amount'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -214,7 +223,8 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: 'Transferred Mode',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('transferred_mode'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -255,8 +265,10 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                               keyboardType: TextInputType.text,
                               initialValue: "",
                               decoration: InputDecoration(
-                                hintText: 'Amount Received From',
-                                labelText: "Collected From",
+                                hintText: AppLocalizations.of(context)
+                                    .translate('amount_received_from'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_from'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -286,8 +298,10 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                               keyboardType: TextInputType.text,
                               initialValue: collectedBy,
                               decoration: InputDecoration(
-                                hintText: 'Amount Collected by',
-                                labelText: "Collected By",
+                                hintText: AppLocalizations.of(context)
+                                    .translate('amount_collected_by'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_by'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -324,9 +338,10 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                               initialValue: notes,
                               maxLines: 2,
                               decoration: InputDecoration(
-                                labelText: 'Notes',
-                                hintText:
-                                    "Short notes/reference about the Collection",
+                                labelText: AppLocalizations.of(context)
+                                    .translate('notes'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('notes_hint'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -371,7 +386,8 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                         collDetails['is_paid_late'] = newValue;
                       },
                       title: Text(
-                        "Is Collected Late? ",
+                        AppLocalizations.of(context)
+                            .translate('is_collected_late'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -416,8 +432,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
             text: DateUtils.formatDate(picked),
           );
 
-          if (widget.collection.chitDate <
-              (collDetails['collected_on'])) {
+          if (widget.collection.chitDate < (collDetails['collected_on'])) {
             isLatePay = true;
           } else {
             isLatePay = false;
@@ -440,8 +455,8 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
         ChitController _cc = ChitController();
         bool isPaid = false;
 
-        if (collDetails['amount'] + widget.collection.getReceived() >= widget.collection.collectionAmount)
-          isPaid = true;
+        if (collDetails['amount'] + widget.collection.getReceived() >=
+            widget.collection.collectionAmount) isPaid = true;
 
         collDetails['transferred_mode'] = int.parse(transferredMode);
         collDetails['created_at'] = DateTime.now();

@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/chit/chit_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class AddChitCustomers extends StatefulWidget {
   AddChitCustomers(this.chit);
 
@@ -33,7 +35,9 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Customers'),
+        title: Text(
+          AppLocalizations.of(context).translate('add_customers'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -43,7 +47,7 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
           _submit();
         },
         label: Text(
-          "Publish Chit",
+          AppLocalizations.of(context).translate('publish_chit'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -77,9 +81,11 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
-                        hintText: "Customer's mobile number...",
+                        hintText: AppLocalizations.of(context)
+                            .translate("hint_customer_mobile"),
                         errorText: !mobileNumberValid
-                            ? 'Enter the valid 10 digit MobileNumber'
+                            ? AppLocalizations.of(context)
+                                .translate('valid_mobile_message')
                             : null,
                         suffixIcon: Icon(
                           Icons.search,
@@ -105,7 +111,7 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
                         ),
                       ),
                       label: Text(
-                        "Search",
+                        AppLocalizations.of(context).translate('search'),
                         style: TextStyle(
                           color: CustomColors.mfinLightGrey,
                           fontSize: 16.0,
@@ -222,7 +228,8 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
                         : Padding(
                             padding: EdgeInsets.all(5),
                             child: Text(
-                              "No Users Selected!",
+                              AppLocalizations.of(context)
+                                  .translate('no_users_selected'),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: CustomColors.mfinAlertRed,

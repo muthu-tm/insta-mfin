@@ -10,6 +10,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/chit/chit_allocation_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class AddChitAllocation extends StatefulWidget {
   AddChitAllocation(this.chitAlloc, this.fund);
 
@@ -54,7 +56,9 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Allocation'),
+        title: Text(
+          AppLocalizations.of(context).translate('add_allocation'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -64,7 +68,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -135,8 +139,10 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                                   controller: _date,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    hintText: 'Date Given',
-                                    labelText: "Given On",
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('date_given'),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('given_on'),
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
@@ -164,8 +170,10 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                               keyboardType: TextInputType.number,
                               initialValue: amount.toString(),
                               decoration: InputDecoration(
-                                hintText: 'Given Amount',
-                                labelText: 'Given Amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('given_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('given_amount'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -198,7 +206,8 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: 'Transferred Mode',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('transferred_mode'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -239,8 +248,10 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                               keyboardType: TextInputType.text,
                               initialValue: "",
                               decoration: InputDecoration(
-                                hintText: 'Amount Given To',
-                                labelText: "Given To",
+                                hintText: AppLocalizations.of(context)
+                                    .translate('amount_given'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('amount_given'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -268,8 +279,10 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                               keyboardType: TextInputType.text,
                               initialValue: givenBy,
                               decoration: InputDecoration(
-                                hintText: 'Amount Given by',
-                                labelText: "Given By",
+                                hintText: AppLocalizations.of(context)
+                                    .translate('given_by'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('given_by'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -304,9 +317,10 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                               initialValue: notes,
                               maxLines: 2,
                               decoration: InputDecoration(
-                                labelText: 'Notes',
-                                hintText:
-                                    "Short notes/reference about the Collection",
+                                labelText: AppLocalizations.of(context)
+                                    .translate('notes'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('notes_hint'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),

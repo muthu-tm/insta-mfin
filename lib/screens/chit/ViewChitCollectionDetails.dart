@@ -11,6 +11,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/chit/chit_controller.dart';
 
+import '../../app_localizations.dart';
+
 class ViewChitCollectionDetails extends StatefulWidget {
   ViewChitCollectionDetails(this.collection);
 
@@ -29,7 +31,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
-            'Chit ${widget.collection.chitID} - ${widget.collection.chitNumber}'),
+            "${AppLocalizations.of(context).translate('chit')} ${widget.collection.chitID} - ${widget.collection.chitNumber}"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(child: _getBody()),
@@ -88,7 +90,8 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
             } else {
               children = <Widget>[
                 Text(
-                  "No Collection received yet!",
+                  AppLocalizations.of(context)
+                      .translate('no_collection_received'),
                   style: TextStyle(
                     color: CustomColors.mfinAlertRed,
                     fontSize: 18.0,
@@ -98,7 +101,8 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
                   child: Text(
-                    "Add collection using '+' button",
+                    AppLocalizations.of(context)
+                        .translate('add_collection_sign'),
                     style: TextStyle(
                       color: CustomColors.mfinBlue,
                       fontSize: 18.0,
@@ -126,7 +130,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                   color: CustomColors.mfinButtonGreen,
                 ),
                 title: Text(
-                  "Collection Details",
+                  AppLocalizations.of(context).translate('collection_details'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,
@@ -206,7 +210,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                 builder: (context) {
                   return AlertDialog(
                     title: new Text(
-                      "Confirm!",
+                      AppLocalizations.of(context).translate('confirm'),
                       style: TextStyle(
                           color: CustomColors.mfinAlertRed,
                           fontSize: 25.0,
@@ -214,7 +218,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                       textAlign: TextAlign.start,
                     ),
                     content: Text(
-                      "Are you sure to remove this ${_collectionDetails.amount} collection",
+                      "${AppLocalizations.of(context).translate('are_you_sure')} ${_collectionDetails.amount} ${AppLocalizations.of(context).translate('collection')}",
                     ),
                     actions: <Widget>[
                       FlatButton(
@@ -232,7 +236,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                       FlatButton(
                         color: CustomColors.mfinAlertRed,
                         child: Text(
-                          "YES",
+                          AppLocalizations.of(context).translate('yes'),
                           style: TextStyle(
                               color: CustomColors.mfinLightGrey,
                               fontSize: 18.0,
@@ -292,7 +296,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                 children: <Widget>[
                   ListTile(
                     leading: Text(
-                      'Date',
+                      AppLocalizations.of(context).translate('date'),
                       style: TextStyle(
                           color: textColor,
                           fontFamily: 'Georgia',
@@ -311,7 +315,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                   ),
                   ListTile(
                     leading: Text(
-                      "AMOUNT",
+                      AppLocalizations.of(context).translate('amount_caps'),
                       style: TextStyle(
                           color: textColor,
                           fontFamily: 'Georgia',
@@ -329,7 +333,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                   ),
                   ListTile(
                     leading: Text(
-                      "FROM",
+                      AppLocalizations.of(context).translate('from'),
                       style: TextStyle(
                           color: textColor,
                           fontFamily: 'Georgia',
@@ -363,7 +367,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
         children: <Widget>[
           ListTile(
             leading: Text(
-              'By',
+              AppLocalizations.of(context).translate('by'),
               style: TextStyle(
                   color: CustomColors.mfinGrey,
                   fontFamily: 'Georgia',
@@ -381,7 +385,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
           ),
           ListTile(
             leading: Text(
-              'NOTES',
+              AppLocalizations.of(context).translate('notes'),
               style: TextStyle(
                   color: CustomColors.mfinGrey,
                   fontFamily: 'Georgia',
@@ -403,7 +407,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
           ),
           ListTile(
             leading: Text(
-              'PAID LATE?',
+              AppLocalizations.of(context).translate('paid_late'),
               style: TextStyle(
                   color: CustomColors.mfinGrey,
                   fontFamily: 'Georgia',
@@ -413,7 +417,9 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
             trailing: SizedBox(
               width: MediaQuery.of(context).size.width * 0.65,
               child: Text(
-                _collectionDetails.isPaidLate ? "YES" : "NO",
+                _collectionDetails.isPaidLate
+                    ? AppLocalizations.of(context).translate('yes')
+                    : AppLocalizations.of(context).translate('no'),
                 textAlign: TextAlign.end,
                 style: TextStyle(
                     color: _collectionDetails.isPaidLate
@@ -446,7 +452,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
               children: <Widget>[
                 ListTile(
                   leading: Text(
-                    'Date',
+                    AppLocalizations.of(context).translate('date'),
                     style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontFamily: 'Georgia',
@@ -465,7 +471,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                 ),
                 ListTile(
                   leading: Text(
-                    "AMOUNT",
+                    AppLocalizations.of(context).translate('amount_caps'),
                     style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontFamily: 'Georgia',
@@ -483,7 +489,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                 ),
                 ListTile(
                   leading: Text(
-                    "FROM",
+                    AppLocalizations.of(context).translate('from_caps'),
                     style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontFamily: 'Georgia',

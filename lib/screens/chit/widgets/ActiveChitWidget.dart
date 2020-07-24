@@ -67,7 +67,8 @@ class ActiveChitWidget extends StatelessWidget {
                           ),
                           ListTile(
                             leading: Text(
-                              'Published On:',
+                              AppLocalizations.of(context)
+                                  .translate('published_on_colon'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -87,7 +88,7 @@ class ActiveChitWidget extends StatelessWidget {
                           ),
                           ListTile(
                             leading: Text(
-                              'Amount:',
+                              AppLocalizations.of(context).translate('amount_colon'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -105,7 +106,7 @@ class ActiveChitWidget extends StatelessWidget {
                           ),
                           ListTile(
                             leading: Text(
-                              'Chit Day:',
+                              AppLocalizations.of(context).translate('chit_day_colon'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,

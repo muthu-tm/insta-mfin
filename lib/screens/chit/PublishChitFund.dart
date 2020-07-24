@@ -7,6 +7,8 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
+import '../../app_localizations.dart';
+
 class PublishChitFund extends StatefulWidget {
   PublishChitFund(this.temp);
 
@@ -87,7 +89,9 @@ class _PublishChitFundState extends State<PublishChitFund> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Publish Chit'),
+        title: Text(
+          AppLocalizations.of(context).translate('publish_chit'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -97,7 +101,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
           _submit();
         },
         label: Text(
-          "Next",
+          AppLocalizations.of(context).translate('next'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -131,7 +135,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Chit Template",
+                        AppLocalizations.of(context).translate('chit_template'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -153,7 +157,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Chit name',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('chit_name'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -190,7 +195,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Chit amount',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('chit_amount'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -219,7 +225,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
                           Flexible(
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                labelText: 'Chit Type',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('chit_type'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -262,7 +269,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Chit ID',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('chit_id'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -294,7 +302,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Commission Rate',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('commission_rate'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -332,7 +341,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Months',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('months'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -368,7 +378,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
                           Flexible(
                             child: DropdownButtonFormField<int>(
                               decoration: InputDecoration(
-                                labelText: 'Collection Day',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collection_day'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -412,8 +423,10 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               initialValue: notes,
                               maxLines: 3,
                               decoration: InputDecoration(
-                                hintText: 'Notes',
-                                labelText: 'Notes',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('notes'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('notes'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -470,7 +483,9 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Chit Number',
+                                                  labelText: AppLocalizations
+                                                          .of(context)
+                                                      .translate('chit_number'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -504,7 +519,9 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Chit Date',
+                                                  labelText: AppLocalizations
+                                                          .of(context)
+                                                      .translate('chit_date'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -548,8 +565,10 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText:
-                                                      'Collection Amount',
+                                                  labelText: AppLocalizations
+                                                          .of(context)
+                                                      .translate(
+                                                          'collection_amount'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -600,7 +619,11 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Total Amount',
+                                                  labelText:
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .translate(
+                                                              'total_amount'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -657,8 +680,10 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText:
-                                                      'Allocation Amount',
+                                                  labelText: AppLocalizations
+                                                          .of(context)
+                                                      .translate(
+                                                          'allocation_amount'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -709,7 +734,11 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Profit Amount',
+                                                  labelText:
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .translate(
+                                                              'profit_amount'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
