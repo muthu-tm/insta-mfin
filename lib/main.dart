@@ -9,7 +9,7 @@ import 'package:syncfusion_flutter_core/core.dart';
 
 void main() {
   SyncfusionLicense.registerLicense(
-      "NT8mJyc2IWhia31ifWN9Z2FoYmF8YGJ8ampqanNiYmlmamlmanMDHmg+Jic7JmBgMCA2EzQ+Mjo/fTA8Pg==");
+      "NT8mJyc2IWhia31hfWN9Z2doYmF8YGJ8ampqanNiYmlmamlmanMDHmg+Jic7JmBgMCA2EzQ+Mjo/fTA8Pg==");
   runApp(MyApp());
   setupLocator();
 }
