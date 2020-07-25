@@ -137,14 +137,13 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   filled: true,
                                 ),
                                 validator: (value) {
-                                  if (widget.cust.mobileNumber !=
-                                      int.parse(value)) {
-                                    if (value.isNotEmpty) {
-                                      updatedCustomer['mobile_number'] =
-                                          int.parse(value);
-                                    } else {
-                                      updatedCustomer['mobile_number'] = null;
-                                    }
+                                  if (value.trim().isNotEmpty &&
+                                      (widget.cust.mobileNumber !=
+                                          int.parse(value.trim()))) {
+                                    updatedCustomer['mobile_number'] =
+                                        int.parse(value.trim());
+                                  } else {
+                                    updatedCustomer['mobile_number'] = null;
                                   }
                                   return null;
                                 },
