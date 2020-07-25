@@ -10,25 +10,69 @@ import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class AllCustomerTab extends StatelessWidget {
-  AllCustomerTab(this._scaffoldKey, this.title, this.status);
+class CustomerTab extends StatefulWidget {
+  CustomerTab(this.title, this.status);
 
   final String title;
   final int status;
-  final GlobalKey<ScaffoldState> _scaffoldKey;
+
+  @override
+  _CustomerTabState createState() => _CustomerTabState();
+}
+
+class _CustomerTabState extends State<CustomerTab> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  int ascByName = 0;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: status != 0
-          ? Customer().streamCustomersByStatus(status)
-          : Customer().streamAllCustomers(),
+      stream: widget.status != 0
+          ? Customer().streamCustomersByStatus(widget.status, ascByName)
+          : Customer().streamAllCustomers(ascByName),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
           if (snapshot.data.documents.isNotEmpty) {
             children = <Widget>[
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: RaisedButton.icon(
+                      color: CustomColors.mfinWhite,
+                      icon: Icon(
+                        ascByName == 1
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        color: ascByName == 1
+                            ? CustomColors.mfinBlue
+                            : CustomColors.mfinGrey,
+                        size: 25,
+                      ),
+                      label: Text(
+                        ascByName == 0
+                            ? "Created At"
+                            : ascByName == 1 ? "Name Asc" : "Name Desc",
+                        style: TextStyle(
+                            color: ascByName == 1
+                                ? CustomColors.mfinBlue
+                                : CustomColors.mfinGrey,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          if (ascByName == 1)
+                            ascByName = 2;
+                          else
+                            ascByName = 1;
+                        });
+                      }),
+                ),
+              ),
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -215,7 +259,6 @@ class AllCustomerTab extends StatelessWidget {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: children,
           ),
         );

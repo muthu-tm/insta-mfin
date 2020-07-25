@@ -148,23 +148,55 @@ class Customer extends Model {
     return getDocumentID(this.id);
   }
 
-  Stream<QuerySnapshot> streamAllCustomers() {
-    return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
-        .orderBy('created_at', descending: true)
-        .snapshots();
+  Stream<QuerySnapshot> streamAllCustomers(int ascByName) {
+    if (ascByName == 0)
+      return getCollectionRef()
+          .where('finance_id', isEqualTo: user.primary.financeID)
+          .where('branch_name', isEqualTo: user.primary.branchName)
+          .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+          .orderBy('created_at', descending: true)
+          .snapshots();
+    else if (ascByName == 1)
+      return getCollectionRef()
+          .where('finance_id', isEqualTo: user.primary.financeID)
+          .where('branch_name', isEqualTo: user.primary.branchName)
+          .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+          .orderBy('first_name')
+          .snapshots();
+    else
+      return getCollectionRef()
+          .where('finance_id', isEqualTo: user.primary.financeID)
+          .where('branch_name', isEqualTo: user.primary.branchName)
+          .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+          .orderBy('first_name', descending: true)
+          .snapshots();
   }
 
-  Stream<QuerySnapshot> streamCustomersByStatus(int status) {
-    return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
-        .where('status', isEqualTo: status)
-        .orderBy('created_at', descending: true)
-        .snapshots();
+  Stream<QuerySnapshot> streamCustomersByStatus(int status, int ascByName) {
+    if (ascByName == 0)
+      return getCollectionRef()
+          .where('finance_id', isEqualTo: user.primary.financeID)
+          .where('branch_name', isEqualTo: user.primary.branchName)
+          .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+          .where('status', isEqualTo: status)
+          .orderBy('created_at', descending: true)
+          .snapshots();
+    else if (ascByName == 1)
+      return getCollectionRef()
+          .where('finance_id', isEqualTo: user.primary.financeID)
+          .where('branch_name', isEqualTo: user.primary.branchName)
+          .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+          .where('status', isEqualTo: status)
+          .orderBy('first_name')
+          .snapshots();
+    else
+      return getCollectionRef()
+          .where('finance_id', isEqualTo: user.primary.financeID)
+          .where('branch_name', isEqualTo: user.primary.branchName)
+          .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+          .where('status', isEqualTo: status)
+          .orderBy('first_name', descending: true)
+          .snapshots();
   }
 
   Future<QuerySnapshot> getAllCustomers() {

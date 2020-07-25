@@ -161,16 +161,16 @@ class CustomersHome extends StatelessWidget {
           body: TabBarView(
             children: [
               SingleChildScrollView(
-                child: AllCustomerTab(_scaffoldKey, 'All Customers', 0),
+                child: CustomerTab('All Customers', 0),
               ),
               SingleChildScrollView(
-                child: AllCustomerTab(_scaffoldKey, 'Active Customers', 1),
+                child: CustomerTab('Active Customers', 1),
               ),
               SingleChildScrollView(
                 child: CustomerListWidget(_scaffoldKey, 'Pending Customers', 2),
               ),
               SingleChildScrollView(
-                child: AllCustomerTab(_scaffoldKey, 'Settled Customers', 3),
+                child: CustomerTab('Settled Customers', 3),
               )
             ],
           ),
