@@ -309,18 +309,33 @@ class Customer extends Model {
     return custList;
   }
 
-  Future<List<Map<String, dynamic>>> getByNameRange(String startsWith) async {
+  Future<List<Map<String, dynamic>>> getByNameRange(
+      String orgString, String startsWith, String endsWith) async {
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: user.primary.financeID)
         .where('branch_name', isEqualTo: user.primary.branchName)
         .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
-        .where('customer_name', isGreaterThanOrEqualTo: startsWith)
+        .where('first_name', isGreaterThanOrEqualTo: startsWith)
+        .where('first_name', isLessThanOrEqualTo: endsWith)
         .getDocuments();
 
     List<Map<String, dynamic>> custList = [];
     if (snap.documents.isNotEmpty) {
       snap.documents.forEach((cust) {
         custList.add(cust.data);
+      });
+    }
+
+    QuerySnapshot secondSnap = await getCollectionRef()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('first_name', isEqualTo: orgString)
+        .getDocuments();
+
+    if (secondSnap.documents.isNotEmpty) {
+      secondSnap.documents.forEach((cus) {
+        custList.add(cus.data);
       });
     }
 
