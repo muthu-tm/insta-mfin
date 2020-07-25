@@ -13,6 +13,8 @@ class Plans extends Model {
   int inr;
   @JsonKey(name: 'notes', defaultValue: '')
   String notes;
+  @JsonKey(name: 'more_info', defaultValue: '')
+  String moreInfo;
   @JsonKey(name: 'plan_id', defaultValue: 0)
   int planID;
   @JsonKey(name: 'plan_name', defaultValue: 0)
