@@ -234,5 +234,13 @@
     "add_customer_chit" : "Add this customer's Chits!",
     "chits_cap" : "CHITS",
     "select_from_template" : "Select From Template",
-    "no_templates" : "No Templates"
+    "no_templates" : "No Templates",
+    "sure_remove" : "Are you sure to remove",
+    "customer_question" : "Customer ?",
+    "search_type" : "Search for different type!",
+    "remove_collection" : "Remove Collection",
+    "date_colon" : "Date:",
+    "pending" : "Pending",
+    "late" : "Late",
+    "collection" : "collection"
 }

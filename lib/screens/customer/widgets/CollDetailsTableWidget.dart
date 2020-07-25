@@ -7,6 +7,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 
+import '../../../app_localizations.dart';
+
 class CollDetailsTableWidget extends StatelessWidget {
   CollDetailsTableWidget(
       this.paySettled, this._scaffoldKey, this._collection, this.custName);
@@ -27,7 +29,7 @@ class CollDetailsTableWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "No Collection received yet!",
+              AppLocalizations.of(context).translate('no_collection_received'),
               style: TextStyle(
                 color: CustomColors.mfinAlertRed,
                 fontSize: 18.0,
@@ -37,7 +39,7 @@ class CollDetailsTableWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
               child: Text(
-                "Add collection using '+' button",
+                AppLocalizations.of(context).translate('add_collection_sign'),
                 style: TextStyle(
                   color: CustomColors.mfinBlue,
                   fontSize: 18.0,
@@ -54,15 +56,16 @@ class CollDetailsTableWidget extends StatelessWidget {
         child: DataTable(columns: <DataColumn>[
           DataColumn(
             label: Text(
-              "Action",
+              AppLocalizations.of(context).translate('chit_day_colon'),
               textAlign: TextAlign.center,
             ),
             numeric: false,
-            tooltip: "Remove Collection",
+            tooltip:
+                AppLocalizations.of(context).translate('remove_collection'),
           ),
           DataColumn(
             label: Text(
-              "Date",
+              AppLocalizations.of(context).translate('date_colon'),
               textAlign: TextAlign.center,
             ),
             numeric: false,
@@ -70,7 +73,7 @@ class CollDetailsTableWidget extends StatelessWidget {
           ),
           DataColumn(
             label: Text(
-              "Amount",
+              AppLocalizations.of(context).translate('amount'),
               textAlign: TextAlign.center,
             ),
             numeric: false,
@@ -78,7 +81,7 @@ class CollDetailsTableWidget extends StatelessWidget {
           ),
           DataColumn(
             label: Text(
-              "Pending",
+              AppLocalizations.of(context).translate('pending'),
               textAlign: TextAlign.center,
             ),
             numeric: false,
@@ -86,7 +89,7 @@ class CollDetailsTableWidget extends StatelessWidget {
           ),
           DataColumn(
             label: Text(
-              "Late",
+              AppLocalizations.of(context).translate('late'),
               textAlign: TextAlign.center,
             ),
             numeric: false,
@@ -94,7 +97,7 @@ class CollDetailsTableWidget extends StatelessWidget {
           ),
           DataColumn(
             label: Text(
-              "From",
+              AppLocalizations.of(context).translate('from'),
               textAlign: TextAlign.center,
             ),
             numeric: false,
@@ -102,7 +105,7 @@ class CollDetailsTableWidget extends StatelessWidget {
           ),
           DataColumn(
             label: Text(
-              "Notes",
+              AppLocalizations.of(context).translate('notes'),
               textAlign: TextAlign.center,
             ),
             numeric: false,
@@ -123,7 +126,7 @@ class CollDetailsTableWidget extends StatelessWidget {
               color: CustomColors.mfinButtonGreen,
             ),
             title: new Text(
-              "Collection Details",
+              AppLocalizations.of(context).translate('collection_details'),
               style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 18.0,
@@ -195,7 +198,7 @@ class CollDetailsTableWidget extends StatelessWidget {
                     builder: (context) {
                       return AlertDialog(
                         title: new Text(
-                          "Confirm!",
+                          AppLocalizations.of(context).translate('confirm'),
                           style: TextStyle(
                               color: CustomColors.mfinAlertRed,
                               fontSize: 25.0,
@@ -203,13 +206,13 @@ class CollDetailsTableWidget extends StatelessWidget {
                           textAlign: TextAlign.start,
                         ),
                         content: Text(
-                          "Are you sure to remove this ${coll.amount} collection",
+                          "${AppLocalizations.of(context).translate('sure_remove')} ${coll.amount} ${AppLocalizations.of(context).translate('collection')}",
                         ),
                         actions: <Widget>[
                           FlatButton(
                             color: CustomColors.mfinButtonGreen,
                             child: Text(
-                              "NO",
+                              AppLocalizations.of(context).translate('no'),
                               style: TextStyle(
                                   color: CustomColors.mfinBlue,
                                   fontSize: 18.0,
@@ -221,7 +224,7 @@ class CollDetailsTableWidget extends StatelessWidget {
                           FlatButton(
                             color: CustomColors.mfinAlertRed,
                             child: Text(
-                              "YES",
+                              AppLocalizations.of(context).translate('yes'),
                               style: TextStyle(
                                   color: CustomColors.mfinLightGrey,
                                   fontSize: 18.0,
@@ -286,7 +289,9 @@ class CollDetailsTableWidget extends StatelessWidget {
             ),
             DataCell(
               Text(
-                coll.isPaidLate ? "YES" : "NO",
+                coll.isPaidLate
+                    ? AppLocalizations.of(context).translate('yes')
+                    : AppLocalizations.of(context).translate('no'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: coll.isPaidLate
