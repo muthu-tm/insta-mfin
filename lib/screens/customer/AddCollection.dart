@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class AddCollection extends StatefulWidget {
   AddCollection(this.payment);
 
@@ -56,7 +58,9 @@ class _AddCollectionState extends State<AddCollection> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Collection'),
+        title: Text(
+          AppLocalizations.of(context).translate('add_collection'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -65,7 +69,7 @@ class _AddCollectionState extends State<AddCollection> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -98,7 +102,7 @@ class _AddCollectionState extends State<AddCollection> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Payment Info",
+                        AppLocalizations.of(context).translate('payment_info'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -115,7 +119,8 @@ class _AddCollectionState extends State<AddCollection> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "CUSTOMER",
+                          AppLocalizations.of(context)
+                              .translate('customer_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -147,7 +152,7 @@ class _AddCollectionState extends State<AddCollection> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "ID",
+                          AppLocalizations.of(context).translate('id'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -179,7 +184,7 @@ class _AddCollectionState extends State<AddCollection> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "DATE",
+                          AppLocalizations.of(context).translate('date'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -219,7 +224,7 @@ class _AddCollectionState extends State<AddCollection> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "AMOUNT",
+                          AppLocalizations.of(context).translate('amount_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -249,7 +254,8 @@ class _AddCollectionState extends State<AddCollection> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "PAY OUT",
+                          AppLocalizations.of(context)
+                              .translate('pay_out_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -282,7 +288,8 @@ class _AddCollectionState extends State<AddCollection> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Collection Info",
+                        AppLocalizations.of(context)
+                            .translate('collection_info'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -304,8 +311,10 @@ class _AddCollectionState extends State<AddCollection> {
                                   : true,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
-                                hintText: 'Collection Number',
-                                labelText: "Collection Number",
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collection_number'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collection_number'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -335,7 +344,8 @@ class _AddCollectionState extends State<AddCollection> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: 'Type',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('type'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -379,8 +389,10 @@ class _AddCollectionState extends State<AddCollection> {
                               keyboardType: TextInputType.number,
                               controller: _cAmountController,
                               decoration: InputDecoration(
-                                hintText: 'Collection Amount',
-                                labelText: 'Collection Amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collection_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collection_amount'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -424,8 +436,10 @@ class _AddCollectionState extends State<AddCollection> {
                                       ? false
                                       : true,
                                   decoration: InputDecoration(
-                                    hintText: 'Collection Date',
-                                    labelText: "Collection Date",
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('collection_date'),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('collection_date'),
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
@@ -460,7 +474,8 @@ class _AddCollectionState extends State<AddCollection> {
                               keyboardType: TextInputType.number,
                               controller: _aCollectedController,
                               decoration: InputDecoration(
-                                labelText: 'Already Collected',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('already_collected'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -495,8 +510,10 @@ class _AddCollectionState extends State<AddCollection> {
                                   keyboardType: TextInputType.datetime,
                                   readOnly: collType == "0" ? false : true,
                                   decoration: InputDecoration(
-                                    hintText: 'Collected Date',
-                                    labelText: "Collected Date",
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('collected_date'),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('collected_date'),
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
@@ -528,8 +545,10 @@ class _AddCollectionState extends State<AddCollection> {
                               keyboardType: TextInputType.number,
                               initialValue: '0',
                               decoration: InputDecoration(
-                                hintText: 'Penalty Amount',
-                                labelText: 'Penalty Amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('penalty_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('penalty_amount'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),

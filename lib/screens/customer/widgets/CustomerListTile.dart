@@ -4,6 +4,8 @@ import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/ViewCustomer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import '../../../app_localizations.dart';
+
 Widget customerListTile(BuildContext context, int index, Customer customer) {
   Color tileColor = CustomColors.mfinBlue;
   Color textColor = CustomColors.mfinWhite;
@@ -81,7 +83,8 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                                 color: textColor,
                               ),
                               Text(
-                                "Upload",
+                                AppLocalizations.of(context)
+                                    .translate('upload'),
                                 style: TextStyle(
                                   fontSize: 10.0,
                                   fontWeight: FontWeight.w500,

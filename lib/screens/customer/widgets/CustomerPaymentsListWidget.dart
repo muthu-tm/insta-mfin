@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 
+import '../../../app_localizations.dart';
+
 class CustomerPaymentsListWidget extends StatelessWidget {
   CustomerPaymentsListWidget(this.id, this._scaffoldKey);
 
@@ -58,20 +60,22 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                               builder: (context) {
                                 return AlertDialog(
                                   title: new Text(
-                                    "Confirm!",
+                                    AppLocalizations.of(context)
+                                        .translate('confirm'),
                                     style: TextStyle(
                                         color: CustomColors.mfinAlertRed,
                                         fontSize: 25.0,
                                         fontWeight: FontWeight.bold),
                                     textAlign: TextAlign.start,
                                   ),
-                                  content: Text(
-                                      'Are you sure to remove this Payment?'),
+                                  content: Text(AppLocalizations.of(context)
+                                      .translate('sure_remove_payment')),
                                   actions: <Widget>[
                                     FlatButton(
                                       color: CustomColors.mfinButtonGreen,
                                       child: Text(
-                                        "NO",
+                                        AppLocalizations.of(context)
+                                            .translate('no_caps'),
                                         style: TextStyle(
                                             color: CustomColors.mfinBlue,
                                             fontSize: 18.0,
@@ -83,7 +87,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                     FlatButton(
                                       color: CustomColors.mfinAlertRed,
                                       child: Text(
-                                        "YES",
+                                        AppLocalizations.of(context)
+                                            .translate('yes'),
                                         style: TextStyle(
                                             color: CustomColors.mfinLightGrey,
                                             fontSize: 18.0,
@@ -211,7 +216,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Payments!",
+                      AppLocalizations.of(context).translate('no_payments'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -222,7 +227,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Add this customer's Payments!",
+                      AppLocalizations.of(context)
+                          .translate('add_customer_payment'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
@@ -248,7 +254,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: Text(
-                  "PAYMENTS",
+                  AppLocalizations.of(context).translate('payments_caps'),
                   style: TextStyle(
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
@@ -258,7 +264,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                 ),
                 trailing: RichText(
                   text: TextSpan(
-                    text: "Total: ",
+                    text: AppLocalizations.of(context).translate('total_colon'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontWeight: FontWeight.bold,

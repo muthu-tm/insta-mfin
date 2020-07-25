@@ -8,6 +8,8 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
+import '../../../app_localizations.dart';
+
 Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
   Color cColor = CustomColors.mfinBlue;
   if (payment.isSettled) cColor = CustomColors.mfinGrey;
@@ -163,7 +165,7 @@ Widget getPaymentDetails(Payment payment) {
                 height: 25,
                 child: ListTile(
                   leading: Text(
-                    "RECEIVED",
+                    AppLocalizations.of(context).translate("received_caps"),
                     style: TextStyle(
                       fontSize: 18,
                       color: CustomColors.mfinBlue,
@@ -184,7 +186,7 @@ Widget getPaymentDetails(Payment payment) {
                 height: 25,
                 child: ListTile(
                   leading: Text(
-                    'PENDING',
+                    AppLocalizations.of(context).translate('pending_caps'),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -205,7 +207,7 @@ Widget getPaymentDetails(Payment payment) {
                 height: 25,
                 child: ListTile(
                   leading: Text(
-                    'TODAY',
+                    AppLocalizations.of(context).translate('today_caps'),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -226,7 +228,7 @@ Widget getPaymentDetails(Payment payment) {
                 height: 25,
                 child: ListTile(
                   leading: Text(
-                    'UPCOMING',
+                    AppLocalizations.of(context).translate('upcoming_caps'),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,
@@ -286,7 +288,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
               height: 30,
               child: ListTile(
                 leading: Text(
-                  "RECEIVED",
+                  AppLocalizations.of(context).translate('received_caps'),
                   style: TextStyle(
                     fontSize: 18,
                     color: CustomColors.mfinBlue,
@@ -307,7 +309,9 @@ Widget getSettledPaymentsDetails(Payment payment) {
               height: 30,
               child: ListTile(
                 leading: Text(
-                  payment.isLoss ? 'LOSS' : 'PROFIT',
+                  payment.isLoss
+                      ? AppLocalizations.of(context).translate('loss_caps')
+                      : AppLocalizations.of(context).translate('profit_caps'),
                   style: TextStyle(
                     fontSize: 17,
                     color: CustomColors.mfinBlue,
@@ -332,7 +336,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
               height: 30,
               child: ListTile(
                 leading: Text(
-                  'SETTLED ON',
+                  AppLocalizations.of(context).translate('settled_on_caps'),
                   style: TextStyle(
                     fontSize: 16,
                     color: CustomColors.mfinBlue,

@@ -13,6 +13,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../../app_localizations.dart';
+
 class CollectionListWidget extends StatelessWidget {
   CollectionListWidget(this._scaffoldKey, this._payment, this.title,
       this.emptyText, this.textColor, this.fetchAll, this.status);
@@ -33,22 +35,13 @@ class CollectionListWidget extends StatelessWidget {
           ? Collection().streamCollectionsForPayment(_payment.financeID,
               _payment.branchName, _payment.subBranchName, _payment.id)
           : status == 0
-              ? Collection().streamUpcomingForPayment(
-                  _payment.financeID,
-                  _payment.branchName,
-                  _payment.subBranchName,
-                  _payment.id)
+              ? Collection().streamUpcomingForPayment(_payment.financeID,
+                  _payment.branchName, _payment.subBranchName, _payment.id)
               : status == 3
-                  ? Collection().streamTodaysForPayment(
-                      _payment.financeID,
-                      _payment.branchName,
-                      _payment.subBranchName,
-                      _payment.id)
-                  : Collection().streamPastForPayment(
-                      _payment.financeID,
-                      _payment.branchName,
-                      _payment.subBranchName,
-                      _payment.id),
+                  ? Collection().streamTodaysForPayment(_payment.financeID,
+                      _payment.branchName, _payment.subBranchName, _payment.id)
+                  : Collection().streamPastForPayment(_payment.financeID,
+                      _payment.branchName, _payment.subBranchName, _payment.id),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
@@ -225,7 +218,8 @@ class CollectionListWidget extends StatelessWidget {
                                             height: 35,
                                             child: ListTile(
                                               leading: Text(
-                                                "TYPE:",
+                                                AppLocalizations.of(context)
+                                                    .translate('type'),
                                                 style: TextStyle(
                                                   fontSize: 18,
                                                   color: CustomColors.mfinBlue,

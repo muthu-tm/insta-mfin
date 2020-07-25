@@ -12,6 +12,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../../app_localizations.dart';
+
 class CollectionListTableWidget extends StatelessWidget {
   CollectionListTableWidget(this._scaffoldKey, this._payment, this.title,
       this.emptyText, this.textColor, this.fetchAll, this.status);
@@ -32,22 +34,13 @@ class CollectionListTableWidget extends StatelessWidget {
           ? Collection().streamCollectionsForPayment(_payment.financeID,
               _payment.branchName, _payment.subBranchName, _payment.id)
           : status == 0
-              ? Collection().streamUpcomingForPayment(
-                  _payment.financeID,
-                  _payment.branchName,
-                  _payment.subBranchName,
-                  _payment.id)
+              ? Collection().streamUpcomingForPayment(_payment.financeID,
+                  _payment.branchName, _payment.subBranchName, _payment.id)
               : status == 3
-                  ? Collection().streamTodaysForPayment(
-                      _payment.financeID,
-                      _payment.branchName,
-                      _payment.subBranchName,
-                      _payment.id)
-                  : Collection().streamPastForPayment(
-                      _payment.financeID,
-                      _payment.branchName,
-                      _payment.subBranchName,
-                      _payment.id),
+                  ? Collection().streamTodaysForPayment(_payment.financeID,
+                      _payment.branchName, _payment.subBranchName, _payment.id)
+                  : Collection().streamPastForPayment(_payment.financeID,
+                      _payment.branchName, _payment.subBranchName, _payment.id),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         Widget widget;
 
@@ -84,7 +77,7 @@ class CollectionListTableWidget extends StatelessWidget {
                   columns: <DataColumn>[
                     DataColumn(
                       label: Text(
-                        "Action",
+                        AppLocalizations.of(context).translate('action'),
                         textAlign: TextAlign.center,
                       ),
                       numeric: false,
@@ -92,7 +85,7 @@ class CollectionListTableWidget extends StatelessWidget {
                     ),
                     DataColumn(
                       label: Text(
-                        "No.",
+                        AppLocalizations.of(context).translate('number_short'),
                         textAlign: TextAlign.center,
                       ),
                       numeric: false,
@@ -100,7 +93,7 @@ class CollectionListTableWidget extends StatelessWidget {
                     ),
                     DataColumn(
                       label: Text(
-                        "Date",
+                        AppLocalizations.of(context).translate('date'),
                         textAlign: TextAlign.center,
                       ),
                       numeric: false,
@@ -108,7 +101,7 @@ class CollectionListTableWidget extends StatelessWidget {
                     ),
                     DataColumn(
                       label: Text(
-                        "Type",
+                        AppLocalizations.of(context).translate('type'),
                         textAlign: TextAlign.center,
                       ),
                       numeric: false,
@@ -116,7 +109,7 @@ class CollectionListTableWidget extends StatelessWidget {
                     ),
                     DataColumn(
                       label: Text(
-                        "Amount",
+                        AppLocalizations.of(context).translate('amount'),
                         textAlign: TextAlign.center,
                       ),
                       numeric: false,
@@ -124,7 +117,8 @@ class CollectionListTableWidget extends StatelessWidget {
                     ),
                     DataColumn(
                       label: Text(
-                        "Total Received",
+                        AppLocalizations.of(context)
+                            .translate('total_received'),
                         textAlign: TextAlign.center,
                       ),
                       numeric: false,
@@ -132,7 +126,8 @@ class CollectionListTableWidget extends StatelessWidget {
                     ),
                     DataColumn(
                       label: Text(
-                        "Received On Time",
+                        AppLocalizations.of(context)
+                            .translate('received_on_time'),
                         textAlign: TextAlign.center,
                       ),
                       numeric: false,
@@ -140,7 +135,7 @@ class CollectionListTableWidget extends StatelessWidget {
                     ),
                     DataColumn(
                       label: Text(
-                        "Received Late",
+                        AppLocalizations.of(context).translate('received_late'),
                         textAlign: TextAlign.center,
                       ),
                       numeric: false,
@@ -148,7 +143,7 @@ class CollectionListTableWidget extends StatelessWidget {
                     ),
                     DataColumn(
                       label: Text(
-                        "Pending",
+                        AppLocalizations.of(context).translate('pending'),
                         textAlign: TextAlign.center,
                       ),
                       numeric: false,
