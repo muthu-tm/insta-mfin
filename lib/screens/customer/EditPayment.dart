@@ -8,6 +8,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class EditPayment extends StatefulWidget {
   EditPayment(this.payment);
 
@@ -84,7 +86,9 @@ class _EditPaymentState extends State<EditPayment> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Edit Payment'),
+        title: Text(
+          AppLocalizations.of(context).translate('edit_payment'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -94,7 +98,7 @@ class _EditPaymentState extends State<EditPayment> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -127,7 +131,7 @@ class _EditPaymentState extends State<EditPayment> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "General Info",
+                        AppLocalizations.of(context).translate('general_info'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -151,7 +155,8 @@ class _EditPaymentState extends State<EditPayment> {
                               initialValue: widget.payment.custName,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Customer name',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('customer_name'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -184,7 +189,8 @@ class _EditPaymentState extends State<EditPayment> {
                                   controller: _date,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    labelText: 'Date of Payment',
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('date_of_payment'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
@@ -216,8 +222,10 @@ class _EditPaymentState extends State<EditPayment> {
                               decoration: InputDecoration(
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
-                                hintText: 'Payment ID',
-                                labelText: 'Payment ID',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('payment_id'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('payment_id'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -253,8 +261,10 @@ class _EditPaymentState extends State<EditPayment> {
                               keyboardType: TextInputType.text,
                               initialValue: widget.payment.givenBy,
                               decoration: InputDecoration(
-                                hintText: 'Amount given by',
-                                labelText: 'Amount given by',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('amount_given_by'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('amount_given_by'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -284,7 +294,8 @@ class _EditPaymentState extends State<EditPayment> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: 'Transferred Mode',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('transferred_mode'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -323,7 +334,8 @@ class _EditPaymentState extends State<EditPayment> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: 'Collection mode',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collection_mode'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -365,7 +377,8 @@ class _EditPaymentState extends State<EditPayment> {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                  'Scheduled collection days',
+                                  AppLocalizations.of(context)
+                                      .translate('scheduled_collection_days'),
                                   style: TextStyle(
                                     color: CustomColors.mfinBlue,
                                   ),
@@ -391,7 +404,8 @@ class _EditPaymentState extends State<EditPayment> {
                                   controller: _collectionDate,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    labelText: 'Start date',
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('start_date'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
@@ -423,7 +437,8 @@ class _EditPaymentState extends State<EditPayment> {
                                   controller: _collectionDate,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    labelText: 'End date',
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('end_date'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
@@ -460,8 +475,10 @@ class _EditPaymentState extends State<EditPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: 'Referral Commission',
-                                labelText: 'Referral Commission',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('referral_commission'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('referral_commission'),
                                 labelStyle:
                                     TextStyle(color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
@@ -502,8 +519,10 @@ class _EditPaymentState extends State<EditPayment> {
                               initialValue: widget.payment.notes,
                               maxLines: 3,
                               decoration: InputDecoration(
-                                hintText: 'Notes',
-                                labelText: 'Notes',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('notes'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('notes'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -543,7 +562,7 @@ class _EditPaymentState extends State<EditPayment> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Payment Info",
+                        AppLocalizations.of(context).translate('payment_info'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -566,8 +585,10 @@ class _EditPaymentState extends State<EditPayment> {
                               keyboardType: TextInputType.number,
                               controller: totalAmountController,
                               decoration: InputDecoration(
-                                hintText: 'Total amount',
-                                labelText: 'Total amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('total_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('total_amount'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -613,8 +634,10 @@ class _EditPaymentState extends State<EditPayment> {
                               keyboardType: TextInputType.number,
                               controller: interestRateController,
                               decoration: InputDecoration(
-                                hintText: 'Interest Amount',
-                                labelText: 'Interest Amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('interest_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('interest_amount'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -667,8 +690,10 @@ class _EditPaymentState extends State<EditPayment> {
                               keyboardType: TextInputType.number,
                               controller: principalAmountController,
                               decoration: InputDecoration(
-                                hintText: 'Principal amount',
-                                labelText: 'Principal amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('principal_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('principal_amount'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -701,8 +726,10 @@ class _EditPaymentState extends State<EditPayment> {
                               keyboardType: TextInputType.number,
                               controller: tenureController,
                               decoration: InputDecoration(
-                                hintText: 'Number of Collections',
-                                labelText: 'No. of collections',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('number_of_collections'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('number_of_collections'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -752,8 +779,10 @@ class _EditPaymentState extends State<EditPayment> {
                               keyboardType: TextInputType.number,
                               controller: collectionAmountController,
                               decoration: InputDecoration(
-                                hintText: 'Each Collection Amount',
-                                labelText: 'Collection amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collection_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collection_amount'),
                                 labelStyle:
                                     TextStyle(color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
@@ -790,8 +819,10 @@ class _EditPaymentState extends State<EditPayment> {
                                     .payment.alreadyCollectedAmount
                                     .toString(),
                                 decoration: InputDecoration(
-                                  hintText: 'Amount received so far',
-                                  labelText: 'Amount received',
+                                  hintText: AppLocalizations.of(context)
+                                      .translate('amount_received'),
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('amount_received'),
                                   labelStyle:
                                       TextStyle(color: CustomColors.mfinBlue),
                                   floatingLabelBehavior:
@@ -827,8 +858,10 @@ class _EditPaymentState extends State<EditPayment> {
                               initialValue: widget.payment.docCharge.toString(),
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: 'Document charge',
-                                labelText: 'Document charge',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('document_charge'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('document_charge'),
                                 labelStyle:
                                     TextStyle(color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
@@ -862,8 +895,10 @@ class _EditPaymentState extends State<EditPayment> {
                               initialValue: widget.payment.surcharge.toString(),
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: 'Service charge if any',
-                                labelText: 'Service charge',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('service_change'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('service_charge'),
                                 labelStyle:
                                     TextStyle(color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:

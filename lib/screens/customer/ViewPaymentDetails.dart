@@ -3,6 +3,8 @@ import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
+import '../../app_localizations.dart';
+
 class ViewPaymentDetails extends StatelessWidget {
   ViewPaymentDetails(this.payment);
 
@@ -41,7 +43,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "General Info",
+                      AppLocalizations.of(context).translate('general_info'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -65,7 +67,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             initialValue: payment.custName,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'Customer name',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('customer_name'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -100,7 +103,8 @@ class ViewPaymentDetails extends StatelessWidget {
                                         payment.dateOfPayment)),
                                 keyboardType: TextInputType.datetime,
                                 decoration: InputDecoration(
-                                  labelText: 'Date of Pay',
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('date_of_pay'),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -130,7 +134,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             textAlign: TextAlign.start,
                             initialValue: payment.paymentID ?? "",
                             decoration: InputDecoration(
-                              labelText: 'Payment ID',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('payment_id'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -160,7 +165,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             textAlign: TextAlign.start,
                             initialValue: payment.givenBy,
                             decoration: InputDecoration(
-                              labelText: 'Amount given by',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('amount_given_by'),
                               labelStyle: TextStyle(
                                 color: CustomColors.mfinBlue,
                               ),
@@ -183,7 +189,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             initialValue:
                                 _transferMode[payment.transferredMode],
                             decoration: InputDecoration(
-                              labelText: 'Transferred Mode',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('transferred_mode'),
                               labelStyle: TextStyle(
                                 color: CustomColors.mfinBlue,
                               ),
@@ -212,7 +219,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             initialValue:
                                 _tempCollectionMode[payment.collectionMode],
                             decoration: InputDecoration(
-                              labelText: 'Collection mode',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('collection_mode'),
                               labelStyle: TextStyle(
                                 color: CustomColors.mfinBlue,
                               ),
@@ -234,13 +242,14 @@ class ViewPaymentDetails extends StatelessWidget {
                   payment.collectionMode.toString() == '0'
                       ? Container(
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(color: CustomColors.mfinGrey, width: 1.0),
+                            border: Border.all(
+                                color: CustomColors.mfinGrey, width: 1.0),
                           ),
                           child: Column(
                             children: <Widget>[
                               Text(
-                                'Scheduled collection days',
+                                AppLocalizations.of(context)
+                                    .translate('scheduled_collection_days'),
                                 style: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -265,7 +274,8 @@ class ViewPaymentDetails extends StatelessWidget {
                                 DateTime.fromMillisecondsSinceEpoch(
                                     payment.collectionStartsFrom)),
                             decoration: InputDecoration(
-                              labelText: 'Start date',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('start_date'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -294,7 +304,8 @@ class ViewPaymentDetails extends StatelessWidget {
                                 DateTime.fromMillisecondsSinceEpoch(
                                     payment.collectionStartsFrom)),
                             decoration: InputDecoration(
-                              labelText: 'End date',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('end_date'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -329,7 +340,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             initialValue: payment.notes,
                             maxLines: 3,
                             decoration: InputDecoration(
-                              labelText: 'Notes',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('notes'),
                               labelStyle: TextStyle(
                                 color: CustomColors.mfinBlue,
                               ),
@@ -364,7 +376,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Payment Info",
+                      AppLocalizations.of(context).translate('payment_info'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -387,7 +399,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             textAlign: TextAlign.start,
                             initialValue: payment.totalAmount.toString(),
                             decoration: InputDecoration(
-                              labelText: 'Total amount',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('total_amount'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle:
@@ -409,7 +422,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             textAlign: TextAlign.start,
                             initialValue: payment.interestAmount.toString(),
                             decoration: InputDecoration(
-                              labelText: 'Interest Amount',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('interest_amount'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle:
@@ -437,7 +451,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             textAlign: TextAlign.start,
                             initialValue: payment.principalAmount.toString(),
                             decoration: InputDecoration(
-                              labelText: 'Principal amount',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('principal_amount'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle:
@@ -459,7 +474,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             textAlign: TextAlign.start,
                             initialValue: payment.tenure.toString(),
                             decoration: InputDecoration(
-                              labelText: 'No. of collections',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('number_of_collections'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle:
@@ -487,8 +503,10 @@ class ViewPaymentDetails extends StatelessWidget {
                             textAlign: TextAlign.start,
                             initialValue: payment.collectionAmount.toString(),
                             decoration: InputDecoration(
-                              hintText: 'Each Collection Amount',
-                              labelText: 'Collection amount',
+                              hintText: AppLocalizations.of(context)
+                                  .translate('collection_amount'),
+                              labelText: AppLocalizations.of(context)
+                                  .translate('collection_amount'),
                               labelStyle:
                                   TextStyle(color: CustomColors.mfinBlue),
                               floatingLabelBehavior:
@@ -511,8 +529,10 @@ class ViewPaymentDetails extends StatelessWidget {
                             initialValue:
                                 payment.alreadyCollectedAmount.toString(),
                             decoration: InputDecoration(
-                              hintText: 'Amount received so far',
-                              labelText: 'Amount received',
+                              hintText: AppLocalizations.of(context)
+                                  .translate('amount_received'),
+                              labelText: AppLocalizations.of(context)
+                                  .translate('amount_received'),
                               labelStyle:
                                   TextStyle(color: CustomColors.mfinBlue),
                               floatingLabelBehavior:
@@ -540,7 +560,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             textAlign: TextAlign.start,
                             initialValue: payment.docCharge.toString(),
                             decoration: InputDecoration(
-                              labelText: 'Document charge',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('document_charge'),
                               labelStyle:
                                   TextStyle(color: CustomColors.mfinBlue),
                               floatingLabelBehavior:
@@ -562,7 +583,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             textAlign: TextAlign.start,
                             initialValue: payment.surcharge.toString(),
                             decoration: InputDecoration(
-                              labelText: 'Service charge',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('service_charge'),
                               labelStyle:
                                   TextStyle(color: CustomColors.mfinBlue),
                               floatingLabelBehavior:

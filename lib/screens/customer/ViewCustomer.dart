@@ -19,6 +19,8 @@ import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app_localizations.dart';
+
 class ViewCustomer extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final User _user = UserController().getCurrentUser();
@@ -67,7 +69,9 @@ class ViewCustomer extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ListTile(
-                        title: Text('Add Payment'),
+                        title: Text(
+                          AppLocalizations.of(context).translate('add_payment'),
+                        ),
                         leading: Icon(
                           Icons.monetization_on,
                           color: CustomColors.mfinBlue,
@@ -106,7 +110,10 @@ class ViewCustomer extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                          title: Text('View Customer'),
+                          title: Text(
+                            AppLocalizations.of(context)
+                                .translate('view_payment'),
+                          ),
                           leading: Icon(
                             Icons.remove_red_eye,
                             color: CustomColors.mfinBlue,
@@ -124,7 +131,10 @@ class ViewCustomer extends StatelessWidget {
                                 });
                           }),
                       ListTile(
-                        title: Text('Edit Customer'),
+                        title: Text(
+                          AppLocalizations.of(context)
+                              .translate('edit_customer'),
+                        ),
                         leading: Icon(
                           Icons.edit,
                           color: CustomColors.mfinBlue,
@@ -142,7 +152,10 @@ class ViewCustomer extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        title: Text('Call Customer'),
+                        title: Text(
+                          AppLocalizations.of(context)
+                              .translate('call_customer'),
+                        ),
                         leading: Icon(
                           Icons.phone,
                           color: CustomColors.mfinBlue,
@@ -162,7 +175,10 @@ class ViewCustomer extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        title: Text('Text Customer'),
+                        title: Text(
+                          AppLocalizations.of(context)
+                              .translate('text_customer'),
+                        ),
                         leading: Icon(
                           Icons.textsms,
                           color: CustomColors.mfinBlue,
@@ -181,7 +197,10 @@ class ViewCustomer extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                          title: Text('Delete Customer'),
+                          title: Text(
+                            AppLocalizations.of(context)
+                                .translate('delete_customer'),
+                          ),
                           leading: Icon(
                             Icons.delete_forever,
                             color: CustomColors.mfinAlertRed,
@@ -189,8 +208,8 @@ class ViewCustomer extends StatelessWidget {
                           onTap: () async {
                             CustomDialogs.confirm(
                               context,
-                              "Confirm",
-                              "Are you sure to remove ${customer.firstName} ${customer.lastName} Customer?",
+                              AppLocalizations.of(context).translate('confirm'),
+                              "${AppLocalizations.of(context).translate('are_you_sure')} ${customer.firstName} ${customer.lastName} ${AppLocalizations.of(context).translate('customer')}?",
                               () async {
                                 Navigator.pop(context);
                                 CustomDialogs.actionWaiting(
@@ -218,7 +237,8 @@ class ViewCustomer extends StatelessWidget {
                             );
                           }),
                       ListTile(
-                        title: Text('Home'),
+                        title: Text(
+                            AppLocalizations.of(context).translate('home')),
                         leading: Icon(
                           Icons.home,
                           color: CustomColors.mfinBlue,
@@ -299,7 +319,8 @@ class ViewCustomer extends StatelessWidget {
                                 bottom: 15,
                                 left: 3,
                                 child: Text(
-                                  "Upload",
+                                  AppLocalizations.of(context)
+                                      .translate('upload'),
                                   style: TextStyle(
                                     fontSize: 10.0,
                                     fontWeight: FontWeight.w500,

@@ -290,8 +290,38 @@
     "joined_on" : "Joined On",
     "profession" : "Profession",
     "age" : "Age",
-    "guarantee_by" : "Guarantee By"
-
+    "guarantee_by" : "Guarantee By",
+    "general_info" : "General Info",
+    "customer_name" : "Customer Name",
+    "date_of_pay" : "Date of Pay",
+    "payment_id" : "Payment ID",
+    "amount_given_by" : "Amount Given By",
+    "payment_template" : "Payment Template",
+    "collection_mode" : "Collection Mode",
+    "scheduled_collection_days" : "Scheduled Collection Days",
+    "referral_commission" : "Referral Commission",
+    "principal_amount" : "Principal Amount",
+    "number_of_collection" : "No. of Collection",
+    "amount_received" : "Amount Received",
+    "service_charge" : "Service Charge",
+    "all_caps" : "ALL",
+    "active" : "Active",
+    "settled" : "Settled",
+    "date_of_payment" : "Date of Payment",
+    "interest_amount" : "Interest Amount",
+    "date_caps" : "DATE",
+    "unable_find_collection" : "Unable to find the collection Details",
+    "view_collection" : "View Collection",
+    "edit_customer" : "Edit Customer",
+    "call_customer" : "Call Customer",
+    "text_customer" : "Text Customer",
+    "delete_customer" : "Delete Customer",
+    "gender_caps_colon" : "GENDER:",
+    "building_and_street" : "Building no. & street",
+    "city" : "City",
+    "state" : "State",
+    "pincode" : "Pincode"
+    
 
 
 

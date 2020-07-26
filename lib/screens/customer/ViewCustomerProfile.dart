@@ -3,6 +3,8 @@ import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
+import '../../app_localizations.dart';
+
 class ViewCustomerProfile extends StatelessWidget {
   ViewCustomerProfile(this.customer);
 
@@ -31,7 +33,8 @@ class ViewCustomerProfile extends StatelessWidget {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Personal Details",
+                        AppLocalizations.of(context)
+                            .translate('personal_details'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -56,7 +59,8 @@ class ViewCustomerProfile extends StatelessWidget {
                                   : "",
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Mobile Number',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('mobile_number'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -82,7 +86,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               textAlign: TextAlign.start,
                               readOnly: true,
                               decoration: InputDecoration(
-                                labelText: 'Customer ID',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('customer_id'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -112,7 +117,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               textAlign: TextAlign.start,
                               readOnly: true,
                               decoration: InputDecoration(
-                                labelText: 'First name',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('first_name'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -138,7 +144,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               textAlign: TextAlign.start,
                               readOnly: true,
                               decoration: InputDecoration(
-                                labelText: 'Last Name',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('last_name'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -164,7 +171,8 @@ class ViewCustomerProfile extends StatelessWidget {
                         children: <Widget>[
                           Expanded(
                             child: Text(
-                              "GENDER:",
+                              AppLocalizations.of(context)
+                                  .translate('gender_caps_colon'),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 16,
@@ -210,7 +218,8 @@ class ViewCustomerProfile extends StatelessWidget {
                                       DateTime.fromMillisecondsSinceEpoch(
                                           customer.joinedAt)),
                                   decoration: InputDecoration(
-                                    labelText: 'Joined On',
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('joined_on'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
@@ -242,7 +251,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               initialValue: customer.profession,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Profession',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('profession'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -272,7 +282,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               initialValue: customer.age.toString(),
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Age',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('age'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -298,7 +309,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               initialValue: customer.guarantiedBy.toString(),
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Guarantee by',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('guarantee_by'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -334,7 +346,8 @@ class ViewCustomerProfile extends StatelessWidget {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Address Details",
+                        AppLocalizations.of(context)
+                            .translate('address_details'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -358,7 +371,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               textAlign: TextAlign.center,
                               maxLines: 3,
                               decoration: InputDecoration(
-                                labelText: 'Building no. & street',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('building_and_street'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -388,7 +402,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               initialValue: customer.address.city,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'City',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('city'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -414,7 +429,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               initialValue: customer.address.state,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'State',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('state'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -444,7 +460,8 @@ class ViewCustomerProfile extends StatelessWidget {
                               initialValue: customer.address.pincode,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Pincode',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('pincode'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
