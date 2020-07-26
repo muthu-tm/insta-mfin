@@ -200,7 +200,8 @@ class _AddChitRequesterState extends State<AddChitRequester> {
                   keyboardType: TextInputType.text,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('short_notes'),
+                    hintText:
+                        AppLocalizations.of(context).translate('short_notes'),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -267,8 +268,8 @@ class _AddChitRequesterState extends State<AddChitRequester> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

@@ -13,6 +13,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import '../../app_localizations.dart';
+
 class ChitHome extends StatefulWidget {
   @override
   _ChitHomeState createState() => _ChitHomeState();
@@ -57,9 +59,10 @@ class _ChitHomeState extends State<ChitHome> {
                 },
               );
             } else {
-              _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-                  "Please Enable Chit Fund for this Fiannce in Settings -> Preferences!",
-                  3));
+              _scaffoldKey.currentState.showSnackBar(
+                  CustomSnackBar.errorSnackBar(
+                      AppLocalizations.of(context).translate('enable_chit'),
+                      3));
             }
           },
           backgroundColor: CustomColors.mfinBlue,

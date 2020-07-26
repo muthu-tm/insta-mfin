@@ -178,7 +178,8 @@ class _AddPaymentState extends State<AddPayment> {
                                   '${widget.customer.firstName} ${widget.customer.lastName}',
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate('customer_name'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('customer_name'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -210,7 +211,8 @@ class _AddPaymentState extends State<AddPayment> {
                                   controller: _date,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(context).translate('date_of_pay'),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('date_of_pay'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
@@ -242,8 +244,10 @@ class _AddPaymentState extends State<AddPayment> {
                               decoration: InputDecoration(
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
-                                hintText: AppLocalizations.of(context).translate('payment_id'),
-                                labelText: AppLocalizations.of(context).translate('payment_id'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('payment_id'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('payment_id'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -279,8 +283,10 @@ class _AddPaymentState extends State<AddPayment> {
                               keyboardType: TextInputType.text,
                               initialValue: givenBy,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('amount_given_by'),
-                                labelText: AppLocalizations.of(context).translate('amount_given_by'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('amount_given_by'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('amount_given_by'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -307,7 +313,8 @@ class _AddPaymentState extends State<AddPayment> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate('transferred_mode'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('transferred_mode'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -345,7 +352,8 @@ class _AddPaymentState extends State<AddPayment> {
                           Flexible(
                             child: DropdownButtonFormField(
                                 decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(context).translate('payment_template'),
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('payment_template'),
                                   labelStyle: TextStyle(
                                     color: CustomColors.mfinBlue,
                                   ),
@@ -376,7 +384,8 @@ class _AddPaymentState extends State<AddPayment> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate('collection_mode'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collection_mode'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -416,7 +425,8 @@ class _AddPaymentState extends State<AddPayment> {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                  AppLocalizations.of(context).translate('scheduled_collection_days'),
+                                  AppLocalizations.of(context)
+                                      .translate('scheduled_collection_days'),
                                   style: TextStyle(
                                     color: CustomColors.mfinBlue,
                                   ),
@@ -442,7 +452,8 @@ class _AddPaymentState extends State<AddPayment> {
                                   controller: _collectionDate,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(context).translate('start_date'),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('start_date'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
@@ -474,7 +485,8 @@ class _AddPaymentState extends State<AddPayment> {
                                   controller: _collectionDate,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(context).translate('end_date'),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('end_date'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
@@ -510,8 +522,10 @@ class _AddPaymentState extends State<AddPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('referral_commission'),
-                                labelText: AppLocalizations.of(context).translate('referral_commission'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('referral_commission'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('referral_commission'),
                                 labelStyle:
                                     TextStyle(color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
@@ -548,8 +562,10 @@ class _AddPaymentState extends State<AddPayment> {
                               initialValue: notes,
                               maxLines: 3,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('notes'),
-                                labelText: AppLocalizations.of(context).translate('notes'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('notes'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('notes'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -614,8 +630,10 @@ class _AddPaymentState extends State<AddPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('total_amount'),
-                                labelText: AppLocalizations.of(context).translate('total_amount'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('total_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('total_amount'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -660,8 +678,10 @@ class _AddPaymentState extends State<AddPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('interest_amount'),
-                                labelText: AppLocalizations.of(context).translate('interest_amount'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('interest_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('interest_amount'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -709,8 +729,10 @@ class _AddPaymentState extends State<AddPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('principal_amount'),
-                                labelText: AppLocalizations.of(context).translate('principal_amount'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('principal_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('principal_amount'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -742,8 +764,10 @@ class _AddPaymentState extends State<AddPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('number_of_collection'),
-                                labelText: AppLocalizations.of(context).translate('number_of_collection'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('number_of_collection'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('number_of_collection'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -793,8 +817,10 @@ class _AddPaymentState extends State<AddPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('collection_amount'),
-                                labelText: AppLocalizations.of(context).translate('collection_amount'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collection_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collection_amount'),
                                 labelStyle:
                                     TextStyle(color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
@@ -825,8 +851,10 @@ class _AddPaymentState extends State<AddPayment> {
                               keyboardType: TextInputType.number,
                               initialValue: alreadyReceivedAmount.toString(),
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('amount_received'),
-                                labelText: AppLocalizations.of(context).translate('amount_received'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('amount_received'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('amount_received'),
                                 labelStyle:
                                     TextStyle(color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
@@ -863,8 +891,10 @@ class _AddPaymentState extends State<AddPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('document_recharge'),
-                                labelText: AppLocalizations.of(context).translate('document_recharge'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('document_recharge'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('document_recharge'),
                                 labelStyle:
                                     TextStyle(color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
@@ -894,8 +924,10 @@ class _AddPaymentState extends State<AddPayment> {
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).translate('service_recharge'),
-                                labelText: AppLocalizations.of(context).translate('service_recharge'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('service_recharge'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('service_recharge'),
                                 labelStyle:
                                     TextStyle(color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
@@ -1071,11 +1103,13 @@ class _AddPaymentState extends State<AddPayment> {
       if (collectionDate.weekday <= 6 &&
           !collectionDays.contains(collectionDate.weekday)) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Collection Start Date must be in collection days', 2));
+            AppLocalizations.of(context).translate('collection_start_date'),
+            2));
         return;
       } else if (collectionDate.weekday == 7 && !collectionDays.contains(0)) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Collection Start Date should be in collection days', 2));
+            AppLocalizations.of(context).translate('collection_start_date'),
+            2));
         return;
       }
     }
@@ -1083,12 +1117,12 @@ class _AddPaymentState extends State<AddPayment> {
     if (form.validate()) {
       if (totalAmount != tenure * collectionAmount) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Total amount should be equal to Collection amount * No. of collections',
+            AppLocalizations.of(context).translate('collection_amount_equal'),
             3));
         return;
       } else if (!(alreadyReceivedAmount < totalAmount)) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Amount Received should be lesser than Total Amount', 3));
+            AppLocalizations.of(context).translate('received_lesser'), 3));
         return;
       }
 
@@ -1124,8 +1158,8 @@ class _AddPaymentState extends State<AddPayment> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

@@ -197,13 +197,18 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
                                         CustomSnackBar.successSnackBar(
-                                            "Removed the Allocation successfully",
+                                            AppLocalizations.of(context)
+                                                .translate(
+                                                    'removed_allocation'),
                                             2));
                                   } catch (err) {
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
-                                        CustomSnackBar.errorSnackBar(
-                                            "Error, Unable to remove now!", 2));
+                                      CustomSnackBar.errorSnackBar(
+                                          AppLocalizations.of(context)
+                                              .translate('unable_to_remove'),
+                                          2),
+                                    );
                                   }
                                 },
                                 icon: Icon(Icons.remove_circle),

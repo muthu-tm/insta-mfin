@@ -1035,13 +1035,15 @@ class _EditPaymentState extends State<EditPayment> {
           !collectionDays.contains(
               DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday)) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Collection Start Date must be in collection days', 2));
+            AppLocalizations.of(context).translate('collection_start_date'),
+            2));
         return;
       } else if (DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday ==
               7 &&
           !collectionDays.contains(0)) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            'Collection Start Date should be in collection days', 2));
+            AppLocalizations.of(context).translate('collection_start_date'),
+            2));
         return;
       }
     }
@@ -1073,12 +1075,12 @@ class _EditPaymentState extends State<EditPayment> {
 
         if (totalAmount != tenure * collectionAmount) {
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Total amount should be equal to Collection amount * No. of collections',
+              AppLocalizations.of(context).translate('collection_amount_equal'),
               3));
           return;
         } else if (!(alreadyReceivedAmount < totalAmount)) {
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Amount Received should be lesser than Total Amount', 3));
+              AppLocalizations.of(context).translate('received_lesser'), 3));
           return;
         }
 
@@ -1095,12 +1097,12 @@ class _EditPaymentState extends State<EditPayment> {
           Navigator.pop(context);
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-              "Please wait... We are updating your collections..!", 3));
+              AppLocalizations.of(context).translate('please_wait'), 3));
         }
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

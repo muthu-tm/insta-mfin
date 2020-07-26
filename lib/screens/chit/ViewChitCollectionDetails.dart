@@ -145,8 +145,11 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                   onPressed: () {
                     if (widget.collection.isClosed) {
                       _scaffoldKey.currentState.showSnackBar(
-                          CustomSnackBar.errorSnackBar(
-                              "You cannot edit already 'CLOSED' Chit Fund", 2));
+                        CustomSnackBar.errorSnackBar(
+                            AppLocalizations.of(context)
+                                .translate('cannot_edit_chit'),
+                            2),
+                      );
                     } else {
                       if (!widget.collection.isPaid) {
                         Navigator.push(
@@ -161,8 +164,11 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                         );
                       } else {
                         _scaffoldKey.currentState.showSnackBar(
-                            CustomSnackBar.errorSnackBar(
-                                "Chit AMOUNT already collected Fully", 2));
+                          CustomSnackBar.errorSnackBar(
+                              AppLocalizations.of(context)
+                                  .translate('chit_collected_fully'),
+                              2),
+                        );
                       }
                     }
                   },
@@ -201,8 +207,10 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
           onTap: () async {
             if (widget.collection.isClosed) {
               _scaffoldKey.currentState.showSnackBar(
-                  CustomSnackBar.errorSnackBar(
-                      "You cannot edit already 'CLOSED' Chit Fund", 2));
+                CustomSnackBar.errorSnackBar(
+                    AppLocalizations.of(context).translate('cannot_edit_chit'),
+                    2),
+              );
             } else {
               var state = Slidable.of(context);
               var dismiss = await showDialog<bool>(

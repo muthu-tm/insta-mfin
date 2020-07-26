@@ -69,7 +69,9 @@ class _ViewPaymentState extends State<ViewPayment> {
               onPressed: () async {
                 _scaffoldKey.currentState.showSnackBar(
                     CustomSnackBar.successSnackBar(
-                        "Generating your Payment Report! Please wait...", 5));
+                        AppLocalizations.of(context)
+                            .translate('generating_payment_report'),
+                        5));
                 await PayReceipt().generateInvoice(
                     UserController().getCurrentUser(), widget.payment);
               }),
@@ -101,7 +103,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "You cannot add collection for SETTLED Payment!",
+                              AppLocalizations.of(context)
+                                  .translate('payment_settled'),
                               3,
                             ),
                           );
@@ -151,7 +154,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "You cannot Edit Payments which has valid COLLECTION!}",
+                              AppLocalizations.of(context)
+                                  .translate('valid_collection'),
                               3,
                             ),
                           );
@@ -167,7 +171,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                         } else {
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "Error, Please try again later!}",
+                              AppLocalizations.of(context)
+                                  .translate('please_fill'),
                               3,
                             ),
                           );
@@ -234,7 +239,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 Navigator.pop(context);
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                    "You cannot Remove Payments which has already received COLLECTION!}",
+                                    AppLocalizations.of(context)
+                                        .translate('received_collection'),
                                     3,
                                   ),
                                 );
@@ -259,7 +265,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
-                                        "Payment removed successfully", 2),
+                                        AppLocalizations.of(context)
+                                            .translate('payment_removed'),
+                                        2),
                                   );
                                   Navigator.pop(context);
                                 }
@@ -268,7 +276,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 Navigator.pop(context);
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                    "Error, Please try again later!}",
+                                    AppLocalizations.of(context)
+                                        .translate('error_later'),
                                     3,
                                   ),
                                 );
@@ -512,7 +521,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 child: RichText(
                                   textAlign: TextAlign.center,
                                   text: TextSpan(
-                                    text: AppLocalizations.of(context).translate('settled_on'),
+                                    text: AppLocalizations.of(context)
+                                        .translate('settled_on'),
                                     style: TextStyle(
                                       color: CustomColors.mfinWhite,
                                       fontFamily: 'Georgia',

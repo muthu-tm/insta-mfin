@@ -543,8 +543,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill valid data!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

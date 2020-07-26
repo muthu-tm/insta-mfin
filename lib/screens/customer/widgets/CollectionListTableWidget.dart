@@ -372,7 +372,7 @@ class CollectionListTableWidget extends StatelessWidget {
   Future markAsCollected(Collection collection, BuildContext context) async {
     if (_payment.isSettled) {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          "You cannot edit already 'SETTLED' Payment", 2));
+          AppLocalizations.of(context).translate('unable_edit_payment'), 2));
     } else {
       if (collection.getReceived() == collection.collectionAmount) {
         CustomDialogs.information(

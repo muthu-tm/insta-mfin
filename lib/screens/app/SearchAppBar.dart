@@ -71,7 +71,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   _searchController.text.trim().length < 2) {
                 _scaffoldKey.currentState.showSnackBar(
                     CustomSnackBar.errorSnackBar(
-                        'Please enter minimum 2 key to search..', 2));
+                        AppLocalizations.of(context).translate('enter_min_key'), 2));
                 return null;
               } else {
                 if (searchMode == 0) {
@@ -79,7 +79,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   if (num == null) {
                     _scaffoldKey.currentState.showSnackBar(
                         CustomSnackBar.errorSnackBar(
-                            "Invalid Mobile number, Please try again!", 2));
+                            AppLocalizations.of(context).translate('invalid_mobile'), 2));
                     return null;
                   } else {
                     if (_searchController.text.trim().length < 10) {

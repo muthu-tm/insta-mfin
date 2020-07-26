@@ -47,7 +47,9 @@ class ViewCustomer extends StatelessWidget {
             onPressed: () async {
               _scaffoldKey.currentState.showSnackBar(
                   CustomSnackBar.successSnackBar(
-                      "Generating your Customers Report! Please wait...", 5));
+                      AppLocalizations.of(context)
+                          .translate('generating_report'),
+                      5));
               await CustReport()
                   .generateReport(UserController().getCurrentUser(), customer);
             },
@@ -85,7 +87,8 @@ class ViewCustomer extends StatelessWidget {
                             Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
-                                    "ADD Payment disabled for sometime! Please contact support for more info. Thanks for your support!",
+                                    AppLocalizations.of(context)
+                                        .translate('payment_disabled'),
                                     3));
                             return;
                           }
@@ -95,7 +98,8 @@ class ViewCustomer extends StatelessWidget {
                             Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
-                                    "Your Finance subscription has expired. Please Recharge to continue!",
+                                    AppLocalizations.of(context)
+                                        .translate('sub_expired'),
                                     3));
                             return;
                           }
@@ -168,7 +172,8 @@ class ViewCustomer extends StatelessWidget {
                             Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
-                                  "Customer doesn't have valid mobile number!",
+                                  AppLocalizations.of(context)
+                                      .translate('customer_mobile'),
                                   3),
                             );
                           }
@@ -190,7 +195,8 @@ class ViewCustomer extends StatelessWidget {
                             Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
-                                  "Customer doesn't have valid mobile number!",
+                                  AppLocalizations.of(context)
+                                      .translate('customer_mobile'),
                                   3),
                             );
                           }
@@ -222,7 +228,8 @@ class ViewCustomer extends StatelessWidget {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                       CustomSnackBar.errorSnackBar(
-                                          "There are few Payments available for this Customer. Please remove the Payments first!",
+                                          AppLocalizations.of(context)
+                                              .translate('remove_payment'),
                                           3));
                                 } else {
                                   // ! Once customer deleted; need to route user to list page

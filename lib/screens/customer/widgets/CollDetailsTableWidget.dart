@@ -142,7 +142,9 @@ class CollDetailsTableWidget extends StatelessWidget {
                 if (paySettled) {
                   _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
-                          "You cannot edit already SETTLED Payment", 2));
+                          AppLocalizations.of(context)
+                              .translate('unable_edit_payment'),
+                          2));
                 } else {
                   if (_collection.getReceived() <
                       _collection.collectionAmount) {
@@ -191,7 +193,9 @@ class CollDetailsTableWidget extends StatelessWidget {
                 if (paySettled) {
                   _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
-                          "You cannot edit already 'SETTLED' Payment", 2));
+                          AppLocalizations.of(context)
+                              .translate('unable_edit_payment'),
+                          2));
                 } else {
                   await showDialog<bool>(
                     context: context,

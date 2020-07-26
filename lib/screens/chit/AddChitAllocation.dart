@@ -388,7 +388,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
       if (amount >
           (widget.fund.allocationAmount - widget.chitAlloc.getTotalPaid())) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "Allocated AMOUNT must be equal or lesser than Balance Amount", 3));
+            AppLocalizations.of(context).translate('amount_equal'), 3));
       } else {
         CustomDialogs.actionWaiting(context, "Updating Allocation");
         ChitAllocationController _cc = ChitAllocationController();
@@ -426,8 +426,8 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
         }
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

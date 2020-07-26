@@ -55,7 +55,8 @@ class AllCustomerTab extends StatelessWidget {
                           } else {
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
-                                  "Customer doesn't have valid mobile number!",
+                                  AppLocalizations.of(context)
+                                      .translate('customer_invalid_number'),
                                   3),
                             );
                           }
@@ -71,7 +72,8 @@ class AllCustomerTab extends StatelessWidget {
                           } else {
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
-                                  "Customer doesn't have valid mobile number!",
+                                  AppLocalizations.of(context)
+                                      .translate('customer_invalid_number'),
                                   3),
                             );
                           }
@@ -146,7 +148,8 @@ class AllCustomerTab extends StatelessWidget {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
-                                            "There are few Payments available for this Customer. Please remove the Payments first!",
+                                            AppLocalizations.of(context)
+                                                .translate('remove_payment'),
                                             3,
                                           ),
                                         );
@@ -154,7 +157,9 @@ class AllCustomerTab extends StatelessWidget {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.successSnackBar(
-                                              "Customer removed successfully",
+                                              AppLocalizations.of(context)
+                                                  .translate(
+                                                      'customer_removed'),
                                               2),
                                         );
                                       }

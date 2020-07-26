@@ -288,8 +288,8 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
         setState(() {
           mobileNumberValid = true;
         });
-        _scaffoldKey.currentState.showSnackBar(
-            CustomSnackBar.errorSnackBar("Error, No Customers Found!", 2));
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            AppLocalizations.of(context).translate('no_customer'), 2));
       }
     } else {
       setState(() {
@@ -300,11 +300,11 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
 
   Future<void> _submit() async {
     if (_custList.length == 0) {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("No Customers Selected!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('no_customer_selected'), 2));
     } else if (!isFilled()) {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          "Not all chits allocated to customers!", 2));
+          AppLocalizations.of(context).translate('chits_not_allocated'), 2));
     } else {
       CustomDialogs.actionWaiting(context, "Publishing Chit!");
       List<ChitCustomers> _chitCustList = [];

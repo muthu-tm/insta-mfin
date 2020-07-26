@@ -50,7 +50,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                           if (payment.isSettled) {
                             _scaffoldKey.currentState
                                 .showSnackBar(CustomSnackBar.errorSnackBar(
-                              "You cannot Edit already 'SETTLED' Payment!}",
+                              AppLocalizations.of(context)
+                                  .translate('unable_edit_payment'),
                               3,
                             ));
                           } else {
@@ -105,7 +106,9 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                           _scaffoldKey.currentState
                                               .showSnackBar(
                                             CustomSnackBar.errorSnackBar(
-                                              "You cannot Remove Payments which has already received COLLECTION!}",
+                                              AppLocalizations.of(context)
+                                                  .translate(
+                                                      'received_collection'),
                                               3,
                                             ),
                                           );
@@ -131,7 +134,9 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                             _scaffoldKey.currentState
                                                 .showSnackBar(
                                               CustomSnackBar.errorSnackBar(
-                                                  "Payment removed successfully",
+                                                  AppLocalizations.of(context)
+                                                      .translate(
+                                                          'customer_removed'),
                                                   2),
                                             );
                                           }
@@ -140,7 +145,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                           _scaffoldKey.currentState
                                               .showSnackBar(
                                             CustomSnackBar.errorSnackBar(
-                                              "Error, Please try again later!}",
+                                              AppLocalizations.of(context)
+                                                  .translate('error_later'),
                                               3,
                                             ),
                                           );
@@ -168,7 +174,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                           if (payment.isSettled) {
                             _scaffoldKey.currentState
                                 .showSnackBar(CustomSnackBar.errorSnackBar(
-                              "You cannot Edit already 'SETTLED' Payment!}",
+                              AppLocalizations.of(context)
+                                  .translate('unable_edit_payment'),
                               3,
                             ));
                           } else {
@@ -177,7 +184,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                             if (totalReceived != null && totalReceived > 0) {
                               _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
-                                  "You cannot Edit Payments which has valid COLLECTION!}",
+                                  AppLocalizations.of(context)
+                                      .translate('valid_collection'),
                                   3,
                                 ),
                               );
@@ -193,7 +201,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                             } else {
                               _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
-                                  "Error, Please try again later!}",
+                                  AppLocalizations.of(context)
+                                      .translate('error_later'),
                                   3,
                                 ),
                               );

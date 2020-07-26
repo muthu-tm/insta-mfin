@@ -138,7 +138,8 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                                   if (chitColl.isPaid) {
                                     _scaffoldKey.currentState.showSnackBar(
                                       CustomSnackBar.errorSnackBar(
-                                          "Already collected full CHIT amount from customer!",
+                                          AppLocalizations.of(context)
+                                              .translate('chit_full'),
                                           2),
                                     );
                                     return;

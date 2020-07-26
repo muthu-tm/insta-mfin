@@ -110,7 +110,9 @@ class CollectionDetailsWidget extends StatelessWidget {
                 if (paySettled) {
                   _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
-                          "You cannot edit already 'SETTLED' Payment", 2));
+                          AppLocalizations.of(context)
+                              .translate('unable_edit_payment'),
+                          2));
                 } else {
                   if (_collection.getReceived() <
                       _collection.collectionAmount) {
@@ -127,7 +129,9 @@ class CollectionDetailsWidget extends StatelessWidget {
                   } else {
                     _scaffoldKey.currentState.showSnackBar(
                         CustomSnackBar.errorSnackBar(
-                            "Collection AMOUNT already collected Fully", 2));
+                            AppLocalizations.of(context)
+                                .translate('collection_amount_fully'),
+                            2));
                   }
                 }
               },
@@ -165,7 +169,9 @@ class CollectionDetailsWidget extends StatelessWidget {
             if (paySettled) {
               _scaffoldKey.currentState.showSnackBar(
                   CustomSnackBar.errorSnackBar(
-                      "You cannot edit already 'SETTLED' Payment", 2));
+                      AppLocalizations.of(context)
+                          .translate('unable_edit_payment'),
+                      2));
             } else {
               var state = Slidable.of(context);
               var dismiss = await showDialog<bool>(

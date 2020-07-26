@@ -449,7 +449,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
           (widget.collection.collectionAmount -
               widget.collection.getReceived())) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "Collected AMOUNT must be equal or lesser than Balance Amount", 3));
+            AppLocalizations.of(context).translate('collected_equal'), 3));
       } else {
         CustomDialogs.actionWaiting(context, "Updating Collection");
         ChitController _cc = ChitController();
@@ -483,8 +483,8 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
         }
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

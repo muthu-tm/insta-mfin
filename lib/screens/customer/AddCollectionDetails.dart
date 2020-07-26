@@ -516,7 +516,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
           (widget.collection.collectionAmount -
               widget.collection.getReceived())) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "Collected AMOUNT must be equal or lesser than Balance Amount", 3));
+            AppLocalizations.of(context).translate('collected_equal'), 3));
       } else {
         CustomDialogs.actionWaiting(context, "Updating Collection");
         CollectionController _cc = CollectionController();
@@ -550,8 +550,8 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
         }
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

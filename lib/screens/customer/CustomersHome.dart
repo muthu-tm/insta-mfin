@@ -142,9 +142,11 @@ class CustomersHome extends StatelessWidget {
                       DateUtils.getUTCDateEpoch(DateTime.now()) &&
                   _user.chitSubscription <
                       DateUtils.getUTCDateEpoch(DateTime.now())) {
-                _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-                    "Your subscription has expired. Please Recharge to continue!",
-                    3));
+                _scaffoldKey.currentState.showSnackBar(
+                    CustomSnackBar.errorSnackBar(
+                        AppLocalizations.of(context)
+                            .translate('subscription_expired'),
+                        3));
                 return;
               }
               Navigator.push(

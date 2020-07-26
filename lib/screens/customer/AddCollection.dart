@@ -683,8 +683,7 @@ class _AddCollectionState extends State<AddCollection> {
         if (res != null) {
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              'Found a Collection with the same Collection NUMBER. Please enter unique Colleciton Number!',
-              2));
+              AppLocalizations.of(context).translate('same_collection'), 2));
           return;
         }
 
@@ -760,8 +759,8 @@ class _AddCollectionState extends State<AddCollection> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

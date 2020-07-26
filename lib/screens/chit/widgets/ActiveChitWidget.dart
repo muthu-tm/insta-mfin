@@ -148,7 +148,9 @@ class ActiveChitWidget extends StatelessWidget {
                                     if (result == null) {
                                       _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
-                                              "Few Collections are collected already! Please remove the Collections first!",
+                                              AppLocalizations.of(context)
+                                                  .translate(
+                                                      'collection_already_collected'),
                                               3));
                                       return;
                                     } else {
