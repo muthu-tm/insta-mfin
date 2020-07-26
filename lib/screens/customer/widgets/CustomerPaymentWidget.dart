@@ -28,7 +28,7 @@ Widget customerPaymentWidget(BuildContext context,
           children: <Widget>[
             Material(
               color: cColor,
-              elevation: 10.0,
+              elevation: 5.0,
               borderRadius: BorderRadius.circular(10.0),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.35,
@@ -106,28 +106,34 @@ Widget customerPaymentWidget(BuildContext context,
                     Spacer(
                       flex: 1,
                     ),
-                    Divider(),
+                    Divider(
+                      color: CustomColors.mfinWhite,
+                    ),
                     Spacer(
                       flex: 1,
                     ),
-                    FlatButton.icon(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ViewPayment(payment),
-                            settings: RouteSettings(name: '/customers/payment'),
+                    SizedBox(
+                      height: 30,
+                      child: FlatButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ViewPayment(payment),
+                              settings:
+                                  RouteSettings(name: '/customers/payment'),
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.remove_red_eye,
+                            color: CustomColors.mfinFadedButtonGreen),
+                        label: Text(
+                          "View",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: CustomColors.mfinFadedButtonGreen,
+                            fontWeight: FontWeight.bold,
                           ),
-                        );
-                      },
-                      icon: Icon(Icons.remove_red_eye,
-                          color: CustomColors.mfinButtonGreen),
-                      label: Text(
-                        "View",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: CustomColors.mfinButtonGreen,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -473,7 +479,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
 
       return Material(
         color: CustomColors.mfinLightGrey,
-        elevation: 10.0,
+        elevation: 5.0,
         borderRadius: BorderRadius.circular(10.0),
         child: Container(
             width: MediaQuery.of(context).size.width * 0.60,
