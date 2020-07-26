@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/enums/collection_type.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
+import 'package:instamfin/screens/customer/AddCustomCollection.dart';
 import 'package:instamfin/screens/customer/ViewPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -21,107 +22,124 @@ Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
           right: 2.0,
           bottom: 5,
         ),
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ViewPayment(payment),
-                settings: RouteSettings(name: '/customers/payment'),
-              ),
-            );
-          },
-          child: Row(
-            children: <Widget>[
-              Material(
-                color: cColor,
-                elevation: 10.0,
-                borderRadius: BorderRadius.circular(10.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.36,
-                  height: 120,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Spacer(
-                        flex: 3,
+        child: Row(
+          children: <Widget>[
+            Material(
+              color: cColor,
+              elevation: 10.0,
+              borderRadius: BorderRadius.circular(10.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.35,
+                height: 150,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Spacer(
+                      flex: 1,
+                    ),
+                    SizedBox(
+                      height: 20,
+                      child: Text(
+                        DateUtils.getFormattedDateFromEpoch(
+                            payment.dateOfPayment),
+                        style: TextStyle(
+                            color: CustomColors.mfinWhite,
+                            fontFamily: 'Georgia',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(
-                        height: 30,
-                        child: Text(
-                          DateUtils.getFormattedDateFromEpoch(
-                              payment.dateOfPayment),
+                    ),
+                    Divider(
+                      color: CustomColors.mfinButtonGreen,
+                    ),
+                    Spacer(
+                      flex: 1,
+                    ),
+                    SizedBox(
+                      height: 20,
+                      child: Text(
+                        payment.totalAmount.toString(),
+                        style: TextStyle(
+                            color: CustomColors.mfinAlertRed,
+                            fontFamily: 'Georgia',
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Spacer(
+                      flex: 1,
+                    ),
+                    SizedBox(
+                      height: 20,
+                      child: RichText(
+                        text: TextSpan(
+                          text: '${payment.tenure}',
                           style: TextStyle(
-                              color: CustomColors.mfinWhite,
-                              fontFamily: 'Georgia',
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      new Divider(
-                        color: CustomColors.mfinButtonGreen,
-                      ),
-                      Spacer(
-                        flex: 1,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        child: Text(
-                          payment.totalAmount.toString(),
-                          style: TextStyle(
-                              color: CustomColors.mfinAlertRed,
-                              fontFamily: 'Georgia',
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Spacer(
-                        flex: 1,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        child: RichText(
-                          text: TextSpan(
-                            text: '${payment.tenure}',
-                            style: TextStyle(
-                              color: CustomColors.mfinWhite,
-                              fontFamily: 'Georgia',
-                              fontSize: 18.0,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: ' x ',
-                                style: TextStyle(
-                                  color: CustomColors.mfinBlack,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(
-                                text: '${payment.collectionAmount}',
-                                style: TextStyle(
-                                  color: CustomColors.mfinFadedButtonGreen,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                            color: CustomColors.mfinWhite,
+                            fontFamily: 'Georgia',
+                            fontSize: 18.0,
                           ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: ' x ',
+                              style: TextStyle(
+                                color: CustomColors.mfinBlack,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${payment.collectionAmount}',
+                              style: TextStyle(
+                                color: CustomColors.mfinFadedButtonGreen,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Spacer(
-                        flex: 1,
+                    ),
+                    Spacer(
+                      flex: 1,
+                    ),
+                    Divider(),
+                    Spacer(
+                      flex: 1,
+                    ),
+                    FlatButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewPayment(payment),
+                            settings: RouteSettings(name: '/customers/payment'),
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.remove_red_eye,
+                          color: CustomColors.mfinButtonGreen),
+                      label: Text(
+                        "View",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: CustomColors.mfinButtonGreen,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                    Spacer(
+                      flex: 1,
+                    ),
+                  ],
                 ),
               ),
-              payment.isSettled
-                  ? getSettledPaymentsDetails(payment)
-                  : getPaymentDetails(payment),
-            ],
-          ),
+            ),
+            payment.isSettled
+                ? getSettledPaymentsDetails(payment)
+                : getPaymentDetails(payment),
+          ],
         ),
       );
     },
@@ -137,6 +155,7 @@ Widget getPaymentDetails(Payment payment) {
 
       if (paidSnap.hasData) {
         if (paidSnap.data.documents.length > 0) {
+          List<Collection> colls = [];
           int _r = 0;
           int _p = 0;
           int _c = 0;
@@ -152,6 +171,8 @@ Widget getPaymentDetails(Payment payment) {
               _p += coll.getPending();
               _c += coll.getCurrent();
               _u += coll.getUpcoming();
+
+              colls.add(coll);
             }
           });
 
@@ -159,88 +180,131 @@ Widget getPaymentDetails(Payment payment) {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
-                height: 25,
-                child: ListTile(
-                  leading: Text(
-                    "RECEIVED",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: CustomColors.mfinBlue,
-                      fontWeight: FontWeight.bold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 5.0),
+                    child: Text(
+                      "RECEIVED",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  trailing: Text(
-                    '$_r',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: CustomColors.mfinPositiveGreen,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.0, top: 5.0),
+                    child: Text(
+                      '$_r',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.mfinPositiveGreen,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ),
+                  )
+                ],
               ),
-              SizedBox(
-                height: 25,
-                child: ListTile(
-                  leading: Text(
-                    'PENDING',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: CustomColors.mfinBlue,
-                      fontWeight: FontWeight.bold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0),
+                    child: Text(
+                      'PENDING',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  trailing: Text(
-                    '$_p',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: CustomColors.mfinAlertRed,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.0, top: 2.0),
+                    child: Text(
+                      '$_p',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.mfinAlertRed,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-              SizedBox(
-                height: 25,
-                child: ListTile(
-                  leading: Text(
-                    'TODAY',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: CustomColors.mfinBlue,
-                      fontWeight: FontWeight.bold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0),
+                    child: Text(
+                      'TODAY',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  trailing: Text(
-                    '$_c',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: CustomColors.mfinBlue,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.0, top: 2.0),
+                    child: Text(
+                      '$_c',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0),
+                    child: Text(
+                      'UPCOMING',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.mfinBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.0, top: 2.0),
+                    child: Text(
+                      '$_u',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.mfinGrey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Divider(),
               SizedBox(
                 height: 25,
-                child: ListTile(
-                  leading: Text(
-                    'UPCOMING',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: CustomColors.mfinBlue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  trailing: Text(
-                    '$_u',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: CustomColors.mfinGrey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                child: FlatButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AddCustomCollection(payment, colls),
+                        settings: RouteSettings(
+                            name: '/customers/payment/collections/add'),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.collections_bookmark),
+                  label: Text("Add Collection"),
                 ),
               ),
             ],
@@ -260,11 +324,11 @@ Widget getPaymentDetails(Payment payment) {
 
       return Material(
         color: CustomColors.mfinLightGrey,
-        elevation: 10.0,
+        elevation: 5.0,
         borderRadius: BorderRadius.circular(10.0),
         child: Container(
             width: MediaQuery.of(context).size.width * 0.60,
-            height: 120,
+            height: 150,
             child: child),
       );
     },
