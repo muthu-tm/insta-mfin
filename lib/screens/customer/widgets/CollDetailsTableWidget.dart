@@ -35,9 +35,9 @@ class CollDetailsTableWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
+              padding: EdgeInsets.only(bottom: 10.0, top: 20.0),
               child: Text(
-                "Add collection using '+' button",
+                "Update collection using 'Update' button",
                 style: TextStyle(
                   color: CustomColors.mfinBlue,
                   fontSize: 18.0,
@@ -129,38 +129,38 @@ class CollDetailsTableWidget extends StatelessWidget {
                 fontSize: 18.0,
               ),
             ),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.add_box,
-                size: 35.0,
-                color: CustomColors.mfinBlue,
-              ),
-              onPressed: () {
-                if (paySettled) {
-                  _scaffoldKey.currentState.showSnackBar(
-                      CustomSnackBar.errorSnackBar(
-                          "You cannot edit already SETTLED Payment", 2));
-                } else {
-                  if (_collection.getReceived() <
-                      _collection.collectionAmount) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            AddCollectionDetails(_collection, custName),
-                        settings: RouteSettings(
-                            name:
-                                '/customers/payments/collections/collectiondetails/add'),
-                      ),
-                    );
-                  } else {
-                    _scaffoldKey.currentState.showSnackBar(
-                        CustomSnackBar.errorSnackBar(
-                            "Collection AMOUNT already collected Fully", 3));
-                  }
-                }
-              },
-            ),
+            // trailing: IconButton(
+            //   icon: Icon(
+            //     Icons.add_box,
+            //     size: 35.0,
+            //     color: CustomColors.mfinBlue,
+            //   ),
+            //   onPressed: () {
+            //     if (paySettled) {
+            //       _scaffoldKey.currentState.showSnackBar(
+            //           CustomSnackBar.errorSnackBar(
+            //               "You cannot edit already SETTLED Payment", 2));
+            //     } else {
+            //       if (_collection.getReceived() <
+            //           _collection.collectionAmount) {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) =>
+            //                 AddCollectionDetails(_collection, custName),
+            //             settings: RouteSettings(
+            //                 name:
+            //                     '/customers/payments/collections/collectiondetails/add'),
+            //           ),
+            //         );
+            //       } else {
+            //         _scaffoldKey.currentState.showSnackBar(
+            //             CustomSnackBar.errorSnackBar(
+            //                 "Collection AMOUNT already collected Fully", 3));
+            //       }
+            //     }
+            //   },
+            // ),
           ),
           new Divider(
             color: CustomColors.mfinBlue,
