@@ -504,19 +504,22 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
         CollectionController _cc = CollectionController();
         bool isPaid = false;
 
-        if (collDetails['amount'] + widget.collection.getReceived() >= widget.collection.collectionAmount)
-          isPaid = true;
+        if (collDetails['amount'] + widget.collection.getReceived() >=
+            widget.collection.collectionAmount) isPaid = true;
 
         collDetails['transferred_mode'] = int.parse(transferredMode);
         collDetails['created_at'] = DateTime.now();
         collDetails['added_by'] = _user.mobileNumber;
         collDetails['is_paid_late'] = isLatePay;
+        int id = widget.collection.collectionDate;
+        if (widget.collection.type == 3)
+          id = widget.collection.collectionDate + 3;
         var result = await _cc.updateCollectionDetails(
             widget.collection.financeID,
             widget.collection.branchName,
             widget.collection.subBranchName,
             widget.collection.paymentID,
-            widget.collection.collectionDate,
+            id,
             isPaid,
             true,
             collDetails,

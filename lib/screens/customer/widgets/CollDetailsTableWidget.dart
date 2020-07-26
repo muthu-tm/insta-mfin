@@ -230,12 +230,15 @@ class CollDetailsTableWidget extends StatelessWidget {
                             ),
                             onPressed: () async {
                               CollectionController _cc = CollectionController();
+                              int id = _collection.collectionDate;
+                              if (_collection.type == 3) id = _collection.collectionDate + 3;
+
                               var result = await _cc.updateCollectionDetails(
                                   _collection.financeID,
                                   _collection.branchName,
                                   _collection.subBranchName,
                                   _collection.paymentID,
-                                  _collection.collectionDate,
+                                  id,
                                   false,
                                   false,
                                   coll.toJson(),

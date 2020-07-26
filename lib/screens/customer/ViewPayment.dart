@@ -87,34 +87,34 @@ class _ViewPaymentState extends State<ViewPayment> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ListTile(
-                      title: Text('Add Collection'),
-                      leading: Icon(
-                        Icons.monetization_on,
-                        color: CustomColors.mfinBlue,
-                      ),
-                      onTap: () {
-                        if (widget.payment.isSettled) {
-                          Navigator.pop(context);
-                          _scaffoldKey.currentState.showSnackBar(
-                            CustomSnackBar.errorSnackBar(
-                              "You cannot add collection for SETTLED Payment!",
-                              3,
-                            ),
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  AddCollection(widget.payment),
-                              settings: RouteSettings(
-                                  name: '/customers/payment/collections/add'),
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                    // ListTile(
+                    //   title: Text('Add Collection'),
+                    //   leading: Icon(
+                    //     Icons.monetization_on,
+                    //     color: CustomColors.mfinBlue,
+                    //   ),
+                    //   onTap: () {
+                    //     if (widget.payment.isSettled) {
+                    //       Navigator.pop(context);
+                    //       _scaffoldKey.currentState.showSnackBar(
+                    //         CustomSnackBar.errorSnackBar(
+                    //           "You cannot add collection for SETTLED Payment!",
+                    //           3,
+                    //         ),
+                    //       );
+                    //     } else {
+                    //       Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //           builder: (context) =>
+                    //               AddCollection(widget.payment),
+                    //           settings: RouteSettings(
+                    //               name: '/customers/payment/collections/add'),
+                    //         ),
+                    //       );
+                    //     }
+                    //   },
+                    // ),
                     ListTile(
                         title: Text('View Payment'),
                         leading: Icon(
@@ -146,7 +146,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "You cannot Edit Payments which has valid COLLECTION!}",
+                              "You cannot Edit Payments which has valid COLLECTION!",
                               3,
                             ),
                           );
@@ -162,7 +162,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         } else {
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "Error, Please try again later!}",
+                              "Error, Please try again later!",
                               3,
                             ),
                           );

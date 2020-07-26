@@ -197,7 +197,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                         },
                       ),
                     ],
-                    child: customerPaymentWidget(context, index, payment),
+                    child: customerPaymentWidget(
+                        context, _scaffoldKey, index, payment),
                   );
                 },
               )

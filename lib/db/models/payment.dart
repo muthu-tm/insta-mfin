@@ -775,7 +775,7 @@ class Payment extends Model {
                             this.branchName,
                             this.subBranchName,
                             this.id,
-                            paymentJSON['settled_date']),
+                            paymentJSON['settled_date']+3),
                         data);
                   }
                 } else {
@@ -803,7 +803,7 @@ class Payment extends Model {
                           this.branchName,
                           this.subBranchName,
                           this.id,
-                          paymentJSON['settled_date']),
+                          paymentJSON['settled_date']+3),
                       data);
                 }
               }

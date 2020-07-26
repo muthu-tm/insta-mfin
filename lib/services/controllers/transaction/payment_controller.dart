@@ -151,18 +151,18 @@ class PaymentController {
 
   Future settlement(Payment payment, Map<String, dynamic> paymentJSON) async {
     try {
-      Collection coll = await Collection().getCollectionByID(
-          payment.financeID,
-          payment.branchName,
-          payment.subBranchName,
-          payment.id,
-          paymentJSON['settled_date'].toString());
+      // Collection coll = await Collection().getCollectionByID(
+      //     payment.financeID,
+      //     payment.branchName,
+      //     payment.subBranchName,
+      //     payment.id,
+      //     paymentJSON['settled_date'].toString());
 
-      if (coll != null && coll.getReceived() > 0) {
-        String sDate = DateUtils.formatDate(
-            DateTime.fromMillisecondsSinceEpoch(paymentJSON['settled_date']));
-        throw "Already a Collection received on this day $sDate";
-      }
+      // if (coll != null && coll.getReceived() > 0) {
+      //   String sDate = DateUtils.formatDate(
+      //       DateTime.fromMillisecondsSinceEpoch(paymentJSON['settled_date']));
+      //   throw "Already a Collection received on this day $sDate";
+      // }
 
       await payment.settlement(paymentJSON);
 

@@ -7,9 +7,11 @@ import 'package:instamfin/screens/customer/AddCustomCollection.dart';
 import 'package:instamfin/screens/customer/ViewPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
-Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
+Widget customerPaymentWidget(BuildContext context,
+    GlobalKey<ScaffoldState> _scaffoldKey, int index, Payment payment) {
   Color cColor = CustomColors.mfinBlue;
   if (payment.isSettled) cColor = CustomColors.mfinGrey;
 
@@ -138,7 +140,7 @@ Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
             ),
             payment.isSettled
                 ? getSettledPaymentsDetails(payment)
-                : getPaymentDetails(payment),
+                : getPaymentDetails(_scaffoldKey, payment),
           ],
         ),
       );
@@ -146,7 +148,8 @@ Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
   );
 }
 
-Widget getPaymentDetails(Payment payment) {
+Widget getPaymentDetails(
+    GlobalKey<ScaffoldState> _scaffoldKey, Payment payment) {
   return StreamBuilder(
     stream: Collection().streamCollectionsForPayment(payment.financeID,
         payment.branchName, payment.subBranchName, payment.id),
@@ -293,15 +296,23 @@ Widget getPaymentDetails(Payment payment) {
                 height: 25,
                 child: FlatButton.icon(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            AddCustomCollection(payment, colls),
-                        settings: RouteSettings(
-                            name: '/customers/payment/collections/add'),
-                      ),
-                    );
+                    if (payment.totalAmount == _r) {
+                      _scaffoldKey.currentState.showSnackBar(
+                        CustomSnackBar.errorSnackBar(
+                            "You have collected total amount, Please Do Settlement!",
+                            2),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AddCustomCollection(payment, colls, _r),
+                          settings: RouteSettings(
+                              name: '/customers/payment/collections/add'),
+                        ),
+                      );
+                    }
                   },
                   icon: Icon(Icons.collections_bookmark),
                   label: Text("Add Collection"),
@@ -342,79 +353,111 @@ Widget getSettledPaymentsDetails(Payment payment) {
       Widget child;
 
       if (paidSnap.hasData) {
-        child = Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              height: 30,
-              child: ListTile(
-                leading: Text(
-                  "RECEIVED",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: CustomColors.mfinBlue,
-                    fontWeight: FontWeight.bold,
+        child = InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ViewPayment(payment),
+                settings: RouteSettings(name: '/customers/payment'),
+              ),
+            );
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: 30,
+                child: ListTile(
+                  leading: Text(
+                    "PRINCIPAL",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                trailing: Text(
-                  paidSnap.data.toString(),
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: CustomColors.mfinPositiveGreen,
-                    fontWeight: FontWeight.bold,
+                  trailing: Text(
+                    payment.principalAmount.toString(),
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: CustomColors.mfinPositiveGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 30,
-              child: ListTile(
-                leading: Text(
-                  payment.isLoss ? 'LOSS' : 'PROFIT',
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: CustomColors.mfinBlue,
-                    fontWeight: FontWeight.bold,
+              SizedBox(
+                height: 30,
+                child: ListTile(
+                  leading: Text(
+                    "RECEIVED",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                trailing: Text(
-                  payment.isLoss
-                      ? payment.lossAmount.toString()
-                      : payment.profitAmount.toString(),
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: payment.isLoss
-                        ? CustomColors.mfinAlertRed
-                        : CustomColors.mfinPositiveGreen,
-                    fontWeight: FontWeight.bold,
+                  trailing: Text(
+                    paidSnap.data.toString(),
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: CustomColors.mfinPositiveGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 30,
-              child: ListTile(
-                leading: Text(
-                  'SETTLED ON',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: CustomColors.mfinBlue,
-                    fontWeight: FontWeight.bold,
+              SizedBox(
+                height: 30,
+                child: ListTile(
+                  leading: Text(
+                    payment.isLoss ? 'LOSS' : 'PROFIT',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                trailing: Text(
-                  DateUtils.formatDate(
-                      DateTime.fromMillisecondsSinceEpoch(payment.settledDate)),
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: CustomColors.mfinGrey,
-                    fontWeight: FontWeight.bold,
+                  trailing: Text(
+                    payment.isLoss
+                        ? payment.lossAmount.toString()
+                        : payment.profitAmount.toString(),
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: payment.isLoss
+                          ? CustomColors.mfinAlertRed
+                          : CustomColors.mfinPositiveGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                height: 30,
+                child: ListTile(
+                  leading: Text(
+                    'SETTLED ON',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: CustomColors.mfinBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: Text(
+                    DateUtils.formatDate(DateTime.fromMillisecondsSinceEpoch(
+                        payment.settledDate)),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: CustomColors.mfinGrey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       } else if (paidSnap.hasError) {
         child = Column(
@@ -434,7 +477,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
         borderRadius: BorderRadius.circular(10.0),
         child: Container(
             width: MediaQuery.of(context).size.width * 0.60,
-            height: 120,
+            height: 150,
             child: child),
       );
     },

@@ -303,12 +303,15 @@ class CollectionBookTab extends StatelessWidget {
       else
         collDetails['is_paid_late'] = false;
 
+      int id = collection.collectionDate;
+        if (collection.type == 3) id = collection.collectionDate + 3;
+
       var result = await _cc.updateCollectionDetails(
           collection.financeID,
           collection.branchName,
           collection.subBranchName,
           collection.paymentID,
-          collection.collectionDate,
+          id,
           true,
           true,
           collDetails,

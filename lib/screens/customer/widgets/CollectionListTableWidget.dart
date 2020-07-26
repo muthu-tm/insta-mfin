@@ -32,22 +32,13 @@ class CollectionListTableWidget extends StatelessWidget {
           ? Collection().streamCollectionsForPayment(_payment.financeID,
               _payment.branchName, _payment.subBranchName, _payment.id)
           : status == 0
-              ? Collection().streamUpcomingForPayment(
-                  _payment.financeID,
-                  _payment.branchName,
-                  _payment.subBranchName,
-                  _payment.id)
+              ? Collection().streamUpcomingForPayment(_payment.financeID,
+                  _payment.branchName, _payment.subBranchName, _payment.id)
               : status == 3
-                  ? Collection().streamTodaysForPayment(
-                      _payment.financeID,
-                      _payment.branchName,
-                      _payment.subBranchName,
-                      _payment.id)
-                  : Collection().streamPastForPayment(
-                      _payment.financeID,
-                      _payment.branchName,
-                      _payment.subBranchName,
-                      _payment.id),
+                  ? Collection().streamTodaysForPayment(_payment.financeID,
+                      _payment.branchName, _payment.subBranchName, _payment.id)
+                  : Collection().streamPastForPayment(_payment.financeID,
+                      _payment.branchName, _payment.subBranchName, _payment.id),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         Widget widget;
 
@@ -407,12 +398,15 @@ class CollectionListTableWidget extends StatelessWidget {
         else
           collDetails['is_paid_late'] = false;
 
+        int id = collection.collectionDate;
+        if (collection.type == 3) id = collection.collectionDate + 3;
+
         var result = await _cc.updateCollectionDetails(
             collection.financeID,
             collection.branchName,
             collection.subBranchName,
             collection.paymentID,
-            collection.collectionDate,
+            id,
             true,
             true,
             collDetails,

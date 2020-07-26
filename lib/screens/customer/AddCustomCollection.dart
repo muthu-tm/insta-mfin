@@ -10,10 +10,11 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AddCustomCollection extends StatefulWidget {
-  AddCustomCollection(this.payment, this.colls);
+  AddCustomCollection(this.payment, this.colls, this.tReceived);
 
   final Payment payment;
   final List<Collection> colls;
+  final int tReceived;
 
   @override
   _AddCustomCollectionState createState() => _AddCustomCollectionState();
@@ -156,7 +157,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
-                              textAlign: TextAlign.end,
+                              textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               initialValue: totalAmount.toString(),
                               decoration: InputDecoration(
@@ -231,7 +232,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              textAlign: TextAlign.end,
+                              textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
                               initialValue: receivedFrom,
                               decoration: InputDecoration(
@@ -260,7 +261,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                           Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: TextFormField(
-                              textAlign: TextAlign.end,
+                              textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
                               initialValue: collectedBy,
                               decoration: InputDecoration(
@@ -367,6 +368,17 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Adding Collection");
+      if (widget.payment.totalAmount < widget.tReceived + collectedAmount) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "You are trying to add more than Payment's total amount, try Settlement!", 3));
+        return;
+      }
+      // if (widget.payment.totalAmount == widget.tReceived + collectedAmount) {
+      //   _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
+      //       "You are collecting full amount, Please do settlement!", 2));
+      // }
+
       CollectionController _cc = CollectionController();
 
       if (widget.colls.length >= widget.payment.tenure) {
@@ -419,12 +431,15 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
             collDetails['transferred_mode'] = int.parse(transferredMode);
             collDetails['created_at'] = DateTime.now();
             collDetails['added_by'] = _user.mobileNumber;
+            int id = coll.collectionDate;
+            if (coll.type == 3) id = coll.collectionDate + 3;
+
             result = await _cc.updateCollectionDetails(
                 coll.financeID,
                 coll.branchName,
                 coll.subBranchName,
                 coll.paymentID,
-                coll.collectionDate,
+                id,
                 isPaid,
                 true,
                 collDetails,
@@ -432,10 +447,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
 
             // stop the loop for any error
             if (!result['is_success']) {
-              Navigator.pop(context);
-              _scaffoldKey.currentState.showSnackBar(
-                CustomSnackBar.errorSnackBar(result['message'], 5),
-              );
+              result = {'is_success': false, 'message': result['message']};
               break;
             }
           }

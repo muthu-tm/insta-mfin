@@ -214,8 +214,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, int index) {
                         if (inOutList[2].isSelected == true) {
-                          return customerPaymentWidget(context, index,
-                              Payment.fromJson(snapshot.data[index]));
+                          return customerPaymentWidget(context, _scaffoldKey,
+                              index, Payment.fromJson(snapshot.data[index]));
                         } else {
                           return customerListTile(context, index,
                               Customer.fromJson(snapshot.data[index]));

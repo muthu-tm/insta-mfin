@@ -29,6 +29,7 @@ class ViewCollection extends StatelessWidget {
           _collection.paymentID,
           (_collection.type != 1 &&
                   _collection.type != 2 &&
+                  _collection.type != 3 &&
                   _collection.type != 4 &&
                   _collection.type != 5)
               ? _collection.collectionDate
