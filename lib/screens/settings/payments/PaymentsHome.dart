@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/plans.dart';
 import 'package:instamfin/db/models/purchases.dart';
 import 'package:instamfin/screens/settings/payments/PurchaseScreen.dart';
@@ -135,90 +136,15 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                   textColor = CustomColors.mfinWhite;
                 }
 
-                return Padding(
+                return SimpleFoldingCell(
+                  frontWidget:
+                      _buildFrontWidget(context, plan, tileColor, textColor),
+                  innerTopWidget: _buildInnerTopWidget(context, plan),
+                  innerBottomWidget: _buildInnerBottomWidget(context, plan),
+                  cellSize: Size(MediaQuery.of(context).size.width, 120),
                   padding: EdgeInsets.all(5.0),
-                  child: Material(
-                    color: tileColor,
-                    elevation: 3.0,
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (selectedID.contains(plan.planID)) {
-                            selectedID.remove(plan.planID);
-                            tAmount -= plan.inr;
-                          } else {
-                            selectedID.add(plan.planID);
-                            tAmount += plan.inr;
-                          }
-                        });
-                      },
-                      child: Container(
-                        height: MediaQuery.of(context).size.width / 5,
-                        alignment: Alignment.center,
-                        decoration: selectedID.contains(plan.planID)
-                            ? BoxDecoration(
-                                color: tileColor,
-                                border: new Border.all(
-                                    color: CustomColors.mfinButtonGreen,
-                                    width: 2.5),
-                              )
-                            : BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: tileColor,
-                              ),
-                        child: Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Icon(
-                                Icons.local_offer,
-                                size: 35.0,
-                                color:
-                                    CustomColors.mfinLightBlue.withOpacity(0.6),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 5, top: 5.0),
-                              width: MediaQuery.of(context).size.width / 1.5,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    plan.name,
-                                    style: TextStyle(
-                                        fontFamily: "Georgia",
-                                        fontSize: 18.0,
-                                        color: textColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    plan.notes,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 12.0,
-                                        color: textColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(5.0),
-                              child: Text(
-                                '${plan.inr}/-',
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: textColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  animationDuration: Duration(milliseconds: 300),
+                  borderRadius: 10,
                 );
               },
             );
@@ -264,7 +190,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
         }
 
         return Card(
-          color: CustomColors.mfinLightGrey,
+          color: CustomColors.mfinWhite,
           child: Column(
             children: <Widget>[
               ListTile(
@@ -284,7 +210,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                   ),
                 ),
               ),
-              new Divider(
+              Divider(
                 color: CustomColors.mfinBlue,
               ),
               widget,
@@ -292,6 +218,261 @@ class _PaymentsHomeState extends State<PaymentsHome> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildFrontWidget(
+      BuildContext context, Plans plan, Color tileColor, Color textColor) {
+    return Builder(builder: (BuildContext context) {
+      return InkWell(
+        onTap: () {
+          SimpleFoldingCellState foldingCellState =
+              context.findAncestorStateOfType();
+          foldingCellState?.toggleFold();
+        },
+        child: Material(
+          color: tileColor,
+          elevation: 3.0,
+          borderRadius: BorderRadius.circular(10.0),
+          child: Container(
+            alignment: Alignment.center,
+            decoration: selectedID.contains(plan.planID)
+                ? BoxDecoration(
+                    color: tileColor,
+                    border: Border.all(
+                        color: CustomColors.mfinButtonGreen, width: 2.5),
+                  )
+                : BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10.0),
+                      topLeft: Radius.circular(10.0),
+                    ),
+                    color: tileColor,
+                  ),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.local_offer,
+                        size: 35.0,
+                        color: CustomColors.mfinLightBlue.withOpacity(0.6),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 5, top: 5.0),
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            plan.name,
+                            style: TextStyle(
+                                fontFamily: "Georgia",
+                                fontSize: 18.0,
+                                color: textColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            plan.notes,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 12.0,
+                                color: textColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Text(
+                        '${plan.inr}/-',
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            color: textColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                RaisedButton.icon(
+                  color: CustomColors.mfinButtonGreen,
+                  onPressed: () {
+                    setState(
+                      () {
+                        if (selectedID.contains(plan.planID)) {
+                          selectedID.remove(plan.planID);
+                          tAmount -= plan.inr;
+                        } else {
+                          selectedID.add(plan.planID);
+                          tAmount += plan.inr;
+                        }
+                      },
+                    );
+                  },
+                  icon: Icon(
+                      selectedID.contains(plan.planID)
+                          ? Icons.remove_circle
+                          : Icons.add_box,
+                      size: 30),
+                  label:
+                      Text(selectedID.contains(plan.planID) ? "REMOVE" : "ADD"),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget _buildInnerTopWidget(BuildContext context, Plans plan) {
+    return Builder(
+      builder: (context) {
+        return InkWell(
+          onTap: () {
+            SimpleFoldingCellState foldingCellState =
+                context.findAncestorStateOfType();
+            foldingCellState?.toggleFold();
+          },
+          child: Material(
+            color: CustomColors.mfinGrey,
+            elevation: 3.0,
+            borderRadius: BorderRadius.circular(10.0),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: selectedID.contains(plan.planID)
+                  ? BoxDecoration(
+                      color: CustomColors.mfinGrey,
+                      border: Border.all(
+                          color: CustomColors.mfinButtonGreen, width: 2.5),
+                    )
+                  : BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10.0),
+                        topLeft: Radius.circular(10.0),
+                      ),
+                      color: CustomColors.mfinGrey,
+                    ),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Icon(
+                          Icons.local_offer,
+                          size: 35.0,
+                          color: CustomColors.mfinLightBlue.withOpacity(0.6),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 5, top: 5.0),
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              plan.name,
+                              style: TextStyle(
+                                  fontFamily: "Georgia",
+                                  fontSize: 18.0,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              plan.notes,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text(
+                          '${plan.inr}/-',
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: CustomColors.mfinBlue,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                  RaisedButton.icon(
+                    color: CustomColors.mfinButtonGreen,
+                    onPressed: () {
+                      setState(
+                        () {
+                          if (selectedID.contains(plan.planID)) {
+                            selectedID.remove(plan.planID);
+                            tAmount -= plan.inr;
+                          } else {
+                            selectedID.add(plan.planID);
+                            tAmount += plan.inr;
+                          }
+                        },
+                      );
+                    },
+                    icon: Icon(
+                        selectedID.contains(plan.planID)
+                            ? Icons.remove_circle
+                            : Icons.add_box,
+                        size: 30),
+                    label: Text(
+                        selectedID.contains(plan.planID) ? "REMOVE" : "ADD"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildInnerBottomWidget(BuildContext context, Plans plan) {
+    return Material(
+      color: CustomColors.mfinBlue,
+      elevation: 3.0,
+      borderRadius: BorderRadius.circular(10.0),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: selectedID.contains(plan.planID)
+            ? BoxDecoration(
+                color: CustomColors.mfinBlue,
+                border:
+                    Border.all(color: CustomColors.mfinButtonGreen, width: 2.5),
+              )
+            : BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10.0),
+                  bottomRight: Radius.circular(10.0),
+                ),
+                color: CustomColors.mfinBlue,
+              ),
+        child: Container(
+          padding: EdgeInsets.only(left: 5, top: 5.0),
+          width: MediaQuery.of(context).size.width / 1.5,
+          child: Text(
+            plan.moreInfo,
+            style: TextStyle(
+                fontFamily: "Georgia",
+                fontSize: 18.0,
+                color: CustomColors.mfinWhite,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
     );
   }
 }

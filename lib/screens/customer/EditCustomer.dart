@@ -6,6 +6,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
 import '../../app_localizations.dart';
@@ -140,14 +141,13 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   filled: true,
                                 ),
                                 validator: (value) {
-                                  if (widget.cust.mobileNumber !=
-                                      int.parse(value)) {
-                                    if (value.isNotEmpty) {
-                                      updatedCustomer['mobile_number'] =
-                                          int.parse(value);
-                                    } else {
-                                      updatedCustomer['mobile_number'] = null;
-                                    }
+                                  if (value.trim().isNotEmpty &&
+                                      (widget.cust.mobileNumber !=
+                                          int.parse(value.trim()))) {
+                                    updatedCustomer['mobile_number'] =
+                                        int.parse(value.trim());
+                                  } else {
+                                    updatedCustomer['mobile_number'] = null;
                                   }
                                   return null;
                                 },
@@ -213,13 +213,9 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   fillColor: CustomColors.mfinWhite,
                                   filled: true,
                                 ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Enter Customer Name';
-                                  }
-                                  updatedCustomer['first_name'] = value;
-                                  return null;
-                                },
+                                validator: (value) =>
+                                    FieldValidator.customerNameValidator(
+                                        value, setCustomerNameState),
                               ),
                             ),
                             Padding(padding: EdgeInsets.only(left: 10)),
@@ -500,6 +496,10 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
         ),
       ),
     );
+  }
+
+  setCustomerNameState(name) {
+    updatedCustomer['first_name'] = name.trim();
   }
 
   Future<Null> _selectedDate(BuildContext context) async {

@@ -217,7 +217,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             child: TextFormField(
                               initialValue: lastname,
                               keyboardType: TextInputType.text,
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: AppLocalizations.of(context)
                                     .translate('last_name'),

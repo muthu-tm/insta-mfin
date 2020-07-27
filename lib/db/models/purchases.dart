@@ -9,10 +9,10 @@ part 'purchases.g.dart';
 class Purchases extends Model {
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
-  @JsonKey(name: 'branch_name', nullable: true)
-  String branchName;
-  @JsonKey(name: 'sub_branch_name', nullable: true)
-  String subBranchName;
+  @JsonKey(name: 'user_number', nullable: true)
+  int userID;
+  @JsonKey(name: 'guid', nullable: true)
+  String guid;
   @JsonKey(name: 'is_success', nullable: true)
   bool isSuccess;
   @JsonKey(name: 'status', nullable: true)
@@ -53,8 +53,8 @@ class Purchases extends Model {
     try {
       this.plans = plans;
       this.financeID = user.primary.financeID;
-      this.branchName = user.primary.branchName;
-      this.subBranchName = user.primary.subBranchName;
+      this.userID = user.mobileNumber;
+      this.guid = user.guid;
       this.isSuccess = false;
       this.paymentID = "";
       this.status = 0;

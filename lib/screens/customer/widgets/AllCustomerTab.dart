@@ -11,25 +11,78 @@ import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class AllCustomerTab extends StatelessWidget {
-  AllCustomerTab(this._scaffoldKey, this.title, this.status);
+class CustomerTab extends StatefulWidget {
+  CustomerTab(this.title, this.status);
 
   final String title;
   final int status;
-  final GlobalKey<ScaffoldState> _scaffoldKey;
+
+  @override
+  _CustomerTabState createState() => _CustomerTabState();
+}
+
+class _CustomerTabState extends State<CustomerTab> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  String orderBy = "0";
+  Map<String, String> _selectedOrderBy = {
+    "0": "Default",
+    "1": "Recent",
+    "2": "Name Asc",
+    "3": "Name Desc"
+  };
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: status != 0
-          ? Customer().streamCustomersByStatus(status)
-          : Customer().streamAllCustomers(),
+      stream: widget.status != 0
+          ? Customer()
+              .streamCustomersByStatus(widget.status, int.parse(orderBy))
+          : Customer().streamAllCustomers(int.parse(orderBy)),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
           if (snapshot.data.documents.isNotEmpty) {
             children = <Widget>[
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Container(
+                    width: 155,
+                    height: 50,
+                    child: DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Order By',
+                        labelStyle: TextStyle(
+                          color: CustomColors.mfinBlue,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 10.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
+                      ),
+                      items: _selectedOrderBy.entries.map(
+                        (f) {
+                          return DropdownMenuItem<String>(
+                            value: f.key,
+                            child: Text(f.value),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (newVal) {
+                        _setOrderBy(newVal);
+                      },
+                      value: orderBy,
+                    ),
+                  ),
+                ),
+              ),
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -188,7 +241,7 @@ class AllCustomerTab extends StatelessWidget {
                 height: 90,
                 child: Column(
                   children: <Widget>[
-                    new Spacer(),
+                    Spacer(),
                     Text(
                       AppLocalizations.of(context).translate('no_customers'),
                       style: TextStyle(
@@ -197,7 +250,7 @@ class AllCustomerTab extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    new Spacer(
+                    Spacer(
                       flex: 2,
                     ),
                     Text(
@@ -209,7 +262,7 @@ class AllCustomerTab extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    new Spacer(),
+                    Spacer(),
                   ],
                 ),
               ),
@@ -224,11 +277,16 @@ class AllCustomerTab extends StatelessWidget {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: children,
           ),
         );
       },
     );
+  }
+
+  _setOrderBy(String newVal) {
+    setState(() {
+      orderBy = newVal;
+    });
   }
 }

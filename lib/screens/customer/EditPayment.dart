@@ -57,6 +57,7 @@ class _EditPaymentState extends State<EditPayment> {
   };
 
   TextEditingController _date = new TextEditingController();
+  DateTime _selectedDate = DateTime.now();
   TextEditingController _collectionDate = new TextEditingController();
 
   Map<String, dynamic> updatedPayment = new Map();
@@ -74,11 +75,15 @@ class _EditPaymentState extends State<EditPayment> {
 
     _date.text =
         DateUtils.getFormattedDateFromEpoch(widget.payment.dateOfPayment);
+    _selectedDate =
+        DateTime.fromMillisecondsSinceEpoch(widget.payment.dateOfPayment);
 
     _collectionDate.text = DateUtils.getFormattedDateFromEpoch(
         widget.payment.collectionStartsFrom);
-    if (widget.payment.collectionMode == 0)
+    if (widget.payment.collectionMode == 0) {
+      collectionDays.clear();
       collectionDays.addAll(widget.payment.collectionDays);
+    }
   }
 
   @override
@@ -330,7 +335,6 @@ class _EditPaymentState extends State<EditPayment> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
-                          Padding(padding: EdgeInsets.only(left: 10)),
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
@@ -940,6 +944,24 @@ class _EditPaymentState extends State<EditPayment> {
   }
 
   _setSelectedCollectionMode(String newVal) {
+    if (newVal == "0") {
+      updatedPayment['collection_starts_from'] =
+          DateUtils.getUTCDateEpoch(_selectedDate.add(Duration(days: 1)));
+      _collectionDate.text =
+          DateUtils.formatDate(_selectedDate.add(Duration(days: 1)));
+    } else if (newVal == "1") {
+      updatedPayment['collection_starts_from'] =
+          DateUtils.getUTCDateEpoch(_selectedDate.add(Duration(days: 7)));
+      _collectionDate.text =
+          DateUtils.formatDate(_selectedDate.add(Duration(days: 7)));
+    } else if (newVal == "2") {
+      updatedPayment['collection_starts_from'] = DateUtils.getUTCDateEpoch(
+          DateTime(
+              _selectedDate.year, _selectedDate.month + 1, _selectedDate.day));
+      _collectionDate.text = DateUtils.formatDate(DateTime(
+          _selectedDate.year, _selectedDate.month + 1, _selectedDate.day));
+    }
+
     setState(() {
       if (widget.payment.collectionMode != int.parse(newVal))
         updatedPayment['collection_mode'] = int.parse(newVal);
@@ -1008,18 +1030,32 @@ class _EditPaymentState extends State<EditPayment> {
       firstDate: DateTime(1990),
       lastDate: DateTime.now(),
     );
-    if (picked != null &&
-        picked !=
-            DateTime.fromMillisecondsSinceEpoch(widget.payment.dateOfPayment))
+    if (picked != null && picked != _selectedDate)
       setState(
         () {
+          _selectedDate = picked;
           updatedPayment['date_of_payment'] = DateUtils.getUTCDateEpoch(picked);
           _date.text = DateUtils.formatDate(picked);
 
-          updatedPayment['collection_starts_from'] =
-              DateUtils.getUTCDateEpoch(picked.add(Duration(days: 1)));
-          _collectionDate.text =
-              DateUtils.formatDate(picked.add(Duration(days: 1)));
+          if (selectedCollectionModeID == "0") {
+            updatedPayment['collection_starts_from'] =
+                DateUtils.getUTCDateEpoch(_selectedDate.add(Duration(days: 1)));
+            _collectionDate.text =
+                DateUtils.formatDate(_selectedDate.add(Duration(days: 1)));
+          } else if (selectedCollectionModeID == "1") {
+            updatedPayment['collection_starts_from'] =
+                DateUtils.getUTCDateEpoch(_selectedDate.add(Duration(days: 7)));
+            _collectionDate.text =
+                DateUtils.formatDate(_selectedDate.add(Duration(days: 7)));
+          } else if (selectedCollectionModeID == "2") {
+            updatedPayment['collection_starts_from'] =
+                DateUtils.getUTCDateEpoch(DateTime(_selectedDate.year,
+                    _selectedDate.month + 1, _selectedDate.day));
+            _collectionDate.text = DateUtils.formatDate(DateTime(
+                _selectedDate.year,
+                _selectedDate.month + 1,
+                _selectedDate.day));
+          }
         },
       );
   }

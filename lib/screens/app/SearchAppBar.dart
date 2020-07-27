@@ -20,43 +20,41 @@ class _SearchAppBarState extends State<SearchAppBar> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController _searchController = TextEditingController();
-  int minNumber = 0;
-  int maxNumber = 0;
   int searchMode = 0;
   String searchKey = "";
   Future<List<Map<String, dynamic>>> snapshot;
 
-  List<CustomRadioModel> inOutList = new List<CustomRadioModel>();
+  List<CustomRadioModel> inOutList = List<CustomRadioModel>();
 
   @override
   void initState() {
     super.initState();
-    inOutList.add(new CustomRadioModel(true, 'Number', ''));
-    inOutList.add(new CustomRadioModel(false, 'Name', ''));
-    inOutList.add(new CustomRadioModel(false, 'Payment', ''));
+    inOutList.add(CustomRadioModel(true, 'Number', ''));
+    inOutList.add(CustomRadioModel(false, 'Name', ''));
+    inOutList.add(CustomRadioModel(false, 'Payment', ''));
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
-      appBar: new AppBar(
+      appBar: AppBar(
         backgroundColor: CustomColors.mfinBlue,
         centerTitle: true,
         titleSpacing: 0.0,
         title: TextFormField(
           controller: _searchController,
           keyboardType: TextInputType.text,
-          style: new TextStyle(
+          style: TextStyle(
             color: CustomColors.mfinWhite,
           ),
-          decoration: new InputDecoration(
+          decoration: InputDecoration(
             hintText: searchMode == 0
                 ? "Type Customer Number here..."
                 : searchMode == 1
-                    ? "Type Customer Name here..."
+                    ? "Customer First Name here..."
                     : "Type Payment ID here...",
-            hintStyle: new TextStyle(color: CustomColors.mfinWhite),
+            hintStyle: TextStyle(color: CustomColors.mfinWhite),
           ),
         ),
         actions: <Widget>[
@@ -74,9 +72,14 @@ class _SearchAppBarState extends State<SearchAppBar> {
                         AppLocalizations.of(context).translate('enter_min_key'), 2));
                 return null;
               } else {
+                int minNumber = 0;
+                int maxNumber = 0;
+                String startKey = "";
+                String endKey = "";
+
                 if (searchMode == 0) {
-                  int num = int.tryParse(_searchController.text.trim());
-                  if (num == null) {
+                  int number = int.tryParse(_searchController.text.trim());
+                  if (number == null) {
                     _scaffoldKey.currentState.showSnackBar(
                         CustomSnackBar.errorSnackBar(
                             AppLocalizations.of(context).translate('invalid_mobile'), 2));
@@ -92,6 +95,15 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       maxNumber = int.parse(_searchController.text.trim());
                     }
                   }
+                } else if (searchMode == 1) {
+                  searchKey = _searchController.text.trim();
+                  if (_searchController.text.trim().length < 10) {
+                    startKey = _searchController.text.trim();
+                    endKey = _searchController.text.trim().padRight(10, 'z');
+                  } else {
+                    startKey = _searchController.text.trim();
+                    endKey = _searchController.text.trim();
+                  }
                 } else {
                   searchKey = _searchController.text.trim();
                 }
@@ -101,7 +113,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
                     searchMode == 0
                         ? snapshot = Customer().getByRange(minNumber, maxNumber)
                         : searchMode == 1
-                            ? snapshot = Customer().getByNameRange(searchKey)
+                            ? snapshot = Customer()
+                                .getByNameRange(searchKey, startKey, endKey)
                             : snapshot =
                                 Payment().getByPaymentIDRange(searchKey);
                   },
@@ -112,6 +125,24 @@ class _SearchAppBarState extends State<SearchAppBar> {
             },
           ),
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
+        tooltip: "Clear Results",
+        onPressed: () {
+          setState(() {
+            searchKey = "";
+            _searchController.text = "";
+          });
+        },
+        elevation: 5.0,
+        icon: Icon(
+          Icons.remove_circle,
+          size: 40,
+          color: CustomColors.mfinWhite,
+        ),
+        label: Text("Clear"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -134,7 +165,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                     },
                   );
                 },
-                child: new SearchOptionsRadio(
+                child: SearchOptionsRadio(
                     inOutList[0], CustomColors.mfinLightBlue),
               ),
               title: InkWell(
@@ -150,8 +181,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                     },
                   );
                 },
-                child:
-                    new SearchOptionsRadio(inOutList[1], CustomColors.mfinBlue),
+                child: SearchOptionsRadio(inOutList[1], CustomColors.mfinBlue),
               ),
               trailing: InkWell(
                 onTap: () {
@@ -166,8 +196,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
                     },
                   );
                 },
-                child: new SearchOptionsRadio(
-                    inOutList[2], CustomColors.mfinAlertRed),
+                child:
+                    SearchOptionsRadio(inOutList[2], CustomColors.mfinAlertRed),
               ),
             ),
             Divider(),
@@ -175,7 +205,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
               future: snapshot,
               builder: (BuildContext context,
                   AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-                if (snapshot.hasData && _searchController.text != '') {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData &&
+                    _searchController.text != '') {
                   if (snapshot.data.isNotEmpty) {
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -184,8 +216,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, int index) {
                         if (inOutList[2].isSelected == true) {
-                          return customerPaymentWidget(context, index,
-                              Payment.fromJson(snapshot.data[index]));
+                          return customerPaymentWidget(context, _scaffoldKey,
+                              index, Payment.fromJson(snapshot.data[index]));
                         } else {
                           return customerListTile(context, index,
                               Customer.fromJson(snapshot.data[index]));
@@ -202,17 +234,17 @@ class _SearchAppBarState extends State<SearchAppBar> {
                               ? AppLocalizations.of(context).translate('no_payment_found')
                               : AppLocalizations.of(context).translate('no_customers_found'),
                           textAlign: TextAlign.center,
-                          style: new TextStyle(
+                          style: TextStyle(
                             color: CustomColors.mfinAlertRed,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Divider(),
+                        Divider(),
                         Text(
                           AppLocalizations.of(context).translate('different_search_key'),
                           textAlign: TextAlign.center,
-                          style: new TextStyle(
+                          style: TextStyle(
                             color: CustomColors.mfinBlue,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

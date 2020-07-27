@@ -175,7 +175,7 @@ class Collection {
     int penalty = 0;
     if (this.collections != null) {
       this.collections.forEach((coll) {
-        penalty += coll.penaltyAmount;
+        if (coll.penaltyAmount != null) penalty += coll.penaltyAmount;
       });
     }
 
@@ -293,9 +293,6 @@ class Collection {
                   accData.collectionsAmount += collDetails['amount'];
                 } else if (this.type == CollectionType.Penalty.name) {
                   this.isPaid = true;
-
-                  accData.totalPenalty += 1;
-                  accData.penaltyAmount += collDetails['amount'];
                 } else if (this.type == CollectionType.DocCharge.name) {
                   this.isPaid = true;
 
@@ -310,8 +307,6 @@ class Collection {
 
                 if (collDetails['penalty_amount'] > 0) {
                   accData.cashInHand += collDetails['penalty_amount'];
-                  accData.totalPenalty += 1;
-                  accData.penaltyAmount += collDetails['penalty_amount'];
 
                   Map<String, dynamic> pData = {
                     "finance_id": this.financeID,
@@ -698,8 +693,6 @@ class Collection {
                 if (hasPenalty) {
                   Collection _c = Collection.fromJson(_coll);
                   accData.cashInHand += data['penalty_amount'];
-                  accData.totalPenalty += 1;
-                  accData.penaltyAmount += data['penalty_amount'];
 
                   Map<String, dynamic> pData = {
                     "finance_id": _c.financeID,
@@ -742,8 +735,6 @@ class Collection {
                 accData.collectionsAmount -= data['amount'];
                 if (hasPenalty) {
                   accData.cashInHand -= data['penalty_amount'];
-                  accData.totalPenalty -= 1;
-                  accData.penaltyAmount -= data['penalty_amount'];
 
                   Model().txDelete(
                       tx,

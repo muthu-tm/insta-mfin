@@ -1,4 +1,3 @@
-import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -151,18 +150,18 @@ class PaymentController {
 
   Future settlement(Payment payment, Map<String, dynamic> paymentJSON) async {
     try {
-      Collection coll = await Collection().getCollectionByID(
-          payment.financeID,
-          payment.branchName,
-          payment.subBranchName,
-          payment.id,
-          paymentJSON['settled_date'].toString());
+      // Collection coll = await Collection().getCollectionByID(
+      //     payment.financeID,
+      //     payment.branchName,
+      //     payment.subBranchName,
+      //     payment.id,
+      //     paymentJSON['settled_date'].toString());
 
-      if (coll != null && coll.getReceived() > 0) {
-        String sDate = DateUtils.formatDate(
-            DateTime.fromMillisecondsSinceEpoch(paymentJSON['settled_date']));
-        throw "Already a Collection received on this day $sDate";
-      }
+      // if (coll != null && coll.getReceived() > 0) {
+      //   String sDate = DateUtils.formatDate(
+      //       DateTime.fromMillisecondsSinceEpoch(paymentJSON['settled_date']));
+      //   throw "Already a Collection received on this day $sDate";
+      // }
 
       await payment.settlement(paymentJSON);
 
@@ -185,6 +184,23 @@ class PaymentController {
 
       return CustomResponse.getSuccesReponse(
           "Removed customer's Payment $paymentID");
+    } catch (err) {
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
+  
+  Future forceRemovePayment(
+    String financeId,
+    String branchName,
+    String subBranchName,
+    int paymentID,
+  ) async {
+    try {
+      await Payment()
+          .forceRemovePayment(financeId, branchName, subBranchName, paymentID);
+
+      return CustomResponse.getSuccesReponse(
+          "Force Removed customer's Payment $paymentID");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

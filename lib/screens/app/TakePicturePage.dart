@@ -46,21 +46,21 @@ class _TakePicturePageState extends State<TakePicturePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.6),
+        backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
         onPressed: () async {
           await _takePicture(context);
         },
         label: Text(
           "Capture",
           style: TextStyle(
-              color: CustomColors.mfinButtonGreen,
+              color: CustomColors.mfinWhite,
               fontSize: 14.0,
               fontWeight: FontWeight.bold),
         ),
         icon: Icon(
-          Icons.broken_image,
+          Icons.camera,
           size: 35,
-          color: CustomColors.mfinButtonGreen,
+          color: CustomColors.mfinWhite,
         ),
       ),
       body: FutureBuilder(

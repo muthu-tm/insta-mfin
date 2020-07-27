@@ -134,8 +134,8 @@ class CustomersHome extends StatelessWidget {
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: CustomColors.mfinBlue,
+          floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
             tooltip: "Add Customer",
             onPressed: () {
               if (_user.financeSubscription <
@@ -158,25 +158,25 @@ class CustomersHome extends StatelessWidget {
               );
             },
             elevation: 5.0,
-            child: Icon(
+            label: Text("ADD"),
+            icon: Icon(
               Icons.add,
-              size: 40,
-              color: CustomColors.mfinButtonGreen,
+              size: 35,
             ),
           ),
           body: TabBarView(
             children: [
               SingleChildScrollView(
-                child: AllCustomerTab(_scaffoldKey, 'All Customers', 0),
+                child: CustomerTab('All Customers', 0),
               ),
               SingleChildScrollView(
-                child: AllCustomerTab(_scaffoldKey, 'Active Customers', 1),
+                child: CustomerTab('Active Customers', 1),
               ),
               SingleChildScrollView(
                 child: CustomerListWidget(_scaffoldKey, 'Pending Customers', 2),
               ),
               SingleChildScrollView(
-                child: AllCustomerTab(_scaffoldKey, 'Settled Customers', 3),
+                child: CustomerTab('Settled Customers', 3),
               )
             ],
           ),

@@ -46,9 +46,11 @@ class FieldValidator {
   static String customerNameValidator(
       String customerName, Function(String) setCustomerNameState) {
     if (customerName.isEmpty) {
-      return 'CustomerName is required';
-    } else if (customerName.length < 4) {
-      return 'CustomerName must be at least 4 characters long';
+      return 'Customer Name is required';
+    } else if (customerName.length < 2) {
+      return 'Too short. Min 2 chars long';
+    } else if (customerName.length > 10) {
+      return 'Too long. Max 10 chars allowed';
     }
 
     setCustomerNameState(customerName);

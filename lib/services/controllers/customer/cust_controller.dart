@@ -64,7 +64,7 @@ class CustController {
 
   Stream<List<Customer>> streamPendingCustomers() async* {
     try {
-      Stream<QuerySnapshot> stream = Customer().streamCustomersByStatus(1);
+      Stream<QuerySnapshot> stream = Customer().streamCustomersByStatus(1, 0);
 
       if (await stream.isEmpty) {
         yield [];

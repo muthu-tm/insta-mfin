@@ -15,6 +15,7 @@ import 'package:instamfin/screens/statistics/StatisticsHome.dart';
 import 'package:instamfin/screens/transaction/ExpenseHome.dart';
 import 'package:instamfin/screens/transaction/JournalEntryHome.dart';
 import 'package:instamfin/screens/transaction/books/BooksHome.dart';
+import 'package:instamfin/screens/transaction/configuration/TransactionConfigHome.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
@@ -202,6 +203,17 @@ Widget openDrawer(BuildContext context) {
                 ),
               ),
             ),
+            ListTile(
+              title: Text('Configurations'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TransactionConfigHome(),
+                  settings: RouteSettings(name: '/transactions/config'),
+                ),
+              ),
+            ),
           ],
         ),
         ExpansionTile(
@@ -241,10 +253,10 @@ Widget openDrawer(BuildContext context) {
           ],
         ),
         _user.accPreferences.chitEnabled
-            ? new ListTile(
-                leading: new Icon(Icons.transfer_within_a_station,
+            ? ListTile(
+                leading: Icon(Icons.transfer_within_a_station,
                     color: CustomColors.mfinButtonGreen),
-                title: new Text('Chit Fund'),
+                title: Text('Chit Fund'),
                 onTap: () => Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -254,15 +266,14 @@ Widget openDrawer(BuildContext context) {
                   (Route<dynamic> route) => false,
                 ),
               )
-            : new ListTile(
-                leading: new Icon(Icons.transfer_within_a_station,
+            : ListTile(
+                leading: Icon(Icons.transfer_within_a_station,
                     color: CustomColors.mfinGrey),
-                title: new Text('Chit Fund'),
+                title: Text('Chit Fund'),
                 onTap: () {}),
-        new ListTile(
-          leading:
-              new Icon(Icons.description, color: CustomColors.mfinButtonGreen),
-          title: new Text('Reports'),
+        ListTile(
+          leading: Icon(Icons.description, color: CustomColors.mfinButtonGreen),
+          title: Text('Reports'),
           onTap: () => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(

@@ -35,7 +35,7 @@ class CollectionDetailsWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
+          padding: EdgeInsets.only(bottom: 10.0, top: 20.0),
           child: Text(
             AppLocalizations.of(context).translate('add_collection_sign'),
             style: TextStyle(
@@ -66,18 +66,17 @@ class CollectionDetailsWidget extends StatelessWidget {
               textColor = CustomColors.mfinGrey;
             }
             return SimpleFoldingCell(
-                frontWidget: _buildFrontWidget(
-                    context, _collectionDetails, cardColor, textColor),
-                innerTopWidget: _buildInnerTopWidget(_collectionDetails),
-                innerBottomWidget:
-                    _buildInnerBottomWidget(context, _collectionDetails),
-                cellSize: Size(MediaQuery.of(context).size.width, 170),
-                padding: EdgeInsets.only(
-                    left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
-                animationDuration: Duration(milliseconds: 300),
-                borderRadius: 10,
-                onOpen: () => print('$index cell opened'),
-                onClose: () => print('$index cell closed'));
+              frontWidget: _buildFrontWidget(
+                  context, _collectionDetails, cardColor, textColor),
+              innerTopWidget: _buildInnerTopWidget(_collectionDetails),
+              innerBottomWidget:
+                  _buildInnerBottomWidget(context, _collectionDetails),
+              cellSize: Size(MediaQuery.of(context).size.width, 170),
+              padding: EdgeInsets.only(
+                  left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
+              animationDuration: Duration(milliseconds: 300),
+              borderRadius: 10,
+            );
           },
         ),
       ];
@@ -85,7 +84,7 @@ class CollectionDetailsWidget extends StatelessWidget {
 
     return Card(
       color: CustomColors.mfinLightGrey,
-      child: new Column(
+      child: Column(
         children: <Widget>[
           ListTile(
             leading: Icon(
@@ -137,7 +136,7 @@ class CollectionDetailsWidget extends StatelessWidget {
               },
             ),
           ),
-          new Divider(
+          Divider(
             color: CustomColors.mfinBlue,
             thickness: 1,
           ),
@@ -214,12 +213,15 @@ class CollectionDetailsWidget extends StatelessWidget {
                         ),
                         onPressed: () async {
                           CollectionController _cc = CollectionController();
+                          int id = _collection.collectionDate;
+                              if (_collection.type == 3) id = _collection.collectionDate + 3;
+
                           var result = await _cc.updateCollectionDetails(
                               _collection.financeID,
                               _collection.branchName,
                               _collection.subBranchName,
                               _collection.paymentID,
-                              _collection.collectionDate,
+                              id,
                               false,
                               false,
                               _collectionDetails.toJson(),

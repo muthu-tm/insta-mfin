@@ -688,7 +688,6 @@ class Payment extends Model {
     int tReceived = await getCollectionReceived();
     if (tReceived == null)
       throw 'Unable to fetch Total Received Amount! Try again Later.';
-    List<int> pDetails = await getPenalityDetails();
 
     try {
       DocumentReference finDocRef = user.getFinanceDocReference();
@@ -775,7 +774,7 @@ class Payment extends Model {
                             this.branchName,
                             this.subBranchName,
                             this.id,
-                            paymentJSON['settled_date']),
+                            paymentJSON['settled_date'] + 3),
                         data);
                   }
                 } else {
@@ -803,7 +802,7 @@ class Payment extends Model {
                           this.branchName,
                           this.subBranchName,
                           this.id,
-                          paymentJSON['settled_date']),
+                          paymentJSON['settled_date'] + 3),
                       data);
                 }
               }
@@ -819,8 +818,6 @@ class Payment extends Model {
               if (this.surcharge > 0) accData.totalSurCharge -= 1;
               accData.surcharge -= this.surcharge;
               accData.collectionsAmount -= tReceived;
-              accData.totalPenalty -= pDetails[0];
-              accData.penaltyAmount -= pDetails[1];
 
               if (paymentJSON['loss']) {
                 payJSON['is_loss'] = true;
@@ -871,6 +868,10 @@ class Payment extends Model {
               accData.cashInHand += payment.principalAmount;
               accData.cashInHand += payment.rCommission;
               accData.paymentsAmount -= payment.totalAmount;
+              if (payment.docCharge > 0) accData.totalDocCharge -= 1;
+              accData.docCharge -= payment.docCharge;
+              if (payment.surcharge > 0) accData.totalSurCharge -= 1;
+              accData.surcharge -= payment.surcharge;
               accData.totalPayments -= 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
@@ -883,6 +884,62 @@ class Payment extends Model {
               for (DocumentSnapshot ds in snapshot.documents) {
                 txDelete(tx, ds.reference);
               }
+              txDelete(tx, docRef);
+            },
+          );
+        },
+      );
+    } catch (err) {
+      print('Payment DELETE Transaction failure:' + err.toString());
+      throw err;
+    }
+  }
+
+  Future forceRemovePayment(String financeId, String branchName,
+      String subBranchName, int paymentID) async {
+    DocumentReference docRef =
+        getDocumentReference(financeId, branchName, subBranchName, paymentID);
+
+    try {
+      DocumentReference finDocRef = user.getFinanceDocReference();
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              DocumentSnapshot snap = await tx.get(docRef);
+
+              if (!snap.exists) {
+                Future.error('No Payment document found to Remove');
+              }
+
+              Payment payment = Payment.fromJson(snap.data);
+
+              accData.cashInHand += payment.principalAmount;
+              accData.cashInHand += payment.rCommission;
+              accData.paymentsAmount -= payment.totalAmount;
+              if (payment.docCharge > 0) accData.totalDocCharge -= 1;
+              accData.docCharge -= payment.docCharge;
+              if (payment.surcharge > 0) accData.totalSurCharge -= 1;
+              accData.surcharge -= payment.surcharge;
+              accData.totalPayments -= 1;
+
+              QuerySnapshot snapshot = await docRef
+                  .collection('customer_collections')
+                  .getDocuments();
+
+              for (DocumentSnapshot ds in snapshot.documents) {
+                Collection coll = Collection.fromJson(ds.data);
+                accData.cashInHand -= coll.getReceived();
+                accData.collectionsAmount -= coll.getReceived();
+                txDelete(tx, ds.reference);
+              }
+
+              
+              Map<String, dynamic> data = {'accounts_data': accData.toJson()};
+              txUpdate(tx, finDocRef, data);
               txDelete(tx, docRef);
             },
           );

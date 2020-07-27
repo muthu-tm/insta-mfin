@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/transaction/books/CollectionBookHome.dart';
 import 'package:instamfin/screens/transaction/books/AllTransactionsBook.dart';
 import 'package:instamfin/screens/transaction/books/CustomersBook.dart';
@@ -11,17 +10,8 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
 
 class BooksHome extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
-
   @override
   Widget build(BuildContext context) {
-    bool hasValidSubscription = true;
-    if (_user.financeSubscription < DateUtils.getUTCDateEpoch(DateTime.now()) &&
-        _user.chitSubscription < DateUtils.getUTCDateEpoch(DateTime.now())) {
-      hasValidSubscription = false;
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate("note_books")),
