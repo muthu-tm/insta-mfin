@@ -7,12 +7,11 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 Widget customerListTile(BuildContext context, int index, Customer customer) {
   Color tileColor = CustomColors.mfinBlue;
   Color textColor = CustomColors.mfinWhite;
-  IconData custIcon = Icons.person_outline;
+  IconData custIcon = Icons.person;
 
   if ((index % 2) == 0) {
     tileColor = CustomColors.mfinWhite;
     textColor = CustomColors.mfinBlue;
-    custIcon = Icons.person;
   }
   return Padding(
     padding: EdgeInsets.only(left: 12.0, top: 5.0, right: 12.0, bottom: 5.0),
@@ -43,8 +42,9 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                   ? Padding(
                       padding: EdgeInsets.all(5),
                       child: Container(
-                        width: 80,
-                        height: 80,
+                        width: 60,
+                        height: 60,
+                        alignment: Alignment.topCenter,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
@@ -73,18 +73,21 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                             );
                           },
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Icon(
-                                custIcon,
-                                size: 35.0,
-                                color: textColor,
+                              Padding(
+                                padding: EdgeInsets.only(right: 15),
+                                child: Icon(
+                                  custIcon,
+                                  size: 25.0,
+                                  color: textColor,
+                                ),
                               ),
                               Text(
-                                "Upload",
+                                "UPLOAD",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 10.0,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 5.0,
                                   color: textColor,
                                 ),
                               ),
@@ -99,7 +102,7 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                           Padding(
                             padding: EdgeInsets.all(5),
                             child: CircleAvatar(
-                              radius: 35.0,
+                              radius: 30.0,
                               backgroundImage:
                                   NetworkImage(customer.getProfilePicPath()),
                               backgroundColor: Colors.transparent,
@@ -107,7 +110,7 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                           ),
                           Positioned(
                             bottom: -10,
-                            left: 20,
+                            left: 10,
                             child: FlatButton(
                               onPressed: () {
                                 showDialog(
