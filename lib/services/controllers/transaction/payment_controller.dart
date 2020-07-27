@@ -188,4 +188,21 @@ class PaymentController {
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
+  
+  Future forceRemovePayment(
+    String financeId,
+    String branchName,
+    String subBranchName,
+    int paymentID,
+  ) async {
+    try {
+      await Payment()
+          .forceRemovePayment(financeId, branchName, subBranchName, paymentID);
+
+      return CustomResponse.getSuccesReponse(
+          "Force Removed customer's Payment $paymentID");
+    } catch (err) {
+      return CustomResponse.getFailureReponse(err.toString());
+    }
+  }
 }

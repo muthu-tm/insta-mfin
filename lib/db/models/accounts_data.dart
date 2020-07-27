@@ -13,10 +13,6 @@ class AccountsData {
   int totalSurCharge;
   @JsonKey(name: 'surcharge', defaultValue: 0)
   int surcharge;
-  @JsonKey(name: 'total_penalty', defaultValue: 0)
-  int totalPenalty;
-  @JsonKey(name: 'penalty_amount', defaultValue: 0)
-  int penaltyAmount;
   @JsonKey(name: 'total_payments', defaultValue: 0)
   int totalPayments;
   @JsonKey(name: 'payments_amount', defaultValue: 0)

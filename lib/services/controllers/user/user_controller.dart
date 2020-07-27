@@ -83,6 +83,20 @@ class UserController {
     }
   }
 
+  bool authCheck(String secretKey) {
+    try {
+      String hashKey =
+          HashGenerator.hmacGenerator(secretKey, getCurrentUserID().toString());
+      if (hashKey != getCurrentUser().password) {
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future updateUser(Map<String, dynamic> userJson) async {
     try {
       User user = User(userJson['mobile_number']);

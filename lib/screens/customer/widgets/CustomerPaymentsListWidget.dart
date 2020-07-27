@@ -8,12 +8,14 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CustomerPaymentsListWidget extends StatelessWidget {
   CustomerPaymentsListWidget(this.id, this._scaffoldKey);
 
   final int id;
   final GlobalKey<ScaffoldState> _scaffoldKey;
+  TextEditingController _pController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +53,15 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                               "You cannot Edit already 'SETTLED' Payment!}",
                               3,
                             ));
+                            // await forceRemove(context, payment,
+                            //     "Enter your Secret KEY to remove SETTLED Payment!");
                           } else {
                             var state = Slidable.of(context);
                             var dismiss = await showDialog<bool>(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: new Text(
+                                  title: Text(
                                     "Confirm!",
                                     style: TextStyle(
                                         color: CustomColors.mfinAlertRed,
@@ -97,13 +101,17 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                         if (totalReceived != null &&
                                             totalReceived > 0) {
                                           Navigator.pop(context);
-                                          _scaffoldKey.currentState
-                                              .showSnackBar(
-                                            CustomSnackBar.errorSnackBar(
-                                              "You cannot Remove Payments which has already received COLLECTION!}",
-                                              3,
-                                            ),
-                                          );
+
+                                          // _scaffoldKey.currentState
+                                          //     .showSnackBar(
+                                          //   CustomSnackBar.errorSnackBar(
+                                          //     "You cannot Remove Payments which has already received COLLECTION!}",
+                                          //     3,
+                                          //   ),
+                                          // );
+
+                                          await forceRemove(context, payment,
+                                              "Enter your Secret KEY to remove payment which has received COLLECTION!");
                                         } else if (totalReceived != null) {
                                           PaymentController _pc =
                                               PaymentController();
@@ -172,7 +180,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                             if (totalReceived != null && totalReceived > 0) {
                               _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
-                                  "You cannot Edit Payments which has valid COLLECTION!}",
+                                  "You cannot Edit Payments which has valid COLLECTION!",
                                   3,
                                 ),
                               );
@@ -295,5 +303,109 @@ class CustomerPaymentsListWidget extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future forceRemove(BuildContext context, Payment payment, String text) async {
+    var state = Slidable.of(context);
+    var dismiss = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Confirm!",
+            style: TextStyle(
+                color: CustomColors.mfinAlertRed,
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.start,
+          ),
+          content: Container(
+            height: 110,
+            child: Column(
+              children: <Widget>[
+                Text(text),
+                Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Card(
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      obscureText: true,
+                      autofocus: false,
+                      controller: _pController,
+                      decoration: InputDecoration(
+                        hintText: 'Secret KEY',
+                        fillColor: CustomColors.mfinLightGrey,
+                        filled: true,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              color: CustomColors.mfinButtonGreen,
+              child: Text(
+                "NO",
+                style: TextStyle(
+                    color: CustomColors.mfinBlue,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+            FlatButton(
+              color: CustomColors.mfinAlertRed,
+              child: Text(
+                "YES",
+                style: TextStyle(
+                    color: CustomColors.mfinLightGrey,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+              onPressed: () async {
+                bool isValid = UserController().authCheck(_pController.text);
+
+                if (isValid) {
+                  PaymentController _pc = PaymentController();
+                  var result = await _pc.forceRemovePayment(payment.financeID,
+                      payment.branchName, payment.subBranchName, payment.id);
+                  if (!result['is_success']) {
+                    Navigator.pop(context);
+                    _scaffoldKey.currentState.showSnackBar(
+                      CustomSnackBar.errorSnackBar(
+                        "Unable to remove the Payment! ${result['message']}",
+                        3,
+                      ),
+                    );
+                  } else {
+                    Navigator.pop(context);
+                    _scaffoldKey.currentState.showSnackBar(
+                      CustomSnackBar.errorSnackBar(
+                          "Payment removed successfully", 2),
+                    );
+                  }
+                } else {
+                  Navigator.pop(context);
+                  _scaffoldKey.currentState.showSnackBar(
+                    CustomSnackBar.errorSnackBar(
+                      "Failed to Authenticate!",
+                      3,
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (dismiss != null && dismiss && state != null) {
+      state.dismiss();
+    }
   }
 }
