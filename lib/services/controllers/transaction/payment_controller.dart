@@ -1,4 +1,3 @@
-import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';

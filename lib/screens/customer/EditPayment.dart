@@ -75,8 +75,10 @@ class _EditPaymentState extends State<EditPayment> {
 
     _collectionDate.text = DateUtils.getFormattedDateFromEpoch(
         widget.payment.collectionStartsFrom);
-    if (widget.payment.collectionMode == 0)
+    if (widget.payment.collectionMode == 0) {
+      collectionDays.clear();
       collectionDays.addAll(widget.payment.collectionDays);
+    }
   }
 
   @override
