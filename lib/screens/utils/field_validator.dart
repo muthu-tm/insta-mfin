@@ -48,9 +48,9 @@ class FieldValidator {
     if (customerName.isEmpty) {
       return 'Customer Name is required';
     } else if (customerName.length < 2) {
-      return 'First Name must be at least 2 characters long';
-    } else if (customerName.length > 8) {
-      return 'First Name is too long. Max 8 chars allowed';
+      return 'Too short. Min 2 chars long';
+    } else if (customerName.length > 10) {
+      return 'Too long. Max 10 chars allowed';
     }
 
     setCustomerNameState(customerName);

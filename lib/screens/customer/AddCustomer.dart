@@ -209,7 +209,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             child: TextFormField(
                               initialValue: lastname,
                               keyboardType: TextInputType.text,
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: 'Last name',
                                 floatingLabelBehavior:

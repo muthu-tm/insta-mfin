@@ -358,19 +358,6 @@ class Customer extends Model {
       });
     }
 
-    QuerySnapshot secondSnap = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
-        .where('first_name', isEqualTo: orgString)
-        .getDocuments();
-
-    if (secondSnap.documents.isNotEmpty) {
-      secondSnap.documents.forEach((cus) {
-        custList.add(cus.data);
-      });
-    }
-
     return custList;
   }
 

@@ -95,9 +95,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   }
                 } else if (searchMode == 1) {
                   searchKey = _searchController.text.trim();
-                  if (_searchController.text.trim().length < 8) {
-                    startKey = _searchController.text.trim().padRight(8, '0');
-                    endKey = _searchController.text.trim().padRight(8, 'z');
+                  if (_searchController.text.trim().length < 10) {
+                    startKey = _searchController.text.trim();
+                    endKey = _searchController.text.trim().padRight(10, 'z');
                   } else {
                     startKey = _searchController.text.trim();
                     endKey = _searchController.text.trim();
