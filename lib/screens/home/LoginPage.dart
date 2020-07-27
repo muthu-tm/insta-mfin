@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/update_app.dart';
@@ -282,7 +283,12 @@ class _LoginPageState extends State<LoginPage> {
           this._user = User.fromJson(_uJSON);
           _verifyPhoneNumber();
         }
-      } catch (err) {
+      } on PlatformException catch (err) {
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "Error while Login: " + err.message, 2));
+      } on Exception catch (err) {
+        Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             "Error while Login: " + err.toString(), 2));
       }
