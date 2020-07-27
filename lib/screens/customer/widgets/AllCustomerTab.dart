@@ -21,16 +21,23 @@ class CustomerTab extends StatefulWidget {
 }
 
 class _CustomerTabState extends State<CustomerTab> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int ascByName = 0;
+  String orderBy = "0";
+  Map<String, String> _selectedOrderBy = {
+    "0": "Default",
+    "1": "Recent",
+    "2": "Name Asc",
+    "3": "Name Desc"
+  };
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: widget.status != 0
-          ? Customer().streamCustomersByStatus(widget.status, ascByName)
-          : Customer().streamAllCustomers(ascByName),
+          ? Customer()
+              .streamCustomersByStatus(widget.status, int.parse(orderBy))
+          : Customer().streamAllCustomers(int.parse(orderBy)),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
@@ -41,36 +48,38 @@ class _CustomerTabState extends State<CustomerTab> {
                 alignment: Alignment.topRight,
                 child: Padding(
                   padding: EdgeInsets.all(10),
-                  child: RaisedButton.icon(
-                      color: CustomColors.mfinWhite,
-                      icon: Icon(
-                        ascByName == 1
-                            ? Icons.keyboard_arrow_up
-                            : Icons.keyboard_arrow_down,
-                        color: ascByName == 1
-                            ? CustomColors.mfinBlue
-                            : CustomColors.mfinGrey,
-                        size: 25,
+                  child: Container(
+                    width: 155,
+                    height: 50,
+                    child: DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Order By',
+                        labelStyle: TextStyle(
+                          color: CustomColors.mfinBlue,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        fillColor: CustomColors.mfinWhite,
+                        filled: true,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 10.0),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: CustomColors.mfinWhite)),
                       ),
-                      label: Text(
-                        ascByName == 0
-                            ? "Created At"
-                            : ascByName == 1 ? "Name Asc" : "Name Desc",
-                        style: TextStyle(
-                            color: ascByName == 1
-                                ? CustomColors.mfinBlue
-                                : CustomColors.mfinGrey,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          if (ascByName == 1)
-                            ascByName = 2;
-                          else
-                            ascByName = 1;
-                        });
-                      }),
+                      items: _selectedOrderBy.entries.map(
+                        (f) {
+                          return DropdownMenuItem<String>(
+                            value: f.key,
+                            child: Text(f.value),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (newVal) {
+                        _setOrderBy(newVal);
+                      },
+                      value: orderBy,
+                    ),
+                  ),
                 ),
               ),
               ListView.builder(
@@ -145,7 +154,7 @@ class _CustomerTabState extends State<CustomerTab> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: new Text(
+                                title: Text(
                                   "Confirm!",
                                   style: TextStyle(
                                       color: CustomColors.mfinAlertRed,
@@ -223,7 +232,7 @@ class _CustomerTabState extends State<CustomerTab> {
                 height: 90,
                 child: Column(
                   children: <Widget>[
-                    new Spacer(),
+                    Spacer(),
                     Text(
                       "No Customers!",
                       style: TextStyle(
@@ -232,7 +241,7 @@ class _CustomerTabState extends State<CustomerTab> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    new Spacer(
+                    Spacer(
                       flex: 2,
                     ),
                     Text(
@@ -244,7 +253,7 @@ class _CustomerTabState extends State<CustomerTab> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    new Spacer(),
+                    Spacer(),
                   ],
                 ),
               ),
@@ -264,5 +273,11 @@ class _CustomerTabState extends State<CustomerTab> {
         );
       },
     );
+  }
+
+  _setOrderBy(String newVal) {
+    setState(() {
+      orderBy = newVal;
+    });
   }
 }
