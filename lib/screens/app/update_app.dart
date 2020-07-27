@@ -38,6 +38,8 @@ class _UpdateAppState extends State<UpdateApp> {
 
     await sPref.setBool('payment_enabled', conf.payEnabled ?? true);
     await sPref.setBool('recharge_enabled', conf.rechargeEnabled ?? true);
+    await sPref.setInt('referral_bonus', conf.referralBonus ?? 25);
+    await sPref.setInt('registration_bonus', conf.registrationBonus ?? 25);
 
     Version minAppVersion = Version.parse(conf.minVersion);
     Version latestAppVersion = Version.parse(conf.cVersion);

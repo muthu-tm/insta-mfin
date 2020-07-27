@@ -18,6 +18,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class ViewPayment extends StatefulWidget {
   ViewPayment(this.payment);
 
@@ -67,7 +69,9 @@ class _ViewPaymentState extends State<ViewPayment> {
               onPressed: () async {
                 _scaffoldKey.currentState.showSnackBar(
                     CustomSnackBar.successSnackBar(
-                        "Generating your Payment Report! Please wait...", 5));
+                        AppLocalizations.of(context)
+                            .translate('generating_payment_report'),
+                        5));
                 await PayReceipt().generateInvoice(
                     UserController().getCurrentUser(), widget.payment);
               }),
@@ -88,7 +92,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                      title: Text('Add Collection'),
+                      title: Text(AppLocalizations.of(context)
+                          .translate('add_collection')),
                       leading: Icon(
                         Icons.monetization_on,
                         color: CustomColors.mfinBlue,
@@ -98,7 +103,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "You cannot add collection for SETTLED Payment!",
+                              AppLocalizations.of(context)
+                                  .translate('payment_settled'),
                               3,
                             ),
                           );
@@ -116,7 +122,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                       },
                     ),
                     ListTile(
-                        title: Text('View Payment'),
+                        title: Text(AppLocalizations.of(context)
+                            .translate('view_payment')),
                         leading: Icon(
                           Icons.remove_red_eye,
                           color: CustomColors.mfinBlue,
@@ -134,7 +141,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                               });
                         }),
                     ListTile(
-                      title: Text('Edit Payment'),
+                      title: Text(AppLocalizations.of(context)
+                          .translate('edit_payment')),
                       leading: Icon(
                         Icons.edit,
                         color: CustomColors.mfinBlue,
@@ -146,7 +154,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "You cannot Edit Payments which has valid COLLECTION!}",
+                              AppLocalizations.of(context)
+                                  .translate('valid_collection'),
                               3,
                             ),
                           );
@@ -162,7 +171,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                         } else {
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "Error, Please try again later!}",
+                              AppLocalizations.of(context)
+                                  .translate('please_fill'),
                               3,
                             ),
                           );
@@ -170,7 +180,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                       },
                     ),
                     ListTile(
-                      title: Text('Do Settlement'),
+                      title: Text(
+                        AppLocalizations.of(context).translate('do_settlement'),
+                      ),
                       leading: Icon(
                         Icons.account_balance_wallet,
                         color: CustomColors.mfinBlue,
@@ -207,7 +219,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                       },
                     ),
                     ListTile(
-                        title: Text('Delete Payment'),
+                        title: Text(AppLocalizations.of(context)
+                            .translate('delete_payment')),
                         leading: Icon(
                           Icons.delete_forever,
                           color: CustomColors.mfinAlertRed,
@@ -226,7 +239,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 Navigator.pop(context);
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                    "You cannot Remove Payments which has already received COLLECTION!}",
+                                    AppLocalizations.of(context)
+                                        .translate('received_collection'),
                                     3,
                                   ),
                                 );
@@ -251,7 +265,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
-                                        "Payment removed successfully", 2),
+                                        AppLocalizations.of(context)
+                                            .translate('payment_removed'),
+                                        2),
                                   );
                                   Navigator.pop(context);
                                 }
@@ -260,7 +276,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 Navigator.pop(context);
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                    "Error, Please try again later!}",
+                                    AppLocalizations.of(context)
+                                        .translate('error_later'),
                                     3,
                                   ),
                                 );
@@ -272,7 +289,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                           );
                         }),
                     ListTile(
-                      title: Text('Home'),
+                      title:
+                          Text(AppLocalizations.of(context).translate('home')),
                       leading: Icon(
                         Icons.home,
                         color: CustomColors.mfinBlue,
@@ -314,7 +332,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "CUSTOMER",
+                          AppLocalizations.of(context)
+                              .translate('customer_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -346,7 +365,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "DATE",
+                          AppLocalizations.of(context).translate('date_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -386,7 +405,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "AMOUNT",
+                          AppLocalizations.of(context).translate('amount_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -416,7 +435,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "PAY OUT",
+                          AppLocalizations.of(context)
+                              .translate('pay_out_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -457,7 +477,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   width: 150,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    "DO SETTLEMENT",
+                                    AppLocalizations.of(context)
+                                        .translate('do_settlement'),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: CustomColors.mfinWhite,
@@ -500,7 +521,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 child: RichText(
                                   textAlign: TextAlign.center,
                                   text: TextSpan(
-                                    text: 'SETTLED ON',
+                                    text: AppLocalizations.of(context)
+                                        .translate('settled_on'),
                                     style: TextStyle(
                                       color: CustomColors.mfinWhite,
                                       fontFamily: 'Georgia',

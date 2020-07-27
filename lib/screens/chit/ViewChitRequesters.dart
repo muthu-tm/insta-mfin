@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
+import '../../app_localizations.dart';
+
 class ViewChitRequesters extends StatefulWidget {
   ViewChitRequesters(this.chit);
 
@@ -26,7 +28,8 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Requesters ${widget.chit.chitID}'),
+        title: Text(
+            '${AppLocalizations.of(context).translate('requesters')} ${widget.chit.chitID}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -41,7 +44,9 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
             ),
           );
         },
-        label: Text("Add"),
+        label: Text(
+          AppLocalizations.of(context).translate('add'),
+        ),
         icon: Icon(
           Icons.add,
           color: CustomColors.mfinFadedButtonGreen,
@@ -85,7 +90,8 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                         children: <Widget>[
                           ListTile(
                             leading: Text(
-                              'Customer:',
+                              AppLocalizations.of(context)
+                                  .translate('customers_colon'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -103,7 +109,8 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Requested At:',
+                              AppLocalizations.of(context)
+                                  .translate('requested_at_colon'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -142,17 +149,23 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
                                         CustomSnackBar.successSnackBar(
-                                            "'Marked As Allocated' successfully",
+                                            AppLocalizations.of(context)
+                                                .translate('marked_collected'),
                                             2));
                                   } catch (err) {
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
                                         CustomSnackBar.errorSnackBar(
-                                            "Error, Unable to update now!", 2));
+                                            AppLocalizations.of(context)
+                                                .translate('unable_to_update'),
+                                            2));
                                   }
                                 },
                                 icon: Icon(Icons.edit),
-                                label: Text("Mark As Allocated"),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('mark_as_allocated'),
+                                ),
                               ),
                               FlatButton.icon(
                                 onPressed: () async {
@@ -167,19 +180,27 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                                         chitReq.createdAt);
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
-                                        CustomSnackBar.successSnackBar(
-                                            "Removed the request successfully",
-                                            2));
+                                      CustomSnackBar.successSnackBar(
+                                          AppLocalizations.of(context)
+                                              .translate('removed_request'),
+                                          2),
+                                    );
                                   } catch (err) {
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
-                                        CustomSnackBar.errorSnackBar(
-                                            "Error, Unable to remove request now!",
-                                            2));
+                                      CustomSnackBar.errorSnackBar(
+                                          AppLocalizations.of(context)
+                                              .translate(
+                                                  'unable_remove_request'),
+                                          2),
+                                    );
                                   }
                                 },
                                 icon: Icon(Icons.remove_circle),
-                                label: Text("Remove Request"),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('remove_request'),
+                                ),
                               ),
                             ],
                           ),
@@ -193,7 +214,7 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
           } else {
             children = [
               Text(
-                "No Requesters for this Chit!",
+                AppLocalizations.of(context).translate('no_requesters_chit'),
                 style: TextStyle(
                   color: CustomColors.mfinAlertRed,
                   fontSize: 18.0,

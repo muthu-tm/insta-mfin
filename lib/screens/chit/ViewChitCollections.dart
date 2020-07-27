@@ -11,6 +11,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class ViewChitCollections extends StatefulWidget {
   ViewChitCollections(this.chitID, this.fundDetails);
 
@@ -30,7 +32,8 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Chit ${widget.chitID} - ${widget.fundDetails.chitNumber}'),
+        title: Text(
+            '${AppLocalizations.of(context).translate('chit')} ${widget.chitID} - ${widget.fundDetails.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(child: _getBody()),
@@ -90,7 +93,8 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Received:',
+                              AppLocalizations.of(context)
+                                  .translate('received'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -126,14 +130,16 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                                   );
                                 },
                                 icon: Icon(Icons.remove_red_eye),
-                                label: Text("View"),
+                                label: Text(AppLocalizations.of(context)
+                                    .translate('view')),
                               ),
                               FlatButton.icon(
                                 onPressed: () {
                                   if (chitColl.isPaid) {
                                     _scaffoldKey.currentState.showSnackBar(
                                       CustomSnackBar.errorSnackBar(
-                                          "Already collected full CHIT amount from customer!",
+                                          AppLocalizations.of(context)
+                                              .translate('chit_full'),
                                           2),
                                     );
                                     return;
@@ -151,7 +157,10 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                                   }
                                 },
                                 icon: Icon(Icons.monetization_on),
-                                label: Text("Add Collection"),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('add_collection'),
+                                ),
                               ),
                             ],
                           ),
@@ -170,7 +179,8 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Collections for this Chit!",
+                      AppLocalizations.of(context)
+                          .translate('no_collection_chit'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -195,7 +205,7 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
             children: <Widget>[
               ListTile(
                 leading: Text(
-                  'Chit Date:',
+                  AppLocalizations.of(context).translate('chit_date_colon'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,
@@ -214,7 +224,7 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
               ),
               ListTile(
                 leading: Text(
-                  'Total Amount:',
+                  AppLocalizations.of(context).translate('total_amount_colon'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,

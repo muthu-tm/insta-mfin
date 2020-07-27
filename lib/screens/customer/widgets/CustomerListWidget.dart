@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../../app_localizations.dart';
+
 class CustomerListWidget extends StatelessWidget {
   CustomerListWidget(this._scaffoldKey, this.title, this.userStatus);
 
@@ -49,7 +51,8 @@ class CustomerListWidget extends StatelessWidget {
                           } else {
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
-                                  "Customer doesn't have valid mobile number!",
+                                  AppLocalizations.of(context)
+                                      .translate('customer_invalid_number'),
                                   3),
                             );
                           }
@@ -66,7 +69,8 @@ class CustomerListWidget extends StatelessWidget {
                             } else {
                               _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
-                                    "Customer doesn't have valid mobile number!",
+                                    AppLocalizations.of(context)
+                                        .translate('customer_invalid_number'),
                                     3),
                               );
                             }
@@ -98,7 +102,8 @@ class CustomerListWidget extends StatelessWidget {
                             builder: (context) {
                               return AlertDialog(
                                 title: new Text(
-                                  "Confirm!",
+                                  AppLocalizations.of(context)
+                                      .translate('confirm'),
                                   style: TextStyle(
                                       color: CustomColors.mfinAlertRed,
                                       fontSize: 25.0,
@@ -106,12 +111,13 @@ class CustomerListWidget extends StatelessWidget {
                                   textAlign: TextAlign.start,
                                 ),
                                 content: Text(
-                                    'Are you sure to remove ${snapshot.data[index].firstName} ${snapshot.data[index].lastName} Customer?'),
+                                    '${AppLocalizations.of(context).translate('are_you_sure')} ${snapshot.data[index].firstName} ${snapshot.data[index].lastName} ${AppLocalizations.of(context).translate('customer')}'),
                                 actions: <Widget>[
                                   FlatButton(
                                     color: CustomColors.mfinButtonGreen,
                                     child: Text(
-                                      "NO",
+                                      AppLocalizations.of(context)
+                                          .translate('no'),
                                       style: TextStyle(
                                           color: CustomColors.mfinBlue,
                                           fontSize: 18.0,
@@ -123,7 +129,8 @@ class CustomerListWidget extends StatelessWidget {
                                   FlatButton(
                                     color: CustomColors.mfinAlertRed,
                                     child: Text(
-                                      "YES",
+                                      AppLocalizations.of(context)
+                                          .translate('yes'),
                                       style: TextStyle(
                                           color: CustomColors.mfinLightGrey,
                                           fontSize: 18.0,
@@ -138,7 +145,8 @@ class CustomerListWidget extends StatelessWidget {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
-                                            "There are few Payments available for this Customer. Please remove the Payments first!",
+                                            AppLocalizations.of(context)
+                                                .translate('remove_payment'),
                                             3,
                                           ),
                                         );
@@ -147,7 +155,9 @@ class CustomerListWidget extends StatelessWidget {
                                         print("Customer removed successfully");
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
-                                              "Customer removed successfully",
+                                              AppLocalizations.of(context)
+                                                  .translate(
+                                                      'customer_removed'),
                                               2),
                                         );
                                       }
@@ -171,7 +181,7 @@ class CustomerListWidget extends StatelessWidget {
               ),
             ];
           } else {
-            // No cistomers available
+            // No customers available
             children = [
               Container(
                 height: 90,
@@ -179,7 +189,7 @@ class CustomerListWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Customers!",
+                      AppLocalizations.of(context).translate('no_customers'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -190,7 +200,7 @@ class CustomerListWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Search for different type!",
+                      AppLocalizations.of(context).translate('search_type'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,

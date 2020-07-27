@@ -7,6 +7,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/chit/chit_controller.dart';
 
+import '../../app_localizations.dart';
+
 class AddChitRequester extends StatefulWidget {
   AddChitRequester(this.chit);
 
@@ -48,7 +50,9 @@ class _AddChitRequesterState extends State<AddChitRequester> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        title: Text('New Requester'),
+        title: Text(
+          AppLocalizations.of(context).translate('new_requester'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -58,7 +62,7 @@ class _AddChitRequesterState extends State<AddChitRequester> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -84,7 +88,7 @@ class _AddChitRequesterState extends State<AddChitRequester> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "Customer:",
+                    AppLocalizations.of(context).translate('customer_colon'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -116,7 +120,7 @@ class _AddChitRequesterState extends State<AddChitRequester> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "Chit:",
+                    AppLocalizations.of(context).translate('chit_colon'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -148,7 +152,8 @@ class _AddChitRequesterState extends State<AddChitRequester> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "Requested At:",
+                    AppLocalizations.of(context)
+                        .translate('requested_at_colon'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -182,7 +187,7 @@ class _AddChitRequesterState extends State<AddChitRequester> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "NOTES:",
+                    AppLocalizations.of(context).translate('notes_colon'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -195,7 +200,8 @@ class _AddChitRequesterState extends State<AddChitRequester> {
                   keyboardType: TextInputType.text,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: "Short notes",
+                    hintText:
+                        AppLocalizations.of(context).translate('short_notes'),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -262,8 +268,8 @@ class _AddChitRequesterState extends State<AddChitRequester> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

@@ -10,6 +10,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/collection_receipt.dart';
 
+import '../../app_localizations.dart';
+
 class ViewCollection extends StatelessWidget {
   ViewCollection(this.pay, this._collection, this.iconColor);
 
@@ -76,7 +78,7 @@ class ViewCollection extends StatelessWidget {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    "CUSTOMER",
+                    AppLocalizations.of(context).translate('customer_caps'),
                     style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Georgia",
@@ -136,7 +138,7 @@ class ViewCollection extends StatelessWidget {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    "AMOUNT",
+                    AppLocalizations.of(context).translate('amount_caps'),
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Georgia",
@@ -165,7 +167,7 @@ class ViewCollection extends StatelessWidget {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    "RECEIVED",
+                    AppLocalizations.of(context).translate('received_caps'),
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Georgia",
@@ -194,7 +196,7 @@ class ViewCollection extends StatelessWidget {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    "DATE",
+                    AppLocalizations.of(context).translate('date_caps'),
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Georgia",
@@ -235,7 +237,8 @@ class ViewCollection extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "Unable to find the collection Details",
+                      AppLocalizations.of(context)
+                          .translate('unable_find_collection'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -256,7 +259,9 @@ class ViewCollection extends StatelessWidget {
 
         return new Scaffold(
           appBar: AppBar(
-            title: Text('View Collection'),
+            title: Text(
+              AppLocalizations.of(context).translate('view_collection'),
+            ),
             backgroundColor: CustomColors.mfinBlue,
           ),
           key: _scaffoldKey,

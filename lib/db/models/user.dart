@@ -6,7 +6,9 @@ import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
+import 'package:instamfin/db/models/user_referees.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/account_preferences.dart';
@@ -22,6 +24,8 @@ class User extends Model {
   String name;
   @JsonKey(name: 'mobile_number', nullable: false)
   int mobileNumber;
+  @JsonKey(name: 'referrer_number', nullable: false)
+  int referrerNumber;
   @JsonKey(name: 'emailID', defaultValue: "")
   String emailID;
   @JsonKey(name: 'password', nullable: false)
@@ -123,7 +127,7 @@ class User extends Model {
   DocumentReference getDocumentReference() {
     return _userCollRef.document(this.mobileNumber.toString());
   }
-  
+
   String getID() {
     return this.mobileNumber.toString();
   }
@@ -160,6 +164,66 @@ class User extends Model {
 
   Future updatePlatformDetails(Map<String, dynamic> data) async {
     this.update(data);
+  }
+
+  Future<void> claimRegistrationBonus(int bonus) async {
+    try {
+      QuerySnapshot snap = await UserReferees()
+          .getCollectionRef(getID())
+          .where('type', isEqualTo: 0)
+          .getDocuments();
+
+      if (snap.documents.isNotEmpty) {
+        throw 'Already you have claimed your Registration Bonus!';
+      } else {
+        var regData = {
+          "user_number": this.mobileNumber,
+          "guid": this.guid,
+          "amount": bonus,
+          "type": 0,
+          "registered_at": DateUtils.getUTCDateEpoch(this.createdAt),
+          "created_at": DateTime.now()
+        };
+
+        await UserReferees()
+            .getCollectionRef(getID())
+            .document()
+            .setData(regData);
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<void> updateReferralCode(int referrerNumber, int bonus) async {
+    try {
+      WriteBatch bWrite = Model.db.batch();
+      var userJSON = await getByID(referrerNumber.toString());
+
+      if (userJSON == null)
+        throw 'Error, Referrer not Found!';
+      else {
+        User referrer = User.fromJson(userJSON);
+        var referrerData = {
+          "user_number": this.mobileNumber,
+          "guid": this.guid,
+          "amount": bonus,
+          "type": 1,
+          "registered_at": DateUtils.getUTCDateEpoch(this.createdAt),
+          "created_at": DateTime.now()
+        };
+        bWrite.setData(
+            UserReferees().getCollectionRef(referrer.getID()).document(),
+            referrerData);
+      }
+      bWrite.updateData(
+          this.getDocumentReference(), {'referrer_number': referrerNumber});
+      await bWrite.commit();
+
+      UserController().getCurrentUser().referrerNumber = referrerNumber;
+    } catch (err) {
+      throw err;
+    }
   }
 
   Future updatePrimaryDetails(int mobileNumber, String guid, String financeID,

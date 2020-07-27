@@ -8,6 +8,8 @@ import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
+import '../../app_localizations.dart';
+
 class EditCustomerProfile extends StatefulWidget {
   EditCustomerProfile(this.cust);
 
@@ -56,7 +58,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -90,7 +92,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         height: 40,
                         alignment: Alignment.center,
                         child: Text(
-                          "Personal Details",
+                          AppLocalizations.of(context)
+                              .translate('personal_details'),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18,
@@ -120,7 +123,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                     fontSize: 16.0,
                                     color: CustomColors.mfinBlue,
                                   ),
-                                  labelText: 'Mobile',
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('mobile'),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -155,7 +159,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 initialValue: widget.cust.customerID,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
-                                  labelText: 'Customer ID',
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('customer_id'),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -192,7 +197,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 initialValue: widget.cust.firstName,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
-                                  labelText: 'First Name',
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('first_name'),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -222,7 +228,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 initialValue: widget.cust.lastName,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
-                                  labelText: 'Last Name',
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('last_name'),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -262,7 +269,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                'Gender',
+                                AppLocalizations.of(context)
+                                    .translate('gender'),
                                 style: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -291,7 +299,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   Flexible(
                                     flex: 1,
                                     child: Text(
-                                      'Male',
+                                      AppLocalizations.of(context)
+                                          .translate('male'),
                                       style: TextStyle(
                                         fontSize: 18,
                                         color: CustomColors.mfinBlue,
@@ -320,7 +329,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   Flexible(
                                     flex: 2,
                                     child: Text(
-                                      'Female',
+                                      AppLocalizations.of(context)
+                                          .translate('female'),
                                       style: TextStyle(
                                         fontSize: 18,
                                         color: CustomColors.mfinBlue,
@@ -345,7 +355,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                     controller: _date,
                                     keyboardType: TextInputType.datetime,
                                     decoration: InputDecoration(
-                                      labelText: 'Joined On',
+                                      labelText: AppLocalizations.of(context)
+                                          .translate('joined_on'),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always,
                                       labelStyle: TextStyle(
@@ -374,7 +385,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 initialValue: widget.cust.profession,
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
-                                  labelText: 'Profession',
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('profession'),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -412,7 +424,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 initialValue: widget.cust.age.toString(),
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
-                                  labelText: 'Age',
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('age'),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -445,7 +458,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                     widget.cust.guarantiedBy.toString(),
                                 textAlign: TextAlign.start,
                                 decoration: InputDecoration(
-                                  labelText: 'Guarantee by',
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('guarantee_by'),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
@@ -529,8 +543,8 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill valid data!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

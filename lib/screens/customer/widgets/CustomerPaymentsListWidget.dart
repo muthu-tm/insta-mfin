@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 
+import '../../../app_localizations.dart';
+
 class CustomerPaymentsListWidget extends StatelessWidget {
   CustomerPaymentsListWidget(this.id, this._scaffoldKey);
 
@@ -48,7 +50,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                           if (payment.isSettled) {
                             _scaffoldKey.currentState
                                 .showSnackBar(CustomSnackBar.errorSnackBar(
-                              "You cannot Edit already 'SETTLED' Payment!}",
+                              AppLocalizations.of(context)
+                                  .translate('unable_edit_payment'),
                               3,
                             ));
                           } else {
@@ -58,20 +61,22 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                               builder: (context) {
                                 return AlertDialog(
                                   title: new Text(
-                                    "Confirm!",
+                                    AppLocalizations.of(context)
+                                        .translate('confirm'),
                                     style: TextStyle(
                                         color: CustomColors.mfinAlertRed,
                                         fontSize: 25.0,
                                         fontWeight: FontWeight.bold),
                                     textAlign: TextAlign.start,
                                   ),
-                                  content: Text(
-                                      'Are you sure to remove this Payment?'),
+                                  content: Text(AppLocalizations.of(context)
+                                      .translate('sure_remove_payment')),
                                   actions: <Widget>[
                                     FlatButton(
                                       color: CustomColors.mfinButtonGreen,
                                       child: Text(
-                                        "NO",
+                                        AppLocalizations.of(context)
+                                            .translate('no_caps'),
                                         style: TextStyle(
                                             color: CustomColors.mfinBlue,
                                             fontSize: 18.0,
@@ -83,7 +88,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                     FlatButton(
                                       color: CustomColors.mfinAlertRed,
                                       child: Text(
-                                        "YES",
+                                        AppLocalizations.of(context)
+                                            .translate('yes'),
                                         style: TextStyle(
                                             color: CustomColors.mfinLightGrey,
                                             fontSize: 18.0,
@@ -100,7 +106,9 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                           _scaffoldKey.currentState
                                               .showSnackBar(
                                             CustomSnackBar.errorSnackBar(
-                                              "You cannot Remove Payments which has already received COLLECTION!}",
+                                              AppLocalizations.of(context)
+                                                  .translate(
+                                                      'received_collection'),
                                               3,
                                             ),
                                           );
@@ -126,7 +134,9 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                             _scaffoldKey.currentState
                                                 .showSnackBar(
                                               CustomSnackBar.errorSnackBar(
-                                                  "Payment removed successfully",
+                                                  AppLocalizations.of(context)
+                                                      .translate(
+                                                          'customer_removed'),
                                                   2),
                                             );
                                           }
@@ -135,7 +145,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                           _scaffoldKey.currentState
                                               .showSnackBar(
                                             CustomSnackBar.errorSnackBar(
-                                              "Error, Please try again later!}",
+                                              AppLocalizations.of(context)
+                                                  .translate('error_later'),
                                               3,
                                             ),
                                           );
@@ -163,7 +174,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                           if (payment.isSettled) {
                             _scaffoldKey.currentState
                                 .showSnackBar(CustomSnackBar.errorSnackBar(
-                              "You cannot Edit already 'SETTLED' Payment!}",
+                              AppLocalizations.of(context)
+                                  .translate('unable_edit_payment'),
                               3,
                             ));
                           } else {
@@ -172,7 +184,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                             if (totalReceived != null && totalReceived > 0) {
                               _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
-                                  "You cannot Edit Payments which has valid COLLECTION!}",
+                                  AppLocalizations.of(context)
+                                      .translate('valid_collection'),
                                   3,
                                 ),
                               );
@@ -188,7 +201,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                             } else {
                               _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
-                                  "Error, Please try again later!}",
+                                  AppLocalizations.of(context)
+                                      .translate('error_later'),
                                   3,
                                 ),
                               );
@@ -211,7 +225,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Payments!",
+                      AppLocalizations.of(context).translate('no_payments'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -222,7 +236,8 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Add this customer's Payments!",
+                      AppLocalizations.of(context)
+                          .translate('add_customer_payment'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
@@ -248,7 +263,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: Text(
-                  "PAYMENTS",
+                  AppLocalizations.of(context).translate('payments_caps'),
                   style: TextStyle(
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
@@ -258,7 +273,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                 ),
                 trailing: RichText(
                   text: TextSpan(
-                    text: "Total: ",
+                    text: AppLocalizations.of(context).translate('total_colon'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontWeight: FontWeight.bold,

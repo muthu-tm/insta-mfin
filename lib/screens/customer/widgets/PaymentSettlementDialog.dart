@@ -6,6 +6,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 
+import '../../../app_localizations.dart';
+
 class PaymentSettlementDialog extends StatefulWidget {
   PaymentSettlementDialog(this._scaffoldKey, this._p, this.pDetails);
 
@@ -52,7 +54,7 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                 Padding(
                   padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
                   child: Text(
-                    "SETTLEMENT",
+                    AppLocalizations.of(context).translate('settlement_caps'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: CustomColors.mfinPositiveGreen,
@@ -74,7 +76,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                           textAlign: TextAlign.end,
                           initialValue: widget._p.totalAmount.toString(),
                           decoration: InputDecoration(
-                            labelText: 'Total Amount',
+                            labelText: AppLocalizations.of(context)
+                                .translate('total_amount'),
                             labelStyle: TextStyle(
                               color: CustomColors.mfinBlue,
                             ),
@@ -99,7 +102,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                           textAlign: TextAlign.end,
                           initialValue: widget._p.principalAmount.toString(),
                           decoration: InputDecoration(
-                            labelText: 'Amount Given',
+                            labelText: AppLocalizations.of(context)
+                                .translate('amount_given'),
                             labelStyle: TextStyle(
                               color: CustomColors.mfinBlue,
                             ),
@@ -129,7 +133,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                           textAlign: TextAlign.end,
                           initialValue: widget.pDetails[0].toString(),
                           decoration: InputDecoration(
-                            labelText: 'Total Received',
+                            labelText: AppLocalizations.of(context)
+                                .translate('total_received'),
                             labelStyle: TextStyle(
                               color: CustomColors.mfinPositiveGreen,
                             ),
@@ -154,7 +159,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                           textAlign: TextAlign.end,
                           initialValue: widget.pDetails[1].toString(),
                           decoration: InputDecoration(
-                            labelText: 'Pending Amount',
+                            labelText: AppLocalizations.of(context)
+                                .translate('pending_amount'),
                             labelStyle: TextStyle(
                               color: CustomColors.mfinAlertRed,
                             ),
@@ -182,7 +188,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
                         child: Text(
-                          "Total Remaining",
+                          AppLocalizations.of(context)
+                              .translate('total_remaining'),
                           style: TextStyle(
                             fontSize: 14,
                             fontFamily: "Georgia",
@@ -233,7 +240,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.4,
                               child: Text(
-                                "Settlement Amount",
+                                AppLocalizations.of(context)
+                                    .translate('settle_amount'),
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontFamily: "Georgia",
@@ -289,7 +297,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                                 initialValue: widget._p.custName,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
-                                  labelText: "Received From",
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('received_from'),
                                   labelStyle: TextStyle(
                                     color: CustomColors.mfinBlue,
                                   ),
@@ -323,7 +332,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                                     controller: _date,
                                     keyboardType: TextInputType.datetime,
                                     decoration: InputDecoration(
-                                      labelText: 'Settlement On',
+                                      labelText: AppLocalizations.of(context)
+                                          .translate('settlement_on'),
                                       labelStyle: TextStyle(
                                         color: CustomColors.mfinBlue,
                                       ),
@@ -353,7 +363,7 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                           Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text(
-                              "Notes:",
+                              AppLocalizations.of(context).translate('notes'),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: "Georgia",
@@ -415,7 +425,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                             width: 120,
                             alignment: Alignment.center,
                             child: Text(
-                              "CLOSE",
+                              AppLocalizations.of(context)
+                                  .translate('close_caps'),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColors.mfinWhite,
@@ -439,7 +450,8 @@ class _PaymentSettlementDialogState extends State<PaymentSettlementDialog> {
                             width: 120,
                             alignment: Alignment.center,
                             child: Text(
-                              "SETTLEMENT",
+                              AppLocalizations.of(context)
+                                  .translate('settlement_caps'),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColors.mfinWhite,

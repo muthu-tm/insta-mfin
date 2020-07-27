@@ -349,7 +349,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 15.0, top: 10),
                         child: Text(
-                          "SUPPORT Language",
+                          "App Language",
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 16,

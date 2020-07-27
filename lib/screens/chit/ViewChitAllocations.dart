@@ -11,6 +11,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/chit/chit_allocation_controller.dart';
 
+import '../../app_localizations.dart';
+
 class ViewChitAllocations extends StatefulWidget {
   ViewChitAllocations(this.chitAlloc, this.fund);
 
@@ -29,7 +31,8 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Allocations ${widget.chitAlloc.chitID}'),
+        title: Text(
+            "$AppLocalizations.of(context).translate('allocation') ${widget.chitAlloc.chitID}"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -45,7 +48,9 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
             ),
           );
         },
-        label: Text("Add"),
+        label: Text(
+          AppLocalizations.of(context).translate('add'),
+        ),
         icon: Icon(
           Icons.add,
           color: CustomColors.mfinFadedButtonGreen,
@@ -93,7 +98,8 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
                         children: <Widget>[
                           ListTile(
                             leading: Text(
-                              'Given on:',
+                              AppLocalizations.of(context)
+                                  .translate('given_on'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -113,7 +119,7 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Amount:',
+                              AppLocalizations.of(context).translate('amount'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -131,7 +137,8 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Given By:',
+                              AppLocalizations.of(context)
+                                  .translate('given_by'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -149,7 +156,8 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Given To:',
+                              AppLocalizations.of(context)
+                                  .translate('given_to'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -189,17 +197,25 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
                                         CustomSnackBar.successSnackBar(
-                                            "Removed the Allocation successfully",
+                                            AppLocalizations.of(context)
+                                                .translate(
+                                                    'removed_allocation'),
                                             2));
                                   } catch (err) {
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
-                                        CustomSnackBar.errorSnackBar(
-                                            "Error, Unable to remove now!", 2));
+                                      CustomSnackBar.errorSnackBar(
+                                          AppLocalizations.of(context)
+                                              .translate('unable_to_remove'),
+                                          2),
+                                    );
                                   }
                                 },
                                 icon: Icon(Icons.remove_circle),
-                                label: Text("Remove Allocation"),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('remove_allocation'),
+                                ),
                               ),
                             ],
                           ),
@@ -213,7 +229,7 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
           } else {
             children = [
               Text(
-                "No Allocations done for this Chit!",
+                AppLocalizations.of(context).translate('no_allocation_chit'),
                 style: TextStyle(
                   color: CustomColors.mfinAlertRed,
                   fontSize: 18.0,
@@ -234,7 +250,7 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
             children: <Widget>[
               ListTile(
                 leading: Text(
-                  'Chit Date:',
+                  AppLocalizations.of(context).translate('chit_date'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,
@@ -253,7 +269,7 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
               ),
               ListTile(
                 leading: Text(
-                  'Allocation Amount:',
+                  AppLocalizations.of(context).translate('allocation_amount'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,

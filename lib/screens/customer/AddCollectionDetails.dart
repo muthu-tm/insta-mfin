@@ -8,6 +8,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class AddCollectionDetails extends StatefulWidget {
   AddCollectionDetails(this.collection, this.custName);
 
@@ -65,7 +67,9 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Collection Details'),
+        title: Text(
+          AppLocalizations.of(context).translate('add_collection_details'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -75,7 +79,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -153,7 +157,8 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                               initialValue: widget.custName,
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
-                                labelText: "Customer Name",
+                                labelText: AppLocalizations.of(context)
+                                    .translate('customer_name'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -177,8 +182,10 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                   controller: _date,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    hintText: 'Date Collected',
-                                    labelText: "Collected On",
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('date_collected'),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('date_collected'),
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
@@ -206,8 +213,10 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                               keyboardType: TextInputType.number,
                               initialValue: totalAmount.toString(),
                               decoration: InputDecoration(
-                                hintText: 'Collected Amount',
-                                labelText: 'Collected Amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collected_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_amount'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -241,7 +250,8 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: 'Transferred Mode',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('transferred_mode'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -282,8 +292,10 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                               keyboardType: TextInputType.text,
                               initialValue: receivedFrom,
                               decoration: InputDecoration(
-                                hintText: 'Amount Received From',
-                                labelText: "Collected From",
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collected_from'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_from'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -313,8 +325,10 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                               keyboardType: TextInputType.text,
                               initialValue: collectedBy,
                               decoration: InputDecoration(
-                                hintText: 'Amount Collected by',
-                                labelText: "Collected By",
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collected_by'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_by'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -351,9 +365,10 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                               initialValue: notes,
                               maxLines: 2,
                               decoration: InputDecoration(
-                                labelText: 'Notes',
-                                hintText:
-                                    "Short notes/reference about the Collection",
+                                labelText: AppLocalizations.of(context)
+                                    .translate('notes'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('notes_hint'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -398,7 +413,8 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                         collDetails['is_paid_late'] = newValue;
                       },
                       title: Text(
-                        "Is Collected Late? ",
+                        AppLocalizations.of(context)
+                            .translate('is_collected_late'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -421,8 +437,10 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                         keyboardType: TextInputType.number,
                         initialValue: '0',
                         decoration: InputDecoration(
-                          hintText: 'Penalty Amount',
-                          labelText: 'Penalty Amount',
+                          hintText: AppLocalizations.of(context)
+                              .translate('penalty_amount'),
+                          labelText: AppLocalizations.of(context)
+                              .translate('penalty_amount'),
                           labelStyle: TextStyle(
                             color: CustomColors.mfinBlue,
                           ),
@@ -498,14 +516,14 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
           (widget.collection.collectionAmount -
               widget.collection.getReceived())) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "Collected AMOUNT must be equal or lesser than Balance Amount", 3));
+            AppLocalizations.of(context).translate('collected_equal'), 3));
       } else {
         CustomDialogs.actionWaiting(context, "Updating Collection");
         CollectionController _cc = CollectionController();
         bool isPaid = false;
 
-        if (collDetails['amount'] + widget.collection.getReceived() >= widget.collection.collectionAmount)
-          isPaid = true;
+        if (collDetails['amount'] + widget.collection.getReceived() >=
+            widget.collection.collectionAmount) isPaid = true;
 
         collDetails['transferred_mode'] = int.parse(transferredMode);
         collDetails['created_at'] = DateTime.now();
@@ -532,8 +550,8 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
         }
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 }

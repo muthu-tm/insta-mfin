@@ -8,6 +8,8 @@ import 'package:instamfin/screens/chit/widgets/ChitCustomerAllocation.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
+import '../../app_localizations.dart';
+
 class ViewChitFund extends StatefulWidget {
   ViewChitFund(this.chit);
 
@@ -25,7 +27,8 @@ class _ViewChitFundState extends State<ViewChitFund> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Chit - ${widget.chit.chitID}'),
+        title: Text(
+            '${AppLocalizations.of(context).translate('chit')} - ${widget.chit.chitID}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -70,7 +73,8 @@ class _ViewChitFundState extends State<ViewChitFund> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Chit Amount',
+                              AppLocalizations.of(context)
+                                  .translate('chit_amount'),
                               style: TextStyle(
                                 color: CustomColors.mfinBlue,
                                 fontSize: 18.0,
@@ -88,7 +92,8 @@ class _ViewChitFundState extends State<ViewChitFund> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Allocation',
+                              AppLocalizations.of(context)
+                                  .translate('allocation'),
                               style: TextStyle(
                                 color: CustomColors.mfinBlue,
                                 fontSize: 18.0,
@@ -106,7 +111,8 @@ class _ViewChitFundState extends State<ViewChitFund> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Commission',
+                              AppLocalizations.of(context)
+                                  .translate('commission'),
                               style: TextStyle(
                                 color: CustomColors.mfinBlue,
                                 fontSize: 18.0,
@@ -141,7 +147,10 @@ class _ViewChitFundState extends State<ViewChitFund> {
                                   );
                                 },
                                 icon: Icon(Icons.payment),
-                                label: Text("Collections"),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('collections'),
+                                ),
                               ),
                               FlatButton.icon(
                                 onPressed: () async {
@@ -182,7 +191,10 @@ class _ViewChitFundState extends State<ViewChitFund> {
                                   }
                                 },
                                 icon: Icon(Icons.monetization_on),
-                                label: Text("Allocation"),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('allocation'),
+                                ),
                               ),
                             ],
                           ),

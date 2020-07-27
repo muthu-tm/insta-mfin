@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instamfin/app_localizations.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerListTile.dart';
@@ -54,7 +55,8 @@ class AllCustomerTab extends StatelessWidget {
                           } else {
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
-                                  "Customer doesn't have valid mobile number!",
+                                  AppLocalizations.of(context)
+                                      .translate('customer_invalid_number'),
                                   3),
                             );
                           }
@@ -70,7 +72,8 @@ class AllCustomerTab extends StatelessWidget {
                           } else {
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
-                                  "Customer doesn't have valid mobile number!",
+                                  AppLocalizations.of(context)
+                                      .translate('customer_invalid_number'),
                                   3),
                             );
                           }
@@ -102,7 +105,8 @@ class AllCustomerTab extends StatelessWidget {
                             builder: (context) {
                               return AlertDialog(
                                 title: new Text(
-                                  "Confirm!",
+                                  AppLocalizations.of(context)
+                                      .translate('confirm'),
                                   style: TextStyle(
                                       color: CustomColors.mfinAlertRed,
                                       fontSize: 25.0,
@@ -110,12 +114,13 @@ class AllCustomerTab extends StatelessWidget {
                                   textAlign: TextAlign.start,
                                 ),
                                 content: Text(
-                                    'Are you sure to remove ${cust.firstName} ${cust.lastName} Customer?'),
+                                    '${AppLocalizations.of(context).translate('sure_remove')} ${cust.firstName} ${cust.lastName} ${AppLocalizations.of(context).translate('customer_question')}'),
                                 actions: <Widget>[
                                   FlatButton(
                                     color: CustomColors.mfinButtonGreen,
                                     child: Text(
-                                      "NO",
+                                      AppLocalizations.of(context)
+                                          .translate('no'),
                                       style: TextStyle(
                                           color: CustomColors.mfinBlue,
                                           fontSize: 18.0,
@@ -127,7 +132,8 @@ class AllCustomerTab extends StatelessWidget {
                                   FlatButton(
                                     color: CustomColors.mfinAlertRed,
                                     child: Text(
-                                      "YES",
+                                      AppLocalizations.of(context)
+                                          .translate('yes'),
                                       style: TextStyle(
                                           color: CustomColors.mfinLightGrey,
                                           fontSize: 18.0,
@@ -142,7 +148,8 @@ class AllCustomerTab extends StatelessWidget {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
-                                            "There are few Payments available for this Customer. Please remove the Payments first!",
+                                            AppLocalizations.of(context)
+                                                .translate('remove_payment'),
                                             3,
                                           ),
                                         );
@@ -150,7 +157,9 @@ class AllCustomerTab extends StatelessWidget {
                                         Navigator.pop(context);
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.successSnackBar(
-                                              "Customer removed successfully",
+                                              AppLocalizations.of(context)
+                                                  .translate(
+                                                      'customer_removed'),
                                               2),
                                         );
                                       }
@@ -181,7 +190,7 @@ class AllCustomerTab extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Customers!",
+                      AppLocalizations.of(context).translate('no_customers'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -192,7 +201,7 @@ class AllCustomerTab extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Search for different type!",
+                      AppLocalizations.of(context).translate('search_type'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,

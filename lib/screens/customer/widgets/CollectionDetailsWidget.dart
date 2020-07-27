@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 
+import '../../../app_localizations.dart';
+
 class CollectionDetailsWidget extends StatelessWidget {
   CollectionDetailsWidget(
       this.paySettled, this._scaffoldKey, this._collection, this.custName);
@@ -25,7 +27,7 @@ class CollectionDetailsWidget extends StatelessWidget {
         _collection.collections.length == 0) {
       widget = <Widget>[
         Text(
-          "No Collection received yet!",
+          AppLocalizations.of(context).translate('no_collection_received'),
           style: TextStyle(
             color: CustomColors.mfinAlertRed,
             fontSize: 18.0,
@@ -35,7 +37,7 @@ class CollectionDetailsWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
           child: Text(
-            "Add collection using '+' button",
+            AppLocalizations.of(context).translate('add_collection_sign'),
             style: TextStyle(
               color: CustomColors.mfinBlue,
               fontSize: 18.0,
@@ -92,7 +94,7 @@ class CollectionDetailsWidget extends StatelessWidget {
               color: CustomColors.mfinButtonGreen,
             ),
             title: new Text(
-              "Collection Details",
+              AppLocalizations.of(context).translate('collection_details'),
               style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 18.0,
@@ -108,15 +110,17 @@ class CollectionDetailsWidget extends StatelessWidget {
                 if (paySettled) {
                   _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
-                          "You cannot edit already 'SETTLED' Payment", 2));
+                          AppLocalizations.of(context)
+                              .translate('unable_edit_payment'),
+                          2));
                 } else {
                   if (_collection.getReceived() <
                       _collection.collectionAmount) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddCollectionDetails(
-                            _collection, custName),
+                        builder: (context) =>
+                            AddCollectionDetails(_collection, custName),
                         settings: RouteSettings(
                             name:
                                 '/customers/payments/collections/collectiondetails/add'),
@@ -125,7 +129,9 @@ class CollectionDetailsWidget extends StatelessWidget {
                   } else {
                     _scaffoldKey.currentState.showSnackBar(
                         CustomSnackBar.errorSnackBar(
-                            "Collection AMOUNT already collected Fully", 2));
+                            AppLocalizations.of(context)
+                                .translate('collection_amount_fully'),
+                            2));
                   }
                 }
               },
@@ -163,7 +169,9 @@ class CollectionDetailsWidget extends StatelessWidget {
             if (paySettled) {
               _scaffoldKey.currentState.showSnackBar(
                   CustomSnackBar.errorSnackBar(
-                      "You cannot edit already 'SETTLED' Payment", 2));
+                      AppLocalizations.of(context)
+                          .translate('unable_edit_payment'),
+                      2));
             } else {
               var state = Slidable.of(context);
               var dismiss = await showDialog<bool>(
@@ -171,7 +179,7 @@ class CollectionDetailsWidget extends StatelessWidget {
                 builder: (context) {
                   return AlertDialog(
                     title: new Text(
-                      "Confirm!",
+                      AppLocalizations.of(context).translate('confirm'),
                       style: TextStyle(
                           color: CustomColors.mfinAlertRed,
                           fontSize: 25.0,
@@ -179,13 +187,13 @@ class CollectionDetailsWidget extends StatelessWidget {
                       textAlign: TextAlign.start,
                     ),
                     content: Text(
-                      "Are you sure to remove this ${_collectionDetails.amount} collection",
+                      "${AppLocalizations.of(context).translate('are_you_sure')} ${_collectionDetails.amount} ${AppLocalizations.of(context).translate('collection')}",
                     ),
                     actions: <Widget>[
                       FlatButton(
                         color: CustomColors.mfinButtonGreen,
                         child: Text(
-                          "NO",
+                          AppLocalizations.of(context).translate('no'),
                           style: TextStyle(
                               color: CustomColors.mfinBlue,
                               fontSize: 18.0,
@@ -197,7 +205,7 @@ class CollectionDetailsWidget extends StatelessWidget {
                       FlatButton(
                         color: CustomColors.mfinAlertRed,
                         child: Text(
-                          "YES",
+                          AppLocalizations.of(context).translate('yes'),
                           style: TextStyle(
                               color: CustomColors.mfinLightGrey,
                               fontSize: 18.0,
@@ -257,7 +265,7 @@ class CollectionDetailsWidget extends StatelessWidget {
                 children: <Widget>[
                   ListTile(
                     leading: Text(
-                      'Date',
+                      AppLocalizations.of(context).translate('date'),
                       style: TextStyle(
                           color: textColor,
                           fontFamily: 'Georgia',
@@ -276,7 +284,7 @@ class CollectionDetailsWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Text(
-                      "AMOUNT",
+                      AppLocalizations.of(context).translate('amount_caps'),
                       style: TextStyle(
                           color: textColor,
                           fontFamily: 'Georgia',
@@ -294,7 +302,7 @@ class CollectionDetailsWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Text(
-                      "FROM",
+                      AppLocalizations.of(context).translate('from'),
                       style: TextStyle(
                           color: textColor,
                           fontFamily: 'Georgia',
@@ -328,7 +336,7 @@ class CollectionDetailsWidget extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Text(
-              'By',
+              AppLocalizations.of(context).translate('by'),
               style: TextStyle(
                   color: CustomColors.mfinGrey,
                   fontFamily: 'Georgia',

@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 
+import '../../app_localizations.dart';
+
 class AddCustomer extends StatefulWidget {
   @override
   _AddCustomerState createState() => _AddCustomerState();
@@ -43,7 +45,9 @@ class _AddCustomerState extends State<AddCustomer> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('New Customer'),
+        title: Text(
+          AppLocalizations.of(context).translate('new_customer'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -53,7 +57,7 @@ class _AddCustomerState extends State<AddCustomer> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -86,7 +90,8 @@ class _AddCustomerState extends State<AddCustomer> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Personal Details",
+                        AppLocalizations.of(context)
+                            .translate('personal_details'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -113,7 +118,8 @@ class _AddCustomerState extends State<AddCustomer> {
                                   fontSize: 16.0,
                                   color: CustomColors.mfinBlue,
                                 ),
-                                labelText: 'Mobile',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('mobile'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -145,7 +151,8 @@ class _AddCustomerState extends State<AddCustomer> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
-                                labelText: 'Customer ID',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('customer_id'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -184,7 +191,8 @@ class _AddCustomerState extends State<AddCustomer> {
                               initialValue: firstname,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'First name',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('first_name'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -211,7 +219,8 @@ class _AddCustomerState extends State<AddCustomer> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
-                                labelText: 'Last name',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('last_name'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -251,7 +260,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              'Gender',
+                              AppLocalizations.of(context).translate('gender'),
                               style: TextStyle(
                                 color: CustomColors.mfinBlue,
                               ),
@@ -279,7 +288,8 @@ class _AddCustomerState extends State<AddCustomer> {
                                 Flexible(
                                   flex: 1,
                                   child: Text(
-                                    'Male',
+                                    AppLocalizations.of(context)
+                                        .translate('male'),
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: CustomColors.mfinBlue,
@@ -306,7 +316,8 @@ class _AddCustomerState extends State<AddCustomer> {
                                 Flexible(
                                   flex: 2,
                                   child: Text(
-                                    'Female',
+                                    AppLocalizations.of(context)
+                                        .translate('female'),
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: CustomColors.mfinBlue,
@@ -331,7 +342,8 @@ class _AddCustomerState extends State<AddCustomer> {
                                   controller: _date,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    labelText: 'Joined On',
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('joined_on'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
@@ -361,7 +373,8 @@ class _AddCustomerState extends State<AddCustomer> {
                               initialValue: profession,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Profession',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('profession'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -399,7 +412,8 @@ class _AddCustomerState extends State<AddCustomer> {
                               initialValue: age.toString(),
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Age',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('age'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -430,7 +444,8 @@ class _AddCustomerState extends State<AddCustomer> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Guarantee by',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('guarantee_by'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -510,8 +525,8 @@ class _AddCustomerState extends State<AddCustomer> {
         );
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('please_fill'), 2));
     }
   }
 

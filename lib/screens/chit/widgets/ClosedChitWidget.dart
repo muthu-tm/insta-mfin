@@ -6,6 +6,8 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 
+import '../../../app_localizations.dart';
+
 class ClosedChitWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,8 @@ class ClosedChitWidget extends StatelessWidget {
                             ),
                             ListTile(
                               leading: Text(
-                                'Published On:',
+                                AppLocalizations.of(context)
+                                    .translate('published_on_colon'),
                                 style: TextStyle(
                                   color: CustomColors.mfinGrey,
                                   fontSize: 18.0,
@@ -89,7 +92,8 @@ class ClosedChitWidget extends StatelessWidget {
                             ),
                             ListTile(
                               leading: Text(
-                                'Amount:',
+                                AppLocalizations.of(context)
+                                    .translate('amount_colon'),
                                 style: TextStyle(
                                   color: CustomColors.mfinGrey,
                                   fontSize: 18.0,
@@ -107,7 +111,8 @@ class ClosedChitWidget extends StatelessWidget {
                             ),
                             ListTile(
                               leading: Text(
-                                'Chit Day:',
+                                AppLocalizations.of(context)
+                                    .translate('chit_day_colon'),
                                 style: TextStyle(
                                   color: CustomColors.mfinGrey,
                                   fontSize: 18.0,
@@ -139,7 +144,7 @@ class ClosedChitWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Closed Chits!",
+                      AppLocalizations.of(context).translate('no_closed_chits'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -164,7 +169,7 @@ class ClosedChitWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: Text(
-                  "Closed Chits",
+                  AppLocalizations.of(context).translate('closed_chits'),
                   style: TextStyle(
                     fontFamily: "Georgia",
                     fontWeight: FontWeight.bold,
@@ -174,7 +179,7 @@ class ClosedChitWidget extends StatelessWidget {
                 ),
                 trailing: RichText(
                   text: TextSpan(
-                    text: "Total: ",
+                    text: AppLocalizations.of(context).translate('total_colon'),
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontWeight: FontWeight.bold,

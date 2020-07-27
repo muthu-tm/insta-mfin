@@ -14,6 +14,8 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class CustomersHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final User _user = UserController().getCurrentUser();
@@ -38,7 +40,9 @@ class CustomersHome extends StatelessWidget {
           drawer: openDrawer(context),
           appBar: AppBar(
             centerTitle: true,
-            title: Text("Customers"),
+            title: Text(
+              AppLocalizations.of(context).translate('customers'),
+            ),
             backgroundColor: CustomColors.mfinBlue,
             automaticallyImplyLeading: false,
             leading: InkWell(
@@ -84,7 +88,7 @@ class CustomersHome extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
                     child: Text(
-                      "All",
+                      AppLocalizations.of(context).translate('all_caps'),
                       style: TextStyle(
                         color: CustomColors.mfinWhite,
                       ),
@@ -96,7 +100,7 @@ class CustomersHome extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
                     child: Text(
-                      "Active",
+                      AppLocalizations.of(context).translate('active'),
                       style: TextStyle(
                         color: CustomColors.mfinButtonGreen,
                       ),
@@ -108,7 +112,7 @@ class CustomersHome extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
                     child: Text(
-                      "Pending",
+                      AppLocalizations.of(context).translate('pending'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                       ),
@@ -120,7 +124,7 @@ class CustomersHome extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
                     child: Text(
-                      "Settled",
+                      AppLocalizations.of(context).translate('settled'),
                       style: TextStyle(
                         color: CustomColors.mfinGrey,
                       ),
@@ -138,9 +142,11 @@ class CustomersHome extends StatelessWidget {
                       DateUtils.getUTCDateEpoch(DateTime.now()) &&
                   _user.chitSubscription <
                       DateUtils.getUTCDateEpoch(DateTime.now())) {
-                _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-                    "Your subscription has expired. Please Recharge to continue!",
-                    3));
+                _scaffoldKey.currentState.showSnackBar(
+                    CustomSnackBar.errorSnackBar(
+                        AppLocalizations.of(context)
+                            .translate('subscription_expired'),
+                        3));
                 return;
               }
               Navigator.push(

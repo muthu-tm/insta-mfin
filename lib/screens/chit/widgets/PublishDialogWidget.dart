@@ -3,6 +3,8 @@ import 'package:instamfin/db/models/chit_template.dart';
 import 'package:instamfin/screens/chit/PublishChitFund.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import '../../../app_localizations.dart';
+
 Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
   return SingleChildScrollView(
     child: Container(
@@ -16,7 +18,7 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Select from Template",
+              AppLocalizations.of(context).translate('select_from_template'),
               style: TextStyle(
                 fontSize: 16.0,
                 color: CustomColors.mfinBlue,
@@ -73,7 +75,7 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
                   )
                 : Container(
                     child: Text(
-                      "No Templates",
+                      AppLocalizations.of(context).translate('no_templates'),
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
@@ -103,7 +105,7 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
               label: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
-                  'Custom',
+                  AppLocalizations.of(context).translate('custom'),
                   style: TextStyle(
                     color: CustomColors.mfinButtonGreen,
                     fontSize: 18.0,
