@@ -37,11 +37,9 @@ Widget customerPaymentWidget(BuildContext context,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Spacer(
-                      flex: 1,
-                    ),
+                    Spacer(),
                     SizedBox(
-                      height: 20,
+                      height: 25,
                       child: Text(
                         DateUtils.getFormattedDateFromEpoch(
                             payment.dateOfPayment),
@@ -55,11 +53,8 @@ Widget customerPaymentWidget(BuildContext context,
                     Divider(
                       color: CustomColors.mfinButtonGreen,
                     ),
-                    Spacer(
-                      flex: 1,
-                    ),
                     SizedBox(
-                      height: 20,
+                      height: 25,
                       child: Text(
                         payment.totalAmount.toString(),
                         style: TextStyle(
@@ -69,11 +64,8 @@ Widget customerPaymentWidget(BuildContext context,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Spacer(
-                      flex: 1,
-                    ),
                     SizedBox(
-                      height: 20,
+                      height: 25,
                       child: RichText(
                         text: TextSpan(
                           text: '${payment.tenure}',
@@ -103,17 +95,11 @@ Widget customerPaymentWidget(BuildContext context,
                         ),
                       ),
                     ),
-                    Spacer(
-                      flex: 1,
-                    ),
                     Divider(
                       color: CustomColors.mfinWhite,
                     ),
-                    Spacer(
-                      flex: 1,
-                    ),
                     SizedBox(
-                      height: 30,
+                      height: 25,
                       child: FlatButton.icon(
                         onPressed: () {
                           Navigator.push(
@@ -137,9 +123,7 @@ Widget customerPaymentWidget(BuildContext context,
                         ),
                       ),
                     ),
-                    Spacer(
-                      flex: 1,
-                    ),
+                    Spacer(),
                   ],
                 ),
               ),
@@ -299,7 +283,7 @@ Widget getPaymentDetails(
               ),
               Divider(),
               SizedBox(
-                height: 25,
+                height: 30,
                 child: FlatButton.icon(
                   onPressed: () {
                     if (payment.totalAmount == _r) {
