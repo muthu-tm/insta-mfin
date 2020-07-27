@@ -7,6 +7,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class SettingsPreferences extends StatefulWidget {
   @override
@@ -131,7 +132,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      "Finance Preferences",
+                      AppLocalizations.of(context).translate('finance_preference'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -144,7 +145,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   Divider(
                     color: CustomColors.mfinButtonGreen,
                   ),
-                  RowHeaderText(textName: "REPORT's SIGNATURE"),
+                  RowHeaderText(textName: AppLocalizations.of(context).translate('finance_preference')),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: TextFormField(
@@ -173,7 +174,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 15.0, top: 10),
                         child: Text(
-                          "Chit Fund",
+                          AppLocalizations.of(context).translate('chit_fund'),
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 16,
@@ -221,7 +222,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 15.0, top: 10),
                             child: Text(
-                              "Interest Rate",
+                              AppLocalizations.of(context).translate('interest_rate'),
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontSize: 16,
@@ -263,7 +264,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 15.0, top: 10),
                             child: Text(
-                              "Collection Mode",
+                              AppLocalizations.of(context).translate('collection_mode'),
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontSize: 16,
@@ -305,7 +306,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       ],
                     ),
                   ),
-                  RowHeaderText(textName: "Collection Days"),
+                  RowHeaderText(textName: AppLocalizations.of(context).translate('collection_days')),
                   Padding(
                     padding: EdgeInsets.all(5),
                     child: Container(
@@ -330,7 +331,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      "User Preferences",
+                     AppLocalizations.of(context).translate('user_preferences'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -446,7 +447,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       ),
                     ],
                   ),
-                  RowHeaderText(textName: "FingerPrint Auth"),
+                  RowHeaderText(textName: AppLocalizations.of(context).translate('fingerprint_auth')),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: ToggleButtons(
@@ -467,14 +468,14 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                           padding: EdgeInsets.only(
                               right: 15, left: 15, bottom: 2, top: 2),
                           child: Text(
-                            ' Enable ',
+                            AppLocalizations.of(context).translate('enable'),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.only(
                               right: 15, left: 15, bottom: 2, top: 2),
                           child: Text(
-                            ' Disable ',
+                            AppLocalizations.of(context).translate('disable'),
                           ),
                         ),
                       ],

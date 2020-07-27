@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class EditSubBranchProfile extends StatefulWidget {
   EditSubBranchProfile(this.financeID, this.branchName, this.subBranch);
@@ -46,7 +47,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
-        title: Text('Edit Sub Branch'),
+        title: Text(AppLocalizations.of(context).translate('edit_sub_branch')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -56,7 +57,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -77,13 +78,13 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                RowHeaderText(textName: 'SubBranch Name'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('sub_branch_name')),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.subBranch.subBranchName,
                     decoration: InputDecoration(
-                      hintText: 'SubBranch Name',
+                      hintText: AppLocalizations.of(context).translate('sub_branch_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -95,13 +96,13 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                     readOnly: true,
                   ),
                 ),
-                RowHeaderText(textName: 'Contact Number'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('contact_number')),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.phone,
                     initialValue: widget.subBranch.contactNumber,
                     decoration: InputDecoration(
-                      hintText: 'Contact Number',
+                      hintText: AppLocalizations.of(context).translate('contact_number'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -121,13 +122,14 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: 'SubBranch EmailID'),
+                
+                RowHeaderText(textName: AppLocalizations.of(context).translate('sub_branch_email_id')),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.subBranch.emailID,
                     decoration: InputDecoration(
-                      hintText: 'Enter your EmailID',
+                      hintText: AppLocalizations.of(context).translate('enter_email_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -147,7 +149,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: 'Registered Date'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('registered_date')),
                 ListTile(
                   title: GestureDetector(
                     onTap: () => _selectDate(context),
@@ -234,7 +236,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 5));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('required_fields'), 5));
     }
   }
 

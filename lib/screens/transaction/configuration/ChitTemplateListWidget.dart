@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/chit/chit_template_controller.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class ChitTemplateListWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey;
@@ -148,7 +149,7 @@ class ChitTemplateListWidget extends StatelessWidget {
                 children: <Widget>[
                   new Spacer(),
                   Text(
-                    "No Chit Templates!",
+                    AppLocalizations.of(context).translate("no_chit_templates"),
                     style: TextStyle(
                       color: CustomColors.mfinAlertRed,
                       fontSize: 18.0,
@@ -159,7 +160,7 @@ class ChitTemplateListWidget extends StatelessWidget {
                     flex: 2,
                   ),
                   Text(
-                    "Add your Chit Fund Templates here!",
+                    AppLocalizations.of(context).translate("add_chit_fund_template"),
                     style: TextStyle(
                       color: CustomColors.mfinBlue,
                       fontSize: 18.0,

@@ -7,6 +7,7 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class SubscriptionStatusWidget extends StatelessWidget {
   final User _user = UserController().getCurrentUser();
@@ -40,7 +41,7 @@ class SubscriptionStatusWidget extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "No Subscription Found",
+                        AppLocalizations.of(context).translate('no_subscription_found'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CustomColors.mfinAlertRed,
@@ -79,7 +80,7 @@ class SubscriptionStatusWidget extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            "FINANCE",
+                            AppLocalizations.of(context).translate('finance'),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: CustomColors.mfinPositiveGreen,
@@ -103,7 +104,7 @@ class SubscriptionStatusWidget extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            "CHIT Fund",
+                            AppLocalizations.of(context).translate('chit_fund'),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: CustomColors.mfinPositiveGreen,

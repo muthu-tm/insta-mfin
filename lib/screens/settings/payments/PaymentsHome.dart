@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class PaymentsHome extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
-        title: Text('Payments'),
+        title: Text(AppLocalizations.of(context).translate('payments')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -64,13 +65,13 @@ class _PaymentsHomeState extends State<PaymentsHome> {
             );
           } else {
             _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-                "Please select a Plan to checkout!", 2));
+             AppLocalizations.of(context).translate('select_plan_to_checkout'), 2));
           }
         },
         label: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: " Checkout ",
+            text: AppLocalizations.of(context).translate('checkout'),
             style: TextStyle(
               color: CustomColors.mfinWhite,
               fontSize: 16.0,
@@ -230,7 +231,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                 children: <Widget>[
                   Spacer(),
                   Text(
-                    "No Plans found!",
+                    AppLocalizations.of(context).translate('no_plans_found'),
                     style: TextStyle(
                       color: CustomColors.mfinAlertRed,
                       fontSize: 18.0,
@@ -239,7 +240,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                   ),
                   Spacer(),
                   Text(
-                    "Please contact support for your Plans and Offers!",
+                    AppLocalizations.of(context).translate('contact_support_for_plans'),
                     style: TextStyle(
                       color: CustomColors.mfinPositiveGreen,
                       fontSize: 18.0,
@@ -273,7 +274,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                   color: CustomColors.mfinBlue.withOpacity(0.5),
                 ),
                 title: Text(
-                  "Plans for YOU!",
+                  AppLocalizations.of(context).translate('plans_for_you'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Georgia",

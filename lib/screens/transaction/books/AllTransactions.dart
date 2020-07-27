@@ -14,6 +14,7 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AllTransactionsBuilder extends StatelessWidget {
   AllTransactionsBuilder(this.byRange, this.startDate, this.endDate);
@@ -36,7 +37,7 @@ class AllTransactionsBuilder extends StatelessWidget {
             color: CustomColors.mfinAlertRed,
           ),
           title: Text(
-            "Payments",
+            AppLocalizations.of(context).translate("payments"),
             style: TextStyle(
               fontSize: 17,
               fontFamily: "Georgia",
@@ -54,7 +55,7 @@ class AllTransactionsBuilder extends StatelessWidget {
             color: CustomColors.mfinPositiveGreen,
           ),
           title: Text(
-            "Collections",
+            AppLocalizations.of(context).translate("collections"),
             style: TextStyle(
               fontSize: 17,
               fontFamily: "Georgia",
@@ -72,7 +73,7 @@ class AllTransactionsBuilder extends StatelessWidget {
             color: CustomColors.mfinGrey,
           ),
           title: Text(
-            "Journals",
+            AppLocalizations.of(context).translate("journals"),
             style: TextStyle(
               fontSize: 17,
               fontFamily: "Georgia",
@@ -90,7 +91,7 @@ class AllTransactionsBuilder extends StatelessWidget {
             color: CustomColors.mfinAlertRed,
           ),
           title: Text(
-            "Expenses",
+            AppLocalizations.of(context).translate("expenses"),
             style: TextStyle(
               fontSize: 17,
               fontFamily: "Georgia",
@@ -150,7 +151,7 @@ class AllTransactionsBuilder extends StatelessWidget {
                               height: 25,
                               child: ListTile(
                                 leading: Text(
-                                  "Customer:",
+                                  AppLocalizations.of(context).translate("customer"),
                                   style: TextStyle(
                                     fontSize: 17,
                                     color: CustomColors.mfinBlue,
@@ -171,7 +172,7 @@ class AllTransactionsBuilder extends StatelessWidget {
                               height: 25,
                               child: ListTile(
                                 leading: Text(
-                                  "Payment ID:",
+                                  AppLocalizations.of(context).translate("payment_id"),
                                   style: TextStyle(
                                     fontSize: 17,
                                     color: CustomColors.mfinBlue,
@@ -192,7 +193,7 @@ class AllTransactionsBuilder extends StatelessWidget {
                               height: 25,
                               child: ListTile(
                                 leading: Text(
-                                  "Collection:",
+                                  AppLocalizations.of(context).translate("collection"),
                                   style: TextStyle(
                                     fontSize: 17,
                                     color: CustomColors.mfinBlue,
@@ -500,7 +501,7 @@ class AllTransactionsBuilder extends StatelessWidget {
                             height: 20,
                             child: ListTile(
                               leading: Text(
-                                journal.isExpense ? "Expense:" : "Income:",
+                                journal.isExpense ? AppLocalizations.of(context).translate("expense") : AppLocalizations.of(context).translate("income"),
                                 style: TextStyle(
                                   fontSize: 17,
                                   color: CustomColors.mfinBlue,
@@ -527,7 +528,7 @@ class AllTransactionsBuilder extends StatelessWidget {
               height: 50,
               alignment: Alignment.center,
               child: Text(
-                "No Journals on this Date!",
+                AppLocalizations.of(context).translate("no_journal_on_this_date"),
                 style: TextStyle(
                   color: CustomColors.mfinAlertRed,
                   fontSize: 18.0,
@@ -640,7 +641,7 @@ class AllTransactionsBuilder extends StatelessWidget {
               height: 50,
               alignment: Alignment.center,
               child: Text(
-                "No Expenses on this Date!",
+                AppLocalizations.of(context).translate("no_expense_on_this_date"),
                 style: TextStyle(
                   color: CustomColors.mfinAlertRed,
                   fontSize: 18.0,

@@ -6,6 +6,7 @@ import 'package:instamfin/screens/settings/add/AddNewSubBranch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class SubBranchesWidget extends StatelessWidget {
   SubBranchesWidget(this.financeID, this.branchName);
@@ -77,7 +78,7 @@ class SubBranchesWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No SubBranches yet!",
+                      AppLocalizations.of(context).translate('no_sub_branches_yet'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -119,7 +120,7 @@ class SubBranchesWidget extends StatelessWidget {
                   color: CustomColors.mfinButtonGreen,
                 ),
                 title: new Text(
-                  "Sub Branch Details",
+                  AppLocalizations.of(context).translate('sub_branch_name'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,

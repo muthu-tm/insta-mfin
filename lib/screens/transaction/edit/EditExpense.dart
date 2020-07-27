@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class EditExpense extends StatefulWidget {
   EditExpense(this.expense);
@@ -80,7 +81,7 @@ class _EditExpenseState extends State<EditExpense> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "NAME:",
+                    AppLocalizations.of(context).translate("name"),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -93,7 +94,7 @@ class _EditExpenseState extends State<EditExpense> {
                   keyboardType: TextInputType.text,
                   initialValue: widget.expense.expenseName,
                   decoration: InputDecoration(
-                    hintText: "Expense Name",
+                    hintText: AppLocalizations.of(context).translate("expense_name"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -127,7 +128,7 @@ class _EditExpenseState extends State<EditExpense> {
                   keyboardType: TextInputType.number,
                   initialValue: widget.expense.amount.toString(),
                   decoration: InputDecoration(
-                    hintText: "Expense Amount",
+                    hintText: AppLocalizations.of(context).translate("expense_amount"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -165,7 +166,7 @@ class _EditExpenseState extends State<EditExpense> {
                       controller: _date,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                        hintText: 'Spent On',
+                        hintText: AppLocalizations.of(context).translate("spend_on"),
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -184,7 +185,7 @@ class _EditExpenseState extends State<EditExpense> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "CATEGORY:",
+                    AppLocalizations.of(context).translate("category"),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -216,7 +217,7 @@ class _EditExpenseState extends State<EditExpense> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "NOTES:",
+                    AppLocalizations.of(context).translate("notes"),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -230,7 +231,7 @@ class _EditExpenseState extends State<EditExpense> {
                   initialValue: widget.expense.notes,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: "Short notes about this expense",
+                    hintText: AppLocalizations.of(context).translate("short_notes_about_expense"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),

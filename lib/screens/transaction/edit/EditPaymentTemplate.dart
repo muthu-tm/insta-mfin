@@ -6,6 +6,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class EditPaymentTemplate extends StatefulWidget {
   EditPaymentTemplate(this.template);
@@ -112,7 +113,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Payment Template",
+                        AppLocalizations.of(context).translate("payment_template"),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -135,7 +136,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Template name',
+                                labelText: AppLocalizations.of(context).translate("payment_template"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -175,7 +176,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Total amount',
+                                labelText: AppLocalizations.of(context).translate("total_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -224,7 +225,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Interest Amount',
+                                labelText: AppLocalizations.of(context).translate("interest_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -276,7 +277,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Principal Amount',
+                                labelText: AppLocalizations.of(context).translate("principal_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -318,7 +319,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'No. of Collections',
+                                labelText: AppLocalizations.of(context).translate("no_of_collections"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -364,7 +365,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Collection amount',
+                                labelText: AppLocalizations.of(context).translate("collection_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -406,7 +407,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Document charge',
+                                labelText: AppLocalizations.of(context).translate("document_charge"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -441,7 +442,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'SurCharge',
+                                labelText: AppLocalizations.of(context).translate("surcharge"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -478,7 +479,7 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                           Flexible(
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                labelText: 'Collection mode',
+                                labelText: AppLocalizations.of(context).translate("collection_mode"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(

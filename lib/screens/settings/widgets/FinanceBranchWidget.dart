@@ -6,6 +6,7 @@ import 'package:instamfin/screens/settings/add/AddNewBranch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class FinanceBranchWidget extends StatelessWidget {
   FinanceBranchWidget(this.financeID);
@@ -78,7 +79,7 @@ class FinanceBranchWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Branches yet!",
+                      AppLocalizations.of(context).translate('no_branches_yet'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -89,7 +90,7 @@ class FinanceBranchWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Expand you Finance, by creating new Branch!",
+                      AppLocalizations.of(context).translate('by_creating_new_branch'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
@@ -120,7 +121,7 @@ class FinanceBranchWidget extends StatelessWidget {
                   color: CustomColors.mfinButtonGreen,
                 ),
                 title: new Text(
-                  "Branch Details",
+                  AppLocalizations.of(context).translate('branch_details'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,

@@ -11,6 +11,7 @@ import 'package:instamfin/screens/transaction/configuration/PaymentTemplateListW
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class TransactionConfigHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -20,7 +21,7 @@ class TransactionConfigHome extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Transaction Configurations'),
+        title: Text(AppLocalizations.of(context).translate("transaction_configuration")),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -38,7 +39,7 @@ class TransactionConfigHome extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                      title: Text('Add Payment template'),
+                      title: Text(AppLocalizations.of(context).translate("add_payment_template")),
                       leading: Icon(
                         Icons.monetization_on,
                         color: CustomColors.mfinBlue,
@@ -56,7 +57,7 @@ class TransactionConfigHome extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                        title: Text('Add Chit Template'),
+                        title: Text(AppLocalizations.of(context).translate("add_chit_template")),
                         leading: Icon(
                           Icons.transfer_within_a_station,
                           color: CustomColors.mfinBlue,
@@ -73,7 +74,7 @@ class TransactionConfigHome extends StatelessWidget {
                           );
                         }),
                     ListTile(
-                      title: Text('Add Expense Categories'),
+                      title: Text(AppLocalizations.of(context).translate("add_expense_categories")),
                       leading: Icon(
                         Icons.shopping_basket,
                         color: CustomColors.mfinBlue,
@@ -156,7 +157,7 @@ class TransactionConfigHome extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Payment Templates",
+                      AppLocalizations.of(context).translate("payments_template"),
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: "Georgia",
@@ -185,7 +186,7 @@ class TransactionConfigHome extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Chit Fund Templates",
+                      AppLocalizations.of(context).translate("chit_fund_template"),
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: "Georgia",
@@ -214,7 +215,7 @@ class TransactionConfigHome extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Expense Categories",
+                      AppLocalizations.of(context).translate("expense_categories"),
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: "Georgia",
@@ -243,7 +244,7 @@ class TransactionConfigHome extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Journal Categories",
+                      AppLocalizations.of(context).translate("journal_categories"),
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: "Georgia",

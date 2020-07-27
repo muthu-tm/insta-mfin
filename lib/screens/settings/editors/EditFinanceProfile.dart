@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class EditFinanceProfile extends StatefulWidget {
   EditFinanceProfile(this.finance);
@@ -42,7 +43,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Edit Finance Profile'),
+        title: Text(AppLocalizations.of(context).translate('edit_finance_profile')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -52,7 +53,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -75,13 +76,13 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RowHeaderText(textName: 'Name'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('name')),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.finance.financeName,
                     decoration: InputDecoration(
-                      hintText: 'Finance Name',
+                      hintText: AppLocalizations.of(context).translate('finance_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -92,7 +93,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Enter Finance Name';
+                        return AppLocalizations.of(context).translate('enter_finance_name');
                       }
                       updatedFinance['finance_name'] = value;
                       return null;
@@ -105,7 +106,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     keyboardType: TextInputType.text,
                     initialValue: widget.finance.registrationID,
                     decoration: InputDecoration(
-                      hintText: 'Registered ID',
+                      hintText: AppLocalizations.of(context).translate('registration_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -125,13 +126,13 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: 'Email'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('email')),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.finance.emailID,
                     decoration: InputDecoration(
-                      hintText: 'Finance EmailID',
+                      hintText: AppLocalizations.of(context).translate('finance_email_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -151,13 +152,13 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: 'Contact Number'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('contact_number')),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.phone,
                     initialValue: widget.finance.contactNumber,
                     decoration: InputDecoration(
-                      hintText: 'Contact Number',
+                      hintText: AppLocalizations.of(context).translate('contact_number'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -177,7 +178,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: 'Registered Date'),
+                RowHeaderText(textName: AppLocalizations.of(context).translate('registered_date')),
                 ListTile(
                   title: GestureDetector(
                     onTap: () => _selectDate(context),
@@ -267,7 +268,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('required_fields'), 2));
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class EditJournalCategory extends StatefulWidget {
   EditJournalCategory(this.jCategory);
@@ -110,7 +111,7 @@ class _EditJournalCategoryState extends State<EditJournalCategory> {
                   initialValue: widget.jCategory.notes,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: "Short notes about this category",
+                    hintText: AppLocalizations.of(context).translate("short_note_about_category"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/settings/add/AddNewFinance.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AddFinanceWidget extends StatelessWidget {
   @override
@@ -10,7 +11,7 @@ class AddFinanceWidget extends StatelessWidget {
         Align(
           alignment: Alignment.topLeft,
           child: Text(
-            "Wish to be a Complete Financier?",
+            AppLocalizations.of(context).translate("wish_to_complete_financier"),
             style: TextStyle(
               fontFamily: 'Georgia',
               fontSize: 16,
@@ -35,7 +36,7 @@ class AddFinanceWidget extends StatelessWidget {
                   color: CustomColors.mfinButtonGreen,
                 ),
                 label: Text(
-                  "Register Your Finance!",
+                  AppLocalizations.of(context).translate("register_your_finance"),
                   style: TextStyle(
                       fontFamily: 'Georgia',
                       color: CustomColors.mfinBlue,

@@ -6,6 +6,7 @@ import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class PrimaryFinanceWidget extends StatelessWidget {
   PrimaryFinanceWidget(this.title, this.editEnabled);
@@ -33,7 +34,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   initialValue: snapshot.data.financeName,
                   decoration: InputDecoration(
-                    hintText: 'Company Name',
+                    hintText: AppLocalizations.of(context).translate('new_company_name'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
@@ -52,7 +53,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   initialValue: _user.primary.branchName ?? "",
                   decoration: InputDecoration(
-                    hintText: 'Branch Name',
+                    hintText: AppLocalizations.of(context).translate('branch_name'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
@@ -71,7 +72,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   initialValue: _user.primary.subBranchName ?? "",
                   decoration: InputDecoration(
-                    hintText: 'SubBranch Name',
+                    hintText: AppLocalizations.of(context).translate('sub_branch_name'),
                     contentPadding: new EdgeInsets.symmetric(
                         vertical: 3.0, horizontal: 3.0),
                     fillColor: CustomColors.mfinWhite,
@@ -116,7 +117,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         color: CustomColors.mfinButtonGreen,
                       ),
                       label: Text(
-                        "Set Primary Finance!",
+                        AppLocalizations.of(context).translate('set_primary_finance'),
                         style: TextStyle(
                             fontFamily: 'Georgia',
                             color: CustomColors.mfinBlue,

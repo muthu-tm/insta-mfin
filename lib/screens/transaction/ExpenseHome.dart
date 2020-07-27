@@ -14,6 +14,7 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class ExpenseHome extends StatefulWidget {
   @override
@@ -50,7 +51,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Expenses"),
+        title: Text(AppLocalizations.of(context).translate("expenses")),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -75,7 +76,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ListTile(
-                          title: Text('Add Expense'),
+                          title: Text(AppLocalizations.of(context).translate("add_expense")),
                           leading: Icon(
                             Icons.monetization_on,
                             color: CustomColors.mfinBlue,
@@ -87,7 +88,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                                     DateUtils.getUTCDateEpoch(DateTime.now())) {
                               _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                      "Your subscription has expired. Please Recharge to continue!",
+                                      AppLocalizations.of(context).translate("subscription_expired"),
                                       3));
                               return;
                             }
@@ -285,7 +286,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                           children: <Widget>[
                             new Spacer(),
                             Text(
-                              "No Expenses so far!",
+                              AppLocalizations.of(context).translate("no_expense_so_far"),
                               style: TextStyle(
                                 color: CustomColors.mfinAlertRed,
                                 fontSize: 18.0,
@@ -296,7 +297,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                               flex: 2,
                             ),
                             Text(
-                              "Add and Manage your expenses here!",
+                              AppLocalizations.of(context).translate("add_manage_expense"),
                               style: TextStyle(
                                 color: CustomColors.mfinBlue,
                                 fontSize: 18.0,

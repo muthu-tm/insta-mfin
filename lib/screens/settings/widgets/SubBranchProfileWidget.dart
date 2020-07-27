@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/screens/settings/editors/EditSubBranchProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class SubBranchProfileWidget extends StatelessWidget {
   SubBranchProfileWidget(this.financeID, this.branchName, this.subBranch);
@@ -24,7 +25,7 @@ class SubBranchProfileWidget extends StatelessWidget {
               color: CustomColors.mfinButtonGreen,
             ),
             title: new Text(
-              "Sub Branch Details",
+              AppLocalizations.of(context).translate('sub_branch_details'),
               style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 18.0,
@@ -57,7 +58,7 @@ class SubBranchProfileWidget extends StatelessWidget {
             title: TextFormField(
               initialValue: subBranch.subBranchName,
               decoration: InputDecoration(
-                hintText: 'SubBranch Name',
+                hintText: AppLocalizations.of(context).translate('sub_branch_name'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -75,7 +76,7 @@ class SubBranchProfileWidget extends StatelessWidget {
                       subBranch.dateOfRegistration))
                   : "",
               decoration: InputDecoration(
-                hintText: 'Registered Date',
+                hintText: AppLocalizations.of(context).translate('registered_date'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -95,7 +96,7 @@ class SubBranchProfileWidget extends StatelessWidget {
             title: TextFormField(
               initialValue: subBranch.contactNumber,
               decoration: InputDecoration(
-                hintText: 'Contact Number',
+                hintText: AppLocalizations.of(context).translate('contact_number'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -110,7 +111,7 @@ class SubBranchProfileWidget extends StatelessWidget {
             title: new TextFormField(
               initialValue: subBranch.emailID,
               decoration: InputDecoration(
-                hintText: 'SubBranch EmailID',
+                hintText: AppLocalizations.of(context).translate('sub_branch_email_id'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -126,7 +127,7 @@ class SubBranchProfileWidget extends StatelessWidget {
               initialValue: subBranch.address.toString(),
               maxLines: 4,
               decoration: InputDecoration(
-                hintText: 'SubBranch Address',
+                hintText: AppLocalizations.of(context).translate('sub_branch_address'),
                 contentPadding:
                     new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 fillColor: CustomColors.mfinWhite,

@@ -7,7 +7,6 @@ import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:syncfusion_flutter_core/core.dart';
-
 import 'package:instamfin/app_localizations.dart';
 
 void main() {
@@ -17,15 +16,37 @@ void main() {
   setupLocator();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState state = context.findAncestorStateOfType();
+    
+    state.setState(() {
+      state.locale = newLocale;
+    }); 
+  }
+}
+
+class _MyAppState extends State<MyApp> {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
+  
+  Locale locale;
+
+  @override
+  void initState() {
+    super.initState();
+    this.locale = locale;
+  }
 
   @override
   Widget build(BuildContext context) {
     Analytics.setupAnalytics(analytics, observer);
     return MaterialApp(
+      locale: this.locale,
       title: 'iFIN',
       theme: ThemeData(
         brightness: Brightness.light,
@@ -62,4 +83,16 @@ class MyApp extends StatelessWidget {
       home: AuthPage(),
     );
   }
+
+  // _fetchLocale() async {
+  //   final User _user = UserController().getCurrentUser();
+  //   if(_user != null){
+  //     var selectedLanguage = _user.preferences.prefLanguage;
+  //     if(selectedLanguage == "Tamil"){
+  //       return Locale('ta', 'IN');
+  //     }else{
+  //       Locale('en', 'US');
+  //     }
+  //   }
+  // }
 }

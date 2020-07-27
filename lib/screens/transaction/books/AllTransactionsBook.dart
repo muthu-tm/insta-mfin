@@ -3,6 +3,7 @@ import 'package:instamfin/screens/transaction/books/AllTransactions.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AllTransactionsBook extends StatelessWidget {
   final int groupPref =
@@ -12,7 +13,7 @@ class AllTransactionsBook extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("All Transactions Book"),
+        title: Text(AppLocalizations.of(context).translate("all_transactions_book")),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(

@@ -12,6 +12,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class PuchasePlan extends StatefulWidget {
   PuchasePlan(this.purchaseID, this.payIDs, this.plans, this.amount);
@@ -52,7 +53,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Recharge Finance"),
+        title: Text(AppLocalizations.of(context).translate('recharge_finance')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -69,7 +70,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
                 4));
         },
         label: Text(
-          " Recharge Now ",
+          AppLocalizations.of(context).translate('recharge_finance'),
           style: TextStyle(
             color: CustomColors.mfinWhite,
             fontSize: 16.0,
@@ -97,7 +98,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
                       color: CustomColors.mfinButtonGreen.withOpacity(0.6),
                     ),
                     title: Text(
-                      "Your Plans",
+                      AppLocalizations.of(context).translate('your_plans'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: "Georgia",

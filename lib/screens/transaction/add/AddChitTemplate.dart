@@ -4,6 +4,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/chit/chit_template_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AddChitTemplate extends StatefulWidget {
   @override
@@ -68,7 +69,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Chit Template'),
+        title: Text(AppLocalizations.of(context).translate('add_chit_template')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -78,7 +79,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -111,7 +112,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Chit Template",
+                        AppLocalizations.of(context).translate('child_template'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -134,7 +135,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Template name',
+                                labelText: AppLocalizations.of(context).translate('template_name'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -171,7 +172,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Chit amount',
+                                labelText: AppLocalizations.of(context).translate('chit_amount'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -200,7 +201,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                           Flexible(
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                labelText: 'Chit Type',
+                                labelText: AppLocalizations.of(context).translate('chit_type'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -279,7 +280,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                           Flexible(
                             child: DropdownButtonFormField<int>(
                               decoration: InputDecoration(
-                                labelText: 'Collection Day',
+                                labelText: AppLocalizations.of(context).translate('collection_day'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -323,8 +324,8 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                               initialValue: notes,
                               maxLines: 3,
                               decoration: InputDecoration(
-                                hintText: 'Notes',
-                                labelText: 'Notes',
+                                hintText: AppLocalizations.of(context).translate('notes'),
+                                labelText: AppLocalizations.of(context).translate('notes'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -390,7 +391,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
                                                   labelText:
-                                                      'Collection Amount',
+                                                      AppLocalizations.of(context).translate('collection_amount'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -435,7 +436,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Total Amount',
+                                                  labelText: AppLocalizations.of(context).translate('total_amount'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -487,7 +488,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
                                                   labelText:
-                                                      'Allocation Amount',
+                                                      AppLocalizations.of(context).translate('allocation_amount'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -532,7 +533,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Profit Amount',
+                                                  labelText: AppLocalizations.of(context).translate('profit_amount'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -630,7 +631,7 @@ class _AddChitTemplateState extends State<AddChitTemplate> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('required_fields'), 2));
     }
   }
 }

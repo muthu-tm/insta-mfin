@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class SubBranchUsersWidget extends StatelessWidget {
   SubBranchUsersWidget(
@@ -32,7 +33,7 @@ class SubBranchUsersWidget extends StatelessWidget {
               color: CustomColors.mfinButtonGreen,
             ),
             title: new Text(
-              "User Details",
+              AppLocalizations.of(context).translate('user_details'),
               style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 18.0,

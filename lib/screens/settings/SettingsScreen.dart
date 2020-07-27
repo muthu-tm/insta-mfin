@@ -10,6 +10,7 @@ import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -63,7 +64,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             Padding(padding: EdgeInsets.all(05.0)),
                             Text(
-                              "Finance",
+                              AppLocalizations.of(context).translate('finance'),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -103,7 +104,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             Padding(padding: EdgeInsets.all(05.0)),
                             Text(
-                              "Profile",
+                              AppLocalizations.of(context).translate('profile'),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
@@ -150,7 +151,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             Padding(padding: EdgeInsets.all(5.0)),
                             Text(
-                              "Preferences",
+                              AppLocalizations.of(context).translate('preferences'),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,

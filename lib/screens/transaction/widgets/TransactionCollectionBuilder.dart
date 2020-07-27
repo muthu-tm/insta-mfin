@@ -6,6 +6,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class TransactionCollectionBuilder extends StatelessWidget {
   final PaymentController _pc = PaymentController();
@@ -78,7 +79,7 @@ class TransactionCollectionBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "Pay Out:",
+                    AppLocalizations.of(context).translate("pay_out"),
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,

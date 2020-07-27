@@ -12,6 +12,7 @@ import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class EditPrimaryFinance extends StatefulWidget {
   EditPrimaryFinance(this.userID);
@@ -55,7 +56,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
                     size: 35.0,
                   ),
                   title: new Text(
-                    "Finance",
+                    AppLocalizations.of(context).translate('finance'),
                     style: TextStyle(color: CustomColors.mfinGrey),
                   ),
                 ),
@@ -82,7 +83,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
                     size: 35.0,
                   ),
                   title: Text(
-                    "Branch",
+                    AppLocalizations.of(context).translate('branch'),
                     style: TextStyle(color: CustomColors.mfinGrey),
                   ),
                 ),
@@ -109,7 +110,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
                     size: 35.0,
                   ),
                   title: Text(
-                    "Sub Branch",
+                    AppLocalizations.of(context).translate('sub_branch'),
                     style: TextStyle(color: CustomColors.mfinGrey),
                   ),
                 ),
@@ -182,7 +183,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
           key: _scaffoldKey,
           backgroundColor: CustomColors.mfinLightGrey,
           appBar: AppBar(
-            title: Text('Edit Primary Finance'),
+            title: Text(AppLocalizations.of(context).translate('edit_primary_finance')),
             backgroundColor: CustomColors.mfinBlue,
           ),
           floatingActionButtonLocation:
@@ -193,7 +194,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
               _submit();
             },
             label: Text(
-              "Save",
+              AppLocalizations.of(context).translate('save'),
               style: TextStyle(
                 fontSize: 17,
                 fontFamily: "Georgia",

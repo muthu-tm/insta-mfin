@@ -6,6 +6,7 @@ import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
 import 'package:instamfin/screens/settings/widgets/UserProfileWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class UserSetting extends StatelessWidget {
 
@@ -16,7 +17,7 @@ class UserSetting extends StatelessWidget {
     return new Scaffold(
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
-        title: Text('Profile Settings'),
+        title: Text(AppLocalizations.of(context).translate('profile_settings')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(

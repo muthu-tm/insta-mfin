@@ -19,7 +19,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
-
+import '../../main.dart';
 import '../../app_localizations.dart';
 
 Widget openDrawer(BuildContext context) {
@@ -353,6 +353,36 @@ Widget openDrawer(BuildContext context) {
             );
           },
         ),
+
+        ExpansionTile(
+          leading: Icon(Icons.language, color: CustomColors.mfinButtonGreen),
+          title: Text(
+            "Language",
+          ),
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.local_library, color: CustomColors.mfinButtonGreen),
+              title: Text(
+                "Tamil"
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () async {
+                MyApp.setLocale(context, Locale('ta', 'IN'));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.local_library, color: CustomColors.mfinFadedButtonGreen),
+              title: Text(
+                "English"
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () async{
+                MyApp.setLocale(context, Locale('en', 'US'));
+              },
+            )
+          ],
+        ),
+
         ListTile(
           leading: Icon(Icons.error, color: CustomColors.mfinAlertRed),
           title: Text(

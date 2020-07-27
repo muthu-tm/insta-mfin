@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class FinanceUsersWidget extends StatelessWidget {
   FinanceUsersWidget(this.financeID);
@@ -109,7 +110,7 @@ class FinanceUsersWidget extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "No Admins yet!",
+                      AppLocalizations.of(context).translate('no_admins_yet'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -119,7 +120,7 @@ class FinanceUsersWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Add admins to manage your Finance!",
+                      AppLocalizations.of(context).translate('to_manage_ur_finance'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
@@ -148,7 +149,7 @@ class FinanceUsersWidget extends StatelessWidget {
                   color: CustomColors.mfinButtonGreen,
                 ),
                 title: new Text(
-                  "User Details",
+                  AppLocalizations.of(context).translate('user_details'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,

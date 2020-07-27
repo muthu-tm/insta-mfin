@@ -6,6 +6,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class FinanceProfileWidget extends StatelessWidget {
   final FinanceController _financeController = FinanceController();
@@ -27,7 +28,7 @@ class FinanceProfileWidget extends StatelessWidget {
                 title: TextFormField(
                   initialValue: snapshot.data.financeName,
                   decoration: InputDecoration(
-                    hintText: 'Finance Name',
+                    hintText: AppLocalizations.of(context).translate('finance_name'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
@@ -42,7 +43,7 @@ class FinanceProfileWidget extends StatelessWidget {
                 title: TextFormField(
                   initialValue: snapshot.data.registrationID,
                   decoration: InputDecoration(
-                    hintText: 'Registered ID',
+                    hintText: AppLocalizations.of(context).translate('registered_date'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
@@ -61,7 +62,7 @@ class FinanceProfileWidget extends StatelessWidget {
                               snapshot.data.dateOfRegistration))
                       : "",
                   decoration: InputDecoration(
-                    hintText: 'Registered Date',
+                    hintText: AppLocalizations.of(context).translate('registered_date'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
@@ -76,7 +77,7 @@ class FinanceProfileWidget extends StatelessWidget {
                 title: TextFormField(
                   initialValue: snapshot.data.contactNumber,
                   decoration: InputDecoration(
-                    hintText: 'Contact Number',
+                    hintText: AppLocalizations.of(context).translate('contact_number'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
@@ -91,7 +92,7 @@ class FinanceProfileWidget extends StatelessWidget {
                 title: new TextFormField(
                   initialValue: snapshot.data.emailID,
                   decoration: InputDecoration(
-                    hintText: 'Finance EmailID',
+                    hintText: AppLocalizations.of(context).translate('finance_email_id'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
@@ -107,7 +108,7 @@ class FinanceProfileWidget extends StatelessWidget {
                   initialValue: snapshot.data.address.toString(),
                   maxLines: 4,
                   decoration: InputDecoration(
-                    hintText: 'Finance Address',
+                    hintText: AppLocalizations.of(context).translate('finance_address'),
                     contentPadding: new EdgeInsets.symmetric(
                         vertical: 5.0, horizontal: 5.0),
                     fillColor: CustomColors.mfinWhite,
@@ -136,7 +137,7 @@ class FinanceProfileWidget extends StatelessWidget {
                     color: CustomColors.mfinButtonGreen,
                   ),
                   title: new Text(
-                    "Finance Details",
+                    AppLocalizations.of(context).translate('finance_details'),
                     style: TextStyle(
                       color: CustomColors.mfinBlue,
                       fontSize: 18.0,

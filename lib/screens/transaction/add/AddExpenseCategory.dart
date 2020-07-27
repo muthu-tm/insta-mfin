@@ -3,6 +3,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AddExpenseCategory extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        title: Text('New Expense Category'),
+        title: Text(AppLocalizations.of(context).translate("new_expense_category")),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -34,7 +35,7 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate("save"),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -60,7 +61,7 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
                 leading: SizedBox(
                   width: 65,
                   child: Text(
-                    "NAME:",
+                    AppLocalizations.of(context).translate("name"),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -72,7 +73,7 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
                 title: TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    hintText: "Category Name",
+                    hintText: AppLocalizations.of(context).translate("category_name"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -93,7 +94,7 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
                 leading: SizedBox(
                   width: 65,
                   child: Text(
-                    "NOTES:",
+                    AppLocalizations.of(context).translate("notes"),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -106,7 +107,7 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
                   keyboardType: TextInputType.text,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: "Short notes about this category",
+                    hintText: AppLocalizations.of(context).translate("short_note_about_category"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -148,7 +149,7 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+          CustomSnackBar.errorSnackBar("required_fields", 2));
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AddExpense extends StatefulWidget {
   @override
@@ -45,7 +46,7 @@ class _AddExpenseState extends State<AddExpense> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        title: Text('New Expense'),
+        title: Text(AppLocalizations.of(context).translate('new_expense')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -55,7 +56,7 @@ class _AddExpenseState extends State<AddExpense> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -81,7 +82,7 @@ class _AddExpenseState extends State<AddExpense> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "NAME:",
+                    AppLocalizations.of(context).translate('name'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -93,7 +94,7 @@ class _AddExpenseState extends State<AddExpense> {
                 title: TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    hintText: "Expense Name",
+                    hintText: AppLocalizations.of(context).translate('expense_name'),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -114,7 +115,7 @@ class _AddExpenseState extends State<AddExpense> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "AMOUNT:",
+                    AppLocalizations.of(context).translate('amount'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -126,7 +127,7 @@ class _AddExpenseState extends State<AddExpense> {
                 title: new TextFormField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    hintText: "Expense Amount",
+                    hintText: AppLocalizations.of(context).translate('expense_amount'),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -163,7 +164,7 @@ class _AddExpenseState extends State<AddExpense> {
                       controller: _date,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                        hintText: 'Spent On',
+                        hintText: AppLocalizations.of(context).translate('spent_on'),
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -182,7 +183,7 @@ class _AddExpenseState extends State<AddExpense> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "CATEGORY:",
+                    AppLocalizations.of(context).translate('category'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -214,7 +215,7 @@ class _AddExpenseState extends State<AddExpense> {
                 leading: SizedBox(
                   width: 80,
                   child: Text(
-                    "NOTES:",
+                    AppLocalizations.of(context).translate('notes'),
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: "Georgia",
@@ -227,7 +228,7 @@ class _AddExpenseState extends State<AddExpense> {
                   keyboardType: TextInputType.text,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: "Short notes about this expense",
+                    hintText: AppLocalizations.of(context).translate("short_notes_about_expense"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -308,7 +309,7 @@ class _AddExpenseState extends State<AddExpense> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate("required_fields"), 2));
     }
   }
 }

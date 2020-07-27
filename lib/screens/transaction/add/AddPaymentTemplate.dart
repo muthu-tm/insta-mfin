@@ -5,6 +5,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AddPaymentTemplate extends StatefulWidget {
   @override
@@ -72,7 +73,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Template'),
+        title: Text(AppLocalizations.of(context).translate("add_template")),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -82,7 +83,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate("save"),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -115,7 +116,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Payment Template",
+                        AppLocalizations.of(context).translate("payment_template"),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -138,7 +139,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Template name',
+                                labelText: AppLocalizations.of(context).translate("template_name"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -175,7 +176,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Total amount',
+                                labelText: AppLocalizations.of(context).translate("total_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -221,7 +222,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Interest Amount',
+                                labelText: AppLocalizations.of(context).translate("interest_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -270,7 +271,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Principal Amount',
+                                labelText: AppLocalizations.of(context).translate("principal_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -309,7 +310,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'No. of Collections',
+                                labelText: AppLocalizations.of(context).translate("no_of_collections"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -352,7 +353,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Collection amount',
+                                labelText: AppLocalizations.of(context).translate("collection_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -390,7 +391,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Document charge',
+                                labelText: AppLocalizations.of(context).translate("document_charge"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -421,7 +422,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'SurCharge',
+                                labelText: AppLocalizations.of(context).translate("surcharge"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -455,7 +456,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                           Flexible(
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                labelText: 'Collection mode',
+                                labelText: AppLocalizations.of(context).translate("collection_mode"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -501,7 +502,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                  'Collection Days',
+                                  AppLocalizations.of(context).translate("collection_days"),
                                   style: TextStyle(
                                       color: CustomColors.mfinBlue,
                                       fontSize: 16.0),
@@ -591,7 +592,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate("required_fields"), 2));
     }
   }
 }

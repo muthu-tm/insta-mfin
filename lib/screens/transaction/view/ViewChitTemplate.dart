@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_template.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class ViewChitTemplate extends StatelessWidget {
   ViewChitTemplate(this.temp);
@@ -11,7 +12,7 @@ class ViewChitTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Chit Template'),
+        title: Text(AppLocalizations.of(context).translate("view_chit_template")),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -31,7 +32,7 @@ class ViewChitTemplate extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Chit Template",
+                      AppLocalizations.of(context).translate("chit_template"),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -53,7 +54,7 @@ class ViewChitTemplate extends StatelessWidget {
                             initialValue: temp.name,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'Template name',
+                              labelText: AppLocalizations.of(context).translate("template_name"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -83,7 +84,7 @@ class ViewChitTemplate extends StatelessWidget {
                             initialValue: temp.chitAmount.toString(),
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'Chit amount',
+                              labelText: AppLocalizations.of(context).translate("chit_amount"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -107,7 +108,7 @@ class ViewChitTemplate extends StatelessWidget {
                             initialValue: temp.getProfitAmount().toString(),
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'Profit amount',
+                              labelText: AppLocalizations.of(context).translate("profit_amount"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -162,7 +163,7 @@ class ViewChitTemplate extends StatelessWidget {
                           child: TextFormField(
                             initialValue: temp.collectionDay.toString(),
                             decoration: InputDecoration(
-                              labelText: 'Collection Day',
+                              labelText: AppLocalizations.of(context).translate("collection_day"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(

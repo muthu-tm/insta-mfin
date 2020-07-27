@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/screens/settings/editors/EditBranchProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class BranchProfileWidget extends StatelessWidget {
   BranchProfileWidget(this.financeID, this.branch);
@@ -23,7 +24,7 @@ class BranchProfileWidget extends StatelessWidget {
               color: CustomColors.mfinButtonGreen,
             ),
             title: new Text(
-              "Branch Details",
+              AppLocalizations.of(context).translate('branch_details'),
               style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 18.0,
@@ -55,7 +56,7 @@ class BranchProfileWidget extends StatelessWidget {
             title: TextFormField(
               initialValue: branch.branchName,
               decoration: InputDecoration(
-                hintText: 'Branch Name',
+                hintText: AppLocalizations.of(context).translate('branch_name'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -73,7 +74,7 @@ class BranchProfileWidget extends StatelessWidget {
                       branch.dateOfRegistration))
                   : "",
               decoration: InputDecoration(
-                hintText: 'Registered Date',
+                hintText: AppLocalizations.of(context).translate('registered_date'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -93,7 +94,7 @@ class BranchProfileWidget extends StatelessWidget {
             title: TextFormField(
               initialValue: branch.contactNumber,
               decoration: InputDecoration(
-                hintText: 'Contact Number',
+                hintText: AppLocalizations.of(context).translate('contact_number'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -108,7 +109,7 @@ class BranchProfileWidget extends StatelessWidget {
             title: new TextFormField(
               initialValue: branch.emailID,
               decoration: InputDecoration(
-                hintText: 'Branch EmailID',
+                hintText: AppLocalizations.of(context).translate('branch_emailid'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
@@ -124,7 +125,7 @@ class BranchProfileWidget extends StatelessWidget {
               initialValue: branch.address.toString(),
               maxLines: 4,
               decoration: InputDecoration(
-                hintText: 'Address',
+                hintText: AppLocalizations.of(context).translate('address'),
                 contentPadding:
                     new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 fillColor: CustomColors.mfinWhite,

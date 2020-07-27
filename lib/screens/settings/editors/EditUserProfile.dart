@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class EditUserProfile extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: Text(AppLocalizations.of(context).translate('edit_profile')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -57,7 +58,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -84,13 +85,13 @@ class _EditUserProfileState extends State<EditUserProfile> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    RowHeaderText(textName: 'Name'),
+                    RowHeaderText(textName: AppLocalizations.of(context).translate('name')),
                     ListTile(
                       title: TextFormField(
                         keyboardType: TextInputType.text,
                         initialValue: user.name,
                         decoration: InputDecoration(
-                          hintText: 'User Name',
+                          hintText: AppLocalizations.of(context).translate('user_name'),
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
                           contentPadding: new EdgeInsets.symmetric(
@@ -108,13 +109,13 @@ class _EditUserProfileState extends State<EditUserProfile> {
                         },
                       ),
                     ),
-                    RowHeaderText(textName: 'Email'),
+                    RowHeaderText(textName: AppLocalizations.of(context).translate('email')),
                     ListTile(
                       title: new TextFormField(
                           keyboardType: TextInputType.text,
                           initialValue: user.emailID,
                           decoration: InputDecoration(
-                            hintText: 'Enter your EmailID',
+                            hintText: AppLocalizations.of(context).translate('enter_email_id'),
                             fillColor: CustomColors.mfinWhite,
                             filled: true,
                             contentPadding: new EdgeInsets.symmetric(
@@ -133,7 +134,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                             }
                           }),
                     ),
-                    RowHeaderText(textName: 'Date Of Birth'),
+                    RowHeaderText(textName: AppLocalizations.of(context).translate('dob')),
                     ListTile(
                       title: GestureDetector(
                         onTap: () => _selectDate(context),
@@ -164,14 +165,14 @@ class _EditUserProfileState extends State<EditUserProfile> {
                         ),
                       ),
                     ),
-                    RowHeaderText(textName: 'Gender'),
+                    RowHeaderText(textName: AppLocalizations.of(context).translate('gender')),
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Flexible(
                           child: RadioListTile(
                             title: Text(
-                              "Male",
+                              AppLocalizations.of(context).translate('male'),
                               style: TextStyle(color: CustomColors.mfinBlue),
                             ),
                             value: "Male",
@@ -188,7 +189,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                         Flexible(
                           child: RadioListTile(
                             title: Text(
-                              "Female",
+                              AppLocalizations.of(context).translate('female'),
                               style: TextStyle(color: CustomColors.mfinBlue),
                             ),
                             value: "Female",

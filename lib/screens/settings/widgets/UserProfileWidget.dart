@@ -6,6 +6,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class UserProfileWidget extends StatelessWidget {
   final UserController _uc = UserController();
@@ -66,7 +67,7 @@ class UserProfileWidget extends StatelessWidget {
             leading: SizedBox(
               width: 95,
               child: Text(
-                "NAME",
+                AppLocalizations.of(context).translate('name'),
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: "Georgia",
@@ -93,7 +94,7 @@ class UserProfileWidget extends StatelessWidget {
             leading: SizedBox(
               width: 95,
               child: Text(
-                "CONTACT",
+                AppLocalizations.of(context).translate('contact'),
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: "Georgia",
@@ -119,7 +120,7 @@ class UserProfileWidget extends StatelessWidget {
                   leading: SizedBox(
                     width: 95,
                     child: Text(
-                      "PASSWORD",
+                      AppLocalizations.of(context).translate('password'),
                       style: TextStyle(
                           fontSize: 14,
                           fontFamily: "Georgia",
@@ -143,7 +144,7 @@ class UserProfileWidget extends StatelessWidget {
                   ),
                   trailing: IconButton(
                     highlightColor: CustomColors.mfinAlertRed.withOpacity(0.5),
-                    tooltip: "Change Password",
+                    tooltip: AppLocalizations.of(context).translate('change_password'),
                     icon: Icon(
                       Icons.edit,
                       size: 25.0,
@@ -169,7 +170,7 @@ class UserProfileWidget extends StatelessWidget {
             leading: SizedBox(
               width: 95,
               child: Text(
-                "GENDER",
+                AppLocalizations.of(context).translate('gender'),
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: "Georgia",
@@ -194,7 +195,7 @@ class UserProfileWidget extends StatelessWidget {
             leading: SizedBox(
               width: 95,
               child: Text(
-                "EMAILID",
+                AppLocalizations.of(context).translate('email_id'),
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: "Georgia",
@@ -219,7 +220,7 @@ class UserProfileWidget extends StatelessWidget {
             leading: SizedBox(
               width: 95,
               child: Text(
-                "DOB",
+                AppLocalizations.of(context).translate('dob'),
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: "Georgia",
@@ -252,7 +253,7 @@ class UserProfileWidget extends StatelessWidget {
             leading: SizedBox(
               width: 95,
               child: Text(
-                "ADDRESS",
+                AppLocalizations.of(context).translate('address'),
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: "Georgia",

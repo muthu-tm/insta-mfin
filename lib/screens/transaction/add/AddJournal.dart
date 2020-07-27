@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AddJournal extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _AddJournalState extends State<AddJournal> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
-        title: Text('New Journal Entry'),
+        title: Text(AppLocalizations.of(context).translate("new_journal_entry")),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -61,7 +62,7 @@ class _AddJournalState extends State<AddJournal> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate("save"),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -121,7 +122,7 @@ class _AddJournalState extends State<AddJournal> {
                   leading: SizedBox(
                     width: 85,
                     child: Text(
-                      "NAME:",
+                      AppLocalizations.of(context).translate("name"),
                       style: TextStyle(
                         fontSize: 13,
                         fontFamily: "Georgia",
@@ -133,7 +134,7 @@ class _AddJournalState extends State<AddJournal> {
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: "Journal Entry Name",
+                      hintText: AppLocalizations.of(context).translate("journal_entry_name"),
                       labelStyle: TextStyle(
                         color: CustomColors.mfinBlue,
                       ),
@@ -154,7 +155,7 @@ class _AddJournalState extends State<AddJournal> {
                   leading: SizedBox(
                     width: 85,
                     child: Text(
-                      "AMOUNT:",
+                      AppLocalizations.of(context).translate("amount"),
                       style: TextStyle(
                         fontSize: 13,
                         fontFamily: "Georgia",
@@ -166,7 +167,7 @@ class _AddJournalState extends State<AddJournal> {
                   title: new TextFormField(
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      hintText: "Journal Amount",
+                      hintText: AppLocalizations.of(context).translate("journal_amount"),
                       labelStyle: TextStyle(
                         color: CustomColors.mfinBlue,
                       ),
@@ -203,7 +204,7 @@ class _AddJournalState extends State<AddJournal> {
                         controller: _date,
                         keyboardType: TextInputType.datetime,
                         decoration: InputDecoration(
-                          hintText: 'Adjustment on',
+                          hintText: AppLocalizations.of(context).translate("adjustment_on"),
                           labelStyle: TextStyle(
                             color: CustomColors.mfinBlue,
                           ),
@@ -223,7 +224,7 @@ class _AddJournalState extends State<AddJournal> {
                   leading: SizedBox(
                     width: 85,
                     child: Text(
-                      "CATEGORY:",
+                      AppLocalizations.of(context).translate("category"),
                       style: TextStyle(
                         fontSize: 13,
                         fontFamily: "Georgia",
@@ -255,7 +256,7 @@ class _AddJournalState extends State<AddJournal> {
                   leading: SizedBox(
                     width: 85,
                     child: Text(
-                      "NOTES:",
+                      AppLocalizations.of(context).translate("notes"),
                       style: TextStyle(
                         fontSize: 13,
                         fontFamily: "Georgia",
@@ -268,7 +269,7 @@ class _AddJournalState extends State<AddJournal> {
                     keyboardType: TextInputType.text,
                     maxLines: 3,
                     decoration: InputDecoration(
-                      hintText: "Reference notes about this adjustment",
+                      hintText: AppLocalizations.of(context).translate("reference_notes_for_adjustment"),
                       labelStyle: TextStyle(
                         color: CustomColors.mfinBlue,
                       ),
@@ -351,7 +352,7 @@ class _AddJournalState extends State<AddJournal> {
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar("Please fill required fields!", 2));
+          CustomSnackBar.errorSnackBar("required_fields", 2));
     }
   }
 }
