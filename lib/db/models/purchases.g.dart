@@ -3,8 +3,8 @@ part of 'purchases.dart';
 Purchases _$PurchasesFromJson(Map<String, dynamic> json) {
   return Purchases()
     ..financeID = json['finance_id'] as String
-    ..branchName = json['branch_name'] as String
-    ..subBranchName = json['sub_branch_name'] as String
+    ..userID = json['user_number'] as int
+    ..guid = json['guid'] as String
     ..isSuccess = json['is_success'] as bool
     ..status = json['status'] as int
     ..paymentID = json['payment_id'] as String
@@ -31,8 +31,8 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 
 Map<String, dynamic> _$PurchasesToJson(Purchases instance) => <String, dynamic>{
       'finance_id': instance.financeID,
-      'branch_name': instance.branchName,
-      'sub_branch_name': instance.subBranchName,
+      'user_number': instance.userID,
+      'guid': instance.guid,
       'is_success': instance.isSuccess,
       'status': instance.status,
       'payment_id': instance.paymentID,
