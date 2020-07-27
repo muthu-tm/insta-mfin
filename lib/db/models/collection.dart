@@ -175,7 +175,7 @@ class Collection {
     int penalty = 0;
     if (this.collections != null) {
       this.collections.forEach((coll) {
-        penalty += coll.penaltyAmount;
+        if (coll.penaltyAmount != null) penalty += coll.penaltyAmount;
       });
     }
 
