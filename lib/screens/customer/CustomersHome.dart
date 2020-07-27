@@ -130,8 +130,8 @@ class CustomersHome extends StatelessWidget {
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: CustomColors.mfinBlue,
+          floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
             tooltip: "Add Customer",
             onPressed: () {
               if (_user.financeSubscription <
@@ -152,10 +152,10 @@ class CustomersHome extends StatelessWidget {
               );
             },
             elevation: 5.0,
-            child: Icon(
+            label: Text("ADD"),
+            icon: Icon(
               Icons.add,
-              size: 40,
-              color: CustomColors.mfinButtonGreen,
+              size: 35,
             ),
           ),
           body: TabBarView(
