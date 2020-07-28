@@ -6,6 +6,7 @@ import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -371,6 +372,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                 _pController.text = "";
 
                 if (isValid) {
+                  CustomDialogs.actionWaiting(context, "Removing..");
                   PaymentController _pc = PaymentController();
                   var result = await _pc.forceRemovePayment(
                       payment.financeID,
@@ -380,6 +382,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                       payment.isSettled);
                   if (!result['is_success']) {
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
                         "Unable to remove the Payment! ${result['message']}",
@@ -388,8 +391,9 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                     );
                   } else {
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     _scaffoldKey.currentState.showSnackBar(
-                      CustomSnackBar.errorSnackBar(
+                      CustomSnackBar.successSnackBar(
                           "Payment removed successfully", 2),
                     );
                   }

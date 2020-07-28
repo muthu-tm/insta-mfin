@@ -80,11 +80,11 @@ class _UserSettingState extends State<UserSetting> {
             textAlign: TextAlign.start,
           ),
           content: Container(
-            height: 150,
+            height: 250,
             child: Column(
               children: <Widget>[
                 Text(
-                    "Please confirm with your Secret KEY! \n DeActivating account won't remove your Finance Data. \n if you wish to clean all, Deactivate your finance first"),
+                    "Confirm with your Secret KEY! \n\nDeactivating account won't remove your Finance Data. \n\nIf you wish to clean all, Deactivate your finance first, please!"),
                 Padding(
                   padding: EdgeInsets.all(5),
                   child: Card(

@@ -918,29 +918,30 @@ class Payment extends Model {
 
               accData.cashInHand += payment.principalAmount;
               accData.cashInHand += payment.rCommission;
-              accData.paymentsAmount -= payment.totalAmount;
-              if (payment.docCharge > 0) accData.totalDocCharge -= 1;
-              accData.docCharge -= payment.docCharge;
-              if (payment.surcharge > 0) accData.totalSurCharge -= 1;
-              accData.surcharge -= payment.surcharge;
-              accData.totalPayments -= 1;
 
               QuerySnapshot snapshot = await docRef
                   .collection('customer_collections')
                   .getDocuments();
+              int tReceived = 0;
 
               for (DocumentSnapshot ds in snapshot.documents) {
                 Collection coll = Collection.fromJson(ds.data);
-                accData.cashInHand -= coll.getReceived();
-                accData.collectionsAmount -= coll.getReceived();
+                if (coll.type != CollectionType.DocCharge.name &&
+                    coll.type != CollectionType.Commission.name &&
+                    coll.type != CollectionType.Surcharge.name)
+                  tReceived += coll.getReceived();
                 txDelete(tx, ds.reference);
               }
+              accData.cashInHand -= tReceived;
 
-              if (isSettled) {
-                if (payment.settlementAmount != null)
-                  accData.collectionsAmount += payment.settlementAmount;
-                if (payment.lossAmount != null)
-                  accData.cashInHand -= payment.lossAmount;
+              if (!isSettled) {
+                accData.collectionsAmount -= tReceived;
+                accData.paymentsAmount -= payment.totalAmount;
+                if (payment.docCharge > 0) accData.totalDocCharge -= 1;
+                accData.docCharge -= payment.docCharge;
+                if (payment.surcharge > 0) accData.totalSurCharge -= 1;
+                accData.surcharge -= payment.surcharge;
+                accData.totalPayments -= 1;
               }
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};

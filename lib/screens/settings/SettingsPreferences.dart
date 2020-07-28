@@ -32,6 +32,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   String selectedCollectionModeID = "0";
   bool chitEnabled = false;
   List<String> chits = ['YES', 'NO'];
+  bool isFromPrincipal = false;
+  List<String> interestFrom = ['Principal Amount', 'Total Amount'];
 
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
@@ -63,6 +65,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
       isSelectedAuth = [true, false];
     }
     this.chitEnabled = _user.accPreferences.chitEnabled;
+    this.isFromPrincipal = _user.accPreferences.interestFromPrincipal;
     this.userPreferencesJSON = _user.preferences.toJson();
     this.intrestRateController.text =
         _user.accPreferences.interestRate.toString() ?? '0.00';
@@ -146,7 +149,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   ),
                   RowHeaderText(textName: "REPORT's SIGNATURE"),
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.only(left: 15.0, right: 5.0, bottom: 10.0),
                     child: TextFormField(
                       textAlign: TextAlign.start,
                       keyboardType: TextInputType.multiline,
@@ -186,7 +189,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                     ),
                     Flexible(
                       child: Padding(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.only(right: 5),
                         child: DropdownButtonFormField<String>(
                           decoration: InputDecoration(
                             fillColor: CustomColors.mfinWhite,
@@ -234,7 +237,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                         ),
                         Flexible(
                           child: Padding(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: EdgeInsets.only(right: 5),
                             child: TextFormField(
                               controller: intrestRateController,
                               textAlign: TextAlign.start,
@@ -263,6 +266,58 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 15.0, top: 10),
                             child: Text(
+                              "Interest From",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinGrey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              items: interestFrom.map(
+                                (f) {
+                                  return DropdownMenuItem<String>(
+                                    value: f,
+                                    child: Text(f),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (newVal) {
+                                _setInterestFrom(newVal);
+                              },
+                              value: isFromPrincipal
+                                  ? "Principal Amount"
+                                  : "Total Amount",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
                               "Collection Mode",
                               textAlign: TextAlign.start,
                               style: TextStyle(
@@ -276,7 +331,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                         ),
                         Flexible(
                           child: Padding(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: EdgeInsets.only(right: 5),
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
                                 fillColor: CustomColors.mfinWhite,
@@ -361,7 +416,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                     ),
                     Flexible(
                       child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(5),
                         child: DropdownButtonFormField(
                             decoration: InputDecoration(
                               floatingLabelBehavior:
@@ -549,6 +604,15 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     });
   }
 
+  _setInterestFrom(String newVal) {
+    setState(() {
+      if (newVal == "Principal Amount")
+        isFromPrincipal = true;
+      else
+        isFromPrincipal = false;
+    });
+  }
+
   _setSelectedCollectionMode(String newVal) {
     setState(() {
       selectedCollectionModeID = newVal;
@@ -615,6 +679,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
         int.parse(selectedCollectionModeID);
     accountPreferencesJSON['collection_days'] = collectionDays;
     accountPreferencesJSON['chit_enabled'] = chitEnabled;
+    accountPreferencesJSON['interest_from_principal'] = isFromPrincipal;
 
     CustomDialogs.actionWaiting(context, "Updating Preferences!");
     if (isSelectedView[0]) {
