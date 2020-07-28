@@ -14,68 +14,27 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class CollectionListWidget extends StatelessWidget {
-  CollectionListWidget(this._scaffoldKey, this._payment, this.title,
-      this.emptyText, this.textColor, this.fetchAll, this.status);
+  CollectionListWidget(this._scaffoldKey, this._payment);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   final Payment _payment;
-  final String title;
-  final String emptyText;
-  final Color textColor;
-  final bool fetchAll;
-  final int status;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: fetchAll
-          ? Collection().streamCollectionsForPayment(_payment.financeID,
-              _payment.branchName, _payment.subBranchName, _payment.id)
-          : status == 0
-              ? Collection().streamUpcomingForPayment(
-                  _payment.financeID,
-                  _payment.branchName,
-                  _payment.subBranchName,
-                  _payment.id)
-              : status == 3
-                  ? Collection().streamTodaysForPayment(
-                      _payment.financeID,
-                      _payment.branchName,
-                      _payment.subBranchName,
-                      _payment.id)
-                  : Collection().streamPastForPayment(
-                      _payment.financeID,
-                      _payment.branchName,
-                      _payment.subBranchName,
-                      _payment.id),
+      stream: Collection().streamCollectionsForPayment(_payment.financeID,
+          _payment.branchName, _payment.subBranchName, _payment.id),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
         if (snapshot.hasData) {
           if (snapshot.data.documents.length > 0) {
             List<Collection> collList = [];
-            if (fetchAll) {
-              snapshot.data.documents.forEach((doc) {
-                Collection _c = Collection.fromJson(doc.data);
-                collList.add(_c);
-              });
-            } else if (status == 1) {
-              snapshot.data.documents.forEach((doc) {
-                Collection _c = Collection.fromJson(doc.data);
-                if (_c.getReceived() == _c.collectionAmount) collList.add(_c);
-              });
-            } else if (status == 4) {
-              snapshot.data.documents.forEach((doc) {
-                Collection _c = Collection.fromJson(doc.data);
-                if (_c.getReceived() < _c.collectionAmount) collList.add(_c);
-              });
-            } else {
-              snapshot.data.documents.forEach((doc) {
-                Collection _c = Collection.fromJson(doc.data);
-                collList.add(_c);
-              });
-            }
+            snapshot.data.documents.forEach((doc) {
+              Collection _c = Collection.fromJson(doc.data);
+              collList.add(_c);
+            });
 
             if (collList.length > 0) {
               children = <Widget>[
@@ -215,7 +174,8 @@ class CollectionListWidget extends StatelessWidget {
                                                 textValue[1],
                                                 style: TextStyle(
                                                   fontSize: 17,
-                                                  color: textColor,
+                                                  color: CustomColors
+                                                      .mfinLightBlue,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -264,7 +224,7 @@ class CollectionListWidget extends StatelessWidget {
                     children: <Widget>[
                       new Spacer(),
                       Text(
-                        emptyText,
+                        "No Collections available for this Payment!",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CustomColors.mfinAlertRed,
@@ -287,7 +247,7 @@ class CollectionListWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      emptyText,
+                      "No Collections available for this Payment!",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
@@ -313,10 +273,10 @@ class CollectionListWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 trailing: Text(
-                  title,
+                  "ALL",
                   style: TextStyle(
                     fontSize: 18,
-                    color: textColor,
+                    color: CustomColors.mfinLightBlue,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -421,7 +381,7 @@ class CollectionListWidget extends StatelessWidget {
         collDetails['is_paid_late'] = false;
 
       int id = collection.collectionDate;
-        if (collection.type == 3) id = collection.collectionDate + 3;
+      if (collection.type == 3) id = collection.collectionDate + 3;
 
       var result = await _cc.updateCollectionDetails(
           collection.financeID,

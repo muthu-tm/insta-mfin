@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/customer/AddCollection.dart';
+import 'package:instamfin/screens/customer/widgets/TransactionListWidget.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/services/pdf/payment_receipt.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/customer/ViewPaymentDetails.dart';
-import 'package:instamfin/screens/customer/widgets/CollectionListTableWidget.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionStatusRadioItem.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionListWidget.dart';
 import 'package:instamfin/screens/customer/widgets/PaymentSettlementDialog.dart';
@@ -31,22 +30,15 @@ class _ViewPaymentState extends State<ViewPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CustomRadioModel> collStatusList = List<CustomRadioModel>();
 
-  String title = "ALL";
-  String emptyText = "No Collections available for this Payment!";
-  Color textColor = CustomColors.mfinBlue;
-  bool fetchAll = true;
+  bool isAllCollection = true;
   bool isSettled = false;
-  int collStatus;
 
   @override
   void initState() {
     super.initState();
     isSettled = widget.payment.isSettled;
-    collStatusList.add(CustomRadioModel(true, '', ''));
-    collStatusList.add(CustomRadioModel(false, '', ''));
-    collStatusList.add(CustomRadioModel(false, '', ''));
-    collStatusList.add(CustomRadioModel(false, '', ''));
-    collStatusList.add(CustomRadioModel(false, '', ''));
+    collStatusList.add(CustomRadioModel(true, 'All', ''));
+    collStatusList.add(CustomRadioModel(false, 'Received', ''));
   }
 
   @override
@@ -87,34 +79,6 @@ class _ViewPaymentState extends State<ViewPayment> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    // ListTile(
-                    //   title: Text('Add Collection'),
-                    //   leading: Icon(
-                    //     Icons.monetization_on,
-                    //     color: CustomColors.mfinBlue,
-                    //   ),
-                    //   onTap: () {
-                    //     if (widget.payment.isSettled) {
-                    //       Navigator.pop(context);
-                    //       _scaffoldKey.currentState.showSnackBar(
-                    //         CustomSnackBar.errorSnackBar(
-                    //           "You cannot add collection for SETTLED Payment!",
-                    //           3,
-                    //         ),
-                    //       );
-                    //     } else {
-                    //       Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //           builder: (context) =>
-                    //               AddCollection(widget.payment),
-                    //           settings: RouteSettings(
-                    //               name: '/customers/payment/collections/add'),
-                    //         ),
-                    //       );
-                    //     }
-                    //   },
-                    // ),
                     ListTile(
                         title: Text('View Payment'),
                         leading: Icon(
@@ -547,79 +511,11 @@ class _ViewPaymentState extends State<ViewPayment> {
                         () {
                           collStatusList[0].isSelected = true;
                           collStatusList[1].isSelected = false;
-                          collStatusList[2].isSelected = false;
-                          collStatusList[3].isSelected = false;
-                          collStatusList[4].isSelected = false;
                         },
                       );
-                      title = "ALL";
-                      emptyText = "No Collections available for this Payment!";
-                      fetchAll = true;
-                      textColor = CustomColors.mfinBlue;
+                      isAllCollection = true;
                     },
                     child: CollectionStatusRadioItem(collStatusList[0],
-                        CustomColors.mfinLightBlue, CustomColors.mfinLightBlue),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(
-                        () {
-                          collStatusList[0].isSelected = false;
-                          collStatusList[1].isSelected = true;
-                          collStatusList[2].isSelected = false;
-                          collStatusList[3].isSelected = false;
-                          collStatusList[4].isSelected = false;
-                        },
-                      );
-                      title = "PAID";
-                      emptyText = "No collection RECEIVED for this Payment!";
-                      fetchAll = false;
-                      textColor = CustomColors.mfinPositiveGreen;
-                      collStatus = 1; //Paid
-                    },
-                    child: CollectionStatusRadioItem(
-                        collStatusList[1],
-                        CustomColors.mfinPositiveGreen,
-                        CustomColors.mfinPositiveGreen),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(
-                        () {
-                          collStatusList[0].isSelected = false;
-                          collStatusList[1].isSelected = false;
-                          collStatusList[2].isSelected = true;
-                          collStatusList[3].isSelected = false;
-                          collStatusList[4].isSelected = false;
-                        },
-                      );
-                      title = "PENDING";
-                      emptyText = "Great! No PENDING collection!";
-                      fetchAll = false;
-                      textColor = CustomColors.mfinAlertRed;
-                      collStatus = 4; // Pending
-                    },
-                    child: CollectionStatusRadioItem(collStatusList[2],
-                        CustomColors.mfinAlertRed, CustomColors.mfinAlertRed),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(
-                        () {
-                          collStatusList[0].isSelected = false;
-                          collStatusList[1].isSelected = false;
-                          collStatusList[2].isSelected = false;
-                          collStatusList[3].isSelected = true;
-                          collStatusList[4].isSelected = false;
-                        },
-                      );
-                      title = "TODAY";
-                      emptyText = "No Collection to receive TODAY";
-                      fetchAll = false;
-                      textColor = CustomColors.mfinLightBlue;
-                      collStatus = 3; // Current
-                    },
-                    child: CollectionStatusRadioItem(collStatusList[3],
                         CustomColors.mfinBlue, CustomColors.mfinBlue),
                   ),
                   InkWell(
@@ -627,45 +523,22 @@ class _ViewPaymentState extends State<ViewPayment> {
                       setState(
                         () {
                           collStatusList[0].isSelected = false;
-                          collStatusList[1].isSelected = false;
-                          collStatusList[2].isSelected = false;
-                          collStatusList[3].isSelected = false;
-                          collStatusList[4].isSelected = true;
+                          collStatusList[1].isSelected = true;
                         },
                       );
-                      title = "UPCOMING";
-                      emptyText = "No UPCOMING collection available!";
-                      fetchAll = false;
-                      textColor = CustomColors.mfinGrey;
-                      collStatus = 0; // Upcoming
+                      isAllCollection = false;
                     },
-                    child: CollectionStatusRadioItem(collStatusList[4],
-                        CustomColors.mfinGrey, CustomColors.mfinGrey),
+                    child: CollectionStatusRadioItem(collStatusList[1],
+                        CustomColors.mfinPositiveGreen, CustomColors.mfinPositiveGreen),
                   ),
                 ],
               ),
-              (UserController().getCurrentUser().preferences.tableView)
+              isAllCollection
                   ? Container(
-                      child: CollectionListTableWidget(
-                        _scaffoldKey,
-                        widget.payment,
-                        title,
-                        emptyText,
-                        textColor,
-                        fetchAll,
-                        collStatus,
-                      ),
+                      child: CollectionListWidget(_scaffoldKey, widget.payment),
                     )
                   : Container(
-                      child: CollectionListWidget(
-                        _scaffoldKey,
-                        widget.payment,
-                        title,
-                        emptyText,
-                        textColor,
-                        fetchAll,
-                        collStatus,
-                      ),
+                      child: TransactionListWidget(widget.payment),
                     ),
               Padding(padding: EdgeInsets.fromLTRB(0, 40, 0, 40))
             ],

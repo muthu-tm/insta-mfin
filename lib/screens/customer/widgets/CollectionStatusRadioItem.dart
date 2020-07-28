@@ -11,28 +11,28 @@ class CollectionStatusRadioItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      margin: new EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
+    return Container(
+      margin: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
       child: Container(
         height: 30.0,
-        width: 50.0,
-        child: new Center(
-          child: new Text(
+        width: 150.0,
+        child: Center(
+          child: Text(
             _item.buttonText,
-            style: new TextStyle(
+            style: TextStyle(
                 fontFamily: "Georgia",
                 color: _item.isSelected
                     ? CustomColors.mfinWhite
-                    : CustomColors.mfinBlue,
+                    : _boxColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0),
           ),
         ),
-        decoration: new BoxDecoration(
+        decoration: BoxDecoration(
           color: _item.isSelected ? _color : CustomColors.mfinLightGrey,
-          border: new Border.all(width: 3.0, color: _boxColor),
-          borderRadius: const BorderRadius.all(
-            const Radius.circular(2.0),
+          border: Border.all(width: 2.0, color: _boxColor),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5.0),
           ),
         ),
       ),
