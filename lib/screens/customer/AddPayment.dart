@@ -606,12 +606,21 @@ class _AddPaymentState extends State<AddPayment> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              controller: totalAmountController,
+                              controller:
+                                  _user.accPreferences.interestFromPrincipal
+                                      ? principalAmountController
+                                      : totalAmountController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: 'Total amount',
-                                labelText: 'Total amount',
+                                hintText:
+                                    _user.accPreferences.interestFromPrincipal
+                                        ? 'Loan Amount'
+                                        : 'Total amount',
+                                labelText:
+                                    _user.accPreferences.interestFromPrincipal
+                                        ? 'Loan Amount'
+                                        : 'Total amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -631,11 +640,15 @@ class _AddPaymentState extends State<AddPayment> {
                                             _user.accPreferences.interestRate
                                         : 0;
                                 int pAmount = int.parse(val) - iAmount.round();
+                                int tAmount = int.parse(val) + iAmount.round();
                                 setState(() {
                                   interestRateController.text =
                                       iAmount.round().toString();
-                                  principalAmountController.text =
-                                      pAmount.toString();
+                                  _user.accPreferences.interestFromPrincipal
+                                      ? totalAmountController.text =
+                                          tAmount.toString()
+                                      : principalAmountController.text =
+                                          pAmount.toString();
                                 });
                               },
                               validator: (amount) {
@@ -643,7 +656,11 @@ class _AddPaymentState extends State<AddPayment> {
                                     amount.trim() == "0") {
                                   return "Cannot be empty!";
                                 } else {
-                                  this.totalAmount = int.parse(amount.trim());
+                                  _user.accPreferences.interestFromPrincipal
+                                      ? this.principalAmount =
+                                          int.parse(amount.trim())
+                                      : this.totalAmount =
+                                          int.parse(amount.trim());
                                 }
                                 return null;
                               },
@@ -671,16 +688,31 @@ class _AddPaymentState extends State<AddPayment> {
                                         color: CustomColors.mfinWhite)),
                               ),
                               onChanged: (val) {
-                                int pAmount =
-                                    int.parse(totalAmountController.text) > 0
-                                        ? int.parse(
-                                                totalAmountController.text) -
-                                            int.parse(val)
-                                        : 0;
-                                setState(() {
-                                  principalAmountController.text =
-                                      pAmount.toString();
-                                });
+                                if (_user
+                                    .accPreferences.interestFromPrincipal) {
+                                  int tAmount = int.parse(
+                                              principalAmountController.text) >
+                                          0
+                                      ? int.parse(
+                                              principalAmountController.text) +
+                                          int.parse(val)
+                                      : 0;
+                                  setState(() {
+                                    totalAmountController.text =
+                                        tAmount.toString();
+                                  });
+                                } else {
+                                  int pAmount =
+                                      int.parse(totalAmountController.text) > 0
+                                          ? int.parse(
+                                                  totalAmountController.text) -
+                                              int.parse(val)
+                                          : 0;
+                                  setState(() {
+                                    principalAmountController.text =
+                                        pAmount.toString();
+                                  });
+                                }
                               },
                               validator: (tenure) {
                                 if (tenure.trim().isEmpty) {
@@ -701,12 +733,21 @@ class _AddPaymentState extends State<AddPayment> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              controller: principalAmountController,
+                              controller:
+                                  _user.accPreferences.interestFromPrincipal
+                                      ? totalAmountController
+                                      : principalAmountController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: 'Principal amount',
-                                labelText: 'Principal amount',
+                                hintText:
+                                    _user.accPreferences.interestFromPrincipal
+                                        ? 'Total Amount'
+                                        : 'Loan amount',
+                                labelText:
+                                    _user.accPreferences.interestFromPrincipal
+                                        ? 'Total Amount'
+                                        : 'Loan amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -724,8 +765,11 @@ class _AddPaymentState extends State<AddPayment> {
                                     amount.trim() == "0") {
                                   return "Cannot be empty!";
                                 } else {
-                                  this.principalAmount =
-                                      int.parse(amount.trim());
+                                  _user.accPreferences.interestFromPrincipal
+                                      ? this.totalAmount =
+                                          int.parse(amount.trim())
+                                      : this.principalAmount =
+                                          int.parse(amount.trim());
                                   return null;
                                 }
                               },
