@@ -60,8 +60,8 @@ class Payment extends Model {
   int settledDate;
   @JsonKey(name: 'is_settled', defaultValue: false)
   bool isSettled;
-  @JsonKey(name: 'is_loss', defaultValue: false)
-  bool isLoss;
+  @JsonKey(name: 'settlement_amount', defaultValue: false)
+  int settlementAmount;
   @JsonKey(name: 'profit_amount', defaultValue: 0)
   int profitAmount;
   @JsonKey(name: 'loss_amount', defaultValue: 0)
@@ -820,14 +820,13 @@ class Payment extends Model {
               accData.collectionsAmount -= tReceived;
 
               if (paymentJSON['loss']) {
-                payJSON['is_loss'] = true;
                 payJSON['loss_amount'] = paymentJSON['loss_amount'];
               } else {
-                payJSON['is_loss'] = false;
                 payJSON['profit_amount'] = paymentJSON['profit_amount'];
               }
 
               payJSON['shortage_amount'] = paymentJSON['shortage_amount'];
+              payJSON['settlement_amount'] = paymentJSON['settlement_amount'];
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
@@ -896,7 +895,7 @@ class Payment extends Model {
   }
 
   Future forceRemovePayment(String financeId, String branchName,
-      String subBranchName, int paymentID) async {
+      String subBranchName, int paymentID, bool isSettled) async {
     DocumentReference docRef =
         getDocumentReference(financeId, branchName, subBranchName, paymentID);
 
@@ -937,7 +936,13 @@ class Payment extends Model {
                 txDelete(tx, ds.reference);
               }
 
-              
+              if (isSettled) {
+                if (payment.settlementAmount != null)
+                  accData.collectionsAmount += payment.settlementAmount;
+                if (payment.lossAmount != null)
+                  accData.cashInHand -= payment.lossAmount;
+              }
+
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
               txDelete(tx, docRef);

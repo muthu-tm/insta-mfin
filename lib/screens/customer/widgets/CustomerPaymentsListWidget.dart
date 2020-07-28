@@ -48,13 +48,13 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                         icon: Icons.delete_forever,
                         onTap: () async {
                           if (payment.isSettled) {
-                            _scaffoldKey.currentState
-                                .showSnackBar(CustomSnackBar.errorSnackBar(
-                              "You cannot Edit already 'SETTLED' Payment!}",
-                              3,
-                            ));
-                            // await forceRemove(context, payment,
-                            //     "Enter your Secret KEY to remove SETTLED Payment!");
+                            // _scaffoldKey.currentState
+                            //     .showSnackBar(CustomSnackBar.errorSnackBar(
+                            //   "You cannot Edit already 'SETTLED' Payment!}",
+                            //   3,
+                            // ));
+                            await forceRemove(context, payment,
+                                "Enter your Secret KEY to remove SETTLED Payment!");
                           } else {
                             var state = Slidable.of(context);
                             var dismiss = await showDialog<bool>(
@@ -368,11 +368,16 @@ class CustomerPaymentsListWidget extends StatelessWidget {
               ),
               onPressed: () async {
                 bool isValid = UserController().authCheck(_pController.text);
+                _pController.text = "";
 
                 if (isValid) {
                   PaymentController _pc = PaymentController();
-                  var result = await _pc.forceRemovePayment(payment.financeID,
-                      payment.branchName, payment.subBranchName, payment.id);
+                  var result = await _pc.forceRemovePayment(
+                      payment.financeID,
+                      payment.branchName,
+                      payment.subBranchName,
+                      payment.id,
+                      payment.isSettled);
                   if (!result['is_success']) {
                     Navigator.pop(context);
                     _scaffoldKey.currentState.showSnackBar(

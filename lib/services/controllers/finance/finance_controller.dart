@@ -27,7 +27,8 @@ class FinanceController {
 
       financeCompany = await financeCompany.create();
 
-      await _userController.updatePrimaryFinance(financeCompany.createdAt.millisecondsSinceEpoch.toString(), "", "");
+      await _userController.updatePrimaryFinance(
+          financeCompany.createdAt.millisecondsSinceEpoch.toString(), "", "");
 
       NUtils.financeNotify("", "NEW FINANCE",
           "Hurray! Created a new Finance $name in iFIN. All the Best!");
@@ -225,8 +226,7 @@ class FinanceController {
   Future updateFinance(
       Map<String, dynamic> financeJson, String financeID) async {
     try {
-      Finance finance = Finance();
-      var result = await finance.updateByID(financeJson, financeID);
+      var result = await Finance().updateByID(financeJson, financeID);
 
       return CustomResponse.getSuccesReponse(result);
     } catch (err) {

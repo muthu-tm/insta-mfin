@@ -30,7 +30,7 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..lossAmount = json['loss_amount'] as int
     ..profitAmount = json['profit_amount'] as int
     ..shortageAmount = json['shortage_amount'] as int
-    ..isLoss = json['is_loss'] as bool
+    ..settlementAmount = json['settlement_amount'] as int
     ..isSettled = json['is_settled'] as bool
     ..givenBy = json['given_by'] as String
     ..notes = json['notes'] as String ?? ''
@@ -61,7 +61,7 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'collection_starts_from': instance.collectionStartsFrom,
       'settled_date': instance.settledDate,
       'total_amount': instance.totalAmount,
-      'is_loss': instance.isLoss ?? false,
+      'settlement_amount': instance.settlementAmount,
       'loss_amount': instance.lossAmount ?? 0,
       'profit_amount': instance.profitAmount ?? 0,
       'shortage_amount': instance.shortageAmount ?? 0,

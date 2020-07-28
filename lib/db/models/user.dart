@@ -49,7 +49,7 @@ class User extends Model {
   @JsonKey(name: 'is_active', defaultValue: true)
   bool isActive;
   @JsonKey(name: 'deactivated_at', nullable: true)
-  DateTime deactivatedAt;
+  int deactivatedAt;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)

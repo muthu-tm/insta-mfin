@@ -27,10 +27,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
         : DateTime.fromMillisecondsSinceEpoch(
             _getMillisecondsSinceEpoch(json['last_signed_in_at'] as Timestamp))
     ..isActive = json['is_active'] as bool ?? true
-    ..deactivatedAt = json['deactivated_at'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['deactivated_at'] as Timestamp))
+    ..deactivatedAt = json['deactivated_at'] as int
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
