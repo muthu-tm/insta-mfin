@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/db/models/user_referees.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -51,11 +49,15 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(5),
-              child: getReferralCode(),
+              child: getReferredByWidget(),
             ),
             Padding(
               padding: EdgeInsets.all(5),
-              child: getReferredByWidget(),
+              child: getReferralCode(),
+            ),
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: getOfferPanel(),
             ),
           ],
         ),
@@ -110,6 +112,72 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget getOfferPanel() {
+    return FutureBuilder(
+      future: SharedPreferences.getInstance(),
+      builder:
+          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+        Widget widget;
+
+        if (snapshot.hasData) {
+          int amount = snapshot.data.getInt('registration_bonus') ?? 25;
+          widget = ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+              colors: [
+                CustomColors.mfinLightGrey,
+                CustomColors.mfinAlertRed,
+              ],
+            ).createShader(
+              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+            ),
+            child: Text(
+              "Refer 'iFIN' with your friends and Earn Rs.$amount instantly",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: CustomColors.mfinWhite,
+                fontSize: 18,
+                fontFamily: "Georgia"
+              ),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          widget = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncError());
+        } else {
+          widget = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: AsyncWidgets.asyncWaiting());
+        }
+
+        return Material(
+          elevation: 10.0,
+          borderRadius: BorderRadius.circular(10.0),
+          child: Container(
+              height: 100,
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.8,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10.0),
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    CustomColors.mfinBlack,
+                    CustomColors.mfinButtonGreen
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              padding: EdgeInsets.all(5),
+              child: widget),
+        );
+      },
     );
   }
 
@@ -198,5 +266,4 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
       ),
     );
   }
-
 }
