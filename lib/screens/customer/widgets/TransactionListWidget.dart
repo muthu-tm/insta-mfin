@@ -6,15 +6,20 @@ import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/pdf/pay_transaction_receipt.dart';
 
 class TransactionListWidget extends StatelessWidget {
-  TransactionListWidget(this._payment);
+  TransactionListWidget(this._scaffoldKey, this._payment);
 
+  final GlobalKey<ScaffoldState> _scaffoldKey;
   final Payment _payment;
 
   @override
   Widget build(BuildContext context) {
+    Map<int, List<CollectionDetails>> collList = {};
     return StreamBuilder(
       stream: Collection().streamCollectionsForPayment(_payment.financeID,
           _payment.branchName, _payment.subBranchName, _payment.id),
@@ -23,7 +28,6 @@ class TransactionListWidget extends StatelessWidget {
 
         if (snapshot.hasData) {
           if (snapshot.data.documents.length > 0) {
-            Map<int, List<CollectionDetails>> collList = {};
             snapshot.data.documents.forEach((doc) {
               Collection _c = Collection.fromJson(doc.data);
               if (_c.type != CollectionType.Commission.name &&
@@ -220,13 +224,32 @@ class TransactionListWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ListTile(
-                trailing: Text(
+                leading: Text(
                   "RECEIVED",
                   style: TextStyle(
                     fontSize: 18,
                     color: CustomColors.mfinBlue,
                     fontWeight: FontWeight.bold,
                   ),
+                ),
+                trailing: IconButton(
+                  tooltip: "Genearte Transaction Report",
+                  icon: Icon(
+                    Icons.print,
+                    size: 30,
+                    color: CustomColors.mfinPositiveGreen,
+                  ),
+                  onPressed: () async {
+                    _scaffoldKey.currentState.showSnackBar(
+                      CustomSnackBar.successSnackBar(
+                          "Generating Payment's Transaction Report! Please wait...",
+                          5),
+                    );
+                    await PayTransactionReceipt().generateInvoice(
+                      UserController().getCurrentUser(),
+                      _payment, collList
+                    );
+                  },
                 ),
               ),
               Divider(

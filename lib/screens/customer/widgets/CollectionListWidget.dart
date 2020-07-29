@@ -12,16 +12,18 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/pdf/payment_receipt.dart';
 
 class CollectionListWidget extends StatelessWidget {
   CollectionListWidget(this._scaffoldKey, this._payment);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
-
   final Payment _payment;
 
   @override
   Widget build(BuildContext context) {
+    List<Collection> collList = [];
+
     return StreamBuilder(
       stream: Collection().streamCollectionsForPayment(_payment.financeID,
           _payment.branchName, _payment.subBranchName, _payment.id),
@@ -30,7 +32,6 @@ class CollectionListWidget extends StatelessWidget {
 
         if (snapshot.hasData) {
           if (snapshot.data.documents.length > 0) {
-            List<Collection> collList = [];
             snapshot.data.documents.forEach((doc) {
               Collection _c = Collection.fromJson(doc.data);
               collList.add(_c);
@@ -174,8 +175,7 @@ class CollectionListWidget extends StatelessWidget {
                                                 textValue[1],
                                                 style: TextStyle(
                                                   fontSize: 17,
-                                                  color: CustomColors
-                                                      .mfinLightBlue,
+                                                  color: CustomColors.mfinBlue,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -272,13 +272,30 @@ class CollectionListWidget extends StatelessWidget {
           child: new Column(
             children: <Widget>[
               ListTile(
-                trailing: Text(
+                leading: Text(
                   "ALL",
                   style: TextStyle(
                     fontSize: 18,
-                    color: CustomColors.mfinLightBlue,
+                    color: CustomColors.mfinBlue,
                     fontWeight: FontWeight.bold,
                   ),
+                ),
+                trailing: IconButton(
+                  tooltip: "Genearte Collection Report",
+                  icon: Icon(
+                    Icons.print,
+                    size: 30,
+                    color: CustomColors.mfinBlue,
+                  ),
+                  onPressed: () async {
+                    _scaffoldKey.currentState.showSnackBar(
+                      CustomSnackBar.successSnackBar(
+                          "Generating Payment's Collection Report! Please wait...",
+                          5),
+                    );
+                    await PayReceipt().generateInvoice(
+                        UserController().getCurrentUser(), _payment, collList);
+                  },
                 ),
               ),
               new Divider(

@@ -48,22 +48,6 @@ class _ViewPaymentState extends State<ViewPayment> {
       appBar: AppBar(
         title: Text('Payment - ${widget.payment.paymentID}'),
         backgroundColor: CustomColors.mfinBlue,
-        actions: <Widget>[
-          IconButton(
-              tooltip: "Genearte Payment Report",
-              icon: Icon(
-                Icons.description,
-                size: 30,
-                color: CustomColors.mfinLightGrey,
-              ),
-              onPressed: () async {
-                _scaffoldKey.currentState.showSnackBar(
-                    CustomSnackBar.successSnackBar(
-                        "Generating your Payment Report! Please wait...", 5));
-                await PayReceipt().generateInvoice(
-                    UserController().getCurrentUser(), widget.payment);
-              }),
-        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
@@ -528,8 +512,10 @@ class _ViewPaymentState extends State<ViewPayment> {
                       );
                       isAllCollection = false;
                     },
-                    child: CollectionStatusRadioItem(collStatusList[1],
-                        CustomColors.mfinPositiveGreen, CustomColors.mfinPositiveGreen),
+                    child: CollectionStatusRadioItem(
+                        collStatusList[1],
+                        CustomColors.mfinPositiveGreen,
+                        CustomColors.mfinPositiveGreen),
                   ),
                 ],
               ),
@@ -538,7 +524,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                       child: CollectionListWidget(_scaffoldKey, widget.payment),
                     )
                   : Container(
-                      child: TransactionListWidget(widget.payment),
+                      child:
+                          TransactionListWidget(_scaffoldKey, widget.payment),
                     ),
               Padding(padding: EdgeInsets.fromLTRB(0, 40, 0, 40))
             ],

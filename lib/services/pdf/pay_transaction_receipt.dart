@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/collection.dart';
+import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
@@ -11,9 +11,9 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 
-class PayReceipt {
+class PayTransactionReceipt {
   Future<void> generateInvoice(
-      User _u, Payment _p, List<Collection> collList) async {
+      User _u, Payment _p, Map<int, List<CollectionDetails>> collList) async {
     final PdfDocument document = PdfDocument();
     final PdfPage page = document.pages.add();
     final Size pageSize = page.getClientSize();
@@ -123,40 +123,38 @@ class PayReceipt {
   }
 
   //Create PDF grid and return
-  Future<PdfGrid> getGrid(List<Collection> collList) async {
+  Future<PdfGrid> getGrid(Map<int, List<CollectionDetails>> collList) async {
     final PdfGrid grid = PdfGrid();
-    grid.columns.add(count: 6);
+    grid.columns.add(count: 4);
     final PdfGridRow headerRow = grid.headers.add(1)[0];
 
     headerRow.style.backgroundBrush = PdfSolidBrush(PdfColor(68, 114, 196));
     headerRow.style.textBrush = PdfBrushes.white;
-    headerRow.cells[0].value = 'Collection No.';
+    headerRow.cells[0].value = 'Date';
     headerRow.cells[0].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[1].value = 'Date';
+    headerRow.cells[1].value = 'From';
     headerRow.cells[1].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[2].value = 'Amount';
+    headerRow.cells[2].value = 'Paid Late?';
     headerRow.cells[2].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[3].value = 'Paid';
+    headerRow.cells[3].value = 'Amount';
     headerRow.cells[3].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[4].value = 'Pending';
-    headerRow.cells[4].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[5].value = 'Penalty';
-    headerRow.cells[5].stringFormat.alignment = PdfTextAlignment.center;
 
+    List<int> cKeys = collList.keys.toList();
     for (int i = 0; i < collList.length; i++) {
-      Collection coll = collList[i];
+      int date = cKeys[i];
+      List<CollectionDetails> collections = collList[date];
+      int tAmount = 0;
+      bool isLatPay = false;
+      String from = "";
+      for (var item in collections) {
+        tAmount += item.amount;
+        from = item.collectedFrom;
+        if (item.isPaidLate) isLatPay = true;
+      }
 
       // Add only "Collection" type
-      if (coll.type == 0 || coll.type == 3) {
-        addRow(
-            coll.collectionNumber,
-            DateTime.fromMillisecondsSinceEpoch(coll.collectionDate),
-            coll.collectionAmount,
-            coll.getReceived(),
-            coll.getPending(),
-            coll.getPenalty(),
-            grid);
-      }
+      addRow(DateTime.fromMillisecondsSinceEpoch(date), from,
+          isLatPay ? "YES" : "NO", tAmount, grid);
     }
     //Apply the table built-in style
     grid.applyBuiltInStyle(PdfGridBuiltInStyle.listTable4Accent5);
@@ -168,7 +166,7 @@ class PayReceipt {
       final PdfGridRow row = grid.rows[i];
       for (int j = 0; j < row.cells.count; j++) {
         final PdfGridCell cell = row.cells[j];
-        if (j != 4) {
+        if (j != 3) {
           cell.stringFormat.alignment = PdfTextAlignment.center;
         } else {
           cell.stringFormat.alignment = PdfTextAlignment.right;
@@ -181,15 +179,13 @@ class PayReceipt {
   }
 
   //Create and row for the grid.
-  void addRow(int cNumber, DateTime cDate, int cAmount, int rAmount,
-      int pAmount, int penaltyAmount, PdfGrid grid) {
+  void addRow(
+      DateTime cDate, String from, String paidLate, int tAmount, PdfGrid grid) {
     final PdfGridRow row = grid.rows.add();
-    row.cells[0].value = cNumber.toString();
-    row.cells[1].value = DateUtils.formatDate(cDate);
-    row.cells[2].value = cAmount.toString();
-    row.cells[3].value = rAmount.toString();
-    row.cells[4].value = pAmount.toString();
-    row.cells[5].value = penaltyAmount.toString();
+    row.cells[0].value = DateUtils.formatDate(cDate);
+    row.cells[1].value = from;
+    row.cells[2].value = paidLate;
+    row.cells[3].value = tAmount.toString();
   }
 
   //Get the total amount.
