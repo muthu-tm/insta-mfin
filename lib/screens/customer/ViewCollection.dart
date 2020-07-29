@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/customer/widgets/CollDetailsTableWidget.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionDetailsWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -507,10 +506,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                       : Padding(
                           padding: const EdgeInsets.all(10.0),
                         ),
-              (UserController().getCurrentUser().preferences.tableView)
-                  ? CollDetailsTableWidget(widget.pay.isSettled, _scaffoldKey,
-                      collection, widget.pay.custName)
-                  : CollectionDetailsWidget(widget.pay.isSettled, _scaffoldKey,
+                  CollectionDetailsWidget(widget.pay.isSettled, _scaffoldKey,
                       collection, widget.pay.custName),
             ];
           } else {

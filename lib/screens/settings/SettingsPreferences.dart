@@ -18,7 +18,6 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   final User _user = UserController().getCurrentUser();
 
   var transctionGroupValue = 0;
-  List<bool> isSelectedView = [false, true];
   List<bool> isSelectedAuth = [false, true];
 
   TextEditingController _textEditingController = TextEditingController();
@@ -58,9 +57,6 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     this.setAccountDetails();
     this.transctionGroupValue = _user.preferences.transactionGroupBy;
     this._selectedLang = _user.preferences.prefLanguage;
-    if (_user.preferences.tableView) {
-      isSelectedView = [true, false];
-    }
     if (_user.preferences.isfingerAuthEnabled) {
       isSelectedAuth = [true, false];
     }
@@ -149,7 +145,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   ),
                   RowHeaderText(textName: "REPORT's SIGNATURE"),
                   Padding(
-                    padding: EdgeInsets.only(left: 15.0, right: 5.0, bottom: 10.0),
+                    padding:
+                        EdgeInsets.only(left: 15.0, right: 5.0, bottom: 10.0),
                     child: TextFormField(
                       textAlign: TextAlign.start,
                       keyboardType: TextInputType.multiline,
@@ -543,48 +540,6 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       isSelected: isSelectedAuth,
                     ),
                   ),
-                  RowHeaderText(textName: "COLLECTION VIEW"),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: ToggleButtons(
-                      borderColor: CustomColors.mfinButtonGreen,
-                      selectedBorderColor: CustomColors.mfinBlue,
-                      fillColor: CustomColors.mfinButtonGreen,
-                      textStyle: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Georgia",
-                        color: CustomColors.mfinButtonGreen,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      borderWidth: 2,
-                      selectedColor: CustomColors.mfinBlue,
-                      borderRadius: BorderRadius.circular(5),
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: 15, left: 15, bottom: 5, top: 5),
-                          child: Text(
-                            'Table View',
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: 15, left: 15, bottom: 5, top: 5),
-                          child: Text(
-                            'List View',
-                          ),
-                        ),
-                      ],
-                      onPressed: (int index) {
-                        setState(() {
-                          for (int i = 0; i < isSelectedView.length; i++) {
-                            isSelectedView[i] = i == index;
-                          }
-                        });
-                      },
-                      isSelected: isSelectedView,
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -682,11 +637,6 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     accountPreferencesJSON['interest_from_principal'] = isFromPrincipal;
 
     CustomDialogs.actionWaiting(context, "Updating Preferences!");
-    if (isSelectedView[0]) {
-      userPreferencesJSON['enable_table_view'] = true;
-    } else {
-      userPreferencesJSON['enable_table_view'] = false;
-    }
     if (isSelectedAuth[0]) {
       userPreferencesJSON['enable_fingerprint_auth'] = true;
     } else {
