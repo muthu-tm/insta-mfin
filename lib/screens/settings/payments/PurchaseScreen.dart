@@ -35,6 +35,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
 
   bool isAmountUsed = false;
   int wAmount = 0;
+  String planText = "";
 
   @override
   void initState() {
@@ -43,6 +44,13 @@ class _PuchasePlanState extends State<PuchasePlan> {
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    
+    for (int i = 0; i < widget.plans.length; i++) {
+      if (i == 0)
+        planText += widget.plans[i].name;
+      else
+        planText += " & " + widget.plans[i].name;
+    }
   }
 
   @override
@@ -68,9 +76,11 @@ class _PuchasePlanState extends State<PuchasePlan> {
                 docData['rz_api'], docData['key'], docData['env']);
             openCheckout(key);
           } else
-            _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-                "KEY ERROR. Please try again later or Contact support. Thanks!",
-                4));
+            _scaffoldKey.currentState.showSnackBar(
+              CustomSnackBar.errorSnackBar(
+                  "KEY ERROR. Please try again later or Contact support. Thanks!",
+                  4),
+            );
         },
         label: Text(
           " Recharge Now ",
@@ -218,7 +228,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
                         Padding(
                           padding: EdgeInsets.only(left: 10.0, right: 10.0),
                           child: Text(
-                            'Rs.${widget.amount-wAmount}',
+                            'Rs.${widget.amount - wAmount}',
                             style: TextStyle(
                                 fontFamily: "Georgia",
                                 fontSize: 14.0,
@@ -274,81 +284,81 @@ class _PuchasePlanState extends State<PuchasePlan> {
             }
 
             child = Container(
-                padding: EdgeInsets.all(10),
-                height: 150,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: 50,
-                          child: CheckboxListTile(
-                            value: isAmountUsed,
-                            onChanged: (bool newValue) {
-                              if (newValue) {
-                                if (walletAmount > widget.amount / 2)
-                                  wAmount = widget.amount ~/ 2;
-                                else
-                                  wAmount = walletAmount;
-                              } else {
-                                wAmount = 0;
-                              }
-                              setState(() {
-                                isAmountUsed = newValue;
-                              });
-                            },
-                            title: Text(
-                              "Apply Balance",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontFamily: "Georgia",
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.mfinBlue,
-                              ),
+              padding: EdgeInsets.all(10),
+              height: 150,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: 50,
+                        child: CheckboxListTile(
+                          value: isAmountUsed,
+                          onChanged: (bool newValue) {
+                            if (newValue) {
+                              if (walletAmount > widget.amount / 2)
+                                wAmount = widget.amount ~/ 2;
+                              else
+                                wAmount = walletAmount;
+                            } else {
+                              wAmount = 0;
+                            }
+                            setState(() {
+                              isAmountUsed = newValue;
+                            });
+                          },
+                          title: Text(
+                            "Apply Balance",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontFamily: "Georgia",
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.mfinBlue,
                             ),
-                            secondary: Text(
-                              "Rs.$walletAmount",
-                              style: TextStyle(
-                                fontFamily: "Georgia",
-                                color: CustomColors.mfinBlue,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          ),
+                          secondary: Text(
+                            "Rs.$walletAmount",
+                            style: TextStyle(
+                              fontFamily: "Georgia",
+                              color: CustomColors.mfinBlue,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
                             ),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            activeColor: CustomColors.mfinAlertRed,
                           ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          activeColor: CustomColors.mfinAlertRed,
                         ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text(
-                          "Amount Applied: ",
-                          style: TextStyle(
-                            fontFamily: "Georgia",
-                            color: CustomColors.mfinBlue,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        "Amount Applied: ",
+                        style: TextStyle(
+                          fontFamily: "Georgia",
+                          color: CustomColors.mfinBlue,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Text(
-                          "Rs.$wAmount",
-                          style: TextStyle(
-                            fontFamily: "Georgia",
-                            color: CustomColors.mfinBlue,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      ),
+                      Text(
+                        "Rs.$wAmount",
+                        style: TextStyle(
+                          fontFamily: "Georgia",
+                          color: CustomColors.mfinBlue,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             );
           } else {
             child = Card(
@@ -428,9 +438,11 @@ class _PuchasePlanState extends State<PuchasePlan> {
       _showDialog(1, id: payID);
     } else {
       Navigator.pop(context);
-      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-          "Successfull Payment ID: ${response.paymentId} - However error occurred while updating your subscription. please contact support!",
-          5));
+      _scaffoldKey.currentState.showSnackBar(
+        CustomSnackBar.successSnackBar(
+            "Successfull Payment ID: ${response.paymentId} - However error occurred while updating your subscription. please contact support!",
+            5),
+      );
     }
   }
 
@@ -481,8 +493,8 @@ class _PuchasePlanState extends State<PuchasePlan> {
     var options = {
       "key": pSec,
       "amount": tAmount * 100,
-      "name": "iFIN services",
-      "description": "Recharge My Account",
+      "name": "iFIN Services",
+      "description": planText,
       "currency": "INR",
       "payment_capture": 1,
       "prefill": {
