@@ -55,7 +55,7 @@ class CustomDialogs {
 
   static actionWaiting(BuildContext context, String actionName) {
     AlertDialog alert = AlertDialog(
-      content: new Row(
+      content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Stack(
@@ -63,22 +63,27 @@ class CustomDialogs {
               Container(
                 width: 45,
                 height: 45,
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('images/icons/logo.png'),
+                alignment: Alignment.center,
+                child: ClipRRect(
+                  child: Image.asset(
+                    "images/icons/logo.png",
+                    height: 35,
+                    width: 35,
                   ),
                 ),
               ),
-              SizedBox(
-                width: 45,
-                height: 45,
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                  backgroundColor: CustomColors.mfinButtonGreen,
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(CustomColors.mfinBlue),
+              Positioned(
+                top: 0,
+                left: 0,
+                child: SizedBox(
+                  width: 45,
+                  height: 45,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    backgroundColor: CustomColors.mfinButtonGreen,
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(CustomColors.mfinBlue),
+                  ),
                 ),
               ),
             ],

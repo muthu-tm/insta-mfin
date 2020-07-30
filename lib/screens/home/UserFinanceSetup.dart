@@ -59,11 +59,10 @@ class UserFinanceSetup extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
                     child: Image.asset(
                       "images/icons/logo.png",
-                      height: 50,
-                      width: 50,
+                      height: 80,
+                      width: 80,
                     ),
                   ),
                 ),

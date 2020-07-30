@@ -31,13 +31,12 @@ Widget contactAndSupportDialog() {
           Divider(
             color: CustomColors.mfinButtonGreen,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 5),
           ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
               child: Image.asset(
                 "images/icons/logo.png",
-                height: 50,
-                width: 50,
+                height: 60,
+                width: 60,
               ),
             ),
           SizedBox(height: 15),

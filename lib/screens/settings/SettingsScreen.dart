@@ -184,11 +184,10 @@ class SettingsScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
                               child: Image.asset(
                                 "images/icons/logo.png",
-                                height: 45,
-                                width: 45,
+                                height: 55,
+                                width: 55,
                               ),
                             ),
                             Padding(padding: EdgeInsets.all(05.0)),

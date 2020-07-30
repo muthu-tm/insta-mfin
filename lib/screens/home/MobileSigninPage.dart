@@ -56,17 +56,12 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(5.0),
-            child: Material(
-              elevation: 10.0,
-              borderRadius: BorderRadius.circular(10.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
+            child: ClipRRect(
                 child: Image.asset(
                   "images/icons/logo.png",
-                  height: 70,
-                  width: 70,
+                  height: 80,
+                  width: 80,
                 ),
-              ),
             ),
           ),
           Padding(
