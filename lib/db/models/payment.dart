@@ -354,6 +354,24 @@ class Payment extends Model {
     return branchSnap.exists;
   }
 
+  Future<List<Payment>> getAllPayments() async {
+    var paymentDocs = await getCollectionRef()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .orderBy('payment_id')
+        .getDocuments();
+
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
+    }
+
+    return payments;
+  }
+
   Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();

@@ -135,18 +135,19 @@ class PaymentReport {
     headerRow.cells[3].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[4].value = 'Total Collections';
     headerRow.cells[4].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[5].value = 'Doc Charge';
+    headerRow.cells[5].value = 'Received';
     headerRow.cells[5].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[6].value = 'SurCharge';
+    headerRow.cells[6].value = 'Penalty';
     headerRow.cells[6].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[7].value = 'Commission';
+    headerRow.cells[7].value = 'Pending';
     headerRow.cells[7].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[8].value = 'Principal Amount';
+    headerRow.cells[8].value = 'Upcoming';
     headerRow.cells[8].stringFormat.alignment = PdfTextAlignment.center;
 
     //Add rows
     for (int index = 0; index < _pays.length; index++) {
       Payment _p = _pays[index];
+      List<int> aDetails = await _p.getAmountDetails();
       addRow(
           _p.paymentID,
           DateUtils.formatDate(
@@ -154,10 +155,10 @@ class PaymentReport {
           _p.totalAmount,
           _p.getMode(),
           _p.tenure,
-          _p.docCharge,
-          _p.surcharge,
-          _p.rCommission,
-          _p.principalAmount,
+          aDetails[0],
+          aDetails[4],
+          aDetails[1],
+          aDetails[3],
           grid);
     }
     //Apply the table built-in style
