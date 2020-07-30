@@ -51,12 +51,12 @@ class AppSettings extends StatelessWidget {
                 color: CustomColors.mfinButtonGreen,
               ),
               ListTile(
-                leading: new Icon(
+                leading: Icon(
                   Icons.card_giftcard,
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: new Text('Refer & Earn'),
+                title: Text('Refer & Earn'),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -72,12 +72,12 @@ class AppSettings extends StatelessWidget {
                 color: CustomColors.mfinButtonGreen,
               ),
               ListTile(
-                leading: new Icon(
+                leading: Icon(
                   Icons.account_balance_wallet,
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: new Text('iFIN Wallet'),
+                title: Text('iFIN Wallet'),
                 onTap: () async {
                   UserReferees ref = await UserReferees().getRegistrationBonus(
                       UserController().getCurrentUserID().toString());
@@ -97,12 +97,12 @@ class AppSettings extends StatelessWidget {
                 color: CustomColors.mfinButtonGreen,
               ),
               ListTile(
-                leading: new Icon(
+                leading: Icon(
                   Icons.headset_mic,
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: new Text('Help & Support'),
+                title: Text('Help & Support'),
                 onTap: () {
                   showDialog(
                     context: context,
@@ -120,12 +120,12 @@ class AppSettings extends StatelessWidget {
                 color: CustomColors.mfinButtonGreen,
               ),
               ListTile(
-                leading: new Icon(
+                leading: Icon(
                   Icons.person_pin_circle,
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: new Text('About Us'),
+                title: Text('About Us'),
                 onTap: () {},
               ),
               Divider(

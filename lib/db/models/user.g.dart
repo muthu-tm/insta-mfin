@@ -22,6 +22,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..primary = json['primary'] == null
         ? new UserPrimary()
         : UserPrimary.fromJson(json['primary'] as Map<String, dynamic>)
+    ..wallet = json['wallet'] == null
+        ? new UserWallet()
+        : UserWallet.fromJson(json['wallet'] as Map<String, dynamic>)
     ..lastSignInTime = json['last_signed_in_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -56,6 +59,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'address': instance.address?.toJson(),
       'preferences': instance.preferences?.toJson(),
       'primary': instance.primary?.toJson(),
+      'wallet': instance.wallet?.toJson(),
       'last_signed_in_at': instance.lastSignInTime,
       'is_active': instance.isActive,
       'deactivated_at': instance.deactivatedAt,
