@@ -28,9 +28,9 @@ class ChitRequesters {
   Map<String, dynamic> toJson() => _$ChitRequestersToJson(this);
 
   CollectionReference getCollectionRef(String financeId, String branchName,
-      String subBranchName, String chitID) {
+      String subBranchName, int id) {
     return ChitFund()
-        .getDocumentReference(financeId, branchName, subBranchName, chitID)
+        .getDocumentReference(financeId, branchName, subBranchName, id)
         .collection("chit_requesters");
   }
 
@@ -39,7 +39,7 @@ class ChitRequesters {
   }
 
   Future<void> create(String financeId, String branchName, String subBranchName,
-      String chitID) async {
+      int chitID) async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
 
@@ -54,7 +54,7 @@ class ChitRequesters {
   }
 
   Stream<QuerySnapshot> streamRequesters(String financeId, String branchName,
-      String subBranchName, String chitID) {
+      String subBranchName, int chitID) {
     try {
       return getCollectionRef(financeId, branchName, subBranchName, chitID)
           .snapshots();
@@ -64,7 +64,7 @@ class ChitRequesters {
   }
 
   Future<void> update(String financeId, String branchName, String subBranchName,
-      String chitID, DateTime createdAt, Map<String, dynamic> data) async {
+      int chitID, DateTime createdAt, Map<String, dynamic> data) async {
     try {
       await getCollectionRef(financeId, branchName, subBranchName, chitID)
           .document(getDocumentID(createdAt))
@@ -76,7 +76,7 @@ class ChitRequesters {
   }
 
   Future<void> remove(String financeId, String branchName, String subBranchName,
-      String chitID, DateTime createdAt) async {
+      int chitID, DateTime createdAt) async {
     try {
       await getCollectionRef(financeId, branchName, subBranchName, chitID)
           .document(getDocumentID(createdAt))

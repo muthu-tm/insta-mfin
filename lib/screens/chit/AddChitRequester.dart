@@ -251,7 +251,7 @@ class _AddChitRequesterState extends State<AddChitRequester> {
           widget.chit.financeID,
           widget.chit.branchName,
           widget.chit.subBranchName,
-          widget.chit.chitID,
+          widget.chit.id,
           _cr);
       if (!result['is_success']) {
         Navigator.pop(context);

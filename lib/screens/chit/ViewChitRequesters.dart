@@ -53,11 +53,8 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
 
   Widget _getBody() {
     return StreamBuilder(
-      stream: ChitRequesters().streamRequesters(
-          widget.chit.financeID,
-          widget.chit.branchName,
-          widget.chit.subBranchName,
-          widget.chit.chitID),
+      stream: ChitRequesters().streamRequesters(widget.chit.financeID,
+          widget.chit.branchName, widget.chit.subBranchName, widget.chit.id),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
@@ -136,7 +133,7 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                                         widget.chit.financeID,
                                         widget.chit.branchName,
                                         widget.chit.subBranchName,
-                                        widget.chit.chitID,
+                                        widget.chit.id,
                                         chitReq.createdAt,
                                         {'is_allocated': true});
                                     Navigator.pop(context);
@@ -163,19 +160,21 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                                         widget.chit.financeID,
                                         widget.chit.branchName,
                                         widget.chit.subBranchName,
-                                        widget.chit.chitID,
+                                        widget.chit.id,
                                         chitReq.createdAt);
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
-                                        CustomSnackBar.successSnackBar(
-                                            "Removed the request successfully",
-                                            2));
+                                      CustomSnackBar.successSnackBar(
+                                          "Removed the request successfully",
+                                          2),
+                                    );
                                   } catch (err) {
                                     Navigator.pop(context);
                                     _scaffoldKey.currentState.showSnackBar(
-                                        CustomSnackBar.errorSnackBar(
-                                            "Error, Unable to remove request now!",
-                                            2));
+                                      CustomSnackBar.errorSnackBar(
+                                          "Error, Unable to remove request now!",
+                                          2),
+                                    );
                                   }
                                 },
                                 icon: Icon(Icons.remove_circle),

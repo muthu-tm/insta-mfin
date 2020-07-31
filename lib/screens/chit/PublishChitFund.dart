@@ -19,13 +19,16 @@ class _PublishChitFundState extends State<PublishChitFund> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  TextEditingController commController = TextEditingController();
+  TextEditingController chitAmountController = TextEditingController();
+
   String name = '';
   String chitID = '';
   double commission = 0.00;
   int amount = 0;
   int tenure = 10;
   String notes = "";
-  String chitType = 'Custom';
+  String chitType = 'Fixed';
   List<String> chitTypes = ['Custom', 'Fixed'];
   List<int> cAmount = [];
   List<int> tAmount = [];
@@ -71,8 +74,11 @@ class _PublishChitFundState extends State<PublishChitFund> {
   @override
   void initState() {
     super.initState();
+    commController.text = '0.00';
+    chitAmountController.text = '0';
     if (widget.temp != null) {
       amount = widget.temp.chitAmount;
+      chitAmountController.text = widget.temp.chitAmount.toString();
       tenure = widget.temp.tenure;
       chitType = widget.temp.type;
       fundDetails = widget.temp.fundDetails;
@@ -186,11 +192,11 @@ class _PublishChitFundState extends State<PublishChitFund> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              initialValue: amount.toString(),
+                              controller: chitAmountController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Chit amount',
+                                labelText: 'Chit Amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -280,21 +286,22 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               validator: (chitID) {
                                 if (chitID.trim().isNotEmpty) {
                                   this.chitID = chitID;
-                                  return null;
                                 } else {
-                                  return "Fill the Chit ID";
+                                  this.chitID = "";
                                 }
+                                return null;
                               },
                             ),
                           ),
                           Padding(padding: EdgeInsets.all(10)),
                           Flexible(
                             child: TextFormField(
-                              initialValue: commission.toString(),
+                              controller: commController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Commission Rate',
+                                labelText: 'Commission %',
+                                hintText: 'Commission Rate - %',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -349,6 +356,20 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 filled: true,
                               ),
                               onChanged: (String val) {
+                                for (int i = fundDetails.length;
+                                    i < int.parse(val);
+                                    i++) {
+                                  ChitFundDetails _fd = ChitFundDetails();
+                                  int cAmount =
+                                      int.parse(chitAmountController.text);
+                                  double cRate =
+                                      double.parse(commController.text);
+                                  if (cRate > 0.00 && cAmount > 0) {
+                                    _fd.profit =
+                                        ((cAmount / 100) * cRate).round();
+                                  }
+                                  fundDetails.insert(i, _fd);
+                                }
                                 setState(() {
                                   this.tenure = int.parse(val);
                                 });

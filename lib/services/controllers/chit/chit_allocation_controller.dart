@@ -8,7 +8,7 @@ class ChitAllocationController {
       String notes) async {
     try {
       List<ChitAllocations> allocs = await ChitAllocations().getChitAllocations(
-          chit.financeID, chit.branchName, chit.subBranchName, chit.chitID);
+          chit.financeID, chit.branchName, chit.subBranchName, chit.id);
       int chits = 0;
       chit.customerDetails.forEach((cd) {
         if (cNumber == cd.number) {
@@ -34,7 +34,7 @@ class ChitAllocationController {
       alloc.financeID = chit.financeID;
       alloc.branchName = chit.branchName;
       alloc.subBranchName = chit.subBranchName;
-      alloc.chitID = chit.chitID;
+      alloc.chitID = chit.id;
       alloc.chitNumber = fund.chitNumber;
       alloc.customer = cNumber;
       alloc.isPaid = isPaid;
@@ -52,7 +52,7 @@ class ChitAllocationController {
       String financeId,
       String branchName,
       String subBranchName,
-      String chitID,
+      int chitID,
       int chitNumber,
       bool isPaid,
       bool isAdd,

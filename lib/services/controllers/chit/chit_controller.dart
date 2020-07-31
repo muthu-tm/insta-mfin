@@ -15,7 +15,7 @@ class ChitController {
   }
 
   Future addRequester(String financeId, String branchName, String subBranchName,
-      String chitID, ChitRequesters requesters) async {
+      int chitID, ChitRequesters requesters) async {
     try {
       await requesters.create(
         financeId,
@@ -35,7 +35,7 @@ class ChitController {
       String financeId,
       String branchName,
       String subBranchName,
-      String chitID,
+      int chitID,
       int mNumber,
       int chitNumber,
       bool isPaid,
@@ -59,7 +59,7 @@ class ChitController {
     }
   }
 
-  Future removeChitFund(String chitID) async {
+  Future removeChitFund(int chitID) async {
     try {
       bool received = await ChitFund().isChitReceived(chitID);
 

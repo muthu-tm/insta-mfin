@@ -6,7 +6,7 @@ ChitCollection _$ChitCollectionFromJson(Map<String, dynamic> json) {
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
     ..customerNumber = json['customer_number'] as int
-    ..chitID = json['chit_id'] as String
+    ..chitID = json['chit_id'] as int
     ..chitNumber = json['chit_number'] as int
     ..chitDate = json['chit_date'] as int
     ..collectedOn = (json['collected_on'] as List)
