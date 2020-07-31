@@ -126,11 +126,11 @@ class CustReport {
 
     headerRow.style.backgroundBrush = PdfSolidBrush(PdfColor(68, 114, 196));
     headerRow.style.textBrush = PdfBrushes.white;
-    headerRow.cells[0].value = 'Payment ID';
+    headerRow.cells[0].value = 'Loan ID';
     headerRow.cells[0].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[1].value = 'Status';
     headerRow.cells[1].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[2].value = 'Date of Payment';
+    headerRow.cells[2].value = 'Loan Date';
     headerRow.cells[2].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[3].value = 'Collection Mode';
     headerRow.cells[3].stringFormat.alignment = PdfTextAlignment.center;
@@ -140,7 +140,7 @@ class CustReport {
     headerRow.cells[5].stringFormat.alignment = PdfTextAlignment.center;
 
     //Add rows
-    List<Payment> pays = await _c.getPayments(_c.mobileNumber);
+    List<Payment> pays = await _c.getPayments(_c.id);
 
     if (pays != null) {
       for (int i = 0; i < pays.length; i++) {
