@@ -14,10 +14,7 @@ SubBranch _$SubBranchFromJson(Map<String, dynamic> json) {
     ..dateOfRegistration = json['date_of_registration'] as int
     ..addedBy = json['added_by'] as int
     ..isActive = json['is_active'] as bool ?? true
-    ..deactivatedAt = json['deactivated_at'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(
-            _getMillisecondsSinceEpoch(json['deactivated_at'] as Timestamp))
+    ..deactivatedAt = json['deactivated_at'] as int
     ..accountsData = json['accounts_data'] == null
         ? new AccountsData()
         : AccountsData.fromJson(json['accounts_data'] as Map<String, dynamic>)

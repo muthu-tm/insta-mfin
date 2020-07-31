@@ -9,6 +9,8 @@ class AccountPreferences {
   double interestRate;
   @JsonKey(name: 'collection_mode', nullable: true)
   int collectionMode;
+  @JsonKey(name: 'interest_from_principal', nullable: true)
+  bool interestFromPrincipal;
   @JsonKey(name: 'chit_enabled', nullable: true)
   bool chitEnabled;
   @JsonKey(name: 'collection_days', nullable: true)

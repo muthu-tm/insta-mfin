@@ -4,17 +4,13 @@ import 'package:instamfin/screens/transaction/books/AllTransactionsBook.dart';
 import 'package:instamfin/screens/transaction/books/CustomersBook.dart';
 import 'package:instamfin/screens/transaction/books/PaymentsBook.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
-import 'package:instamfin/app_localizations.dart';
 
 class BooksHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate("note_books")),
+        title: Text("NoteBooks"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: Column(
@@ -24,14 +20,6 @@ class BooksHome extends StatelessWidget {
             padding: EdgeInsets.all(10),
             child: InkWell(
               onTap: () {
-                if (!hasValidSubscription) {
-                  _scaffoldKey.currentState.showSnackBar(
-                      CustomSnackBar.errorSnackBar(
-                          AppLocalizations.of(context).translate("subscription_expired"),
-                          3));
-                  return;
-                }
-
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -86,7 +74,7 @@ class BooksHome extends StatelessWidget {
                       ),
                       Spacer(),
                       Text(
-                        AppLocalizations.of(context).translate("collection_book"),
+                        "Collections Book",
                         style: TextStyle(
                           fontSize: 20,
                           fontFamily: "Georgia",
@@ -159,7 +147,7 @@ class BooksHome extends StatelessWidget {
                       ),
                       Spacer(),
                       Text(
-                        AppLocalizations.of(context).translate("payments_book"),
+                        "Payments Book",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
@@ -224,7 +212,7 @@ class BooksHome extends StatelessWidget {
                       ),
                       Spacer(),
                       Text(
-                        AppLocalizations.of(context).translate("transactions_book"),
+                        "Transactions Book",
                         style: TextStyle(
                           fontSize: 20,
                           fontFamily: "Georgia",
@@ -289,7 +277,7 @@ class BooksHome extends StatelessWidget {
                       ),
                       Spacer(),
                       Text(
-                        AppLocalizations.of(context).translate("customers_book"),
+                        "Customers Book",
                         style: TextStyle(
                           fontSize: 20,
                           fontFamily: "Georgia",

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/customer/widgets/CollDetailsTableWidget.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionDetailsWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -14,9 +13,7 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/collection_receipt.dart';
 
-import '../../app_localizations.dart';
-
-class ViewCollection extends StatelessWidget {
+class ViewCollection extends StatefulWidget {
   ViewCollection(this.pay, this._collection, this.iconColor);
 
   final Payment pay;
@@ -135,7 +132,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    AppLocalizations.of(context).translate('customer_caps'),
+                    "CUSTOMER",
                     style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Georgia",
@@ -195,7 +192,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    AppLocalizations.of(context).translate('amount_caps'),
+                    "AMOUNT",
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Georgia",
@@ -220,60 +217,143 @@ class _ViewCollectionState extends State<ViewCollection> {
                   ),
                 ),
               ),
-              ListTile(
-                leading: SizedBox(
-                  width: 100,
-                  child: Text(
-                    AppLocalizations.of(context).translate('received_caps'),
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinGrey),
-                  ),
-                ),
-                title: TextFormField(
-                  readOnly: true,
-                  textAlign: TextAlign.end,
-                  initialValue: collection.getReceived().toString(),
-                  decoration: InputDecoration(
-                    fillColor: CustomColors.mfinWhite,
-                    filled: true,
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 3.0, horizontal: 3.0),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: CustomColors.mfinGrey,
+              isReceived
+                  ? ListTile(
+                      leading: SizedBox(
+                        width: 100,
+                        child: Text(
+                          "RECEIVED",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: "Georgia",
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.mfinGrey),
+                        ),
+                      ),
+                      title: TextFormField(
+                        readOnly: true,
+                        textAlign: TextAlign.end,
+                        initialValue: collection.getReceived().toString(),
+                        decoration: InputDecoration(
+                          fillColor: CustomColors.mfinWhite,
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: CustomColors.mfinGrey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _date,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    hintText: 'Date Collected',
+                                    labelText: "Collected On",
+                                    labelStyle: TextStyle(
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 3.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Flexible(
+                            child: TextFormField(
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.number,
+                              initialValue: totalAmount.toString(),
+                              decoration: InputDecoration(
+                                hintText: 'Collected Amount',
+                                labelText: 'Collected Amount',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 3.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              validator: (amount) {
+                                if (amount.trim().isEmpty ||
+                                    amount.trim() == "0") {
+                                  return "Collected Amount should not be empty!";
+                                } else {
+                                  collDetails['amount'] =
+                                      int.parse(amount.trim());
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: SizedBox(
-                  width: 100,
-                  child: Text(
-                    AppLocalizations.of(context).translate('date_caps'),
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: "Georgia",
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.mfinGrey),
-                  ),
-                ),
-                title: TextFormField(
-                  readOnly: true,
-                  textAlign: TextAlign.end,
-                  initialValue: DateUtils.getFormattedDateFromEpoch(
-                      collection.collectionDate),
-                  decoration: InputDecoration(
-                    fillColor: CustomColors.mfinWhite,
-                    filled: true,
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 3.0, horizontal: 3.0),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: CustomColors.mfinGrey,
+              isReceived
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Transferred Mode',
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              items: _transferMode.entries.map(
+                                (f) {
+                                  return DropdownMenuItem<String>(
+                                    value: f.key,
+                                    child: Text(f.value),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (newVal) {
+                                _setTransferredMode(newVal);
+                              },
+                              value: transferredMode,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
               isReceived
@@ -426,10 +506,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                       : Padding(
                           padding: const EdgeInsets.all(10.0),
                         ),
-              (UserController().getCurrentUser().preferences.tableView)
-                  ? CollDetailsTableWidget(widget.pay.isSettled, _scaffoldKey,
-                      collection, widget.pay.custName)
-                  : CollectionDetailsWidget(widget.pay.isSettled, _scaffoldKey,
+                  CollectionDetailsWidget(widget.pay.isSettled, _scaffoldKey,
                       collection, widget.pay.custName),
             ];
           } else {
@@ -441,8 +518,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                   children: <Widget>[
                     Spacer(),
                     Text(
-                      AppLocalizations.of(context)
-                          .translate('unable_find_collection'),
+                      "Unable to find the collection Details",
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -463,9 +539,7 @@ class _ViewCollectionState extends State<ViewCollection> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-              AppLocalizations.of(context).translate('view_collection'),
-            ),
+            title: Text('View Collection'),
             backgroundColor: CustomColors.mfinBlue,
           ),
           key: _scaffoldKey,

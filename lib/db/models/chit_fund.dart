@@ -22,6 +22,8 @@ class ChitFund extends Model {
   String subBranchName;
   @JsonKey(name: 'chit_id', nullable: true)
   String chitID;
+  @JsonKey(name: 'id', nullable: true)
+  int id;
   @JsonKey(name: 'customers_details', nullable: true)
   List<ChitCustomers> customerDetails;
   @JsonKey(name: 'customers', nullable: true)
@@ -136,7 +138,7 @@ class ChitFund extends Model {
   String getID() {
     String value = this.financeID + this.branchName + this.subBranchName;
 
-    return HashGenerator.hmacGenerator(value, this.chitID);
+    return HashGenerator.hmacGenerator(value, this.id.toString());
   }
 
   Query getGroupQuery() {
@@ -144,20 +146,20 @@ class ChitFund extends Model {
   }
 
   String getDocumentID(String financeId, String branchName,
-      String subBranchName, String chitID) {
+      String subBranchName, int id) {
     String value = financeId + branchName + subBranchName;
-    return HashGenerator.hmacGenerator(value, chitID);
+    return HashGenerator.hmacGenerator(value, id.toString());
   }
 
   DocumentReference getDocumentReference(String financeId, String branchName,
-      String subBranchName, String chitID) {
+      String subBranchName, int id) {
     return getCollectionRef()
-        .document(getDocumentID(financeId, branchName, subBranchName, chitID));
+        .document(getDocumentID(financeId, branchName, subBranchName, id));
   }
 
   Future<bool> isExist() async {
     var chitSnap = await getDocumentReference(
-            this.financeID, this.branchName, this.subBranchName, this.chitID)
+            this.financeID, this.branchName, this.subBranchName, this.id)
         .get();
 
     return chitSnap.exists;
@@ -170,6 +172,7 @@ class ChitFund extends Model {
     this.branchName = user.primary.branchName;
     this.subBranchName = user.primary.subBranchName;
     this.publishedBy = user.mobileNumber;
+    this.id = createdAt.microsecondsSinceEpoch;
     try {
       bool isExist = await this.isExist();
 
@@ -184,12 +187,12 @@ class ChitFund extends Model {
     }
   }
 
-  Future<ChitFund> getByChitID(String chitID) async {
+  Future<ChitFund> getByChitID(int chitID) async {
     QuerySnapshot snap = await getCollectionRef()
         .where('finance_id', isEqualTo: user.primary.financeID)
         .where('branch_name', isEqualTo: user.primary.branchName)
         .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
-        .where('chit_id', isEqualTo: chitID)
+        .where('id', isEqualTo: chitID)
         .getDocuments();
 
     if (snap.documents.isNotEmpty)
@@ -261,7 +264,7 @@ class ChitFund extends Model {
         .snapshots();
   }
 
-  Future<bool> isChitReceived(String chitID) async {
+  Future<bool> isChitReceived(int chitID) async {
     try {
       ChitFund chit = await getByChitID(chitID);
 
@@ -275,7 +278,7 @@ class ChitFund extends Model {
 
         List<ChitCollection> colls = await ChitCollection()
             .getByCollectionNumber(chit.financeID, chit.branchName,
-                chit.subBranchName, chit.chitID, i + 1);
+                chit.subBranchName, chit.id, i + 1);
 
         for (int index = 0; index < colls.length; index++) {
           if (colls[index].getReceived() > 0) {
@@ -291,9 +294,9 @@ class ChitFund extends Model {
     }
   }
 
-  Future removeChit(String chitID) async {
+  Future removeChit(int id) async {
     DocumentReference docRef = getDocumentReference(user.primary.financeID,
-        user.primary.branchName, user.primary.subBranchName, chitID);
+        user.primary.branchName, user.primary.subBranchName, id);
 
     try {
       QuerySnapshot snapshot =

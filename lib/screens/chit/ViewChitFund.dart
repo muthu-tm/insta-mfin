@@ -140,7 +140,7 @@ class _ViewChitFundState extends State<ViewChitFund> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ViewChitCollections(
-                                          widget.chit.chitID, _fund),
+                                          widget.chit.id, _fund),
                                       settings: RouteSettings(
                                           name: '/chit/collections'),
                                     ),
@@ -160,7 +160,7 @@ class _ViewChitFundState extends State<ViewChitFund> {
                                               widget.chit.financeID,
                                               widget.chit.branchName,
                                               widget.chit.subBranchName,
-                                              widget.chit.chitID,
+                                              widget.chit.id,
                                               _fund.chitNumber);
                                   if (chitAlloc == null) {
                                     showDialog(

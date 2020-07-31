@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user_referees.dart';
@@ -10,7 +9,6 @@ import 'package:instamfin/screens/settings/payments/PaymentsHome.dart';
 import 'package:instamfin/screens/settings/payments/ReferAndEarnScreen.dart';
 import 'package:instamfin/screens/settings/payments/WalletHome.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/app_localizations.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class AppSettings extends StatelessWidget {
@@ -40,7 +38,7 @@ class AppSettings extends StatelessWidget {
                   color: CustomColors.mfinBlue,
                 ),
                 title: Text(
-                  AppLocalizations.of(context).translate('payments'),
+                  "Payments",
                 ),
                 trailing: Icon(
                   Icons.arrow_forward_ios,
@@ -53,12 +51,12 @@ class AppSettings extends StatelessWidget {
                 color: CustomColors.mfinButtonGreen,
               ),
               ListTile(
-                leading: new Icon(
+                leading: Icon(
                   Icons.card_giftcard,
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: new Text(AppLocalizations.of(context).translate('refer_earn')),
+                title: Text('Refer & Earn'),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -74,12 +72,12 @@ class AppSettings extends StatelessWidget {
                 color: CustomColors.mfinButtonGreen,
               ),
               ListTile(
-                leading: new Icon(
+                leading: Icon(
                   Icons.account_balance_wallet,
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: new Text('iFIN Wallet'),
+                title: Text('iFIN Wallet'),
                 onTap: () async {
                   UserReferees ref = await UserReferees().getRegistrationBonus(
                       UserController().getCurrentUserID().toString());
@@ -99,12 +97,12 @@ class AppSettings extends StatelessWidget {
                 color: CustomColors.mfinButtonGreen,
               ),
               ListTile(
-                leading: new Icon(
+                leading: Icon(
                   Icons.headset_mic,
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: new Text(AppLocalizations.of(context).translate('help_support')),
+                title: Text('Help & Support'),
                 onTap: () {
                   showDialog(
                     context: context,
@@ -122,12 +120,12 @@ class AppSettings extends StatelessWidget {
                 color: CustomColors.mfinButtonGreen,
               ),
               ListTile(
-                leading: new Icon(
+                leading: Icon(
                   Icons.person_pin_circle,
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: new Text(AppLocalizations.of(context).translate('about_us')),
+                title: Text('About Us'),
                 onTap: () {},
               ),
               Divider(

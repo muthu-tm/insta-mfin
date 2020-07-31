@@ -423,12 +423,13 @@ Widget openDrawer(BuildContext context) {
               height: 80,
               width: 50,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
                 child: Align(
                   alignment: Alignment.center,
-                  child: Image.asset('images/icons/logo.png'),
+                  child: Image.asset(
+                    'images/icons/logo.png',
+                    height: 60,
+                    width: 60,
+                  ),
                 ),
               ),
             ),

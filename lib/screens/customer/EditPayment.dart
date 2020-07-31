@@ -587,12 +587,16 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              controller: totalAmountController,
+                              controller: accPref.interestFromPrincipal
+                                  ? principalAmountController
+                                  : totalAmountController,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)
-                                    .translate('total_amount'),
-                                labelText: AppLocalizations.of(context)
-                                    .translate('total_amount'),
+                                hintText: accPref.interestFromPrincipal
+                                    ? 'Loan Amount'
+                                    : 'Total amount',
+                                labelText: accPref.interestFromPrincipal
+                                    ? 'Loan Amount'
+                                    : 'Total amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -611,21 +615,35 @@ class _EditPaymentState extends State<EditPayment> {
                                         accPref.interestRate
                                     : 0;
                                 int pAmount = int.parse(val) - iAmount.round();
+                                int tAmount = int.parse(val) + iAmount.round();
                                 setState(() {
                                   interestRateController.text =
                                       iAmount.round().toString();
-                                  principalAmountController.text =
-                                      pAmount.toString();
+                                  accPref.interestFromPrincipal
+                                      ? totalAmountController.text =
+                                          tAmount.toString()
+                                      : principalAmountController.text =
+                                          pAmount.toString();
                                 });
                               },
                               validator: (amount) {
                                 if (amount.trim().isEmpty ||
                                     amount.trim() == "0") {
-                                  return "Total Amount should not be empty!";
-                                } else if (amount.trim() !=
-                                    widget.payment.totalAmount.toString()) {
-                                  updatedPayment['total_amount'] =
-                                      int.parse(amount.trim());
+                                  return "Amount should not be empty!";
+                                } else {
+                                  if (accPref.interestFromPrincipal &&
+                                      amount.trim() !=
+                                          widget.payment.principalAmount
+                                              .toString()) {
+                                    updatedPayment['principal_amount'] =
+                                        int.parse(amount.trim());
+                                  } else if (!accPref.interestFromPrincipal &&
+                                      amount.trim() !=
+                                          widget.payment.totalAmount
+                                              .toString()) {
+                                    updatedPayment['total_amount'] =
+                                        int.parse(amount.trim());
+                                  }
                                 }
                                 return null;
                               },
@@ -655,16 +673,30 @@ class _EditPaymentState extends State<EditPayment> {
                                         color: CustomColors.mfinWhite)),
                               ),
                               onChanged: (val) {
-                                int pAmount =
-                                    int.parse(totalAmountController.text) > 0
-                                        ? int.parse(
-                                                totalAmountController.text) -
-                                            int.parse(val)
-                                        : 0;
-                                setState(() {
-                                  principalAmountController.text =
-                                      pAmount.toString();
-                                });
+                                if (accPref.interestFromPrincipal) {
+                                  int tAmount = int.parse(
+                                              principalAmountController.text) >
+                                          0
+                                      ? int.parse(
+                                              principalAmountController.text) +
+                                          int.parse(val)
+                                      : 0;
+                                  setState(() {
+                                    totalAmountController.text =
+                                        tAmount.toString();
+                                  });
+                                } else {
+                                  int pAmount =
+                                      int.parse(totalAmountController.text) > 0
+                                          ? int.parse(
+                                                  totalAmountController.text) -
+                                              int.parse(val)
+                                          : 0;
+                                  setState(() {
+                                    principalAmountController.text =
+                                        pAmount.toString();
+                                  });
+                                }
                               },
                               validator: (iRate) {
                                 if (iRate.trim() !=
@@ -692,12 +724,16 @@ class _EditPaymentState extends State<EditPayment> {
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              controller: principalAmountController,
+                              controller: accPref.interestFromPrincipal
+                                  ? totalAmountController
+                                  : principalAmountController,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)
-                                    .translate('principal_amount'),
-                                labelText: AppLocalizations.of(context)
-                                    .translate('principal_amount'),
+                                hintText: accPref.interestFromPrincipal
+                                    ? 'Total Amount'
+                                    : 'Loan amount',
+                                labelText: accPref.interestFromPrincipal
+                                    ? 'Total Amount'
+                                    : 'Loan amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle:
@@ -713,13 +749,23 @@ class _EditPaymentState extends State<EditPayment> {
                               validator: (amount) {
                                 if (amount.trim().isEmpty ||
                                     amount.trim() == "0") {
-                                  return "Principal Amount should not be empty!";
-                                } else if (amount.trim() !=
-                                    widget.payment.principalAmount.toString()) {
-                                  updatedPayment['principal_amount'] =
-                                      int.parse(amount.trim());
+                                  return "Amount should not be empty!";
+                                } else {
+                                  if (accPref.interestFromPrincipal &&
+                                      amount.trim() !=
+                                          widget.payment.totalAmount
+                                              .toString()) {
+                                    updatedPayment['total_amount'] =
+                                        int.parse(amount.trim());
+                                  } else if (!accPref.interestFromPrincipal &&
+                                      amount.trim() !=
+                                          widget.payment.principalAmount
+                                              .toString()) {
+                                    updatedPayment['principal_amount'] =
+                                        int.parse(amount.trim());
+                                  }
+                                  return null;
                                 }
-                                return null;
                               },
                             ),
                           ),

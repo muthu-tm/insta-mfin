@@ -5,7 +5,7 @@ ChitAllocations _$ChitAllocationsFromJson(Map<String, dynamic> json) {
     ..financeID = json['finance_id'] as String
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
-    ..chitID = json['chit_id'] as String
+    ..chitID = json['chit_id'] as int
     ..chitNumber = json['chit_number'] as int
     ..customer = json['customer'] as int
     ..allocations = (json['allocations'] as List)

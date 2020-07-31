@@ -16,7 +16,7 @@ import '../../app_localizations.dart';
 class ViewChitCollections extends StatefulWidget {
   ViewChitCollections(this.chitID, this.fundDetails);
 
-  final String chitID;
+  final int chitID;
   final ChitFundDetails fundDetails;
 
   @override
@@ -32,8 +32,7 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(
-            '${AppLocalizations.of(context).translate('chit')} ${widget.chitID} - ${widget.fundDetails.chitNumber}'),
+        title: Text('Chit - ${widget.fundDetails.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(child: _getBody()),

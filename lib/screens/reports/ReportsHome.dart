@@ -437,7 +437,7 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (customers.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            AppLocalizations.of(context).translate('format'), 2));
+            "Generating your Customers Report! It may take upto 10-30 seconds, Please wait...", 5));
         await CustomerReport()
             .generateReport(_user, customers, isRange, fromDate, toDate);
       } else {
@@ -451,6 +451,7 @@ class _ReportsHomeState extends State<ReportsHome> {
       if (_selectedRange == '0') {
         // Todays Payment Report
         if (_selectedType == '0') {
+          // pays = await Payment().getAllPayments();
           pays = await Payment()
               .getAllPaymentsByDate(DateUtils.getUTCDateEpoch(fromDate));
         } else {
@@ -476,7 +477,7 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (pays.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-          AppLocalizations.of(context).translate('generating_payment_report'), 2));
+            "Generating your Payment Report! It may take upto 10-30 seconds, Please wait...", 5));
         await PaymentReport()
             .generateReport(_user, pays, isRange, fromDate, toDate);
       } else {

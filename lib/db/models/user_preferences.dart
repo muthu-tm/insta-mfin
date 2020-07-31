@@ -11,8 +11,6 @@ class UserPreferences {
   String prefLanguage;
   @JsonKey(name: 'enable_fingerprint_auth', defaultValue: false)
   bool isfingerAuthEnabled;
-  @JsonKey(name: 'enable_table_view', defaultValue: false)
-  bool tableView;
 
   factory UserPreferences.fromJson(Map<String, dynamic> json) => _$UserPreferencesFromJson(json);
   Map<String, dynamic> toJson() => _$UserPreferencesToJson(this);

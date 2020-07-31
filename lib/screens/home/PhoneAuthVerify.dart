@@ -83,16 +83,11 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(_fixedPadding),
-            child: Material(
-              elevation: 10.0,
-              borderRadius: BorderRadius.circular(10.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
+            child: ClipRRect(
                 child: Image.asset(
                   "images/icons/logo.png",
-                  height: _height * 0.1,
+                  height: 80,
                 ),
-              ),
             ),
           ),
           Text('iFIN',
@@ -117,7 +112,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
                       TextSpan(
                           text: 'One Time Password',
                           style: TextStyle(
-                              color: CustomColors.mfinWhite,
+                              color: CustomColors.mfinButtonGreen,
                               fontSize: 16.0,
                               fontWeight: FontWeight.w700)),
                       TextSpan(

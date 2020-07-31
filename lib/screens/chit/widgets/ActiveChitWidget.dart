@@ -144,7 +144,7 @@ class ActiveChitWidget extends StatelessWidget {
                                             4));
                                     ChitController _cc = ChitController();
                                     var result =
-                                        await _cc.removeChitFund(chit.chitID);
+                                        await _cc.removeChitFund(chit.id);
                                     if (result == null) {
                                       _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(

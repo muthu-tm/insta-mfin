@@ -46,7 +46,7 @@ dependencies:
   path_provider: ^1.6.10
   modal_bottom_sheet: ^0.1.6+1
   percent_indicator: ^2.1.5
-  razorpay_flutter: ^1.2.1
+  razorpay_flutter: ^1.2.2
   encrypt: ^4.0.2
   package_info: ^0.4.1
 

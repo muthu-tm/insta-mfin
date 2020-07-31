@@ -6,6 +6,7 @@ import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/customer/widgets/CustomerPaymentWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -50,14 +51,13 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                         icon: Icons.delete_forever,
                         onTap: () async {
                           if (payment.isSettled) {
-                            _scaffoldKey.currentState
-                                .showSnackBar(CustomSnackBar.errorSnackBar(
-                              AppLocalizations.of(context)
-                                  .translate('unable_edit_payment'),
-                              3,
-                            ));
-                            // await forceRemove(context, payment,
-                            //     "Enter your Secret KEY to remove SETTLED Payment!");
+                            // _scaffoldKey.currentState
+                            //     .showSnackBar(CustomSnackBar.errorSnackBar(
+                            //   "You cannot Edit already 'SETTLED' Payment!}",
+                            //   3,
+                            // ));
+                            await forceRemove(context, payment,
+                                "Enter your Secret KEY to remove SETTLED Payment!");
                           } else {
                             var state = Slidable.of(context);
                             var dismiss = await showDialog<bool>(
@@ -381,12 +381,19 @@ class CustomerPaymentsListWidget extends StatelessWidget {
               ),
               onPressed: () async {
                 bool isValid = UserController().authCheck(_pController.text);
+                _pController.text = "";
 
                 if (isValid) {
+                  CustomDialogs.actionWaiting(context, "Removing..");
                   PaymentController _pc = PaymentController();
-                  var result = await _pc.forceRemovePayment(payment.financeID,
-                      payment.branchName, payment.subBranchName, payment.id);
+                  var result = await _pc.forceRemovePayment(
+                      payment.financeID,
+                      payment.branchName,
+                      payment.subBranchName,
+                      payment.id,
+                      payment.isSettled);
                   if (!result['is_success']) {
+                    Navigator.pop(context);
                     Navigator.pop(context);
                     _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
@@ -396,8 +403,9 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                     );
                   } else {
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     _scaffoldKey.currentState.showSnackBar(
-                      CustomSnackBar.errorSnackBar(
+                      CustomSnackBar.successSnackBar(
                           "Payment removed successfully", 2),
                     );
                   }

@@ -1,6 +1,7 @@
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/subscriptions.dart';
 import 'package:instamfin/db/models/user_primary.dart';
+import 'package:instamfin/db/models/user_wallet.dart';
 import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/db/models/finance.dart';
 import 'package:instamfin/db/models/model.dart';
@@ -44,12 +45,14 @@ class User extends Model {
   UserPreferences preferences;
   @JsonKey(name: 'primary')
   UserPrimary primary;
+  @JsonKey(name: 'wallet')
+  UserWallet wallet;
   @JsonKey(name: 'last_signed_in_at', nullable: true)
   DateTime lastSignInTime;
   @JsonKey(name: 'is_active', defaultValue: true)
   bool isActive;
   @JsonKey(name: 'deactivated_at', nullable: true)
-  DateTime deactivatedAt;
+  int deactivatedAt;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -132,6 +135,10 @@ class User extends Model {
     return this.mobileNumber.toString();
   }
 
+  Stream<DocumentSnapshot> streamUserData() {
+    return getDocumentReference().snapshots();
+  }
+
   Future<User> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
@@ -168,15 +175,18 @@ class User extends Model {
 
   Future<void> claimRegistrationBonus(int bonus) async {
     try {
-      QuerySnapshot snap = await UserReferees()
-          .getCollectionRef(getID())
-          .where('type', isEqualTo: 0)
-          .getDocuments();
+      // QuerySnapshot snap = await UserReferees()
+      //     .getCollectionRef(getID())
+      //     .where('type', isEqualTo: 0)
+      //     .getDocuments();
 
-      if (snap.documents.isNotEmpty) {
-        throw 'Already you have claimed your Registration Bonus!';
-      } else {
-        var regData = {
+      // if (snap.documents.isNotEmpty) {
+      //   throw 'Already you have claimed your Registration Bonus!';
+      // } else {
+      DocumentReference userDocRef = getDocumentReference();
+
+      try {
+        Map<String, dynamic> regData = {
           "user_number": this.mobileNumber,
           "guid": this.guid,
           "amount": bonus,
@@ -185,11 +195,39 @@ class User extends Model {
           "created_at": DateTime.now()
         };
 
-        await UserReferees()
-            .getCollectionRef(getID())
-            .document()
-            .setData(regData);
+        await Model.db.runTransaction(
+          (tx) {
+            return tx.get(userDocRef).then(
+              (doc) async {
+                User _u = User.fromJson(doc.data);
+                int tAmount = bonus;
+                int aAmount = bonus;
+                if (_u.wallet != null && _u.wallet.totalAmount != null) {
+                  tAmount += _u.wallet.totalAmount;
+                  aAmount += _u.wallet.availableBalance;
+                }
+
+                Map<String, dynamic> data = {
+                  'wallet': {
+                    'total_amount': tAmount,
+                    'available_balance': aAmount
+                  }
+                };
+
+                txCreate(
+                    tx,
+                    UserReferees().getCollectionRef(getID()).document(),
+                    regData);
+                txUpdate(tx, userDocRef, data);
+              },
+            );
+          },
+        );
+      } catch (err) {
+        print("Transaction Error Claiming Bonus" + err.toString());
+        throw err;
       }
+      // }
     } catch (err) {
       throw err;
     }
@@ -204,7 +242,7 @@ class User extends Model {
         throw 'Error, Referrer not Found!';
       else {
         User referrer = User.fromJson(userJSON);
-        var referrerData = {
+        Map<String, dynamic> referrerData = {
           "user_number": this.mobileNumber,
           "guid": this.guid,
           "amount": bonus,
@@ -212,6 +250,19 @@ class User extends Model {
           "registered_at": DateUtils.getUTCDateEpoch(this.createdAt),
           "created_at": DateTime.now()
         };
+
+        int tAmount = bonus;
+        int aAmount = bonus;
+        if (referrer.wallet != null && referrer.wallet.totalAmount != null) {
+          tAmount += referrer.wallet.totalAmount;
+          aAmount += referrer.wallet.availableBalance;
+        }
+
+        Map<String, dynamic> data = {
+          'wallet': {'total_amount': tAmount, 'available_balance': aAmount}
+        };
+
+        bWrite.updateData(referrer.getDocumentReference(), data);
         bWrite.setData(
             UserReferees().getCollectionRef(referrer.getID()).document(),
             referrerData);

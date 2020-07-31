@@ -374,10 +374,6 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
             "You are trying to add more than Payment's total amount, try Settlement!", 3));
         return;
       }
-      // if (widget.payment.totalAmount == widget.tReceived + collectedAmount) {
-      //   _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-      //       "You are collecting full amount, Please do settlement!", 2));
-      // }
 
       CollectionController _cc = CollectionController();
 

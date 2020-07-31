@@ -19,7 +19,7 @@ class ChitCollection {
   @JsonKey(name: 'customer_number', nullable: true)
   int customerNumber;
   @JsonKey(name: 'chit_id', nullable: true)
-  String chitID;
+  int chitID;
   @JsonKey(name: 'chit_number', nullable: true)
   int chitNumber;
   @JsonKey(name: 'chit_date', defaultValue: '')
@@ -55,7 +55,7 @@ class ChitCollection {
     this.customerNumber = number;
   }
 
-  setChitID(String chitID) {
+  setChitID(int chitID) {
     this.chitID = chitID;
   }
 
@@ -182,7 +182,7 @@ class ChitCollection {
   Map<String, dynamic> toJson() => _$ChitCollectionToJson(this);
 
   CollectionReference getCollectionRef(String financeId, String branchName,
-      String subBranchName, String chitID, int chitNumber) {
+      String subBranchName, int chitID, int chitNumber) {
     return ChitFund()
         .getDocumentReference(financeId, branchName, subBranchName, chitID)
         .collection("chits")
@@ -199,7 +199,7 @@ class ChitCollection {
   }
 
   DocumentReference getDocumentReference(String financeId, String branchName,
-      String subBranchName, String chitID, int mNumber, int chitNumber) {
+      String subBranchName, int chitID, int mNumber, int chitNumber) {
     return getCollectionRef(
             financeId, branchName, subBranchName, chitID, chitNumber)
         .document(getDocumentID(mNumber));
@@ -310,14 +310,14 @@ class ChitCollection {
   }
 
   Stream<QuerySnapshot> streamCollectionsForChit(String financeId,
-      String branchName, String subBranchName, String chitID, int chitNumber) {
+      String branchName, String subBranchName, int chitID, int chitNumber) {
     return getCollectionRef(
             financeId, branchName, subBranchName, chitID, chitNumber)
         .snapshots();
   }
 
   Stream<QuerySnapshot> streamUpcomingForChit(String financeId,
-      String branchName, String subBranchName, String chitID, int chitNumber) {
+      String branchName, String subBranchName, int chitID, int chitNumber) {
     return getCollectionRef(
             financeId, branchName, subBranchName, chitID, chitNumber)
         .where('chit_date',
@@ -326,7 +326,7 @@ class ChitCollection {
   }
 
   Stream<QuerySnapshot> streamTodaysForChit(String financeId, String branchName,
-      String subBranchName, String chitID, int chitNumber) {
+      String subBranchName, int chitID, int chitNumber) {
     return getCollectionRef(
             financeId, branchName, subBranchName, chitID, chitNumber)
         .where('chit_date',
@@ -335,7 +335,7 @@ class ChitCollection {
   }
 
   Stream<QuerySnapshot> streamPastForChit(String financeId, String branchName,
-      String subBranchName, String chitID, int chitNumber) {
+      String subBranchName, int chitID, int chitNumber) {
     return getCollectionRef(
             financeId, branchName, subBranchName, chitID, chitNumber)
         .where('chit_date',
@@ -347,7 +347,7 @@ class ChitCollection {
       String financeID,
       String branchName,
       String subBranchName,
-      String chitID,
+      int chitID,
       int chitNumber) async {
     var collectionDocs = await getCollectionRef(
             financeID, branchName, subBranchName, chitID, chitNumber)
@@ -377,7 +377,7 @@ class ChitCollection {
   }
 
   Future<ChitCollection> getCollectionByID(String financeId, String branchName,
-      String subBranchName, String chitID, int chitNumber, String docID) async {
+      String subBranchName, int chitID, int chitNumber, String docID) async {
     DocumentSnapshot snapshot = await getCollectionRef(
             financeId, branchName, subBranchName, chitID, chitNumber)
         .document(docID)
@@ -394,7 +394,7 @@ class ChitCollection {
       String financeId,
       String branchName,
       String subBranchName,
-      String chitID,
+      int chitID,
       int number,
       int chitNumber) {
     return getCollectionRef(
@@ -407,7 +407,7 @@ class ChitCollection {
       String financeId,
       String branchName,
       String subBranchName,
-      String chitID,
+      int chitID,
       int chitNumber,
       String docID,
       Map<String, dynamic> collJSON) async {
@@ -423,7 +423,7 @@ class ChitCollection {
       String financeId,
       String branchName,
       String subBranchName,
-      String chitID,
+      int chitID,
       int mNumber,
       int chitNumber,
       bool isPaid,

@@ -84,22 +84,17 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(5),
-                    child: Material(
-                      borderRadius: BorderRadius.circular(10.0),
-                      elevation: 10.0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
+                    child: ClipRRect(
                         child: Image.asset(
                           "images/icons/logo.png",
-                          height: 60,
-                          width: 60,
+                          height: 80,
+                          width: 80,
                         ),
                       ),
-                    ),
                   ),
                   Padding(
                     padding:
-                        EdgeInsets.only(top: 20, left: 5, right: 5, bottom: 10),
+                        EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
                     child: Card(
                       child: TextFormField(
                         textAlign: TextAlign.center,

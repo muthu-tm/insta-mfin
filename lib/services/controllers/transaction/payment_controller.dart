@@ -194,10 +194,11 @@ class PaymentController {
     String branchName,
     String subBranchName,
     int paymentID,
+    bool isSettled
   ) async {
     try {
       await Payment()
-          .forceRemovePayment(financeId, branchName, subBranchName, paymentID);
+          .forceRemovePayment(financeId, branchName, subBranchName, paymentID, isSettled);
 
       return CustomResponse.getSuccesReponse(
           "Force Removed customer's Payment $paymentID");

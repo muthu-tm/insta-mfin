@@ -19,7 +19,6 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   final User _user = UserController().getCurrentUser();
 
   var transctionGroupValue = 0;
-  List<bool> isSelectedView = [false, true];
   List<bool> isSelectedAuth = [false, true];
 
   TextEditingController _textEditingController = TextEditingController();
@@ -33,6 +32,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   String selectedCollectionModeID = "0";
   bool chitEnabled = false;
   List<String> chits = ['YES', 'NO'];
+  bool isFromPrincipal = false;
+  List<String> interestFrom = ['Principal Amount', 'Total Amount'];
 
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
@@ -57,13 +58,11 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     this.setAccountDetails();
     this.transctionGroupValue = _user.preferences.transactionGroupBy;
     this._selectedLang = _user.preferences.prefLanguage;
-    if (_user.preferences.tableView) {
-      isSelectedView = [true, false];
-    }
     if (_user.preferences.isfingerAuthEnabled) {
       isSelectedAuth = [true, false];
     }
     this.chitEnabled = _user.accPreferences.chitEnabled;
+    this.isFromPrincipal = _user.accPreferences.interestFromPrincipal;
     this.userPreferencesJSON = _user.preferences.toJson();
     this.intrestRateController.text =
         _user.accPreferences.interestRate.toString() ?? '0.00';
@@ -147,7 +146,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   ),
                   RowHeaderText(textName: AppLocalizations.of(context).translate('finance_preference')),
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding:
+                        EdgeInsets.only(left: 15.0, right: 5.0, bottom: 10.0),
                     child: TextFormField(
                       textAlign: TextAlign.start,
                       keyboardType: TextInputType.multiline,
@@ -187,7 +187,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                     ),
                     Flexible(
                       child: Padding(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.only(right: 5),
                         child: DropdownButtonFormField<String>(
                           decoration: InputDecoration(
                             fillColor: CustomColors.mfinWhite,
@@ -235,7 +235,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                         ),
                         Flexible(
                           child: Padding(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: EdgeInsets.only(right: 5),
                             child: TextFormField(
                               controller: intrestRateController,
                               textAlign: TextAlign.start,
@@ -264,6 +264,58 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 15.0, top: 10),
                             child: Text(
+                              "Interest From",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Georgia",
+                                fontWeight: FontWeight.bold,
+                                color: CustomColors.mfinGrey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.mfinWhite)),
+                              ),
+                              items: interestFrom.map(
+                                (f) {
+                                  return DropdownMenuItem<String>(
+                                    value: f,
+                                    child: Text(f),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (newVal) {
+                                _setInterestFrom(newVal);
+                              },
+                              value: isFromPrincipal
+                                  ? "Principal Amount"
+                                  : "Total Amount",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
                               AppLocalizations.of(context).translate('collection_mode'),
                               textAlign: TextAlign.start,
                               style: TextStyle(
@@ -277,7 +329,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                         ),
                         Flexible(
                           child: Padding(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: EdgeInsets.only(right: 5),
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
                                 fillColor: CustomColors.mfinWhite,
@@ -362,7 +414,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                     ),
                     Flexible(
                       child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(5),
                         child: DropdownButtonFormField(
                             decoration: InputDecoration(
                               floatingLabelBehavior:
@@ -489,48 +541,6 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       isSelected: isSelectedAuth,
                     ),
                   ),
-                  RowHeaderText(textName: "COLLECTION VIEW"),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: ToggleButtons(
-                      borderColor: CustomColors.mfinButtonGreen,
-                      selectedBorderColor: CustomColors.mfinBlue,
-                      fillColor: CustomColors.mfinButtonGreen,
-                      textStyle: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Georgia",
-                        color: CustomColors.mfinButtonGreen,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      borderWidth: 2,
-                      selectedColor: CustomColors.mfinBlue,
-                      borderRadius: BorderRadius.circular(5),
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: 15, left: 15, bottom: 5, top: 5),
-                          child: Text(
-                            'Table View',
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: 15, left: 15, bottom: 5, top: 5),
-                          child: Text(
-                            'List View',
-                          ),
-                        ),
-                      ],
-                      onPressed: (int index) {
-                        setState(() {
-                          for (int i = 0; i < isSelectedView.length; i++) {
-                            isSelectedView[i] = i == index;
-                          }
-                        });
-                      },
-                      isSelected: isSelectedView,
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -547,6 +557,15 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
         chitEnabled = true;
       else
         chitEnabled = false;
+    });
+  }
+
+  _setInterestFrom(String newVal) {
+    setState(() {
+      if (newVal == "Principal Amount")
+        isFromPrincipal = true;
+      else
+        isFromPrincipal = false;
     });
   }
 
@@ -616,13 +635,9 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
         int.parse(selectedCollectionModeID);
     accountPreferencesJSON['collection_days'] = collectionDays;
     accountPreferencesJSON['chit_enabled'] = chitEnabled;
+    accountPreferencesJSON['interest_from_principal'] = isFromPrincipal;
 
     CustomDialogs.actionWaiting(context, "Updating Preferences!");
-    if (isSelectedView[0]) {
-      userPreferencesJSON['enable_table_view'] = true;
-    } else {
-      userPreferencesJSON['enable_table_view'] = false;
-    }
     if (isSelectedAuth[0]) {
       userPreferencesJSON['enable_fingerprint_auth'] = true;
     } else {

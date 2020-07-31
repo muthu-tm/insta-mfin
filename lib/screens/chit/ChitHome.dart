@@ -15,8 +15,6 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-import '../../app_localizations.dart';
-
 class ChitHome extends StatefulWidget {
   @override
   _ChitHomeState createState() => _ChitHomeState();
@@ -80,36 +78,29 @@ class _ChitHomeState extends State<ChitHome> {
                             3));
                   }
                 },
-              );
-            } else {
-              _scaffoldKey.currentState.showSnackBar(
-                  CustomSnackBar.errorSnackBar(
-                      AppLocalizations.of(context).translate('enable_chit'),
-                      3));
-            }
-          },
-          backgroundColor: CustomColors.mfinBlue,
-          splashColor: CustomColors.mfinWhite,
-          child: Icon(
-            Icons.add,
-            size: 30,
-            color: CustomColors.mfinButtonGreen,
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(padding: EdgeInsets.all(5)),
-              ActiveChitWidget(_scaffoldKey),
-              Padding(padding: EdgeInsets.all(5)),
-              ClosedChitWidget(),
-              Padding(padding: EdgeInsets.all(35)),
-            ],
-          ),
-        ),
-        bottomNavigationBar: bottomBar(context),
-      ),
+                backgroundColor: CustomColors.mfinBlue,
+                splashColor: CustomColors.mfinWhite,
+                child: Icon(
+                  Icons.add,
+                  size: 30,
+                  color: CustomColors.mfinButtonGreen,
+                ),
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(padding: EdgeInsets.all(5)),
+                    ActiveChitWidget(_scaffoldKey),
+                    Padding(padding: EdgeInsets.all(5)),
+                    ClosedChitWidget(),
+                    Padding(padding: EdgeInsets.all(35)),
+                  ],
+                ),
+              ),
+              bottomNavigationBar: bottomBar(context),
+            )
+          : RechargeAlertScreen("Chit Fund"),
     );
   }
 }

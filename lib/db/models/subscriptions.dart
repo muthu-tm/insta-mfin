@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/plans.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -73,8 +74,8 @@ class Subscriptions extends Model {
     }
   }
 
-  Future<bool> updateSuccessStatus(
-      String purchaseID, List<Plans> plans, int tAmount, String payID) async {
+  Future<bool> updateSuccessStatus(String purchaseID, List<Plans> plans,
+      int tAmount, String payID, int wAmount) async {
     try {
       QuerySnapshot subSnap = await getCollectionRef()
           .where('finance_id', isEqualTo: user.primary.financeID)
@@ -143,6 +144,22 @@ class Subscriptions extends Model {
 
         bWrite.updateData(Model.db.collection('purchases').document(purchaseID),
             purchaseJSON);
+      }
+
+      if (wAmount > 0) {
+        Map<String, dynamic> uData = await user.getByID(user.getID());
+        User _u = User.fromJson(uData);
+        int tAmount = 0;
+        int aAmount = 0;
+        if (_u.wallet != null && _u.wallet.totalAmount != null) {
+          tAmount = _u.wallet.totalAmount;
+          aAmount = _u.wallet.availableBalance - wAmount;
+        }
+
+        var data = {
+          'wallet': {'total_amount': tAmount, 'available_balance': aAmount}
+        };
+        bWrite.updateData(user.getDocumentReference(), data);
       }
 
       await bWrite.commit();

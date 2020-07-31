@@ -60,8 +60,8 @@ class Payment extends Model {
   int settledDate;
   @JsonKey(name: 'is_settled', defaultValue: false)
   bool isSettled;
-  @JsonKey(name: 'is_loss', defaultValue: false)
-  bool isLoss;
+  @JsonKey(name: 'settlement_amount', defaultValue: false)
+  int settlementAmount;
   @JsonKey(name: 'profit_amount', defaultValue: 0)
   int profitAmount;
   @JsonKey(name: 'loss_amount', defaultValue: 0)
@@ -354,6 +354,24 @@ class Payment extends Model {
     return branchSnap.exists;
   }
 
+  Future<List<Payment>> getAllPayments() async {
+    var paymentDocs = await getCollectionRef()
+        .where('finance_id', isEqualTo: user.primary.financeID)
+        .where('branch_name', isEqualTo: user.primary.branchName)
+        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .orderBy('payment_id')
+        .getDocuments();
+
+    List<Payment> payments = [];
+    if (paymentDocs.documents.isNotEmpty) {
+      for (var doc in paymentDocs.documents) {
+        payments.add(Payment.fromJson(doc.data));
+      }
+    }
+
+    return payments;
+  }
+
   Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
@@ -410,10 +428,12 @@ class Payment extends Model {
                 if (this.docCharge > 0) {
                   accData.totalDocCharge += 1;
                   accData.docCharge += this.docCharge;
+                  accData.cashInHand += this.docCharge;
                 }
                 if (this.surcharge > 0) {
                   accData.totalSurCharge += 1;
                   accData.surcharge += this.surcharge;
+                  accData.cashInHand += this.surcharge;
                 }
 
                 Map<String, dynamic> data = {'accounts_data': accData.toJson()};
@@ -659,7 +679,9 @@ class Payment extends Model {
               accData.paymentsAmount += totalAmount;
               accData.totalDocCharge += docAdd;
               accData.docCharge += totalDocCharge;
+              accData.cashInHand += totalDocCharge;
               accData.totalSurCharge += surAdd;
+              accData.cashInHand += totalSurCharge;
               accData.surcharge += totalSurCharge;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
@@ -820,14 +842,13 @@ class Payment extends Model {
               accData.collectionsAmount -= tReceived;
 
               if (paymentJSON['loss']) {
-                payJSON['is_loss'] = true;
                 payJSON['loss_amount'] = paymentJSON['loss_amount'];
               } else {
-                payJSON['is_loss'] = false;
                 payJSON['profit_amount'] = paymentJSON['profit_amount'];
               }
 
               payJSON['shortage_amount'] = paymentJSON['shortage_amount'];
+              payJSON['settlement_amount'] = paymentJSON['settlement_amount'];
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
@@ -870,8 +891,10 @@ class Payment extends Model {
               accData.paymentsAmount -= payment.totalAmount;
               if (payment.docCharge > 0) accData.totalDocCharge -= 1;
               accData.docCharge -= payment.docCharge;
+              accData.cashInHand -= payment.docCharge;
               if (payment.surcharge > 0) accData.totalSurCharge -= 1;
               accData.surcharge -= payment.surcharge;
+              accData.cashInHand -= payment.surcharge;
               accData.totalPayments -= 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
@@ -896,7 +919,7 @@ class Payment extends Model {
   }
 
   Future forceRemovePayment(String financeId, String branchName,
-      String subBranchName, int paymentID) async {
+      String subBranchName, int paymentID, bool isSettled) async {
     DocumentReference docRef =
         getDocumentReference(financeId, branchName, subBranchName, paymentID);
 
@@ -919,25 +942,34 @@ class Payment extends Model {
 
               accData.cashInHand += payment.principalAmount;
               accData.cashInHand += payment.rCommission;
-              accData.paymentsAmount -= payment.totalAmount;
-              if (payment.docCharge > 0) accData.totalDocCharge -= 1;
-              accData.docCharge -= payment.docCharge;
-              if (payment.surcharge > 0) accData.totalSurCharge -= 1;
-              accData.surcharge -= payment.surcharge;
-              accData.totalPayments -= 1;
+              accData.cashInHand -= payment.docCharge;
+              accData.cashInHand -= payment.surcharge;
 
               QuerySnapshot snapshot = await docRef
                   .collection('customer_collections')
                   .getDocuments();
+              int tReceived = 0;
 
               for (DocumentSnapshot ds in snapshot.documents) {
                 Collection coll = Collection.fromJson(ds.data);
-                accData.cashInHand -= coll.getReceived();
-                accData.collectionsAmount -= coll.getReceived();
+                if (coll.type != CollectionType.DocCharge.name &&
+                    coll.type != CollectionType.Commission.name &&
+                    coll.type != CollectionType.Surcharge.name)
+                  tReceived += coll.getReceived();
                 txDelete(tx, ds.reference);
               }
+              accData.cashInHand -= tReceived;
 
-              
+              if (!isSettled) {
+                accData.collectionsAmount -= tReceived;
+                accData.paymentsAmount -= payment.totalAmount;
+                if (payment.docCharge > 0) accData.totalDocCharge -= 1;
+                accData.docCharge -= payment.docCharge;
+                if (payment.surcharge > 0) accData.totalSurCharge -= 1;
+                accData.surcharge -= payment.surcharge;
+                accData.totalPayments -= 1;
+              }
+
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
               txUpdate(tx, finDocRef, data);
               txDelete(tx, docRef);

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/customer/AddCollection.dart';
+import 'package:instamfin/screens/customer/widgets/TransactionListWidget.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
-import 'package:instamfin/services/pdf/payment_receipt.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/customer/EditPayment.dart';
 import 'package:instamfin/screens/customer/ViewPaymentDetails.dart';
-import 'package:instamfin/screens/customer/widgets/CollectionListTableWidget.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionStatusRadioItem.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionListWidget.dart';
 import 'package:instamfin/screens/customer/widgets/PaymentSettlementDialog.dart';
@@ -17,8 +15,6 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
-
-import '../../app_localizations.dart';
 
 class ViewPayment extends StatefulWidget {
   ViewPayment(this.payment);
@@ -33,22 +29,15 @@ class _ViewPaymentState extends State<ViewPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CustomRadioModel> collStatusList = List<CustomRadioModel>();
 
-  String title = "ALL";
-  String emptyText = "No Collections available for this Payment!";
-  Color textColor = CustomColors.mfinBlue;
-  bool fetchAll = true;
+  bool isAllCollection = true;
   bool isSettled = false;
-  int collStatus;
 
   @override
   void initState() {
     super.initState();
     isSettled = widget.payment.isSettled;
-    collStatusList.add(CustomRadioModel(true, '', ''));
-    collStatusList.add(CustomRadioModel(false, '', ''));
-    collStatusList.add(CustomRadioModel(false, '', ''));
-    collStatusList.add(CustomRadioModel(false, '', ''));
-    collStatusList.add(CustomRadioModel(false, '', ''));
+    collStatusList.add(CustomRadioModel(true, 'All', ''));
+    collStatusList.add(CustomRadioModel(false, 'Received', ''));
   }
 
   @override
@@ -58,24 +47,6 @@ class _ViewPaymentState extends State<ViewPayment> {
       appBar: AppBar(
         title: Text('Payment - ${widget.payment.paymentID}'),
         backgroundColor: CustomColors.mfinBlue,
-        actions: <Widget>[
-          IconButton(
-              tooltip: "Genearte Payment Report",
-              icon: Icon(
-                Icons.description,
-                size: 30,
-                color: CustomColors.mfinLightGrey,
-              ),
-              onPressed: () async {
-                _scaffoldKey.currentState.showSnackBar(
-                    CustomSnackBar.successSnackBar(
-                        AppLocalizations.of(context)
-                            .translate('generating_payment_report'),
-                        5));
-                await PayReceipt().generateInvoice(
-                    UserController().getCurrentUser(), widget.payment);
-              }),
-        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
@@ -92,38 +63,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                      title: Text(AppLocalizations.of(context)
-                          .translate('add_collection')),
-                      leading: Icon(
-                        Icons.monetization_on,
-                        color: CustomColors.mfinBlue,
-                      ),
-                      onTap: () {
-                        if (widget.payment.isSettled) {
-                          Navigator.pop(context);
-                          _scaffoldKey.currentState.showSnackBar(
-                            CustomSnackBar.errorSnackBar(
-                              AppLocalizations.of(context)
-                                  .translate('payment_settled'),
-                              3,
-                            ),
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  AddCollection(widget.payment),
-                              settings: RouteSettings(
-                                  name: '/customers/payment/collections/add'),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    ListTile(
-                        title: Text(AppLocalizations.of(context)
-                            .translate('view_payment')),
+                        title: Text('View Payment'),
                         leading: Icon(
                           Icons.remove_red_eye,
                           color: CustomColors.mfinBlue,
@@ -141,8 +81,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                               });
                         }),
                     ListTile(
-                      title: Text(AppLocalizations.of(context)
-                          .translate('edit_payment')),
+                      title: Text('Edit Payment'),
                       leading: Icon(
                         Icons.edit,
                         color: CustomColors.mfinBlue,
@@ -154,8 +93,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              AppLocalizations.of(context)
-                                  .translate('valid_collection'),
+                              "You cannot Edit Payments which has valid COLLECTION!",
                               3,
                             ),
                           );
@@ -171,8 +109,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         } else {
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              AppLocalizations.of(context)
-                                  .translate('please_fill'),
+                              "Error, Please try again later!",
                               3,
                             ),
                           );
@@ -180,9 +117,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       },
                     ),
                     ListTile(
-                      title: Text(
-                        AppLocalizations.of(context).translate('do_settlement'),
-                      ),
+                      title: Text('Do Settlement'),
                       leading: Icon(
                         Icons.account_balance_wallet,
                         color: CustomColors.mfinBlue,
@@ -219,8 +154,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       },
                     ),
                     ListTile(
-                        title: Text(AppLocalizations.of(context)
-                            .translate('delete_payment')),
+                        title: Text('Delete Payment'),
                         leading: Icon(
                           Icons.delete_forever,
                           color: CustomColors.mfinAlertRed,
@@ -239,8 +173,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 Navigator.pop(context);
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                    AppLocalizations.of(context)
-                                        .translate('received_collection'),
+                                    "You cannot Remove Payments which has already received COLLECTION!}",
                                     3,
                                   ),
                                 );
@@ -265,9 +198,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
-                                        AppLocalizations.of(context)
-                                            .translate('payment_removed'),
-                                        2),
+                                        "Payment removed successfully", 2),
                                   );
                                   Navigator.pop(context);
                                 }
@@ -276,8 +207,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 Navigator.pop(context);
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                    AppLocalizations.of(context)
-                                        .translate('error_later'),
+                                    "Error, Please try again later!}",
                                     3,
                                   ),
                                 );
@@ -289,8 +219,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                           );
                         }),
                     ListTile(
-                      title:
-                          Text(AppLocalizations.of(context).translate('home')),
+                      title: Text('Home'),
                       leading: Icon(
                         Icons.home,
                         color: CustomColors.mfinBlue,
@@ -332,8 +261,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          AppLocalizations.of(context)
-                              .translate('customer_caps'),
+                          "CUSTOMER",
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -365,7 +293,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          AppLocalizations.of(context).translate('date_caps'),
+                          "DATE",
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -405,7 +333,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          AppLocalizations.of(context).translate('amount_caps'),
+                          "AMOUNT",
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -435,8 +363,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          AppLocalizations.of(context)
-                              .translate('pay_out_caps'),
+                          "PAY OUT",
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -477,8 +404,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   width: 150,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    AppLocalizations.of(context)
-                                        .translate('do_settlement'),
+                                    "DO SETTLEMENT",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: CustomColors.mfinWhite,
@@ -521,8 +447,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 child: RichText(
                                   textAlign: TextAlign.center,
                                   text: TextSpan(
-                                    text: AppLocalizations.of(context)
-                                        .translate('settled_on'),
+                                    text: 'SETTLED ON',
                                     style: TextStyle(
                                       color: CustomColors.mfinWhite,
                                       fontFamily: 'Georgia',
@@ -569,79 +494,11 @@ class _ViewPaymentState extends State<ViewPayment> {
                         () {
                           collStatusList[0].isSelected = true;
                           collStatusList[1].isSelected = false;
-                          collStatusList[2].isSelected = false;
-                          collStatusList[3].isSelected = false;
-                          collStatusList[4].isSelected = false;
                         },
                       );
-                      title = "ALL";
-                      emptyText = "No Collections available for this Payment!";
-                      fetchAll = true;
-                      textColor = CustomColors.mfinBlue;
+                      isAllCollection = true;
                     },
                     child: CollectionStatusRadioItem(collStatusList[0],
-                        CustomColors.mfinLightBlue, CustomColors.mfinLightBlue),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(
-                        () {
-                          collStatusList[0].isSelected = false;
-                          collStatusList[1].isSelected = true;
-                          collStatusList[2].isSelected = false;
-                          collStatusList[3].isSelected = false;
-                          collStatusList[4].isSelected = false;
-                        },
-                      );
-                      title = "PAID";
-                      emptyText = "No collection RECEIVED for this Payment!";
-                      fetchAll = false;
-                      textColor = CustomColors.mfinPositiveGreen;
-                      collStatus = 1; //Paid
-                    },
-                    child: CollectionStatusRadioItem(
-                        collStatusList[1],
-                        CustomColors.mfinPositiveGreen,
-                        CustomColors.mfinPositiveGreen),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(
-                        () {
-                          collStatusList[0].isSelected = false;
-                          collStatusList[1].isSelected = false;
-                          collStatusList[2].isSelected = true;
-                          collStatusList[3].isSelected = false;
-                          collStatusList[4].isSelected = false;
-                        },
-                      );
-                      title = "PENDING";
-                      emptyText = "Great! No PENDING collection!";
-                      fetchAll = false;
-                      textColor = CustomColors.mfinAlertRed;
-                      collStatus = 4; // Pending
-                    },
-                    child: CollectionStatusRadioItem(collStatusList[2],
-                        CustomColors.mfinAlertRed, CustomColors.mfinAlertRed),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(
-                        () {
-                          collStatusList[0].isSelected = false;
-                          collStatusList[1].isSelected = false;
-                          collStatusList[2].isSelected = false;
-                          collStatusList[3].isSelected = true;
-                          collStatusList[4].isSelected = false;
-                        },
-                      );
-                      title = "TODAY";
-                      emptyText = "No Collection to receive TODAY";
-                      fetchAll = false;
-                      textColor = CustomColors.mfinLightBlue;
-                      collStatus = 3; // Current
-                    },
-                    child: CollectionStatusRadioItem(collStatusList[3],
                         CustomColors.mfinBlue, CustomColors.mfinBlue),
                   ),
                   InkWell(
@@ -649,45 +506,25 @@ class _ViewPaymentState extends State<ViewPayment> {
                       setState(
                         () {
                           collStatusList[0].isSelected = false;
-                          collStatusList[1].isSelected = false;
-                          collStatusList[2].isSelected = false;
-                          collStatusList[3].isSelected = false;
-                          collStatusList[4].isSelected = true;
+                          collStatusList[1].isSelected = true;
                         },
                       );
-                      title = "UPCOMING";
-                      emptyText = "No UPCOMING collection available!";
-                      fetchAll = false;
-                      textColor = CustomColors.mfinGrey;
-                      collStatus = 0; // Upcoming
+                      isAllCollection = false;
                     },
-                    child: CollectionStatusRadioItem(collStatusList[4],
-                        CustomColors.mfinGrey, CustomColors.mfinGrey),
+                    child: CollectionStatusRadioItem(
+                        collStatusList[1],
+                        CustomColors.mfinPositiveGreen,
+                        CustomColors.mfinPositiveGreen),
                   ),
                 ],
               ),
-              (UserController().getCurrentUser().preferences.tableView)
+              isAllCollection
                   ? Container(
-                      child: CollectionListTableWidget(
-                        _scaffoldKey,
-                        widget.payment,
-                        title,
-                        emptyText,
-                        textColor,
-                        fetchAll,
-                        collStatus,
-                      ),
+                      child: CollectionListWidget(_scaffoldKey, widget.payment),
                     )
                   : Container(
-                      child: CollectionListWidget(
-                        _scaffoldKey,
-                        widget.payment,
-                        title,
-                        emptyText,
-                        textColor,
-                        fetchAll,
-                        collStatus,
-                      ),
+                      child:
+                          TransactionListWidget(_scaffoldKey, widget.payment),
                     ),
               Padding(padding: EdgeInsets.fromLTRB(0, 40, 0, 40))
             ],

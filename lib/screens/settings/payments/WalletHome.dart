@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_referees.dart';
+import 'package:instamfin/db/models/user_wallet.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -24,9 +25,12 @@ class _WalletHomeState extends State<WalletHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final User _user = UserController().getCurrentUser();
 
+  bool isClaimed = false;
+
   @override
   void initState() {
     super.initState();
+    this.isClaimed = widget.isApplied;
   }
 
   @override
@@ -47,7 +51,7 @@ class _WalletHomeState extends State<WalletHome> {
               padding: EdgeInsets.all(5),
               child: getWalletWidget(),
             ),
-            !widget.isApplied
+            !isClaimed
                 ? Padding(
                     padding: EdgeInsets.all(5),
                     child: getBonusWidget(),
@@ -65,16 +69,15 @@ class _WalletHomeState extends State<WalletHome> {
 
   Widget getWalletWidget() {
     return StreamBuilder(
-      stream: UserReferees().streamReferees(_user.mobileNumber.toString()),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      stream: _user.streamUserData(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         Widget widget;
 
         if (snapshot.hasData) {
-          if (snapshot.data.documents.length > 0) {
-            int amount = 0;
-            for (int i = 0; i < snapshot.data.documents.length; i++) {
-              amount += snapshot.data.documents[i].data['amount'];
-            }
+          if (snapshot.data.exists && snapshot.data.data.isNotEmpty) {
+            User _u = User.fromJson(snapshot.data.data);
+            int amount = _u.wallet.availableBalance;
 
             widget = Padding(
               padding: EdgeInsets.all(10),
@@ -96,7 +99,7 @@ class _WalletHomeState extends State<WalletHome> {
                         ),
                       ),
                       Text(
-                        "Rs.$amount",
+                        "Rs.${amount ?? 0.00}",
                         style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontSize: 18.0,
@@ -160,7 +163,7 @@ class _WalletHomeState extends State<WalletHome> {
                   ),
                 ),
               ),
-              new Divider(
+              Divider(
                 color: CustomColors.mfinBlue,
               ),
               widget,
@@ -209,6 +212,9 @@ class _WalletHomeState extends State<WalletHome> {
                               CustomSnackBar.successSnackBar(
                                   "Successfully claimed you bonus in iFIN!",
                                   2));
+                          setState(() {
+                            isClaimed = true;
+                          });
                         } catch (err) {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
@@ -252,7 +258,7 @@ class _WalletHomeState extends State<WalletHome> {
                   ),
                 ),
               ),
-              new Divider(
+              Divider(
                 color: CustomColors.mfinBlue,
               ),
               widget,
@@ -368,7 +374,7 @@ class _WalletHomeState extends State<WalletHome> {
           } else {
             widget = Container(
               padding: EdgeInsets.all(10),
-              height: 75,
+              height: 100,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

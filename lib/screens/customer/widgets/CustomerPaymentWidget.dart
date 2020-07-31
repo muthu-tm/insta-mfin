@@ -12,7 +12,7 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 
 import '../../../app_localizations.dart';
 
-Widget customerPaymentWidget(BuildContext context, int index, Payment payment) {
+Widget customerPaymentWidget(BuildContext context, GlobalKey<ScaffoldState> _scaffoldKey, int index, Payment payment) {
   Color cColor = CustomColors.mfinBlue;
   if (payment.isSettled) cColor = CustomColors.mfinGrey;
 
@@ -400,31 +400,51 @@ Widget getSettledPaymentsDetails(Payment payment) {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 30,
-                child: ListTile(
-                  leading: Text(
-                    AppLocalizations.of(context).translate('today_caps'),
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: CustomColors.mfinBlue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  trailing: Text(
-                    payment.isLoss
-                        ? payment.lossAmount.toString()
-                        : payment.profitAmount.toString(),
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: payment.isLoss
-                          ? CustomColors.mfinAlertRed
-                          : CustomColors.mfinPositiveGreen,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+              payment.lossAmount > 0
+                  ? SizedBox(
+                      height: 30,
+                      child: ListTile(
+                        leading: Text(
+                          'LOSS',
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: CustomColors.mfinBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        trailing: Text(
+                          payment.lossAmount.toString(),
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: CustomColors.mfinAlertRed,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )
+                  : payment.profitAmount > 0
+                      ? SizedBox(
+                          height: 30,
+                          child: ListTile(
+                            leading: Text(
+                              'PROFIT',
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: CustomColors.mfinBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              payment.profitAmount.toString(),
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: CustomColors.mfinPositiveGreen,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
               SizedBox(
                 height: 30,
                 child: ListTile(

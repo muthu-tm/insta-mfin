@@ -17,7 +17,7 @@ class ChitAllocations {
   @JsonKey(name: 'sub_branch_name', nullable: true)
   String subBranchName;
   @JsonKey(name: 'chit_id', nullable: true)
-  String chitID;
+  int chitID;
   @JsonKey(name: 'chit_number', nullable: true)
   int chitNumber;
   @JsonKey(name: 'customer', nullable: true)
@@ -81,7 +81,7 @@ class ChitAllocations {
   Map<String, dynamic> toJson() => _$ChitAllocationsToJson(this);
 
   CollectionReference getCollectionRef(String financeId, String branchName,
-      String subBranchName, String chitID) {
+      String subBranchName, int chitID) {
     return ChitFund()
         .getDocumentReference(financeId, branchName, subBranchName, chitID)
         .collection("chit_allocations");
@@ -96,7 +96,7 @@ class ChitAllocations {
   }
 
   DocumentReference getDocumentReference(String financeId, String branchName,
-      String subBranchName, String chitID, int chitNumber) {
+      String subBranchName, int chitID, int chitNumber) {
     return getCollectionRef(financeId, branchName, subBranchName, chitID)
         .document(getDocumentID(chitNumber));
   }
@@ -117,13 +117,13 @@ class ChitAllocations {
   }
 
   Stream<QuerySnapshot> streamChitAllocations(String financeID,
-      String branchName, String subBranchName, String chitID) {
+      String branchName, String subBranchName, int chitID) {
     return getCollectionRef(financeID, branchName, subBranchName, chitID)
         .snapshots();
   }
 
   Future<List<ChitAllocations>> getChitAllocations(String financeID,
-      String branchName, String subBranchName, String chitID) async {
+      String branchName, String subBranchName, int chitID) async {
     QuerySnapshot snap =
         await getCollectionRef(financeID, branchName, subBranchName, chitID)
             .getDocuments();
@@ -142,7 +142,7 @@ class ChitAllocations {
       String financeID,
       String branchName,
       String subBranchName,
-      String chitID,
+      int chitID,
       int chitNumber) async {
     DocumentSnapshot snap = await getDocumentReference(
             financeID, branchName, subBranchName, chitID, chitNumber)
@@ -156,14 +156,14 @@ class ChitAllocations {
   }
 
   Stream<DocumentSnapshot> streamAllocationsByNumber(String financeID,
-      String branchName, String subBranchName, String chitID, int chitNumber) {
+      String branchName, String subBranchName, int chitID, int chitNumber) {
     return getDocumentReference(
             financeID, branchName, subBranchName, chitID, chitNumber)
         .snapshots();
   }
 
   Future removeChitAllocation(String financeID, String branchName,
-      String subBranchName, String chitID, int chitNumber) async {
+      String subBranchName, int chitID, int chitNumber) async {
     DocumentReference docRef = getDocumentReference(
         financeID, branchName, subBranchName, chitID, chitNumber);
 
@@ -179,7 +179,7 @@ class ChitAllocations {
       String financeId,
       String branchName,
       String subBranchName,
-      String chitID,
+      int chitID,
       int chitNumer,
       bool isPaid,
       bool isAdd,

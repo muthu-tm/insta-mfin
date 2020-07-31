@@ -37,7 +37,7 @@ class SubBranch {
   @JsonKey(name: 'is_active', defaultValue: true)
   bool isActive;
   @JsonKey(name: 'deactivated_at', nullable: true)
-  DateTime deactivatedAt;
+  int deactivatedAt;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -186,6 +186,17 @@ class SubBranch {
     }
 
     return subBranches;
+  }
+
+  Future<SubBranch> getSubBranchByName(
+      String financeID, String branchName, String subBranchName) async {
+    var subBranchSnap =
+        await getDocumentReference(financeID, branchName, subBranchName).get();
+    if (!subBranchSnap.exists) {
+      return null;
+    }
+
+    return SubBranch.fromJson(subBranchSnap.data);
   }
 
   Future<List<SubBranch>> getSubBranchByUserID(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class GradientText extends StatelessWidget {
   GradientText(
@@ -18,7 +19,7 @@ class GradientText extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: Colors.white,
+          color: CustomColors.mfinWhite,
           fontSize: 18,
         ),
       ),
