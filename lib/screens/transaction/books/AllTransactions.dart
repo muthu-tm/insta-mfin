@@ -117,124 +117,124 @@ class AllTransactionsBuilder extends StatelessWidget {
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
             widget = ListView.builder(
-                itemCount: snapshot.data.length,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                primary: false,
-                itemBuilder: (context, int index) {
-                  Payment payment = snapshot.data[index];
+              itemCount: snapshot.data.length,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (context, int index) {
+                Payment payment = snapshot.data[index];
 
-                  return Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: InkWell(
-                      onTap: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ViewPayment(payment),
-                            settings:
-                                RouteSettings(name: '/customers/payments'),
+                return Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: InkWell(
+                    onTap: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewPayment(payment),
+                          settings: RouteSettings(name: '/customers/payments'),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinAlertRed.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Customer:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                payment.custName,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        );
-                      },
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: CustomColors.mfinAlertRed.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 25,
-                              child: ListTile(
-                                leading: Text(
-                                  "Customer:",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinBlue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Payment ID:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                trailing: Text(
-                                  payment.custName,
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinBlue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              trailing: Text(
+                                payment.paymentID ?? "-",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 25,
-                              child: ListTile(
-                                leading: Text(
-                                  "Payment ID:",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinBlue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                trailing: Text(
-                                  payment.paymentID ?? "-",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinBlue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Collection:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 25,
-                              child: ListTile(
-                                leading: Text(
-                                  "Collection:",
+                              trailing: RichText(
+                                text: TextSpan(
+                                  text: '${payment.tenure}',
                                   style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinBlue,
-                                    fontWeight: FontWeight.bold,
+                                    color: CustomColors.mfinWhite,
+                                    fontFamily: 'Georgia',
+                                    fontSize: 18.0,
                                   ),
-                                ),
-                                trailing: RichText(
-                                  text: TextSpan(
-                                    text: '${payment.tenure}',
-                                    style: TextStyle(
-                                      color: CustomColors.mfinWhite,
-                                      fontFamily: 'Georgia',
-                                      fontSize: 18.0,
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: ' x ',
+                                      style: TextStyle(
+                                        color: CustomColors.mfinBlack,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: ' x ',
-                                        style: TextStyle( 
-                                          color: CustomColors.mfinBlack,
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                    TextSpan(
+                                      text: '${payment.collectionAmount}',
+                                      style: TextStyle(
+                                        color: CustomColors.mfinPositiveGreen,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      TextSpan(
-                                        text: '${payment.collectionAmount}',
-                                        style: TextStyle(
-                                          color: CustomColors.mfinPositiveGreen,
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  );
-                });
+                  ),
+                );
+              },
+            );
           } else {
             widget = Container(
               height: 50,
@@ -291,124 +291,145 @@ class AllTransactionsBuilder extends StatelessWidget {
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
             widget = ListView.builder(
-                itemCount: snapshot.data.length,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                primary: false,
-                itemBuilder: (context, int index) {
-                  Collection coll = snapshot.data[index];
+              itemCount: snapshot.data.length,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (context, int index) {
+                Collection coll = snapshot.data[index];
 
-                  int received = 0;
+                int received = 0;
 
-                  if (coll.collections.length > 1) {
-                    coll.collections.forEach((cDetails) {
-                      if (cDetails.collectedOn >=
-                              DateUtils.getUTCDateEpoch(startDate) &&
-                          cDetails.collectedOn <=
-                              DateUtils.getUTCDateEpoch(endDate))
-                        received += cDetails.amount;
-                    });
-                  } else {
-                    received = coll.getReceived();
-                  }
+                if (coll.collections.length > 1) {
+                  coll.collections.forEach((cDetails) {
+                    if (cDetails.collectedOn >=
+                            DateUtils.getUTCDateEpoch(startDate) &&
+                        cDetails.collectedOn <=
+                            DateUtils.getUTCDateEpoch(endDate))
+                      received += cDetails.amount;
+                  });
+                } else {
+                  received = coll.getReceived();
+                }
 
-                  return Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: InkWell(
-                      onTap: () async {
-                        List<Map<String, dynamic>> payList = await Payment()
-                            .getByPaymentID(coll.financeID, coll.branchName,
-                                coll.subBranchName, coll.paymentID);
-                        Payment pay = Payment.fromJson(payList[0]);
+                return Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: InkWell(
+                    onTap: () async {
+                      List<Map<String, dynamic>> payList = await Payment()
+                          .getByPaymentID(coll.financeID, coll.branchName,
+                              coll.subBranchName, coll.paymentID);
+                      Payment pay = Payment.fromJson(payList[0]);
 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ViewCollection(
-                                pay, coll, CustomColors.mfinPositiveGreen),
-                            settings: RouteSettings(
-                                name: '/customers/payments/collection'),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewCollection(
+                              pay, coll, CustomColors.mfinPositiveGreen),
+                          settings: RouteSettings(
+                              name: '/customers/payments/collection'),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 130,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinPositiveGreen.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Loan ID:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                coll.payID ?? "",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        );
-                      },
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color:
-                              CustomColors.mfinPositiveGreen.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 25,
-                              child: ListTile(
-                                leading: Text(
-                                  "Type:",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinBlue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Type:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                trailing: Text(
-                                  coll.getType(),
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinLightGrey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              trailing: Text(
+                                coll.getType(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 25,
-                              child: ListTile(
-                                leading: Text(
-                                  "Amount:",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinBlue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Amount:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                trailing: Text(
-                                  coll.collectionAmount.toString(),
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinLightGrey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              trailing: Text(
+                                coll.collectionAmount.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 25,
-                              child: ListTile(
-                                leading: Text(
-                                  "Received:",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinBlue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Received:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                trailing: Text(
-                                  received.toString(),
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: CustomColors.mfinLightGrey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              trailing: Text(
+                                received.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  );
-                });
+                  ),
+                );
+              },
+            );
           } else {
             widget = Container(
               height: 50,

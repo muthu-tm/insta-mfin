@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     RichText(
                       text: TextSpan(
-                        text: "Welcome Back, ",
+                        text: "Welcome, ",
                         style: TextStyle(
                           fontSize: 16.0,
                           color: CustomColors.mfinLightGrey,
@@ -118,211 +118,118 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(right: 10.0, left: 10.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 16, left: 8, right: 8, bottom: 16),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                                  decoration: BoxDecoration(
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                          color: CustomColors.mfinButtonGreen
-                                              .withOpacity(0.6),
-                                          offset: const Offset(1.1, 4.0),
-                                          blurRadius: 8.0),
-                                    ],
-                                    gradient: LinearGradient(
-                                      colors: <Color>[
-                                        CustomColors.mfinButtonGreen,
-                                        CustomColors.mfinBlue,
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      bottomRight: Radius.circular(8.0),
-                                      bottomLeft: Radius.circular(8.0),
-                                      topLeft: Radius.circular(8.0),
-                                      topRight: Radius.circular(54.0),
-                                    ),
-                                  ),
-                                  height: 150,
+                          padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0),
+                          child: Container(
+                            // margin: EdgeInsets.symmetric(vertical: 10.0),
+                            width: MediaQuery.of(context).size.width * 0.475,
+                            decoration: BoxDecoration(
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: CustomColors.mfinButtonGreen
+                                        .withOpacity(0.6),
+                                    offset: const Offset(1.1, 4.0),
+                                    blurRadius: 8.0),
+                              ],
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  CustomColors.mfinButtonGreen,
+                                  CustomColors.mfinBlue,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(25.0),
+                                bottomLeft: Radius.circular(3.0),
+                                topLeft: Radius.circular(25.0),
+                                topRight: Radius.circular(3.0),
+                              ),
+                            ),
+                            height: 150,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(5),
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 70, left: 5, right: 5),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Text(
-                                              "Cash In Hand",
-                                              style: TextStyle(
-                                                fontSize: 17.0,
-                                                fontFamily: "Georgia",
-                                                color: CustomColors.mfinWhite,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(height: 20),
-                                            getCIHAmount(context),
-                                          ],
+                                      Text(
+                                        "Cash In Hand",
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                          fontFamily: "Georgia",
+                                          color: CustomColors.mfinWhite,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      SizedBox(height: 20),
+                                      getCIHAmount(context),
                                     ],
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                top: -5,
-                                left: 0,
-                                child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    color: CustomColors.mfinLightGrey
-                                        .withOpacity(0.3),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 10,
-                                left: 16,
-                                child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: CustomColors.mfinBlue,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(5),
-                                      child: Icon(
-                                        Icons.grade,
-                                        size: 35,
-                                        color: CustomColors.mfinButtonGreen,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(right: 10.0, left: 10.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 16, left: 8, right: 8, bottom: 16),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                                  decoration: BoxDecoration(
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                          color: CustomColors.mfinAlertRed
-                                              .withOpacity(0.6),
-                                          offset: const Offset(1.1, 4.0),
-                                          blurRadius: 8.0),
-                                    ],
-                                    gradient: LinearGradient(
-                                      colors: <Color>[
-                                        CustomColors.mfinAlertRed,
-                                        CustomColors.mfinBlue,
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      bottomRight: Radius.circular(8.0),
-                                      bottomLeft: Radius.circular(8.0),
-                                      topLeft: Radius.circular(8.0),
-                                      topRight: Radius.circular(54.0),
-                                    ),
-                                  ),
-                                  height: 150,
+                          padding: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 5.0),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.475,
+                            decoration: BoxDecoration(
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: CustomColors.mfinAlertRed
+                                        .withOpacity(0.6),
+                                    offset: const Offset(1.1, 4.0),
+                                    blurRadius: 8.0),
+                              ],
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  CustomColors.mfinAlertRed,
+                                  CustomColors.mfinBlue,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(3.0),
+                                bottomLeft: Radius.circular(25.0),
+                                topLeft: Radius.circular(3.0),
+                                topRight: Radius.circular(25.0),
+                              ),
+                            ),
+                            height: 150,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(5),
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 70, left: 5, right: 5),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Text(
-                                              "Outstanding",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 17.0,
-                                                fontFamily: "Georgia",
-                                                color: CustomColors.mfinWhite,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(height: 5),
-                                            getStockAmount(context),
-                                          ],
+                                      Text(
+                                        "Outstanding",
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                          fontFamily: "Georgia",
+                                          color: CustomColors.mfinWhite,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      SizedBox(height: 5),
+                                      getStockAmount(context),
                                     ],
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                top: -5,
-                                left: 0,
-                                child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    color: CustomColors.mfinLightGrey
-                                        .withOpacity(0.3),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 10,
-                                left: 16,
-                                child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: CustomColors.mfinGrey,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(5),
-                                      child: Icon(
-                                        Icons.featured_play_list,
-                                        size: 30,
-                                        color: CustomColors.mfinAlertRed,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -464,23 +371,27 @@ class HomeScreen extends StatelessWidget {
 
           children = <Widget>[
             Text(
-              '$tPay',
-              textAlign: TextAlign.center,
+              'Total: $tPay',
               style: TextStyle(
-                fontSize: 16.0,
+                fontSize: 14.0,
                 fontFamily: "Georgia",
                 color: CustomColors.mfinLightGrey,
-                fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              'Rs.${pAmount - cAmount}',
-              textAlign: TextAlign.center,
+              'Loan: Rs.$pAmount',
               style: TextStyle(
-                fontSize: 17.0,
+                fontSize: 14.0,
                 fontFamily: "Georgia",
                 color: CustomColors.mfinLightGrey,
-                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Received: Rs.$cAmount',
+              style: TextStyle(
+                fontSize: 14.0,
+                fontFamily: "Georgia",
+                color: CustomColors.mfinLightGrey,
               ),
             ),
           ];
@@ -492,8 +403,7 @@ class HomeScreen extends StatelessWidget {
 
         return Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           ),
         );

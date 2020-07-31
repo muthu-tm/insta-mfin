@@ -428,10 +428,12 @@ class Payment extends Model {
                 if (this.docCharge > 0) {
                   accData.totalDocCharge += 1;
                   accData.docCharge += this.docCharge;
+                  accData.cashInHand += this.docCharge;
                 }
                 if (this.surcharge > 0) {
                   accData.totalSurCharge += 1;
                   accData.surcharge += this.surcharge;
+                  accData.cashInHand += this.surcharge;
                 }
 
                 Map<String, dynamic> data = {'accounts_data': accData.toJson()};
@@ -677,7 +679,9 @@ class Payment extends Model {
               accData.paymentsAmount += totalAmount;
               accData.totalDocCharge += docAdd;
               accData.docCharge += totalDocCharge;
+              accData.cashInHand += totalDocCharge;
               accData.totalSurCharge += surAdd;
+              accData.cashInHand += totalSurCharge;
               accData.surcharge += totalSurCharge;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
@@ -887,8 +891,10 @@ class Payment extends Model {
               accData.paymentsAmount -= payment.totalAmount;
               if (payment.docCharge > 0) accData.totalDocCharge -= 1;
               accData.docCharge -= payment.docCharge;
+              accData.cashInHand -= payment.docCharge;
               if (payment.surcharge > 0) accData.totalSurCharge -= 1;
               accData.surcharge -= payment.surcharge;
+              accData.cashInHand -= payment.surcharge;
               accData.totalPayments -= 1;
 
               Map<String, dynamic> data = {'accounts_data': accData.toJson()};
@@ -936,6 +942,8 @@ class Payment extends Model {
 
               accData.cashInHand += payment.principalAmount;
               accData.cashInHand += payment.rCommission;
+              accData.cashInHand -= payment.docCharge;
+              accData.cashInHand -= payment.surcharge;
 
               QuerySnapshot snapshot = await docRef
                   .collection('customer_collections')
