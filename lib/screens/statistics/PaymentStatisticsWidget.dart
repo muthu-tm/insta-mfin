@@ -6,6 +6,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../app_localizations.dart';
+
 class PaymentStatisticsWidget extends StatelessWidget {
   PaymentStatisticsWidget(this.type, this.mode, [this.fDate, this.tDate]);
 
@@ -20,8 +22,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
       elevation: 5.0,
       child: FutureBuilder<List<Payment>>(
         future: Payment().getAllPaymentsByDateRange(
-            DateUtils.getUTCDateEpoch(fDate),
-            DateUtils.getUTCDateEpoch(tDate)),
+            DateUtils.getUTCDateEpoch(fDate), DateUtils.getUTCDateEpoch(tDate)),
         builder: (context, snapshot) {
           Widget widget;
 
@@ -180,7 +181,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
                   children: <Widget>[
                     Flexible(
                       child: Text(
-                        "Payments",
+                        AppLocalizations.of(context).translate('payments'),
                         style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontSize: 18.0,
@@ -193,7 +194,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        "No Entries during the selected Range!",
+                        AppLocalizations.of(context).translate('no_entries'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CustomColors.mfinAlertRed,

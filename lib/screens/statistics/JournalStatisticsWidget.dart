@@ -8,6 +8,8 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../app_localizations.dart';
+
 class JournalStatisticsWidget extends StatelessWidget {
   JournalStatisticsWidget(this.type, this.mode, [this.fDate, this.tDate]);
 
@@ -188,7 +190,7 @@ class JournalStatisticsWidget extends StatelessWidget {
                   children: <Widget>[
                     Flexible(
                       child: Text(
-                        "Journals",
+                        AppLocalizations.of(context).translate('journals'),
                         style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontSize: 18.0,
@@ -201,7 +203,7 @@ class JournalStatisticsWidget extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        "No Entries during the selected Range!",
+                        AppLocalizations.of(context).translate('no_entries'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CustomColors.mfinAlertRed,

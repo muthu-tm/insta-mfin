@@ -8,6 +8,8 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../app_localizations.dart';
+
 class CollectionStatisticsWidget extends StatelessWidget {
   CollectionStatisticsWidget(this.type, this.mode, [this.fDate, this.tDate]);
 
@@ -41,17 +43,17 @@ class CollectionStatisticsWidget extends StatelessWidget {
 
               Map<DateTime, CollData> cGroup = new Map();
               snapshot.data.forEach((p) {
-                  p.collections.forEach((c) {
-                    cGroup.update(
-                      DateTime.fromMillisecondsSinceEpoch(c.collectedOn),
-                      (value) => CollData(
-                          DateTime.fromMillisecondsSinceEpoch(c.collectedOn),
-                          value.amount + c.amount),
-                      ifAbsent: () => CollData(
-                          DateTime.fromMillisecondsSinceEpoch(c.collectedOn),
-                          c.amount),
-                    );
-                  });
+                p.collections.forEach((c) {
+                  cGroup.update(
+                    DateTime.fromMillisecondsSinceEpoch(c.collectedOn),
+                    (value) => CollData(
+                        DateTime.fromMillisecondsSinceEpoch(c.collectedOn),
+                        value.amount + c.amount),
+                    ifAbsent: () => CollData(
+                        DateTime.fromMillisecondsSinceEpoch(c.collectedOn),
+                        c.amount),
+                  );
+                });
               });
 
               cGroup.forEach((key, value) {
@@ -192,7 +194,7 @@ class CollectionStatisticsWidget extends StatelessWidget {
                   children: <Widget>[
                     Flexible(
                       child: Text(
-                        "Collections",
+                        AppLocalizations.of(context).translate('collections'),
                         style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontSize: 18.0,
@@ -205,7 +207,7 @@ class CollectionStatisticsWidget extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        "No Entries during the selected Range!",
+                        AppLocalizations.of(context).translate('no_entries'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CustomColors.mfinAlertRed,
