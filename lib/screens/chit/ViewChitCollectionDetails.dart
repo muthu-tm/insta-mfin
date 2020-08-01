@@ -29,7 +29,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
-            'Chit ${widget.collection.chitID} - ${widget.collection.chitNumber}'),
+            '${widget.collection.customerNumber}: Chit -  ${widget.collection.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(child: _getBody()),

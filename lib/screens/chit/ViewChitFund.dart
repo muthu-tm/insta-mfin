@@ -159,6 +159,7 @@ class _ViewChitFundState extends State<ViewChitFund> {
                                     MaterialPageRoute(
                                       builder: (context) => ViewChitCollections(
                                           widget.chit.id,
+                                          widget.chit.isClosed,
                                           widget.chit.chitName,
                                           _fund),
                                       settings: RouteSettings(
