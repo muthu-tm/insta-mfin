@@ -4,7 +4,7 @@ import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user_primary.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/chit/ViewChitCollectionDetails.dart';
 import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/customer/ViewPayment.dart';
@@ -21,7 +21,7 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 class AllTransactionsBuilder extends StatelessWidget {
   AllTransactionsBuilder(this.byRange, this.startDate, this.endDate);
 
-  final UserPrimary _primary = UserController().getUserPrimary();
+  final User _user = UserController().getCurrentUser();
 
   final bool byRange;
   final DateTime startDate;
@@ -84,7 +84,7 @@ class AllTransactionsBuilder extends StatelessWidget {
             ),
           ),
         ),
-        getChits(),
+        _user.accPreferences.chitEnabled ? getChits() : Container(),
         Divider(),
         ListTile(
           leading: Icon(
@@ -293,16 +293,16 @@ class AllTransactionsBuilder extends StatelessWidget {
     return FutureBuilder<List<Collection>>(
       future: byRange
           ? CollectionController().getAllCollectionByDateRange(
-              _primary.financeID,
-              _primary.branchName,
-              _primary.subBranchName,
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
               [0, 1, 2, 3, 4, 5],
               startDate,
               endDate)
           : Collection().getAllCollectionDetailsByDateRange(
-              _primary.financeID,
-              _primary.branchName,
-              _primary.subBranchName,
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
               [DateUtils.getUTCDateEpoch(startDate)],
               [0, 1, 2, 3, 4, 5]),
       builder:
@@ -487,12 +487,16 @@ class AllTransactionsBuilder extends StatelessWidget {
   Widget getChits() {
     return FutureBuilder<List<ChitCollection>>(
       future: byRange
-          ? ChitController().getAllChitsByDateRange(_primary.financeID,
-              _primary.branchName, _primary.subBranchName, startDate, endDate)
+          ? ChitController().getAllChitsByDateRange(
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
+              startDate,
+              endDate)
           : ChitCollection().getAllCollectionDetailsByDateRange(
-              _primary.financeID,
-              _primary.branchName,
-              _primary.subBranchName,
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
               [DateUtils.getUTCDateEpoch(startDate)]),
       builder:
           (BuildContext context, AsyncSnapshot<List<ChitCollection>> snapshot) {
@@ -672,10 +676,14 @@ class AllTransactionsBuilder extends StatelessWidget {
 
     return FutureBuilder<List<Journal>>(
       future: byRange
-          ? _jc.getAllJournalByDateRange(_primary.financeID,
-              _primary.branchName, _primary.subBranchName, startDate, endDate)
-          : _jc.getJournalByDate(_primary.financeID, _primary.branchName,
-              _primary.subBranchName, startDate),
+          ? _jc.getAllJournalByDateRange(
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
+              startDate,
+              endDate)
+          : _jc.getJournalByDate(_user.primary.financeID,
+              _user.primary.branchName, _user.primary.subBranchName, startDate),
       builder: (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
         Widget widget;
 
@@ -785,10 +793,14 @@ class AllTransactionsBuilder extends StatelessWidget {
 
     return FutureBuilder<List<Expense>>(
       future: byRange
-          ? _ec.getAllExpenseByDateRange(_primary.financeID,
-              _primary.branchName, _primary.subBranchName, startDate, endDate)
-          : _ec.getExpenseByDate(_primary.financeID, _primary.branchName,
-              _primary.subBranchName, startDate),
+          ? _ec.getAllExpenseByDateRange(
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
+              startDate,
+              endDate)
+          : _ec.getExpenseByDate(_user.primary.financeID,
+              _user.primary.branchName, _user.primary.subBranchName, startDate),
       builder: (BuildContext context, AsyncSnapshot<List<Expense>> snapshot) {
         Widget widget;
 
