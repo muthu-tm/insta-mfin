@@ -198,7 +198,7 @@ class _ViewChitFundState extends State<ViewChitFund> {
                                     );
                                   }
                                 },
-                                icon: Icon(Icons.monetization_on),
+                                icon: Icon(Icons.gavel),
                                 label: Text("Allocation"),
                               ),
                             ],

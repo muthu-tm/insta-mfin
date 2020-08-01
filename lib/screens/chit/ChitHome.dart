@@ -94,7 +94,7 @@ class _ChitHomeState extends State<ChitHome> {
                     ActiveChitWidget(_scaffoldKey),
                     Padding(padding: EdgeInsets.all(5)),
                     ClosedChitWidget(),
-                    Padding(padding: EdgeInsets.all(35)),
+                    Padding(padding: EdgeInsets.only(top: 40, bottom: 40)),
                   ],
                 ),
               ),
