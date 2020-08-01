@@ -480,10 +480,8 @@ class ChitCollection {
 
               if (isAdd) {
                 accData.cashInHand += data['amount'];
-                accData.collectionsAmount += data['amount'];
               } else {
                 accData.cashInHand -= data['amount'];
-                accData.collectionsAmount -= data['amount'];
               }
 
               Map<String, dynamic> aData = {'accounts_data': accData.toJson()};
