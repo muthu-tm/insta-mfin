@@ -33,24 +33,7 @@ class ViewCustomer extends StatelessWidget {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(customer.firstName),
-        backgroundColor: CustomColors.mfinBlue,
-        actions: <Widget>[
-          IconButton(
-            tooltip: "Generate Customer Report",
-            icon: Icon(
-              Icons.description,
-              size: 30,
-              color: CustomColors.mfinLightGrey,
-            ),
-            onPressed: () async {
-              _scaffoldKey.currentState.showSnackBar(
-                  CustomSnackBar.successSnackBar(
-                      "Generating your Customers Report! Please wait...", 5));
-              await CustReport()
-                  .generateReport(UserController().getCurrentUser(), customer);
-            },
-          )
-        ],
+        backgroundColor: CustomColors.mfinBlue
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(

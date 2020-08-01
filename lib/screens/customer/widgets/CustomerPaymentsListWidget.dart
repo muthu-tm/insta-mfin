@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/pdf/cust_report.dart';
 
 class CustomerPaymentsListWidget extends StatelessWidget {
   CustomerPaymentsListWidget(this.id, this._scaffoldKey);
@@ -102,14 +103,6 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                         if (totalReceived != null &&
                                             totalReceived > 0) {
                                           Navigator.pop(context);
-
-                                          // _scaffoldKey.currentState
-                                          //     .showSnackBar(
-                                          //   CustomSnackBar.errorSnackBar(
-                                          //     "You cannot Remove Payments which has already received COLLECTION!}",
-                                          //     3,
-                                          //   ),
-                                          // );
 
                                           await forceRemove(context, payment,
                                               "Enter your Secret KEY to remove payment which has received COLLECTION!");
@@ -219,20 +212,20 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                 height: 90,
                 child: Column(
                   children: <Widget>[
-                    new Spacer(),
+                    Spacer(),
                     Text(
-                      "No Payments!",
+                      "No Loans!",
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    new Spacer(
+                    Spacer(
                       flex: 2,
                     ),
                     Text(
-                      "Add this customer's Payments!",
+                      "Add this customer's Loans!",
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
@@ -240,7 +233,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    new Spacer(),
+                    Spacer(),
                   ],
                 ),
               ),
@@ -254,42 +247,35 @@ class CustomerPaymentsListWidget extends StatelessWidget {
 
         return Card(
           color: CustomColors.mfinLightGrey,
-          child: new Column(
+          child: Column(
             children: <Widget>[
               ListTile(
-                leading: Text(
-                  "PAYMENTS",
-                  style: TextStyle(
-                    fontFamily: "Georgia",
-                    fontWeight: FontWeight.bold,
-                    color: CustomColors.mfinPositiveGreen,
-                    fontSize: 17.0,
-                  ),
-                ),
-                trailing: RichText(
-                  text: TextSpan(
-                    text: "Total: ",
+                  leading: Text(
+                    "Loans",
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinGrey,
-                      fontSize: 18.0,
+                      color: CustomColors.mfinPositiveGreen,
+                      fontSize: 17.0,
                     ),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: snapshot.hasData
-                              ? snapshot.data.documents.length.toString()
-                              : "00",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.mfinGrey,
-                            fontSize: 18.0,
-                          )),
-                    ],
                   ),
-                ),
-              ),
-              new Divider(
+                  trailing: IconButton(
+                    tooltip: "Generate Customer Loan Report",
+                    icon: Icon(
+                      Icons.description,
+                      size: 30,
+                      color: CustomColors.mfinLightGrey,
+                    ),
+                    onPressed: () async {
+                      _scaffoldKey.currentState.showSnackBar(
+                          CustomSnackBar.successSnackBar(
+                              "Generating Customer's Loan Report! Please wait...",
+                              5));
+                      await CustReport().generateReport(
+                          UserController().getCurrentUser(), id);
+                    },
+                  )),
+              Divider(
                 color: CustomColors.mfinBlue,
               ),
               Center(

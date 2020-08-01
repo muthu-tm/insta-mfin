@@ -164,7 +164,8 @@ Widget openDrawer(BuildContext context) {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BooksHome(),
+                  builder: (context) =>
+                      BooksHome(_user.accPreferences.chitEnabled),
                   settings: RouteSettings(name: '/transactions/books'),
                 ),
               ),
@@ -249,8 +250,8 @@ Widget openDrawer(BuildContext context) {
                 ),
               )
             : ListTile(
-                leading: Icon(Icons.local_florist,
-                    color: CustomColors.mfinGrey),
+                leading:
+                    Icon(Icons.local_florist, color: CustomColors.mfinGrey),
                 title: Text('Chit Fund'),
                 onTap: () {}),
         ListTile(

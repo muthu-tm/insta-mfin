@@ -41,7 +41,7 @@ class TransactionScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BooksHome(),
+                        builder: (context) => BooksHome(_user.accPreferences.chitEnabled),
                         settings: RouteSettings(name: "/transactions/books"),
                       ),
                     );

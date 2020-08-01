@@ -78,12 +78,12 @@ class _ChitHomeState extends State<ChitHome> {
                             3));
                   }
                 },
-                backgroundColor: CustomColors.mfinBlue,
+                backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
                 splashColor: CustomColors.mfinWhite,
                 child: Icon(
                   Icons.add,
                   size: 30,
-                  color: CustomColors.mfinButtonGreen,
+                  color: CustomColors.mfinWhite,
                 ),
               ),
               body: SingleChildScrollView(

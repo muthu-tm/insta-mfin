@@ -11,14 +11,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 
 class CustReport {
-  Future<void> generateReport(User _u, Customer _cust) async {
+  Future<void> generateReport(User _u, int _id) async {
     final PdfDocument document = PdfDocument();
     final PdfPage page = document.pages.add();
     final Size pageSize = page.getClientSize();
     page.graphics.drawRectangle(
         bounds: Rect.fromLTWH(0, 0, pageSize.width, pageSize.height),
         pen: PdfPen(PdfColor(52, 213, 120)));
-
+    final Customer _cust = await Customer().getByCustomerID(_id);
     final PdfGrid grid = await getGrid(_cust);
     final PdfLayoutResult result =
         await drawHeader(page, pageSize, grid, _cust);
@@ -126,11 +126,11 @@ class CustReport {
 
     headerRow.style.backgroundBrush = PdfSolidBrush(PdfColor(68, 114, 196));
     headerRow.style.textBrush = PdfBrushes.white;
-    headerRow.cells[0].value = 'Payment ID';
+    headerRow.cells[0].value = 'Loan ID';
     headerRow.cells[0].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[1].value = 'Status';
     headerRow.cells[1].stringFormat.alignment = PdfTextAlignment.center;
-    headerRow.cells[2].value = 'Date of Payment';
+    headerRow.cells[2].value = 'Loan Date';
     headerRow.cells[2].stringFormat.alignment = PdfTextAlignment.center;
     headerRow.cells[3].value = 'Collection Mode';
     headerRow.cells[3].stringFormat.alignment = PdfTextAlignment.center;
@@ -140,7 +140,7 @@ class CustReport {
     headerRow.cells[5].stringFormat.alignment = PdfTextAlignment.center;
 
     //Add rows
-    List<Payment> pays = await _c.getPayments(_c.mobileNumber);
+    List<Payment> pays = await _c.getPayments(_c.id);
 
     if (pays != null) {
       for (int i = 0; i < pays.length; i++) {
