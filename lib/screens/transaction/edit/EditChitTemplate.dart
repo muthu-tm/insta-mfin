@@ -18,12 +18,21 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List<ChitFundDetails> fundDetails = [];
+  TextEditingController commController = TextEditingController();
+  TextEditingController chitAmountController = TextEditingController();
+
   Map<String, dynamic> updatedTempJSON = {};
 
   String chitType = 'Custom';
   List<String> chitTypes = ['Custom', 'Fixed'];
   int tenure;
+
+  List<TextEditingController> dateController = <TextEditingController>[];
+  List<TextEditingController> collAmountController = <TextEditingController>[];
+  List<TextEditingController> totalAmountController = <TextEditingController>[];
+  List<TextEditingController> allocAmountController = <TextEditingController>[];
+  List<TextEditingController> profitAmountController =
+      <TextEditingController>[];
 
   int collectionDay = 1;
   List<int> collectionDays = [
@@ -67,10 +76,56 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
     super.initState();
 
     this.chitType = widget.temp.type;
+    chitAmountController.text = widget.temp.chitAmount.toString();
+    commController.text = widget.temp.interestRate.toString();
     this.tenure = widget.temp.tenure;
-    this.fundDetails = widget.temp.fundDetails;
     this.collectionDay = widget.temp.collectionDay;
     this.updatedTempJSON = widget.temp.toJson();
+    setCollectionValues(widget.temp.fundDetails);
+  }
+
+  setCollectionValues(List<ChitFundDetails> fundDetails) {
+    for (int i = 0; i < fundDetails.length; i++) {
+      ChitFundDetails fd = fundDetails[i];
+      TextEditingController _ca = TextEditingController();
+      _ca.text = fd.collectionAmount.toString();
+      collAmountController.insert(i, _ca);
+      TextEditingController _ta = TextEditingController();
+      _ta.text = fd.totalAmount.toString();
+      totalAmountController.insert(i, _ta);
+      TextEditingController _aa = TextEditingController();
+      _aa.text = fd.allocationAmount.toString();
+      allocAmountController.insert(i, _aa);
+      TextEditingController _pa = TextEditingController();
+      _pa.text = fd.profit.toString();
+      profitAmountController.insert(i, _pa);
+    }
+  }
+
+  initCollectionValues(int tenure) {
+    collAmountController.clear();
+    totalAmountController.clear();
+    allocAmountController.clear();
+    for (int i = 0; i < tenure; i++) {
+      TextEditingController _ca = TextEditingController();
+      _ca.text = "";
+      collAmountController.insert(i, _ca);
+      TextEditingController _ta = TextEditingController();
+      _ta.text = "";
+      totalAmountController.insert(i, _ta);
+      TextEditingController _aa = TextEditingController();
+      _aa.text = "";
+      allocAmountController.insert(i, _aa);
+      TextEditingController _pa = TextEditingController();
+      _pa.text = "";
+      profitAmountController.insert(i, _pa);
+    }
+  }
+
+  setProfit(int amount) {
+    for (var item in profitAmountController) {
+      item.text = amount.toString();
+    }
   }
 
   @override
@@ -177,7 +232,7 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
-                              initialValue: widget.temp.chitAmount.toString(),
+                              controller: chitAmountController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
@@ -196,6 +251,16 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                               ),
+                              onChanged: (String val) {
+                                double cRate = 0.00;
+                                if (commController.text.isNotEmpty)
+                                  cRate = double.parse(commController.text);
+                                int cAmount = int.parse(val);
+                                int profit = ((cAmount / 100) * cRate).round();
+                                setState(() {
+                                  setProfit(profit);
+                                });
+                              },
                               validator: (amount) {
                                 if (amount.trim().isNotEmpty) {
                                   updatedTempJSON['chit_amount'] =
@@ -208,6 +273,55 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                             ),
                           ),
                           Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            child: TextFormField(
+                              controller: commController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                labelText: 'Commission %',
+                                hintText: 'Commission Rate - %',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelStyle: TextStyle(
+                                  color: CustomColors.mfinBlue,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.0, horizontal: 10.0),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            CustomColors.mfinFadedButtonGreen)),
+                                fillColor: CustomColors.mfinWhite,
+                                filled: true,
+                              ),
+                              onChanged: (String val) {
+                                double cRate = double.parse(val);
+                                int cAmount =
+                                    int.parse(chitAmountController.text);
+                                int profit = ((cAmount / 100) * cRate).round();
+                                setState(() {
+                                  setProfit(profit);
+                                });
+                              },
+                              validator: (cRate) {
+                                if (cRate.trim().isNotEmpty) {
+                                  updatedTempJSON['interest_rate'] =
+                                      double.parse(cRate);
+                                } else {
+                                  updatedTempJSON['interest_rate'] = 0.00;
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
                           Flexible(
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
@@ -271,8 +385,17 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                 filled: true,
                               ),
                               onChanged: (String val) {
+                                int cAmount =
+                                    int.parse(chitAmountController.text);
+                                double cRate =
+                                    double.parse(commController.text);
+                                int profit = ((cAmount / 100) * cRate).round();
+
+                                this.tenure = int.parse(val);
+                                initCollectionValues(int.parse(val));
+
                                 setState(() {
-                                  this.tenure = int.parse(val);
+                                  setProfit(profit);
                                 });
                               },
                               validator: (tenure) {
@@ -397,12 +520,8 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                           children: <Widget>[
                                             Flexible(
                                               child: TextFormField(
-                                                initialValue:
-                                                    (index < fundDetails.length)
-                                                        ? fundDetails[index]
-                                                            .collectionAmount
-                                                            .toString()
-                                                        : '',
+                                                controller:
+                                                    collAmountController[index],
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -430,6 +549,24 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                       CustomColors.mfinWhite,
                                                   filled: true,
                                                 ),
+                                                onChanged: (String val) {
+                                                  int cAmount = int.parse(val);
+                                                  int tAmount =
+                                                      cAmount * tenure;
+                                                  int profit = int.parse(
+                                                      profitAmountController[
+                                                              index]
+                                                          .text);
+                                                  setState(() {
+                                                    totalAmountController[index]
+                                                            .text =
+                                                        tAmount.toString();
+                                                    allocAmountController[index]
+                                                            .text =
+                                                        (tAmount - profit)
+                                                            .toString();
+                                                  });
+                                                },
                                                 validator: (amount) {
                                                   if (amount
                                                           .trim()
@@ -447,14 +584,11 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                               ),
                                             ),
                                             Padding(padding: EdgeInsets.all(5)),
-                                                                                        Flexible(
+                                            Flexible(
                                               child: TextFormField(
-                                                initialValue:
-                                                    (index < fundDetails.length)
-                                                        ? fundDetails[index]
-                                                            .totalAmount
-                                                            .toString()
-                                                        : '',
+                                                controller:
+                                                    totalAmountController[
+                                                        index],
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -481,6 +615,19 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                       CustomColors.mfinWhite,
                                                   filled: true,
                                                 ),
+                                                onChanged: (String val) {
+                                                  int tAmount = int.parse(val);
+                                                  int profit = int.parse(
+                                                      profitAmountController[
+                                                              index]
+                                                          .text);
+                                                  setState(() {
+                                                    allocAmountController[index]
+                                                            .text =
+                                                        (tAmount - profit)
+                                                            .toString();
+                                                  });
+                                                },
                                                 validator: (amount) {
                                                   if (amount
                                                           .trim()
@@ -497,7 +644,6 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                 },
                                               ),
                                             ),
-
                                           ],
                                         ),
                                       ),
@@ -507,12 +653,9 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                           children: <Widget>[
                                             Flexible(
                                               child: TextFormField(
-                                                initialValue:
-                                                    (index < fundDetails.length)
-                                                        ? fundDetails[index]
-                                                            .allocationAmount
-                                                            .toString()
-                                                        : '',
+                                                controller:
+                                                    allocAmountController[
+                                                        index],
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -540,6 +683,20 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                       CustomColors.mfinWhite,
                                                   filled: true,
                                                 ),
+                                                onChanged: (String val) {
+                                                  int aAmount = int.parse(val);
+                                                  int tAmount = int.parse(
+                                                      totalAmountController[
+                                                              index]
+                                                          .text);
+                                                  setState(() {
+                                                    profitAmountController[
+                                                                index]
+                                                            .text =
+                                                        (tAmount - aAmount)
+                                                            .toString();
+                                                  });
+                                                },
                                                 validator: (amount) {
                                                   if (amount
                                                           .trim()
@@ -559,12 +716,9 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                             Padding(padding: EdgeInsets.all(5)),
                                             Flexible(
                                               child: TextFormField(
-                                                initialValue:
-                                                    (index < fundDetails.length)
-                                                        ? fundDetails[index]
-                                                            .profit
-                                                            .toString()
-                                                        : '',
+                                                controller:
+                                                    profitAmountController[
+                                                        index],
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -591,6 +745,19 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                       CustomColors.mfinWhite,
                                                   filled: true,
                                                 ),
+                                                onChanged: (String val) {
+                                                  int tAmount = int.parse(
+                                                      totalAmountController[
+                                                              index]
+                                                          .text);
+                                                  int profit = int.parse(val);
+                                                  setState(() {
+                                                    allocAmountController[index]
+                                                            .text =
+                                                        (tAmount - profit)
+                                                            .toString();
+                                                  });
+                                                },
                                                 validator: (amount) {
                                                   if (amount
                                                       .trim()
@@ -613,7 +780,8 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                   ),
                                 ),
                               );
-                            })
+                            },
+                          )
                         : Text("")
                   ],
                 ),

@@ -42,8 +42,6 @@ class _PublishChitFundState extends State<PublishChitFund> {
   List<TextEditingController> profitAmountController =
       <TextEditingController>[];
 
-  // List<ChitFundDetails> fundDetails = [];
-
   int collectionDay = 1;
   List<int> collectionDays = [
     1,
@@ -87,7 +85,6 @@ class _PublishChitFundState extends State<PublishChitFund> {
       chitAmountController.text = widget.temp.chitAmount.toString();
       tenure = widget.temp.tenure;
       chitType = widget.temp.type;
-      // fundDetails = widget.temp.fundDetails;
       setCollectionValues(widget.temp.fundDetails);
       collectionDay = widget.temp.collectionDay;
     } else {
@@ -190,7 +187,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Chit Template",
+                        "Chit Details",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -384,21 +381,6 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 int cAmount =
                                     int.parse(chitAmountController.text);
                                 int profit = ((cAmount / 100) * cRate).round();
-                                // if (fundDetails.length == 0) {
-                                //   for (int i = 0; i < tenure; i++) {
-                                //     ChitFundDetails _fd = ChitFundDetails();
-                                //     if (cRate > 0.00 && cAmount > 0) {
-                                //       _fd.profit = profit;
-                                //     }
-                                //     fundDetails.insert(i, _fd);
-                                //   }
-                                // } else {
-                                //   for (int i = 0; i < fundDetails.length; i++) {
-                                //     if (cRate > 0.00 && cAmount > 0) {
-                                //       fundDetails[i].profit = profit;
-                                //     }
-                                //   }
-                                // }
                                 setState(() {
                                   setProfit(profit);
                                 });
