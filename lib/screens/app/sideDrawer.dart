@@ -236,7 +236,7 @@ Widget openDrawer(BuildContext context) {
         ),
         _user.accPreferences.chitEnabled
             ? ListTile(
-                leading: Icon(Icons.transfer_within_a_station,
+                leading: Icon(Icons.local_florist,
                     color: CustomColors.mfinButtonGreen),
                 title: Text('Chit Fund'),
                 onTap: () => Navigator.pushAndRemoveUntil(
@@ -249,7 +249,7 @@ Widget openDrawer(BuildContext context) {
                 ),
               )
             : ListTile(
-                leading: Icon(Icons.transfer_within_a_station,
+                leading: Icon(Icons.local_florist,
                     color: CustomColors.mfinGrey),
                 title: Text('Chit Fund'),
                 onTap: () {}),

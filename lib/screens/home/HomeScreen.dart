@@ -123,7 +123,6 @@ class HomeScreen extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0),
                           child: Container(
-                            // margin: EdgeInsets.symmetric(vertical: 10.0),
                             width: MediaQuery.of(context).size.width * 0.475,
                             decoration: BoxDecoration(
                               boxShadow: <BoxShadow>[
@@ -135,8 +134,8 @@ class HomeScreen extends StatelessWidget {
                               ],
                               gradient: LinearGradient(
                                 colors: <Color>[
+                                  CustomColors.mfinBlack,
                                   CustomColors.mfinButtonGreen,
-                                  CustomColors.mfinBlue,
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
@@ -191,11 +190,11 @@ class HomeScreen extends StatelessWidget {
                               ],
                               gradient: LinearGradient(
                                 colors: <Color>[
-                                  CustomColors.mfinAlertRed,
                                   CustomColors.mfinBlue,
+                                  CustomColors.mfinAlertRed,
                                 ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
                               ),
                               borderRadius: BorderRadius.only(
                                 bottomRight: Radius.circular(3.0),
