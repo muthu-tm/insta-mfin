@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/RechargeAlertScreen.dart';
-import 'package:instamfin/screens/transaction/books/CollectionBookTab.dart';
+import 'package:instamfin/screens/transaction/books/ChitBookTab.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
-class CollectionBookHome extends StatefulWidget {
+class ChitBookHome extends StatefulWidget {
   @override
-  _CollectionBookHomeState createState() => _CollectionBookHomeState();
+  _ChitBookHomeState createState() => _ChitBookHomeState();
 }
 
-class _CollectionBookHomeState extends State<CollectionBookHome> {
+class _ChitBookHomeState extends State<ChitBookHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final User _user = UserController().getCurrentUser();
 
   bool hasValidSubscription = true;
+
   @override
   void initState() {
     super.initState();
 
-    if (_user.financeSubscription < DateUtils.getUTCDateEpoch(DateTime.now())) {
+    if (_user.chitSubscription < DateUtils.getUTCDateEpoch(DateTime.now())) {
       hasValidSubscription = false;
     }
   }
@@ -34,7 +35,7 @@ class _CollectionBookHomeState extends State<CollectionBookHome> {
             child: Scaffold(
               key: _scaffoldKey,
               appBar: AppBar(
-                title: Text("Collection Book"),
+                title: Text("Chit Book"),
                 backgroundColor: CustomColors.mfinBlue,
                 bottom: TabBar(
                   unselectedLabelColor: CustomColors.mfinWhite,
@@ -67,20 +68,20 @@ class _CollectionBookHomeState extends State<CollectionBookHome> {
               ),
               body: TabBarView(
                 children: [
-                  CollectionBookTab(
+                  ChitBookTab(
                       _scaffoldKey,
                       true,
                       DateUtils.getUTCDateEpoch(
                           DateTime.now().subtract(Duration(days: 1))),
                       CustomColors.mfinAlertRed,
                       CustomColors.mfinGrey),
-                  CollectionBookTab(
+                  ChitBookTab(
                       _scaffoldKey,
                       false,
                       DateUtils.getUTCDateEpoch(DateTime.now()),
                       CustomColors.mfinBlue,
                       CustomColors.mfinGrey),
-                  CollectionBookTab(
+                  ChitBookTab(
                       _scaffoldKey,
                       false,
                       DateUtils.getUTCDateEpoch(
@@ -91,6 +92,6 @@ class _CollectionBookHomeState extends State<CollectionBookHome> {
               ),
             ),
           )
-        : RechargeAlertScreen("Collection Book");
+        : RechargeAlertScreen("Chit Book");
   }
 }

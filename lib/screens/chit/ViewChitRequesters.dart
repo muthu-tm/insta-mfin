@@ -107,7 +107,25 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                           ListTile(
                             leading: Text(
                               AppLocalizations.of(context)
-                                  .translate('requested_at_colon'),
+                                  .translate('chit_number_colon'),
+                              style: TextStyle(
+                                color: CustomColors.mfinGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              chitReq.chitNumber.toString(),
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: Text(
+                              'Requested At:',
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -125,6 +143,24 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                               ),
                             ),
                           ),
+                          ListTile(
+                            leading: Text(
+                              'Allocated?',
+                              style: TextStyle(
+                                color: CustomColors.mfinGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Text(
+                              chitReq.isAllocated ? "YES" : "NO",
+                              style: TextStyle(
+                                color: CustomColors.mfinLightGrey,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                           Divider(
                             color: CustomColors.mfinButtonGreen,
                           ),
@@ -133,6 +169,14 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                             children: <Widget>[
                               FlatButton.icon(
                                 onPressed: () async {
+                                  if (chitReq.isAllocated) {
+                                    _scaffoldKey.currentState.showSnackBar(
+                                      CustomSnackBar.errorSnackBar(
+                                          "Already you marked this request as Allocated",
+                                          2),
+                                    );
+                                    return;
+                                  }
                                   CustomDialogs.actionWaiting(
                                       context, "Updating...");
                                   try {
@@ -211,7 +255,8 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
           } else {
             children = [
               Text(
-                AppLocalizations.of(context).translate('no_requesters_chit'),
+                AppLocalizations.of(context).translate('no_requesters'),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: CustomColors.mfinAlertRed,
                   fontSize: 18.0,
@@ -229,6 +274,7 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
         return Container(
           color: CustomColors.mfinLightGrey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: children,
           ),
         );

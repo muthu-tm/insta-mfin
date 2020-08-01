@@ -7,6 +7,7 @@ ChitCollection _$ChitCollectionFromJson(Map<String, dynamic> json) {
     ..subBranchName = json['sub_branch_name'] as String
     ..customerNumber = json['customer_number'] as int
     ..chitID = json['chit_id'] as int
+    ..chitOriginalID = json['chit_org_id'] as String ?? ""
     ..chitNumber = json['chit_number'] as int
     ..chitDate = json['chit_date'] as int
     ..collectedOn = (json['collected_on'] as List)
@@ -38,6 +39,7 @@ Map<String, dynamic> _$ChitCollectionToJson(ChitCollection instance) =>
       'sub_branch_name': instance.subBranchName,
       'customer_number': instance.customerNumber,
       'chit_id': instance.chitID,
+      'chit_org_id': instance.chitOriginalID ?? "",
       'chit_number': instance.chitNumber,
       'chit_date': instance.chitDate,
       'collected_on': instance.collectedOn == null ? [] : instance.collectedOn,

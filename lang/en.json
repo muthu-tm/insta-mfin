@@ -457,5 +457,17 @@
     "payment_disabled" : "ADD Payment disabled for sometime! Please contact support for more info. Thanks for your support!",
     "sub_expired" : "Your Finance subscription has expired. Please Recharge to continue!",
     "payment_settled" : "You cannot add collection for SETTLED Payment!",
-    "payment_removed" : "Payment removed successfully"
+    "payment_removed" : "Payment removed successfully",
+    "no_entries" : "No Entries during the selected Range!",
+    "daily" : "Daily",
+    "weekly" : "Weekly",
+    "monthly" : "Monthly",
+    "chit_details" : "Chit details",
+    "chit_number_colon" : "Chit Number:",
+    "no_requesters" : "No Requesters for this Chit!",
+    "no_loans" : "No Loans!",
+    "add_loan" : "Add this customer's Loans!",
+    "loans" : "Loans"
+
+    
 }

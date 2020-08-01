@@ -22,6 +22,8 @@ class ChitTemplate extends Model {
   String type;
   @JsonKey(name: 'chit_amount', nullable: true)
   int chitAmount;
+  @JsonKey(name: 'interest_rate', nullable: true)
+  double interestRate;
   @JsonKey(name: 'tenure', nullable: true)
   int tenure;
   @JsonKey(name: 'collection_day', nullable: true)
@@ -55,6 +57,10 @@ class ChitTemplate extends Model {
 
   setchitAmount(int amount) {
     this.chitAmount = amount;
+  }
+
+  setInterestRate(double iRate) {
+    this.interestRate = iRate;
   }
 
   setTenure(int tenure) {

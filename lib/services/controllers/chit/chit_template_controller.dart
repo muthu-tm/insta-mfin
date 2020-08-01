@@ -3,12 +3,13 @@ import 'package:instamfin/db/models/chit_template.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class ChitTemplateController {
-  Future createTemplate(String name, int tAmount, int tenure, int collectionDay,
+  Future createTemplate(String name, int tAmount, int tenure, double commission, int collectionDay,
       String type, String notes, List<ChitFundDetails> fundDetails) async {
     try {
       ChitTemplate temp = ChitTemplate();
       temp.setTempName(name);
       temp.setchitAmount(tAmount);
+      temp.setInterestRate(commission);
       temp.setNotes(notes);
       temp.setTenure(tenure);
       temp.setCollectionDay(collectionDay);

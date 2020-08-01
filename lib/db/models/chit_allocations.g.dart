@@ -6,6 +6,7 @@ ChitAllocations _$ChitAllocationsFromJson(Map<String, dynamic> json) {
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
     ..chitID = json['chit_id'] as int
+    ..chitOriginalID = json['chit_org_id'] as String ?? ""
     ..chitNumber = json['chit_number'] as int
     ..customer = json['customer'] as int
     ..allocations = (json['allocations'] as List)
@@ -36,6 +37,7 @@ Map<String, dynamic> _$ChitAllocationsToJson(ChitAllocations instance) =>
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
       'chit_id': instance.chitID,
+      'chit_org_id': instance.chitOriginalID ?? "",
       'chit_number': instance.chitNumber,
       'customer': instance.customer,
       'allocations': instance.allocations?.map((e) => e?.toJson())?.toList(),

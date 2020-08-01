@@ -14,9 +14,12 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 import '../../app_localizations.dart';
 
 class ViewChitCollections extends StatefulWidget {
-  ViewChitCollections(this.chitID, this.fundDetails);
+  ViewChitCollections(
+      this.chitID, this.isClosed, this.chitName, this.fundDetails);
 
   final int chitID;
+  final bool isClosed;
+  final String chitName;
   final ChitFundDetails fundDetails;
 
   @override
@@ -32,7 +35,7 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Chit - ${widget.fundDetails.chitNumber}'),
+        title: Text('${widget.chitName} - ${widget.fundDetails.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(child: _getBody()),
@@ -134,6 +137,15 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                               ),
                               FlatButton.icon(
                                 onPressed: () {
+                                  if (widget.isClosed) {
+                                    _scaffoldKey.currentState.showSnackBar(
+                                      CustomSnackBar.errorSnackBar(
+                                          "Cannot Add collection for CLOSED Chit Fund!",
+                                          2),
+                                    );
+                                    return;
+                                  }
+                                  
                                   if (chitColl.isPaid) {
                                     _scaffoldKey.currentState.showSnackBar(
                                       CustomSnackBar.errorSnackBar(

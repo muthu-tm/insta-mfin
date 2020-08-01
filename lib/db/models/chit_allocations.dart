@@ -18,6 +18,8 @@ class ChitAllocations {
   String subBranchName;
   @JsonKey(name: 'chit_id', nullable: true)
   int chitID;
+  @JsonKey(name: 'chit_org_id', nullable: true)
+  String chitOriginalID;
   @JsonKey(name: 'chit_number', nullable: true)
   int chitNumber;
   @JsonKey(name: 'customer', nullable: true)

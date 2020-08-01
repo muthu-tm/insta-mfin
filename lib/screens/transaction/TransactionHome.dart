@@ -41,7 +41,7 @@ class TransactionScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BooksHome(),
+                        builder: (context) => BooksHome(_user.accPreferences.chitEnabled),
                         settings: RouteSettings(name: "/transactions/books"),
                       ),
                     );
@@ -62,7 +62,7 @@ class TransactionScreen extends StatelessWidget {
                             children: <Widget>[
                               Spacer(),
                               Icon(
-                                Icons.library_books,
+                                Icons.import_contacts,
                                 size: 50.0,
                                 color: CustomColors.mfinButtonGreen,
                               ),

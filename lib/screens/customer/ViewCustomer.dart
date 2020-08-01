@@ -8,7 +8,6 @@ import 'package:instamfin/screens/customer/widgets/CustomerPaymentsListWidget.da
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
-import 'package:instamfin/services/pdf/cust_report.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/customer/AddPayment.dart';
@@ -35,26 +34,7 @@ class ViewCustomer extends StatelessWidget {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(customer.firstName),
-        backgroundColor: CustomColors.mfinBlue,
-        actions: <Widget>[
-          IconButton(
-            tooltip: "Generate Customer Report",
-            icon: Icon(
-              Icons.description,
-              size: 30,
-              color: CustomColors.mfinLightGrey,
-            ),
-            onPressed: () async {
-              _scaffoldKey.currentState.showSnackBar(
-                  CustomSnackBar.successSnackBar(
-                      AppLocalizations.of(context)
-                          .translate('generating_report'),
-                      5));
-              await CustReport()
-                  .generateReport(UserController().getCurrentUser(), customer);
-            },
-          )
-        ],
+        backgroundColor: CustomColors.mfinBlue
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(

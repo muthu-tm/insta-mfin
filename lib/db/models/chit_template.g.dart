@@ -7,6 +7,7 @@ ChitTemplate _$ChitTemplateFromJson(Map<String, dynamic> json) {
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
     ..chitAmount = json['chit_amount'] as int
+    ..interestRate = (json['interest_rate'] as num)?.toDouble()
     ..tenure = json['tenure'] as int
     ..type = json['type'] as String
     ..collectionDay = json['collection_day'] as int
@@ -38,6 +39,7 @@ Map<String, dynamic> _$ChitTemplateToJson(ChitTemplate instance) =>
       'sub_branch_name': instance.subBranchName,
       'type': instance.type,
       'chit_amount': instance.chitAmount,
+      'interest_rate': instance.interestRate,
       'fund_details': instance.fundDetails?.map((e) => e?.toJson())?.toList(),
       'tenure': instance.tenure,
       'collection_day': instance.collectionDay,

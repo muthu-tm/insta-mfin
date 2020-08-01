@@ -10,6 +10,8 @@ import 'package:instamfin/screens/utils/CustomTabBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class StatisticsHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -32,7 +34,7 @@ class StatisticsHome extends StatelessWidget {
           drawer: openDrawer(context),
           appBar: AppBar(
             centerTitle: true,
-            title: Text("Statistics"),
+            title: Text(AppLocalizations.of(context).translate('statistics')),
             backgroundColor: CustomColors.mfinBlue,
             automaticallyImplyLeading: false,
             leading: InkWell(
@@ -85,21 +87,24 @@ class StatisticsHome extends StatelessWidget {
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.25,
                       alignment: Alignment.center,
-                      child: Text("Daily"),
+                      child:
+                          Text(AppLocalizations.of(context).translate('daily')),
                     ),
                   ),
                   Tab(
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.25,
                       alignment: Alignment.center,
-                      child: Text("Weekly"),
+                      child: Text(
+                          AppLocalizations.of(context).translate('weekly')),
                     ),
                   ),
                   Tab(
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.25,
                       alignment: Alignment.center,
-                      child: Text("Monthly"),
+                      child: Text(
+                          AppLocalizations.of(context).translate('monthly')),
                     ),
                   ),
                 ],

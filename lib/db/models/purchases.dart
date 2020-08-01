@@ -45,7 +45,7 @@ class Purchases extends Model {
   Future<QuerySnapshot> getSecKey() {
     return Model.db
         .collection("rz_key")
-        .where('env', isEqualTo: "TEST")
+        .where('env', isEqualTo: "PROD")
         .getDocuments();
   }
 

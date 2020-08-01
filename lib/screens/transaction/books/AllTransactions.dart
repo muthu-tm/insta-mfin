@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user_primary.dart';
+import 'package:instamfin/db/models/user.dart';
+import 'package:instamfin/screens/chit/ViewChitCollectionDetails.dart';
 import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/customer/ViewPayment.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/chit/chit_controller.dart';
 import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
@@ -19,7 +22,7 @@ import 'package:instamfin/app_localizations.dart';
 class AllTransactionsBuilder extends StatelessWidget {
   AllTransactionsBuilder(this.byRange, this.startDate, this.endDate);
 
-  final UserPrimary _primary = UserController().getUserPrimary();
+  final User _user = UserController().getCurrentUser();
 
   final bool byRange;
   final DateTime startDate;
@@ -37,7 +40,7 @@ class AllTransactionsBuilder extends StatelessWidget {
             color: CustomColors.mfinAlertRed,
           ),
           title: Text(
-            AppLocalizations.of(context).translate("payments"),
+            AppLocalizations.of(context).translate('loans'),
             style: TextStyle(
               fontSize: 17,
               fontFamily: "Georgia",
@@ -65,6 +68,24 @@ class AllTransactionsBuilder extends StatelessWidget {
           ),
         ),
         getCollections(),
+        Divider(),
+        ListTile(
+          leading: Icon(
+            Icons.local_florist,
+            size: 35.0,
+            color: CustomColors.mfinPositiveGreen,
+          ),
+          title: Text(
+            "Chits",
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: "Georgia",
+              color: CustomColors.mfinBlue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        _user.accPreferences.chitEnabled ? getChits() : Container(),
         Divider(),
         ListTile(
           leading: Icon(
@@ -273,16 +294,16 @@ class AllTransactionsBuilder extends StatelessWidget {
     return FutureBuilder<List<Collection>>(
       future: byRange
           ? CollectionController().getAllCollectionByDateRange(
-              _primary.financeID,
-              _primary.branchName,
-              _primary.subBranchName,
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
               [0, 1, 2, 3, 4, 5],
               startDate,
               endDate)
           : Collection().getAllCollectionDetailsByDateRange(
-              _primary.financeID,
-              _primary.branchName,
-              _primary.subBranchName,
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
               [DateUtils.getUTCDateEpoch(startDate)],
               [0, 1, 2, 3, 4, 5]),
       builder:
@@ -464,15 +485,206 @@ class AllTransactionsBuilder extends StatelessWidget {
     );
   }
 
+  Widget getChits() {
+    return FutureBuilder<List<ChitCollection>>(
+      future: byRange
+          ? ChitController().getAllChitsByDateRange(
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
+              startDate,
+              endDate)
+          : ChitCollection().getAllCollectionDetailsByDateRange(
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
+              [DateUtils.getUTCDateEpoch(startDate)]),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<ChitCollection>> snapshot) {
+        Widget widget;
+
+        if (snapshot.hasData) {
+          if (snapshot.data.length > 0) {
+            widget = ListView.builder(
+              itemCount: snapshot.data.length,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (context, int index) {
+                ChitCollection coll = snapshot.data[index];
+
+                int received = 0;
+
+                if (coll.collections.length > 1) {
+                  coll.collections.forEach((cDetails) {
+                    if (cDetails.collectedOn >=
+                            DateUtils.getUTCDateEpoch(startDate) &&
+                        cDetails.collectedOn <=
+                            DateUtils.getUTCDateEpoch(endDate))
+                      received += cDetails.amount;
+                  });
+                } else {
+                  received = coll.getReceived();
+                }
+
+                return Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: InkWell(
+                    onTap: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewChitCollectionDetails(coll),
+                          settings: RouteSettings(
+                              name: '/chit/collections/collectionDetails'),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 130,
+                      decoration: BoxDecoration(
+                        color: CustomColors.mfinGrey.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Chit ID:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                coll.chitOriginalID ?? "",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Customer:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                coll.customerNumber.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Amount:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                coll.collectionAmount.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              leading: Text(
+                                "Received:",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                received.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: CustomColors.mfinLightGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          } else {
+            widget = Container(
+              height: 50,
+              alignment: Alignment.center,
+              child: Text(
+                "No Chits on this Date!",
+                style: TextStyle(
+                  color: CustomColors.mfinAlertRed,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
+          }
+        } else if (snapshot.hasError) {
+          widget = Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: AsyncWidgets.asyncError(),
+          );
+        } else {
+          widget = Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: AsyncWidgets.asyncWaiting(),
+          );
+        }
+
+        return widget;
+      },
+    );
+  }
+
   Widget getJournals() {
     JournalController _jc = JournalController();
 
     return FutureBuilder<List<Journal>>(
       future: byRange
-          ? _jc.getAllJournalByDateRange(_primary.financeID,
-              _primary.branchName, _primary.subBranchName, startDate, endDate)
-          : _jc.getJournalByDate(_primary.financeID, _primary.branchName,
-              _primary.subBranchName, startDate),
+          ? _jc.getAllJournalByDateRange(
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
+              startDate,
+              endDate)
+          : _jc.getJournalByDate(_user.primary.financeID,
+              _user.primary.branchName, _user.primary.subBranchName, startDate),
       builder: (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
         Widget widget;
 
@@ -582,10 +794,14 @@ class AllTransactionsBuilder extends StatelessWidget {
 
     return FutureBuilder<List<Expense>>(
       future: byRange
-          ? _ec.getAllExpenseByDateRange(_primary.financeID,
-              _primary.branchName, _primary.subBranchName, startDate, endDate)
-          : _ec.getExpenseByDate(_primary.financeID, _primary.branchName,
-              _primary.subBranchName, startDate),
+          ? _ec.getAllExpenseByDateRange(
+              _user.primary.financeID,
+              _user.primary.branchName,
+              _user.primary.subBranchName,
+              startDate,
+              endDate)
+          : _ec.getExpenseByDate(_user.primary.financeID,
+              _user.primary.branchName, _user.primary.subBranchName, startDate),
       builder: (BuildContext context, AsyncSnapshot<List<Expense>> snapshot) {
         Widget widget;
 

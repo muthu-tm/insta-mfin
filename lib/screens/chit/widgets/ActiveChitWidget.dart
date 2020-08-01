@@ -9,10 +9,12 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/chit/chit_controller.dart';
+import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 import '../../../app_localizations.dart';
 
 class ActiveChitWidget extends StatelessWidget {
+  TextEditingController _pController = TextEditingController();
   ActiveChitWidget(this._scaffoldKey);
 
   final GlobalKey<ScaffoldState> _scaffoldKey;
@@ -146,13 +148,10 @@ class ActiveChitWidget extends StatelessWidget {
                                     var result =
                                         await _cc.removeChitFund(chit.id);
                                     if (result == null) {
-                                      _scaffoldKey.currentState.showSnackBar(
-                                          CustomSnackBar.errorSnackBar(
-                                              AppLocalizations.of(context)
-                                                  .translate(
-                                                      'collection_already_collected'),
-                                              3));
-                                      return;
+                                      await forceRemoveChit(
+                                          context,
+                                          "Few collections are done already\n\nPlease confirm with Secret KEY!",
+                                          chit);
                                     } else {
                                       if (!result['is_success']) {
                                         _scaffoldKey.currentState.showSnackBar(
@@ -303,6 +302,106 @@ class ActiveChitWidget extends StatelessWidget {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  Future forceRemoveChit(
+      BuildContext context, String text, ChitFund chit) async {
+    await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Confirm!",
+            style: TextStyle(
+                color: CustomColors.mfinAlertRed,
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.start,
+          ),
+          content: Container(
+            height: 175,
+            child: Column(
+              children: <Widget>[
+                Text(text),
+                Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Card(
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      obscureText: true,
+                      autofocus: false,
+                      controller: _pController,
+                      decoration: InputDecoration(
+                        hintText: 'Secret KEY',
+                        fillColor: CustomColors.mfinLightGrey,
+                        filled: true,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              color: CustomColors.mfinButtonGreen,
+              child: Text(
+                "NO",
+                style: TextStyle(
+                    color: CustomColors.mfinBlue,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+            FlatButton(
+              color: CustomColors.mfinAlertRed,
+              child: Text(
+                "YES",
+                style: TextStyle(
+                    color: CustomColors.mfinLightGrey,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+              onPressed: () async {
+                bool isValid = UserController().authCheck(_pController.text);
+                _pController.text = "";
+
+                if (isValid) {
+                  try {
+                    Navigator.pop(context);
+                    _scaffoldKey.currentState.showSnackBar(
+                      CustomSnackBar.successSnackBar(
+                        "Removing ${chit.chitName} ChitFund. It may take upto 10-30sec. Please Wait!",
+                        3,
+                      ),
+                    );
+                    await chit.forceRemoveChit();
+                  } catch (err) {
+                    _scaffoldKey.currentState.showSnackBar(
+                      CustomSnackBar.errorSnackBar(
+                        "Unable to remove the Chit now! Please try again later.",
+                        3,
+                      ),
+                    );
+                  }
+                } else {
+                  Navigator.pop(context);
+                  _scaffoldKey.currentState.showSnackBar(
+                    CustomSnackBar.errorSnackBar(
+                      "Failed to Authenticate!",
+                      3,
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
         );
       },
     );
