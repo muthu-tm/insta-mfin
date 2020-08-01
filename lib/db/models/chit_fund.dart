@@ -145,24 +145,16 @@ class ChitFund extends Model {
     return Model.db.collectionGroup('chit_funds');
   }
 
-  String getDocumentID(String financeId, String branchName,
-      String subBranchName, int id) {
+  String getDocumentID(
+      String financeId, String branchName, String subBranchName, int id) {
     String value = financeId + branchName + subBranchName;
     return HashGenerator.hmacGenerator(value, id.toString());
   }
 
-  DocumentReference getDocumentReference(String financeId, String branchName,
-      String subBranchName, int id) {
+  DocumentReference getDocumentReference(
+      String financeId, String branchName, String subBranchName, int id) {
     return getCollectionRef()
         .document(getDocumentID(financeId, branchName, subBranchName, id));
-  }
-
-  Future<bool> isExist() async {
-    var chitSnap = await getDocumentReference(
-            this.financeID, this.branchName, this.subBranchName, this.id)
-        .get();
-
-    return chitSnap.exists;
   }
 
   Future create() async {
@@ -172,15 +164,9 @@ class ChitFund extends Model {
     this.branchName = user.primary.branchName;
     this.subBranchName = user.primary.subBranchName;
     this.publishedBy = user.mobileNumber;
-    this.id = createdAt.microsecondsSinceEpoch;
+    this.id = createdAt.millisecondsSinceEpoch;
     try {
-      bool isExist = await this.isExist();
-
-      if (isExist) {
-        throw 'Already a Chit exist with this Chit ID - ${this.chitID}';
-      } else {
-        await super.add(this.toJson());
-      }
+      await super.add(this.toJson());
     } catch (err) {
       print('Chit Publish failure:' + err.toString());
       throw err;

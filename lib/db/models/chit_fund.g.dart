@@ -7,6 +7,7 @@ ChitFund _$ChitFundFromJson(Map<String, dynamic> json) {
     ..branchName = json['branch_name'] as String
     ..subBranchName = json['sub_branch_name'] as String
     ..chitID = json['chit_id'] as String
+    ..id = json['id'] as int
     ..customerDetails = (json['customer_details'] as List)
         ?.map((e) => e == null
             ? null
@@ -49,6 +50,7 @@ Map<String, dynamic> _$ChitFundToJson(ChitFund instance) => <String, dynamic>{
       'branch_name': instance.branchName,
       'sub_branch_name': instance.subBranchName,
       'chit_id': instance.chitID,
+      'id': instance.id,
       'customer_details':
           instance.customerDetails?.map((e) => e?.toJson())?.toList(),
       'customers': instance.customers,

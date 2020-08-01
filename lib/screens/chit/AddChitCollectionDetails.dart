@@ -14,7 +14,8 @@ class AddChitCollectionDetails extends StatefulWidget {
   final ChitCollection collection;
 
   @override
-  _AddChitCollectionDetailsState createState() => _AddChitCollectionDetailsState();
+  _AddChitCollectionDetailsState createState() =>
+      _AddChitCollectionDetailsState();
 }
 
 class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
@@ -87,16 +88,16 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new Card(
+              Card(
                 elevation: 10.0,
                 margin: EdgeInsets.only(
                     top: 10.0, bottom: 10.0, left: 5.0, right: 5.0),
                 shadowColor: CustomColors.mfinPositiveGreen,
-                child: new Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -155,7 +156,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
-                                    contentPadding: new EdgeInsets.symmetric(
+                                    contentPadding: EdgeInsets.symmetric(
                                         vertical: 3.0, horizontal: 3.0),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -186,7 +187,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -270,11 +271,11 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                               ),
                               validator: (receivedFrom) {
                                 if (receivedFrom.trim().isEmpty) {
-                                  return "Fill the person name who Paid the amount";
+                                  collDetails['collected_from'] = "";
+                                } else {
+                                  collDetails['collected_from'] =
+                                      receivedFrom.trim();
                                 }
-
-                                collDetails['collected_from'] =
-                                    receivedFrom.trim();
                                 return null;
                               },
                             ),
@@ -301,7 +302,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                               ),
                               validator: (collectedBy) {
                                 if (collectedBy.trim().isEmpty) {
-                                  return "Please fill the person name who collected the amount";
+                                  return "Person who collected the amount";
                                 }
 
                                 collDetails['collected_by'] =
@@ -416,8 +417,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
             text: DateUtils.formatDate(picked),
           );
 
-          if (widget.collection.chitDate <
-              (collDetails['collected_on'])) {
+          if (widget.collection.chitDate < (collDetails['collected_on'])) {
             isLatePay = true;
           } else {
             isLatePay = false;
@@ -440,8 +440,8 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
         ChitController _cc = ChitController();
         bool isPaid = false;
 
-        if (collDetails['amount'] + widget.collection.getReceived() >= widget.collection.collectionAmount)
-          isPaid = true;
+        if (collDetails['amount'] + widget.collection.getReceived() >=
+            widget.collection.collectionAmount) isPaid = true;
 
         collDetails['transferred_mode'] = int.parse(transferredMode);
         collDetails['created_at'] = DateTime.now();

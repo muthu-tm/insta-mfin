@@ -29,7 +29,7 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Allocations ${widget.chitAlloc.chitID}'),
+        title: Text('Allocations - ${widget.fund.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

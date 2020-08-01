@@ -254,9 +254,10 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                               ),
                               validator: (given) {
                                 if (given.trim().isEmpty) {
-                                  return "Fill the person name who Paid the amount";
+                                  this.givenTo = "";
+                                } else {
+                                  this.givenTo = given.trim();
                                 }
-                                this.givenTo = given.trim();
                                 return null;
                               },
                             ),

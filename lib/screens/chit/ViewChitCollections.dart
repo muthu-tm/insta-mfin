@@ -12,9 +12,10 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class ViewChitCollections extends StatefulWidget {
-  ViewChitCollections(this.chitID, this.fundDetails);
+  ViewChitCollections(this.chitID, this.chitName, this.fundDetails);
 
   final int chitID;
+  final String chitName;
   final ChitFundDetails fundDetails;
 
   @override
@@ -30,7 +31,7 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Chit - ${widget.fundDetails.chitNumber}'),
+        title: Text('${widget.chitName} - ${widget.fundDetails.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(child: _getBody()),

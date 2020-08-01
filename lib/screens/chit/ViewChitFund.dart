@@ -25,7 +25,8 @@ class _ViewChitFundState extends State<ViewChitFund> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Chit - ${widget.chit.chitID}'),
+        title: Text(
+            'Chit - ${widget.chit.chitID == "" ? widget.chit.chitName : widget.chit.chitID}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -134,7 +135,9 @@ class _ViewChitFundState extends State<ViewChitFund> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ViewChitCollections(
-                                          widget.chit.id, _fund),
+                                          widget.chit.id,
+                                          widget.chit.chitName,
+                                          _fund),
                                       settings: RouteSettings(
                                           name: '/chit/collections'),
                                     ),
@@ -145,15 +148,28 @@ class _ViewChitFundState extends State<ViewChitFund> {
                               ),
                               FlatButton.icon(
                                 onPressed: () async {
-                                  ChitAllocations chitAlloc =
+                                  List<ChitAllocations> chitAllocs =
                                       await ChitAllocations()
-                                          .getAllocationsByNumber(
+                                          .getChitAllocations(
                                               widget.chit.financeID,
                                               widget.chit.branchName,
                                               widget.chit.subBranchName,
-                                              widget.chit.id,
-                                              _fund.chitNumber);
-                                  if (chitAlloc == null) {
+                                              widget.chit.id);
+                                  bool isExist = false;
+                                  ChitAllocations chitAlloc;
+                                  Map<int, int> allocMap = {};
+                                  for (var alloc in chitAllocs) {
+                                    if (allocMap.containsKey(alloc.customer))
+                                      allocMap[alloc.customer] =
+                                          allocMap[alloc.customer] + 1;
+                                    else
+                                      allocMap[alloc.customer] = 1;
+                                    if (alloc.chitNumber == _fund.chitNumber) {
+                                      chitAlloc = alloc;
+                                      isExist = true;
+                                    }
+                                  }
+                                  if (!isExist) {
                                     showDialog(
                                       context: context,
                                       routeSettings: RouteSettings(
@@ -164,7 +180,8 @@ class _ViewChitFundState extends State<ViewChitFund> {
                                               context,
                                               _scaffoldKey,
                                               widget.chit,
-                                              _fund),
+                                              _fund,
+                                              allocMap),
                                         );
                                       },
                                     );
