@@ -20,8 +20,7 @@ class _CollectionBookHomeState extends State<CollectionBookHome> {
   void initState() {
     super.initState();
 
-    if (_user.financeSubscription < DateUtils.getUTCDateEpoch(DateTime.now()) &&
-        _user.chitSubscription < DateUtils.getUTCDateEpoch(DateTime.now())) {
+    if (_user.financeSubscription < DateUtils.getUTCDateEpoch(DateTime.now())) {
       hasValidSubscription = false;
     }
   }

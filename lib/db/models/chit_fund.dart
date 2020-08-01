@@ -34,8 +34,6 @@ class ChitFund extends Model {
   int chitAmount;
   @JsonKey(name: 'tenure', nullable: true)
   int tenure;
-  @JsonKey(name: 'already_completed_months', nullable: true)
-  int alreadyCompletedMonths;
   @JsonKey(name: 'interest_rate', nullable: true)
   double interestRate;
   @JsonKey(name: 'collection_date', nullable: true)

@@ -36,14 +36,20 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: CustomColors.mfinBlue,
         onPressed: () async {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  AddChitAllocation(widget.chitAlloc, widget.fund),
-              settings: RouteSettings(name: '/chits/allocations/add'),
-            ),
-          );
+          if (widget.chitAlloc.isPaid) {
+            _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+                "Already allocated full amount", 2));
+            return;
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    AddChitAllocation(widget.chitAlloc, widget.fund),
+                settings: RouteSettings(name: '/chits/allocations/add'),
+              ),
+            );
+          }
         },
         label: Text("Add"),
         icon: Icon(
