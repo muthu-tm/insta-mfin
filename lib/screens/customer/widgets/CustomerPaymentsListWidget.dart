@@ -262,9 +262,9 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                   trailing: IconButton(
                     tooltip: "Generate Customer Loan Report",
                     icon: Icon(
-                      Icons.description,
+                      Icons.print,
                       size: 30,
-                      color: CustomColors.mfinLightGrey,
+                      color: CustomColors.mfinBlack,
                     ),
                     onPressed: () async {
                       _scaffoldKey.currentState.showSnackBar(
