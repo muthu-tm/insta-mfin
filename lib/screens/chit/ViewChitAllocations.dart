@@ -31,22 +31,27 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(
-            "$AppLocalizations.of(context).translate('allocation') ${widget.chitAlloc.chitID}"),
+        title: Text('${AppLocalizations.of(context).translate('allocation')} - ${widget.fund.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: CustomColors.mfinBlue,
         onPressed: () async {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  AddChitAllocation(widget.chitAlloc, widget.fund),
-              settings: RouteSettings(name: '/chits/allocations/add'),
-            ),
-          );
+          if (widget.chitAlloc.isPaid) {
+            _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+                "Already allocated full amount", 2));
+            return;
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    AddChitAllocation(widget.chitAlloc, widget.fund),
+                settings: RouteSettings(name: '/chits/allocations/add'),
+              ),
+            );
+          }
         },
         label: Text(
           AppLocalizations.of(context).translate('add'),

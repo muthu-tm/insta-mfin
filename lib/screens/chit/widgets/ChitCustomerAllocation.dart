@@ -3,7 +3,6 @@ import 'package:instamfin/db/models/chit_allocations.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/screens/chit/AddChitAllocation.dart';
-import 'package:instamfin/screens/chit/PublishChitFund.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -15,7 +14,8 @@ Widget chitCustomerAllocationDialog(
     BuildContext context,
     GlobalKey<ScaffoldState> _scaffoldKey,
     ChitFund chit,
-    ChitFundDetails fund) {
+    ChitFundDetails fund,
+    Map<int, int> allocMap) {
   return SingleChildScrollView(
     child: Container(
       width: MediaQuery.of(context).size.width * 0.9,
@@ -45,6 +45,13 @@ Widget chitCustomerAllocationDialog(
                     primary: false,
                     itemCount: chit.customerDetails.length,
                     itemBuilder: (BuildContext context, int index) {
+                      int availableChits = 0;
+
+                      allocMap.containsKey(chit.customerDetails[index].number)
+                          ? availableChits = chit.customerDetails[index].chits -
+                              allocMap[chit.customerDetails[index].number]
+                          : availableChits = chit.customerDetails[index].chits;
+
                       return Padding(
                         padding: EdgeInsets.all(5),
                         child: Container(
@@ -59,13 +66,21 @@ Widget chitCustomerAllocationDialog(
                               ),
                             ),
                             title: Text(
-                              chit.customerDetails[index].chits.toString(),
+                              availableChits.toString(),
                               style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             onTap: () {
+                              if (availableChits <= 0) {
+                                _scaffoldKey.currentState.showSnackBar(
+                                  CustomSnackBar.errorSnackBar(
+                                      "Already allocated all chits to this customer",
+                                      2),
+                                );
+                                return;
+                              }
                               CustomDialogs.confirm(context, "Confirm",
                                   "Are you sure to allocate to ${chit.customerDetails[index].number}",
                                   () async {
@@ -115,41 +130,6 @@ Widget chitCustomerAllocationDialog(
                       ),
                     ),
                   ),
-            Divider(
-              color: CustomColors.mfinButtonGreen,
-            ),
-            SizedBox(height: 15),
-            RaisedButton.icon(
-              icon: Icon(
-                Icons.fiber_new,
-                color: CustomColors.mfinLightGrey,
-              ),
-              elevation: 15.0,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PublishChitFund(null),
-                    settings: RouteSettings(name: '/chit/publish/new'),
-                  ),
-                );
-              },
-              label: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Text(
-                  AppLocalizations.of(context).translate('custom'),
-                  style: TextStyle(
-                    color: CustomColors.mfinButtonGreen,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              color: CustomColors.mfinBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
           ],
         ),
       ),

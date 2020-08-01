@@ -28,7 +28,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
   String chitID = '';
   double commission = 0.00;
   int amount = 0;
-  int tenure = 10;
+  int tenure = 5;
   String notes = "";
   String chitType = 'Fixed';
   List<String> chitTypes = ['Custom', 'Fixed'];
@@ -38,8 +38,11 @@ class _PublishChitFundState extends State<PublishChitFund> {
   List<int> pAmount = [];
   List<DateTime> chitDates = [];
   List<TextEditingController> dateController = <TextEditingController>[];
-
-  List<ChitFundDetails> fundDetails = [];
+  List<TextEditingController> collAmountController = <TextEditingController>[];
+  List<TextEditingController> totalAmountController = <TextEditingController>[];
+  List<TextEditingController> allocAmountController = <TextEditingController>[];
+  List<TextEditingController> profitAmountController =
+      <TextEditingController>[];
 
   int collectionDay = 1;
   List<int> collectionDays = [
@@ -78,16 +81,63 @@ class _PublishChitFundState extends State<PublishChitFund> {
     super.initState();
     commController.text = '0.00';
     chitAmountController.text = '0';
+
     if (widget.temp != null) {
       amount = widget.temp.chitAmount;
       chitAmountController.text = widget.temp.chitAmount.toString();
       tenure = widget.temp.tenure;
       chitType = widget.temp.type;
-      fundDetails = widget.temp.fundDetails;
+      setCollectionValues(widget.temp.fundDetails);
       collectionDay = widget.temp.collectionDay;
+    } else {
+      initCollectionValues(this.tenure);
     }
 
     setChitDates(collectionDay);
+  }
+
+  setCollectionValues(List<ChitFundDetails> fundDetails) {
+    for (int i = 0; i < fundDetails.length; i++) {
+      ChitFundDetails fd = fundDetails[i];
+      TextEditingController _ca = TextEditingController();
+      _ca.text = fd.collectionAmount.toString();
+      collAmountController.insert(i, _ca);
+      TextEditingController _ta = TextEditingController();
+      _ta.text = fd.totalAmount.toString();
+      totalAmountController.insert(i, _ta);
+      TextEditingController _aa = TextEditingController();
+      _aa.text = fd.allocationAmount.toString();
+      allocAmountController.insert(i, _aa);
+      TextEditingController _pa = TextEditingController();
+      _pa.text = fd.profit.toString();
+      profitAmountController.insert(i, _pa);
+    }
+  }
+
+  initCollectionValues(int tenure) {
+    collAmountController.clear();
+    totalAmountController.clear();
+    allocAmountController.clear();
+    for (int i = 0; i < tenure; i++) {
+      TextEditingController _ca = TextEditingController();
+      _ca.text = "";
+      collAmountController.insert(i, _ca);
+      TextEditingController _ta = TextEditingController();
+      _ta.text = "";
+      totalAmountController.insert(i, _ta);
+      TextEditingController _aa = TextEditingController();
+      _aa.text = "";
+      allocAmountController.insert(i, _aa);
+      TextEditingController _pa = TextEditingController();
+      _pa.text = "";
+      profitAmountController.insert(i, _pa);
+    }
+  }
+
+  setProfit(int amount) {
+    for (var item in profitAmountController) {
+      item.text = amount.toString();
+    }
   }
 
   @override
@@ -141,7 +191,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        AppLocalizations.of(context).translate('chit_template'),
+                        AppLocalizations.of(context).translate('chit_details'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -217,6 +267,16 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                               ),
+                              onChanged: (String val) {
+                                double cRate = 0.00;
+                                if (commController.text.isNotEmpty)
+                                  cRate = double.parse(commController.text);
+                                int cAmount = int.parse(val);
+                                int profit = ((cAmount / 100) * cRate).round();
+                                setState(() {
+                                  setProfit(profit);
+                                });
+                              },
                               validator: (amount) {
                                 if (amount.trim().isNotEmpty) {
                                   this.amount = int.parse(amount);
@@ -324,6 +384,15 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                               ),
+                              onChanged: (String val) {
+                                double cRate = double.parse(val);
+                                int cAmount =
+                                    int.parse(chitAmountController.text);
+                                int profit = ((cAmount / 100) * cRate).round();
+                                setState(() {
+                                  setProfit(profit);
+                                });
+                              },
                               validator: (cRate) {
                                 if (cRate.trim().isNotEmpty) {
                                   this.commission = double.parse(cRate);
@@ -365,22 +434,18 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 filled: true,
                               ),
                               onChanged: (String val) {
-                                for (int i = fundDetails.length;
-                                    i < int.parse(val);
-                                    i++) {
-                                  ChitFundDetails _fd = ChitFundDetails();
-                                  int cAmount =
-                                      int.parse(chitAmountController.text);
-                                  double cRate =
-                                      double.parse(commController.text);
-                                  if (cRate > 0.00 && cAmount > 0) {
-                                    _fd.profit =
-                                        ((cAmount / 100) * cRate).round();
-                                  }
-                                  fundDetails.insert(i, _fd);
-                                }
+                                int cAmount =
+                                    int.parse(chitAmountController.text);
+                                double cRate =
+                                    double.parse(commController.text);
+                                int profit = ((cAmount / 100) * cRate).round();
+
+                                this.tenure = int.parse(val);
+                                setChitDates(collectionDay);
+                                initCollectionValues(int.parse(val));
+
                                 setState(() {
-                                  this.tenure = int.parse(val);
+                                  setProfit(profit);
                                 });
                               },
                               validator: (tenure) {
@@ -477,6 +542,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                 ),
               ),
               Card(
+                color: CustomColors.mfinGrey,
                 child: Column(
                   children: <Widget>[
                     tenure > 0
@@ -575,12 +641,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                           children: <Widget>[
                                             Flexible(
                                               child: TextFormField(
-                                                initialValue:
-                                                    (index < fundDetails.length)
-                                                        ? fundDetails[index]
-                                                            .collectionAmount
-                                                            .toString()
-                                                        : '',
+                                                controller:
+                                                    collAmountController[index],
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -610,6 +672,24 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                       CustomColors.mfinWhite,
                                                   filled: true,
                                                 ),
+                                                onChanged: (String val) {
+                                                  int cAmount = int.parse(val);
+                                                  int tAmount =
+                                                      cAmount * tenure;
+                                                  int profit = int.parse(
+                                                      profitAmountController[
+                                                              index]
+                                                          .text);
+                                                  setState(() {
+                                                    totalAmountController[index]
+                                                            .text =
+                                                        tAmount.toString();
+                                                    allocAmountController[index]
+                                                            .text =
+                                                        (tAmount - profit)
+                                                            .toString();
+                                                  });
+                                                },
                                                 validator: (amount) {
                                                   if (amount
                                                           .trim()
@@ -629,12 +709,9 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                             Padding(padding: EdgeInsets.all(5)),
                                             Flexible(
                                               child: TextFormField(
-                                                initialValue:
-                                                    (index < fundDetails.length)
-                                                        ? fundDetails[index]
-                                                            .totalAmount
-                                                            .toString()
-                                                        : '',
+                                                controller:
+                                                    totalAmountController[
+                                                        index],
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -665,6 +742,19 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                       CustomColors.mfinWhite,
                                                   filled: true,
                                                 ),
+                                                onChanged: (String val) {
+                                                  int tAmount = int.parse(val);
+                                                  int profit = int.parse(
+                                                      profitAmountController[
+                                                              index]
+                                                          .text);
+                                                  setState(() {
+                                                    allocAmountController[index]
+                                                            .text =
+                                                        (tAmount - profit)
+                                                            .toString();
+                                                  });
+                                                },
                                                 validator: (amount) {
                                                   if (amount
                                                           .trim()
@@ -690,12 +780,9 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                           children: <Widget>[
                                             Flexible(
                                               child: TextFormField(
-                                                initialValue:
-                                                    (index < fundDetails.length)
-                                                        ? fundDetails[index]
-                                                            .allocationAmount
-                                                            .toString()
-                                                        : '',
+                                                controller:
+                                                    allocAmountController[
+                                                        index],
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
@@ -725,6 +812,20 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                       CustomColors.mfinWhite,
                                                   filled: true,
                                                 ),
+                                                onChanged: (String val) {
+                                                  int aAmount = int.parse(val);
+                                                  int tAmount = int.parse(
+                                                      totalAmountController[
+                                                              index]
+                                                          .text);
+                                                  setState(() {
+                                                    profitAmountController[
+                                                                index]
+                                                            .text =
+                                                        (tAmount - aAmount)
+                                                            .toString();
+                                                  });
+                                                },
                                                 validator: (amount) {
                                                   if (amount
                                                           .trim()
@@ -744,21 +845,17 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                             Padding(padding: EdgeInsets.all(5)),
                                             Flexible(
                                               child: TextFormField(
-                                                initialValue:
-                                                    (index < fundDetails.length)
-                                                        ? fundDetails[index]
-                                                            .profit
-                                                            .toString()
-                                                        : '',
+                                                controller:
+                                                    profitAmountController[
+                                                        index],
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText:
-                                                      AppLocalizations.of(
+                                                  labelText: AppLocalizations.of(
                                                               context)
                                                           .translate(
-                                                              'profit_amount'),
+                                                              'commission'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -780,6 +877,19 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                       CustomColors.mfinWhite,
                                                   filled: true,
                                                 ),
+                                                onChanged: (String val) {
+                                                  int tAmount = int.parse(
+                                                      totalAmountController[
+                                                              index]
+                                                          .text);
+                                                  int profit = int.parse(val);
+                                                  setState(() {
+                                                    allocAmountController[index]
+                                                            .text =
+                                                        (tAmount - profit)
+                                                            .toString();
+                                                  });
+                                                },
                                                 validator: (amount) {
                                                   if (amount
                                                       .trim()
@@ -816,6 +926,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
   }
 
   void setChitDates(int day) {
+    chitDates.clear();
+    dateController.clear();
     DateTime today = DateTime.now();
     DateTime startDate = DateTime(today.year, today.month, day);
     if (DateUtils.getUTCDateEpoch(startDate) <

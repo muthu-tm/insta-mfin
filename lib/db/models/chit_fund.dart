@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instamfin/db/models/accounts_data.dart';
+import 'package:instamfin/db/models/chit_allocations.dart';
 import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/chit_customers.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
@@ -34,8 +36,6 @@ class ChitFund extends Model {
   int chitAmount;
   @JsonKey(name: 'tenure', nullable: true)
   int tenure;
-  @JsonKey(name: 'already_completed_months', nullable: true)
-  int alreadyCompletedMonths;
   @JsonKey(name: 'interest_rate', nullable: true)
   double interestRate;
   @JsonKey(name: 'collection_date', nullable: true)
@@ -145,24 +145,16 @@ class ChitFund extends Model {
     return Model.db.collectionGroup('chit_funds');
   }
 
-  String getDocumentID(String financeId, String branchName,
-      String subBranchName, int id) {
+  String getDocumentID(
+      String financeId, String branchName, String subBranchName, int id) {
     String value = financeId + branchName + subBranchName;
     return HashGenerator.hmacGenerator(value, id.toString());
   }
 
-  DocumentReference getDocumentReference(String financeId, String branchName,
-      String subBranchName, int id) {
+  DocumentReference getDocumentReference(
+      String financeId, String branchName, String subBranchName, int id) {
     return getCollectionRef()
         .document(getDocumentID(financeId, branchName, subBranchName, id));
-  }
-
-  Future<bool> isExist() async {
-    var chitSnap = await getDocumentReference(
-            this.financeID, this.branchName, this.subBranchName, this.id)
-        .get();
-
-    return chitSnap.exists;
   }
 
   Future create() async {
@@ -172,15 +164,10 @@ class ChitFund extends Model {
     this.branchName = user.primary.branchName;
     this.subBranchName = user.primary.subBranchName;
     this.publishedBy = user.mobileNumber;
-    this.id = createdAt.microsecondsSinceEpoch;
-    try {
-      bool isExist = await this.isExist();
+    this.id = createdAt.millisecondsSinceEpoch;
 
-      if (isExist) {
-        throw 'Already a Chit exist with this Chit ID - ${this.chitID}';
-      } else {
-        await super.add(this.toJson());
-      }
+    try {
+      await super.add(this.toJson());
     } catch (err) {
       print('Chit Publish failure:' + err.toString());
       throw err;
@@ -188,15 +175,11 @@ class ChitFund extends Model {
   }
 
   Future<ChitFund> getByChitID(int chitID) async {
-    QuerySnapshot snap = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
-        .where('id', isEqualTo: chitID)
-        .getDocuments();
+    DocumentSnapshot snap = await getDocumentReference(user.primary.financeID,
+            user.primary.branchName, user.primary.subBranchName, chitID)
+        .get();
 
-    if (snap.documents.isNotEmpty)
-      return ChitFund.fromJson(snap.documents.first.data);
+    if (snap.exists) return ChitFund.fromJson(snap.data);
 
     return null;
   }
@@ -290,6 +273,112 @@ class ChitFund extends Model {
 
       return received;
     } catch (err) {
+      print(err.toString());
+      throw err;
+    }
+  }
+
+  Future<int> getChitReceived() async {
+    try {
+      int received = 0;
+      for (int i = 0; i < this.tenure; i++) {
+        List<ChitCollection> colls = await ChitCollection()
+            .getByCollectionNumber(this.financeID, this.branchName,
+                this.subBranchName, this.id, i + 1);
+
+        for (int index = 0; index < colls.length; index++) {
+          received += colls[index].getReceived();
+        }
+      }
+
+      return received;
+    } catch (err) {
+      print(err.toString());
+      throw err;
+    }
+  }
+
+  Future<int> getChitAllocations() async {
+    try {
+      int allocations = 0;
+      for (int i = 0; i < this.tenure; i++) {
+        ChitAllocations alloc = await ChitAllocations().getAllocationsByNumber(
+            this.financeID,
+            this.branchName,
+            this.subBranchName,
+            this.id,
+            i + 1);
+        if (alloc != null && alloc.allocations != null) {
+          for (int index = 0; index < alloc.allocations.length; index++) {
+            allocations += alloc.allocations[index].amount;
+          }
+        }
+      }
+
+      return allocations;
+    } catch (err) {
+      print(err.toString());
+      throw err;
+    }
+  }
+
+  Future forceRemoveChit() async {
+    DocumentReference docRef = getDocumentReference(
+        this.financeID, this.branchName, this.subBranchName, this.id);
+
+    print(this.id.toString());
+
+    try {
+      int received = await getChitReceived();
+      int allocated = await getChitAllocations();
+      DocumentReference finDocRef = user.getFinanceDocReference();
+
+      await Model.db.runTransaction(
+        (tx) {
+          return tx.get(finDocRef).then(
+            (doc) async {
+              AccountsData accData =
+                  AccountsData.fromJson(doc.data['accounts_data']);
+
+              accData.cashInHand -= received;
+              accData.cashInHand += allocated;
+
+              QuerySnapshot reqSnapshot =
+                  await docRef.collection("chit_requesters").getDocuments();
+              QuerySnapshot allocSnapshot =
+                  await docRef.collection("chit_allocations").getDocuments();
+
+              for (int i = 0; i < reqSnapshot.documents.length; i++) {
+                txDelete(tx, reqSnapshot.documents[i].reference);
+              }
+
+              for (int i = 0; i < allocSnapshot.documents.length; i++) {
+                txDelete(tx, allocSnapshot.documents[i].reference);
+              }
+
+              QuerySnapshot chitsSnapshot =
+                  await docRef.collection("chits").getDocuments();
+
+              for (int i = 0; i < chitsSnapshot.documents.length; i++) {
+                QuerySnapshot snap = await chitsSnapshot.documents[i].reference
+                    .collection("chit_collections")
+                    .getDocuments();
+                for (int i = 0; i < snap.documents.length; i++) {
+                  txDelete(tx, snap.documents[i].reference);
+                }
+                txDelete(tx, chitsSnapshot.documents[i].reference);
+              }
+              txDelete(tx, docRef);
+
+              Map<String, dynamic> aData = {'accounts_data': accData.toJson()};
+              txUpdate(tx, finDocRef, aData);
+              txDelete(tx, docRef);
+            },
+          );
+        },
+      );
+    } catch (err) {
+      print('Chit Force REMOVE Transaction failure:' + err.toString());
       throw err;
     }
   }

@@ -59,7 +59,7 @@ class TransactionConfigHome extends StatelessWidget {
                     ListTile(
                         title: Text(AppLocalizations.of(context).translate("add_chit_template")),
                         leading: Icon(
-                          Icons.transfer_within_a_station,
+                          Icons.local_florist,
                           color: CustomColors.mfinBlue,
                         ),
                         onTap: () {

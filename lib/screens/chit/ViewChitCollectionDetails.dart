@@ -31,7 +31,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
-            "${AppLocalizations.of(context).translate('chit')} ${widget.collection.chitID} - ${widget.collection.chitNumber}"),
+            '${widget.collection.customerNumber}: ${AppLocalizations.of(context).translate('chit')} -  ${widget.collection.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(child: _getBody()),

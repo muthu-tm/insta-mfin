@@ -461,5 +461,13 @@
     "no_entries" : "No Entries during the selected Range!",
     "daily" : "Daily",
     "weekly" : "Weekly",
-    "monthly" : "Monthly"
+    "monthly" : "Monthly",
+    "chit_details" : "Chit details",
+    "chit_number_colon" : "Chit Number:",
+    "no_requesters" : "No Requesters for this Chit!",
+    "no_loans" : "No Loans!",
+    "add_loan" : "Add this customer's Loans!",
+    "loans" : "Loans"
+
+    
 }

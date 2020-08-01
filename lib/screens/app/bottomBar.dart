@@ -115,7 +115,7 @@ Widget bottomBar(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.transfer_within_a_station,
+                          Icons.local_florist,
                           size: 30.0,
                           color: CustomColors.mfinButtonGreen,
                         ),

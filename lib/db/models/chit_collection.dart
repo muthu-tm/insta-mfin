@@ -20,6 +20,8 @@ class ChitCollection {
   int customerNumber;
   @JsonKey(name: 'chit_id', nullable: true)
   int chitID;
+  @JsonKey(name: 'chit_org_id', nullable: true)
+  String chitOriginalID;
   @JsonKey(name: 'chit_number', nullable: true)
   int chitNumber;
   @JsonKey(name: 'chit_date', defaultValue: '')
@@ -205,7 +207,7 @@ class ChitCollection {
         .document(getDocumentID(mNumber));
   }
 
-  Stream<QuerySnapshot> streamAllPendingCollectionByDate(
+  Stream<QuerySnapshot> streamAllPendingChitByDate(
       String financeId, String branchName, String subBranchName, int epoch) {
     return getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
@@ -217,7 +219,7 @@ class ChitCollection {
         .snapshots();
   }
 
-  Stream<QuerySnapshot> streamAllCollectionByDate(String financeId,
+  Stream<QuerySnapshot> streamAllChitByDate(String financeId,
       String branchName, String subBranchName, bool isClosed, int epoch) {
     return getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
@@ -228,7 +230,7 @@ class ChitCollection {
         .snapshots();
   }
 
-  Future<List<ChitCollection>> getAllCollectionByDate(String financeId,
+  Future<List<ChitCollection>> getAllChitByDate(String financeId,
       String branchName, String subBranchName, bool isClosed, int epoch) async {
     var collDocs = await getGroupQuery()
         .where('finance_id', isEqualTo: financeId)
