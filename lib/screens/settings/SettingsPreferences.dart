@@ -28,11 +28,11 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   Map<String, dynamic> accountPreferencesJSON = new Map();
 
   String _selectedLang = 'English';
-  List<String> _prefSupportLangList = ["English", "Tamil", "Hindi", "Kannada"];
+  List<String> _prefSupportLangList = ["English", "Tamil", "Hindi", "Kannada", "Telugu", "Malayalam"];
   String selectedCollectionModeID = "0";
   bool chitEnabled = false;
   List<String> chits = ['YES', 'NO'];
-  bool isFromPrincipal = false;
+  bool isFromPrincipal = true;
   List<String> interestFrom = ['Principal Amount', 'Total Amount'];
 
   Map<String, String> _tempCollectionMode = {

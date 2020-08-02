@@ -318,7 +318,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
             textAlign: TextAlign.start,
           ),
           content: Container(
-            height: 110,
+            height: 135,
             child: Column(
               children: <Widget>[
                 Text(text),

@@ -322,7 +322,7 @@ class ActiveChitWidget extends StatelessWidget {
             textAlign: TextAlign.start,
           ),
           content: Container(
-            height: 175,
+            height: 135,
             child: Column(
               children: <Widget>[
                 Text(text),

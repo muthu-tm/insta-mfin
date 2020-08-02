@@ -36,7 +36,7 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: CustomColors.mfinBlue,
+        backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
         onPressed: () async {
           if (widget.chitAlloc.isPaid) {
             _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
@@ -58,7 +58,7 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
         ),
         icon: Icon(
           Icons.add,
-          color: CustomColors.mfinFadedButtonGreen,
+          color: CustomColors.mfinWhite,
         ),
       ),
       body: SingleChildScrollView(child: _getBody()),
@@ -229,7 +229,10 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
                     ),
                   );
                 },
-              )
+              ),
+              Padding(
+                padding: EdgeInsets.all(35),
+              ),
             ];
           } else {
             children = [
