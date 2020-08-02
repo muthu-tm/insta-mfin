@@ -105,7 +105,7 @@ class _AddCustomerState extends State<AddCustomer> {
                       color: CustomColors.mfinBlue,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -144,7 +144,7 @@ class _AddCustomerState extends State<AddCustomer> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               initialValue: id,
@@ -181,7 +181,7 @@ class _AddCustomerState extends State<AddCustomer> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -212,7 +212,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       name, setCustomerNameState),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               initialValue: lastname,
@@ -249,7 +249,7 @@ class _AddCustomerState extends State<AddCustomer> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Container(
                         padding: EdgeInsets.only(top: 5),
                         decoration: BoxDecoration(
@@ -291,7 +291,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                     AppLocalizations.of(context)
                                         .translate('male'),
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       color: CustomColors.mfinBlue,
                                     ),
                                   ),
@@ -319,7 +319,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                     AppLocalizations.of(context)
                                         .translate('female'),
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       color: CustomColors.mfinBlue,
                                     ),
                                   ),
@@ -331,7 +331,7 @@ class _AddCustomerState extends State<AddCustomer> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -366,7 +366,7 @@ class _AddCustomerState extends State<AddCustomer> {
                               ),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               keyboardType: TextInputType.text,
@@ -403,7 +403,7 @@ class _AddCustomerState extends State<AddCustomer> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -438,7 +438,7 @@ class _AddCustomerState extends State<AddCustomer> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               keyboardType: TextInputType.text,

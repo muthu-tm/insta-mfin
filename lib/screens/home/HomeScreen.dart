@@ -731,8 +731,7 @@ class HomeScreen extends StatelessWidget {
                               Text(
                                 AppLocalizations.of(context).translate('upload'),
                                 style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                               ),

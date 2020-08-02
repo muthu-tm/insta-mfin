@@ -77,7 +77,7 @@ class CustomersHome extends StatelessWidget {
               isScrollable: true,
               labelColor: CustomColors.mfinWhite,
               indicatorWeight: 0,
-              labelPadding: EdgeInsets.only(left: 5.0, right: 5.0),
+              labelPadding: EdgeInsets.only(left: 10.0, right: 10.0),
               indicator: BoxDecoration(
                 color: CustomColors.mfinLightBlue,
                 borderRadius: BorderRadius.circular(5),
@@ -85,7 +85,6 @@ class CustomersHome extends StatelessWidget {
               tabs: [
                 Tab(
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
                     child: Text(
                       AppLocalizations.of(context).translate('all_caps'),
@@ -97,7 +96,6 @@ class CustomersHome extends StatelessWidget {
                 ),
                 Tab(
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
                     child: Text(
                       AppLocalizations.of(context).translate('active'),
@@ -109,7 +107,6 @@ class CustomersHome extends StatelessWidget {
                 ),
                 Tab(
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
                     child: Text(
                       AppLocalizations.of(context).translate('pending'),
@@ -121,7 +118,6 @@ class CustomersHome extends StatelessWidget {
                 ),
                 Tab(
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
                     alignment: Alignment.center,
                     child: Text(
                       AppLocalizations.of(context).translate('settled'),
