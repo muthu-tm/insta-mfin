@@ -192,6 +192,37 @@ class _ViewCollectionState extends State<ViewCollection> {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
+                    "DATE",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinGrey),
+                  ),
+                ),
+                title: TextFormField(
+                  readOnly: true,
+                  textAlign: TextAlign.end,
+                  initialValue: DateUtils.formatDate(
+                      DateTime.fromMillisecondsSinceEpoch(
+                          collection.collectionDate)),
+                  decoration: InputDecoration(
+                    fillColor: CustomColors.mfinWhite,
+                    filled: true,
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: CustomColors.mfinGrey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: SizedBox(
+                  width: 100,
+                  child: Text(
                     "AMOUNT",
                     style: TextStyle(
                         fontSize: 15,
@@ -248,7 +279,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                       ),
                     )
                   : Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.only(top: 25.0, right: 8.0, left: 8.0, bottom: 8.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -506,8 +537,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                       : Padding(
                           padding: const EdgeInsets.all(10.0),
                         ),
-                  CollectionDetailsWidget(widget.pay.isSettled, _scaffoldKey,
-                      collection, widget.pay.custName),
+              CollectionDetailsWidget(widget.pay.isSettled, _scaffoldKey,
+                  collection, widget.pay.custName),
             ];
           } else {
             // No Collections available for this filterred view

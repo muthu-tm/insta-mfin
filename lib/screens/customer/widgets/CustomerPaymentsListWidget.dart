@@ -318,13 +318,11 @@ class CustomerPaymentsListWidget extends StatelessWidget {
             textAlign: TextAlign.start,
           ),
           content: Container(
-            height: 135,
+            height: 150,
             child: Column(
               children: <Widget>[
                 Text(text),
-                Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Card(
+                Card(
                     child: TextFormField(
                       textAlign: TextAlign.center,
                       obscureText: true,
@@ -336,7 +334,6 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                         filled: true,
                       ),
                     ),
-                  ),
                 ),
               ],
             ),

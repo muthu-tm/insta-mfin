@@ -150,7 +150,7 @@ class ActiveChitWidget extends StatelessWidget {
                                     if (result == null) {
                                       await forceRemoveChit(
                                           context,
-                                          "Few collections are done already\n\nPlease confirm with Secret KEY!",
+                                          "Few collections are done already.\n\nPlease confirm with Secret KEY!",
                                           chit);
                                     } else {
                                       if (!result['is_success']) {
@@ -167,6 +167,12 @@ class ActiveChitWidget extends StatelessWidget {
                                 label: Text(
                                   AppLocalizations.of(context)
                                       .translate('remove'),
+                                  style: TextStyle(
+                                    color: CustomColors.mfinAlertRed
+                                        .withOpacity(0.7),
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               FlatButton.icon(
@@ -180,10 +186,15 @@ class ActiveChitWidget extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                icon: Icon(Icons.payment),
+                                icon: Icon(Icons.remove_red_eye),
                                 label: Text(
                                   AppLocalizations.of(context)
                                       .translate('view'),
+                                  style: TextStyle(
+                                    color: CustomColors.mfinButtonGreen,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               FlatButton.icon(
@@ -202,6 +213,11 @@ class ActiveChitWidget extends StatelessWidget {
                                 label: Text(
                                   AppLocalizations.of(context)
                                       .translate('requesters'),
+                                  style: TextStyle(
+                                    color: CustomColors.mfinGrey,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],
@@ -290,7 +306,7 @@ class ActiveChitWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              new Divider(
+              Divider(
                 color: CustomColors.mfinBlue,
               ),
               Center(
@@ -322,23 +338,20 @@ class ActiveChitWidget extends StatelessWidget {
             textAlign: TextAlign.start,
           ),
           content: Container(
-            height: 135,
+            height: 165,
             child: Column(
               children: <Widget>[
                 Text(text),
-                Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Card(
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      obscureText: true,
-                      autofocus: false,
-                      controller: _pController,
-                      decoration: InputDecoration(
-                        hintText: 'Secret KEY',
-                        fillColor: CustomColors.mfinLightGrey,
-                        filled: true,
-                      ),
+                Card(
+                  child: TextFormField(
+                    textAlign: TextAlign.center,
+                    obscureText: true,
+                    autofocus: false,
+                    controller: _pController,
+                    decoration: InputDecoration(
+                      hintText: 'Secret KEY',
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
                     ),
                   ),
                 ),

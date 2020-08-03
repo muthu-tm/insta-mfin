@@ -468,7 +468,8 @@
     "no_requesters" : "No Requesters for this Chit!",
     "no_loans" : "No Loans!",
     "add_loan" : "Add this customer's Loans!",
-    "loans" : "Loans"
+    "loans" : "Loans",
+    "add": "Add"
 
     
 }
