@@ -33,9 +33,8 @@ class ViewCustomer extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(customer.firstName),
-        backgroundColor: CustomColors.mfinBlue
-      ),
+          title: Text(customer.firstName),
+          backgroundColor: CustomColors.mfinBlue),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -374,25 +373,41 @@ class ViewCustomer extends StatelessWidget {
                   color: CustomColors.mfinButtonGreen,
                 ),
               ),
-              Text(
-                customer.mobileNumber != null
-                    ? customer.mobileNumber.toString()
-                    : "",
-                style: TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold,
-                  color: CustomColors.mfinBlue,
-                ),
-              ),
-              Text(
-                customer.address.street != null ? customer.address.street : "",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    fontSize: 12.0,
-                    color: CustomColors.mfinAlertRed.withOpacity(0.5),
-                    fontWeight: FontWeight.bold),
-              ),
+              customer.mobileNumber != null
+                  ? Text(
+                      customer.mobileNumber != null
+                          ? customer.mobileNumber.toString()
+                          : "",
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                      ),
+                    )
+                  : Text(
+                      customer.address.street != null
+                          ? customer.address.street
+                          : "",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 12.0,
+                          color: CustomColors.mfinAlertRed.withOpacity(0.5),
+                          fontWeight: FontWeight.bold),
+                    ),
+              customer.mobileNumber != null
+                  ? Text(
+                      customer.address.street != null
+                          ? customer.address.street
+                          : "",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 12.0,
+                          color: CustomColors.mfinAlertRed.withOpacity(0.5),
+                          fontWeight: FontWeight.bold),
+                    )
+                  : Container(),
               CustomerPaymentsListWidget(customer.id, _scaffoldKey),
               if (_user.accPreferences.chitEnabled)
                 CustomerChitsWidget(customer.mobileNumber),
