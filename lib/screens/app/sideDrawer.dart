@@ -257,7 +257,8 @@ Widget openDrawer(BuildContext context) {
             ? ListTile(
                 leading: Icon(Icons.local_florist,
                     color: CustomColors.mfinButtonGreen),
-                title: Text('Chit Fund'),
+                title:
+                    Text(AppLocalizations.of(context).translate('chit_fund')),
                 onTap: () => Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -270,11 +271,15 @@ Widget openDrawer(BuildContext context) {
             : ListTile(
                 leading:
                     Icon(Icons.local_florist, color: CustomColors.mfinGrey),
-                title: Text('Chit Fund'),
+                title: Text(
+                  AppLocalizations.of(context).translate('chit_fund'),
+                ),
                 onTap: () {}),
         ListTile(
           leading: Icon(Icons.description, color: CustomColors.mfinButtonGreen),
-          title: Text('Reports'),
+          title: Text(
+            AppLocalizations.of(context).translate('reports'),
+          ),
           onTap: () => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -365,36 +370,6 @@ Widget openDrawer(BuildContext context) {
             );
           },
         ),
-
-        ExpansionTile(
-          leading: Icon(Icons.language, color: CustomColors.mfinButtonGreen),
-          title: Text(
-            "Language",
-          ),
-          children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.local_library, color: CustomColors.mfinButtonGreen),
-              title: Text(
-                "Tamil"
-              ),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () async {
-                MyApp.setLocale(context, Locale('ta', 'IN'));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.local_library, color: CustomColors.mfinFadedButtonGreen),
-              title: Text(
-                "English"
-              ),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () async{
-                MyApp.setLocale(context, Locale('en', 'US'));
-              },
-            )
-          ],
-        ),
-
         ListTile(
           leading: Icon(Icons.error, color: CustomColors.mfinAlertRed),
           title: Text(

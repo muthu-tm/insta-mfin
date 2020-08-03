@@ -225,7 +225,7 @@ class _AuthPageState extends State<AuthPage> {
               children: <Widget>[
                 Text(
                   AppLocalizations.of(context).translate('no_account'),
-                  style: new TextStyle(
+                  style: TextStyle(
                     fontSize: 13.0,
                     fontFamily: 'Georgia',
                     fontWeight: FontWeight.bold,
@@ -242,8 +242,8 @@ class _AuthPageState extends State<AuthPage> {
                   },
                   child: Text(
                     AppLocalizations.of(context).translate('sign_up'),
-                    style: new TextStyle(
-                      fontSize: 18.0,
+                    style: TextStyle(
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                       color: CustomColors.mfinPositiveGreen,
                     ),

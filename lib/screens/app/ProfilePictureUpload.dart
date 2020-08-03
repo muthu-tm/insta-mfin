@@ -41,7 +41,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
       ),
       child: Container(
         height: 300,
-        width: MediaQuery.of(context).size.width * 0.75,
+        width: MediaQuery.of(context).size.width * 0.8,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[

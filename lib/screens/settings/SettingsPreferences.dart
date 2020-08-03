@@ -35,7 +35,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   bool chitEnabled = false;
   List<String> chits = ['YES', 'NO'];
   bool isFromPrincipal = true;
-  List<String> interestFrom = ['Principal Amount', 'Total Amount'];
+  List<String> interestFrom = ['Loan Amount', 'Total Amount'];
 
   Map<String, String> _tempCollectionMode = {
     "0": "Daily",
@@ -146,7 +146,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   Divider(
                     color: CustomColors.mfinButtonGreen,
                   ),
-                  RowHeaderText(textName: AppLocalizations.of(context).translate('finance_preference')),
+                  RowHeaderText(textName: "Report's Signature"),
                   Padding(
                     padding:
                         EdgeInsets.only(left: 15.0, right: 5.0, bottom: 10.0),
@@ -302,7 +302,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                                 _setInterestFrom(newVal);
                               },
                               value: isFromPrincipal
-                                  ? "Principal Amount"
+                                  ? "Loan Amount"
                                   : "Total Amount",
                             ),
                           ),
@@ -564,7 +564,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
 
   _setInterestFrom(String newVal) {
     setState(() {
-      if (newVal == "Principal Amount")
+      if (newVal == "Loan Amount")
         isFromPrincipal = true;
       else
         isFromPrincipal = false;

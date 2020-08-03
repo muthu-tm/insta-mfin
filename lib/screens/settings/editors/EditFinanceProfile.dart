@@ -43,7 +43,8 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('edit_finance_profile')),
+        title: Text(
+            AppLocalizations.of(context).translate('edit_finance_profile')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -76,13 +77,15 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RowHeaderText(textName: AppLocalizations.of(context).translate('name')),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context).translate('name')),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.finance.financeName,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate('finance_name'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('finance_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -93,7 +96,8 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return AppLocalizations.of(context).translate('enter_finance_name');
+                        return AppLocalizations.of(context)
+                            .translate('enter_finance_name');
                       }
                       updatedFinance['finance_name'] = value;
                       return null;
@@ -106,7 +110,8 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     keyboardType: TextInputType.text,
                     initialValue: widget.finance.registrationID,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate('registration_id'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('registration_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -126,13 +131,15 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate('email')),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context).translate('email')),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.finance.emailID,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate('finance_email_id'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('finance_email_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -152,13 +159,16 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate('contact_number')),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate('contact_number')),
                 ListTile(
                   title: new TextFormField(
                     keyboardType: TextInputType.phone,
                     initialValue: widget.finance.contactNumber,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate('contact_number'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('contact_number'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
                       contentPadding: new EdgeInsets.symmetric(
@@ -178,7 +188,9 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate('registered_date')),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate('registered_date')),
                 ListTile(
                   title: GestureDetector(
                     onTap: () => _selectDate(context),
@@ -211,6 +223,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                 ),
                 AddressWidget(
                     "Office Address", widget.finance.address, updatedAddress),
+                Padding(padding: EdgeInsets.all(35)),
               ],
             ),
           ),
@@ -267,8 +280,8 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('required_fields'), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('required_fields'), 2));
     }
   }
 }

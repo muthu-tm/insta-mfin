@@ -120,7 +120,7 @@ Widget bottomBar(BuildContext context) {
                           color: CustomColors.mfinButtonGreen,
                         ),
                         Text(
-                          "Chit Fund",
+                          AppLocalizations.of(context).translate('chit_fund'),
                           style: TextStyle(
                             fontFamily: "Georgia",
                             fontSize: 10,
