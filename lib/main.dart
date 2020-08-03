@@ -73,7 +73,9 @@ class _MyAppState extends State<MyApp> {
         Locale('en', 'US'),
         Locale('ta', 'IN'),
         Locale('hi', 'IN'),
-        Locale('ml', 'IN')
+        Locale('ml', 'IN'),
+        Locale('kn', 'IN'),
+        Locale('te', 'IN')
       ],
       localizationsDelegates: [
         AppLocalizations.delegate,
@@ -104,6 +106,10 @@ class _MyAppState extends State<MyApp> {
       return Locale('ml', 'IN');
     } else if(_language == "Hindi"){
       return Locale('hi', 'IN');
+    } else if(_language == "Kannada"){
+      return Locale('kn', 'IN');
+    } else if(_language == "Telugu"){
+      return Locale('te', 'IN');
     } else {
       return Locale('en', 'US');
     }
