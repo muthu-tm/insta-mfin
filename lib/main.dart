@@ -8,6 +8,7 @@ import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:syncfusion_flutter_core/core.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   SyncfusionLicense.registerLicense(
@@ -24,7 +25,9 @@ class MyApp extends StatefulWidget {
     _MyAppState state = context.findAncestorStateOfType();
     
     state.setState(() {
-      state.locale = newLocale;
+      state._fetchLocale().then((locale) {
+        state.locale = locale;
+      });
     }); 
   }
 }
@@ -39,7 +42,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    this.locale = locale;
+    this._fetchLocale().then((locale) {
+      setState(() {
+        this.locale = locale;
+      });
+    });
+    // this.locale = locale;
   }
 
   @override
@@ -64,6 +72,8 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: [
         Locale('en', 'US'),
         Locale('ta', 'IN'),
+        Locale('hi', 'IN'),
+        Locale('ml', 'IN')
       ],
       localizationsDelegates: [
         AppLocalizations.delegate,
@@ -84,15 +94,18 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  // _fetchLocale() async {
-  //   final User _user = UserController().getCurrentUser();
-  //   if(_user != null){
-  //     var selectedLanguage = _user.preferences.prefLanguage;
-  //     if(selectedLanguage == "Tamil"){
-  //       return Locale('ta', 'IN');
-  //     }else{
-  //       Locale('en', 'US');
-  //     }
-  //   }
-  // }
+  _fetchLocale() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var _language = _prefs.getString("language");
+
+    if(_language == "Tamil"){
+      return Locale('ta', 'IN');
+    } else if(_language == "Malayalam"){
+      return Locale('ml', 'IN');
+    } else if(_language == "Hindi"){
+      return Locale('hi', 'IN');
+    } else {
+      return Locale('en', 'US');
+    }
+  }
 }

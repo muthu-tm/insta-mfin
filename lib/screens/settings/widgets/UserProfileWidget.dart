@@ -94,7 +94,7 @@ class UserProfileWidget extends StatelessWidget {
             leading: SizedBox(
               width: 95,
               child: Text(
-                AppLocalizations.of(context).translate('contact'),
+                AppLocalizations.of(context).translate('contact_number'),
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: "Georgia",
@@ -195,7 +195,7 @@ class UserProfileWidget extends StatelessWidget {
             leading: SizedBox(
               width: 95,
               child: Text(
-                AppLocalizations.of(context).translate('email_id'),
+                AppLocalizations.of(context).translate('email'),
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: "Georgia",

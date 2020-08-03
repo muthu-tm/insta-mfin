@@ -8,6 +8,8 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../main.dart';
 
 class SettingsPreferences extends StatefulWidget {
   @override
@@ -654,6 +656,10 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
     } else {
+      SharedPreferences sPref = await SharedPreferences.getInstance();
+      sPref.setString("language", userPreferencesJSON['language']);
+      MyApp.setLocale(context, Locale('en', 'US'));
+
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
           "Preferences updated successfully", 2));
       Navigator.pop(context);
