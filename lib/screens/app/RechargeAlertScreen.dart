@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/settings/payments/PaymentsHome.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import '../../app_localizations.dart';
+
 class RechargeAlertScreen extends StatelessWidget {
   RechargeAlertScreen(this.title);
 
@@ -20,7 +22,7 @@ class RechargeAlertScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Your subscription has expired",
+                AppLocalizations.of(context).translate('subscription_expired'),
                 style: TextStyle(
                   fontSize: 14,
                   fontFamily: "Georgia",
@@ -31,7 +33,7 @@ class RechargeAlertScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  "Please Recharge to continue!",
+                  AppLocalizations.of(context).translate('recharge_to_continue'),
                   style: TextStyle(
                     fontSize: 16,
                     fontFamily: "Georgia",
@@ -61,7 +63,7 @@ class RechargeAlertScreen extends StatelessWidget {
                     color: CustomColors.mfinButtonGreen,
                   ),
                   label: Text(
-                    "Recharge Now",
+                    AppLocalizations.of(context).translate('recharge_now'),
                     style: TextStyle(
                       fontSize: 16,
                       fontFamily: "Georgia",

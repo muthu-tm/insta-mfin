@@ -469,5 +469,9 @@
     "add_loan" : "Add this customer's Loans!",
     "loans" : "Loans",
     "add": "Add",
-    "payment_id": "Payment Id" 
+    "payment_id": "Payment Id",
+    "unable_to_open" : "Unable to open update URL now. Please update manually!",
+    "take_picture" : "Take Picture",
+    "recharge_to_continue" : "Please Recharge to continue!",
+         
 }
