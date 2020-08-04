@@ -206,7 +206,6 @@
     "add_manage_expense": "Add and Manage your expenses here!",
     "wish_to_complete_financier": "Wish to be a Complete Financier?",
     "register_your_finance": "Register Your Finance!",
-    
     "happy_to_help": "We are happy to help you!",
     "contact_us": "Contact Us",
     "email": "Email",
@@ -469,5 +468,6 @@
     "no_loans" : "No Loans!",
     "add_loan" : "Add this customer's Loans!",
     "loans" : "Loans",
-    "add": "Add"
+    "add": "Add",
+    "payment_id": "Payment Id" 
 }

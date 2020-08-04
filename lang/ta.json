@@ -329,7 +329,6 @@
     "invalid_mobile": "சரியான எண் இல்லை. மீண்டும் முயற்சிக்கவும்",
     "collection_already_collected": "சில வசூல்கள் வசூலிக்கப்பட்டுவிட்டது. தயவுசெய்து அந்த வசூல்களை அழிக்கவும்",
     "amount_equal": "ஒதுக்கப்பட்ட தொகை இருப்புத் தொகையை விட சமமாகவோ அல்லது குறைவாகவோ இருக்க வேண்டும்",
-
     "edit_finance_profile": "Edit Finance Profile",
     "registered_id": "Registered ID",
     "branch": "Branch",
@@ -461,5 +460,14 @@
     "payment_removed" : "Payment removed successfully",
     "loans" : "Loans",
     "add_payment": "Add Loan",
-    "add": "Add"
+    "add": "Add",
+    "no_entries" : "No Entries during the selected Range!",
+    "daily" : "Daily",
+    "weekly" : "Weekly",
+    "monthly" : "Monthly",
+    "chit_details" : "Chit details",
+    "chit_number_colon" : "Chit Number:",
+    "no_requesters" : "No Requesters for this Chit!",
+    "no_loans" : "No Loans!",
+    "add_loan" : "Add this customer's Loans!"
 }   
