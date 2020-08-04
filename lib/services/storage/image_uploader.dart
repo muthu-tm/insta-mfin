@@ -16,14 +16,13 @@ class Uploader {
 
     storageTaskSnapshot.ref.getDownloadURL().then((profilePathUrl) {
       print("Image uploaded; downloadURL - " + profilePathUrl);
-      if (type == 0)
+      if (type == 0) {
         updateUserData('profile_path_org', id, profilePathUrl);
-      else if (type == 1)
+        UserController().getCurrentUser().profilePathOrg = profilePathUrl;
+      } else if (type == 1)
         updateCustData('profile_path_org', id, profilePathUrl);
       else if (type == 2)
         updateFinanceData('profile_path_org', fileName, id, profilePathUrl);
-
-      UserController().getCurrentUser().profilePathOrg = profilePathUrl;
     }).catchError((err) {
       Analytics.reportError({
         "type": 'image_upload_error',
@@ -40,14 +39,13 @@ class Uploader {
 
     reference.getDownloadURL().then((profilePathUrl) {
       print("Resized image downloadURL - " + profilePathUrl);
-      if (type == 0)
+      if (type == 0) {
         updateUserData('profile_path', id, profilePathUrl);
-      else if (type == 1)
+        UserController().getCurrentUser().profilePath = profilePathUrl;
+      } else if (type == 1)
         updateCustData('profile_path', id, profilePathUrl);
       else if (type == 2)
         updateFinanceData('profile_path', fileName, id, profilePathUrl);
-
-      UserController().getCurrentUser().profilePath = profilePathUrl;
     }).catchError((err) {
       print(err.toString());
       Analytics.reportError({
