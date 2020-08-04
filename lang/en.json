@@ -469,5 +469,5 @@
     "add_loan" : "Add this customer's Loans!",
     "loans" : "Loans",
     "add": "Add",
-    "payment_id": "Payment Id" 
+    "payment_id": "Loan Id" 
 }
