@@ -295,7 +295,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
           } else {
             widget._scaffoldKey.currentState.showSnackBar(
               CustomSnackBar.errorSnackBar(
-                  "Unable to use FigerPrint Auth. Please LOGIN using Secret KEY!",
+                  "Unable to use FingerPrint Auth. Please LOGIN using Secret KEY!",
                   2),
             );
             return;
@@ -303,7 +303,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
         } else {
           widget._scaffoldKey.currentState.showSnackBar(
             CustomSnackBar.errorSnackBar(
-                "Unable to use FigerPrint Auth. Please LOGIN using Secret KEY!",
+                "Unable to use FingerPrint Auth. Please LOGIN using Secret KEY!",
                 2),
           );
           return;
@@ -312,7 +312,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
     } catch (e) {
       widget._scaffoldKey.currentState.showSnackBar(
         CustomSnackBar.errorSnackBar(
-            "Unable to use FigerPrint Auth. Please LOGIN using Secret KEY!", 2),
+            "Unable to use FingerPrint Auth. Please LOGIN using Secret KEY!", 2),
       );
     }
   }
