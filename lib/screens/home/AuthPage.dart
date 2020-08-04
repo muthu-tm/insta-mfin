@@ -204,6 +204,7 @@ class _AuthPageState extends State<AuthPage> {
                       child: new Center(
                         child: new Text(
                           AppLocalizations.of(context).translate('login'),
+                          textAlign: TextAlign.center,
                           style: new TextStyle(
                             fontSize: 18.0,
                             fontFamily: 'Georgia',
