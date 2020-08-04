@@ -42,7 +42,9 @@ class ResponseDialog extends StatelessWidget {
                       Text(
                         message,
                         style: TextStyle(
-                            fontWeight: FontWeight.w800, fontSize: 20, color: CustomColors.mfinBlue),
+                            fontWeight: FontWeight.w800,
+                            fontSize: 20,
+                            color: CustomColors.mfinBlue),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
@@ -52,7 +54,9 @@ class ResponseDialog extends StatelessWidget {
                           ? Container()
                           : Text(
                               "ID: $id",
-                              style: TextStyle(fontWeight: FontWeight.w300, color: CustomColors.mfinBlue),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  color: CustomColors.mfinBlue),
                             ),
                     ],
                   ),
@@ -65,11 +69,13 @@ class ResponseDialog extends StatelessWidget {
                 height: 80,
                 width: 80,
                 decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-                child: Icon(
-                  icon,
-                  color: CustomColors.mfinWhite,
-                  size: 40,
-                ),
+                child: IconButton(
+                    icon: Icon(
+                      icon,
+                      color: CustomColors.mfinWhite,
+                      size: 40,
+                    ),
+                    onPressed: () => Navigator.pop(context)),
               ),
             ),
           ],
