@@ -132,6 +132,8 @@ class PaymentStatisticsWidget extends StatelessWidget {
                                 dataLabelSettings: DataLabelSettings(
                                     isVisible: mode == 0 ? true : false),
                                 width: 2,
+                                color:
+                                    CustomColors.mfinAlertRed.withOpacity(0.7),
                                 animationDuration: 1500,
                                 enableTooltip: true,
                                 name: 'Loan',
@@ -146,14 +148,10 @@ class PaymentStatisticsWidget extends StatelessWidget {
                                 yValueMapper: (PayData pay, _) => pay.amount,
                                 dataLabelSettings: DataLabelSettings(
                                     isVisible: mode == 0 ? true : false),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    CustomColors.mfinLightGrey,
-                                    CustomColors.mfinLightBlue,
-                                    CustomColors.mfinAlertRed
-                                  ],
-                                  stops: <double>[0.0, 0.2, 1.0],
-                                ),
+                                color:
+                                    CustomColors.mfinAlertRed.withOpacity(0.7),
+                                borderColor: CustomColors.mfinButtonGreen,
+                                borderWidth: 1.0,
                                 animationDuration: 1500,
                                 enableTooltip: true,
                                 name: 'Loan',

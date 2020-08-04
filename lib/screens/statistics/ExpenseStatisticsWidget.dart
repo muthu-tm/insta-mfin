@@ -142,10 +142,12 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                                 dataLabelSettings: DataLabelSettings(
                                     isVisible: mode == 0 ? true : false),
                                 width: 2,
+                                color: CustomColors.mfinAlertRed,
                                 animationDuration: 1500,
                                 enableTooltip: true,
                                 name: 'Expense',
-                                markerSettings: MarkerSettings(isVisible: true),
+                                markerSettings: MarkerSettings(
+                                    isVisible: mode == 0 ? true : false),
                               ),
                             ]
                           : <ChartSeries>[
@@ -155,14 +157,9 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                                 yValueMapper: (EData e, _) => e.amount,
                                 dataLabelSettings: DataLabelSettings(
                                     isVisible: mode == 0 ? true : false),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    CustomColors.mfinLightGrey,
-                                    CustomColors.mfinLightBlue,
-                                    CustomColors.mfinBlue
-                                  ],
-                                  stops: <double>[0.0, 0.2, 1.0],
-                                ),
+                                color: CustomColors.mfinAlertRed,
+                                borderColor: CustomColors.mfinBlue,
+                                borderWidth: 1.0,
                                 animationDuration: 1500,
                                 enableTooltip: true,
                                 name: 'Expense',

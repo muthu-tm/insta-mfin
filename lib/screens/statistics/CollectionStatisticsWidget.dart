@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/user.dart';
@@ -46,7 +48,7 @@ class CollectionStatisticsWidget extends StatelessWidget {
               DateFormat formatter = DateFormat('MMM-yyyy');
               if (mode == 0) formatter = DateFormat('dd-MMM-yyyy');
 
-              Map<DateTime, CollData> cGroup = new Map();
+              SplayTreeMap<DateTime, CollData> cGroup = new SplayTreeMap();
               List<String> pList = [];
               snapshot.data.forEach((p) {
                 String uKey =
@@ -68,8 +70,6 @@ class CollectionStatisticsWidget extends StatelessWidget {
                       );
 
                       String format = formatter.format(_dt);
-                      print(format);
-                      print(c.amount.toString());
                       aDetails.update(format, (value) => c.amount + value,
                           ifAbsent: () => c.amount);
                     }
@@ -158,6 +158,9 @@ class CollectionStatisticsWidget extends StatelessWidget {
                               dataLabelSettings: DataLabelSettings(
                                   isVisible: mode == 0 ? true : false),
                               width: 2,
+                              color:
+                                  CustomColors.mfinButtonGreen.withOpacity(0.6),
+                              sortingOrder: SortingOrder.ascending,
                               animationDuration: 1500,
                               enableTooltip: true,
                               name: 'Collection',
@@ -172,14 +175,10 @@ class CollectionStatisticsWidget extends StatelessWidget {
                               yValueMapper: (CollData c, _) => c.amount,
                               dataLabelSettings: DataLabelSettings(
                                   isVisible: mode == 0 ? true : false),
-                              gradient: LinearGradient(
-                                colors: [
-                                  CustomColors.mfinLightGrey,
-                                  CustomColors.mfinLightBlue,
-                                  CustomColors.mfinPositiveGreen
-                                ],
-                                stops: <double>[0.0, 0.3, 0.7],
-                              ),
+                              color:
+                                  CustomColors.mfinButtonGreen.withOpacity(0.6),
+                              borderColor: CustomColors.mfinBlue,
+                              borderWidth: 1.0,
                               animationDuration: 1500,
                               enableTooltip: true,
                               name: 'Collection',

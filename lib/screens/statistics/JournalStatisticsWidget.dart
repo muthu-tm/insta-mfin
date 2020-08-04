@@ -142,6 +142,7 @@ class JournalStatisticsWidget extends StatelessWidget {
                                 dataLabelSettings: DataLabelSettings(
                                     isVisible: mode == 0 ? true : false),
                                 width: 2,
+                                color: CustomColors.mfinGrey,
                                 animationDuration: 1500,
                                 enableTooltip: true,
                                 name: 'Journal',
@@ -156,14 +157,9 @@ class JournalStatisticsWidget extends StatelessWidget {
                                 yValueMapper: (JData j, _) => j.amount,
                                 dataLabelSettings: DataLabelSettings(
                                     isVisible: mode == 0 ? true : false),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    CustomColors.mfinLightGrey,
-                                    CustomColors.mfinLightBlue,
-                                    CustomColors.mfinBlue
-                                  ],
-                                  stops: <double>[0.0, 0.2, 1.0],
-                                ),
+                                color: CustomColors.mfinGrey,
+                                borderColor: CustomColors.mfinAlertRed,
+                                borderWidth: 1.0,
                                 animationDuration: 1500,
                                 enableTooltip: true,
                                 name: 'Journal',
