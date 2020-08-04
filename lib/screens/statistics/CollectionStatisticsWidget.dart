@@ -47,25 +47,34 @@ class CollectionStatisticsWidget extends StatelessWidget {
               if (mode == 0) formatter = DateFormat('dd-MMM-yyyy');
 
               Map<DateTime, CollData> cGroup = new Map();
+              List<String> pList = [];
               snapshot.data.forEach((p) {
-                p.collections.forEach((c) {
-                  DateTime _dt =
-                      DateTime.fromMillisecondsSinceEpoch(c.collectedOn);
+                String uKey =
+                    '${p.customerID}_${p.paymentID}_${p.collectionNumber}';
+                if (pList.contains(uKey)) {
+                  print("Found duplicate; Skipping - " + uKey);
+                } else {
+                  pList.add(uKey);
+                  p.collections.forEach((c) {
+                    DateTime _dt =
+                        DateTime.fromMillisecondsSinceEpoch(c.collectedOn);
 
-                  if (c.collectedOn >= DateUtils.getUTCDateEpoch(fDate)) {
-                    cGroup.update(
-                      _dt,
-                      (value) => CollData(_dt, value.amount + c.amount),
-                      ifAbsent: () => CollData(_dt, c.amount),
-                    );
+                    if (c.collectedOn >= DateUtils.getUTCDateEpoch(fDate) &&
+                        c.collectedOn <= DateUtils.getUTCDateEpoch(tDate)) {
+                      cGroup.update(
+                        _dt,
+                        (value) => CollData(_dt, value.amount + c.amount),
+                        ifAbsent: () => CollData(_dt, c.amount),
+                      );
 
-                    String format = formatter.format(_dt);
-                    print(format);
-                    print(c.amount.toString());
-                    aDetails.update(format, (value) => c.amount + value,
-                        ifAbsent: () => c.amount);
-                  }
-                });
+                      String format = formatter.format(_dt);
+                      print(format);
+                      print(c.amount.toString());
+                      aDetails.update(format, (value) => c.amount + value,
+                          ifAbsent: () => c.amount);
+                    }
+                  });
+                }
               });
 
               cGroup.forEach((key, value) {

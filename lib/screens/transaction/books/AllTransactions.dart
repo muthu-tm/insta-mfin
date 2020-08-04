@@ -262,7 +262,7 @@ class AllTransactionsBuilder extends StatelessWidget {
               height: 50,
               alignment: Alignment.center,
               child: Text(
-                "No Payments on this Date!",
+                "No Loans on this Date!",
                 style: TextStyle(
                   color: CustomColors.mfinAlertRed,
                   fontSize: 18.0,
