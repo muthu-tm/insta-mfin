@@ -132,8 +132,15 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                                   );
                                 },
                                 icon: Icon(Icons.remove_red_eye),
-                                label: Text(AppLocalizations.of(context)
-                                    .translate('view')),
+                                label: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('view'),
+                                  style: TextStyle(
+                                    color: CustomColors.mfinGrey,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               FlatButton.icon(
                                 onPressed: () {
@@ -145,7 +152,7 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                                     );
                                     return;
                                   }
-                                  
+
                                   if (chitColl.isPaid) {
                                     _scaffoldKey.currentState.showSnackBar(
                                       CustomSnackBar.errorSnackBar(
@@ -171,6 +178,11 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
                                 label: Text(
                                   AppLocalizations.of(context)
                                       .translate('add_collection'),
+                                  style: TextStyle(
+                                    color: CustomColors.mfinButtonGreen,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],

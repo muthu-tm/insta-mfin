@@ -151,7 +151,6 @@ class CustomerListWidget extends StatelessWidget {
                                         );
                                       } else {
                                         Navigator.pop(context);
-                                        print("Customer removed successfully");
                                         _scaffoldKey.currentState.showSnackBar(
                                           CustomSnackBar.errorSnackBar(
                                               AppLocalizations.of(context)

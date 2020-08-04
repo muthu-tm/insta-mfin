@@ -209,10 +209,9 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 child: Text(
                   AppLocalizations.of(context).translate('alreay_account'),
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 12,
                     fontFamily: 'Georgia',
                     color: CustomColors.mfinPositiveGreen,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -220,6 +219,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 onPressed: () => Navigator.pop(context),
                 child: Text(
                   AppLocalizations.of(context).translate('login'),
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

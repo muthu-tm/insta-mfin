@@ -11,7 +11,7 @@
     "wrong_secret_key": "തെറ്റായ രഹസ്യം വാക്ക്. ദയവായി വീണ്ടും ശ്രമിക്കുക!",
     "logging_in": "ലോഗിൻ ചെയ്യുന്നു",
     "unable_to_login": "പ്രവേശിക്കാൻ കഴിഞ്ഞില്ല എന്തോ കുഴപ്പം സംഭവിച്ചു. പിന്നീട് വീണ്ടും ശ്രമിക്കുക!",
-    "welcome_back": "സ്വാഗതം",
+    "welcome_back": "സ്വാഗതം, ",
     "edit_primary_finance": "പ്രാഥമിക ധനകാര്യം എഡിറ്റുചെയ്യുക",
     "cash_in_hand": "കയ്യിലുള്ള പണം",
     "outstanding": "പുറത്ത് ഉള്ള പണം",
@@ -31,8 +31,8 @@
     "name": "പേര്",
     "four_digit_secret": "4 അക്ക രഹസ്യ വാക്ക്",
     "we_will_send": "ഞങ്ങൾ അയയ്ക്കും",
-    "one_time_password": "ഒന്ന് സമയം പാസ്‌വേഡ്",
-    "to_mobile_no": "ഈ മൊബൈൽ നമ്പറിലേക്ക്",
+    "one_time_password": " ഒന്ന് സമയം പാസ്‌വേഡ്",
+    "to_mobile_no": " ഈ മൊബൈൽ നമ്പറിലേക്ക്",
     "already_account": "ഇതിനകം ഒരു അക്കൗണ്ട് ഉണ്ടോ?",
     "invalid_number": "ക്ഷമിക്കണം! നമ്പർ അസാധുവാണെന്ന് തോന്നുന്നു",
     "enter_your_name": "ദയവായി നിങ്ങളുടെ പേര് നൽകുക",
@@ -468,5 +468,7 @@
     "no_expense_so_far": "No Expenses so far!",
     "add_manage_expense": "Add and Manage your expenses here!",
     "wish_to_complete_financier": "Wish to be a Complete Financier?",
-    "register_your_finance": "Register Your Finance!"
+    "register_your_finance": "Register Your Finance!",
+    "add_payment": "Add Loan",
+    "add": "Add"
 }

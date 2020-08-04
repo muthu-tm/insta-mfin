@@ -264,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
           CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('enter_valid_phone'), 2));
       return;
     } else {
-      CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('checking_user'));
+      CustomDialogs.actionWaiting(context, 'Checking User');
 
       number = _nController.text;
       try {

@@ -11,7 +11,7 @@
     "wrong_secret_key": "తప్పు సీక్రెట్ కీ. దయచేసి మళ్ళీ ప్రయత్నించండి!",
     "logging_in": "నరికివేత",
     "unable_to_login": "లాగిన్ ఏదో చేయలేక తప్పు జరిగింది. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి!",
-    "welcome_back": "స్వాగతం",
+    "welcome_back": "స్వాగతం, ",
     "edit_primary_finance": "ప్రాథమిక ఫైనాన్స్ మార్చు",
     "cash_in_hand": "కాష్ ఇన్ హ్యాండ్",
     "outstanding": "అసాధారణ",
@@ -31,8 +31,8 @@
     "name": "పేరు",
     "four_digit_secret": "4 అంకెల సీక్రెట్ కీ",
     "we_will_send": "మేము పంపుతాము",
-    "one_time_password": "ఏకోపయోగ సాంకేతిక పద గుర్తింపు పదం",
-    "to_mobile_no": "ఈ మొబైల్ నంబర్ కు",
+    "one_time_password": " ఏకోపయోగ సాంకేతిక పద గుర్తింపు పదం",
+    "to_mobile_no": " ఈ మొబైల్ నంబర్ కు",
     "already_account": "ఖాతా కలిగి ఉన్నారా?",
     "invalid_number": "అయ్యో! సంఖ్య చెల్లదు తెలుస్తోంది",
     "enter_your_name": "దయచేసి మీ పేరు నమోదు చేయండి",
@@ -468,5 +468,7 @@
     "no_expense_so_far": "No Expenses so far!",
     "add_manage_expense": "Add and Manage your expenses here!",
     "wish_to_complete_financier": "Wish to be a Complete Financier?",
-    "register_your_finance": "Register Your Finance!"
+    "register_your_finance": "Register Your Finance!",
+    "add_payment": "Add Loan",
+    "add": "Add"
 }

@@ -11,7 +11,7 @@
     "wrong_secret_key": "ರಾಂಗ್ ಸೀಕ್ರೆಟ್ ಕೀ. ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ!",
     "logging_in": "ಲಾಗ್ ಇನ್",
     "unable_to_login": "ಲಾಗಿನ್ ಏನೋ ಸಾಧ್ಯವಿಲ್ಲ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ!",
-    "welcome_back": "ಸ್ವಾಗತ",
+    "welcome_back": "ಸ್ವಾಗತ, ",
     "edit_primary_finance": "ಪ್ರಾಥಮಿಕ ಹಣಕಾಸು ಸಂಪಾದಿಸಿ",
     "cash_in_hand": "ಕ್ಯಾಶ್ ಇನ್ ಹ್ಯಾಂಡ್",
     "outstanding": "ಅತ್ಯುತ್ತಮ",
@@ -31,8 +31,8 @@
     "name": "ಹೆಸರು",
     "four_digit_secret": "4 ಅಂಕಿಯ ಸೀಕ್ರೆಟ್ ಕೀ",
     "we_will_send": "ನಾವು ಕಳುಹಿಸುತ್ತೇವೆ",
-    "one_time_password": "ಒಂದು ಟೈಮ್ ಪಾಸ್ವರ್ಡ್",
-    "to_mobile_no": "ಈ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಗೆ",
+    "one_time_password": " ಒಂದು ಟೈಮ್ ಪಾಸ್ವರ್ಡ್",
+    "to_mobile_no": " ಈ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಗೆ",
     "already_account": "ಈಗಾಗಲೇ ಖಾತೆ ಹೊಂದಿದ್ದೀರ?",
     "invalid_number": "ಅಯ್ಯೋ! ಸಂಖ್ಯೆ ಅಮಾನ್ಯವಾಗಿದೆ ತೋರುತ್ತದೆ",
     "enter_your_name": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಹೆಸರು ನಮೂದಿಸಿ",
@@ -468,5 +468,7 @@
     "no_expense_so_far": "No Expenses so far!",
     "add_manage_expense": "Add and Manage your expenses here!",
     "wish_to_complete_financier": "Wish to be a Complete Financier?",
-    "register_your_finance": "Register Your Finance!"
+    "register_your_finance": "Register Your Finance!",
+    "add_payment": "Add Loan",
+    "add": "Add"
 }

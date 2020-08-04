@@ -31,7 +31,8 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('${AppLocalizations.of(context).translate('allocation')} - ${widget.fund.chitNumber}'),
+        title: Text(
+            '${AppLocalizations.of(context).translate('allocation')} - ${widget.fund.chitNumber}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -220,6 +221,11 @@ class _ViewChitAllocationsState extends State<ViewChitAllocations> {
                                 label: Text(
                                   AppLocalizations.of(context)
                                       .translate('remove_allocation'),
+                                  style: TextStyle(
+                                    color: CustomColors.mfinAlertRed,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],

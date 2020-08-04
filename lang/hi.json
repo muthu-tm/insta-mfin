@@ -11,7 +11,7 @@
     "wrong_secret_key": "गलत गोपनीय कुंजी। कृपया पुन: प्रयास करें!",
     "logging_in": "प्रवेश किया",
     "unable_to_login": "लॉग इन कुछ करने में असमर्थ गलत हो गया। बाद में पुन: प्रयास करें!",
-    "welcome_back": "स्वागत हे",
+    "welcome_back": "स्वागत हे, ",
     "edit_primary_finance": "प्राथमिक वित्त संपादित करें",
     "cash_in_hand": "हाथ में पैसे",
     "outstanding": "बकाया",
@@ -468,5 +468,7 @@
     "no_expense_so_far": "No Expenses so far!",
     "add_manage_expense": "Add and Manage your expenses here!",
     "wish_to_complete_financier": "Wish to be a Complete Financier?",
-    "register_your_finance": "Register Your Finance!"
+    "register_your_finance": "Register Your Finance!",
+    "add_payment": "Add Loan",
+    "add": "Add"
 }
