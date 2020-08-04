@@ -25,7 +25,7 @@ class _AddJournalState extends State<AddJournal> {
 
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {"0": "Choose Category"};
-  List<CustomRadioModel> inOutList = new List<CustomRadioModel>();
+  List<CustomRadioModel> inOutList = List<CustomRadioModel>();
   List<JournalCategory> categoryList;
 
   DateTime selectedDate = DateTime.now();
@@ -34,23 +34,22 @@ class _AddJournalState extends State<AddJournal> {
   int amount = 0;
   bool isExpense = false;
 
-  TextEditingController _date = new TextEditingController();
+  TextEditingController _date = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     this.getCategoryData();
-    inOutList.add(new CustomRadioModel(true, 'Income', ''));
-    inOutList.add(new CustomRadioModel(false, 'Expense', ''));
+    inOutList.add(CustomRadioModel(true, 'Income', ''));
+    inOutList.add(CustomRadioModel(false, 'Expense', ''));
 
     _date.text = DateUtils.formatDate(DateTime.now());
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate("new_journal_entry")),
         backgroundColor: CustomColors.mfinBlue,
@@ -80,9 +79,8 @@ class _AddJournalState extends State<AddJournal> {
         key: _formKey,
         child: SingleChildScrollView(
           child: Container(
-            height: MediaQuery.of(context).size.height * 1,
             color: CustomColors.mfinWhite,
-            child: new Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -100,7 +98,7 @@ class _AddJournalState extends State<AddJournal> {
 
                       isExpense = false;
                     },
-                    child: new InOutRadioItem(
+                    child: InOutRadioItem(
                         inOutList[0], CustomColors.mfinLightBlue),
                   ),
                   trailing: InkWell(
@@ -114,7 +112,7 @@ class _AddJournalState extends State<AddJournal> {
 
                       isExpense = true;
                     },
-                    child: new InOutRadioItem(
+                    child: InOutRadioItem(
                         inOutList[1], CustomColors.mfinAlertRed),
                   ),
                 ),
@@ -164,7 +162,7 @@ class _AddJournalState extends State<AddJournal> {
                       ),
                     ),
                   ),
-                  title: new TextFormField(
+                  title: TextFormField(
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context).translate("journal_amount"),
@@ -265,7 +263,7 @@ class _AddJournalState extends State<AddJournal> {
                       ),
                     ),
                   ),
-                  title: new TextFormField(
+                  title: TextFormField(
                     keyboardType: TextInputType.text,
                     maxLines: 3,
                     decoration: InputDecoration(
