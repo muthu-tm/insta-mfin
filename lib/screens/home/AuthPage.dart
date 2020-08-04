@@ -12,6 +12,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthPage extends StatefulWidget {
@@ -27,6 +28,7 @@ class _AuthPageState extends State<AuthPage> {
   final AuthController _authController = AuthController();
 
   String url = "";
+  bool isAuth = false;
 
   @override
   void initState() {
@@ -56,6 +58,11 @@ class _AuthPageState extends State<AuthPage> {
                         AsyncSnapshot<Map<String, dynamic>> userSnapshot) {
                       if (userSnapshot.hasData) {
                         User _user = User.fromJson(userSnapshot.data);
+
+                        if (_user.preferences.isfingerAuthEnabled) {
+                          //biometric();
+                        }
+
                         return _getBody(snapshot.data, _user);
                       } else if (userSnapshot.hasError) {
                         return LoginPage(false, _scaffoldKey);
@@ -89,6 +96,49 @@ class _AuthPageState extends State<AuthPage> {
         ),
       ),
     );
+  }
+
+  biometric() async {
+    final LocalAuthentication auth = LocalAuthentication();
+    bool canCheckBiometrics = false;
+    try {
+      canCheckBiometrics = await auth.canCheckBiometrics;
+    } catch (e) {
+      print("error biome trics $e");
+    }
+
+    print("biometric is available: $canCheckBiometrics");
+
+    List<BiometricType> availableBiometrics;
+    try {
+      availableBiometrics = await auth.getAvailableBiometrics();
+    } catch (e) {
+      print("error enumerate biometrics $e");
+    }
+
+    print("following biometrics are available");
+    if (availableBiometrics.isNotEmpty) {
+      availableBiometrics.forEach((ab) {
+        print("\ttech: $ab");
+      });
+    } else {
+      print("no biometrics are available");
+    }
+
+    bool authenticated = false;
+    try {
+      authenticated = await auth.authenticateWithBiometrics(
+          localizedReason: 'Touch your finger on the sensor to login',
+          useErrorDialogs: true,
+          stickyAuth: true);
+    } catch (e) {
+      print("error using biometric auth: $e");
+    }
+    setState(() {
+      isAuth = authenticated ? true : false;
+    });
+
+    print("authenticated: $authenticated");
   }
 
   Widget _getBody(String number, User _user) {
@@ -158,7 +208,8 @@ class _AuthPageState extends State<AuthPage> {
                         autofocus: false,
                         controller: _pController,
                         decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context).translate('secret_key'),
+                          hintText: AppLocalizations.of(context)
+                              .translate('secret_key'),
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
                         ),
@@ -258,48 +309,51 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
+  login() async {
+    try {
+      await UserController().refreshCacheSubscription();
+      await UserController().refreshUser(true);
+    } catch (err) {
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          "Unable to Login, Something went wrong. Please try again Later!", 2));
+      return;
+    }
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (BuildContext context) => UpdateApp(
+          child: UserFinanceSetup(),
+        ),
+      ),
+      (Route<dynamic> route) => false,
+    );
+  }
+
   void _submit(User _user) async {
     if (_pController.text.length == 0) {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('your_secret_key'), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('your_secret_key'), 2));
       return;
     } else {
       String hashKey = HashGenerator.hmacGenerator(
           _pController.text, _user.mobileNumber.toString());
       if (hashKey != _user.password) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-           AppLocalizations.of(context).translate('wrong_secret_key'), 2));
+            AppLocalizations.of(context).translate('wrong_secret_key'), 2));
         return;
       } else {
-        CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('logging_in'));
+        CustomDialogs.actionWaiting(
+            context, AppLocalizations.of(context).translate('logging_in'));
 
         var result = await _authController.signInWithMobileNumber(_user);
 
         if (!result['is_success']) {
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              AppLocalizations.of(context).translate('unable_to_login'),
-              2));
+              AppLocalizations.of(context).translate('unable_to_login'), 2));
           _scaffoldKey.currentState
               .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
         } else {
-          try {
-            await UserController().refreshCacheSubscription();
-            await UserController().refreshUser(true);
-          } catch (err) {
-            _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-                "Unable to Login, Something went wrong. Please try again Later!",
-                2));
-            return;
-          }
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (BuildContext context) => UpdateApp(
-                child: UserFinanceSetup(),
-              ),
-            ),
-            (Route<dynamic> route) => false,
-          );
+          login();
         }
       }
     }
