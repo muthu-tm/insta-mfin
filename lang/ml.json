@@ -468,5 +468,7 @@
     "no_expense_so_far": "No Expenses so far!",
     "add_manage_expense": "Add and Manage your expenses here!",
     "wish_to_complete_financier": "Wish to be a Complete Financier?",
-    "register_your_finance": "Register Your Finance!"
+    "register_your_finance": "Register Your Finance!",
+    "add_payment": "Add Loan",
+    "add": "Add"
 }

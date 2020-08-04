@@ -1,5 +1,5 @@
 {
-    "login": "Login",
+    "login": "LOGIN",
     "customers": "Customers",
     "mobile_number": "Mobile Number",
     "get_otp": "Get OTP",
@@ -470,6 +470,4 @@
     "add_loan" : "Add this customer's Loans!",
     "loans" : "Loans",
     "add": "Add"
-
-    
 }

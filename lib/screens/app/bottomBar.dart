@@ -48,6 +48,8 @@ Widget bottomBar(BuildContext context) {
                   ),
                   Text(
                     AppLocalizations.of(context).translate('customers'),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 10,
@@ -84,6 +86,8 @@ Widget bottomBar(BuildContext context) {
                   ),
                   Text(
                     AppLocalizations.of(context).translate('transactions'),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 9,
@@ -121,6 +125,8 @@ Widget bottomBar(BuildContext context) {
                         ),
                         Text(
                           AppLocalizations.of(context).translate('chit_fund'),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontFamily: "Georgia",
                             fontSize: 10,
@@ -158,6 +164,8 @@ Widget bottomBar(BuildContext context) {
                   ),
                   Text(
                     AppLocalizations.of(context).translate('reports'),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 10,
@@ -194,6 +202,8 @@ Widget bottomBar(BuildContext context) {
                   ),
                   Text(
                     AppLocalizations.of(context).translate('statistics'),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 10,
@@ -230,6 +240,8 @@ Widget bottomBar(BuildContext context) {
                   ),
                   Text(
                     AppLocalizations.of(context).translate('settings'),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Georgia",
                       fontSize: 10,

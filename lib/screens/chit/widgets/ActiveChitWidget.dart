@@ -134,7 +134,7 @@ class ActiveChitWidget extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              FlatButton.icon(
+                              FlatButton(
                                 onPressed: () {
                                   CustomDialogs.confirm(context, "Confirm!",
                                       "Are you sure to remove this ${chit.chitName} ChitFund?",
@@ -163,15 +163,13 @@ class ActiveChitWidget extends StatelessWidget {
                                     Navigator.pop(context);
                                   });
                                 },
-                                icon: Icon(Icons.payment),
-                                label: Text(
+                                child: Text(
                                   AppLocalizations.of(context)
                                       .translate('remove'),
                                   style: TextStyle(
                                     color: CustomColors.mfinAlertRed
                                         .withOpacity(0.7),
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10.0,
                                   ),
                                 ),
                               ),
@@ -192,12 +190,11 @@ class ActiveChitWidget extends StatelessWidget {
                                       .translate('view'),
                                   style: TextStyle(
                                     color: CustomColors.mfinButtonGreen,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10.0,
                                   ),
                                 ),
                               ),
-                              FlatButton.icon(
+                              FlatButton(
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -209,14 +206,12 @@ class ActiveChitWidget extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                icon: Icon(Icons.monetization_on),
-                                label: Text(
+                                child: Text(
                                   AppLocalizations.of(context)
                                       .translate('requesters'),
                                   style: TextStyle(
                                     color: CustomColors.mfinGrey,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10.0,
                                   ),
                                 ),
                               ),
@@ -235,7 +230,7 @@ class ActiveChitWidget extends StatelessWidget {
                 height: 90,
                 child: Column(
                   children: <Widget>[
-                    new Spacer(),
+                    Spacer(),
                     Text(
                       AppLocalizations.of(context).translate('no_active_chits'),
                       style: TextStyle(
@@ -244,7 +239,7 @@ class ActiveChitWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    new Spacer(
+                    Spacer(
                       flex: 2,
                     ),
                     Text(
@@ -257,7 +252,7 @@ class ActiveChitWidget extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    new Spacer(),
+                    Spacer(),
                   ],
                 ),
               ),
