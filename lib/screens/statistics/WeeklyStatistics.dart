@@ -164,7 +164,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
             1,
             selectedF,
             selectedF.add(
-              Duration(days: 29),
+              Duration(days: 28),
             ),
           ),
           CollectionStatisticsWidget(
@@ -172,7 +172,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
             1,
             selectedF,
             selectedF.add(
-              Duration(days: 29),
+              Duration(days: 28),
             ),
           ),
           ExpenseStatisticsWidget(
@@ -180,7 +180,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
             1,
             selectedF,
             selectedF.add(
-              Duration(days: 29),
+              Duration(days: 28),
             ),
           ),
           JournalStatisticsWidget(

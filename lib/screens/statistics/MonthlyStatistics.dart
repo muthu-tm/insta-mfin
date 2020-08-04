@@ -164,7 +164,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 93),
+              Duration(days: 92),
             ),
           ),
           CollectionStatisticsWidget(
@@ -172,7 +172,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 93),
+              Duration(days: 92),
             ),
           ),
           ExpenseStatisticsWidget(
@@ -180,7 +180,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 93),
+              Duration(days: 92),
             ),
           ),
           JournalStatisticsWidget(
@@ -188,7 +188,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 93),
+              Duration(days: 92),
             ),
           ),
         ],
