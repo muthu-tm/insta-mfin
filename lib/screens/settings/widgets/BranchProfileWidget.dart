@@ -13,9 +13,9 @@ class BranchProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Card(
+    return Card(
       color: CustomColors.mfinLightGrey,
-      child: new Column(
+      child: Column(
         children: <Widget>[
           ListTile(
             leading: Icon(
@@ -23,7 +23,7 @@ class BranchProfileWidget extends StatelessWidget {
               size: 35.0,
               color: CustomColors.mfinButtonGreen,
             ),
-            title: new Text(
+            title: Text(
               AppLocalizations.of(context).translate('branch_details'),
               style: TextStyle(
                 color: CustomColors.mfinBlue,
@@ -48,7 +48,7 @@ class BranchProfileWidget extends StatelessWidget {
               },
             ),
           ),
-          new Divider(
+          Divider(
             color: CustomColors.mfinBlue,
             thickness: 1,
           ),
@@ -60,7 +60,7 @@ class BranchProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
@@ -74,11 +74,12 @@ class BranchProfileWidget extends StatelessWidget {
                       branch.dateOfRegistration))
                   : "",
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).translate('registered_date'),
+                hintText:
+                    AppLocalizations.of(context).translate('registered_date'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
                 suffixIcon: Icon(
@@ -94,11 +95,12 @@ class BranchProfileWidget extends StatelessWidget {
             title: TextFormField(
               initialValue: branch.contactNumber,
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).translate('contact_number'),
+                hintText:
+                    AppLocalizations.of(context).translate('contact_number'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
@@ -106,14 +108,15 @@ class BranchProfileWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: new TextFormField(
+            title: TextFormField(
               initialValue: branch.emailID,
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).translate('branch_emailid'),
+                hintText:
+                    AppLocalizations.of(context).translate('branch_emailid'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinWhite)),
               ),
@@ -127,7 +130,7 @@ class BranchProfileWidget extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context).translate('address'),
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 border: OutlineInputBorder(

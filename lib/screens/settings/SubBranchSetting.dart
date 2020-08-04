@@ -78,7 +78,7 @@ class _SubBranchSettingState extends State<SubBranchSetting> {
             "Confirm!",
             style: TextStyle(
                 color: CustomColors.mfinAlertRed,
-                fontSize: 25.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.start,
           ),
@@ -86,21 +86,17 @@ class _SubBranchSettingState extends State<SubBranchSetting> {
             height: 150,
             child: Column(
               children: <Widget>[
-                Text(
-                    "Enter your Secret KEY! \n Deactivating your SubBranch, Please Confirm!"),
-                Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Card(
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      obscureText: true,
-                      autofocus: false,
-                      controller: _pController,
-                      decoration: InputDecoration(
-                        hintText: 'Secret KEY',
-                        fillColor: CustomColors.mfinLightGrey,
-                        filled: true,
-                      ),
+                Text("Enter your Secret KEY to Deactivate your SubBranch!"),
+                Card(
+                  child: TextFormField(
+                    textAlign: TextAlign.center,
+                    obscureText: true,
+                    autofocus: false,
+                    controller: _pController,
+                    decoration: InputDecoration(
+                      hintText: 'Secret KEY',
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
                     ),
                   ),
                 ),
