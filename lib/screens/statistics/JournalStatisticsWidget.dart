@@ -66,7 +66,7 @@ class JournalStatisticsWidget extends StatelessWidget {
                 child: SfCartesianChart(
                   title: ChartTitle(
                     text: 'JOURNALS',
-                    textStyle: ChartTextStyle(
+                    textStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
@@ -91,7 +91,7 @@ class JournalStatisticsWidget extends StatelessWidget {
                     majorGridLines: MajorGridLines(width: 0),
                     title: AxisTitle(
                       text: mode == 0 ? 'Days' : mode == 1 ? 'Weeks' : 'Months',
-                      textStyle: ChartTextStyle(
+                      textStyle: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold,
@@ -106,7 +106,7 @@ class JournalStatisticsWidget extends StatelessWidget {
                     majorTickLines: MajorTickLines(size: 0),
                     title: AxisTitle(
                       text: 'Amount',
-                      textStyle: ChartTextStyle(
+                      textStyle: TextStyle(
                         color: CustomColors.mfinPositiveGreen,
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold,
@@ -127,57 +127,38 @@ class JournalStatisticsWidget extends StatelessWidget {
                             dataSource: jData,
                             xValueMapper: (JData pay, _) => pay.date,
                             yValueMapper: (JData pay, _) => pay.amount,
-                            dataLabelSettings:
-                                DataLabelSettings(isVisible: true),
+                            dataLabelSettings: DataLabelSettings(
+                                isVisible: mode == 0 ? true : false),
                             width: 2,
-                            animationDuration: 2500,
+                            animationDuration: 1500,
                             enableTooltip: true,
                             name: 'Journal',
-                            markerSettings: MarkerSettings(isVisible: true),
+                            markerSettings: MarkerSettings(
+                                isVisible: mode == 0 ? true : false),
                           ),
                         ]
-                      : type == 1
-                          ? <CartesianSeries>[
-                              BubbleSeries<JData, DateTime>(
-                                dataSource: jData,
-                                xValueMapper: (JData j, _) => j.date,
-                                yValueMapper: (JData j, _) => j.amount,
-                                dataLabelSettings:
-                                    DataLabelSettings(isVisible: true),
-                                sizeValueMapper: (JData j, _) =>
-                                    (j.amount.toString().length * 0.5),
-                                name: 'Journal',
-                                gradient: LinearGradient(
-                                  colors: [
-                                    CustomColors.mfinLightGrey,
-                                    CustomColors.mfinLightBlue,
-                                    CustomColors.mfinBlue
-                                  ],
-                                  stops: <double>[0.0, 0.2, 1.0],
-                                ),
-                              ),
-                            ]
-                          : <ChartSeries>[
-                              ColumnSeries<JData, DateTime>(
-                                dataSource: jData,
-                                xValueMapper: (JData j, _) => j.date,
-                                yValueMapper: (JData j, _) => j.amount,
-                                dataLabelSettings:
-                                    DataLabelSettings(isVisible: true),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    CustomColors.mfinLightGrey,
-                                    CustomColors.mfinLightBlue,
-                                    CustomColors.mfinBlue
-                                  ],
-                                  stops: <double>[0.0, 0.2, 1.0],
-                                ),
-                                animationDuration: 2500,
-                                enableTooltip: true,
-                                name: 'Journal',
-                                markerSettings: MarkerSettings(isVisible: true),
-                              )
-                            ],
+                      : <ChartSeries>[
+                          ColumnSeries<JData, DateTime>(
+                            dataSource: jData,
+                            xValueMapper: (JData j, _) => j.date,
+                            yValueMapper: (JData j, _) => j.amount,
+                            dataLabelSettings: DataLabelSettings(
+                                isVisible: mode == 0 ? true : false),
+                            gradient: LinearGradient(
+                              colors: [
+                                CustomColors.mfinLightGrey,
+                                CustomColors.mfinLightBlue,
+                                CustomColors.mfinBlue
+                              ],
+                              stops: <double>[0.0, 0.2, 1.0],
+                            ),
+                            animationDuration: 1500,
+                            enableTooltip: true,
+                            name: 'Journal',
+                            markerSettings: MarkerSettings(
+                                isVisible: mode == 0 ? true : false),
+                          )
+                        ],
                 ),
               );
             } else {

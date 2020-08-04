@@ -70,7 +70,7 @@ class CollectionStatisticsWidget extends StatelessWidget {
                 child: SfCartesianChart(
                   title: ChartTitle(
                     text: 'COLLECTIONS',
-                    textStyle: ChartTextStyle(
+                    textStyle: TextStyle(
                       color: CustomColors.mfinPositiveGreen,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ class CollectionStatisticsWidget extends StatelessWidget {
                     majorGridLines: MajorGridLines(width: 0),
                     title: AxisTitle(
                       text: mode == 0 ? 'Days' : mode == 1 ? 'Weeks' : 'Months',
-                      textStyle: ChartTextStyle(
+                      textStyle: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold,
@@ -110,7 +110,7 @@ class CollectionStatisticsWidget extends StatelessWidget {
                     majorTickLines: MajorTickLines(size: 0),
                     title: AxisTitle(
                       text: 'Amount',
-                      textStyle: ChartTextStyle(
+                      textStyle: TextStyle(
                         color: CustomColors.mfinPositiveGreen,
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold,
@@ -131,57 +131,38 @@ class CollectionStatisticsWidget extends StatelessWidget {
                             dataSource: cData,
                             xValueMapper: (CollData c, _) => c.date,
                             yValueMapper: (CollData c, _) => c.amount,
-                            dataLabelSettings:
-                                DataLabelSettings(isVisible: true),
+                            dataLabelSettings: DataLabelSettings(
+                                isVisible: mode == 0 ? true : false),
                             width: 2,
-                            animationDuration: 2500,
+                            animationDuration: 1500,
                             enableTooltip: true,
                             name: 'Collection',
-                            markerSettings: MarkerSettings(isVisible: true),
+                            markerSettings: MarkerSettings(
+                                isVisible: mode == 0 ? true : false),
                           ),
                         ]
-                      : type == 1
-                          ? <CartesianSeries>[
-                              BubbleSeries<CollData, DateTime>(
-                                dataSource: cData,
-                                xValueMapper: (CollData c, _) => c.date,
-                                yValueMapper: (CollData c, _) => c.amount,
-                                dataLabelSettings:
-                                    DataLabelSettings(isVisible: true),
-                                sizeValueMapper: (CollData c, _) =>
-                                    (c.amount.toString().length * 0.5),
-                                name: 'Collection',
-                                gradient: LinearGradient(
-                                  colors: [
-                                    CustomColors.mfinLightGrey,
-                                    CustomColors.mfinLightBlue,
-                                    CustomColors.mfinPositiveGreen
-                                  ],
-                                  stops: <double>[0.0, 0.3, 0.7],
-                                ),
-                              ),
-                            ]
-                          : <ChartSeries>[
-                              ColumnSeries<CollData, DateTime>(
-                                dataSource: cData,
-                                xValueMapper: (CollData c, _) => c.date,
-                                yValueMapper: (CollData c, _) => c.amount,
-                                dataLabelSettings:
-                                    DataLabelSettings(isVisible: true),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    CustomColors.mfinLightGrey,
-                                    CustomColors.mfinLightBlue,
-                                    CustomColors.mfinPositiveGreen
-                                  ],
-                                  stops: <double>[0.0, 0.3, 0.7],
-                                ),
-                                animationDuration: 2500,
-                                enableTooltip: true,
-                                name: 'Collection',
-                                markerSettings: MarkerSettings(isVisible: true),
-                              )
-                            ],
+                      : <ChartSeries>[
+                          ColumnSeries<CollData, DateTime>(
+                            dataSource: cData,
+                            xValueMapper: (CollData c, _) => c.date,
+                            yValueMapper: (CollData c, _) => c.amount,
+                            dataLabelSettings: DataLabelSettings(
+                                isVisible: mode == 0 ? true : false),
+                            gradient: LinearGradient(
+                              colors: [
+                                CustomColors.mfinLightGrey,
+                                CustomColors.mfinLightBlue,
+                                CustomColors.mfinPositiveGreen
+                              ],
+                              stops: <double>[0.0, 0.3, 0.7],
+                            ),
+                            animationDuration: 1500,
+                            enableTooltip: true,
+                            name: 'Collection',
+                            markerSettings: MarkerSettings(
+                                isVisible: mode == 0 ? true : false),
+                          )
+                        ],
                 ),
               );
             } else {

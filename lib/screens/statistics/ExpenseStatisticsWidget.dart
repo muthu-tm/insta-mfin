@@ -66,7 +66,7 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                 child: SfCartesianChart(
                   title: ChartTitle(
                     text: 'EXPENSES',
-                    textStyle: ChartTextStyle(
+                    textStyle: TextStyle(
                       color: CustomColors.mfinAlertRed,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
@@ -91,7 +91,7 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                     majorGridLines: MajorGridLines(width: 0),
                     title: AxisTitle(
                       text: mode == 0 ? 'Days' : mode == 1 ? 'Weeks' : 'Months',
-                      textStyle: ChartTextStyle(
+                      textStyle: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold,
@@ -106,7 +106,7 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                     majorTickLines: MajorTickLines(size: 0),
                     title: AxisTitle(
                       text: 'Amount',
-                      textStyle: ChartTextStyle(
+                      textStyle: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold,
@@ -127,57 +127,37 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                             dataSource: eData,
                             xValueMapper: (EData pay, _) => pay.date,
                             yValueMapper: (EData pay, _) => pay.amount,
-                            dataLabelSettings:
-                                DataLabelSettings(isVisible: true),
+                            dataLabelSettings: DataLabelSettings(
+                                isVisible: mode == 0 ? true : false),
                             width: 2,
-                            animationDuration: 2500,
+                            animationDuration: 1500,
                             enableTooltip: true,
                             name: 'Expense',
                             markerSettings: MarkerSettings(isVisible: true),
                           ),
                         ]
-                      : type == 1
-                          ? <CartesianSeries>[
-                              BubbleSeries<EData, DateTime>(
-                                dataSource: eData,
-                                xValueMapper: (EData e, _) => e.date,
-                                yValueMapper: (EData e, _) => e.amount,
-                                dataLabelSettings:
-                                    DataLabelSettings(isVisible: true),
-                                sizeValueMapper: (EData e, _) =>
-                                    (e.amount.toString().length * 0.5),
-                                name: 'Expense',
-                                gradient: LinearGradient(
-                                  colors: [
-                                    CustomColors.mfinLightGrey,
-                                    CustomColors.mfinLightBlue,
-                                    CustomColors.mfinBlue
-                                  ],
-                                  stops: <double>[0.0, 0.2, 1.0],
-                                ),
-                              ),
-                            ]
-                          : <ChartSeries>[
-                              ColumnSeries<EData, DateTime>(
-                                dataSource: eData,
-                                xValueMapper: (EData e, _) => e.date,
-                                yValueMapper: (EData e, _) => e.amount,
-                                dataLabelSettings:
-                                    DataLabelSettings(isVisible: true),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    CustomColors.mfinLightGrey,
-                                    CustomColors.mfinLightBlue,
-                                    CustomColors.mfinBlue
-                                  ],
-                                  stops: <double>[0.0, 0.2, 1.0],
-                                ),
-                                animationDuration: 2500,
-                                enableTooltip: true,
-                                name: 'Expense',
-                                markerSettings: MarkerSettings(isVisible: true),
-                              )
-                            ],
+                      : <ChartSeries>[
+                          ColumnSeries<EData, DateTime>(
+                            dataSource: eData,
+                            xValueMapper: (EData e, _) => e.date,
+                            yValueMapper: (EData e, _) => e.amount,
+                            dataLabelSettings: DataLabelSettings(
+                                isVisible: mode == 0 ? true : false),
+                            gradient: LinearGradient(
+                              colors: [
+                                CustomColors.mfinLightGrey,
+                                CustomColors.mfinLightBlue,
+                                CustomColors.mfinBlue
+                              ],
+                              stops: <double>[0.0, 0.2, 1.0],
+                            ),
+                            animationDuration: 1500,
+                            enableTooltip: true,
+                            name: 'Expense',
+                            markerSettings: MarkerSettings(
+                                isVisible: mode == 0 ? true : false),
+                          )
+                        ],
                 ),
               );
             } else {
