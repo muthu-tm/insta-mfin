@@ -124,19 +124,17 @@ class _BranchSettingState extends State<BranchSetting> {
             "Confirm!",
             style: TextStyle(
                 color: CustomColors.mfinAlertRed,
-                fontSize: 25.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.start,
           ),
           content: Container(
-            height: 175,
+            height: 200,
             child: Column(
               children: <Widget>[
                 Text(
-                    "Enter your Secret KEY! \n\nDeactivating your Branch will deactivate all your SubBranches too, Please Confirm!"),
-                Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Card(
+                    "Deactivating your Branch will deactivate all your SubBranches too.\nPlease Confirm with your Secret KEY!"),
+                Card(
                     child: TextFormField(
                       textAlign: TextAlign.center,
                       obscureText: true,
@@ -148,7 +146,6 @@ class _BranchSettingState extends State<BranchSetting> {
                         filled: true,
                       ),
                     ),
-                  ),
                 ),
               ],
             ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
 import 'package:instamfin/screens/settings/widgets/UserProfileWidget.dart';
@@ -76,19 +75,17 @@ class _UserSettingState extends State<UserSetting> {
             "Confirm!",
             style: TextStyle(
                 color: CustomColors.mfinAlertRed,
-                fontSize: 25.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.start,
           ),
           content: Container(
-            height: 250,
+            height: 225,
             child: Column(
               children: <Widget>[
                 Text(
-                    "Confirm with your Secret KEY! \n\nDeactivating account won't remove your Finance Data. \n\nIf you wish to clean all, Deactivate your finance first, please!"),
-                Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Card(
+                    "Deactivating account won't remove your Finance Data.\n\nIf you wish to clean all, Deactivate your finance first, please!"),
+                Card(
                     child: TextFormField(
                       textAlign: TextAlign.center,
                       obscureText: true,
@@ -101,7 +98,6 @@ class _UserSettingState extends State<UserSetting> {
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           ),

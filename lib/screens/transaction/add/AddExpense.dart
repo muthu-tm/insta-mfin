@@ -42,9 +42,8 @@ class _AddExpenseState extends State<AddExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('new_expense')),
         backgroundColor: CustomColors.mfinBlue,
@@ -72,181 +71,187 @@ class _AddExpenseState extends State<AddExpense> {
       ),
       body: Form(
         key: _formKey,
-        child: Container(
-          color: CustomColors.mfinWhite,
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              ListTile(
-                leading: SizedBox(
-                  width: 80,
-                  child: Text(
-                    AppLocalizations.of(context).translate('name'),
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinBlue,
+        child: SingleChildScrollView(
+          child: Container(
+            color: CustomColors.mfinWhite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                ListTile(
+                  leading: SizedBox(
+                    width: 80,
+                    child: Text(
+                      AppLocalizations.of(context).translate('name'),
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                      ),
                     ),
                   ),
-                ),
-                title: TextFormField(
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('expense_name'),
-                    labelStyle: TextStyle(
-                      color: CustomColors.mfinBlue,
+                  title: TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)
+                          .translate('expense_name'),
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      ),
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
                     ),
-                    fillColor: CustomColors.mfinLightGrey,
-                    filled: true,
-                  ),
-                  validator: (name) {
-                    if (name.trim().isEmpty) {
-                      return "Name should not be empty";
-                    } else {
-                      this.name = name.trim();
-                      return null;
-                    }
-                  },
-                ),
-              ),
-              ListTile(
-                leading: SizedBox(
-                  width: 80,
-                  child: Text(
-                    AppLocalizations.of(context).translate('amount'),
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinBlue,
-                    ),
+                    validator: (name) {
+                      if (name.trim().isEmpty) {
+                        return "Name should not be empty";
+                      } else {
+                        this.name = name.trim();
+                        return null;
+                      }
+                    },
                   ),
                 ),
-                title: new TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('expense_amount'),
-                    labelStyle: TextStyle(
-                      color: CustomColors.mfinBlue,
-                    ),
-                    fillColor: CustomColors.mfinLightGrey,
-                    filled: true,
-                  ),
-                  validator: (amount) {
-                    if (amount.trim().isEmpty) {
-                      return "Amount should not be empty!";
-                    } else {
-                      this.amount = int.parse(amount.trim());
-                      return null;
-                    }
-                  },
-                ),
-              ),
-              ListTile(
-                leading: SizedBox(
-                  width: 80,
-                  child: Text(
-                    "DATE:",
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinBlue,
+                ListTile(
+                  leading: SizedBox(
+                    width: 80,
+                    child: Text(
+                      AppLocalizations.of(context).translate('amount'),
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                      ),
                     ),
                   ),
+                  title: TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)
+                          .translate('expense_amount'),
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      ),
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
+                    ),
+                    validator: (amount) {
+                      if (amount.trim().isEmpty) {
+                        return "Amount should not be empty!";
+                      } else {
+                        this.amount = int.parse(amount.trim());
+                        return null;
+                      }
+                    },
+                  ),
                 ),
-                title: GestureDetector(
-                  onTap: () => _selectDate(context),
-                  child: AbsorbPointer(
-                    child: TextFormField(
-                      controller: _date,
-                      keyboardType: TextInputType.datetime,
-                      decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context).translate('spent_on'),
-                        labelStyle: TextStyle(
-                          color: CustomColors.mfinBlue,
-                        ),
-                        fillColor: CustomColors.mfinLightGrey,
-                        filled: true,
-                        suffixIcon: Icon(
-                          Icons.date_range,
-                          color: CustomColors.mfinBlue,
+                ListTile(
+                  leading: SizedBox(
+                    width: 80,
+                    child: Text(
+                      "Date",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                      ),
+                    ),
+                  ),
+                  title: GestureDetector(
+                    onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: _date,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)
+                              .translate('spent_on'),
+                          labelStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                          ),
+                          fillColor: CustomColors.mfinLightGrey,
+                          filled: true,
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            color: CustomColors.mfinBlue,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              ListTile(
-                leading: SizedBox(
-                  width: 80,
-                  child: Text(
-                    AppLocalizations.of(context).translate('category'),
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinBlue,
+                ListTile(
+                  leading: SizedBox(
+                    width: 80,
+                    child: Text(
+                      AppLocalizations.of(context).translate('category'),
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                      ),
                     ),
                   ),
-                ),
-                title: DropdownButton<String>(
-                  dropdownColor: CustomColors.mfinLightGrey,
-                  isExpanded: true,
-                  items: _categoriesMap.entries.map(
-                    (f) {
-                      return DropdownMenuItem<String>(
-                        value: f.key,
-                        child: Text(f.value),
-                      );
+                  title: DropdownButton<String>(
+                    dropdownColor: CustomColors.mfinLightGrey,
+                    isExpanded: true,
+                    items: _categoriesMap.entries.map(
+                      (f) {
+                        return DropdownMenuItem<String>(
+                          value: f.key,
+                          child: Text(f.value),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (newVal) {
+                      setState(() {
+                        _selectedCategory = newVal;
+                      });
                     },
-                  ).toList(),
-                  onChanged: (newVal) {
-                    setState(() {
-                      _selectedCategory = newVal;
-                    });
-                  },
-                  value: _selectedCategory,
-                ),
-              ),
-              ListTile(
-                leading: SizedBox(
-                  width: 80,
-                  child: Text(
-                    AppLocalizations.of(context).translate('notes'),
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinBlue,
-                    ),
+                    value: _selectedCategory,
                   ),
                 ),
-                title: new TextFormField(
-                  keyboardType: TextInputType.text,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate("short_notes_about_expense"),
-                    labelStyle: TextStyle(
-                      color: CustomColors.mfinBlue,
+                ListTile(
+                  leading: SizedBox(
+                    width: 80,
+                    child: Text(
+                      AppLocalizations.of(context).translate('notes'),
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: "Georgia",
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                      ),
                     ),
-                    fillColor: CustomColors.mfinLightGrey,
-                    filled: true,
                   ),
-                  validator: (note) {
-                    if (note.trim().isEmpty) {
-                      this.notes = "";
-                    } else {
-                      this.notes = note.trim();
-                    }
+                  title: TextFormField(
+                    keyboardType: TextInputType.text,
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)
+                          .translate("short_notes_about_expense"),
+                      labelStyle: TextStyle(
+                        color: CustomColors.mfinBlue,
+                      ),
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
+                    ),
+                    validator: (note) {
+                      if (note.trim().isEmpty) {
+                        this.notes = "";
+                      } else {
+                        this.notes = note.trim();
+                      }
 
-                    return null;
-                  },
+                      return null;
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -308,8 +313,8 @@ class _AddExpenseState extends State<AddExpense> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate("required_fields"), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate("required_fields"), 2));
     }
   }
 }

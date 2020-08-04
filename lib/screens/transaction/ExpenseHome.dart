@@ -93,7 +93,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                               return;
                             }
 
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AddExpense(),
@@ -111,7 +111,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                           ),
                           onTap: () async {
                             await UserController().refreshUser(false);
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => UserFinanceSetup(),

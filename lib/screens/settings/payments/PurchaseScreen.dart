@@ -45,7 +45,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-    
+
     for (int i = 0; i < widget.plans.length; i++) {
       if (i == 0)
         planText += widget.plans[i].name;
@@ -427,7 +427,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
     String payID = response.paymentId;
     String orderID = response.orderId;
     String sign = response.signature;
-    CustomDialogs.actionWaiting(context, "Loading...");
+    CustomDialogs.actionWaiting(context, "Success...");
 
     bool isSuccess = await Subscriptions().updateSuccessStatus(
         widget.purchaseID, widget.plans, widget.amount, payID, wAmount);
@@ -450,17 +450,19 @@ class _PuchasePlanState extends State<PuchasePlan> {
   void _handlePaymentError(PaymentFailureResponse response) async {
     await Purchases()
         .updateError(widget.purchaseID, response.message, response.code);
-    _showDialog(2);
+    _scaffoldKey.currentState.showSnackBar(
+      CustomSnackBar.errorSnackBar("ERROR - Message: ${response.message}", 2),
+    );
 
-    _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-        "ERROR - Message: ${response.message}", 4));
+    _showDialog(2);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
+    _scaffoldKey.currentState.showSnackBar(
+      CustomSnackBar.successSnackBar(
+          "EXTERNAL_WALLET: ${response.walletName}", 2),
+    );
     _showDialog(3);
-
-    _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-        "EXTERNAL_WALLET: ${response.walletName}", 4));
   }
 
   void _showDialog(int task, {String id}) {

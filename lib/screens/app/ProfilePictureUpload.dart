@@ -40,8 +40,8 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Container(
-        height: 300,
-        width: MediaQuery.of(context).size.width * 0.8,
+        height: 350,
+        width: MediaQuery.of(context).size.width * 0.85,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -52,11 +52,12 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                   : widget.type == 1
                       ? AppLocalizations.of(context).translate('customer_photo')
                       : AppLocalizations.of(context).translate('finance_logo'),
+              
               style: TextStyle(
                   color: CustomColors.mfinBlack,
-                  fontSize: 25.0,
+                  fontSize: 20.0,
                   fontWeight: FontWeight.bold),
-              textAlign: TextAlign.start,
+              textAlign: TextAlign.center,
             ),
             Spacer(),
             selectedImagePath == ""

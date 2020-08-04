@@ -12,9 +12,9 @@ class MonthlyStatistics extends StatefulWidget {
 }
 
 class _MonthlyStatisticsState extends State<MonthlyStatistics> {
-  String _selectedChart = "2";
+  String _selectedChart = "1";
   String _selectedY = "0";
-  Map<String, String> _chartList = {"0": "Line", "1": "Bubble", "2": "Bar"};
+  Map<String, String> _chartList = {"0": "Line", "1": "Bar"};
   Map<String, String> _yList = {"0": "Amount", "1": "Count"};
 
   DateTime selectedF = DateTime.now().subtract(Duration(days: 92));
@@ -164,7 +164,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 93),
+              Duration(days: 92),
             ),
           ),
           CollectionStatisticsWidget(
@@ -172,7 +172,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 93),
+              Duration(days: 92),
             ),
           ),
           ExpenseStatisticsWidget(
@@ -180,7 +180,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 93),
+              Duration(days: 92),
             ),
           ),
           JournalStatisticsWidget(
@@ -188,7 +188,7 @@ class _MonthlyStatisticsState extends State<MonthlyStatistics> {
             2,
             selectedF,
             selectedF.add(
-              Duration(days: 93),
+              Duration(days: 92),
             ),
           ),
         ],

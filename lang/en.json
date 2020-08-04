@@ -44,7 +44,7 @@
     "warning": "Warning!",
     "exit_confirmation": "Do you really want to exit?",
     "get_report": "GET REPORT",
-    "category": "CATEGORY:",
+    "category": "Category",
     "type": "TYPE:",
     "range": "RANGE:",
     "from": "FROM:",
@@ -472,6 +472,5 @@
     "payment_id": "Payment Id",
     "unable_to_open" : "Unable to open update URL now. Please update manually!",
     "take_picture" : "Take Picture",
-    "recharge_to_continue" : "Please Recharge to continue!",
-         
+    "recharge_to_continue" : "Please Recharge to continue!"         
 }

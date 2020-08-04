@@ -91,7 +91,7 @@ class _JournalEntryHomeState extends State<JournalEntryHome> {
                               return;
                             }
 
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AddJournal(),
@@ -109,7 +109,7 @@ class _JournalEntryHomeState extends State<JournalEntryHome> {
                           ),
                           onTap: () async {
                             await UserController().refreshUser(false);
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => UserFinanceSetup(),

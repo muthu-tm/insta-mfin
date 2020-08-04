@@ -31,7 +31,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
     super.initState();
     inOutList.add(CustomRadioModel(true, 'Number', ''));
     inOutList.add(CustomRadioModel(false, 'Name', ''));
-    inOutList.add(CustomRadioModel(false, 'Payment', ''));
+    inOutList.add(CustomRadioModel(false, 'Loan', ''));
   }
 
   @override
@@ -53,7 +53,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                 ? "Type Customer Number here..."
                 : searchMode == 1
                     ? "Customer First Name here..."
-                    : "Type Payment ID here...",
+                    : "Type Loan ID here...",
             hintStyle: TextStyle(color: CustomColors.mfinWhite),
           ),
         ),
@@ -69,7 +69,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   _searchController.text.trim().length < 2) {
                 _scaffoldKey.currentState.showSnackBar(
                     CustomSnackBar.errorSnackBar(
-                        AppLocalizations.of(context).translate('enter_min_key'), 2));
+                        AppLocalizations.of(context).translate('enter_min_key'),
+                        2));
                 return null;
               } else {
                 int minNumber = 0;
@@ -82,7 +83,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   if (number == null) {
                     _scaffoldKey.currentState.showSnackBar(
                         CustomSnackBar.errorSnackBar(
-                            AppLocalizations.of(context).translate('invalid_mobile'), 2));
+                            AppLocalizations.of(context)
+                                .translate('invalid_mobile'),
+                            2));
                     return null;
                   } else {
                     if (_searchController.text.trim().length < 10) {
@@ -231,8 +234,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       children: <Widget>[
                         Text(
                           inOutList[2].isSelected == true
-                              ? AppLocalizations.of(context).translate('no_payment_found')
-                              : AppLocalizations.of(context).translate('no_customers_found'),
+                              ? AppLocalizations.of(context)
+                                  .translate('no_payment_found')
+                              : AppLocalizations.of(context)
+                                  .translate('no_customers_found'),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: CustomColors.mfinAlertRed,
@@ -242,7 +247,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
                         ),
                         Divider(),
                         Text(
-                          AppLocalizations.of(context).translate('different_search_key'),
+                          AppLocalizations.of(context)
+                              .translate('different_search_key'),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: CustomColors.mfinBlue,
@@ -259,11 +265,39 @@ class _SearchAppBarState extends State<SearchAppBar> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: AsyncWidgets.asyncError(),
                   );
-                } else {
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: AsyncWidgets.asyncWaiting(),
+                  );
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                        child: Text(
+                          "No Search Triggerred!",
+                          style: TextStyle(
+                            color: CustomColors.mfinBlue,
+                            fontSize: 16.0
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                        child: Text(
+                          "Search for Customer or Loans!",
+                          style: TextStyle(
+                            color: CustomColors.mfinGrey,
+                            fontSize: 16.0
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 }
               },

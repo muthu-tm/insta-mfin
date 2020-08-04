@@ -659,9 +659,10 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
       SharedPreferences sPref = await SharedPreferences.getInstance();
       sPref.setString("language", userPreferencesJSON['language']);
       MyApp.setLocale(context, Locale('en', 'US'));
-
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-          "Preferences updated successfully", 2));
+          "Preferences updated successfully", 1));
+      Navigator.pop(context);
+      await Future.delayed(Duration(milliseconds: 750));
       Navigator.pop(context);
     }
   }

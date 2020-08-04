@@ -96,12 +96,12 @@ class PaymentTemplateListWidget extends StatelessWidget {
                                                       result['message'], 2));
                                           _scaffoldKey.currentState.showSnackBar(
                                               CustomSnackBar.errorSnackBar(
-                                                  "Unable to remove Payment Template",
+                                                  "Unable to remove Loan Template",
                                                   2));
                                         } else {
                                           _scaffoldKey.currentState.showSnackBar(
                                               CustomSnackBar.successSnackBar(
-                                                  "Payment Template removed successfully",
+                                                  "Loan Template removed successfully",
                                                   2));
                                         }
                                       },
@@ -148,7 +148,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                 children: <Widget>[
                   new Spacer(),
                   Text(
-                    "No Payment Templates!",
+                    "No Loan Templates!",
                     style: TextStyle(
                       color: CustomColors.mfinAlertRed,
                       fontSize: 18.0,
@@ -159,7 +159,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                     flex: 2,
                   ),
                   Text(
-                    "Add your Templates and make your Payment faster!",
+                    "Add your Templates and make your Loan faster!",
                     style: TextStyle(
                       color: CustomColors.mfinBlue,
                       fontSize: 18.0,

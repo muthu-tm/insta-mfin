@@ -51,7 +51,6 @@ Widget bottomBar(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: "Georgia",
                       fontSize: 10,
                       color: CustomColors.mfinGrey,
                     ),
@@ -89,8 +88,7 @@ Widget bottomBar(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: "Georgia",
-                      fontSize: 9,
+                      fontSize: 10,
                       color: CustomColors.mfinGrey,
                     ),
                   ),
@@ -128,7 +126,6 @@ Widget bottomBar(BuildContext context) {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontFamily: "Georgia",
                             fontSize: 10,
                             color: CustomColors.mfinGrey,
                           ),
@@ -167,7 +164,6 @@ Widget bottomBar(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: "Georgia",
                       fontSize: 10,
                       color: CustomColors.mfinGrey,
                     ),
@@ -205,11 +201,10 @@ Widget bottomBar(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: "Georgia",
                       fontSize: 10,
                       color: CustomColors.mfinGrey,
                     ),
-                  ), // text
+                  ),
                 ],
               ),
             ),
@@ -243,7 +238,6 @@ Widget bottomBar(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: "Georgia",
                       fontSize: 10,
                       color: CustomColors.mfinGrey,
                     ),
