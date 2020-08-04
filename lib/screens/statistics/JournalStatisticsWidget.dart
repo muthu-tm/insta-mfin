@@ -41,16 +41,23 @@ class JournalStatisticsWidget extends StatelessWidget {
               List<JData> jData = [];
               Map<DateTime, JData> jGroup = new Map();
 
+              Map<String, int> aDetails = new Map();
+              DateFormat formatter = DateFormat('MMM-yyyy');
+              if (mode == 0) formatter = DateFormat('dd-MMM-yyyy');
+
               snapshot.data.forEach((j) {
+                DateTime _dt =
+                    DateTime.fromMillisecondsSinceEpoch(j.journalDate);
+
                 jGroup.update(
-                  DateTime.fromMillisecondsSinceEpoch(j.journalDate),
-                  (value) => JData(
-                      DateTime.fromMillisecondsSinceEpoch(j.journalDate),
-                      value.amount + j.amount),
-                  ifAbsent: () => JData(
-                      DateTime.fromMillisecondsSinceEpoch(j.journalDate),
-                      j.amount),
+                  _dt,
+                  (value) => JData(_dt, value.amount + j.amount),
+                  ifAbsent: () => JData(_dt, j.amount),
                 );
+
+                String format = formatter.format(_dt);
+                aDetails.update(format, (value) => j.amount + value,
+                    ifAbsent: () => j.amount);
               });
 
               jGroup.forEach((key, value) {
@@ -62,104 +69,152 @@ class JournalStatisticsWidget extends StatelessWidget {
                 jData.add(value);
               });
 
-              widget = Container(
-                child: SfCartesianChart(
-                  title: ChartTitle(
-                    text: 'JOURNALS',
-                    textStyle: TextStyle(
-                      color: CustomColors.mfinBlue,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  borderColor: CustomColors.mfinAlertRed,
-                  primaryXAxis: DateTimeAxis(
-                    intervalType: mode == 0
-                        ? DateTimeIntervalType.days
-                        : mode == 1
+              widget = Column(
+                children: <Widget>[
+                  Container(
+                    child: SfCartesianChart(
+                      title: ChartTitle(
+                        text:
+                            AppLocalizations.of(context).translate('journals'),
+                        textStyle: TextStyle(
+                          color: CustomColors.mfinBlue,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      tooltipBehavior: TooltipBehavior(enable: true),
+                      borderColor: CustomColors.mfinAlertRed,
+                      primaryXAxis: DateTimeAxis(
+                        intervalType: mode == 0
                             ? DateTimeIntervalType.days
-                            : DateTimeIntervalType.months,
-                    dateFormat: mode == 0
-                        ? DateFormat('MMM-dd')
-                        : mode == 1
+                            : mode == 1
+                                ? DateTimeIntervalType.days
+                                : DateTimeIntervalType.months,
+                        dateFormat: mode == 0
                             ? DateFormat('MMM-dd')
-                            : DateFormat('MMM-yyyy'),
-                    minimum: fDate,
-                    maximum: tDate,
-                    interval: mode == 0 ? 1 : mode == 1 ? 7 : 1,
-                    majorGridLines: MajorGridLines(width: 0),
-                    title: AxisTitle(
-                      text: mode == 0 ? 'Days' : mode == 1 ? 'Weeks' : 'Months',
-                      textStyle: TextStyle(
-                        color: CustomColors.mfinBlue,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  primaryYAxis: NumericAxis(
-                    minimum: 0,
-                    maximum: max.toDouble(),
-                    interval: interval.toDouble(),
-                    labelFormat: '{value}',
-                    majorTickLines: MajorTickLines(size: 0),
-                    title: AxisTitle(
-                      text: 'Amount',
-                      textStyle: TextStyle(
-                        color: CustomColors.mfinPositiveGreen,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  trackballBehavior: TrackballBehavior(
-                      enable: true,
-                      shouldAlwaysShow: true,
-                      lineType: TrackballLineType.vertical,
-                      lineColor: CustomColors.mfinPositiveGreen,
-                      lineWidth: 2,
-                      tooltipSettings:
-                          InteractiveTooltip(format: 'point.x : point.y')),
-                  series: type == 0
-                      ? <ChartSeries>[
-                          LineSeries<JData, DateTime>(
-                            dataSource: jData,
-                            xValueMapper: (JData pay, _) => pay.date,
-                            yValueMapper: (JData pay, _) => pay.amount,
-                            dataLabelSettings: DataLabelSettings(
-                                isVisible: mode == 0 ? true : false),
-                            width: 2,
-                            animationDuration: 1500,
-                            enableTooltip: true,
-                            name: 'Journal',
-                            markerSettings: MarkerSettings(
-                                isVisible: mode == 0 ? true : false),
+                            : mode == 1
+                                ? DateFormat('MMM-dd')
+                                : DateFormat('MMM-yyyy'),
+                        minimum: fDate,
+                        maximum: tDate,
+                        interval: mode == 0 ? 1 : mode == 1 ? 7 : 1,
+                        majorGridLines: MajorGridLines(width: 0),
+                        title: AxisTitle(
+                          text: mode == 0
+                              ? 'Days'
+                              : mode == 1 ? 'Weeks' : 'Months',
+                          textStyle: TextStyle(
+                            color: CustomColors.mfinBlue,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ]
-                      : <ChartSeries>[
-                          ColumnSeries<JData, DateTime>(
-                            dataSource: jData,
-                            xValueMapper: (JData j, _) => j.date,
-                            yValueMapper: (JData j, _) => j.amount,
-                            dataLabelSettings: DataLabelSettings(
-                                isVisible: mode == 0 ? true : false),
-                            gradient: LinearGradient(
-                              colors: [
-                                CustomColors.mfinLightGrey,
-                                CustomColors.mfinLightBlue,
-                                CustomColors.mfinBlue
-                              ],
-                              stops: <double>[0.0, 0.2, 1.0],
-                            ),
-                            animationDuration: 1500,
-                            enableTooltip: true,
-                            name: 'Journal',
-                            markerSettings: MarkerSettings(
-                                isVisible: mode == 0 ? true : false),
+                        ),
+                      ),
+                      primaryYAxis: NumericAxis(
+                        minimum: 0,
+                        maximum: max.toDouble(),
+                        interval: interval.toDouble(),
+                        labelFormat: '{value}',
+                        majorTickLines: MajorTickLines(size: 0),
+                        title: AxisTitle(
+                          text: 'Amount',
+                          textStyle: TextStyle(
+                            color: CustomColors.mfinPositiveGreen,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      trackballBehavior: TrackballBehavior(
+                          enable: true,
+                          shouldAlwaysShow: true,
+                          lineType: TrackballLineType.vertical,
+                          lineColor: CustomColors.mfinPositiveGreen,
+                          lineWidth: 2,
+                          tooltipSettings:
+                              InteractiveTooltip(format: 'point.x : point.y')),
+                      series: type == 0
+                          ? <ChartSeries>[
+                              LineSeries<JData, DateTime>(
+                                dataSource: jData,
+                                xValueMapper: (JData pay, _) => pay.date,
+                                yValueMapper: (JData pay, _) => pay.amount,
+                                dataLabelSettings: DataLabelSettings(
+                                    isVisible: mode == 0 ? true : false),
+                                width: 2,
+                                animationDuration: 1500,
+                                enableTooltip: true,
+                                name: 'Journal',
+                                markerSettings: MarkerSettings(
+                                    isVisible: mode == 0 ? true : false),
+                              ),
+                            ]
+                          : <ChartSeries>[
+                              ColumnSeries<JData, DateTime>(
+                                dataSource: jData,
+                                xValueMapper: (JData j, _) => j.date,
+                                yValueMapper: (JData j, _) => j.amount,
+                                dataLabelSettings: DataLabelSettings(
+                                    isVisible: mode == 0 ? true : false),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    CustomColors.mfinLightGrey,
+                                    CustomColors.mfinLightBlue,
+                                    CustomColors.mfinBlue
+                                  ],
+                                  stops: <double>[0.0, 0.2, 1.0],
+                                ),
+                                animationDuration: 1500,
+                                enableTooltip: true,
+                                name: 'Journal',
+                                markerSettings: MarkerSettings(
+                                    isVisible: mode == 0 ? true : false),
+                              )
+                            ],
+                    ),
+                  ),
+                  Container(
+                    child: aDetails.length > 0
+                        ? ListView.builder(
+                            padding: EdgeInsets.all(5),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            primary: false,
+                            itemCount: aDetails.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              String key = aDetails.keys.elementAt(index);
+                              return Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Text(
+                                      '$key: ',
+                                      style: TextStyle(
+                                        fontFamily: "Georgia",
+                                        color: CustomColors.mfinBlue,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Rs.${aDetails[key]}',
+                                      style: TextStyle(
+                                        fontFamily: "Georgia",
+                                        color: CustomColors.mfinAlertRed,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
                           )
-                        ],
-                ),
+                        : Text("No Data Found!"),
+                  )
+                ],
               );
             } else {
               widget = Container(

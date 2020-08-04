@@ -17,7 +17,7 @@ class _DailyStatisticsState extends State<DailyStatistics> {
   Map<String, String> _chartList = {"0": "Line", "1": "Bar"};
   Map<String, String> _yList = {"0": "Amount", "1": "Count"};
 
-  DateTime selectedF = DateTime.now().subtract(Duration(days: 6));
+  DateTime selectedF = DateTime.now().subtract(Duration(days: 7));
   TextEditingController _fDate = new TextEditingController();
 
   @override
