@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(8.0)),
             child: SizedBox(
               height: 350,
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery.of(context).size.width * 0.85,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
