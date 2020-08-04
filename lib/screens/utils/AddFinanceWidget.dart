@@ -21,13 +21,13 @@ class AddFinanceWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(5.0),
           child: Material(
             elevation: 10.0,
             shadowColor: CustomColors.mfinButtonGreen,
             borderRadius: BorderRadius.circular(10.0),
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.75,
+              width: 275,
               height: 50,
               child: FlatButton.icon(
                 icon: Icon(
@@ -40,7 +40,7 @@ class AddFinanceWidget extends StatelessWidget {
                   style: TextStyle(
                       fontFamily: 'Georgia',
                       color: CustomColors.mfinBlue,
-                      fontSize: 17.0),
+                      fontSize: 16.0),
                 ),
                 onPressed: () => Navigator.push(
                   context,
