@@ -125,7 +125,8 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Requested At:',
+                              AppLocalizations.of(context)
+                                  .translate('requested_at_colon'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,
@@ -145,7 +146,8 @@ class _ViewChitRequestersState extends State<ViewChitRequesters> {
                           ),
                           ListTile(
                             leading: Text(
-                              'Allocated?',
+                              AppLocalizations.of(context)
+                                  .translate('allocated_ques'),
                               style: TextStyle(
                                 color: CustomColors.mfinGrey,
                                 fontSize: 18.0,

@@ -232,7 +232,7 @@ class _ViewChitCollectionDetailsState extends State<ViewChitCollectionDetails> {
                       FlatButton(
                         color: CustomColors.mfinButtonGreen,
                         child: Text(
-                          "NO",
+                          AppLocalizations.of(context).translate('no'),
                           style: TextStyle(
                               color: CustomColors.mfinBlue,
                               fontSize: 18.0,

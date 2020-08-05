@@ -507,5 +507,15 @@
     "clear" : "Clear",
     "no_trigger" : "No Search Triggered!",
     "multi_search" : "Search for Customer or Loans!",
-    "capture" : "Capture"
+    "capture" : "Capture",
+    "commission_percentage" : "Commission %",
+    "allocated_ques" : "Allocated?",
+    "order_by" : "Order By",
+    "no_collection" : "No Collections available for this Payment!",
+    "upcoming" : "UPCOMING",
+    "loss" : "Loss",
+    "profit" : "Profit",
+    "paid_late_ques" : "Paid Late?",
+    "no_collection_rec" : "No collection received",
+    "settled_on" : "Settled On"
 }

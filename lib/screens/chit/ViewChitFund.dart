@@ -266,7 +266,7 @@ class _ViewChitFundState extends State<ViewChitFund> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            "Confirm!",
+            AppLocalizations.of(context).translate('confirm'),
             style: TextStyle(
                 color: CustomColors.mfinAlertRed,
                 fontSize: 25.0,
@@ -302,7 +302,7 @@ class _ViewChitFundState extends State<ViewChitFund> {
             FlatButton(
               color: CustomColors.mfinButtonGreen,
               child: Text(
-                "NO",
+                AppLocalizations.of(context).translate('no'),
                 style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,
@@ -314,7 +314,7 @@ class _ViewChitFundState extends State<ViewChitFund> {
             FlatButton(
               color: CustomColors.mfinAlertRed,
               child: Text(
-                "YES",
+                AppLocalizations.of(context).translate('yes'),
                 style: TextStyle(
                     color: CustomColors.mfinLightGrey,
                     fontSize: 18.0,

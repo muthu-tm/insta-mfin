@@ -310,7 +310,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            "Confirm!",
+            AppLocalizations.of(context).translate('confirm'),
             style: TextStyle(
                 color: CustomColors.mfinAlertRed,
                 fontSize: 25.0,
@@ -323,17 +323,17 @@ class CustomerPaymentsListWidget extends StatelessWidget {
               children: <Widget>[
                 Text(text),
                 Card(
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      obscureText: true,
-                      autofocus: false,
-                      controller: _pController,
-                      decoration: InputDecoration(
-                        hintText: 'Secret KEY',
-                        fillColor: CustomColors.mfinLightGrey,
-                        filled: true,
-                      ),
+                  child: TextFormField(
+                    textAlign: TextAlign.center,
+                    obscureText: true,
+                    autofocus: false,
+                    controller: _pController,
+                    decoration: InputDecoration(
+                      hintText: 'Secret KEY',
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
                     ),
+                  ),
                 ),
               ],
             ),
@@ -342,7 +342,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
             FlatButton(
               color: CustomColors.mfinButtonGreen,
               child: Text(
-                "NO",
+                AppLocalizations.of(context).translate('no'),
                 style: TextStyle(
                     color: CustomColors.mfinBlue,
                     fontSize: 18.0,
@@ -354,7 +354,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
             FlatButton(
               color: CustomColors.mfinAlertRed,
               child: Text(
-                "YES",
+                AppLocalizations.of(context).translate('yes'),
                 style: TextStyle(
                     color: CustomColors.mfinLightGrey,
                     fontSize: 18.0,

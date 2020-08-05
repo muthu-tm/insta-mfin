@@ -12,7 +12,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 
 import '../../../app_localizations.dart';
 
-Widget customerPaymentWidget(BuildContext context, GlobalKey<ScaffoldState> _scaffoldKey, int index, Payment payment) {
+Widget customerPaymentWidget(BuildContext context,
+    GlobalKey<ScaffoldState> _scaffoldKey, int index, Payment payment) {
   Color cColor = CustomColors.mfinBlue;
   if (payment.isSettled) cColor = CustomColors.mfinGrey;
 
@@ -115,7 +116,7 @@ Widget customerPaymentWidget(BuildContext context, GlobalKey<ScaffoldState> _sca
                         icon: Icon(Icons.remove_red_eye,
                             color: CustomColors.mfinFadedButtonGreen),
                         label: Text(
-                          "View",
+                          AppLocalizations.of(context).translate('view'),
                           style: TextStyle(
                             fontSize: 16,
                             color: CustomColors.mfinFadedButtonGreen,
@@ -180,7 +181,7 @@ Widget getPaymentDetails(
                   Padding(
                     padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 5.0),
                     child: Text(
-                      "RECEIVED",
+                      AppLocalizations.of(context).translate('received'),
                       style: TextStyle(
                         fontSize: 16,
                         color: CustomColors.mfinBlue,
@@ -207,7 +208,7 @@ Widget getPaymentDetails(
                   Padding(
                     padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0),
                     child: Text(
-                      'PENDING',
+                      AppLocalizations.of(context).translate('pending'),
                       style: TextStyle(
                         fontSize: 16,
                         color: CustomColors.mfinBlue,
@@ -234,7 +235,7 @@ Widget getPaymentDetails(
                   Padding(
                     padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0),
                     child: Text(
-                      'TODAY',
+                      AppLocalizations.of(context).translate('today'),
                       style: TextStyle(
                         fontSize: 16,
                         color: CustomColors.mfinBlue,
@@ -261,7 +262,7 @@ Widget getPaymentDetails(
                   Padding(
                     padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0),
                     child: Text(
-                      'UPCOMING',
+                      AppLocalizations.of(context).translate('upcoming'),
                       style: TextStyle(
                         fontSize: 16,
                         color: CustomColors.mfinBlue,
@@ -306,7 +307,9 @@ Widget getPaymentDetails(
                     }
                   },
                   icon: Icon(Icons.collections_bookmark),
-                  label: Text("Add Collection"),
+                  label: Text(
+                    AppLocalizations.of(context).translate('add_collection'),
+                  ),
                 ),
               ),
             ],
@@ -405,7 +408,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                       height: 30,
                       child: ListTile(
                         leading: Text(
-                          'LOSS',
+                          AppLocalizations.of(context).translate('loss'),
                           style: TextStyle(
                             fontSize: 17,
                             color: CustomColors.mfinBlue,
@@ -427,7 +430,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                           height: 30,
                           child: ListTile(
                             leading: Text(
-                              'PROFIT',
+                              AppLocalizations.of(context).translate('profit'),
                               style: TextStyle(
                                 fontSize: 17,
                                 color: CustomColors.mfinBlue,

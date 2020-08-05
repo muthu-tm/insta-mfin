@@ -11,6 +11,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/pay_transaction_receipt.dart';
 
+import '../../../app_localizations.dart';
+
 class TransactionListWidget extends StatelessWidget {
   TransactionListWidget(this._scaffoldKey, this._payment);
 
@@ -120,7 +122,8 @@ class TransactionListWidget extends StatelessWidget {
                                     height: 35,
                                     child: ListTile(
                                       leading: Text(
-                                        "AMOUNT:",
+                                        AppLocalizations.of(context)
+                                            .translate('amount_colon'),
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: CustomColors.mfinBlue,
@@ -141,7 +144,8 @@ class TransactionListWidget extends StatelessWidget {
                                     height: 35,
                                     child: ListTile(
                                       leading: Text(
-                                        "PAID LATE?",
+                                        AppLocalizations.of(context)
+                                            .translate('paid_late_ques'),
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: CustomColors.mfinBlue,
@@ -176,7 +180,8 @@ class TransactionListWidget extends StatelessWidget {
                     children: <Widget>[
                       new Spacer(),
                       Text(
-                        "No collection received",
+                        AppLocalizations.of(context)
+                            .translate('no_collection_rec'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CustomColors.mfinAlertRed,
@@ -246,9 +251,7 @@ class TransactionListWidget extends StatelessWidget {
                           5),
                     );
                     await PayTransactionReceipt().generateInvoice(
-                      UserController().getCurrentUser(),
-                      _payment, collList
-                    );
+                        UserController().getCurrentUser(), _payment, collList);
                   },
                 ),
               ),
