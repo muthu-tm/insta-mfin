@@ -500,5 +500,11 @@
     "no_journal_category": "No Journal Categories!",
     "add_journal_category": "Add Journal Categories",
     "pay_template": "Payment Template",
-    "add_journal": "Add Journal"
+    "add_journal": "Add Journal",
+    "type_number" : "Type Customer Number here...",
+    "customer_first_name" : "Customer First Name here...",
+    "loan_id" : "Type Loan ID here...",
+    "clear" : "Clear",
+    "no_trigger" : "No Search Triggered!",
+    "multi_search" : "Search for Customer or Loans!"
 }
