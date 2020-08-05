@@ -89,12 +89,12 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new Card(
+              Card(
                 elevation: 10.0,
                 margin: EdgeInsets.only(
                     top: 10.0, bottom: 10.0, left: 5.0, right: 5.0),
                 shadowColor: CustomColors.mfinPositiveGreen,
-                child: new Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -128,7 +128,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                       color: CustomColors.mfinBlue,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -144,9 +144,10 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                                     labelText: AppLocalizations.of(context)
                                         .translate('given_on'),
                                     labelStyle: TextStyle(
+                                      fontSize: 10,
                                       color: CustomColors.mfinBlue,
                                     ),
-                                    contentPadding: new EdgeInsets.symmetric(
+                                    contentPadding: EdgeInsets.symmetric(
                                         vertical: 3.0, horizontal: 3.0),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -163,7 +164,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                               ),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.end,
@@ -175,11 +176,12 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('given_amount'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -200,7 +202,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -209,6 +211,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('transferred_mode'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 floatingLabelBehavior:
@@ -239,7 +242,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -253,11 +256,12 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('amount_given'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -273,7 +277,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.end,
@@ -285,11 +289,12 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('given_by'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -308,7 +313,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -323,11 +328,12 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                                 hintText: AppLocalizations.of(context)
                                     .translate('notes_hint'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(

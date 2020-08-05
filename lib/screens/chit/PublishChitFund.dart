@@ -205,7 +205,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                       color: CustomColors.mfinBlue,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -218,6 +218,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -242,7 +243,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -256,6 +257,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -287,7 +289,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.all(5)),
                           Flexible(
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
@@ -296,6 +298,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -326,7 +329,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -340,6 +343,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -361,7 +365,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.all(5)),
                           Flexible(
                             child: TextFormField(
                               controller: commController,
@@ -373,6 +377,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -407,7 +412,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -421,6 +426,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -459,7 +465,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.all(5)),
                           Flexible(
                             child: DropdownButtonFormField<int>(
                               decoration: InputDecoration(
@@ -468,6 +474,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -498,7 +505,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -513,6 +520,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('notes'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 floatingLabelBehavior:
@@ -559,7 +567,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                   child: Column(
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.all(5.0),
+                                        padding: EdgeInsets.all(5.0),
                                         child: Row(
                                           children: <Widget>[
                                             Flexible(
@@ -576,6 +584,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                       FloatingLabelBehavior
                                                           .always,
                                                   labelStyle: TextStyle(
+                                                    fontSize: 10,
                                                     color:
                                                         CustomColors.mfinBlue,
                                                   ),
@@ -612,6 +621,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                       FloatingLabelBehavior
                                                           .always,
                                                   labelStyle: TextStyle(
+                                                    fontSize: 10,
                                                     color:
                                                         CustomColors.mfinBlue,
                                                   ),
@@ -636,7 +646,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(5.0),
+                                        padding: EdgeInsets.all(5.0),
                                         child: Row(
                                           children: <Widget>[
                                             Flexible(
@@ -655,6 +665,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                       FloatingLabelBehavior
                                                           .always,
                                                   labelStyle: TextStyle(
+                                                    fontSize: 10,
                                                     color:
                                                         CustomColors.mfinBlue,
                                                   ),
@@ -725,6 +736,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                       FloatingLabelBehavior
                                                           .always,
                                                   labelStyle: TextStyle(
+                                                    fontSize: 10,
                                                     color:
                                                         CustomColors.mfinBlue,
                                                   ),
@@ -775,7 +787,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(5.0),
+                                        padding: EdgeInsets.all(5.0),
                                         child: Row(
                                           children: <Widget>[
                                             Flexible(
@@ -795,6 +807,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                       FloatingLabelBehavior
                                                           .always,
                                                   labelStyle: TextStyle(
+                                                    fontSize: 10,
                                                     color:
                                                         CustomColors.mfinBlue,
                                                   ),
@@ -852,14 +865,14 @@ class _PublishChitFundState extends State<PublishChitFund> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText: AppLocalizations.of(
-                                                              context)
-                                                          .translate(
-                                                              'commission'),
+                                                  labelText: AppLocalizations
+                                                          .of(context)
+                                                      .translate('commission'),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
                                                   labelStyle: TextStyle(
+                                                    fontSize: 10,
                                                     color:
                                                         CustomColors.mfinBlue,
                                                   ),

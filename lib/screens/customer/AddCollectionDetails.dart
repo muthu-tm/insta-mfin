@@ -96,16 +96,16 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new Card(
+              Card(
                 elevation: 10.0,
                 margin: EdgeInsets.only(
                     top: 10.0, bottom: 10.0, left: 5.0, right: 5.0),
                 shadowColor: CustomColors.mfinPositiveGreen,
-                child: new Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -148,7 +148,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                       color: CustomColors.mfinBlue,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -160,6 +160,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('customer_name'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinLightGrey,
@@ -171,7 +172,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -187,6 +188,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                     labelText: AppLocalizations.of(context)
                                         .translate('date_collected'),
                                     labelStyle: TextStyle(
+                                      fontSize: 10,
                                       color: CustomColors.mfinBlue,
                                     ),
                                     contentPadding: new EdgeInsets.symmetric(
@@ -206,7 +208,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                               ),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.end,
@@ -218,11 +220,12 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('collected_amount'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -244,7 +247,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -253,6 +256,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('transferred_mode'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 floatingLabelBehavior:
@@ -283,7 +287,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -297,11 +301,12 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('collected_from'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -318,7 +323,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.end,
@@ -330,6 +335,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('collected_by'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
@@ -355,7 +361,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -370,6 +376,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                 hintText: AppLocalizations.of(context)
                                     .translate('notes_hint'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
@@ -397,12 +404,12 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(5.0),
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(10.0),
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
+                    width: MediaQuery.of(context).size.width * 0.85,
                     height: 50,
                     child: CheckboxListTile(
                       value: isLatePay,
@@ -442,6 +449,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                           labelText: AppLocalizations.of(context)
                               .translate('penalty_amount'),
                           labelStyle: TextStyle(
+                            fontSize: 10,
                             color: CustomColors.mfinBlue,
                           ),
                           fillColor: CustomColors.mfinWhite,

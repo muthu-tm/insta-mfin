@@ -12,7 +12,8 @@ class ViewChitTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate("view_chit_template")),
+        title:
+            Text(AppLocalizations.of(context).translate("view_chit_template")),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -46,7 +47,7 @@ class ViewChitTemplate extends StatelessWidget {
                     color: CustomColors.mfinBlue,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -54,10 +55,12 @@ class ViewChitTemplate extends StatelessWidget {
                             initialValue: temp.name,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context).translate("template_name"),
+                              labelText: AppLocalizations.of(context)
+                                  .translate("template_name"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -76,7 +79,7 @@ class ViewChitTemplate extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -84,10 +87,12 @@ class ViewChitTemplate extends StatelessWidget {
                             initialValue: temp.chitAmount.toString(),
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context).translate("chit_amount"),
+                              labelText: AppLocalizations.of(context)
+                                  .translate("chit_amount"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -102,16 +107,18 @@ class ViewChitTemplate extends StatelessWidget {
                             readOnly: true,
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                        Padding(padding: EdgeInsets.all(5)),
                         Flexible(
                           child: TextFormField(
                             initialValue: temp.getProfitAmount().toString(),
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context).translate("profit_amount"),
+                              labelText: AppLocalizations.of(context)
+                                  .translate("profit_amount"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -130,7 +137,7 @@ class ViewChitTemplate extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -143,6 +150,7 @@ class ViewChitTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -158,15 +166,17 @@ class ViewChitTemplate extends StatelessWidget {
                             readOnly: true,
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                        Padding(padding: EdgeInsets.all(5)),
                         Flexible(
                           child: TextFormField(
                             initialValue: temp.collectionDay.toString(),
                             decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context).translate("collection_day"),
+                              labelText: AppLocalizations.of(context)
+                                  .translate("collection_day"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -185,7 +195,7 @@ class ViewChitTemplate extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -197,6 +207,7 @@ class ViewChitTemplate extends StatelessWidget {
                               hintText: 'Notes',
                               labelText: 'Notes',
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               floatingLabelBehavior:
@@ -244,7 +255,7 @@ class ViewChitTemplate extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(5.0),
+                                      padding: EdgeInsets.all(5.0),
                                       child: Row(
                                         children: <Widget>[
                                           Flexible(
@@ -260,6 +271,7 @@ class ViewChitTemplate extends StatelessWidget {
                                                     FloatingLabelBehavior
                                                         .always,
                                                 labelStyle: TextStyle(
+                                                  fontSize: 10,
                                                   color: CustomColors.mfinBlue,
                                                 ),
                                                 contentPadding:
@@ -293,6 +305,7 @@ class ViewChitTemplate extends StatelessWidget {
                                                     FloatingLabelBehavior
                                                         .always,
                                                 labelStyle: TextStyle(
+                                                  fontSize: 10,
                                                   color: CustomColors.mfinBlue,
                                                 ),
                                                 contentPadding:
@@ -316,7 +329,7 @@ class ViewChitTemplate extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(5.0),
+                                      padding: EdgeInsets.all(5.0),
                                       child: Row(
                                         children: <Widget>[
                                           Flexible(
@@ -332,6 +345,7 @@ class ViewChitTemplate extends StatelessWidget {
                                                     FloatingLabelBehavior
                                                         .always,
                                                 labelStyle: TextStyle(
+                                                  fontSize: 10,
                                                   color: CustomColors.mfinBlue,
                                                 ),
                                                 contentPadding:
@@ -364,6 +378,7 @@ class ViewChitTemplate extends StatelessWidget {
                                                     FloatingLabelBehavior
                                                         .always,
                                                 labelStyle: TextStyle(
+                                                  fontSize: 10,
                                                   color: CustomColors.mfinBlue,
                                                 ),
                                                 contentPadding:

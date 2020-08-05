@@ -39,7 +39,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Payment Template",
+                      "Loan Template",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -53,7 +53,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                     color: CustomColors.mfinBlue,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -66,6 +66,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -83,7 +84,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -96,6 +97,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -109,7 +111,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                        Padding(padding: EdgeInsets.all(5)),
                         Flexible(
                           child: TextFormField(
                             initialValue: template.interestAmount.toString(),
@@ -120,6 +122,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -137,7 +140,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -150,6 +153,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -167,7 +171,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -180,6 +184,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -193,7 +198,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                        Padding(padding: EdgeInsets.all(5)),
                         Flexible(
                           child: TextFormField(
                             initialValue: template.collectionAmount.toString(),
@@ -204,6 +209,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -221,7 +227,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -234,6 +240,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -247,7 +254,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                        Padding(padding: EdgeInsets.all(5)),
                         Flexible(
                           child: TextFormField(
                             initialValue: template.surcharge.toString(),
@@ -258,6 +265,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -275,7 +283,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -288,6 +296,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(

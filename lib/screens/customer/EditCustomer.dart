@@ -129,6 +129,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
+                                    fontSize: 10,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
@@ -164,6 +165,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
+                                    fontSize: 10,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
@@ -202,6 +204,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
+                                    fontSize: 10,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
@@ -229,6 +232,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
+                                    fontSize: 10,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
@@ -356,6 +360,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always,
                                       labelStyle: TextStyle(
+                                        fontSize: 10,
                                         color: CustomColors.mfinBlue,
                                       ),
                                       contentPadding: EdgeInsets.symmetric(
@@ -386,6 +391,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
+                                    fontSize: 10,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
@@ -425,6 +431,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
+                                    fontSize: 10,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
@@ -459,6 +466,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
+                                    fontSize: 10,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   contentPadding: EdgeInsets.symmetric(

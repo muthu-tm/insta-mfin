@@ -116,7 +116,8 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        AppLocalizations.of(context).translate("payment_template"),
+                        AppLocalizations.of(context)
+                            .translate("payment_template"),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -130,7 +131,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       color: CustomColors.mfinBlue,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -139,10 +140,12 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate("template_name"),
+                                labelText: AppLocalizations.of(context)
+                                    .translate("template_name"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -167,7 +170,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -176,10 +179,12 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate("total_amount"),
+                                labelText: AppLocalizations.of(context)
+                                    .translate("total_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -215,17 +220,19 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.all(5)),
                           Flexible(
                             child: TextFormField(
                               controller: interestAmountController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate("interest_amount"),
+                                labelText: AppLocalizations.of(context)
+                                    .translate("interest_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -262,7 +269,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -271,10 +278,12 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate("principal_amount"),
+                                labelText: AppLocalizations.of(context)
+                                    .translate("principal_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -301,7 +310,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -310,10 +319,12 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate("no_of_collections"),
+                                labelText: AppLocalizations.of(context)
+                                    .translate("no_of_collections"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -346,17 +357,19 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.all(5)),
                           Flexible(
                             child: TextFormField(
                               controller: collectionAmountController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate("collection_amount"),
+                                labelText: AppLocalizations.of(context)
+                                    .translate("collection_amount"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -382,7 +395,7 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -391,10 +404,12 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate("document_charge"),
+                                labelText: AppLocalizations.of(context)
+                                    .translate("document_charge"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -415,17 +430,19 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.all(5)),
                           Flexible(
                             child: TextFormField(
                               initialValue: surChargeAmount.toString(),
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate("surcharge"),
+                                labelText: AppLocalizations.of(context)
+                                    .translate("surcharge"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -450,16 +467,18 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context).translate("collection_mode"),
+                                labelText: AppLocalizations.of(context)
+                                    .translate("collection_mode"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -502,7 +521,8 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                  AppLocalizations.of(context).translate("collection_days"),
+                                  AppLocalizations.of(context)
+                                      .translate("collection_days"),
                                   style: TextStyle(
                                       color: CustomColors.mfinBlue,
                                       fontSize: 16.0),
@@ -591,8 +611,8 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate("required_fields"), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate("required_fields"), 2));
     }
   }
 }

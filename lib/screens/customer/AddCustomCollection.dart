@@ -99,7 +99,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -110,6 +110,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                               decoration: InputDecoration(
                                 labelText: "Customer Name",
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinLightGrey,
@@ -121,7 +122,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -135,9 +136,10 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                                     hintText: 'Date Collected',
                                     labelText: "Collected On",
                                     labelStyle: TextStyle(
+                                      fontSize: 10,
                                       color: CustomColors.mfinBlue,
                                     ),
-                                    contentPadding: new EdgeInsets.symmetric(
+                                    contentPadding: EdgeInsets.symmetric(
                                         vertical: 3.0, horizontal: 3.0),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -154,7 +156,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                               ),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -164,11 +166,12 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                                 hintText: 'Collected Amount',
                                 labelText: 'Collected Amount',
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -189,7 +192,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -197,6 +200,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                               decoration: InputDecoration(
                                 labelText: 'Transferred Mode',
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 floatingLabelBehavior:
@@ -227,7 +231,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -239,11 +243,12 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                                 hintText: 'Amount Received From',
                                 labelText: "Collected From",
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -258,7 +263,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -268,11 +273,12 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                                 hintText: 'Amount Collected by',
                                 labelText: "Collected By",
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -291,7 +297,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -305,11 +311,12 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                                 hintText:
                                     "Short notes/reference about the Collection",
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -371,7 +378,8 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
       if (widget.payment.totalAmount < widget.tReceived + collectedAmount) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            "You are trying to add more than Payment's total amount, try Settlement!", 3));
+            "You are trying to add more than Payment's total amount, try Settlement!",
+            3));
         return;
       }
 

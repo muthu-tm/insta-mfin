@@ -134,53 +134,50 @@ class ViewCustomer extends StatelessWidget {
                           );
                         },
                       ),
-                      ListTile(
-                        title: Text(
-                          AppLocalizations.of(context)
-                              .translate('call_customer'),
-                        ),
-                        leading: Icon(
-                          Icons.phone,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        onTap: () {
-                          if (customer.mobileNumber != null) {
-                            UrlLauncherUtils.makePhoneCall(
-                                customer.mobileNumber);
-                          } else {
-                            Navigator.pop(context);
-                            _scaffoldKey.currentState.showSnackBar(
-                              CustomSnackBar.errorSnackBar(
-                                  AppLocalizations.of(context)
-                                      .translate('customer_mobile'),
-                                  3),
-                            );
-                          }
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          AppLocalizations.of(context)
-                              .translate('text_customer'),
-                        ),
-                        leading: Icon(
-                          Icons.textsms,
-                          color: CustomColors.mfinBlue,
-                        ),
-                        onTap: () {
-                          if (customer.mobileNumber != null) {
-                            UrlLauncherUtils.makeSMS(customer.mobileNumber);
-                          } else {
-                            Navigator.pop(context);
-                            _scaffoldKey.currentState.showSnackBar(
-                              CustomSnackBar.errorSnackBar(
-                                  AppLocalizations.of(context)
-                                      .translate('customer_mobile'),
-                                  3),
-                            );
-                          }
-                        },
-                      ),
+                      customer.mobileNumber != null
+                          ? ListTile(
+                              title: Text('Call Customer'),
+                              leading: Icon(
+                                Icons.phone,
+                                color: CustomColors.mfinBlue,
+                              ),
+                              onTap: () {
+                                if (customer.mobileNumber != null) {
+                                  UrlLauncherUtils.makePhoneCall(
+                                      customer.mobileNumber);
+                                } else {
+                                  Navigator.pop(context);
+                                  _scaffoldKey.currentState.showSnackBar(
+                                    CustomSnackBar.errorSnackBar(
+                                        "Customer doesn't have valid mobile number!",
+                                        3),
+                                  );
+                                }
+                              },
+                            )
+                          : Container(),
+                      customer.mobileNumber != null
+                          ? ListTile(
+                              title: Text('Text Customer'),
+                              leading: Icon(
+                                Icons.textsms,
+                                color: CustomColors.mfinBlue,
+                              ),
+                              onTap: () {
+                                if (customer.mobileNumber != null) {
+                                  UrlLauncherUtils.makeSMS(
+                                      customer.mobileNumber);
+                                } else {
+                                  Navigator.pop(context);
+                                  _scaffoldKey.currentState.showSnackBar(
+                                    CustomSnackBar.errorSnackBar(
+                                        "Customer doesn't have valid mobile number!",
+                                        3),
+                                  );
+                                }
+                              },
+                            )
+                          : Container(),
                       ListTile(
                           title: Text(
                             AppLocalizations.of(context)
@@ -211,7 +208,6 @@ class ViewCustomer extends StatelessWidget {
                                               .translate('remove_payment'),
                                           3));
                                 } else {
-                                  // ! Once customer deleted; need to route user to list page
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                   Navigator.pop(context);

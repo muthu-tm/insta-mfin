@@ -144,7 +144,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                       color: CustomColors.mfinBlue,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -160,6 +160,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                                     labelText: AppLocalizations.of(context)
                                         .translate('collected_on'),
                                     labelStyle: TextStyle(
+                                      fontSize: 10,
                                       color: CustomColors.mfinBlue,
                                     ),
                                     contentPadding: EdgeInsets.symmetric(
@@ -179,7 +180,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                               ),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.end,
@@ -191,6 +192,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('collected_amount'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
@@ -217,7 +219,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -226,6 +228,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('transferred_mode'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 floatingLabelBehavior:
@@ -256,7 +259,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -270,11 +273,12 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('collected_from'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -291,7 +295,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.end,
@@ -303,11 +307,12 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('collected_by'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -328,7 +333,7 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -343,11 +348,12 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                                 hintText: AppLocalizations.of(context)
                                     .translate('notes_hint'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -370,12 +376,12 @@ class _AddChitCollectionDetailsState extends State<AddChitCollectionDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(5.0),
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(10.0),
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
+                    width: MediaQuery.of(context).size.width * 0.85,
                     height: 50,
                     child: CheckboxListTile(
                       value: isLatePay,

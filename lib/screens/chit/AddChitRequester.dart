@@ -46,7 +46,7 @@ class _AddChitRequesterState extends State<AddChitRequester> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinGrey,
       appBar: AppBar(
@@ -196,7 +196,7 @@ class _AddChitRequesterState extends State<AddChitRequester> {
                     ),
                   ),
                 ),
-                title: new TextFormField(
+                title: TextFormField(
                   keyboardType: TextInputType.text,
                   maxLines: 3,
                   decoration: InputDecoration(
