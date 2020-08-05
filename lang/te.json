@@ -469,5 +469,22 @@
     "wish_to_complete_financier": "Wish to be a Complete Financier?",
     "register_your_finance": "Register Your Finance!",
     "add_payment": "Add Loan",
-    "add": "Add"
+    "add": "Add",
+
+    "apply_balance": "Apply Balance",
+    "amount_applied": "Amount Applied: ",
+    "wallet_amount": "Wallet Amount",
+    "refer_and_earn": "Refer & Earn",
+    "referal_code": "Your Referral Code",
+    "referred_by": "Referred by",
+    "apply_referal_code": "Apply Referral Code",
+    "available_balance": "Available Balance: ",
+    "registration_bonus": "Registration Bonus",
+    "no_rewards_so_far": "No Rewards so far!",
+    "refer_and_reward": "Refer your code & Earn rewards!",
+    "your_reward": "Your Rewards",
+    "payment": "Payments",
+    "interest_from": "Interest From",
+    "app_language": "App Language",
+    "transaction_group_by": "TRANSACTIONS GROUP BY"
 }

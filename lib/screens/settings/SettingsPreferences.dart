@@ -146,7 +146,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   Divider(
                     color: CustomColors.mfinButtonGreen,
                   ),
-                  RowHeaderText(textName: "Report's Signature"),
+                  RowHeaderText(textName: AppLocalizations.of(context).translate('report_signature')),
                   Padding(
                     padding:
                         EdgeInsets.only(left: 15.0, right: 5.0, bottom: 10.0),
@@ -266,7 +266,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 15.0, top: 10),
                             child: Text(
-                              "Interest From",
+                              AppLocalizations.of(context).translate('interest_from'),
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontSize: 16,
@@ -403,7 +403,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 15.0, top: 10),
                         child: Text(
-                          "App Language",
+                          AppLocalizations.of(context).translate('app_language'),
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 16,
@@ -444,7 +444,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       ),
                     ),
                   ]),
-                  RowHeaderText(textName: "TRANSACTIONS GROUP BY"),
+                  RowHeaderText(textName: AppLocalizations.of(context).translate('transaction_group_by')),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

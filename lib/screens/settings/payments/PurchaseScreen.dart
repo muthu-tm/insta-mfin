@@ -312,7 +312,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
                             });
                           },
                           title: Text(
-                            "Apply Balance",
+                            AppLocalizations.of(context).translate('apply_balance'),
                             style: TextStyle(
                               fontSize: 18.0,
                               fontFamily: "Georgia",
@@ -339,7 +339,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Text(
-                        "Amount Applied: ",
+                        AppLocalizations.of(context).translate('amount_applied'),
                         style: TextStyle(
                           fontFamily: "Georgia",
                           color: CustomColors.mfinBlue,
@@ -402,7 +402,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
                   color: CustomColors.mfinBlue.withOpacity(0.6),
                 ),
                 title: Text(
-                  "Wallet Amount",
+                  AppLocalizations.of(context).translate('wallet_amount'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Georgia",
