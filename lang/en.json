@@ -506,5 +506,6 @@
     "loan_id" : "Type Loan ID here...",
     "clear" : "Clear",
     "no_trigger" : "No Search Triggered!",
-    "multi_search" : "Search for Customer or Loans!"
+    "multi_search" : "Search for Customer or Loans!",
+    "capture" : "Capture"
 }

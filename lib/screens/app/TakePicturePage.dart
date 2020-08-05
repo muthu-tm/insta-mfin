@@ -2,6 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import '../../app_localizations.dart';
+
 class TakePicturePage extends StatefulWidget {
   final CameraDescription camera;
   final String path;
@@ -41,7 +43,9 @@ class _TakePicturePageState extends State<TakePicturePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Take Picture"),
+        title: Text(
+          AppLocalizations.of(context).translate('take_picture'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -51,7 +55,7 @@ class _TakePicturePageState extends State<TakePicturePage> {
           await _takePicture(context);
         },
         label: Text(
-          "Capture",
+          AppLocalizations.of(context).translate('capture'),
           style: TextStyle(
               color: CustomColors.mfinWhite,
               fontSize: 14.0,
