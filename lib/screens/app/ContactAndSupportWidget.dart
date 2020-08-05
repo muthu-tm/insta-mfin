@@ -6,8 +6,8 @@ import '../../app_localizations.dart';
 
 Widget contactAndSupportDialog(context) {
   return Container(
-    height: 350,
-    width: 300,
+    height: 400,
+    width: MediaQuery.of(context).size.width * 0.9,
     child: Card(
       elevation: 5.0,
       shape: RoundedRectangleBorder(
@@ -44,6 +44,7 @@ Widget contactAndSupportDialog(context) {
           SizedBox(height: 15),
           Text(
             AppLocalizations.of(context).translate('lost_need_help'),
+            textAlign: TextAlign.center,
             style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 16.0,
@@ -51,6 +52,7 @@ Widget contactAndSupportDialog(context) {
           ),
           Text(
             AppLocalizations.of(context).translate('happy_to_help'),
+            textAlign: TextAlign.center,
             style: TextStyle(
                 color: CustomColors.mfinPositiveGreen,
                 fontSize: 14.0,
@@ -59,9 +61,10 @@ Widget contactAndSupportDialog(context) {
           SizedBox(height: 40),
           Text(
             AppLocalizations.of(context).translate('contact_us'),
+            textAlign: TextAlign.center,
             style: TextStyle(
                 color: CustomColors.mfinBlue,
-                fontSize: 20.0,
+                fontSize: 18.0,
                 fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 10),
@@ -83,17 +86,14 @@ Widget contactAndSupportDialog(context) {
                       'iFIN - Help %26 Support',
                       'Please type your query/issue here with your mobile number.. We will get back to you ASAP!');
                 },
-                label: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Text(
+                label: Text(
                     AppLocalizations.of(context).translate('email'),
                     style: TextStyle(
                       color: CustomColors.mfinButtonGreen,
-                      fontSize: 18.0,
+                      fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
                 color: CustomColors.mfinBlue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -111,17 +111,14 @@ Widget contactAndSupportDialog(context) {
                 onPressed: () {
                   UrlLauncherUtils.makePhoneCall(9361808580);
                 },
-                label: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Text(
+                label: Text(
                     AppLocalizations.of(context).translate('phone'),
                     style: TextStyle(
                       color: CustomColors.mfinButtonGreen,
-                      fontSize: 18.0,
+                      fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
                 color: CustomColors.mfinBlue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
