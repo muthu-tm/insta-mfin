@@ -150,7 +150,7 @@ class _EditPaymentState extends State<EditPayment> {
                       color: CustomColors.mfinAlertRed,
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -165,6 +165,7 @@ class _EditPaymentState extends State<EditPayment> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -182,7 +183,7 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -199,6 +200,7 @@ class _EditPaymentState extends State<EditPayment> {
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
+                                      fontSize: 10,
                                       color: CustomColors.mfinBlue,
                                     ),
                                     contentPadding: EdgeInsets.symmetric(
@@ -218,7 +220,7 @@ class _EditPaymentState extends State<EditPayment> {
                               ),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -232,6 +234,7 @@ class _EditPaymentState extends State<EditPayment> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('payment_id'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 fillColor: CustomColors.mfinWhite,
@@ -257,7 +260,7 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: EdgeInsets.all(5),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -271,6 +274,7 @@ class _EditPaymentState extends State<EditPayment> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('amount_given_by'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 floatingLabelBehavior:
@@ -295,13 +299,14 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
                                 labelText: AppLocalizations.of(context)
                                     .translate('transferred_mode'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 floatingLabelBehavior:
@@ -332,7 +337,7 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -341,6 +346,7 @@ class _EditPaymentState extends State<EditPayment> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('collection_mode'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 floatingLabelBehavior:
@@ -397,7 +403,7 @@ class _EditPaymentState extends State<EditPayment> {
                           )
                         : Container(),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -409,10 +415,11 @@ class _EditPaymentState extends State<EditPayment> {
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
                                     labelText: AppLocalizations.of(context)
-                                        .translate('start_date'),
+                                        .translate('collection_sdate'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
+                                      fontSize: 10,
                                       color: CustomColors.mfinBlue,
                                     ),
                                     contentPadding: EdgeInsets.symmetric(
@@ -432,7 +439,7 @@ class _EditPaymentState extends State<EditPayment> {
                               ),
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: GestureDetector(
                               onTap: () => _selectCollectionDate(context),
@@ -442,10 +449,11 @@ class _EditPaymentState extends State<EditPayment> {
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
                                     labelText: AppLocalizations.of(context)
-                                        .translate('end_date'),
+                                        .translate('collection_edate'),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
+                                      fontSize: 10,
                                       color: CustomColors.mfinBlue,
                                     ),
                                     contentPadding: EdgeInsets.symmetric(
@@ -469,7 +477,7 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -483,8 +491,8 @@ class _EditPaymentState extends State<EditPayment> {
                                     .translate('referral_commission'),
                                 labelText: AppLocalizations.of(context)
                                     .translate('referral_commission'),
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
+                                labelStyle: TextStyle(
+                                    fontSize: 10, color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
@@ -513,7 +521,7 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -528,6 +536,7 @@ class _EditPaymentState extends State<EditPayment> {
                                 labelText: AppLocalizations.of(context)
                                     .translate('notes'),
                                 labelStyle: TextStyle(
+                                  fontSize: 10,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 floatingLabelBehavior:
@@ -580,7 +589,7 @@ class _EditPaymentState extends State<EditPayment> {
                       color: CustomColors.mfinAlertRed,
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -599,8 +608,8 @@ class _EditPaymentState extends State<EditPayment> {
                                     : 'Total amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
+                                labelStyle: TextStyle(
+                                    fontSize: 10, color: CustomColors.mfinBlue),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                                 contentPadding: EdgeInsets.symmetric(
@@ -649,7 +658,7 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -662,8 +671,8 @@ class _EditPaymentState extends State<EditPayment> {
                                     .translate('interest_amount'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
+                                labelStyle: TextStyle(
+                                    fontSize: 10, color: CustomColors.mfinBlue),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                                 contentPadding: EdgeInsets.symmetric(
@@ -717,7 +726,7 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -736,8 +745,8 @@ class _EditPaymentState extends State<EditPayment> {
                                     : 'Loan amount',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
+                                labelStyle: TextStyle(
+                                    fontSize: 10, color: CustomColors.mfinBlue),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                                 contentPadding: EdgeInsets.symmetric(
@@ -769,7 +778,7 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -782,8 +791,8 @@ class _EditPaymentState extends State<EditPayment> {
                                     .translate('number_of_collections'),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
+                                labelStyle: TextStyle(
+                                    fontSize: 10, color: CustomColors.mfinBlue),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
                                 contentPadding: EdgeInsets.symmetric(
@@ -820,7 +829,7 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -833,8 +842,8 @@ class _EditPaymentState extends State<EditPayment> {
                                     .translate('collection_amount'),
                                 labelText: AppLocalizations.of(context)
                                     .translate('collection_amount'),
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
+                                labelStyle: TextStyle(
+                                    fontSize: 10, color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
@@ -860,7 +869,7 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                                 textAlign: TextAlign.start,
@@ -870,11 +879,12 @@ class _EditPaymentState extends State<EditPayment> {
                                     .toString(),
                                 decoration: InputDecoration(
                                   hintText: AppLocalizations.of(context)
-                                      .translate('amount_received'),
+                                      .translate('already_collected'),
                                   labelText: AppLocalizations.of(context)
-                                      .translate('amount_received'),
-                                  labelStyle:
-                                      TextStyle(color: CustomColors.mfinBlue),
+                                      .translate('already_collected'),
+                                  labelStyle: TextStyle(
+                                      fontSize: 10,
+                                      color: CustomColors.mfinBlue),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   fillColor: CustomColors.mfinWhite,
@@ -899,7 +909,7 @@ class _EditPaymentState extends State<EditPayment> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -912,8 +922,8 @@ class _EditPaymentState extends State<EditPayment> {
                                     .translate('document_charge'),
                                 labelText: AppLocalizations.of(context)
                                     .translate('document_charge'),
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
+                                labelStyle: TextStyle(
+                                    fontSize: 10, color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,
@@ -938,7 +948,7 @@ class _EditPaymentState extends State<EditPayment> {
                               },
                             ),
                           ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Padding(padding: EdgeInsets.only(left: 5)),
                           Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
@@ -949,8 +959,8 @@ class _EditPaymentState extends State<EditPayment> {
                                     .translate('service_change'),
                                 labelText: AppLocalizations.of(context)
                                     .translate('service_charge'),
-                                labelStyle:
-                                    TextStyle(color: CustomColors.mfinBlue),
+                                labelStyle: TextStyle(
+                                    fontSize: 10, color: CustomColors.mfinBlue),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 fillColor: CustomColors.mfinWhite,

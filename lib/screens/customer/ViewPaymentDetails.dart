@@ -57,7 +57,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     color: CustomColors.mfinBlue,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -72,6 +72,7 @@ class ViewPaymentDetails extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -89,7 +90,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -108,6 +109,7 @@ class ViewPaymentDetails extends StatelessWidget {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: TextStyle(
+                                    fontSize: 10,
                                     color: CustomColors.mfinBlue,
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
@@ -127,7 +129,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Padding(padding: EdgeInsets.only(left: 5)),
                         Flexible(
                           child: TextFormField(
                             readOnly: true,
@@ -139,6 +141,7 @@ class ViewPaymentDetails extends StatelessWidget {
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               fillColor: CustomColors.mfinWhite,
@@ -156,7 +159,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.all(5),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -168,6 +171,7 @@ class ViewPaymentDetails extends StatelessWidget {
                               labelText: AppLocalizations.of(context)
                                   .translate('amount_given_by'),
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               floatingLabelBehavior:
@@ -182,7 +186,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Padding(padding: EdgeInsets.only(left: 5)),
                         Flexible(
                           child: TextFormField(
                             readOnly: true,
@@ -192,6 +196,7 @@ class ViewPaymentDetails extends StatelessWidget {
                               labelText: AppLocalizations.of(context)
                                   .translate('transferred_mode'),
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               floatingLabelBehavior:
@@ -210,7 +215,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -222,6 +227,7 @@ class ViewPaymentDetails extends StatelessWidget {
                               labelText: AppLocalizations.of(context)
                                   .translate('collection_mode'),
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               floatingLabelBehavior:
@@ -264,7 +270,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         )
                       : Container(),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -275,10 +281,11 @@ class ViewPaymentDetails extends StatelessWidget {
                                     payment.collectionStartsFrom)),
                             decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)
-                                  .translate('start_date'),
+                                  .translate('collection_sdate'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -296,7 +303,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                        Padding(padding: EdgeInsets.all(5)),
                         Flexible(
                           child: TextFormField(
                             readOnly: true,
@@ -305,10 +312,11 @@ class ViewPaymentDetails extends StatelessWidget {
                                     payment.collectionStartsFrom)),
                             decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)
-                                  .translate('end_date'),
+                                  .translate('collection_edate'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               contentPadding: EdgeInsets.symmetric(
@@ -330,7 +338,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -343,6 +351,7 @@ class ViewPaymentDetails extends StatelessWidget {
                               labelText: AppLocalizations.of(context)
                                   .translate('notes'),
                               labelStyle: TextStyle(
+                                fontSize: 10,
                                 color: CustomColors.mfinBlue,
                               ),
                               floatingLabelBehavior:
@@ -390,7 +399,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     color: CustomColors.mfinBlue,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -403,8 +412,8 @@ class ViewPaymentDetails extends StatelessWidget {
                                   .translate('total_amount'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
+                              labelStyle: TextStyle(
+                                  fontSize: 10, color: CustomColors.mfinBlue),
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
                               contentPadding: EdgeInsets.symmetric(
@@ -415,7 +424,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Padding(padding: EdgeInsets.only(left: 5)),
                         Flexible(
                           child: TextFormField(
                             readOnly: true,
@@ -426,8 +435,8 @@ class ViewPaymentDetails extends StatelessWidget {
                                   .translate('interest_amount'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
+                              labelStyle: TextStyle(
+                                  fontSize: 10, color: CustomColors.mfinBlue),
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
                               contentPadding: EdgeInsets.symmetric(
@@ -442,7 +451,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -455,8 +464,8 @@ class ViewPaymentDetails extends StatelessWidget {
                                   .translate('principal_amount'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
+                              labelStyle: TextStyle(
+                                  fontSize: 10, color: CustomColors.mfinBlue),
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
                               contentPadding: EdgeInsets.symmetric(
@@ -467,7 +476,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Padding(padding: EdgeInsets.only(left: 5)),
                         Flexible(
                           child: TextFormField(
                             readOnly: true,
@@ -478,8 +487,8 @@ class ViewPaymentDetails extends StatelessWidget {
                                   .translate('number_of_collections'),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
+                              labelStyle: TextStyle(
+                                  fontSize: 10, color: CustomColors.mfinBlue),
                               fillColor: CustomColors.mfinWhite,
                               filled: true,
                               contentPadding: EdgeInsets.symmetric(
@@ -494,7 +503,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -507,8 +516,8 @@ class ViewPaymentDetails extends StatelessWidget {
                                   .translate('collection_amount'),
                               labelText: AppLocalizations.of(context)
                                   .translate('collection_amount'),
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
+                              labelStyle: TextStyle(
+                                  fontSize: 10, color: CustomColors.mfinBlue),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               fillColor: CustomColors.mfinWhite,
@@ -521,7 +530,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Padding(padding: EdgeInsets.only(left: 5)),
                         Flexible(
                           child: TextFormField(
                             readOnly: true,
@@ -530,11 +539,11 @@ class ViewPaymentDetails extends StatelessWidget {
                                 payment.alreadyCollectedAmount.toString(),
                             decoration: InputDecoration(
                               hintText: AppLocalizations.of(context)
-                                  .translate('amount_received'),
+                                  .translate('already_collected'),
                               labelText: AppLocalizations.of(context)
-                                  .translate('amount_received'),
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
+                                  .translate('already_collected'),
+                              labelStyle: TextStyle(
+                                  fontSize: 10, color: CustomColors.mfinBlue),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               fillColor: CustomColors.mfinWhite,
@@ -551,7 +560,7 @@ class ViewPaymentDetails extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: Row(
                       children: <Widget>[
                         Flexible(
@@ -562,8 +571,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)
                                   .translate('document_charge'),
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
+                              labelStyle: TextStyle(
+                                  fontSize: 10, color: CustomColors.mfinBlue),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               fillColor: CustomColors.mfinWhite,
@@ -576,7 +585,7 @@ class ViewPaymentDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(10)),
+                        Padding(padding: EdgeInsets.all(5)),
                         Flexible(
                           child: TextFormField(
                             readOnly: true,
@@ -585,8 +594,8 @@ class ViewPaymentDetails extends StatelessWidget {
                             decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)
                                   .translate('service_charge'),
-                              labelStyle:
-                                  TextStyle(color: CustomColors.mfinBlue),
+                              labelStyle: TextStyle(
+                                  fontSize: 10, color: CustomColors.mfinBlue),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               fillColor: CustomColors.mfinWhite,

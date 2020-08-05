@@ -442,6 +442,8 @@
     "add_template": "Add Template",
     "no_of_collections": "No. of Collections",
     "document_charge": "Document Charge",
+    "collection_sdate": "Collection Starts",
+    "collection_edate": "Collection Ends",
     "surcharge": "SurCharge",
     "expense": "Expense",
     "income": "Income",
