@@ -30,7 +30,14 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   Map<String, dynamic> accountPreferencesJSON = new Map();
 
   String _selectedLang = 'English';
-  List<String> _prefSupportLangList = ["English", "Tamil", "Hindi", "Kannada", "Telugu", "Malayalam"];
+  List<String> _prefSupportLangList = [
+    "English",
+    "Tamil",
+    "Hindi",
+    "Kannada",
+    "Telugu",
+    "Malayalam"
+  ];
   String selectedCollectionModeID = "0";
   bool chitEnabled = false;
   List<String> chits = ['YES', 'NO'];
@@ -133,7 +140,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      AppLocalizations.of(context).translate('finance_preference'),
+                      AppLocalizations.of(context)
+                          .translate('finance_preference'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -224,7 +232,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 15.0, top: 10),
                             child: Text(
-                              AppLocalizations.of(context).translate('interest_rate'),
+                              AppLocalizations.of(context)
+                                  .translate('interest_rate'),
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontSize: 16,
@@ -294,7 +303,10 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                                 (f) {
                                   return DropdownMenuItem<String>(
                                     value: f,
-                                    child: Text(f),
+                                    child: Text(
+                                      f,
+                                      style: TextStyle(fontSize: 12),
+                                    ),
                                   );
                                 },
                               ).toList(),
@@ -318,7 +330,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 15.0, top: 10),
                             child: Text(
-                              AppLocalizations.of(context).translate('collection_mode'),
+                              AppLocalizations.of(context)
+                                  .translate('collection_mode'),
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontSize: 16,
@@ -360,18 +373,17 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       ],
                     ),
                   ),
-                  RowHeaderText(textName: AppLocalizations.of(context).translate('collection_days')),
-                  Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: CustomColors.mfinGrey, width: 1.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: selectedDays.toList(),
-                      ),
+                  RowHeaderText(
+                      textName: AppLocalizations.of(context)
+                          .translate('collection_days')),
+                  Container(
+                    decoration: BoxDecoration(
+                      border:
+                          Border.all(color: CustomColors.mfinGrey, width: 1.0),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: selectedDays.toList(),
                     ),
                   ),
                 ],
@@ -385,7 +397,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                     AppLocalizations.of(context).translate('user_preferences'),
+                      AppLocalizations.of(context)
+                          .translate('user_preferences'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -501,7 +514,9 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                       ),
                     ],
                   ),
-                  RowHeaderText(textName: AppLocalizations.of(context).translate('fingerprint_auth')),
+                  RowHeaderText(
+                      textName: AppLocalizations.of(context)
+                          .translate('fingerprint_auth')),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: ToggleButtons(
@@ -601,7 +616,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
             elevation: 5.0,
             selectedColor: CustomColors.mfinBlue,
             backgroundColor: CustomColors.mfinWhite,
-            labelStyle: TextStyle(color: CustomColors.mfinButtonGreen),
+            labelStyle:
+                TextStyle(fontSize: 11, color: CustomColors.mfinButtonGreen),
             onSelected: (selected) {
               setState(() {
                 if (selected) {
@@ -639,7 +655,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
     accountPreferencesJSON['chit_enabled'] = chitEnabled;
     accountPreferencesJSON['interest_from_principal'] = isFromPrincipal;
 
-    CustomDialogs.actionWaiting(context, "Updating Preferences!");
+    CustomDialogs.actionWaiting(context, "Updating..!");
     if (isSelectedAuth[0]) {
       userPreferencesJSON['enable_fingerprint_auth'] = true;
     } else {
