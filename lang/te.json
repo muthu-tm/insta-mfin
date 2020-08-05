@@ -486,5 +486,14 @@
     "payment": "Payments",
     "interest_from": "Interest From",
     "app_language": "App Language",
-    "transaction_group_by": "TRANSACTIONS GROUP BY"
+    "transaction_group_by": "TRANSACTIONS GROUP BY",
+    "chits": "Chits",
+    "collections_book": "Collections Book",
+    "mark_resolved": "Mark As Collected",
+    "no_category": "No Categories!",
+    "add_your_category": "Add your Categories!",
+    "no_journal_category": "No Journal Categories!",
+    "add_journal_category": "Add Journal Categories",
+    "pay_template": "Payment Template",
+    "add_journal": "Add Journal"
 }

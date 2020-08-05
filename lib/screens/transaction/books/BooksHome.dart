@@ -5,6 +5,7 @@ import 'package:instamfin/screens/transaction/books/AllTransactionsBook.dart';
 import 'package:instamfin/screens/transaction/books/CustomersBook.dart';
 import 'package:instamfin/screens/transaction/books/PaymentsBook.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class BooksHome extends StatelessWidget {
   BooksHome(this.chitEnabled);
@@ -79,7 +80,7 @@ class BooksHome extends StatelessWidget {
                       ),
                       Spacer(),
                       Text(
-                        "Collections Book",
+                        AppLocalizations.of(context).translate("collections_book"),
                         style: TextStyle(
                           fontSize: 20,
                           fontFamily: "Georgia",

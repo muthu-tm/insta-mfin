@@ -76,7 +76,7 @@ class AllTransactionsBuilder extends StatelessWidget {
             color: CustomColors.mfinPositiveGreen,
           ),
           title: Text(
-            "Chits",
+            AppLocalizations.of(context).translate("chits"),
             style: TextStyle(
               fontSize: 17,
               fontFamily: "Georgia",

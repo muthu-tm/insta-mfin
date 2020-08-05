@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class ViewPaymentTemplate extends StatelessWidget {
   final List _tempCollectionMode = ["Daily", "Weekly", "Monthly"];
@@ -39,7 +40,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     child: Text(
-                      "Payment Template",
+                      AppLocalizations.of(context).translate("pay_template"),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -62,7 +63,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                             readOnly: true,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'Template name',
+                              labelText: AppLocalizations.of(context).translate("template_name"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -146,7 +147,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                             readOnly: true,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'Principal Amount',
+                              labelText: AppLocalizations.of(context).translate("principal_amount"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -176,7 +177,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                             readOnly: true,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'No. of Collections',
+                              labelText: AppLocalizations.of(context).translate("no_of_collections"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -200,7 +201,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                             readOnly: true,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'Collection amount',
+                              labelText: AppLocalizations.of(context).translate("collection_amount"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -254,7 +255,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                             readOnly: true,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
-                              labelText: 'SurCharge',
+                              labelText: AppLocalizations.of(context).translate("surcharge"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
@@ -284,7 +285,7 @@ class ViewPaymentTemplate extends StatelessWidget {
                                 _tempCollectionMode[template.collectionMode],
                             readOnly: true,
                             decoration: InputDecoration(
-                              labelText: 'Collection mode',
+                              labelText: AppLocalizations.of(context).translate("collection_mode"),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               labelStyle: TextStyle(
