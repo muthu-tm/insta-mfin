@@ -42,7 +42,7 @@ class _ChitBookHomeState extends State<ChitBookHome> {
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicator: BoxDecoration(
                     color: CustomColors.mfinLightBlue,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(3),
                   ),
                   tabs: [
                     Tab(

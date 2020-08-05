@@ -6,7 +6,6 @@ import 'package:instamfin/screens/statistics/DailyStatistics.dart';
 import 'package:instamfin/screens/statistics/MonthlyStatistics.dart';
 import 'package:instamfin/screens/statistics/WeeklyStatistics.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/CustomTabBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
@@ -64,51 +63,38 @@ class StatisticsHome extends StatelessWidget {
                 },
               ),
             ],
-            bottom: CustomTabBar(
-              CustomColors.mfinLightGrey,
-              TabBar(
-                indicatorColor: CustomColors.mfinWhite,
-                labelColor: CustomColors.mfinWhite,
-                unselectedLabelColor: CustomColors.mfinBlue,
-                indicatorWeight: 0,
-                labelPadding: EdgeInsets.only(left: 5.0, right: 5.0),
-                indicator: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      CustomColors.mfinLightBlue,
-                      CustomColors.mfinBlue,
-                      CustomColors.mfinLightBlue,
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                tabs: [
-                  Tab(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      alignment: Alignment.center,
-                      child:
-                          Text(AppLocalizations.of(context).translate('daily')),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      alignment: Alignment.center,
-                      child: Text(
-                          AppLocalizations.of(context).translate('weekly')),
-                    ),
-                  ),
-                  Tab(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      alignment: Alignment.center,
-                      child: Text(
-                          AppLocalizations.of(context).translate('monthly')),
-                    ),
-                  ),
-                ],
+            bottom: TabBar(
+              indicatorColor: CustomColors.mfinWhite,
+              unselectedLabelColor: CustomColors.mfinWhite,
+              indicatorWeight: 0,
+              labelPadding: EdgeInsets.only(left: 5.0, right: 5.0),
+              indicator: BoxDecoration(
+                color: CustomColors.mfinLightBlue,
+                borderRadius: BorderRadius.circular(3),
               ),
+              tabs: [
+                Tab(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child:
+                        Text(AppLocalizations.of(context).translate('daily')),
+                  ),
+                ),
+                Tab(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child:
+                        Text(AppLocalizations.of(context).translate('weekly')),
+                  ),
+                ),
+                Tab(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child:
+                        Text(AppLocalizations.of(context).translate('monthly')),
+                  ),
+                ),
+              ],
             ),
           ),
           body: TabBarView(

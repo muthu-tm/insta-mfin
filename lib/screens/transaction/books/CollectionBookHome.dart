@@ -41,7 +41,7 @@ class _CollectionBookHomeState extends State<CollectionBookHome> {
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicator: BoxDecoration(
                     color: CustomColors.mfinLightBlue,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(3),
                   ),
                   tabs: [
                     Tab(

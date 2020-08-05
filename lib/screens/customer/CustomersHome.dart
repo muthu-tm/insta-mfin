@@ -80,7 +80,7 @@ class CustomersHome extends StatelessWidget {
               labelPadding: EdgeInsets.only(left: 10.0, right: 10.0),
               indicator: BoxDecoration(
                 color: CustomColors.mfinLightBlue,
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(3),
               ),
               tabs: [
                 Tab(
