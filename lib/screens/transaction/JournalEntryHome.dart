@@ -13,6 +13,7 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class JournalEntryHome extends StatefulWidget {
   @override
@@ -74,7 +75,7 @@ class _JournalEntryHomeState extends State<JournalEntryHome> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ListTile(
-                          title: Text('Add Journal'),
+                          title: Text(AppLocalizations.of(context).translate("add_journal")),
                           leading: Icon(
                             Icons.monetization_on,
                             color: CustomColors.mfinBlue,

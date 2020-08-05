@@ -13,6 +13,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class CollectionBookTab extends StatelessWidget {
   CollectionBookTab(this._scaffoldKey, this.isPending, this.epoch,
@@ -53,7 +54,7 @@ class CollectionBookTab extends StatelessWidget {
                   direction: Axis.horizontal,
                   actions: <Widget>[
                     IconSlideAction(
-                      caption: 'Mark As Collected',
+                      caption: AppLocalizations.of(context).translate("mark_resolved"),
                       color: CustomColors.mfinPositiveGreen,
                       icon: Icons.check_box,
                       onTap: () {

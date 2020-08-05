@@ -50,10 +50,11 @@ class _SearchAppBarState extends State<SearchAppBar> {
           ),
           decoration: InputDecoration(
             hintText: searchMode == 0
-                ? "Type Customer Number here..."
+                ? AppLocalizations.of(context).translate('type_number')
                 : searchMode == 1
-                    ? "Customer First Name here..."
-                    : "Type Loan ID here...",
+                    ? AppLocalizations.of(context)
+                        .translate('customer_first_name')
+                    : AppLocalizations.of(context).translate('loan_id'),
             hintStyle: TextStyle(color: CustomColors.mfinWhite),
           ),
         ),
@@ -145,7 +146,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
           size: 40,
           color: CustomColors.mfinWhite,
         ),
-        label: Text("Clear"),
+        label: Text(
+          AppLocalizations.of(context).translate('clear'),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -280,21 +283,18 @@ class _SearchAppBarState extends State<SearchAppBar> {
                       Padding(
                         padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
                         child: Text(
-                          "No Search Triggerred!",
+                          AppLocalizations.of(context).translate('no_trigger'),
                           style: TextStyle(
-                            color: CustomColors.mfinBlue,
-                            fontSize: 16.0
-                          ),
+                              color: CustomColors.mfinBlue, fontSize: 16.0),
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
                         child: Text(
-                          "Search for Customer or Loans!",
+                          AppLocalizations.of(context)
+                              .translate('multi_search'),
                           style: TextStyle(
-                            color: CustomColors.mfinGrey,
-                            fontSize: 16.0
-                          ),
+                              color: CustomColors.mfinGrey, fontSize: 16.0),
                         ),
                       ),
                     ],

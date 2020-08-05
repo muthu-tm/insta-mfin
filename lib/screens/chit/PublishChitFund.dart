@@ -372,7 +372,8 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Commission %',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('commission_percentage'),
                                 hintText: 'Commission Rate - %',
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,

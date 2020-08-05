@@ -9,6 +9,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class AddCustomCollection extends StatefulWidget {
   AddCustomCollection(this.payment, this.colls, this.tReceived);
 
@@ -58,7 +60,9 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add Collection Details'),
+        title: Text(
+          AppLocalizations.of(context).translate('add_collection_details'),
+        ),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -68,7 +72,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
           _submit();
         },
         label: Text(
-          "Save",
+          AppLocalizations.of(context).translate('save'),
           style: TextStyle(
             fontSize: 17,
             fontFamily: "Georgia",
@@ -108,7 +112,8 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                               initialValue: widget.payment.custName,
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
-                                labelText: "Customer Name",
+                                labelText: AppLocalizations.of(context)
+                                    .translate('customer_name'),
                                 labelStyle: TextStyle(
                                   fontSize: 10,
                                   color: CustomColors.mfinBlue,
@@ -133,8 +138,10 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                                   controller: _date,
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
-                                    hintText: 'Date Collected',
-                                    labelText: "Collected On",
+                                    hintText: AppLocalizations.of(context)
+                                        .translate('collected_on'),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('collected_on'),
                                     labelStyle: TextStyle(
                                       fontSize: 10,
                                       color: CustomColors.mfinBlue,
@@ -163,8 +170,10 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                               keyboardType: TextInputType.number,
                               initialValue: totalAmount.toString(),
                               decoration: InputDecoration(
-                                hintText: 'Collected Amount',
-                                labelText: 'Collected Amount',
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collected_amount'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_amount'),
                                 labelStyle: TextStyle(
                                   fontSize: 10,
                                   color: CustomColors.mfinBlue,
@@ -198,7 +207,8 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: 'Transferred Mode',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('transferred_mode'),
                                 labelStyle: TextStyle(
                                   fontSize: 10,
                                   color: CustomColors.mfinBlue,
@@ -240,8 +250,10 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                               keyboardType: TextInputType.text,
                               initialValue: receivedFrom,
                               decoration: InputDecoration(
-                                hintText: 'Amount Received From',
-                                labelText: "Collected From",
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collected_from'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_from'),
                                 labelStyle: TextStyle(
                                   fontSize: 10,
                                   color: CustomColors.mfinBlue,
@@ -270,8 +282,10 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                               keyboardType: TextInputType.text,
                               initialValue: collectedBy,
                               decoration: InputDecoration(
-                                hintText: 'Amount Collected by',
-                                labelText: "Collected By",
+                                hintText: AppLocalizations.of(context)
+                                    .translate('collected_by'),
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_by'),
                                 labelStyle: TextStyle(
                                   fontSize: 10,
                                   color: CustomColors.mfinBlue,
@@ -307,9 +321,10 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
                               initialValue: notes,
                               maxLines: 2,
                               decoration: InputDecoration(
-                                labelText: 'Notes',
-                                hintText:
-                                    "Short notes/reference about the Collection",
+                                labelText: AppLocalizations.of(context)
+                                    .translate('notes'),
+                                hintText: AppLocalizations.of(context)
+                                    .translate('notes_hint'),
                                 labelStyle: TextStyle(
                                   fontSize: 10,
                                   color: CustomColors.mfinBlue,

@@ -227,7 +227,7 @@ class CollectionListWidget extends StatelessWidget {
                     children: <Widget>[
                       new Spacer(),
                       Text(
-                        "No Collections available for this Payment!",
+                        AppLocalizations.of(context).translate('no_collection'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CustomColors.mfinAlertRed,
@@ -250,7 +250,7 @@ class CollectionListWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Collections available for this Payment!",
+                      AppLocalizations.of(context).translate('no_collection'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
@@ -276,7 +276,7 @@ class CollectionListWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: Text(
-                  "ALL",
+                  AppLocalizations.of(context).translate('all'),
                   style: TextStyle(
                     fontSize: 18,
                     color: CustomColors.mfinBlue,
@@ -284,7 +284,7 @@ class CollectionListWidget extends StatelessWidget {
                   ),
                 ),
                 trailing: IconButton(
-                  tooltip: "Genearte Collection Report",
+                  tooltip: "Generate Collection Report",
                   icon: Icon(
                     Icons.print,
                     size: 30,

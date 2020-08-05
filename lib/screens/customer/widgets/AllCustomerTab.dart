@@ -54,7 +54,8 @@ class _CustomerTabState extends State<CustomerTab> {
                     height: 50,
                     child: DropdownButtonFormField(
                       decoration: InputDecoration(
-                        labelText: 'Order By',
+                        labelText:
+                            AppLocalizations.of(context).translate('order_by'),
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),

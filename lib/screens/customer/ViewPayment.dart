@@ -16,6 +16,8 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 
+import '../../app_localizations.dart';
+
 class ViewPayment extends StatefulWidget {
   ViewPayment(this.payment);
 
@@ -63,7 +65,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                        title: Text('View Loan'),
+                        title: Text(
+                          AppLocalizations.of(context).translate('view_loan'),
+                        ),
                         leading: Icon(
                           Icons.remove_red_eye,
                           color: CustomColors.mfinBlue,
@@ -81,7 +85,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                               });
                         }),
                     ListTile(
-                      title: Text('Edit Loan'),
+                      title: Text(
+                        AppLocalizations.of(context).translate('edit_loan'),
+                      ),
                       leading: Icon(
                         Icons.edit,
                         color: CustomColors.mfinBlue,
@@ -117,7 +123,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                       },
                     ),
                     ListTile(
-                      title: Text('Do Settlement'),
+                      title: Text(
+                        AppLocalizations.of(context).translate('do_settlement'),
+                      ),
                       leading: Icon(
                         Icons.account_balance_wallet,
                         color: CustomColors.mfinBlue,
@@ -154,7 +162,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                       },
                     ),
                     ListTile(
-                        title: Text('Delete Loan'),
+                        title: Text(
+                          AppLocalizations.of(context).translate('delete_loan'),
+                        ),
                         leading: Icon(
                           Icons.delete_forever,
                           color: CustomColors.mfinAlertRed,
@@ -219,7 +229,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                           );
                         }),
                     ListTile(
-                      title: Text('Home'),
+                      title: Text(
+                        AppLocalizations.of(context).translate('home'),
+                      ),
                       leading: Icon(
                         Icons.home,
                         color: CustomColors.mfinBlue,
@@ -261,7 +273,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "CUSTOMER",
+                          AppLocalizations.of(context)
+                              .translate('customer_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -293,7 +306,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "DATE",
+                          AppLocalizations.of(context).translate('date_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -333,7 +346,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "AMOUNT",
+                          AppLocalizations.of(context).translate('amount_caps'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -363,7 +376,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "PAY OUT",
+                          AppLocalizations.of(context).translate('pay_out'),
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: "Georgia",
@@ -404,7 +417,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   width: 150,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    "DO SETTLEMENT",
+                                    AppLocalizations.of(context)
+                                        .translate('do_settlement'),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: CustomColors.mfinWhite,
@@ -447,7 +461,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 child: RichText(
                                   textAlign: TextAlign.center,
                                   text: TextSpan(
-                                    text: 'SETTLED ON',
+                                    text: AppLocalizations.of(context)
+                                        .translate('settled_on'),
                                     style: TextStyle(
                                       color: CustomColors.mfinWhite,
                                       fontFamily: 'Georgia',

@@ -13,6 +13,8 @@ import 'package:instamfin/services/controllers/transaction/collection_controller
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/pdf/collection_receipt.dart';
 
+import '../../app_localizations.dart';
+
 class ViewCollection extends StatefulWidget {
   ViewCollection(this.pay, this._collection, this.iconColor);
 
@@ -132,7 +134,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    "CUSTOMER",
+                    AppLocalizations.of(context).translate('customer_caps'),
                     style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Georgia",
@@ -163,7 +165,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    "COLL NO",
+                    AppLocalizations.of(context).translate('coll_no_caps'),
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Georgia",
@@ -192,7 +194,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    "DATE",
+                    AppLocalizations.of(context).translate('date_caps'),
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Georgia",
@@ -223,7 +225,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                 leading: SizedBox(
                   width: 100,
                   child: Text(
-                    "AMOUNT",
+                    AppLocalizations.of(context).translate('amount_caps'),
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Georgia",
@@ -253,7 +255,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                       leading: SizedBox(
                         width: 100,
                         child: Text(
-                          "RECEIVED",
+                          AppLocalizations.of(context)
+                              .translate('received_caps'),
                           style: TextStyle(
                               fontSize: 15,
                               fontFamily: "Georgia",
@@ -279,7 +282,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                       ),
                     )
                   : Padding(
-                      padding: EdgeInsets.only(top: 25.0, right: 8.0, left: 8.0, bottom: 8.0),
+                      padding: EdgeInsets.only(
+                          top: 25.0, right: 8.0, left: 8.0, bottom: 8.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -291,7 +295,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                                   keyboardType: TextInputType.datetime,
                                   decoration: InputDecoration(
                                     hintText: 'Date Collected',
-                                    labelText: "Collected On",
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('collected_on'),
                                     labelStyle: TextStyle(
                                       color: CustomColors.mfinBlue,
                                     ),
@@ -320,7 +325,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                               initialValue: totalAmount.toString(),
                               decoration: InputDecoration(
                                 hintText: 'Collected Amount',
-                                labelText: 'Collected Amount',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_amount'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -356,7 +362,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                           Flexible(
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                labelText: 'Transferred Mode',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('transferred_mode'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -400,7 +407,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                               initialValue: receivedFrom,
                               decoration: InputDecoration(
                                 hintText: 'Amount Received From',
-                                labelText: "Collected From",
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_from'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -431,7 +439,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                               initialValue: collectedBy,
                               decoration: InputDecoration(
                                 hintText: 'Amount Collected by',
-                                labelText: "Collected By",
+                                labelText: AppLocalizations.of(context)
+                                    .translate('collected_by'),
                                 labelStyle: TextStyle(
                                   color: CustomColors.mfinBlue,
                                 ),
@@ -470,7 +479,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                               initialValue: notes,
                               maxLines: 2,
                               decoration: InputDecoration(
-                                labelText: 'Notes',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('notes'),
                                 hintText:
                                     "Short notes/reference about the Collection",
                                 labelStyle: TextStyle(
@@ -508,7 +518,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                             initialValue: '0',
                             decoration: InputDecoration(
                               hintText: 'Penalty Amount',
-                              labelText: 'Penalty Amount',
+                              labelText: AppLocalizations.of(context)
+                                  .translate('penalty_amount'),
                               labelStyle: TextStyle(
                                 color: CustomColors.mfinBlue,
                               ),
@@ -549,7 +560,8 @@ class _ViewCollectionState extends State<ViewCollection> {
                   children: <Widget>[
                     Spacer(),
                     Text(
-                      "Unable to find the collection Details",
+                      AppLocalizations.of(context)
+                          .translate('unable_find_collection'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -570,7 +582,8 @@ class _ViewCollectionState extends State<ViewCollection> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('View Collection'),
+            title:
+                Text(AppLocalizations.of(context).translate('view_collection')),
             backgroundColor: CustomColors.mfinBlue,
           ),
           key: _scaffoldKey,
@@ -596,7 +609,7 @@ class _ViewCollectionState extends State<ViewCollection> {
               color: CustomColors.mfinWhite,
             ),
             label: Text(
-              "Update",
+              AppLocalizations.of(context).translate('update'),
               style: TextStyle(
                 color: CustomColors.mfinWhite,
               ),
