@@ -477,7 +477,7 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (pays.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Generating your Payment Report! It may take upto 10-30 seconds, Please wait...", 5));
+            "Generating your Loan Report! It may take upto 10-30 seconds, Please wait...", 5));
         await PaymentReport()
             .generateReport(_user, pays, isRange, fromDate, toDate);
       } else {

@@ -52,7 +52,7 @@ class PaymentController {
       await pay.create();
 
       return CustomResponse.getSuccesReponse(
-          "Created new Payment successfully");
+          "Created new Loan successfully");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -134,15 +134,15 @@ class PaymentController {
       if (paymentJSON.containsKey('payment_id')) {
         Payment pay = await Payment().getPaymentByID(paymentJSON['payment_id']);
         if (pay != null) {
-          throw 'Already a Payment exist with this PAYMENT ID - ${paymentJSON["payment_id"]}';
+          throw 'Already a Loan exist with this LOAN ID - ${paymentJSON["payment_id"]}';
         }
       }
       await Payment().updatePayment(payment, paymentJSON);
 
       return CustomResponse.getSuccesReponse(
-          "Updated ${payment.custName} customer's Payment");
+          "Updated ${payment.custName} customer's Laon");
     } catch (err) {
-      print("Error while updating ${payment.custName}customer's Payment: " +
+      print("Error while updating ${payment.custName}customer's Loan: " +
           err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -166,7 +166,7 @@ class PaymentController {
       await payment.settlement(paymentJSON);
 
       return CustomResponse.getSuccesReponse(
-          "Updated ${payment.custName} customer's Payment");
+          "Updated ${payment.custName} customer's Loan");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -183,7 +183,7 @@ class PaymentController {
           .removePayment(financeId, branchName, subBranchName, paymentID);
 
       return CustomResponse.getSuccesReponse(
-          "Removed customer's Payment $paymentID");
+          "Removed customer's Loan $paymentID");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -201,7 +201,7 @@ class PaymentController {
           .forceRemovePayment(financeId, branchName, subBranchName, paymentID, isSettled);
 
       return CustomResponse.getSuccesReponse(
-          "Force Removed customer's Payment $paymentID");
+          "Force Removed customer's Loan $paymentID");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

@@ -62,9 +62,9 @@ class ChitTemplateController {
     try {
       await ChitTemplate().removeChitTemplate(tempID);
       return CustomResponse.getSuccesReponse(
-          "removed Payment template $tempID");
+          "removed Chit template $tempID");
     } catch (err) {
-      print("Error while removing Payment template with ID $tempID: " +
+      print("Error while removing Chit template with ID $tempID: " +
           err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }

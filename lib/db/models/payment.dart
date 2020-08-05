@@ -388,7 +388,7 @@ class Payment extends Model {
       }
 
       if (isExist != null) {
-        throw 'Already a Payment exist with this PAYMENT ID - ${this.paymentID}';
+        throw 'Already a Loan exist with this LOAN ID - ${this.paymentID}';
       } else {
         DocumentReference finDocRef = user.getFinanceDocReference();
         // DocumentSnapshot doc = await finDocRef.get();
@@ -451,7 +451,7 @@ class Payment extends Model {
         );
       }
     } catch (err) {
-      print('Payment CREATE Transaction failure:' + err.toString());
+      print('Loan CREATE Transaction failure:' + err.toString());
       throw err;
     }
   }
@@ -881,7 +881,7 @@ class Payment extends Model {
               DocumentSnapshot snap = await tx.get(docRef);
 
               if (!snap.exists) {
-                Future.error('No Payment document found to Remove');
+                Future.error('No Loan document found to Remove');
               }
 
               Payment payment = Payment.fromJson(snap.data);
@@ -935,7 +935,7 @@ class Payment extends Model {
               DocumentSnapshot snap = await tx.get(docRef);
 
               if (!snap.exists) {
-                Future.error('No Payment document found to Remove');
+                Future.error('No Loan document found to Remove');
               }
 
               Payment payment = Payment.fromJson(snap.data);

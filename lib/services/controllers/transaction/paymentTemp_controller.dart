@@ -28,7 +28,7 @@ class PaymentTemplateController {
 
       await temp.createTemplate();
 
-      return CustomResponse.getSuccesReponse("Created new Payment template");
+      return CustomResponse.getSuccesReponse("Created new Loan template");
     } catch (err) {
       print("Error while creating $name template: " + err.toString());
       return CustomResponse.getFailureReponse(err.toString());
@@ -40,7 +40,7 @@ class PaymentTemplateController {
       PaymentTemplate temp = PaymentTemplate();
       return await temp.getTemplateByID(tempID);
     } catch (err) {
-      print("Error while retrieving Payment template for ID $tempID: " +
+      print("Error while retrieving Loan template for ID $tempID: " +
           err.toString());
       return null;
     }
@@ -56,7 +56,7 @@ class PaymentTemplateController {
 
       return temps;
     } catch (err) {
-      print("Error while retrieving Payment templates:" + err.toString());
+      print("Error while retrieving Loan templates:" + err.toString());
       throw err;
     }
   }
@@ -66,9 +66,9 @@ class PaymentTemplateController {
       await PaymentTemplate().update(tempID, tempJSON);
 
       return CustomResponse.getSuccesReponse(
-          "Updated Payment template $tempID");
+          "Updated Loan template $tempID");
     } catch (err) {
-      print("Error while updating Payment template with ID $tempID: " +
+      print("Error while updating Loan template with ID $tempID: " +
           err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -78,9 +78,9 @@ class PaymentTemplateController {
     try {
       await PaymentTemplate().remove(tempID);
       return CustomResponse.getSuccesReponse(
-          "removed Payment template $tempID");
+          "removed Loan template $tempID");
     } catch (err) {
-      print("Error while removing Payment template with ID $tempID: " +
+      print("Error while removing Loan template with ID $tempID: " +
           err.toString());
       return CustomResponse.getFailureReponse(err.toString());
     }

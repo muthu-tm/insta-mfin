@@ -704,14 +704,14 @@ class _AddCollectionState extends State<AddCollection> {
         if (cAmount == widget.payment.totalAmount) {
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              "You have enough collection entries for this Payment amount $cAmount",
+              "You have enough collection entries for this Loan amount $cAmount",
               2));
           return;
         } else if ((cAmount + collAmount) > widget.payment.totalAmount) {
           int bAmount = widget.payment.totalAmount - cAmount;
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              "Total collection amount should not be greater than Payment amount $cAmount! You can create collection for $bAmount",
+              "Total collection amount should not be greater than Loan amount $cAmount! You can create collection for $bAmount",
               2));
           return;
         }

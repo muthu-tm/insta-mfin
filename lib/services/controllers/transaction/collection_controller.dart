@@ -52,7 +52,7 @@ class CollectionController {
       await coll.create(cAlready, collection);
 
       return CustomResponse.getSuccesReponse(
-          "Added new Collection successfully for Payment $paymentID}");
+          "Added new Collection successfully for Loan $paymentID}");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -151,7 +151,7 @@ class CollectionController {
           collID, collectionJSON);
 
       return CustomResponse.getSuccesReponse(
-          "Updated $paymentID Payment's collection $collID");
+          "Updated $paymentID Loan's collection $collID");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }
@@ -180,7 +180,7 @@ class CollectionController {
           collectionDetails,
           hasPenalty);
       return CustomResponse.getSuccesReponse(
-          "Payment's Collection updated for Payment $paymentID");
+          "Loan's Collection updated for Loan $paymentID");
     } catch (err) {
       return CustomResponse.getFailureReponse(err.toString());
     }

@@ -1024,7 +1024,7 @@ class _AddPaymentState extends State<AddPayment> {
         tempList = templates;
       });
     } catch (err) {
-      print("Unable to load Payment templates for Payment ADD!");
+      print("Unable to load Loan templates for Loan ADD!");
     }
   }
 
