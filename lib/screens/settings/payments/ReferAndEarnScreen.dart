@@ -8,6 +8,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class ReferAndEarnScreen extends StatefulWidget {
   @override
@@ -39,7 +40,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
-        title: Text('Refer & Earn'),
+        title: Text(AppLocalizations.of(context).translate('refer_and_earn')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -74,7 +75,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Your Referral Code",
+            AppLocalizations.of(context).translate('referal_code'),
             style: TextStyle(
               color: CustomColors.mfinBlue,
               fontSize: 16.0,
@@ -190,7 +191,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Referred by",
+            AppLocalizations.of(context).translate('referred_by'),
             style: TextStyle(
               color: CustomColors.mfinBlue,
               fontSize: 16.0,
@@ -257,7 +258,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                                 "Please Enter valid referral code!", 2));
                       }
                     },
-                    label: Text("Apply Referral Code"),
+                    label: Text(AppLocalizations.of(context).translate('apply_referal_code')),
                     icon: Icon(Icons.card_giftcard),
                   ),
                 )

@@ -10,6 +10,7 @@ import 'package:instamfin/screens/settings/payments/ReferAndEarnScreen.dart';
 import 'package:instamfin/screens/settings/payments/WalletHome.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class AppSettings extends StatelessWidget {
   @override
@@ -38,7 +39,7 @@ class AppSettings extends StatelessWidget {
                   color: CustomColors.mfinBlue,
                 ),
                 title: Text(
-                  "Payments",
+                  AppLocalizations.of(context).translate('payment'),
                 ),
                 trailing: Icon(
                   Icons.arrow_forward_ios,
@@ -56,7 +57,7 @@ class AppSettings extends StatelessWidget {
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: Text('Refer & Earn'),
+                title: Text(AppLocalizations.of(context).translate('refer_and_earn')),
                 onTap: () {
                   Navigator.push(
                     context,

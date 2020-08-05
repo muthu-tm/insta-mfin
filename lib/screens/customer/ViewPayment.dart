@@ -45,7 +45,7 @@ class _ViewPaymentState extends State<ViewPayment> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Payment - ${widget.payment.paymentID}'),
+        title: Text('Loan - ${widget.payment.paymentID}'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -63,7 +63,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                        title: Text('View Payment'),
+                        title: Text('View Loan'),
                         leading: Icon(
                           Icons.remove_red_eye,
                           color: CustomColors.mfinBlue,
@@ -81,7 +81,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                               });
                         }),
                     ListTile(
-                      title: Text('Edit Payment'),
+                      title: Text('Edit Loan'),
                       leading: Icon(
                         Icons.edit,
                         color: CustomColors.mfinBlue,
@@ -93,7 +93,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "You cannot Edit Payments which has valid COLLECTION!",
+                              "You cannot Edit Loan which has valid COLLECTION!",
                               3,
                             ),
                           );
@@ -130,7 +130,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                             CustomSnackBar.errorSnackBar(
-                              "Payment has already SETTLED on $sDate.!",
+                              "Loan has already SETTLED on $sDate.!",
                               3,
                             ),
                           );
@@ -154,7 +154,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                       },
                     ),
                     ListTile(
-                        title: Text('Delete Payment'),
+                        title: Text('Delete Loan'),
                         leading: Icon(
                           Icons.delete_forever,
                           color: CustomColors.mfinAlertRed,
@@ -163,7 +163,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                           CustomDialogs.confirm(
                             context,
                             "Confirm",
-                            "Are you sure to remove this Payment?",
+                            "Are you sure to remove this Loan?",
                             () async {
                               int totalReceived =
                                   await widget.payment.getTotalReceived();
@@ -173,7 +173,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 Navigator.pop(context);
                                 _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                    "You cannot Remove Payments which has already received COLLECTION!}",
+                                    "You cannot Remove Loan which has already received COLLECTION!}",
                                     3,
                                   ),
                                 );
@@ -189,7 +189,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
-                                      "Unable to remove the Payment! ${result['message']}",
+                                      "Unable to remove the Loan! ${result['message']}",
                                       3,
                                     ),
                                   );
@@ -198,7 +198,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
                                     CustomSnackBar.errorSnackBar(
-                                        "Payment removed successfully", 2),
+                                        "Loan removed successfully", 2),
                                   );
                                   Navigator.pop(context);
                                 }

@@ -13,6 +13,7 @@ import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class TransactionScreen extends StatelessWidget {
   final User _user = UserController().getCurrentUser();
@@ -140,7 +141,7 @@ class TransactionScreen extends StatelessWidget {
                               ),
                               Spacer(),
                               Text(
-                                "Expenses",
+                                AppLocalizations.of(context).translate("expenses"),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16,
@@ -214,7 +215,7 @@ class TransactionScreen extends StatelessWidget {
                               ),
                               Spacer(),
                               Text(
-                                "Journals",
+                                AppLocalizations.of(context).translate("journals"),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16,

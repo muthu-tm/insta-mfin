@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class ExpenseCategoryListWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey;
@@ -159,7 +160,7 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Categories!",
+                      AppLocalizations.of(context).translate("no_category"),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -170,7 +171,7 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Add your Categories!",
+                      AppLocalizations.of(context).translate("add_your_category"),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,

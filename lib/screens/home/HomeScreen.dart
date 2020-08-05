@@ -209,7 +209,7 @@ class HomeScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Padding(
-                                  padding: EdgeInsets.all(5),
+                                  padding: EdgeInsets.only(top: 5, left: 5),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -217,13 +217,13 @@ class HomeScreen extends StatelessWidget {
                                       Text(
                                         AppLocalizations.of(context).translate('outstanding'),
                                         style: TextStyle(
-                                          fontSize: 17.0,
+                                          fontSize: 16.0,
                                           fontFamily: "Georgia",
                                           color: CustomColors.mfinWhite,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(height: 5),
+                                      SizedBox(height: 3),
                                       getStockAmount(context),
                                     ],
                                   ),
@@ -446,17 +446,17 @@ class HomeScreen extends StatelessWidget {
                     Text(
                       AppLocalizations.of(context).translate('today_collection'),
                       style: TextStyle(
-                        fontSize: 22.0,
+                        fontSize: 20.0,
                         fontFamily: "Georgia",
                         color: CustomColors.mfinLightGrey,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 15.0),
                     Text(
                       'Total: $total',
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         fontFamily: "Georgia",
                         color: CustomColors.mfinGrey,
                         fontWeight: FontWeight.bold,
@@ -465,7 +465,7 @@ class HomeScreen extends StatelessWidget {
                     Text(
                       'Amount: Rs.$amount',
                       style: TextStyle(
-                        fontSize: 17.0,
+                        fontSize: 16.0,
                         fontFamily: "Georgia",
                         color: CustomColors.mfinGrey,
                         fontWeight: FontWeight.bold,
@@ -474,7 +474,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(5),
                   child: CircularPercentIndicator(
                     radius: 80.0,
                     lineWidth: 10.0,
@@ -485,12 +485,12 @@ class HomeScreen extends StatelessWidget {
                       size: 30.0,
                       color: CustomColors.mfinFadedButtonGreen.withOpacity(0.9),
                     ),
-                    footer: new Text(
+                    footer: Text(
                       "Rs.$rAmount",
-                      style: new TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: "Georgia",
-                          fontSize: 17.0),
+                          fontSize: 14.0),
                     ),
                     circularStrokeCap: CircularStrokeCap.round,
                     backgroundColor: amount == 0

@@ -11,6 +11,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class WalletHome extends StatefulWidget {
   WalletHome(this.isApplied);
@@ -91,7 +92,7 @@ class _WalletHomeState extends State<WalletHome> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Text(
-                        "Available Balance: ",
+                        AppLocalizations.of(context).translate('available_balance'),
                         style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontSize: 18.0,
@@ -153,7 +154,7 @@ class _WalletHomeState extends State<WalletHome> {
                   color: CustomColors.mfinBlue.withOpacity(0.6),
                 ),
                 title: Text(
-                  "Wallet Amount",
+                  AppLocalizations.of(context).translate('wallet_amount'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Georgia",
@@ -248,7 +249,7 @@ class _WalletHomeState extends State<WalletHome> {
                   color: CustomColors.mfinBlue.withOpacity(0.5),
                 ),
                 title: Text(
-                  "Registration Bonus",
+                  AppLocalizations.of(context).translate('registration_bonus'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Georgia",
@@ -379,7 +380,7 @@ class _WalletHomeState extends State<WalletHome> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "No Rewards so far!",
+                    AppLocalizations.of(context).translate('no_rewards_so_far'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: CustomColors.mfinAlertRed,
@@ -391,7 +392,7 @@ class _WalletHomeState extends State<WalletHome> {
                     color: CustomColors.mfinBlue,
                   ),
                   Text(
-                    "Refer your code & Earn rewards!",
+                    AppLocalizations.of(context).translate('refer_and_reward'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: CustomColors.mfinButtonGreen,
@@ -426,7 +427,7 @@ class _WalletHomeState extends State<WalletHome> {
                   color: CustomColors.mfinBlue.withOpacity(0.6),
                 ),
                 title: Text(
-                  "Your Rewards",
+                  AppLocalizations.of(context).translate('your_reward'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Georgia",

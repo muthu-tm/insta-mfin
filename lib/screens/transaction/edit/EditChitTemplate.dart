@@ -5,6 +5,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/chit/chit_template_controller.dart';
+import 'package:instamfin/app_localizations.dart';
 
 class EditChitTemplate extends StatefulWidget {
   EditChitTemplate(this.temp);
@@ -176,7 +177,7 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        "Chit Template",
+                        AppLocalizations.of(context).translate("child_template"),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -199,7 +200,7 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                               keyboardType: TextInputType.text,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
-                                labelText: 'Template name',
+                                labelText: AppLocalizations.of(context).translate("template_name"),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
@@ -527,7 +528,7 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
                                                   labelText:
-                                                      'Collection Amount',
+                                                    AppLocalizations.of(context).translate("collection_amount"),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -661,7 +662,7 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
                                                   labelText:
-                                                      'Allocation Amount',
+                                                      AppLocalizations.of(context).translate("allocation_amount"),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,
@@ -723,7 +724,7 @@ class _EditChitTemplateState extends State<EditChitTemplate> {
                                                     TextInputType.number,
                                                 textAlign: TextAlign.start,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Profit Amount',
+                                                  labelText: AppLocalizations.of(context).translate("profit_amount"),
                                                   floatingLabelBehavior:
                                                       FloatingLabelBehavior
                                                           .always,

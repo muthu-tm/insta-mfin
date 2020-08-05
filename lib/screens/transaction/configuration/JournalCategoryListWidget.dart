@@ -10,6 +10,8 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/app_localizations.dart';
+
 
 class JournalCategoryListWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey;
@@ -159,7 +161,7 @@ class JournalCategoryListWidget extends StatelessWidget {
                   children: <Widget>[
                     new Spacer(),
                     Text(
-                      "No Journal Categories!",
+                      AppLocalizations.of(context).translate("no_journal_category"),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
@@ -170,7 +172,7 @@ class JournalCategoryListWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      "Add your Categories!",
+                      AppLocalizations.of(context).translate("add_your_category"),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,

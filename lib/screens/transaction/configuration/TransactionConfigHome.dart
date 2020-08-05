@@ -92,7 +92,7 @@ class TransactionConfigHome extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                        title: Text('Add Journal Categories'),
+                        title: Text(AppLocalizations.of(context).translate("add_journal_category")),
                         leading: Icon(
                           Icons.library_books,
                           color: CustomColors.mfinBlue,
