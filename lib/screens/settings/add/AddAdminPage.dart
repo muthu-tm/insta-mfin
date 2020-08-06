@@ -107,9 +107,11 @@ class _AddAdminPageState extends State<AddAdminPage> {
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
-                        hintText: AppLocalizations.of(context).translate('type_user_mobile_no'),
+                        hintText: AppLocalizations.of(context)
+                            .translate('type_user_mobile_no'),
                         errorText: !mobileNumberValid
-                            ? AppLocalizations.of(context).translate('enter_valid_phone')
+                            ? AppLocalizations.of(context)
+                                .translate('enter_valid_phone')
                             : null,
                         suffixIcon: Icon(
                           Icons.search,
@@ -177,7 +179,8 @@ class _AddAdminPageState extends State<AddAdminPage> {
                     : Padding(
                         padding: EdgeInsets.all(5),
                         child: Text(
-                          AppLocalizations.of(context).translate('no_user_select'),
+                          AppLocalizations.of(context)
+                              .translate('no_user_select'),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: CustomColors.mfinLightGrey,
@@ -198,7 +201,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
     if (mobileNumber != "" &&
         int.parse(mobileNumber) == UserController().getCurrentUserID()) {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-        AppLocalizations.of(context).translate('type_user_mobile_no'), 3));
+          AppLocalizations.of(context).translate('type_user_mobile_no'), 3));
       return;
     }
 
@@ -238,11 +241,11 @@ class _AddAdminPageState extends State<AddAdminPage> {
 
   Future<void> _submit() async {
     if (userList.length == 0) {
-      _scaffoldKey.currentState
-          .showSnackBar(CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('no_user_select'), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('no_user_select'), 2));
     } else {
       String groupName = widget.groupName;
-      CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('updating_admin'));
+      CustomDialogs.actionWaiting(context, "Updating..");
       var response;
 
       try {
@@ -253,7 +256,8 @@ class _AddAdminPageState extends State<AddAdminPage> {
               userList,
               widget.financeID,
               widget.branchName,
-              widget.subBranchName, true);
+              widget.subBranchName,
+              true);
           BranchController _branchController = BranchController();
           await _branchController.updateBranchUsers(
               true, userList, widget.financeID, widget.branchName);

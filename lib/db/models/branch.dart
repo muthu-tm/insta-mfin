@@ -178,7 +178,7 @@ class Branch {
         .getDocuments();
 
     if (branchDocs.documents.isEmpty) {
-      throw 'No branch found for $financeID';
+      return null;
     }
 
     List<Branch> branches = [];
