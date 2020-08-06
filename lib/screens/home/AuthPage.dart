@@ -56,11 +56,41 @@ class _AuthPageState extends State<AuthPage> {
                       } else if (userSnapshot.hasError) {
                         return LoginPage(false, _scaffoldKey);
                       } else {
-                        return Center(
+                        return Container(
+                          height: MediaQuery.of(context).size.height,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: AsyncWidgets.asyncWaiting(),
+                            children: <Widget>[
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.30,
+                              ),
+                              ClipRRect(
+                                child: Image.asset(
+                                  "images/icons/logo.png",
+                                  height: 80,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(5),
+                                child: shadowGradientText("mFIN", 16.0),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.35,
+                              ),
+                              Text(
+                                "Serving From",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: CustomColors.mfinGrey,
+                                  fontSize: 12,
+                                  fontFamily: "Georgia",
+                                ),
+                              ),
+                              shadowGradientText("Fourcup Inc.", 20.0),
+                            ],
                           ),
                         );
                       }
@@ -82,6 +112,28 @@ class _AuthPageState extends State<AuthPage> {
               }
             },
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget shadowGradientText(String text, double size) {
+    return ShaderMask(
+      shaderCallback: (bounds) => LinearGradient(
+        colors: [
+          CustomColors.mfinButtonGreen,
+          CustomColors.mfinBlue,
+        ],
+      ).createShader(
+        Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+      ),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: CustomColors.mfinWhite,
+          fontSize: size,
+          fontFamily: "Georgia",
         ),
       ),
     );
@@ -295,7 +347,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
           } else {
             widget._scaffoldKey.currentState.showSnackBar(
               CustomSnackBar.errorSnackBar(
-                  "Unable to use FingerPrint Auth. Please LOGIN using Secret KEY!",
+                  "Unable to use FingerPrint Login. Please LOGIN using Secret KEY!",
                   2),
             );
             return;
@@ -303,7 +355,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
         } else {
           widget._scaffoldKey.currentState.showSnackBar(
             CustomSnackBar.errorSnackBar(
-                "Unable to use FingerPrint Auth. Please LOGIN using Secret KEY!",
+                "Unable to use FingerPrint Login. Please LOGIN using Secret KEY!",
                 2),
           );
           return;
@@ -312,7 +364,8 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
     } catch (e) {
       widget._scaffoldKey.currentState.showSnackBar(
         CustomSnackBar.errorSnackBar(
-            "Unable to use FingerPrint Auth. Please LOGIN using Secret KEY!", 2),
+            "Unable to use FingerPrint Login. Please LOGIN using Secret KEY!",
+            2),
       );
     }
   }

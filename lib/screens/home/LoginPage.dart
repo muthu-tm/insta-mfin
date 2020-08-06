@@ -127,26 +127,26 @@ class _LoginPageState extends State<LoginPage> {
                         color: CustomColors.mfinWhite,
                         size: 20.0,
                       ),
-                      SizedBox(width: 10.0),
+                      SizedBox(width: 5.0),
                       Expanded(
                         child: RichText(
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'We will send ',
+                                text: AppLocalizations.of(context).translate('we_will_send'),
                                 style: TextStyle(
                                     color: CustomColors.mfinWhite,
                                     fontWeight: FontWeight.w400),
                               ),
                               TextSpan(
-                                text: 'One Time Password',
+                                text: AppLocalizations.of(context).translate('one_time_password'),
                                 style: TextStyle(
                                     color: CustomColors.mfinAlertRed,
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w700),
                               ),
                               TextSpan(
-                                text: ' to this mobile number',
+                                text: AppLocalizations.of(context).translate('to_mobile_no'),
                                 style: TextStyle(
                                     color: CustomColors.mfinWhite,
                                     fontWeight: FontWeight.w400),
@@ -157,22 +157,22 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  Padding(padding: EdgeInsets.all(20.0)),
-                  new InkWell(
+                  Padding(padding: EdgeInsets.all(10.0)),
+                  InkWell(
                     onTap: () {
                       _submit();
                     },
-                    child: new Container(
+                    child: Container(
                       width: 150.0,
                       height: 50.0,
-                      decoration: new BoxDecoration(
+                      decoration: BoxDecoration(
                         color: CustomColors.mfinFadedButtonGreen,
-                        borderRadius: new BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                      child: new Center(
-                        child: new Text(
+                      child: Center(
+                        child: Text(
                           AppLocalizations.of(context).translate('get_otp'),
-                          style: new TextStyle(
+                          style: TextStyle(
                             fontSize: 20.0,
                             color: CustomColors.mfinBlue,
                             fontWeight: FontWeight.bold,
@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  Padding(padding: EdgeInsets.all(25.0)),
+                  Padding(padding: EdgeInsets.all(10.0)),
                 ],
               ),
             ),
@@ -194,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Text(
                   AppLocalizations.of(context).translate('no_account'),
-                  style: new TextStyle(
+                  style: TextStyle(
                     fontSize: 13.0,
                     fontFamily: 'Georgia',
                     color: CustomColors.mfinAlertRed,
@@ -211,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: Text(
                     AppLocalizations.of(context).translate('sign_up'),
-                    style: new TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: CustomColors.mfinBlue,
                       fontSize: 18.0,
@@ -245,7 +245,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               label: Text(
                 AppLocalizations.of(context).translate('help_support'),
-                style: new TextStyle(
+                style: TextStyle(
+                  fontFamily: 'Georgia',
                   fontWeight: FontWeight.bold,
                   color: CustomColors.mfinBlue,
                   fontSize: 16.0,

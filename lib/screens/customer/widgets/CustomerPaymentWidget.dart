@@ -179,22 +179,22 @@ Widget getPaymentDetails(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 5.0),
+                    padding: EdgeInsets.only(left: 2.0, top: 5.0),
                     child: Text(
-                      AppLocalizations.of(context).translate('received'),
+                      AppLocalizations.of(context).translate('received_caps'),
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: CustomColors.mfinBlue,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 5.0, top: 5.0),
+                    padding: EdgeInsets.only(right: 2.0, top: 5.0),
                     child: Text(
                       '$_r',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: CustomColors.mfinPositiveGreen,
                         fontWeight: FontWeight.bold,
                       ),
@@ -206,22 +206,22 @@ Widget getPaymentDetails(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0),
+                    padding: EdgeInsets.only(left: 2.0, top: 2.0),
                     child: Text(
-                      AppLocalizations.of(context).translate('pending'),
+                      AppLocalizations.of(context).translate('pending_caps'),
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: CustomColors.mfinBlue,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 5.0, top: 2.0),
+                    padding: EdgeInsets.only(right: 2.0, top: 2.0),
                     child: Text(
                       '$_p',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: CustomColors.mfinAlertRed,
                         fontWeight: FontWeight.bold,
                       ),
@@ -233,22 +233,22 @@ Widget getPaymentDetails(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0),
+                    padding: EdgeInsets.only(left: 2.0, top: 2.0),
                     child: Text(
-                      AppLocalizations.of(context).translate('today'),
+                      AppLocalizations.of(context).translate('today_caps'),
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: CustomColors.mfinBlue,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 5.0, top: 2.0),
+                    padding: EdgeInsets.only(right: 2.0, top: 2.0),
                     child: Text(
                       '$_c',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: CustomColors.mfinBlue,
                         fontWeight: FontWeight.bold,
                       ),
@@ -260,22 +260,22 @@ Widget getPaymentDetails(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(right: 5.0, left: 5.0, top: 2.0),
+                    padding: EdgeInsets.only(left: 2.0, top: 2.0),
                     child: Text(
-                      AppLocalizations.of(context).translate('upcoming'),
+                      AppLocalizations.of(context).translate('upcoming_caps'),
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: CustomColors.mfinBlue,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 5.0, top: 2.0),
+                    padding: EdgeInsets.only(right: 2.0, top: 2.0),
                     child: Text(
                       '$_u',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: CustomColors.mfinGrey,
                         fontWeight: FontWeight.bold,
                       ),
@@ -367,7 +367,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                   leading: Text(
                     AppLocalizations.of(context).translate("received_caps"),
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 14,
                       color: CustomColors.mfinBlue,
                       fontWeight: FontWeight.bold,
                     ),
@@ -375,7 +375,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                   trailing: Text(
                     payment.principalAmount.toString(),
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 14,
                       color: CustomColors.mfinPositiveGreen,
                       fontWeight: FontWeight.bold,
                     ),
@@ -388,7 +388,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                   leading: Text(
                     AppLocalizations.of(context).translate('pending_caps'),
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 14,
                       color: CustomColors.mfinBlue,
                       fontWeight: FontWeight.bold,
                     ),
@@ -396,7 +396,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                   trailing: Text(
                     paidSnap.data.toString(),
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 14,
                       color: CustomColors.mfinPositiveGreen,
                       fontWeight: FontWeight.bold,
                     ),
@@ -410,7 +410,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                         leading: Text(
                           AppLocalizations.of(context).translate('loss'),
                           style: TextStyle(
-                            fontSize: 17,
+                            fontSize: 14,
                             color: CustomColors.mfinBlue,
                             fontWeight: FontWeight.bold,
                           ),
@@ -418,7 +418,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                         trailing: Text(
                           payment.lossAmount.toString(),
                           style: TextStyle(
-                            fontSize: 17,
+                            fontSize: 14,
                             color: CustomColors.mfinAlertRed,
                             fontWeight: FontWeight.bold,
                           ),
@@ -432,7 +432,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                             leading: Text(
                               AppLocalizations.of(context).translate('profit'),
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 14,
                                 color: CustomColors.mfinBlue,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -440,7 +440,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                             trailing: Text(
                               payment.profitAmount.toString(),
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 14,
                                 color: CustomColors.mfinPositiveGreen,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -454,7 +454,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                   leading: Text(
                     AppLocalizations.of(context).translate('upcoming_caps'),
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: CustomColors.mfinBlue,
                       fontWeight: FontWeight.bold,
                     ),
@@ -463,7 +463,7 @@ Widget getSettledPaymentsDetails(Payment payment) {
                     DateUtils.formatDate(DateTime.fromMillisecondsSinceEpoch(
                         payment.settledDate)),
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 14,
                       color: CustomColors.mfinGrey,
                       fontWeight: FontWeight.bold,
                     ),
