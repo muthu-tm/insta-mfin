@@ -40,20 +40,12 @@ class Notification extends Model {
     return _notificationCollRef;
   }
 
-  String getID() {
-    return this.createdAt.microsecondsSinceEpoch.toString();
-  }
-
   Query getGroupQuery() {
     return Model.db.collectionGroup('user_notifications');
   }
 
-  String getDocumentID(DateTime createdAt) {
-    return createdAt.microsecondsSinceEpoch.toString();
-  }
-
-  DocumentReference getDocumentReference(DateTime createdAt) {
-    return getCollectionRef().document(getDocumentID(createdAt));
+  DocumentReference getDocumentReference() {
+    return getCollectionRef().document();
   }
 
   create() async {
@@ -61,7 +53,7 @@ class Notification extends Model {
     this.financeID = user.primary.financeID;
     this.createdBy = user.name;
     
-    await super.add(this.toJson());
+    await getDocumentReference().setData(this.toJson());
   }
 
   Stream<QuerySnapshot> streamAllByType(List<int> type) {
