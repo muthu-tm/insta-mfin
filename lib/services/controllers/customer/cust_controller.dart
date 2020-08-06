@@ -3,7 +3,6 @@ import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
-import 'package:instamfin/services/controllers/notification/n_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -46,9 +45,6 @@ class CustController {
       cust.setAddedBy(user.mobileNumber);
 
       await cust.create();
-
-      NUtils.financeNotify("", "NEW Customer OnBoard",
-          "New Customer $firstName $lastName onboarded by ${user.mobileNumber}.!");
 
       return CustomResponse.getSuccesReponse(cust.toJson());
     } catch (err) {

@@ -127,7 +127,7 @@ class BranchUsersWidget extends StatelessWidget {
                                 BranchController _bc = BranchController();
                                 try {
                                   await _bc.updateBranchAdmins(
-                                      false, [userID], financeID, branchName);
+                                      false, [userID], financeID, branchName, true);
 
                                   List<Branch> _bList = await _bc
                                       .getBranchesForUserID(financeID, userID);

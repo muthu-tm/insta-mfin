@@ -47,9 +47,6 @@ class SubBranchController {
 
       SubBranch subBranch = await newSubBranch.create(financeID, branchName);
 
-      NUtils.financeNotify("", "NEW Branch",
-          "Woww! Your have grown your business. Our Best wishes to exapnd more! We are ready to provide more OFFERS, Please Contact Us");
-
       return CustomResponse.getSuccesReponse(subBranch.toJson());
     } catch (err) {
       Analytics.reportError({
@@ -64,22 +61,29 @@ class SubBranchController {
   }
 
   Future updateSubBranchAdmins(bool isAdd, List<int> userList, String financeID,
-      String branchName, String subBranchName) async {
+      String branchName, String subBranchName, bool notify) async {
     try {
       SubBranch subBranch = SubBranch();
       await subBranch.updateArrayField(
           isAdd, {'admins': userList}, financeID, branchName, subBranchName);
 
-      NUtils.financeNotify("", "New SubBranch Admin",
-          "You have added new Admin for the SubBranch $subBranchName");
-
-      userList.forEach((u) {
-        NUtils.userNotify(
-            "",
-            "SubBranch Admin",
-            "You have added as a Admin for the SubBranch $subBranchName of Branch $branchName. Please change your primary finance to work with this SubBranch. Thanks!",
-            u);
-      });
+      if (notify && isAdd) {
+        userList.forEach((u) {
+          NUtils.userNotify(
+              "",
+              "SubBranch Admin",
+              "You have been added as an ADMIN for the SubBranch '$subBranchName' of Branch '$branchName'. Please change your primary finance to work with this SubBranch. Thanks!",
+              u);
+        });
+      } else if (notify && !isAdd) {
+        userList.forEach((u) {
+          NUtils.userNotify(
+              "",
+              "SubBranch Admin",
+              "Your access to the SubBranch '$subBranchName' of Branch '$branchName' has been revoked. Thanks!",
+              u);
+        });
+      }
 
       return CustomResponse.getSuccesReponse(
           "Successfully updated Admin list of SubBranch $subBranchName");

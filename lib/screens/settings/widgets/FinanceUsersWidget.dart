@@ -89,7 +89,7 @@ class FinanceUsersWidget extends StatelessWidget {
                             () async {
                               FinanceController _fc = FinanceController();
                               await _fc.updateFinanceAdmins(
-                                  false, [userID], financeID);
+                                  false, [userID], financeID, financeName);
                               Navigator.pop(context);
                             },
                             () {

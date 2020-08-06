@@ -30,13 +30,10 @@ class FinanceController {
       await _userController.updatePrimaryFinance(
           financeCompany.createdAt.millisecondsSinceEpoch.toString(), "", "");
 
-      NUtils.financeNotify("", "NEW FINANCE",
-          "Hurray! Created a new Finance $name in iFIN. All the Best!");
-
       NUtils.userNotify(
           "",
           "NEW FINANCE",
-          "Hurray! Your have created a Finance $name in iFIN. We wish 'All the Best' for your Business!",
+          "Hurray! Your have created a Finance '$name' in mFIN. We wish 'All the Best' for your Business!",
           addedBy);
 
       return CustomResponse.getSuccesReponse(financeCompany.toJson());
@@ -109,8 +106,8 @@ class FinanceController {
     }
   }
 
-  Future updateFinanceAdmins(
-      bool isAdd, List<int> userList, String financeID) async {
+  Future updateFinanceAdmins(bool isAdd, List<int> userList, String financeID,
+      String financeName) async {
     try {
       Finance finance = Finance();
       await finance.updateArrayField(
@@ -119,6 +116,24 @@ class FinanceController {
       List<Branch> branches = await getAllBranches(financeID);
       if (branches != null && branches.length > 0) {
         await updateBranchAdmins(isAdd, branches, userList, financeID);
+      }
+
+      if (isAdd) {
+        userList.forEach((u) {
+          NUtils.userNotify(
+              "",
+              "Finance Admin",
+              "You have been added as an ADMIN for the Finance '$financeName'. Please set this as your primary to work this Finance. Thanks!",
+              u);
+        });
+      } else {
+        userList.forEach((u) {
+          NUtils.userNotify(
+              "",
+              "Finance Admin",
+              "Your access to the Finance '$financeName' has been revoked. Thanks!",
+              u);
+        });
       }
 
       return CustomResponse.getSuccesReponse(finance.toJson());
@@ -161,7 +176,7 @@ class FinanceController {
         String branchName = branch.branchName;
 
         await _branchController.updateBranchAdmins(
-            isAdd, userList, financeID, branchName);
+            isAdd, userList, financeID, branchName, false);
       }
     }
   }

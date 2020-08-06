@@ -42,9 +42,6 @@ class BranchController {
 
       Branch branch = await newBranch.create(financeID);
 
-      NUtils.financeNotify("", "NEW Branch",
-          "Great! Added a new Branch. Our Best wishes for your growth!");
-          
       return CustomResponse.getSuccesReponse(branch.toJson());
     } catch (err) {
       Analytics.reportError({
@@ -58,7 +55,7 @@ class BranchController {
   }
 
   Future updateBranchAdmins(bool isAdd, List<int> userList, String financeID,
-      String branchName) async {
+      String branchName, bool notify) async {
     try {
       Branch branch = Branch();
       await branch.updateArrayField(isAdd,
@@ -71,16 +68,23 @@ class BranchController {
             isAdd, subBranches, userList, financeID, branchName);
       }
 
-      NUtils.financeNotify("", "New Branch Admin",
-          "Added new Admin for the Branch $branchName");
-
-      userList.forEach((u) {
-        NUtils.userNotify(
-            "",
-            "SubBranch Admin",
-            "You have added as a Admin for the Branch $branchName. Please change your primary finance to work with this Branch. Thanks!",
-            u);
-      });
+      if (notify && isAdd) {
+        userList.forEach((u) {
+          NUtils.userNotify(
+              "",
+              "Branch Admin",
+              "You have been added as an ADMIN for the Branch '$branchName'. Please change your primary finance to work with this Branch. Thanks!",
+              u);
+        });
+      } else if (notify && !isAdd) {
+        userList.forEach((u) {
+          NUtils.userNotify(
+              "",
+              "Branch Admin",
+              "Your access to the Branch '$branchName' has been revoked. Thanks!",
+              u);
+        });
+      } 
 
       return CustomResponse.getSuccesReponse(branch.toJson());
     } catch (err) {
@@ -127,7 +131,7 @@ class BranchController {
         String subBranchName = subBranch.subBranchName;
 
         await _subBranchController.updateSubBranchAdmins(
-            isAdd, userList, financeID, branchName, subBranchName);
+            isAdd, userList, financeID, branchName, subBranchName, false);
       }
     }
   }

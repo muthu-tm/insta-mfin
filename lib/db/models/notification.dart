@@ -11,16 +11,10 @@ class Notification extends Model {
 
   @JsonKey(name: 'finance_id', nullable: true)
   String financeID;
-  @JsonKey(name: 'branch_name', nullable: true)
-  String branchName;
-  @JsonKey(name: 'sub_branch_name', nullable: true)
-  String subBranchName;
   @JsonKey(name: 'created_by', nullable: true)
-  int createdBy;
+  String createdBy;
   @JsonKey(name: 'user_number', nullable: true)
   int userNumber;
-  @JsonKey(name: 'cust_number', nullable: true)
-  int custNumber;
   @JsonKey(name: 'type', nullable: true)
   int type;
   @JsonKey(name: 'data', nullable: true)
@@ -47,7 +41,7 @@ class Notification extends Model {
   }
 
   String getID() {
-    return this.createdAt.millisecondsSinceEpoch.toString();
+    return this.createdAt.microsecondsSinceEpoch.toString();
   }
 
   Query getGroupQuery() {
@@ -55,7 +49,7 @@ class Notification extends Model {
   }
 
   String getDocumentID(DateTime createdAt) {
-    return createdAt.millisecondsSinceEpoch.toString();
+    return createdAt.microsecondsSinceEpoch.toString();
   }
 
   DocumentReference getDocumentReference(DateTime createdAt) {
@@ -65,9 +59,7 @@ class Notification extends Model {
   create() async {
     this.createdAt = DateTime.now();
     this.financeID = user.primary.financeID;
-    this.branchName = user.primary.branchName;
-    this.subBranchName = user.primary.subBranchName;
-    this.createdBy = user.mobileNumber;
+    this.createdBy = user.name;
     
     await super.add(this.toJson());
   }
@@ -75,13 +67,13 @@ class Notification extends Model {
   Stream<QuerySnapshot> streamAllByType(List<int> type) {
     return getCollectionRef()
         .where('type', whereIn: type)
-        .where('created_by', isEqualTo: user.mobileNumber)
+        .where('user_number', isEqualTo: user.mobileNumber)
         .snapshots();
   }
 
   Stream<QuerySnapshot> streamAll() {
     return getCollectionRef()
-        .where('created_by', isEqualTo: user.mobileNumber)
+        .where('user_number', isEqualTo: user.mobileNumber)
         .snapshots();
   }
 }

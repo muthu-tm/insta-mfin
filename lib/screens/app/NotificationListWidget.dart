@@ -45,20 +45,15 @@ class NotificationListWidget extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: 100,
                       child: Row(
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.02,
-                                right:
-                                    MediaQuery.of(context).size.width * 0.04),
+                            padding: EdgeInsets.only(left: 5, right: 10),
                             child: _n.logoPath == ""
                                 ? Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    height: MediaQuery.of(context).size.width *
-                                        0.15,
+                                    width: 60,
+                                    height: 60,
                                     margin: EdgeInsets.only(bottom: 5),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
@@ -67,7 +62,6 @@ class NotificationListWidget extends StatelessWidget {
                                               CustomColors.mfinFadedButtonGreen,
                                           style: BorderStyle.solid,
                                           width: 2.0),
-                                      // image:
                                     ),
                                     child: Icon(
                                       Icons.turned_in_not,
@@ -76,8 +70,7 @@ class NotificationListWidget extends StatelessWidget {
                                     ),
                                   )
                                 : CircleAvatar(
-                                    radius: MediaQuery.of(context).size.width *
-                                        0.15,
+                                    radius: 30,
                                     backgroundImage: NetworkImage(_n.logoPath),
                                     backgroundColor: Colors.transparent,
                                   ),
@@ -86,16 +79,21 @@ class NotificationListWidget extends StatelessWidget {
                             width: MediaQuery.of(context).size.width * 0.75,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 Expanded(
-                                  child: Text(
-                                    _n.title.toString(),
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: textColor,
-                                        fontFamily: 'Georgia',
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold),
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.only(top: 2.0, bottom: 2.0),
+                                    child: Text(
+                                      _n.title.toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: textColor,
+                                          fontFamily: 'Georgia',
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
                                 Expanded(
@@ -109,14 +107,18 @@ class NotificationListWidget extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                Text(
-                                  DateUtils.formatDateTime(_n.createdAt),
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      color: textColor,
-                                      fontFamily: 'Georgia',
-                                      fontSize: 10.0,
-                                      fontWeight: FontWeight.bold),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 2.0, bottom: 5.0),
+                                  child: Text(
+                                    DateUtils.formatDateTime(_n.createdAt),
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(
+                                        color: textColor,
+                                        fontFamily: 'Georgia',
+                                        fontSize: 10.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ],
                             ),
@@ -127,12 +129,11 @@ class NotificationListWidget extends StatelessWidget {
                   );
                 });
           } else {
-            // No Collections available for this filterred view
             widget = Container(
               height: 90,
               child: Column(
                 children: <Widget>[
-                  new Spacer(),
+                  Spacer(),
                   Text(
                     emptyText,
                     textAlign: TextAlign.center,
@@ -142,7 +143,7 @@ class NotificationListWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  new Spacer(),
+                  Spacer(),
                 ],
               ),
             );

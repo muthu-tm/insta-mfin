@@ -3,11 +3,8 @@ part of 'notification.dart';
 Notification _$NotificationFromJson(Map<String, dynamic> json) {
   return Notification()
     ..financeID = json['finance_id'] as String
-    ..branchName = json['branch_name'] as String
-    ..subBranchName = json['sub_branch_name'] as String
-    ..createdBy = json['created_by'] as int
+    ..createdBy = json['created_by'] as String
     ..userNumber = json['user_number'] as int
-    ..custNumber = json['cust_number'] as int
     ..type = json['type'] as int
     ..data = json['data'] as Map<String, dynamic>
     ..title = json['title'] as String
@@ -27,11 +24,8 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 Map<String, dynamic> _$NotificationToJson(Notification instance) =>
     <String, dynamic>{
       'finance_id': instance.financeID,
-      'branch_name': instance.branchName,
-      'sub_branch_name': instance.subBranchName,
       'created_by': instance.createdBy,
       'user_number': instance.userNumber,
-      'cust_number': instance.custNumber,
       'type': instance.type,
       'data': instance.data,
       'title': instance.title,

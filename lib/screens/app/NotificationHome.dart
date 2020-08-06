@@ -14,7 +14,7 @@ class NotificationHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 3,
       child: Scaffold(
         key: _scaffoldKey,
         drawer: openDrawer(context),
@@ -52,85 +52,50 @@ class NotificationHome extends StatelessWidget {
               },
             ),
           ],
-          bottom: CustomTabBar(
-            CustomColors.mfinLightGrey,
-            TabBar(
-              isScrollable: true,
-              indicatorColor: CustomColors.mfinWhite,
-              labelColor: CustomColors.mfinWhite,
-              unselectedLabelColor: CustomColors.mfinBlue,
-              indicatorWeight: 0,
-              labelPadding: EdgeInsets.only(left: 5.0, right: 5.0),
-              indicator: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    CustomColors.mfinLightBlue,
-                    CustomColors.mfinBlue,
-                    CustomColors.mfinLightBlue,
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              tabs: [
-                Tab(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppLocalizations.of(context).translate('all'),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppLocalizations.of(context).translate('finance'),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppLocalizations.of(context).translate('alert'),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppLocalizations.of(context).translate('personal'),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppLocalizations.of(context).translate('promotions'),
-                    ),
-                  ),
-                ),
-              ],
+          bottom: TabBar(
+            isScrollable: true,
+            indicatorColor: CustomColors.mfinWhite,
+            unselectedLabelColor: CustomColors.mfinWhite,
+            indicatorWeight: 0,
+            labelPadding: EdgeInsets.only(left: 5.0, right: 5.0),
+            indicator: BoxDecoration(
+              color: CustomColors.mfinLightBlue,
+              borderRadius: BorderRadius.circular(3),
             ),
+            tabs: [
+              Tab(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    AppLocalizations.of(context).translate('all'),
+                  ),
+                ),
+              ),
+              Tab(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    AppLocalizations.of(context).translate('finance'),
+                  ),
+                ),
+              ),
+              Tab(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    AppLocalizations.of(context).translate('promotions'),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         body: TabBarView(
           children: [
             NotificationListWidget("No Notification received yet!",
                 CustomColors.mfinBlue, true, [0]),
-            NotificationListWidget("No Finance Notification received yet!",
-                CustomColors.mfinBlue, false, [5]),
-            NotificationListWidget(
-                "No Alerts received yet!", CustomColors.mfinBlue, false, [3]),
-            NotificationListWidget("No Personal Notification received yet!",
-                CustomColors.mfinBlue, false, [6]),
+            NotificationListWidget("No Notification received yet!",
+                CustomColors.mfinBlue, false, [1]),
             NotificationListWidget("No Promotions and Offers received yet!",
                 CustomColors.mfinBlue, false, [2]),
           ],

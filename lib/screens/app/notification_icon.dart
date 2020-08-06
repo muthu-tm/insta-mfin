@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
+import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class PushNotification extends StatefulWidget {
   @override
@@ -57,11 +58,12 @@ class _PushNotificationState extends State<PushNotification> {
                 ),
               ),
               Positioned(
-                right: 0,
+                right: 10,
+                top: 10,
                 child: Container(
                   padding: EdgeInsets.all(1),
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: CustomColors.mfinAlertRed,
                     borderRadius: BorderRadius.circular(15),
                   ),
                   constraints: BoxConstraints(
@@ -71,7 +73,7 @@ class _PushNotificationState extends State<PushNotification> {
                   child: Text(
                     '',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: CustomColors.mfinWhite,
                       fontSize: 8,
                     ),
                     textAlign: TextAlign.center,

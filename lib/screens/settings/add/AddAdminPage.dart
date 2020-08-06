@@ -253,14 +253,14 @@ class _AddAdminPageState extends State<AddAdminPage> {
               userList,
               widget.financeID,
               widget.branchName,
-              widget.subBranchName);
+              widget.subBranchName, true);
           BranchController _branchController = BranchController();
           await _branchController.updateBranchUsers(
               true, userList, widget.financeID, widget.branchName);
         } else if (widget.branchName != "") {
           BranchController _branchController = BranchController();
           response = await _branchController.updateBranchAdmins(
-              true, userList, widget.financeID, widget.branchName);
+              true, userList, widget.financeID, widget.branchName, true);
 
           FinanceController _financeController = FinanceController();
           await _financeController.updateFinanceUsers(
@@ -268,7 +268,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
         } else {
           FinanceController _financeController = FinanceController();
           response = await _financeController.updateFinanceAdmins(
-              true, userList, widget.financeID);
+              true, userList, widget.financeID, groupName);
         }
       } catch (err) {
         Navigator.pop(context);

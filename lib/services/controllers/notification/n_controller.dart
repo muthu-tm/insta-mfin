@@ -2,8 +2,7 @@ import 'package:instamfin/db/models/notification.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 
 class NController {
-  Future create(String logo, String title, String desc, int type, int uNumber,
-      int cNumber) async {
+  Future create(String logo, String title, String desc, int type, int uNumber) async {
     try {
       Notification _n = Notification();
       _n.type = type;
@@ -11,7 +10,6 @@ class NController {
       _n.title = title;
       _n.logoPath = logo;
       _n.userNumber = uNumber;
-      _n.custNumber = cNumber;
 
       _n.create();
     } catch (err) {

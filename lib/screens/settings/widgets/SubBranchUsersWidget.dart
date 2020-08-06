@@ -137,6 +137,7 @@ class SubBranchUsersWidget extends StatelessWidget {
                                     financeID,
                                     branchName,
                                     subBranchName,
+                                    true
                                   );
 
                                   List<SubBranch> sbList =
