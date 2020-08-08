@@ -157,7 +157,14 @@ class JournalStatisticsWidget extends StatelessWidget {
                                 yValueMapper: (JData j, _) => j.amount,
                                 dataLabelSettings: DataLabelSettings(
                                     isVisible: mode == 0 ? true : false),
-                                color: CustomColors.mfinGrey,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    CustomColors.mfinBlue.withOpacity(0.4),
+                                    CustomColors.mfinBlue.withOpacity(0.7),
+                                    CustomColors.mfinBlue,
+                                  ],
+                                  stops: <double>[0.0, 0.4, 1.0],
+                                ),
                                 borderColor: CustomColors.mfinAlertRed,
                                 borderWidth: 1.0,
                                 animationDuration: 1500,

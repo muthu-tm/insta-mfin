@@ -175,8 +175,14 @@ class CollectionStatisticsWidget extends StatelessWidget {
                               yValueMapper: (CollData c, _) => c.amount,
                               dataLabelSettings: DataLabelSettings(
                                   isVisible: mode == 0 ? true : false),
-                              color:
-                                  CustomColors.mfinButtonGreen.withOpacity(0.6),
+                              gradient: LinearGradient(
+                                colors: [
+                                  CustomColors.mfinButtonGreen.withOpacity(0.3),
+                                  CustomColors.mfinButtonGreen.withOpacity(0.5),
+                                  CustomColors.mfinButtonGreen.withOpacity(0.8),
+                                ],
+                                stops: <double>[0.0, 0.4, 1.0],
+                              ),
                               borderColor: CustomColors.mfinBlue,
                               borderWidth: 1.0,
                               animationDuration: 1500,

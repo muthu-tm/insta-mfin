@@ -157,7 +157,14 @@ class ExpenseStatisticsWidget extends StatelessWidget {
                                 yValueMapper: (EData e, _) => e.amount,
                                 dataLabelSettings: DataLabelSettings(
                                     isVisible: mode == 0 ? true : false),
-                                color: CustomColors.mfinAlertRed,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    CustomColors.mfinAlertRed.withOpacity(0.3),
+                                    CustomColors.mfinAlertRed.withOpacity(0.6),
+                                    CustomColors.mfinAlertRed,
+                                  ],
+                                  stops: <double>[0.0, 0.4, 1.0],
+                                ),
                                 borderColor: CustomColors.mfinBlue,
                                 borderWidth: 1.0,
                                 animationDuration: 1500,

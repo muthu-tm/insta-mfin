@@ -148,8 +148,14 @@ class PaymentStatisticsWidget extends StatelessWidget {
                                 yValueMapper: (PayData pay, _) => pay.amount,
                                 dataLabelSettings: DataLabelSettings(
                                     isVisible: mode == 0 ? true : false),
-                                color:
-                                    CustomColors.mfinAlertRed.withOpacity(0.7),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    CustomColors.mfinAlertRed.withOpacity(0.3),
+                                    CustomColors.mfinAlertRed.withOpacity(0.5),
+                                    CustomColors.mfinAlertRed.withOpacity(0.8),
+                                  ],
+                                  stops: <double>[0.0, 0.4, 1.0],
+                                ),
                                 borderColor: CustomColors.mfinButtonGreen,
                                 borderWidth: 1.0,
                                 animationDuration: 1500,
