@@ -28,7 +28,7 @@ class FinanceController {
       financeCompany = await financeCompany.create();
 
       await _userController.updatePrimaryFinance(
-          financeCompany.createdAt.millisecondsSinceEpoch.toString(), "", "");
+          financeCompany.getID(), "", "");
 
       NUtils.userNotify(
           "",
@@ -36,13 +36,18 @@ class FinanceController {
           "Hurray! Your have created a Finance '$name' in mFIN. We wish 'All the Best' for your Business!",
           addedBy);
 
+      Analytics.sendAnalyticsEvent({
+        "type": 'finance_create',
+        'finance_id': financeCompany.getID(),
+      }, 'finance');
+
       return CustomResponse.getSuccesReponse(financeCompany.toJson());
     } catch (err) {
       Analytics.reportError({
         "type": 'finance_create_error',
         "finance_name": name,
         'error': err.toString()
-      });
+      }, 'finance');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -62,7 +67,7 @@ class FinanceController {
         "type": 'finance_get_error',
         "user_id": userID,
         'error': err.toString()
-      });
+      }, 'finance');
       return null;
     }
   }
@@ -73,8 +78,7 @@ class FinanceController {
         throw 'Please set a valid Finance as Primary!';
       }
 
-      Finance finance = Finance();
-      var financeData = await finance.getByID(financeID);
+      var financeData = await Finance().getByID(financeID);
       if (financeData == null) {
         throw 'No Finance found for this ID $financeID';
       }
@@ -84,7 +88,7 @@ class FinanceController {
         "type": 'finance_get_error',
         "finance_id": financeID,
         'error': err.toString()
-      });
+      }, 'finance');
       throw err;
     }
   }
@@ -101,7 +105,7 @@ class FinanceController {
         "type": 'finance_get_error',
         "user_id": financeID,
         'error': err.toString()
-      });
+      }, 'finance');
       return "";
     }
   }
@@ -143,7 +147,7 @@ class FinanceController {
         "is_add": isAdd,
         "finance_id": financeID,
         'error': err.toString()
-      });
+      }, 'finance');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -162,7 +166,7 @@ class FinanceController {
         "is_add": isAdd,
         "finance_id": financeID,
         'error': err.toString()
-      });
+      }, 'finance');
       throw err;
     }
   }
@@ -195,7 +199,7 @@ class FinanceController {
         "type": 'finance_branch_error',
         "finance_id": financeID,
         'error': err.toString()
-      });
+      }, 'finance');
       throw err;
     }
   }
@@ -214,7 +218,7 @@ class FinanceController {
         "type": 'finance_admin_error',
         "finance_id": financeID,
         'error': err.toString()
-      });
+      }, 'finance');
       throw err;
     }
   }
@@ -233,7 +237,7 @@ class FinanceController {
         "type": 'finance_check_admin_error',
         "finance_id": financeID,
         'error': err.toString()
-      });
+      }, 'finance');
       throw err;
     }
   }
@@ -249,7 +253,7 @@ class FinanceController {
         "type": 'finance_update_error',
         "finance_id": financeID,
         'error': err.toString()
-      });
+      }, 'finance');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

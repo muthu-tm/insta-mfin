@@ -1,6 +1,7 @@
 import 'package:instamfin/db/models/chit_allocations.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class ChitAllocationController {
@@ -44,6 +45,11 @@ class ChitAllocationController {
 
       return CustomResponse.getSuccesReponse(alloc);
     } catch (err) {
+      Analytics.reportError({
+        "type": 'chit_alloc_create_error',
+        'chit_id': chit.id,
+        'error': err.toString()
+      }, 'chit');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -63,6 +69,11 @@ class ChitAllocationController {
       return CustomResponse.getSuccesReponse(
           "Allocation updated for Chit $chitID");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'chit_alloc_update_error',
+        'chit_id': chitID,
+        'error': err.toString()
+      }, 'chit');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

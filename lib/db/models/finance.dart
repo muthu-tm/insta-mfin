@@ -121,7 +121,7 @@ class Finance extends Model {
   }
 
   String getID() {
-    return this.createdAt.millisecondsSinceEpoch.toString();
+    return this.createdAt.microsecondsSinceEpoch.toString();
   }
 
   Future<DocumentSnapshot> getFinance(String financeID) async {

@@ -85,12 +85,12 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: EdgeInsets.all(5),
                     child: ClipRRect(
-                        child: Image.asset(
-                          "images/icons/logo.png",
-                          height: 80,
-                          width: 80,
-                        ),
+                      child: Image.asset(
+                        "images/icons/logo.png",
+                        height: 80,
+                        width: 80,
                       ),
+                    ),
                   ),
                   Padding(
                     padding:
@@ -107,7 +107,8 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 16.0,
                             color: CustomColors.mfinBlue,
                           ),
-                          hintText: AppLocalizations.of(context).translate('mobile_number'),
+                          hintText: AppLocalizations.of(context)
+                              .translate('mobile_number'),
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
                           suffixIcon: Icon(
@@ -133,20 +134,23 @@ class _LoginPageState extends State<LoginPage> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: AppLocalizations.of(context).translate('we_will_send'),
+                                text: AppLocalizations.of(context)
+                                    .translate('we_will_send'),
                                 style: TextStyle(
                                     color: CustomColors.mfinWhite,
                                     fontWeight: FontWeight.w400),
                               ),
                               TextSpan(
-                                text: AppLocalizations.of(context).translate('one_time_password'),
+                                text: AppLocalizations.of(context)
+                                    .translate('one_time_password'),
                                 style: TextStyle(
                                     color: CustomColors.mfinAlertRed,
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w700),
                               ),
                               TextSpan(
-                                text: AppLocalizations.of(context).translate('to_mobile_no'),
+                                text: AppLocalizations.of(context)
+                                    .translate('to_mobile_no'),
                                 style: TextStyle(
                                     color: CustomColors.mfinWhite,
                                     fontWeight: FontWeight.w400),
@@ -206,6 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) => MobileSignInPage(),
+                        settings: RouteSettings(name: '/signup'),
                       ),
                     );
                   },
@@ -261,8 +266,8 @@ class _LoginPageState extends State<LoginPage> {
 
   void _submit() async {
     if (_nController.text.length != 10) {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('enter_valid_phone'), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('enter_valid_phone'), 2));
       return;
     } else {
       CustomDialogs.actionWaiting(context, 'Checking User');
@@ -274,7 +279,8 @@ class _LoginPageState extends State<LoginPage> {
         if (_uJSON == null) {
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              AppLocalizations.of(context).translate('invalid_user_signup'), 2));
+              AppLocalizations.of(context).translate('invalid_user_signup'),
+              2));
           return;
         } else {
           this._user = User.fromJson(_uJSON);
@@ -287,7 +293,9 @@ class _LoginPageState extends State<LoginPage> {
       } on Exception catch (err) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            AppLocalizations.of(context).translate('login_error') + err.toString(), 2));
+            AppLocalizations.of(context).translate('login_error') +
+                err.toString(),
+            2));
       }
     }
   }
@@ -321,8 +329,7 @@ class _LoginPageState extends State<LoginPage> {
       if (!result['is_success']) {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          AppLocalizations.of(context).translate('unable_to_login'),
-            2));
+            AppLocalizations.of(context).translate('unable_to_login'), 2));
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 2));
       } else {
@@ -331,8 +338,7 @@ class _LoginPageState extends State<LoginPage> {
           await UserController().refreshUser(true);
         } catch (err) {
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              AppLocalizations.of(context).translate('unable_to_login'),
-              2));
+              AppLocalizations.of(context).translate('unable_to_login'), 2));
           return;
         }
         Navigator.of(context).pushAndRemoveUntil(
@@ -347,8 +353,7 @@ class _LoginPageState extends State<LoginPage> {
     }).catchError((error) {
       Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          AppLocalizations.of(context).translate('try_later'),
-          2));
+          AppLocalizations.of(context).translate('try_later'), 2));
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar("${error.toString()}", 2));
     });
@@ -360,13 +365,16 @@ class _LoginPageState extends State<LoginPage> {
 
     _smsVerificationCode = verificationId;
     Navigator.pop(context);
-    CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('verify_user'));
+    CustomDialogs.actionWaiting(
+        context, AppLocalizations.of(context).translate('verify_user'));
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
     Navigator.pop(context);
     _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-        AppLocalizations.of(context).translate('verification_failed') + authException.message.toString(), 2));
+        AppLocalizations.of(context).translate('verification_failed') +
+            authException.message.toString(),
+        2));
   }
 
   _codeAutoRetrievalTimeout(String verificationId) {

@@ -90,7 +90,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
                 ),
             ),
           ),
-          Text('iFIN',
+          Text('mFIN',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: CustomColors.mfinWhite,

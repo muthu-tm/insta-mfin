@@ -83,7 +83,7 @@ Widget contactAndSupportDialog(context) {
                 onPressed: () {
                   UrlLauncherUtils.sendEmail(
                       'hello.ifin@gmail.com',
-                      'iFIN - Help %26 Support',
+                      'mFIN - Help %26 Support',
                       'Please type your query/issue here with your mobile number.. We will get back to you ASAP!');
                 },
                 label: Text(

@@ -11,7 +11,8 @@ class Analytics {
     Analytics.observer = observer;
   }
 
-  static Future<void> sendAnalyticsEvent(String name, Map<String, dynamic> data) async {
+  static Future<void> sendAnalyticsEvent(
+      Map<String, dynamic> data, String name) async {
     await analytics.logEvent(
       name: name,
       parameters: data,
@@ -28,8 +29,8 @@ class Analytics {
     await analytics.setUserId(userId);
   }
 
-  static Future reportError(Map<String, dynamic> data) async {
-    await analytics.logEvent(name: 'Error', parameters: data);
+  static Future reportError(Map<String, dynamic> data, String eventName) async {
+    await analytics.logEvent(name: eventName, parameters: data);
   }
 
   static Future<void> setAnalyticsCollectionEnabled(bool isEnabled) async {
@@ -39,5 +40,4 @@ class Analytics {
   static Future<void> setUserProperty(String name, String value) async {
     await analytics.setUserProperty(name: name, value: value);
   }
-
 }

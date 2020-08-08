@@ -1,6 +1,7 @@
 import 'package:instamfin/db/models/journal_category.dart';
 import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class JournalController {
@@ -20,6 +21,10 @@ class JournalController {
       return CustomResponse.getSuccesReponse(
           "Added new Journal $name successfully");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'journal_create_error',
+        'error': err.toString()
+      }, 'journal');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -30,7 +35,10 @@ class JournalController {
       Journal _je = Journal();
       return _je.getAllJournals(financeId, branchName, subBranchName);
     } catch (err) {
-      print("Error while retrieving Journals: " + err.toString());
+      Analytics.reportError({
+        "type": 'journal_get_all_error',
+        'error': err.toString()
+      }, 'journal');
       throw err;
     }
   }
@@ -50,6 +58,10 @@ class JournalController {
 
       return journals;
     } catch (err) {
+      Analytics.reportError({
+        "type": 'journal_get_date_error',
+        'error': err.toString()
+      }, 'journal');
       throw err;
     }
   }
@@ -62,6 +74,10 @@ class JournalController {
       return getAllJournalByDateRange(financeId, branchName, subBranchName,
           today.subtract(Duration(days: today.weekday)), today);
     } catch (err) {
+      Analytics.reportError({
+        "type": 'journal_get_week_error',
+        'error': err.toString()
+      }, 'journal');
       throw err;
     }
   }
@@ -74,6 +90,10 @@ class JournalController {
       return getAllJournalByDateRange(financeId, branchName, subBranchName,
           DateTime(today.year, today.month, 1, 0, 0, 0, 0), today);
     } catch (err) {
+      Analytics.reportError({
+        "type": 'journal_get_month_error',
+        'error': err.toString()
+      }, 'journal');
       throw err;
     }
   }
@@ -98,30 +118,10 @@ class JournalController {
 
       return journals;
     } catch (err) {
-      throw err;
-    }
-  }
-
-  Future<List<int>> getTotalJournalAmount(
-      String financeId, String branchName, String subBranchName) async {
-    try {
-      List<Journal> journals =
-          await getAllJournalEntries(financeId, branchName, subBranchName);
-
-      int inTotal = 0;
-      int outTotal = 0;
-      journals.forEach(
-        (journal) {
-          if (journal.isExpense) {
-            outTotal += journal.amount;
-          } else {
-            inTotal += journal.amount;
-          }
-        },
-      );
-
-      return [inTotal, outTotal];
-    } catch (err) {
+      Analytics.reportError({
+        "type": 'journal_get_range_error',
+        'error': err.toString()
+      }, 'journal');
       throw err;
     }
   }
@@ -135,32 +135,26 @@ class JournalController {
 
       return Journal.fromJson(jEntry);
     } catch (err) {
+      Analytics.reportError({
+        "type": 'journal_get_error',
+        'error': err.toString()
+      }, 'journal');
       throw err;
-    }
-  }
-
-  Future updateJournal(Journal journal, Map<String, dynamic> jeData) async {
-    try {
-      // Journal _je = Journal();
-
-      // await _je.updateJournal(journal, jeData);
-
-      return CustomResponse.getSuccesReponse("Updated Journal successfully");
-    } catch (err) {
-      return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
   Future removeJournal(String financeId, String branchName,
       String subBranchName, DateTime createdAt) async {
     try {
-      Journal _je = Journal();
-
-      await _je.removeJournal(financeId, branchName, subBranchName, createdAt);
+      await Journal().removeJournal(financeId, branchName, subBranchName, createdAt);
 
       return CustomResponse.getSuccesReponse(
           "Removed the Journal successfully");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'journal_remove_error',
+        'error': err.toString()
+      }, 'journal');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

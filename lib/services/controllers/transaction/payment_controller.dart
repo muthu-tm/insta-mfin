@@ -1,5 +1,6 @@
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
@@ -51,9 +52,13 @@ class PaymentController {
 
       await pay.create();
 
-      return CustomResponse.getSuccesReponse(
-          "Created new Loan successfully");
+      return CustomResponse.getSuccesReponse("Created new Loan successfully");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'loan_create_error',
+        'cust_id': custID,
+        'error': err.toString()
+      }, 'loan');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -69,6 +74,11 @@ class PaymentController {
 
       return payments;
     } catch (err) {
+      Analytics.reportError({
+        "type": 'loan_get_error',
+        'cust_id': custID,
+        'error': err.toString()
+      }, 'loan');
       throw err;
     }
   }
@@ -83,6 +93,8 @@ class PaymentController {
 
       return payments;
     } catch (err) {
+      Analytics.reportError(
+          {"type": 'loan_get_date_error', 'error': err.toString()}, 'loan');
       throw err;
     }
   }
@@ -95,6 +107,8 @@ class PaymentController {
           today.subtract(Duration(days: today.weekday)),
           today.add(Duration(days: 1)));
     } catch (err) {
+      Analytics.reportError(
+          {"type": 'loan_get_week_error', 'error': err.toString()}, 'loan');
       throw err;
     }
   }
@@ -107,6 +121,8 @@ class PaymentController {
           DateTime(today.year, today.month, 1, 0, 0, 0, 0),
           today.add(Duration(days: 1)));
     } catch (err) {
+      Analytics.reportError(
+          {"type": 'loan_get_month_error', 'error': err.toString()}, 'loan');
       throw err;
     }
   }
@@ -124,6 +140,8 @@ class PaymentController {
 
       return payments;
     } catch (err) {
+      Analytics.reportError(
+          {"type": 'loan_get_range_error', 'error': err.toString()}, 'loan');
       throw err;
     }
   }
@@ -142,8 +160,11 @@ class PaymentController {
       return CustomResponse.getSuccesReponse(
           "Updated ${payment.custName} customer's Laon");
     } catch (err) {
-      print("Error while updating ${payment.custName}customer's Loan: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'loan_update_error',
+        'payment_id': payment.id,
+        'error': err.toString()
+      }, 'loan');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -168,6 +189,11 @@ class PaymentController {
       return CustomResponse.getSuccesReponse(
           "Updated ${payment.custName} customer's Loan");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'loan_settlement_error',
+        'payment_id': payment.id,
+        'error': err.toString()
+      }, 'loan');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -185,24 +211,29 @@ class PaymentController {
       return CustomResponse.getSuccesReponse(
           "Removed customer's Loan $paymentID");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'loan_remove_error',
+        'payment_id': paymentID,
+        'error': err.toString()
+      }, 'loan');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
-  
-  Future forceRemovePayment(
-    String financeId,
-    String branchName,
-    String subBranchName,
-    int paymentID,
-    bool isSettled
-  ) async {
+
+  Future forceRemovePayment(String financeId, String branchName,
+      String subBranchName, int paymentID, bool isSettled) async {
     try {
-      await Payment()
-          .forceRemovePayment(financeId, branchName, subBranchName, paymentID, isSettled);
+      await Payment().forceRemovePayment(
+          financeId, branchName, subBranchName, paymentID, isSettled);
 
       return CustomResponse.getSuccesReponse(
           "Force Removed customer's Loan $paymentID");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'loan_force_remove_error',
+        'payment_id': paymentID,
+        'error': err.toString()
+      }, 'loan');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

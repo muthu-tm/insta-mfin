@@ -1,5 +1,6 @@
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class CollectionController {
@@ -54,6 +55,11 @@ class CollectionController {
       return CustomResponse.getSuccesReponse(
           "Added new Collection successfully for Loan $paymentID}");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'coll_create_error',
+        'payment_id': paymentID,
+        'error': err.toString()
+      }, 'collection');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -65,6 +71,12 @@ class CollectionController {
       return await collection.getCollectionByID(
           financeId, branchName, subBranchName, paymentID, collID);
     } catch (err) {
+      Analytics.reportError({
+        "type": 'coll_get_error',
+        'payment_id': paymentID,
+        'coll_id': collID,
+        'error': err.toString()
+      }, 'collection');
       return null;
     }
   }
@@ -82,6 +94,11 @@ class CollectionController {
 
       return payments;
     } catch (err) {
+      Analytics.reportError({
+        "type": 'coll_get_error',
+        'payment_id': paymentID,
+        'error': err.toString()
+      }, 'collection');
       throw err;
     }
   }
@@ -135,25 +152,12 @@ class CollectionController {
 
       return collections;
     } catch (err) {
+      Analytics.reportError({
+        "type": 'coll_get_date_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'collection');
       throw err;
-    }
-  }
-
-  Future updateCollection(
-      String financeId,
-      String branchName,
-      String subBranchName,
-      int paymentID,
-      String collID,
-      Map<String, dynamic> collectionJSON) async {
-    try {
-      await Collection().update(financeId, branchName, subBranchName, paymentID,
-          collID, collectionJSON);
-
-      return CustomResponse.getSuccesReponse(
-          "Updated $paymentID Loan's collection $collID");
-    } catch (err) {
-      return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
@@ -182,6 +186,11 @@ class CollectionController {
       return CustomResponse.getSuccesReponse(
           "Loan's Collection updated for Loan $paymentID");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'coll_update_error',
+        'payment_id': paymentID,
+        'error': err.toString()
+      }, 'collection');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:instamfin/app_localizations.dart';
@@ -40,7 +41,7 @@ class _WalletHomeState extends State<WalletHome> {
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
-        title: Text('iFIN Wallet'),
+        title: Text('mFIN Wallet'),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -92,7 +93,8 @@ class _WalletHomeState extends State<WalletHome> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Text(
-                        AppLocalizations.of(context).translate('available_balance'),
+                        AppLocalizations.of(context)
+                            .translate('available_balance'),
                         style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontSize: 18.0,
@@ -211,12 +213,16 @@ class _WalletHomeState extends State<WalletHome> {
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.successSnackBar(
-                                  "Successfully claimed you bonus in iFIN!",
+                                  "Successfully claimed you bonus in mFIN!",
                                   2));
                           setState(() {
                             isClaimed = true;
                           });
                         } catch (err) {
+                          Analytics.reportError({
+                            "type": 'claim_error',
+                            'error': err.toString(),
+                          }, 'wallet');
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(err.toString(), 3));

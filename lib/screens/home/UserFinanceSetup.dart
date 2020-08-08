@@ -17,7 +17,10 @@ class UserFinanceSetup extends StatelessWidget {
     if (_user.primary.financeID != null && _user.primary.financeID != "") {
       return WillPopScope(
         onWillPop: () => CustomDialogs.confirm(
-            context, AppLocalizations.of(context).translate('warning'), AppLocalizations.of(context).translate('exit_confirmation'), () async {
+            context,
+            AppLocalizations.of(context).translate('warning'),
+            AppLocalizations.of(context).translate('exit_confirmation'),
+            () async {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -91,7 +94,7 @@ class UserFinanceSetup extends StatelessWidget {
               ),
               label: Text(
                 AppLocalizations.of(context).translate('help_support'),
-                style: new TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: CustomColors.mfinBlue,
                   fontSize: 16.0,

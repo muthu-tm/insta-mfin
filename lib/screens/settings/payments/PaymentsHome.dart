@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:instamfin/app_localizations.dart';
 
@@ -55,6 +56,11 @@ class _PaymentsHomeState extends State<PaymentsHome> {
             });
 
             String docID = await Purchases().create(_p, tAmount);
+            Analytics.sendAnalyticsEvent({
+              "type": 'check_out',
+              'purchase_id': docID,
+              'amount': tAmount,
+            }, 'purchase');
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -66,7 +72,9 @@ class _PaymentsHomeState extends State<PaymentsHome> {
             );
           } else {
             _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-             AppLocalizations.of(context).translate('select_plan_to_checkout'), 2));
+                AppLocalizations.of(context)
+                    .translate('select_plan_to_checkout'),
+                2));
           }
         },
         label: RichText(
@@ -166,7 +174,8 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                   ),
                   Spacer(),
                   Text(
-                    AppLocalizations.of(context).translate('contact_support_for_plans'),
+                    AppLocalizations.of(context)
+                        .translate('contact_support_for_plans'),
                     style: TextStyle(
                       color: CustomColors.mfinPositiveGreen,
                       fontSize: 18.0,

@@ -2,6 +2,7 @@ import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/chit_requesters.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class ChitController {
@@ -9,8 +10,19 @@ class ChitController {
     try {
       await chit.create();
 
+      Analytics.sendAnalyticsEvent({
+        "type": 'chit_create',
+        'chit_id': chit.getID(),
+        'finance_id': chit.financeID,
+      }, 'chit');
+
       return CustomResponse.getSuccesReponse("Published New Chit Successfully");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'chit_create_error',
+        'chit_name': chit.chitName,
+        'error': err.toString()
+      }, 'chit');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -28,6 +40,11 @@ class ChitController {
       return CustomResponse.getSuccesReponse(
           "Chit Requester added successfully");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'chit_req_add_error',
+        'chit_name': chitID,
+        'error': err.toString()
+      }, 'chit');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -80,6 +97,11 @@ class ChitController {
 
       return collections;
     } catch (err) {
+      Analytics.reportError({
+        "type": 'chit_get_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'chit');
       throw err;
     }
   }
@@ -108,6 +130,11 @@ class ChitController {
       return CustomResponse.getSuccesReponse(
           "Chit's Collection updated for Chit $chitID");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'chit_update_coll_error',
+        'chit_id': chitID,
+        'error': err.toString()
+      }, 'chit');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -124,7 +151,11 @@ class ChitController {
       return CustomResponse.getSuccesReponse(
           "Removed the ChitFund successfully!!");
     } catch (err) {
-      print(err.toString());
+      Analytics.reportError({
+        "type": 'chit_remove_error',
+        'chit_id': chitID,
+        'error': err.toString()
+      }, 'chit');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
     Analytics.setupAnalytics(analytics, observer);
     return MaterialApp(
       locale: this.locale,
-      title: 'iFIN',
+      title: 'mFIN',
       theme: ThemeData(
         brightness: Brightness.light,
         fontFamily: 'Georgia',

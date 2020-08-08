@@ -1,5 +1,6 @@
 import 'package:instamfin/db/models/journal_category.dart';
 import 'package:instamfin/db/models/expense_category.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class CategoryController {
@@ -14,6 +15,11 @@ class CategoryController {
       return CustomResponse.getSuccesReponse(
           "Added new Journal Category $name successfully");
     } catch (err) {
+      Analytics.reportError({
+        "type": 'cat_journal_create_error',
+        'cat_name': name,
+        'error': err.toString()
+      }, 'categories');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -29,8 +35,11 @@ class CategoryController {
       return CustomResponse.getSuccesReponse(
           "Added new Expense Category $name successfully");
     } catch (err) {
-      print("Error while creating Expense Category $name " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'cat_expense_create_error',
+        'cat_name': name,
+        'error': err.toString()
+      }, 'categories');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -44,7 +53,11 @@ class CategoryController {
 
       return JournalCategory.fromJson(jCategory);
     } catch (err) {
-      print("Error while retrieving Journal Category: " + err.toString());
+      Analytics.reportError({
+        "type": 'cat_journal_get_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'categories');
       throw err;
     }
   }
@@ -58,7 +71,11 @@ class CategoryController {
 
       return ExpenseCategory.fromJson(mCategory);
     } catch (err) {
-      print("Error while retrieving Expense Category: " + err.toString());
+      Analytics.reportError({
+        "type": 'cat_expense_get_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'categories');
       throw err;
     }
   }
@@ -75,7 +92,11 @@ class CategoryController {
 
       return jCategories;
     } catch (err) {
-      print("Error while retrieving Journal Categories: " + err.toString());
+      Analytics.reportError({
+        "type": 'cat_journal_getall_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'categories');
       throw err;
     }
   }
@@ -92,8 +113,11 @@ class CategoryController {
 
       return mCategories;
     } catch (err) {
-      print(
-          "Error while retrieving Expense Categories: " + err.toString());
+      Analytics.reportError({
+        "type": 'cat_expense_getall_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'categories');
       throw err;
     }
   }
@@ -113,7 +137,11 @@ class CategoryController {
       return CustomResponse.getSuccesReponse(
           "Edited the Journal Category successfully");
     } catch (err) {
-      print("Error while editing Journal Category: " + err.toString());
+      Analytics.reportError({
+        "type": 'cat_journal_update_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'categories');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -133,7 +161,11 @@ class CategoryController {
       return CustomResponse.getSuccesReponse(
           "Edited the Expense Category successfully");
     } catch (err) {
-      print("Error while editing Expense Category: " + err.toString());
+      Analytics.reportError({
+        "type": 'cat_expense_update_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'categories');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -153,7 +185,11 @@ class CategoryController {
       return CustomResponse.getSuccesReponse(
           "Removed the Journal Category successfully");
     } catch (err) {
-      print("Error while removing Journal Category: " + err.toString());
+      Analytics.reportError({
+        "type": 'cat_journal_remove_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'categories');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -169,7 +205,11 @@ class CategoryController {
       return CustomResponse.getSuccesReponse(
           "Removed the Expense Category successfully");
     } catch (err) {
-      print("Error while remove Expense Category: " + err.toString());
+      Analytics.reportError({
+        "type": 'cat_expense_remove_error',
+        'finance_id': financeId,
+        'error': err.toString()
+      }, 'categories');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

@@ -78,7 +78,7 @@ class AppSettings extends StatelessWidget {
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: Text('iFIN Wallet'),
+                title: Text('mFIN Wallet'),
                 onTap: () async {
                   UserReferees ref = await UserReferees().getRegistrationBonus(
                       UserController().getCurrentUserID().toString());

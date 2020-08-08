@@ -46,6 +46,12 @@ class CustController {
 
       await cust.create();
 
+      Analytics.sendAnalyticsEvent({
+        "type": 'customer_create',
+        'cust_id': cust.getID(),
+        'finance_id': user.primary.financeID,
+      }, 'customer');
+
       return CustomResponse.getSuccesReponse(cust.toJson());
     } catch (err) {
       Analytics.reportError({
@@ -53,7 +59,7 @@ class CustController {
         "cust_number": mobileNumber,
         'name': '$firstName $lastName',
         'error': err.toString()
-      });
+      }, 'customer');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -97,8 +103,11 @@ class CustController {
 
       return CustomResponse.getSuccesReponse(result);
     } catch (err) {
-      Analytics.reportError(
-          {"type": 'customer_update_error', 'error': err.toString()});
+      Analytics.reportError({
+        "type": 'customer_update_error',
+        'cust_id': custUUID,
+        'error': err.toString()
+      }, 'customer');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -116,8 +125,11 @@ class CustController {
 
       return CustomResponse.getSuccesReponse("Successfully removed customer!");
     } catch (err) {
-      Analytics.reportError(
-          {"type": 'customer_remove_error', 'error': err.toString()});
+      Analytics.reportError({
+        "type": 'customer_remove_error',
+        'cust_id': custUUID,
+        'error': err.toString()
+      }, 'customer');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

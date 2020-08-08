@@ -1,4 +1,5 @@
 import 'package:instamfin/db/models/payment_template.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class PaymentTemplateController {
@@ -30,18 +31,22 @@ class PaymentTemplateController {
 
       return CustomResponse.getSuccesReponse("Created new Loan template");
     } catch (err) {
-      print("Error while creating $name template: " + err.toString());
+      Analytics.reportError(
+          {"type": 'loan_temp_create_error', 'error': err.toString()},
+          'loan_temp');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
 
   Future<PaymentTemplate> getTempByID(String tempID) async {
     try {
-      PaymentTemplate temp = PaymentTemplate();
-      return await temp.getTemplateByID(tempID);
+      return await PaymentTemplate().getTemplateByID(tempID);
     } catch (err) {
-      print("Error while retrieving Loan template for ID $tempID: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'loan_temp_get_error',
+        'temp_id': tempID,
+        'error': err.toString()
+      }, 'loan_temp');
       return null;
     }
   }
@@ -56,7 +61,9 @@ class PaymentTemplateController {
 
       return temps;
     } catch (err) {
-      print("Error while retrieving Loan templates:" + err.toString());
+      Analytics.reportError(
+          {"type": 'loan_temp_get_error', 'error': err.toString()},
+          'loan_temp');
       throw err;
     }
   }
@@ -65,11 +72,13 @@ class PaymentTemplateController {
     try {
       await PaymentTemplate().update(tempID, tempJSON);
 
-      return CustomResponse.getSuccesReponse(
-          "Updated Loan template $tempID");
+      return CustomResponse.getSuccesReponse("Updated Loan template $tempID");
     } catch (err) {
-      print("Error while updating Loan template with ID $tempID: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'loan_temp_get_error',
+        'temp_id': tempID,
+        'error': err.toString()
+      }, 'loan_temp');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -77,11 +86,13 @@ class PaymentTemplateController {
   Future removeTemp(String tempID) async {
     try {
       await PaymentTemplate().remove(tempID);
-      return CustomResponse.getSuccesReponse(
-          "removed Loan template $tempID");
+      return CustomResponse.getSuccesReponse("removed Loan template $tempID");
     } catch (err) {
-      print("Error while removing Loan template with ID $tempID: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'loan_temp_remove_error',
+        'temp_id': tempID,
+        'error': err.toString()
+      }, 'loan_temp');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

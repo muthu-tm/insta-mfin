@@ -21,7 +21,7 @@ class AuthService {
           "user_id": mobileNumber,
           'name': name,
           'error': "Found an existing user for this mobile number"
-        });
+        }, 'sign_up');
         return null;
       }
 
@@ -42,7 +42,7 @@ class AuthService {
         "user_id": mobileNumber,
         'name': name,
         'error': err.toString()
-      });
+      }, 'sign_up');
       throw err;
     }
   }
@@ -54,7 +54,10 @@ class AuthService {
       await prefs.remove("mobile_number");
       return;
     } catch (err) {
-      Analytics.sendAnalyticsEvent('sign_out_error', {'error': err.toString()});
+      Analytics.reportError({
+        "type": 'sign_out_error',
+        "error": err.toString(),
+      }, 'sign_out');
       throw err;
     }
   }

@@ -309,6 +309,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) => MobileSignInPage(),
+                        settings: RouteSettings(name: '/signup'),
                       ),
                     );
                   },

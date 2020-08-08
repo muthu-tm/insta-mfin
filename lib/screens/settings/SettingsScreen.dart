@@ -193,7 +193,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             Padding(padding: EdgeInsets.all(05.0)),
                             Text(
-                              "iFIN",
+                              "mFIN",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: 'Georgia',

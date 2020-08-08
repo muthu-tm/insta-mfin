@@ -1,10 +1,18 @@
 import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/db/models/chit_template.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class ChitTemplateController {
-  Future createTemplate(String name, int tAmount, int tenure, double commission, int collectionDay,
-      String type, String notes, List<ChitFundDetails> fundDetails) async {
+  Future createTemplate(
+      String name,
+      int tAmount,
+      int tenure,
+      double commission,
+      int collectionDay,
+      String type,
+      String notes,
+      List<ChitFundDetails> fundDetails) async {
     try {
       ChitTemplate temp = ChitTemplate();
       temp.setTempName(name);
@@ -20,7 +28,11 @@ class ChitTemplateController {
 
       return CustomResponse.getSuccesReponse("Created new Chit template");
     } catch (err) {
-      print("Error while creating $name template: " + err.toString());
+      Analytics.reportError({
+        "type": 'chit_temp_create_error',
+        'temp_name': name,
+        'error': err.toString()
+      }, 'chit');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -30,8 +42,11 @@ class ChitTemplateController {
       ChitTemplate temp = ChitTemplate();
       return await temp.getTemplateByID(tempID);
     } catch (err) {
-      print("Error while retrieving Chit template for ID $tempID: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'chit_temp_get_error',
+        'temp_id': tempID,
+        'error': err.toString()
+      }, 'chit');
       return null;
     }
   }
@@ -40,8 +55,8 @@ class ChitTemplateController {
     try {
       return await ChitTemplate().getAllChitTemplates();
     } catch (err) {
-      print("Error while retrieving ALL Chit templates: " +
-          err.toString());
+      Analytics.reportError(
+          {"type": 'chit_temp_getall_error', 'error': err.toString()}, 'chit');
       return null;
     }
   }
@@ -52,8 +67,11 @@ class ChitTemplateController {
 
       return CustomResponse.getSuccesReponse("Updated Chit template $tempID");
     } catch (err) {
-      print("Error while updating Chit template with ID $tempID: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'chit_temp_update_error',
+        'temp_id': tempID,
+        'error': err.toString()
+      }, 'chit');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -61,11 +79,13 @@ class ChitTemplateController {
   Future removeTemp(String tempID) async {
     try {
       await ChitTemplate().removeChitTemplate(tempID);
-      return CustomResponse.getSuccesReponse(
-          "removed Chit template $tempID");
+      return CustomResponse.getSuccesReponse("removed Chit template $tempID");
     } catch (err) {
-      print("Error while removing Chit template with ID $tempID: " +
-          err.toString());
+      Analytics.reportError({
+        "type": 'chit_temp_remove_error',
+        'temp_id': tempID,
+        'error': err.toString()
+      }, 'chit');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

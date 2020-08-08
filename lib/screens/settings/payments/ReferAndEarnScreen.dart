@@ -6,6 +6,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:instamfin/app_localizations.dart';
@@ -85,7 +86,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
           Padding(
             padding: EdgeInsets.only(top: 5),
             child: Text(
-              "Refer iFIN with this code and get rewards in your iFIN Wallet!",
+              "Refer mFIN with this code and get rewards in your mFIN Wallet!",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: CustomColors.mfinBlack,
@@ -135,7 +136,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
               Rect.fromLTWH(0, 0, bounds.width, bounds.height),
             ),
             child: Text(
-              "Refer 'iFIN' with your friends and Earn Rs.$amount instantly",
+              "Refer 'mFIN' with your friends and Earn Rs.$amount instantly",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: CustomColors.mfinWhite,
@@ -248,6 +249,11 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                             });
                           }
                         } catch (err) {
+                          Analytics.reportError({
+                            "type": 'referral_apply_error',
+                            'referral_code': _textEditingController.text,
+                            'error': err.toString(),
+                          }, 'wallet');
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(err.toString(), 3));

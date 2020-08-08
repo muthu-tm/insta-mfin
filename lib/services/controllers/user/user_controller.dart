@@ -78,7 +78,7 @@ class UserController {
         "type": 'user_get_error',
         "user_id": number,
         'error': err.toString()
-      });
+      }, 'user');
       throw err;
     }
   }
@@ -119,7 +119,7 @@ class UserController {
         "type": 'user_update_error',
         "user_id": userJson['mobile_number'],
         'error': err.toString()
-      });
+      }, 'user');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -140,7 +140,7 @@ class UserController {
       }
     } catch (err) {
       Analytics.reportError(
-          {"type": 'get_primary_error', 'error': err.toString()});
+          {"type": 'get_primary_error', 'error': err.toString()}, 'user');
       throw err;
     }
   }
@@ -199,7 +199,7 @@ class UserController {
         'branach_name': branchName,
         "sub_branch_name": subBranchName,
         'error': err.toString()
-      });
+      }, 'user');
       throw err;
     }
   }
@@ -224,7 +224,7 @@ class UserController {
         "type": 'user_get_error',
         'user_id': mobileNumber,
         'error': err.toString()
-      });
+      }, 'user');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -245,7 +245,7 @@ class UserController {
         "type": 'secret_update_error',
         'user_id': getCurrentUserID(),
         'error': err.toString()
-      });
+      }, 'user');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -270,7 +270,7 @@ class UserController {
         "type": 'user_transaction_error',
         'user_id': getCurrentUserID(),
         'error': err.toString()
-      });
+      }, 'user');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

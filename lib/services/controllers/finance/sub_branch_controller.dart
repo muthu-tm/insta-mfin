@@ -24,10 +24,10 @@ class SubBranchController {
           "branch_name": branchName,
           "sub_branch_name": subBranchName,
           'error':
-              "Branch Name must be unique! A subBranch exists with the given Branch Name."
-        });
+              "SubBranch Name must be unique! A subBranch exists with the given Branch Name."
+        }, 'sub_branch');
         return CustomResponse.getFailureReponse(
-            "Branch Name must be unique! A subBranch exists with the given Branch Name.");
+            "SubBranch Name must be unique! A subBranch exists with the given Branch Name.");
       }
 
       BranchController _branchController = BranchController();
@@ -55,7 +55,7 @@ class SubBranchController {
         "branch_name": branchName,
         "sub_branch_name": subBranchName,
         'error': err.toString()
-      });
+      }, 'sub_branch');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -95,7 +95,7 @@ class SubBranchController {
         "sub_branch_name": subBranchName,
         "is_add": isAdd,
         'error': err.toString()
-      });
+      }, 'sub_branch');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -119,7 +119,7 @@ class SubBranchController {
         'branach_name': branchName,
         "user_id": userID,
         'error': err.toString()
-      });
+      }, 'sub_branch');
       return null;
     }
   }
@@ -139,7 +139,7 @@ class SubBranchController {
         'branach_name': branchName,
         "sub_branch_name": subBranchName,
         'error': err.toString()
-      });
+      }, 'sub_branch');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

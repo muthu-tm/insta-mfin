@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -312,7 +313,8 @@ class _PuchasePlanState extends State<PuchasePlan> {
                             });
                           },
                           title: Text(
-                            AppLocalizations.of(context).translate('apply_balance'),
+                            AppLocalizations.of(context)
+                                .translate('apply_balance'),
                             style: TextStyle(
                               fontSize: 18.0,
                               fontFamily: "Georgia",
@@ -339,7 +341,8 @@ class _PuchasePlanState extends State<PuchasePlan> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Text(
-                        AppLocalizations.of(context).translate('amount_applied'),
+                        AppLocalizations.of(context)
+                            .translate('amount_applied'),
                         style: TextStyle(
                           fontFamily: "Georgia",
                           color: CustomColors.mfinBlue,
@@ -427,6 +430,12 @@ class _PuchasePlanState extends State<PuchasePlan> {
     String payID = response.paymentId;
     String orderID = response.orderId;
     String sign = response.signature;
+    Analytics.sendAnalyticsEvent({
+      "type": 'purchased',
+      'purchase_id': widget.purchaseID,
+      'payment_id': payID
+    }, 'purchase');
+
     CustomDialogs.actionWaiting(context, "Success...");
 
     bool isSuccess = await Subscriptions().updateSuccessStatus(
@@ -448,6 +457,12 @@ class _PuchasePlanState extends State<PuchasePlan> {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) async {
+    Analytics.reportError({
+      "type": 'pay_error',
+      'purchase_id': widget.purchaseID,
+      'error': response.message,
+    }, 'purchase');
+
     await Purchases()
         .updateError(widget.purchaseID, response.message, response.code);
     _scaffoldKey.currentState.showSnackBar(
@@ -493,10 +508,18 @@ class _PuchasePlanState extends State<PuchasePlan> {
 
   void openCheckout(String pSec) {
     int tAmount = widget.amount - wAmount;
+
+    Analytics.sendAnalyticsEvent({
+      "type": 'pay',
+      'purchase_id': widget.purchaseID,
+      'wallet_amount': wAmount,
+      'amount': tAmount,
+    }, 'purchase');
+
     var options = {
       "key": pSec,
       "amount": tAmount * 100,
-      "name": "iFIN Services",
+      "name": "mFIN Services",
       "description": planText,
       "currency": "INR",
       "payment_capture": 1,
@@ -513,7 +536,12 @@ class _PuchasePlanState extends State<PuchasePlan> {
     try {
       _razorpay.open(options);
     } catch (e) {
-      print(e.toString());
+      Analytics.reportError({
+        "type": 'pay_error',
+        'purchase_id': widget.purchaseID,
+        'amount': tAmount,
+        'error': e.toString(),
+      }, 'purchase');
     }
   }
 }

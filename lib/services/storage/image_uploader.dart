@@ -28,7 +28,7 @@ class Uploader {
         "type": 'image_upload_error',
         'user_id': id,
         'error': err.toString()
-      });
+      }, 'storage');
     });
     await Future.delayed(Duration(seconds: 8));
 
@@ -52,7 +52,7 @@ class Uploader {
         "type": 'image_resize_error',
         'user_id': id,
         'error': err.toString()
-      });
+      }, 'storage');
     });
 
     onUploaded();
@@ -69,7 +69,7 @@ class Uploader {
         'user_id': mobileNumber,
         'path': profilePathUrl,
         'error': err.toString()
-      });
+      }, 'storage');
     }
   }
 
@@ -84,15 +84,14 @@ class Uploader {
         'cust_id': id,
         'path': profilePathUrl,
         'error': err.toString()
-      });
+      }, 'storage');
     }
   }
 
   static void updateFinanceData(
       String field, String id, int mobileNumber, String profilePathUrl) {
     try {
-      Finance fin = Finance();
-      fin.updateByID({field: profilePathUrl}, id);
+      Finance().updateByID({field: profilePathUrl}, id);
     } catch (err) {
       Analytics.reportError({
         "type": 'url_update_error',
@@ -100,7 +99,7 @@ class Uploader {
         'finance_id': id,
         'path': profilePathUrl,
         'error': err.toString()
-      });
+      }, 'storage');
     }
   }
 }

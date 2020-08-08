@@ -24,7 +24,7 @@ class BranchController {
           'branach_name': branchName,
           'error':
               "Branch Name must be unique! A branch exists with the given Branch Name."
-        });
+        }, 'branch');
         return CustomResponse.getFailureReponse(
             "Branch Name must be unique! A branch exists with the given Branch Name.");
       }
@@ -49,7 +49,7 @@ class BranchController {
         "finance_id": financeID,
         'branach_name': branchName,
         'error': err.toString()
-      });
+      }, 'branch');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -84,7 +84,7 @@ class BranchController {
               "Your access to the Branch '$branchName' has been revoked. Thanks!",
               u);
         });
-      } 
+      }
 
       return CustomResponse.getSuccesReponse(branch.toJson());
     } catch (err) {
@@ -94,7 +94,7 @@ class BranchController {
         'branach_name': branchName,
         "is_add": isAdd,
         'error': err.toString()
-      });
+      }, 'branch');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }
@@ -118,7 +118,7 @@ class BranchController {
         'branach_name': branchName,
         "is_add": isAdd,
         'error': err.toString()
-      });
+      }, 'branch');
       throw err;
     }
   }
@@ -146,7 +146,7 @@ class BranchController {
         "finance_id": financeID,
         'branach_name': branchName,
         'error': err.toString()
-      });
+      }, 'branch');
       throw err;
     }
   }
@@ -168,7 +168,7 @@ class BranchController {
         "finance_id": financeID,
         'branach_name': branchName,
         'error': err.toString()
-      });
+      }, 'branch');
       throw err;
     }
   }
@@ -190,7 +190,7 @@ class BranchController {
         "finance_id": financeID,
         'user_id': userID,
         'error': err.toString()
-      });
+      }, 'branch');
       return null;
     }
   }
@@ -210,7 +210,7 @@ class BranchController {
         "finance_id": financeID,
         'branach_name': branchName,
         'error': err.toString()
-      });
+      }, 'branch');
       throw err;
     }
   }
@@ -231,7 +231,7 @@ class BranchController {
         "finance_id": financeID,
         'branach_name': branchName,
         'error': err.toString()
-      });
+      }, 'branch');
       throw err;
     }
   }
@@ -248,7 +248,7 @@ class BranchController {
         "finance_id": financeID,
         'branach_name': branchName,
         'error': err.toString()
-      });
+      }, 'branch');
       return CustomResponse.getFailureReponse(err.toString());
     }
   }

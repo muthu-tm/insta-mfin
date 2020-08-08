@@ -2,7 +2,8 @@ import 'package:instamfin/db/models/notification.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 
 class NController {
-  Future create(String logo, String title, String desc, int type, int uNumber) async {
+  Future create(
+      String logo, String title, String desc, int type, int uNumber) async {
     try {
       Notification _n = Notification();
       _n.type = type;
@@ -13,8 +14,9 @@ class NController {
 
       _n.create();
     } catch (err) {
-      Analytics.sendAnalyticsEvent(
-          'notification_create_error', {'error': err.toString()});
+      Analytics.reportError(
+          {'type': 'notification_create_error', 'error': err.toString()},
+          'notification');
     }
   }
 }
