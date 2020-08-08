@@ -20,7 +20,6 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
-import '../../main.dart';
 import '../../app_localizations.dart';
 
 Widget openDrawer(BuildContext context) {
@@ -70,8 +69,7 @@ Widget openDrawer(BuildContext context) {
                           child: Text(
                             AppLocalizations.of(context).translate('upload'),
                             style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 12.0,
                               color: CustomColors.mfinLightGrey,
                             ),
                           ),
