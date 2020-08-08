@@ -186,9 +186,8 @@ class Finance extends Model {
     };
 
     WriteBatch bWrite = Model.db.batch();
-    bWrite.setData(getCollectionRef().document(), data);
-    bWrite.setData(
-        this.getCollectionRef().document(this.getID()), this.toJson());
+    bWrite.setData(sub.getCollectionRef().document(), data);
+    bWrite.setData(getCollectionRef().document(this.getID()), this.toJson());
     await bWrite.commit();
     return this;
   }

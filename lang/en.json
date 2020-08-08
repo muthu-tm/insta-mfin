@@ -113,7 +113,7 @@
     "gender": "Gender",
     "male": "Male",
     "female": "Female",
-    "payments": "Loans",
+    "payments": "Payments",
     "select_plan_to_checkout": "Please select a Plan to checkout!",
     "checkout": "Checkout",
     "no_plans_found": "No Plans found!",

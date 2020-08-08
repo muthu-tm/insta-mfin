@@ -513,5 +513,6 @@
     "profit" : "Profit",
     "paid_late_ques" : "Paid Late?",
     "no_collection_rec" : "No collection received",
-    "settled_on" : "Settled On"
+    "settled_on" : "Settled On",
+    "payments": "Payments"
 }   

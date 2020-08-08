@@ -21,6 +21,31 @@ class _PushNotificationState extends State<PushNotification> {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text(
+                message['notification']['title'],
+                style: TextStyle(
+                    color: CustomColors.mfinBlue,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+              subtitle: Text(
+                message['notification']['body'],
+                style: TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
         setState(() {
           this.message = message;
           _newNotification = true;
