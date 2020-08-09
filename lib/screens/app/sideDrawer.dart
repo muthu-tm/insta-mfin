@@ -407,10 +407,7 @@ Widget openDrawer(BuildContext context) {
                 ),
               ),
             ),
-            applicationName:
-                AppLocalizations.of(context).translate('company_name'),
-            applicationVersion:
-                AppLocalizations.of(context).translate('version'),
+            applicationName: 'mFIN',
             applicationLegalese:
                 AppLocalizations.of(context).translate('copyright'),
             child: ListTile(
@@ -426,7 +423,7 @@ Widget openDrawer(BuildContext context) {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'i',
+                      text: 'm',
                       style: TextStyle(
                         color: CustomColors.mfinFadedButtonGreen,
                         fontFamily: 'Georgia',
@@ -445,29 +442,6 @@ Widget openDrawer(BuildContext context) {
                   ],
                 ),
               ),
-              trailing: RichText(
-                textAlign: TextAlign.justify,
-                text: TextSpan(
-                  text:
-                      AppLocalizations.of(context).translate('version_number'),
-                  style: TextStyle(
-                    color: CustomColors.mfinButtonGreen,
-                    fontFamily: 'Georgia',
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: AppLocalizations.of(context)
-                          .translate('version_code'),
-                      style: TextStyle(
-                        color: CustomColors.mfinGrey,
-                        fontSize: 13.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
             aboutBoxChildren: <Widget>[
               SizedBox(
@@ -478,7 +452,7 @@ Widget openDrawer(BuildContext context) {
                 leading: RichText(
                   textAlign: TextAlign.justify,
                   text: TextSpan(
-                    text: 'i',
+                    text: 'm',
                     style: TextStyle(
                       color: CustomColors.mfinBlue,
                       fontFamily: 'Georgia',
