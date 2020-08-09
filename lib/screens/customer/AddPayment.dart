@@ -1207,12 +1207,7 @@ class _AddPaymentState extends State<AddPayment> {
     }
 
     if (form.validate()) {
-      if (totalAmount != tenure * collectionAmount) {
-        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-            AppLocalizations.of(context).translate('collection_amount_equal'),
-            3));
-        return;
-      } else if (!(alreadyReceivedAmount < totalAmount)) {
+      if (!(alreadyReceivedAmount < totalAmount)) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             AppLocalizations.of(context).translate('received_lesser'), 3));
         return;

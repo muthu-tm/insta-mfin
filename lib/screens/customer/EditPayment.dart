@@ -1204,25 +1204,12 @@ class _EditPaymentState extends State<EditPayment> {
             ? updatedPayment['total_amount']
             : widget.payment.totalAmount;
 
-        int tenure = updatedPayment.containsKey('tenure')
-            ? updatedPayment['tenure']
-            : widget.payment.tenure;
-
-        int collectionAmount = updatedPayment.containsKey('collection_amount')
-            ? updatedPayment['collection_amount']
-            : widget.payment.collectionAmount;
-
         int alreadyReceivedAmount =
             updatedPayment.containsKey('already_collected_amount')
                 ? updatedPayment['already_collected_amount']
                 : widget.payment.alreadyCollectedAmount;
 
-        if (totalAmount != tenure * collectionAmount) {
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              AppLocalizations.of(context).translate('collection_amount_equal'),
-              3));
-          return;
-        } else if (!(alreadyReceivedAmount < totalAmount)) {
+        if (!(alreadyReceivedAmount < totalAmount)) {
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
               AppLocalizations.of(context).translate('received_lesser'), 3));
           return;
