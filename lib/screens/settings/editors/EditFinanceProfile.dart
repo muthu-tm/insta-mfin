@@ -43,8 +43,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(
-            AppLocalizations.of(context).translate('edit_finance_profile')),
+        title: Text(widget.finance.financeName),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -89,8 +88,8 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                           .translate('finance_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
@@ -115,8 +114,8 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                           .translate('registration_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
@@ -143,8 +142,8 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                           .translate('finance_email_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinWhite),
                       ),
@@ -172,8 +171,8 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                           .translate('contact_number'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
