@@ -75,23 +75,28 @@ class _AddFinancePageState extends State<AddFinancePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RowHeaderText(textName: AppLocalizations.of(context).translate('finance_name')),
+                RowHeaderText(
+                    textName:
+                        AppLocalizations.of(context).translate('finance_name')),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate('finance_name'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('finance_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (name) {
                       if (name.trim().isEmpty) {
-                        return AppLocalizations.of(context).translate('enter_finance_name');
+                        return AppLocalizations.of(context)
+                            .translate('enter_finance_name');
                       }
 
                       this.financeName = name.trim();
@@ -99,16 +104,19 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate("registration_id")),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate("registration_id")),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate("registration_id"),
+                      hintText: AppLocalizations.of(context)
+                          .translate("registration_id"),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
@@ -122,7 +130,9 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate("registered_date")),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate("registered_date")),
                 ListTile(
                   title: GestureDetector(
                     onTap: () => _selectDate(context),
@@ -152,16 +162,19 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     ),
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate("finance_contact_number")),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate("finance_contact_number")),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate("finance_contact_number"),
+                      hintText: AppLocalizations.of(context)
+                          .translate("finance_contact_number"),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
@@ -175,16 +188,19 @@ class _AddFinancePageState extends State<AddFinancePage> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate("finance_email_id")),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate("finance_email_id")),
                 ListTile(
-                  title: new TextFormField(
+                  title: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate("finance_email_id"),
+                      hintText: AppLocalizations.of(context)
+                          .translate("finance_email_id"),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
@@ -251,8 +267,8 @@ class _AddFinancePageState extends State<AddFinancePage> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate("required_fields"), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate("required_fields"), 2));
     }
   }
 }

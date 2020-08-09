@@ -365,8 +365,7 @@ class _LoginPageState extends State<LoginPage> {
 
     _smsVerificationCode = verificationId;
     Navigator.pop(context);
-    CustomDialogs.actionWaiting(
-        context, AppLocalizations.of(context).translate('verify_user'));
+    CustomDialogs.actionWaiting(context, 'Verifying User');
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {

@@ -20,7 +20,7 @@ class UserProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: CustomColors.mfinLightGrey,
-      child: new Column(
+      child: Column(
         children: <Widget>[
           ListTile(
             leading: Icon(
@@ -28,7 +28,7 @@ class UserProfileWidget extends StatelessWidget {
               size: 35.0,
               color: CustomColors.mfinFadedButtonGreen,
             ),
-            title: new Text(
+            title: Text(
               title,
               style: TextStyle(
                 color: CustomColors.mfinBlue,
@@ -60,7 +60,7 @@ class UserProfileWidget extends StatelessWidget {
               },
             ),
           ),
-          new Divider(
+          Divider(
             color: CustomColors.mfinButtonGreen,
           ),
           ListTile(
@@ -81,7 +81,7 @@ class UserProfileWidget extends StatelessWidget {
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(
                   color: CustomColors.mfinGrey,
@@ -105,14 +105,15 @@ class UserProfileWidget extends StatelessWidget {
             title: TextFormField(
               initialValue: user.mobileNumber.toString(),
               decoration: InputDecoration(
-                fillColor: CustomColors.mfinWhite,
+                fillColor: CustomColors.mfinLightGrey,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
-              readOnly: true,
+              enabled: false,
+              autofocus: false,
             ),
           ),
           (user.mobileNumber == _uc.getCurrentUser().mobileNumber)
@@ -135,7 +136,7 @@ class UserProfileWidget extends StatelessWidget {
                     decoration: InputDecoration(
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                           vertical: 1.0, horizontal: 5.0),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: CustomColors.mfinGrey)),

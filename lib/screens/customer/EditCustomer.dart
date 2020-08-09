@@ -108,7 +108,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         color: CustomColors.mfinBlue,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(5.0),
                         child: Row(
                           children: <Widget>[
                             Flexible(
@@ -154,11 +154,12 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 },
                               ),
                             ),
-                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Padding(padding: EdgeInsets.only(left: 5)),
                             Flexible(
                               child: TextFormField(
                                 initialValue: widget.cust.customerID,
                                 textAlign: TextAlign.start,
+                                keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   labelText: AppLocalizations.of(context)
                                       .translate('customer_id'),
@@ -191,13 +192,16 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(5.0),
                         child: Row(
                           children: <Widget>[
                             Flexible(
                               child: TextFormField(
                                 initialValue: widget.cust.firstName,
                                 textAlign: TextAlign.start,
+                                keyboardType: TextInputType.text,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
                                 decoration: InputDecoration(
                                   labelText: AppLocalizations.of(context)
                                       .translate('first_name'),
@@ -221,7 +225,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                         value, setCustomerNameState),
                               ),
                             ),
-                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Padding(padding: EdgeInsets.only(left: 5)),
                             Flexible(
                               child: TextFormField(
                                 initialValue: widget.cust.lastName,
@@ -258,7 +262,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(5.0),
                         child: Container(
                           padding: EdgeInsets.only(top: 5),
                           decoration: BoxDecoration(
@@ -344,7 +348,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(5.0),
                         child: Row(
                           children: <Widget>[
                             Flexible(
@@ -380,7 +384,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 ),
                               ),
                             ),
-                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Padding(padding: EdgeInsets.only(left: 5)),
                             Flexible(
                               child: TextFormField(
                                 initialValue: widget.cust.profession,
@@ -418,7 +422,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(5.0),
                         child: Row(
                           children: <Widget>[
                             Flexible(
@@ -454,7 +458,7 @@ class _EditCustomerProfileState extends State<EditCustomerProfile> {
                                 },
                               ),
                             ),
-                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Padding(padding: EdgeInsets.only(left: 5)),
                             Flexible(
                               child: TextFormField(
                                 initialValue:

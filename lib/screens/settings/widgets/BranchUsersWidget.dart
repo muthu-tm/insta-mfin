@@ -5,7 +5,6 @@ import 'package:instamfin/screens/settings/add/AddAdminPage.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
@@ -22,7 +21,7 @@ class BranchUsersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: CustomColors.mfinLightGrey,
-      child: new Column(
+      child: Column(
         children: <Widget>[
           ListTile(
             leading: Icon(
@@ -30,8 +29,8 @@ class BranchUsersWidget extends StatelessWidget {
               size: 35.0,
               color: CustomColors.mfinButtonGreen,
             ),
-            title: new Text(
-             AppLocalizations.of(context).translate('user_details'),
+            title: Text(
+              AppLocalizations.of(context).translate('user_details'),
               style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 18.0,
@@ -59,7 +58,7 @@ class BranchUsersWidget extends StatelessWidget {
               },
             ),
           ),
-          new Divider(
+          Divider(
             color: CustomColors.mfinBlue,
             thickness: 1,
           ),
@@ -71,19 +70,19 @@ class BranchUsersWidget extends StatelessWidget {
                 ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
+                  primary: false,
                   itemCount: branch.admins.length,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
                       title: TextFormField(
-                        keyboardType: TextInputType.text,
                         initialValue: branch.admins[index].toString(),
                         decoration: InputDecoration(
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
+                          contentPadding: EdgeInsets.symmetric(
                               vertical: 5.0, horizontal: 5.0),
-                          suffixIcon: customIconButton(Icons.navigate_next,
-                              35.0, CustomColors.mfinBlue, null),
+                          suffixIcon: Icon(Icons.navigate_next,
+                              size: 35.0, color: CustomColors.mfinBlue),
                           border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: CustomColors.mfinGrey)),
@@ -126,8 +125,8 @@ class BranchUsersWidget extends StatelessWidget {
                                 String branchName = branch.branchName;
                                 BranchController _bc = BranchController();
                                 try {
-                                  await _bc.updateBranchAdmins(
-                                      false, [userID], financeID, branchName, true);
+                                  await _bc.updateBranchAdmins(false, [userID],
+                                      financeID, branchName, true);
 
                                   List<Branch> _bList = await _bc
                                       .getBranchesForUserID(financeID, userID);

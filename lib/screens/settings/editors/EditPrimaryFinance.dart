@@ -183,7 +183,8 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
           key: _scaffoldKey,
           backgroundColor: CustomColors.mfinLightGrey,
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).translate('edit_primary_finance')),
+            title: Text(
+                AppLocalizations.of(context).translate('edit_primary_finance')),
             backgroundColor: CustomColors.mfinBlue,
           ),
           floatingActionButtonLocation:
@@ -284,32 +285,40 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
           CustomSnackBar.errorSnackBar("No Finance Selected!", 3));
     } else {
       CustomDialogs.actionWaiting(context, "Validating Details!");
-      if (_selectedSubBranch != "0") {
-        _updatePrimary(widget.userID, _selectedFinance, _selectedBranch,
-            _selectedSubBranch);
-      } else if (_selectedBranch != "0") {
-        BranchController _bc = BranchController();
-        bool isAdmin = await _bc.isUserAdmin(
-            _selectedFinance, _selectedBranch, widget.userID);
-        if (!isAdmin) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              "You cannot set $_selectedBranch as Primary; Because you are not an Admin of $_selectedBranch!",
-              3));
+      try {
+        if (_selectedSubBranch != "0") {
+          _updatePrimary(widget.userID, _selectedFinance, _selectedBranch,
+              _selectedSubBranch);
+        } else if (_selectedBranch != "0") {
+          BranchController _bc = BranchController();
+          bool isAdmin = await _bc.isUserAdmin(
+              _selectedFinance, _selectedBranch, widget.userID);
+          if (!isAdmin) {
+            Navigator.pop(context);
+            _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+                "You cannot set $_selectedBranch as Primary; Because you are not an Admin of $_selectedBranch!",
+                3));
+          } else {
+            _updatePrimary(
+                widget.userID, _selectedFinance, _selectedBranch, "");
+          }
         } else {
-          _updatePrimary(widget.userID, _selectedFinance, _selectedBranch, "");
+          bool isAdmin = await financeController.isUserAdmin(
+              _selectedFinance, widget.userID);
+          if (!isAdmin) {
+            Navigator.pop(context);
+            _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+                "You cannot set $_selectedFinance as Primary; Because you are not an Admin of $_selectedFinance!",
+                3));
+          } else {
+            _updatePrimary(widget.userID, _selectedFinance, "", "");
+          }
         }
-      } else {
-        bool isAdmin = await financeController.isUserAdmin(
-            _selectedFinance, widget.userID);
-        if (!isAdmin) {
-          Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              "You cannot set $_selectedFinance as Primary; Because you are not an Admin of $_selectedFinance!",
-              3));
-        } else {
-          _updatePrimary(widget.userID, _selectedFinance, "", "");
-        }
+      } catch (err) {
+        print(err.toString());
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "Something went wrong, sorry! Try again later.", 3));
       }
     }
   }

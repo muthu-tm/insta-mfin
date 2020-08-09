@@ -5,7 +5,6 @@ import 'package:instamfin/screens/settings/BranchSetting.dart';
 import 'package:instamfin/screens/settings/add/AddNewBranch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/app_localizations.dart';
 
 class FinanceBranchWidget extends StatelessWidget {
@@ -26,25 +25,25 @@ class FinanceBranchWidget extends StatelessWidget {
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
+                primary: false,
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
+                  print(snapshot.data.documents[index].data['branch_name']);
                   return ListTile(
                     title: TextFormField(
-                      keyboardType: TextInputType.text,
                       initialValue:
                           snapshot.data.documents[index].data['branch_name'],
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                           vertical: 5.0,
                           horizontal: 5.0,
                         ),
-                        suffixIcon: customIconButton(
+                        suffixIcon: Icon(
                           Icons.navigate_next,
-                          35.0,
-                          CustomColors.mfinBlue,
-                          null,
+                          size: 35.0,
+                          color: CustomColors.mfinBlue,
                         ),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: CustomColors.mfinGrey),
@@ -74,10 +73,10 @@ class FinanceBranchWidget extends StatelessWidget {
             // No branches available
             children = [
               Container(
-                height: 90,
+                height: 120,
                 child: Column(
                   children: <Widget>[
-                    new Spacer(),
+                    Spacer(),
                     Text(
                       AppLocalizations.of(context).translate('no_branches_yet'),
                       style: TextStyle(
@@ -86,11 +85,12 @@ class FinanceBranchWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    new Spacer(
+                    Spacer(
                       flex: 2,
                     ),
                     Text(
-                      AppLocalizations.of(context).translate('by_creating_new_branch'),
+                      AppLocalizations.of(context)
+                          .translate('by_creating_new_branch'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
@@ -98,7 +98,7 @@ class FinanceBranchWidget extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    new Spacer(),
+                    Spacer(),
                   ],
                 ),
               ),
@@ -112,7 +112,7 @@ class FinanceBranchWidget extends StatelessWidget {
 
         return Card(
           color: CustomColors.mfinLightGrey,
-          child: new Column(
+          child: Column(
             children: <Widget>[
               ListTile(
                 leading: Icon(
@@ -120,7 +120,7 @@ class FinanceBranchWidget extends StatelessWidget {
                   size: 35.0,
                   color: CustomColors.mfinButtonGreen,
                 ),
-                title: new Text(
+                title: Text(
                   AppLocalizations.of(context).translate('branch_details'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
@@ -145,7 +145,7 @@ class FinanceBranchWidget extends StatelessWidget {
                   },
                 ),
               ),
-              new Divider(
+              Divider(
                 color: CustomColors.mfinBlue,
                 thickness: 1,
               ),

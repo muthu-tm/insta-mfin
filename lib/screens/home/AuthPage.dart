@@ -237,8 +237,23 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
                     ),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      (widget._user.preferences.isfingerAuthEnabled)
+                          ? FlatButton(
+                              onPressed: () async {
+                                await biometric();
+                              },
+                              child: Text(
+                                "Fingerprint",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: CustomColors.mfinGrey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            )
+                          : Container(),
                       FlatButton(
                         onPressed: () {
                           Navigator.of(context).push(
@@ -251,10 +266,9 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
                         child: Text(
                           AppLocalizations.of(context).translate('forget_key'),
                           textAlign: TextAlign.end,
-                          style: new TextStyle(
-                            fontWeight: FontWeight.bold,
+                          style: TextStyle(
                             color: CustomColors.mfinAlertRed,
-                            fontSize: 12.0,
+                            fontSize: 11.0,
                           ),
                         ),
                       ),
@@ -342,6 +356,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
           bool authenticated = await auth.authenticateWithBiometrics(
               localizedReason: 'Touch your finger on the sensor to login',
               useErrorDialogs: true,
+              sensitiveTransaction: true,
               stickyAuth: true);
           if (authenticated) {
             await login(widget._user);

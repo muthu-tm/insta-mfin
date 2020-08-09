@@ -211,6 +211,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                           Flexible(
                             child: TextFormField(
                               keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.sentences,
                               textAlign: TextAlign.start,
                               decoration: InputDecoration(
                                 labelText: AppLocalizations.of(context)

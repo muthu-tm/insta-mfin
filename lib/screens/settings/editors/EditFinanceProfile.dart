@@ -40,7 +40,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
@@ -71,9 +71,9 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Container(
+          child: Container(
             color: CustomColors.mfinLightGrey,
-            child: new Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -82,13 +82,14 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.sentences,
                     initialValue: widget.finance.financeName,
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)
                           .translate('finance_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
@@ -106,7 +107,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                 ),
                 RowHeaderText(textName: 'Registered ID'),
                 ListTile(
-                  title: new TextFormField(
+                  title: TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.finance.registrationID,
                     decoration: InputDecoration(
@@ -114,7 +115,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                           .translate('registration_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
@@ -134,7 +135,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                 RowHeaderText(
                     textName: AppLocalizations.of(context).translate('email')),
                 ListTile(
-                  title: new TextFormField(
+                  title: TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.finance.emailID,
                     decoration: InputDecoration(
@@ -142,7 +143,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                           .translate('finance_email_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinWhite),
@@ -163,7 +164,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                     textName: AppLocalizations.of(context)
                         .translate('contact_number')),
                 ListTile(
-                  title: new TextFormField(
+                  title: TextFormField(
                     keyboardType: TextInputType.phone,
                     initialValue: widget.finance.contactNumber,
                     decoration: InputDecoration(
@@ -171,7 +172,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                           .translate('contact_number'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
@@ -199,11 +200,7 @@ class _EditFinanceProfileState extends State<EditFinanceProfile> {
                         controller: _date,
                         keyboardType: TextInputType.datetime,
                         decoration: InputDecoration(
-                          // labelText: 'Finance Registered On',
                           floatingLabelBehavior: FloatingLabelBehavior.always,
-                          labelStyle: TextStyle(
-                            color: CustomColors.mfinBlue,
-                          ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 10.0),
                           border: OutlineInputBorder(

@@ -14,9 +14,9 @@ class SubBranchProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Card(
+    return Card(
       color: CustomColors.mfinLightGrey,
-      child: new Column(
+      child: Column(
         children: <Widget>[
           ListTile(
             leading: Icon(
@@ -24,7 +24,7 @@ class SubBranchProfileWidget extends StatelessWidget {
               size: 35.0,
               color: CustomColors.mfinButtonGreen,
             ),
-            title: new Text(
+            title: Text(
               AppLocalizations.of(context).translate('sub_branch_details'),
               style: TextStyle(
                 color: CustomColors.mfinBlue,
@@ -50,7 +50,7 @@ class SubBranchProfileWidget extends StatelessWidget {
               },
             ),
           ),
-          new Divider(
+          Divider(
             color: CustomColors.mfinBlue,
             thickness: 1,
           ),
@@ -58,11 +58,12 @@ class SubBranchProfileWidget extends StatelessWidget {
             title: TextFormField(
               initialValue: subBranch.subBranchName,
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).translate('sub_branch_name'),
+                hintText:
+                    AppLocalizations.of(context).translate('sub_branch_name'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
@@ -76,11 +77,12 @@ class SubBranchProfileWidget extends StatelessWidget {
                       subBranch.dateOfRegistration))
                   : "",
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).translate('registered_date'),
+                hintText:
+                    AppLocalizations.of(context).translate('registered_date'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
                 suffixIcon: Icon(
@@ -96,11 +98,12 @@ class SubBranchProfileWidget extends StatelessWidget {
             title: TextFormField(
               initialValue: subBranch.contactNumber,
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).translate('contact_number'),
+                hintText:
+                    AppLocalizations.of(context).translate('contact_number'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinGrey)),
               ),
@@ -108,14 +111,15 @@ class SubBranchProfileWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: new TextFormField(
+            title: TextFormField(
               initialValue: subBranch.emailID,
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).translate('sub_branch_email_id'),
+                hintText: AppLocalizations.of(context)
+                    .translate('sub_branch_email_id'),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: CustomColors.mfinWhite)),
               ),
@@ -127,9 +131,10 @@ class SubBranchProfileWidget extends StatelessWidget {
               initialValue: subBranch.address.toString(),
               maxLines: 4,
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).translate('sub_branch_address'),
+                hintText: AppLocalizations.of(context)
+                    .translate('sub_branch_address'),
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                 fillColor: CustomColors.mfinWhite,
                 filled: true,
                 border: OutlineInputBorder(

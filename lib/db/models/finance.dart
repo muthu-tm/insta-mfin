@@ -16,6 +16,8 @@ class Finance extends Model {
 
   @JsonKey(name: 'registration_id', nullable: true)
   String registrationID;
+  @JsonKey(name: 'finance_id', nullable: true)
+  int financeID;
   @JsonKey(name: 'finance_name', nullable: true)
   String financeName;
   @JsonKey(name: 'email', nullable: true)
@@ -121,7 +123,7 @@ class Finance extends Model {
   }
 
   String getID() {
-    return this.createdAt.microsecondsSinceEpoch.toString();
+    return this.financeID.toString();
   }
 
   Future<DocumentSnapshot> getFinance(String financeID) async {
@@ -156,6 +158,7 @@ class Finance extends Model {
   Future<Finance> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
+    this.financeID = this.createdAt.microsecondsSinceEpoch;
     this.accountsData = new AccountsData();
     this.isActive = true;
 

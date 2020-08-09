@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/update_app.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:instamfin/app_localizations.dart';
@@ -18,7 +20,7 @@ class MobileSignInPage extends StatefulWidget {
 
 class _MobileSignInPageState extends State<MobileSignInPage> {
   String number, _smsVerificationCode;
-  bool _passwordVisible = false;
+  bool _passwordVisible = true;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   final TextEditingController _phoneNumberController = TextEditingController();
@@ -58,11 +60,11 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
           Padding(
             padding: EdgeInsets.all(5.0),
             child: ClipRRect(
-                child: Image.asset(
-                  "images/icons/logo.png",
-                  height: 80,
-                  width: 80,
-                ),
+              child: Image.asset(
+                "images/icons/logo.png",
+                height: 80,
+                width: 80,
+              ),
             ),
           ),
           Padding(
@@ -71,18 +73,18 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    " +91 ",
+                    " +91",
                     style: TextStyle(
                       fontSize: 16.0,
                       color: CustomColors.mfinBlue,
                     ),
                   ),
-                  SizedBox(width: 8.0),
                   Expanded(
                     child: TextFormField(
+                      textAlign: TextAlign.center,
                       controller: _phoneNumberController,
                       autofocus: false,
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.number,
                       key: Key('EnterPhone-TextFormField'),
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
@@ -92,7 +94,8 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                           color: CustomColors.mfinFadedButtonGreen,
                           size: 35.0,
                         ),
-                        hintText: AppLocalizations.of(context).translate('enter_phone_number'),
+                        hintText: AppLocalizations.of(context)
+                            .translate('enter_phone_number'),
                         border: InputBorder.none,
                         errorMaxLines: 1,
                       ),
@@ -109,8 +112,9 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 controller: _nameController,
                 autofocus: false,
                 keyboardType: TextInputType.text,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                  hintText:  AppLocalizations.of(context).translate('name'),
+                  hintText: AppLocalizations.of(context).translate('name'),
                   fillColor: CustomColors.mfinWhite,
                   filled: true,
                   suffixIcon: Icon(
@@ -129,8 +133,11 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 controller: _passKeyController,
                 obscureText: _passwordVisible,
                 keyboardType: TextInputType.number,
-                decoration: new InputDecoration(
-                  hintText: AppLocalizations.of(context).translate('four_digit_secret'),
+                maxLength: 4,
+                maxLengthEnforced: true,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)
+                      .translate('four_digit_secret'),
                   fillColor: CustomColors.mfinWhite,
                   filled: true,
                   suffixIcon: IconButton(
@@ -162,18 +169,21 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 child: RichText(
                     text: TextSpan(children: [
                   TextSpan(
-                      text: AppLocalizations.of(context).translate('we_will_send'),
+                      text: AppLocalizations.of(context)
+                          .translate('we_will_send'),
                       style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontWeight: FontWeight.w400)),
                   TextSpan(
-                      text: AppLocalizations.of(context).translate('one_time_password'),
+                      text: AppLocalizations.of(context)
+                          .translate('one_time_password'),
                       style: TextStyle(
                           color: CustomColors.mfinAlertRed,
                           fontSize: 16.0,
                           fontWeight: FontWeight.w700)),
                   TextSpan(
-                      text: AppLocalizations.of(context).translate('to_mobile_no'),
+                      text: AppLocalizations.of(context)
+                          .translate('to_mobile_no'),
                       style: TextStyle(
                           color: CustomColors.mfinBlue,
                           fontWeight: FontWeight.w400)),
@@ -234,22 +244,36 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
 
   startPhoneAuth() async {
     if (_phoneNumberController.text.length != 10) {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('invalid_number'), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('invalid_number'), 2));
       return;
     } else if (_nameController.text.length <= 2) {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('enter_your_name'), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('enter_your_name'), 2));
       return;
     } else if (_passKeyController.text.length != 4) {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
           AppLocalizations.of(context).translate('secret_key_validation'), 2));
       return;
     } else {
-      CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('checking_user'));
-
+      CustomDialogs.actionWaiting(
+          context, AppLocalizations.of(context).translate('checking_user'));
       this.number = _phoneNumberController.text;
-      await _verifyPhoneNumber();
+
+      var data = await User(int.parse(number)).getByID(number);
+      if (data != null) {
+        Analytics.reportError({
+          "type": 'sign_up_error',
+          "user_id": number,
+          'name': _nameController.text,
+          'error': "Found an existing user for this mobile number"
+        }, 'sign_up');
+        Navigator.pop(context);
+        _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+            "Found an existing user for this mobile number", 2));
+      } else {
+        await _verifyPhoneNumber();
+      }
     }
   }
 
@@ -283,7 +307,8 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print(AppLocalizations.of(context).translate('unable_to_register') + result['message']);
+        print(AppLocalizations.of(context).translate('unable_to_register') +
+            result['message']);
       } else {
         final SharedPreferences prefs = await _prefs;
         prefs.setString("mobile_number", number.toString());
@@ -300,20 +325,20 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
     }).catchError((error) {
       Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          AppLocalizations.of(context).translate('try_later'),
-          2));
+          AppLocalizations.of(context).translate('try_later'), 2));
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar("${error.toString()}", 2));
     });
   }
 
   _smsCodeSent(String verificationId, List<int> code) {
-    _scaffoldKey.currentState
-        .showSnackBar(CustomSnackBar.successSnackBar(AppLocalizations.of(context).translate('otp_send'), 1));
+    _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
+        AppLocalizations.of(context).translate('otp_send'), 1));
 
     _smsVerificationCode = verificationId;
     Navigator.pop(context);
-    CustomDialogs.actionWaiting(context, AppLocalizations.of(context).translate('verify_user'));
+    CustomDialogs.actionWaiting(
+        context, AppLocalizations.of(context).translate('verify_user'));
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
@@ -325,8 +350,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
   _codeAutoRetrievalTimeout(String verificationId) {
     _smsVerificationCode = verificationId;
 
-    Navigator.pop(context);
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (BuildContext context) => PhoneAuthVerify(
             true,

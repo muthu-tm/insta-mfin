@@ -24,16 +24,16 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
     ..profilePath = json['profile_path'] as String ?? ''
     ..createdAt = json['created_at'] == null
         ? null
-        : DateTime.fromMicrosecondsSinceEpoch(
-            _getMicroSecondsSinceEpoch(json['created_at'] as Timestamp))
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['created_at'] as Timestamp))
     ..updatedAt = json['updated_at'] == null
         ? null
-        : DateTime.fromMicrosecondsSinceEpoch(
-            _getMicroSecondsSinceEpoch(json['updated_at'] as Timestamp));
+        : DateTime.fromMillisecondsSinceEpoch(
+            _getMillisecondsSinceEpoch(json['updated_at'] as Timestamp));
 }
 
-int _getMicroSecondsSinceEpoch(Timestamp ts) {
-  return ts.microsecondsSinceEpoch;
+int _getMillisecondsSinceEpoch(Timestamp ts) {
+  return ts.millisecondsSinceEpoch;
 }
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{

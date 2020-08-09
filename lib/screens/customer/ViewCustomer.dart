@@ -39,12 +39,12 @@ class ViewCustomer extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showMaterialModalBottomSheet(
-              expand: false,
-              context: context,
-              backgroundColor: Colors.transparent,
-              builder: (context, scrollController) {
-                return Material(
-                    child: SafeArea(
+            expand: false,
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context, scrollController) {
+              return Material(
+                child: SafeArea(
                   top: false,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -195,7 +195,7 @@ class ViewCustomer extends StatelessWidget {
                               () async {
                                 Navigator.pop(context);
                                 CustomDialogs.actionWaiting(
-                                    context, "Removing Customer");
+                                    context, "Removing..");
                                 CustController _cc = CustController();
                                 var result =
                                     await _cc.removeCustomer(customer.id);
@@ -238,8 +238,10 @@ class ViewCustomer extends StatelessWidget {
                       )
                     ],
                   ),
-                ));
-              });
+                ),
+              );
+            },
+          );
         },
         backgroundColor: CustomColors.mfinBlue,
         splashColor: CustomColors.mfinWhite,
@@ -287,29 +289,25 @@ class ViewCustomer extends StatelessWidget {
                               },
                             );
                           },
-                          child: Stack(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Align(
-                                alignment: Alignment.topCenter,
+                              Padding(
+                                padding: EdgeInsets.all(2),
                                 child: Icon(
                                   Icons.person,
                                   size: 40.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                               ),
-                              Positioned(
-                                bottom: 15,
-                                left: 3,
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('upload'),
-                                  style: TextStyle(
-                                    fontSize: 10.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: CustomColors.mfinBlue,
-                                  ),
+                              Text(
+                                'UPLOAD',
+                                style: TextStyle(
+                                  fontFamily: 'Quicksand',
+                                  fontSize: 10.0,
+                                  color: CustomColors.mfinBlue,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),

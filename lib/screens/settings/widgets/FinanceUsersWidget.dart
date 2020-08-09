@@ -6,7 +6,6 @@ import 'package:instamfin/screens/settings/add/AddAdminPage.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
@@ -32,20 +31,20 @@ class FinanceUsersWidget extends StatelessWidget {
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
+                primary: false,
                 itemCount: snapshot.data.data['admins'].length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     title: TextFormField(
-                      keyboardType: TextInputType.text,
                       initialValue:
                           snapshot.data.data['admins'][index].toString(),
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                             vertical: 5.0, horizontal: 5.0),
-                        suffixIcon: customIconButton(Icons.navigate_next, 35.0,
-                            CustomColors.mfinBlue, null),
+                        suffixIcon: Icon(Icons.navigate_next,
+                            size: 35.0, color: CustomColors.mfinBlue),
                         border: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: CustomColors.mfinGrey)),
@@ -116,11 +115,12 @@ class FinanceUsersWidget extends StatelessWidget {
                         fontSize: 18.0,
                       ),
                     ),
-                    new Spacer(
+                    Spacer(
                       flex: 2,
                     ),
                     Text(
-                      AppLocalizations.of(context).translate('to_manage_ur_finance'),
+                      AppLocalizations.of(context)
+                          .translate('to_manage_ur_finance'),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,
@@ -140,7 +140,7 @@ class FinanceUsersWidget extends StatelessWidget {
 
         return Card(
           color: CustomColors.mfinLightGrey,
-          child: new Column(
+          child: Column(
             children: <Widget>[
               ListTile(
                 leading: Icon(
@@ -148,7 +148,7 @@ class FinanceUsersWidget extends StatelessWidget {
                   size: 35.0,
                   color: CustomColors.mfinButtonGreen,
                 ),
-                title: new Text(
+                title: Text(
                   AppLocalizations.of(context).translate('user_details'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
@@ -174,7 +174,7 @@ class FinanceUsersWidget extends StatelessWidget {
                   },
                 ),
               ),
-              new Divider(
+              Divider(
                 color: CustomColors.mfinBlue,
                 thickness: 1,
               ),

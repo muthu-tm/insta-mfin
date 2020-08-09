@@ -5,7 +5,6 @@ import 'package:instamfin/screens/settings/SubBranchSetting.dart';
 import 'package:instamfin/screens/settings/add/AddNewSubBranch.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/app_localizations.dart';
 
 class SubBranchesWidget extends StatelessWidget {
@@ -17,8 +16,7 @@ class SubBranchesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: SubBranch()
-          .streamAllSubBranches(financeID, branchName),
+      stream: SubBranch().streamAllSubBranches(financeID, branchName),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         List<Widget> children;
 
@@ -28,20 +26,20 @@ class SubBranchesWidget extends StatelessWidget {
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
+                primary: false,
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     title: TextFormField(
-                      keyboardType: TextInputType.text,
                       initialValue: snapshot
                           .data.documents[index].data['sub_branch_name'],
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                             vertical: 5.0, horizontal: 5.0),
-                        suffixIcon: customIconButton(Icons.navigate_next, 35.0,
-                            CustomColors.mfinBlue, null),
+                        suffixIcon: Icon(Icons.navigate_next,
+                            size: 35.0, color: CustomColors.mfinBlue),
                         border: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: CustomColors.mfinGrey)),
@@ -76,16 +74,17 @@ class SubBranchesWidget extends StatelessWidget {
                 height: 90,
                 child: Column(
                   children: <Widget>[
-                    new Spacer(),
+                    Spacer(),
                     Text(
-                      AppLocalizations.of(context).translate('no_sub_branches_yet'),
+                      AppLocalizations.of(context)
+                          .translate('no_sub_branches_yet'),
                       style: TextStyle(
                         color: CustomColors.mfinAlertRed,
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    new Spacer(
+                    Spacer(
                       flex: 2,
                     ),
                     Text(
@@ -97,7 +96,7 @@ class SubBranchesWidget extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    new Spacer(),
+                    Spacer(),
                   ],
                 ),
               ),
@@ -111,7 +110,7 @@ class SubBranchesWidget extends StatelessWidget {
 
         return Card(
           color: CustomColors.mfinLightGrey,
-          child: new Column(
+          child: Column(
             children: <Widget>[
               ListTile(
                 leading: Icon(
@@ -119,7 +118,7 @@ class SubBranchesWidget extends StatelessWidget {
                   size: 35.0,
                   color: CustomColors.mfinButtonGreen,
                 ),
-                title: new Text(
+                title: Text(
                   AppLocalizations.of(context).translate('sub_branch_name'),
                   style: TextStyle(
                     color: CustomColors.mfinBlue,
@@ -145,7 +144,7 @@ class SubBranchesWidget extends StatelessWidget {
                   },
                 ),
               ),
-              new Divider(
+              Divider(
                 color: CustomColors.mfinBlue,
                 thickness: 1,
               ),

@@ -45,7 +45,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
   Widget build(BuildContext context) {
     updatedUser['mobile_number'] = user.mobileNumber;
 
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('edit_profile')),
@@ -85,16 +85,20 @@ class _EditUserProfileState extends State<EditUserProfile> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    RowHeaderText(textName: AppLocalizations.of(context).translate('name')),
+                    RowHeaderText(
+                        textName:
+                            AppLocalizations.of(context).translate('name')),
                     ListTile(
                       title: TextFormField(
                         keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.sentences,
                         initialValue: user.name,
                         decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context).translate('user_name'),
+                          hintText: AppLocalizations.of(context)
+                              .translate('user_name'),
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
+                          contentPadding: EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 3.0),
                           border: OutlineInputBorder(
                               borderSide:
@@ -109,16 +113,19 @@ class _EditUserProfileState extends State<EditUserProfile> {
                         },
                       ),
                     ),
-                    RowHeaderText(textName: AppLocalizations.of(context).translate('email')),
+                    RowHeaderText(
+                        textName:
+                            AppLocalizations.of(context).translate('email')),
                     ListTile(
-                      title: new TextFormField(
+                      title: TextFormField(
                           keyboardType: TextInputType.text,
                           initialValue: user.emailID,
                           decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context).translate('enter_email_id'),
+                            hintText: AppLocalizations.of(context)
+                                .translate('enter_email_id'),
                             fillColor: CustomColors.mfinWhite,
                             filled: true,
-                            contentPadding: new EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 3.0),
                             border: OutlineInputBorder(
                                 borderSide:
@@ -134,7 +141,9 @@ class _EditUserProfileState extends State<EditUserProfile> {
                             }
                           }),
                     ),
-                    RowHeaderText(textName: AppLocalizations.of(context).translate('dob')),
+                    RowHeaderText(
+                        textName:
+                            AppLocalizations.of(context).translate('dob')),
                     ListTile(
                       title: GestureDetector(
                         onTap: () => _selectDate(context),
@@ -165,8 +174,10 @@ class _EditUserProfileState extends State<EditUserProfile> {
                         ),
                       ),
                     ),
-                    RowHeaderText(textName: AppLocalizations.of(context).translate('gender')),
-                    new Row(
+                    RowHeaderText(
+                        textName:
+                            AppLocalizations.of(context).translate('gender')),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Flexible(

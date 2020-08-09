@@ -34,7 +34,8 @@ class PrimaryFinanceWidget extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   initialValue: snapshot.data.financeName,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('new_company_name'),
+                    hintText: AppLocalizations.of(context)
+                        .translate('new_company_name'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
@@ -53,7 +54,8 @@ class PrimaryFinanceWidget extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   initialValue: _user.primary.branchName ?? "",
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('branch_name'),
+                    hintText:
+                        AppLocalizations.of(context).translate('branch_name'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     contentPadding: new EdgeInsets.symmetric(
@@ -72,7 +74,8 @@ class PrimaryFinanceWidget extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   initialValue: _user.primary.subBranchName ?? "",
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('sub_branch_name'),
+                    hintText: AppLocalizations.of(context)
+                        .translate('sub_branch_name'),
                     contentPadding: new EdgeInsets.symmetric(
                         vertical: 3.0, horizontal: 3.0),
                     fillColor: CustomColors.mfinWhite,
@@ -102,13 +105,13 @@ class PrimaryFinanceWidget extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(5.0),
                 child: Material(
-                  elevation: 10.0,
+                  elevation: 5.0,
                   shadowColor: CustomColors.mfinButtonGreen,
                   borderRadius: BorderRadius.circular(10.0),
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
+                    width: 275,
                     height: 50,
                     child: FlatButton.icon(
                       icon: Icon(
@@ -117,11 +120,12 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         color: CustomColors.mfinButtonGreen,
                       ),
                       label: Text(
-                        AppLocalizations.of(context).translate('set_primary_finance'),
+                        AppLocalizations.of(context)
+                            .translate('set_primary_finance'),
                         style: TextStyle(
                             fontFamily: 'Georgia',
                             color: CustomColors.mfinBlue,
-                            fontSize: 17.0),
+                            fontSize: 15.0),
                       ),
                       onPressed: () {
                         Navigator.push(
@@ -140,8 +144,8 @@ class PrimaryFinanceWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 10),
-                child: new Text(
+                padding: EdgeInsets.only(top: 10),
+                child: Text(
                   "OR",
                   style: TextStyle(
                     color: CustomColors.mfinGrey,
@@ -151,7 +155,10 @@ class PrimaryFinanceWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              AddFinanceWidget(),
+              Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                child: AddFinanceWidget(),
+              )
             ];
           }
         } else if (snapshot.hasError) {
@@ -160,10 +167,10 @@ class PrimaryFinanceWidget extends StatelessWidget {
           children = AsyncWidgets.asyncWaiting();
         }
 
-        return new Card(
+        return Card(
           color: CustomColors.mfinLightGrey,
           child: SingleChildScrollView(
-            child: new Column(
+            child: Column(
               children: <Widget>[
                 ListTile(
                   leading: Icon(
@@ -171,7 +178,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                     size: 35.0,
                     color: CustomColors.mfinFadedButtonGreen,
                   ),
-                  title: new Text(
+                  title: Text(
                     title,
                     style: TextStyle(
                       color: CustomColors.mfinBlue,
@@ -200,9 +207,8 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         )
                       : Text(""),
                 ),
-                new Divider(
-                  color: CustomColors.mfinBlue,
-                  thickness: 1,
+                Divider(
+                  color: CustomColors.mfinAlertRed,
                 ),
                 Center(
                   child: Column(

@@ -70,29 +70,34 @@ class _AddSubBranchState extends State<AddSubBranch> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Container(
+          child: Container(
             color: CustomColors.mfinLightGrey,
-            child: new Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RowHeaderText(textName: AppLocalizations.of(context).translate("sub_branch_name")),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate("sub_branch_name")),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate("sub_branch_name"),
+                      hintText: AppLocalizations.of(context)
+                          .translate("sub_branch_name"),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
                     ),
                     validator: (name) {
                       if (name.trim().isEmpty) {
-                        return AppLocalizations.of(context).translate("enter_sub_branch_name");
+                        return AppLocalizations.of(context)
+                            .translate("enter_sub_branch_name");
                       }
 
                       this.subBranchName = name.trim();
@@ -100,7 +105,9 @@ class _AddSubBranchState extends State<AddSubBranch> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate("registered_date")),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate("registered_date")),
                 ListTile(
                   title: GestureDetector(
                     onTap: () => _selectDate(context),
@@ -130,15 +137,18 @@ class _AddSubBranchState extends State<AddSubBranch> {
                     ),
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate("contact_number")),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate("contact_number")),
                 ListTile(
-                  title: new TextFormField(
+                  title: TextFormField(
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context).translate("contact_number"),
+                        hintText: AppLocalizations.of(context)
+                            .translate("contact_number"),
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                             vertical: 3.0, horizontal: 3.0),
                         border: OutlineInputBorder(
                             borderSide:
@@ -154,15 +164,18 @@ class _AddSubBranchState extends State<AddSubBranch> {
                         }
                       }),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate("sub_branch_email_id")),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate("sub_branch_email_id")),
                 ListTile(
-                  title: new TextFormField(
+                  title: TextFormField(
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context).translate("sub_branch_email_id"),
+                        hintText: AppLocalizations.of(context)
+                            .translate("sub_branch_email_id"),
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
-                        contentPadding: new EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                             vertical: 3.0, horizontal: 3.0),
                         border: OutlineInputBorder(
                             borderSide:
@@ -235,8 +248,8 @@ class _AddSubBranchState extends State<AddSubBranch> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate("required_fields"), 2));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate("required_fields"), 2));
     }
   }
 }

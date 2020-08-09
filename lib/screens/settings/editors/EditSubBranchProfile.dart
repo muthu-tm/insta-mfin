@@ -43,7 +43,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
@@ -74,21 +74,25 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Container(
-            child: new Column(
+          child: Container(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                RowHeaderText(textName: AppLocalizations.of(context).translate('sub_branch_name')),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate('sub_branch_name')),
                 ListTile(
                   title: TextFormField(
                     keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.sentences,
                     initialValue: widget.subBranch.subBranchName,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate('sub_branch_name'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('sub_branch_name'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
@@ -96,17 +100,20 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                     readOnly: true,
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate('contact_number')),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate('contact_number')),
                 ListTile(
-                  title: new TextFormField(
+                  title: TextFormField(
                     keyboardType: TextInputType.phone,
                     initialValue: widget.subBranch.contactNumber,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate('contact_number'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('contact_number'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
@@ -122,18 +129,20 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                     },
                   ),
                 ),
-                
-                RowHeaderText(textName: AppLocalizations.of(context).translate('sub_branch_email_id')),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate('sub_branch_email_id')),
                 ListTile(
-                  title: new TextFormField(
+                  title: TextFormField(
                     keyboardType: TextInputType.text,
                     initialValue: widget.subBranch.emailID,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate('enter_email_id'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('enter_email_id'),
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 3.0, horizontal: 3.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
                       border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
@@ -149,7 +158,9 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                     },
                   ),
                 ),
-                RowHeaderText(textName: AppLocalizations.of(context).translate('registered_date')),
+                RowHeaderText(
+                    textName: AppLocalizations.of(context)
+                        .translate('registered_date')),
                 ListTile(
                   title: GestureDetector(
                     onTap: () => _selectDate(context),
@@ -235,8 +246,8 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
         Navigator.pop(context);
       }
     } else {
-      _scaffoldKey.currentState.showSnackBar(
-          CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('required_fields'), 5));
+      _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
+          AppLocalizations.of(context).translate('required_fields'), 5));
     }
   }
 

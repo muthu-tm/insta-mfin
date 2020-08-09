@@ -28,11 +28,12 @@ class FinanceProfileWidget extends StatelessWidget {
                 title: TextFormField(
                   initialValue: snapshot.data.financeName,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('finance_name'),
+                    hintText:
+                        AppLocalizations.of(context).translate('finance_name'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 5.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinGrey)),
                   ),
@@ -43,11 +44,12 @@ class FinanceProfileWidget extends StatelessWidget {
                 title: TextFormField(
                   initialValue: snapshot.data.registrationID,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('registered_date'),
+                    hintText: AppLocalizations.of(context)
+                        .translate('registration_id'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 5.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinGrey)),
                   ),
@@ -62,11 +64,12 @@ class FinanceProfileWidget extends StatelessWidget {
                               snapshot.data.dateOfRegistration))
                       : "",
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('registered_date'),
+                    hintText: AppLocalizations.of(context)
+                        .translate('registered_date'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 5.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinGrey)),
                   ),
@@ -77,11 +80,12 @@ class FinanceProfileWidget extends StatelessWidget {
                 title: TextFormField(
                   initialValue: snapshot.data.contactNumber,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('contact_number'),
+                    hintText: AppLocalizations.of(context)
+                        .translate('contact_number'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 5.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinGrey)),
                   ),
@@ -89,14 +93,15 @@ class FinanceProfileWidget extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: new TextFormField(
+                title: TextFormField(
                   initialValue: snapshot.data.emailID,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('finance_email_id'),
+                    hintText: AppLocalizations.of(context)
+                        .translate('finance_email_id'),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 5.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: CustomColors.mfinWhite)),
                   ),
@@ -108,9 +113,10 @@ class FinanceProfileWidget extends StatelessWidget {
                   initialValue: snapshot.data.address.toString(),
                   maxLines: 4,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate('finance_address'),
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 5.0),
+                    hintText: AppLocalizations.of(context)
+                        .translate('finance_address'),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                     fillColor: CustomColors.mfinWhite,
                     filled: true,
                     border: OutlineInputBorder(
@@ -126,9 +132,9 @@ class FinanceProfileWidget extends StatelessWidget {
             children = AsyncWidgets.asyncWaiting();
           }
 
-          return new Card(
+          return Card(
             color: CustomColors.mfinLightGrey,
-            child: new Column(
+            child: Column(
               children: <Widget>[
                 ListTile(
                   leading: Icon(
@@ -136,7 +142,7 @@ class FinanceProfileWidget extends StatelessWidget {
                     size: 35.0,
                     color: CustomColors.mfinButtonGreen,
                   ),
-                  title: new Text(
+                  title: Text(
                     AppLocalizations.of(context).translate('finance_details'),
                     style: TextStyle(
                       color: CustomColors.mfinBlue,
@@ -169,7 +175,7 @@ class FinanceProfileWidget extends StatelessWidget {
                     },
                   ),
                 ),
-                new Divider(
+                Divider(
                   color: CustomColors.mfinBlue,
                   thickness: 1,
                 ),

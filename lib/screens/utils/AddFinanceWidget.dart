@@ -11,7 +11,8 @@ class AddFinanceWidget extends StatelessWidget {
         Align(
           alignment: Alignment.topLeft,
           child: Text(
-            AppLocalizations.of(context).translate("wish_to_complete_financier"),
+            AppLocalizations.of(context)
+                .translate("wish_to_complete_financier"),
             style: TextStyle(
               fontFamily: 'Georgia',
               fontSize: 16,
@@ -23,7 +24,7 @@ class AddFinanceWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(5.0),
           child: Material(
-            elevation: 10.0,
+            elevation: 5.0,
             shadowColor: CustomColors.mfinButtonGreen,
             borderRadius: BorderRadius.circular(10.0),
             child: Container(
@@ -36,11 +37,12 @@ class AddFinanceWidget extends StatelessWidget {
                   color: CustomColors.mfinButtonGreen,
                 ),
                 label: Text(
-                  AppLocalizations.of(context).translate("register_your_finance"),
+                  AppLocalizations.of(context)
+                      .translate("register_your_finance"),
                   style: TextStyle(
                       fontFamily: 'Georgia',
                       color: CustomColors.mfinBlue,
-                      fontSize: 16.0),
+                      fontSize: 15.0),
                 ),
                 onPressed: () => Navigator.push(
                   context,

@@ -3,6 +3,7 @@ part of 'finance.dart';
 Finance _$FinanceFromJson(Map<String, dynamic> json) {
   return Finance()
     ..registrationID = json['registration_id'] as String
+    ..financeID = json['finance_id'] as int
     ..financeName = json['finance_name'] as String
     ..contactNumber = json['contact_number'] as String
     ..emailID = json['email'] as String
@@ -40,6 +41,7 @@ int _getMillisecondsSinceEpoch(Timestamp ts) {
 
 Map<String, dynamic> _$FinanceToJson(Finance instance) => <String, dynamic>{
       'registration_id': instance.registrationID ?? '',
+      'finance_id': instance.financeID,
       'finance_name': instance.financeName,
       'contact_number': instance.contactNumber ?? '',
       'email': instance.emailID ?? '',

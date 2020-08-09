@@ -45,6 +45,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         title: TextFormField(
           controller: _searchController,
           keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.sentences,
           style: TextStyle(
             color: CustomColors.mfinWhite,
           ),

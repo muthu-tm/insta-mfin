@@ -16,11 +16,6 @@ class AuthController {
       User user = await _authService.registerWithMobileNumber(
           mobileNumber, passkey, userName, uid);
 
-      if (user == null) {
-        return CustomResponse.getFailureReponse(
-            "Found an existing user for this mobile number");
-      }
-
       var platformData = await UserFCM().getPlatformDetails();
 
       if (platformData != null) {

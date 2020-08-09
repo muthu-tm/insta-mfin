@@ -14,16 +14,6 @@ class AuthService {
       int mobileNumber, String password, String name, String uid) async {
     try {
       User user = User(mobileNumber);
-      var data = await user.getByID(mobileNumber.toString());
-      if (data != null) {
-        Analytics.reportError({
-          "type": 'sign_up_error',
-          "user_id": mobileNumber,
-          'name': name,
-          'error': "Found an existing user for this mobile number"
-        }, 'sign_up');
-        return null;
-      }
 
       String hKey =
           HashGenerator.hmacGenerator(password, user.mobileNumber.toString());
