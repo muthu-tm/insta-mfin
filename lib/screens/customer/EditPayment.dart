@@ -1215,7 +1215,7 @@ class _EditPaymentState extends State<EditPayment> {
           return;
         }
 
-        CustomDialogs.actionWaiting(context, "Editing Payment");
+        CustomDialogs.actionWaiting(context, "Updating..!");
         PaymentController _pc = PaymentController();
         var result = await _pc.updatePayment(widget.payment, updatedPayment);
 
