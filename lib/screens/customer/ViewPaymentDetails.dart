@@ -307,9 +307,7 @@ class ViewPaymentDetails extends StatelessWidget {
                         Flexible(
                           child: TextFormField(
                             readOnly: true,
-                            initialValue: DateUtils.formatDate(
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    payment.collectionStartsFrom)),
+                            initialValue: DateUtils.formatDate(getEndDate()),
                             decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)
                                   .translate('collection_edate'),
@@ -633,6 +631,34 @@ class ViewPaymentDetails extends StatelessWidget {
           labelStyle: TextStyle(color: CustomColors.mfinButtonGreen),
         ),
       );
+    }
+  }
+
+  DateTime getEndDate() {
+    if (payment.collectionMode == 2) {
+      DateTime starts =
+          DateTime.fromMillisecondsSinceEpoch(payment.collectionStartsFrom);
+      return DateTime(
+          starts.year, starts.month + payment.tenure - 1, starts.day);
+    } else {
+      int collectionDate = payment.collectionStartsFrom;
+      for (int index = 1; index < payment.tenure; index++) {
+        if (payment.collectionMode == 0) {
+          for (int i = 0; i < 7; i++) {
+            // 1 day in milliseconds
+            collectionDate += 86400000;
+            int collectionWeekDay =
+                DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday;
+            if (collectionWeekDay == 7 && payment.collectionDays.contains(0))
+              break;
+            else if (payment.collectionDays.contains(collectionWeekDay)) break;
+          }
+        } else if (payment.collectionMode == 1) {
+          // 7 days in milliseconds
+          collectionDate += 604800000;
+        }
+      }
+      return DateTime.fromMillisecondsSinceEpoch(collectionDate);
     }
   }
 }

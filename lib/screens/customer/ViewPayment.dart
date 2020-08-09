@@ -66,7 +66,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                   children: <Widget>[
                     ListTile(
                         title: Text(
-                          AppLocalizations.of(context).translate('view_loan'),
+                          AppLocalizations.of(context)
+                              .translate('view_payment'),
                         ),
                         leading: Icon(
                           Icons.remove_red_eye,
@@ -86,7 +87,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                         }),
                     ListTile(
                       title: Text(
-                        AppLocalizations.of(context).translate('edit_loan'),
+                        AppLocalizations.of(context).translate('edit_payment'),
                       ),
                       leading: Icon(
                         Icons.edit,
@@ -104,7 +105,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                             ),
                           );
                         } else if (totalReceived != null) {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => EditPayment(widget.payment),
@@ -163,7 +164,8 @@ class _ViewPaymentState extends State<ViewPayment> {
                     ),
                     ListTile(
                         title: Text(
-                          AppLocalizations.of(context).translate('delete_loan'),
+                          AppLocalizations.of(context)
+                              .translate('delete_payment'),
                         ),
                         leading: Icon(
                           Icons.delete_forever,
@@ -404,9 +406,9 @@ class _ViewPaymentState extends State<ViewPayment> {
                     ),
                     !isSettled
                         ? Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(10.0),
                             child: Material(
-                              elevation: 10.0,
+                              elevation: 5.0,
                               shadowColor: CustomColors.mfinBlue,
                               color: CustomColors.mfinPositiveGreen,
                               borderRadius: BorderRadius.circular(10.0),
@@ -414,7 +416,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                 splashColor: CustomColors.mfinWhite,
                                 child: Container(
                                   height: 40,
-                                  width: 150,
+                                  width: 250,
                                   alignment: Alignment.center,
                                   child: Text(
                                     AppLocalizations.of(context)
@@ -448,7 +450,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                             ),
                           )
                         : Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(10.0),
                             child: Material(
                               elevation: 10.0,
                               shadowColor: CustomColors.mfinBlue,
@@ -484,7 +486,7 @@ class _ViewPaymentState extends State<ViewPayment> {
                                                 widget.payment.settledDate)),
                                         style: TextStyle(
                                           color: CustomColors.mfinLightGrey,
-                                          fontSize: 18.0,
+                                          fontSize: 16.0,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),

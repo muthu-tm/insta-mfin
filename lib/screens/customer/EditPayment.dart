@@ -56,9 +56,10 @@ class _EditPaymentState extends State<EditPayment> {
     "6": "Sat",
   };
 
-  TextEditingController _date = new TextEditingController();
+  TextEditingController _date = TextEditingController();
   DateTime _selectedDate = DateTime.now();
-  TextEditingController _collectionDate = new TextEditingController();
+  TextEditingController _collectionDate = TextEditingController();
+  TextEditingController _collectionEndDate = TextEditingController();
 
   Map<String, dynamic> updatedPayment = new Map();
 
@@ -83,6 +84,35 @@ class _EditPaymentState extends State<EditPayment> {
     if (widget.payment.collectionMode == 0) {
       collectionDays.clear();
       collectionDays.addAll(widget.payment.collectionDays);
+    }
+    _collectionEndDate.text = DateUtils.formatDate(
+      getEndDate(widget.payment.collectionStartsFrom, widget.payment.tenure,
+          widget.payment.collectionMode.toString()),
+    );
+  }
+
+  DateTime getEndDate(int collectionDate, int tenure, String collMode) {
+    if (collMode == '2') {
+      DateTime starts = DateTime.fromMillisecondsSinceEpoch(collectionDate);
+      return DateTime(starts.year, starts.month + tenure - 1, starts.day);
+    } else {
+      for (int index = 1; index < tenure; index++) {
+        if (collMode == '0') {
+          for (int i = 0; i < 7; i++) {
+            // 1 day in milliseconds
+            collectionDate += 86400000;
+            int collectionWeekDay =
+                DateTime.fromMillisecondsSinceEpoch(collectionDate).weekday;
+            if (collectionWeekDay == 7 && collectionDays.contains(0))
+              break;
+            else if (collectionDays.contains(collectionWeekDay)) break;
+          }
+        } else if (collMode == '1') {
+          // 7 days in milliseconds
+          collectionDate += 604800000;
+        }
+      }
+      return DateTime.fromMillisecondsSinceEpoch(collectionDate);
     }
   }
 
@@ -402,80 +432,6 @@ class _EditPaymentState extends State<EditPayment> {
                             ),
                           )
                         : Container(),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: GestureDetector(
-                              onTap: () => _selectCollectionDate(context),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _collectionDate,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(context)
-                                        .translate('collection_sdate'),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    labelStyle: TextStyle(
-                                      fontSize: 10,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 10.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 5)),
-                          Flexible(
-                            child: GestureDetector(
-                              onTap: () => _selectCollectionDate(context),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _collectionDate,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(context)
-                                        .translate('collection_edate'),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    labelStyle: TextStyle(
-                                      fontSize: 10,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 10.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.all(5.0),
                       child: Row(
@@ -833,6 +789,80 @@ class _EditPaymentState extends State<EditPayment> {
                       child: Row(
                         children: <Widget>[
                           Flexible(
+                            child: GestureDetector(
+                              onTap: () => _selectCollectionDate(context),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: _collectionDate,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('collection_sdate'),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      fontSize: 10,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinWhite,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 5)),
+                          Flexible(
+                            child: GestureDetector(
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  readOnly: true,
+                                  controller: _collectionEndDate,
+                                  keyboardType: TextInputType.datetime,
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('collection_edate'),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelStyle: TextStyle(
+                                      fontSize: 10,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 3.0, horizontal: 10.0),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: CustomColors.mfinWhite)),
+                                    fillColor: CustomColors.mfinLightGrey,
+                                    filled: true,
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      size: 35,
+                                      color: CustomColors.mfinBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
                             child: TextFormField(
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
@@ -1000,28 +1030,33 @@ class _EditPaymentState extends State<EditPayment> {
   }
 
   _setSelectedCollectionMode(String newVal) {
+    DateTime collStartsDate = _selectedDate.add(Duration(days: 1));
     if (newVal == "0") {
+      collStartsDate = _selectedDate.add(Duration(days: 1));
       updatedPayment['collection_starts_from'] =
-          DateUtils.getUTCDateEpoch(_selectedDate.add(Duration(days: 1)));
-      _collectionDate.text =
-          DateUtils.formatDate(_selectedDate.add(Duration(days: 1)));
+          DateUtils.getUTCDateEpoch(collStartsDate);
+      _collectionDate.text = DateUtils.formatDate(collStartsDate);
     } else if (newVal == "1") {
+      collStartsDate = _selectedDate.add(Duration(days: 7));
       updatedPayment['collection_starts_from'] =
-          DateUtils.getUTCDateEpoch(_selectedDate.add(Duration(days: 7)));
-      _collectionDate.text =
-          DateUtils.formatDate(_selectedDate.add(Duration(days: 7)));
+          DateUtils.getUTCDateEpoch(collStartsDate);
+      _collectionDate.text = DateUtils.formatDate(collStartsDate);
     } else if (newVal == "2") {
-      updatedPayment['collection_starts_from'] = DateUtils.getUTCDateEpoch(
-          DateTime(
-              _selectedDate.year, _selectedDate.month + 1, _selectedDate.day));
-      _collectionDate.text = DateUtils.formatDate(DateTime(
-          _selectedDate.year, _selectedDate.month + 1, _selectedDate.day));
+      collStartsDate = DateTime(
+          _selectedDate.year, _selectedDate.month + 1, _selectedDate.day);
+      updatedPayment['collection_starts_from'] =
+          DateUtils.getUTCDateEpoch(collStartsDate);
+      _collectionDate.text = DateUtils.formatDate(collStartsDate);
     }
+
+    DateTime eDate = getEndDate(collStartsDate.millisecondsSinceEpoch,
+        int.parse(tenureController.text), newVal);
 
     setState(() {
       if (widget.payment.collectionMode != int.parse(newVal))
         updatedPayment['collection_mode'] = int.parse(newVal);
       selectedCollectionModeID = newVal;
+      _collectionEndDate.text = DateUtils.formatDate(eDate);
     });
   }
 
@@ -1068,14 +1103,18 @@ class _EditPaymentState extends State<EditPayment> {
     if (picked != null &&
         picked !=
             DateTime.fromMillisecondsSinceEpoch(
-                widget.payment.collectionStartsFrom))
+                widget.payment.collectionStartsFrom)) {
+      DateTime eDate = getEndDate(picked.millisecondsSinceEpoch,
+          int.parse(tenureController.text), this.selectedCollectionModeID);
       setState(
         () {
           updatedPayment['collection_starts_from'] =
               DateUtils.getUTCDateEpoch(picked);
           _collectionDate.text = DateUtils.formatDate(picked);
+          _collectionEndDate.text = DateUtils.formatDate(eDate);
         },
       );
+    }
   }
 
   Future<void> _selectPaymentDate(BuildContext context) async {
@@ -1188,8 +1227,6 @@ class _EditPaymentState extends State<EditPayment> {
           Navigator.pop(context);
           Navigator.pop(context);
           Navigator.pop(context);
-          _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-              AppLocalizations.of(context).translate('please_wait'), 3));
         }
       }
     } else {
