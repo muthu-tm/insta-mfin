@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
-import 'package:instamfin/db/models/branch.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -25,9 +24,7 @@ class _AddBranchState extends State<AddBranch> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final Branch branch = new Branch();
   DateTime selectedDate = DateTime.now();
-  var dateFormatter = DateUtils.dateFormatter;
   String branchName;
   String contactNumber = "";
   String emailID = "";
@@ -42,7 +39,7 @@ class _AddBranchState extends State<AddBranch> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('add_branch')),
@@ -231,8 +228,7 @@ class _AddBranchState extends State<AddBranch> {
 
     if (form.validate()) {
       CustomDialogs.actionWaiting(context, "Creating Branch!");
-      BranchController _branchController = BranchController();
-      var result = await _branchController.addBranch(
+      var result = await BranchController().addBranch(
           widget.financeID,
           branchName,
           contactNumber,

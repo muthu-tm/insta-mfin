@@ -9,12 +9,9 @@ import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class BranchController {
-  SubBranchController _subBranchController = SubBranchController();
-
   Future addBranch(String financeID, String branchName, String contactNumber,
       String email, Address address, int dateOfRegistration) async {
     try {
-      int addedBy = UserController().getCurrentUserID();
 
       Branch newBranch = Branch();
       if (await newBranch.isExist(financeID, branchName)) {
@@ -29,16 +26,16 @@ class BranchController {
             "Branch Name must be unique! A branch exists with the given Branch Name.");
       }
 
-      FinanceController _financeController = FinanceController();
       newBranch.setBranchName(branchName);
       newBranch.setDOR(dateOfRegistration);
       newBranch.setEmail(email);
       newBranch.setContactNumber(contactNumber);
       newBranch.setAddress(address);
 
+      FinanceController _financeController = FinanceController();
       List<int> admins = await _financeController.getAllAdmins(financeID);
       newBranch.addAdmins(admins);
-      newBranch.setAddedBy(addedBy);
+      newBranch.setAddedBy(UserController().getCurrentUserID());
 
       Branch branch = await newBranch.create(financeID);
 
@@ -130,7 +127,7 @@ class BranchController {
         SubBranch subBranch = subBranches[index];
         String subBranchName = subBranch.subBranchName;
 
-        await _subBranchController.updateSubBranchAdmins(
+        await SubBranchController().updateSubBranchAdmins(
             isAdd, userList, financeID, branchName, subBranchName, false);
       }
     }

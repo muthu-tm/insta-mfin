@@ -15,6 +15,8 @@ class SubBranchesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<TextEditingController> nameController = <TextEditingController>[];
+
     return StreamBuilder<QuerySnapshot>(
       stream: SubBranch().streamAllSubBranches(financeID, branchName),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -22,6 +24,14 @@ class SubBranchesWidget extends StatelessWidget {
 
         if (snapshot.hasData) {
           if (snapshot.data.documents.isNotEmpty) {
+            nameController.clear();
+            for (int i = 0; i < snapshot.data.documents.length; i++) {
+              TextEditingController _controller = TextEditingController();
+              _controller.text =
+                  snapshot.data.documents[i].data['sub_branch_name'];
+              nameController.insert(i, _controller);
+            }
+
             children = <Widget>[
               ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -31,8 +41,7 @@ class SubBranchesWidget extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     title: TextFormField(
-                      initialValue: snapshot
-                          .data.documents[index].data['sub_branch_name'],
+                      controller: nameController[index],
                       decoration: InputDecoration(
                         fillColor: CustomColors.mfinWhite,
                         filled: true,
@@ -56,7 +65,7 @@ class SubBranchesWidget extends StatelessWidget {
                           builder: (context) => SubBranchSetting(
                             financeID,
                             branchName,
-                            subBranch,
+                            subBranch.subBranchName,
                           ),
                           settings: RouteSettings(
                               name: '/settings/finance/branch/subbranch'),

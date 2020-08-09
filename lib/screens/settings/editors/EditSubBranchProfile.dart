@@ -45,7 +45,6 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('edit_sub_branch')),
         backgroundColor: CustomColors.mfinBlue,
@@ -89,7 +88,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)
                           .translate('sub_branch_name'),
-                      fillColor: CustomColors.mfinWhite,
+                      fillColor: CustomColors.mfinLightGrey,
                       filled: true,
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
@@ -105,7 +104,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
                         .translate('contact_number')),
                 ListTile(
                   title: TextFormField(
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.number,
                     initialValue: widget.subBranch.contactNumber,
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)
@@ -230,7 +229,7 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
     final FormState form = _formKey.currentState;
 
     if (form.validate()) {
-      CustomDialogs.actionWaiting(context, "Updating SubBranch!");
+      CustomDialogs.actionWaiting(context, "Updating..!");
       SubBranchController _subBranchController = SubBranchController();
       updatedSubBranch['address'] = updatedAddress.toJson();
       var result = await _subBranchController.updateSubBranch(widget.financeID,
@@ -249,9 +248,5 @@ class _EditSubBranchProfileState extends State<EditSubBranchProfile> {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
           AppLocalizations.of(context).translate('required_fields'), 5));
     }
-  }
-
-  _close() {
-    Navigator.pop(context);
   }
 }

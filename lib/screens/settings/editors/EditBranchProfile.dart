@@ -42,9 +42,8 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinWhite,
       appBar: AppBar(
         title:
             Text(AppLocalizations.of(context).translate('edit_branch_profile')),
@@ -89,7 +88,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
                     decoration: InputDecoration(
                       hintText:
                           AppLocalizations.of(context).translate('branch_name'),
-                      fillColor: CustomColors.mfinWhite,
+                      fillColor: CustomColors.mfinLightGrey,
                       filled: true,
                       contentPadding: EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 3.0),
@@ -97,8 +96,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
                           borderSide:
                               BorderSide(color: CustomColors.mfinWhite)),
                     ),
-                    enabled: false,
-                    autofocus: false,
+                    readOnly: true,
                   ),
                 ),
                 RowHeaderText(
@@ -106,7 +104,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
                         .translate('contact_number')),
                 ListTile(
                   title: TextFormField(
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.number,
                     initialValue: widget.branch.contactNumber,
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)
@@ -242,6 +240,7 @@ class _EditBranchProfileState extends State<EditBranchProfile> {
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
       } else {
+        Navigator.pop(context);
         Navigator.pop(context);
         Navigator.pop(context);
       }

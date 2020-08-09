@@ -60,7 +60,7 @@ class SubBranchProfileWidget extends StatelessWidget {
               decoration: InputDecoration(
                 hintText:
                     AppLocalizations.of(context).translate('sub_branch_name'),
-                fillColor: CustomColors.mfinWhite,
+                fillColor: CustomColors.mfinLightGrey,
                 filled: true,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
