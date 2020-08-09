@@ -351,8 +351,7 @@
     "valid_collection": "ಮಾನ್ಯವಾದ ಕಲೆಕ್ಷನ್ ಹೊಂದಿದೆ ಇದು ಸಂಪಾದಿಸಿ ಪಾವತಿಗಳು ಮಾಡಬಹುದು!",
     "same_collection": "ಅದೇ ಕಲೆಕ್ಷನ್ ಸಂಖ್ಯೆ ಒಂದು ಕಲೆಕ್ಷನ್ ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ಅನನ್ಯ ಕಲೆಕ್ಷನ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ!",
     "collection_start_date": "ಕಲೆಕ್ಷನ್ ಪ್ರಾರಂಭ ದಿನಾಂಕ ಸಂಗ್ರಹ ದಿನಗಳಲ್ಲಿ ಇರಬೇಕು",
-    "collection_amount_equal": "ಪ್ರಮಾಣ ಸಂಗ್ರಹಣೆಗಳು ಸಂಗ್ರಹ ಮೊತ್ತ * ನಂ ಸಮಾನ ಇರಬೇಕು",
-    "received_lesser": "ಸ್ವೀಕರಿಸಲಾಗಿದೆ ಪ್ರಮಾಣದ ಒಟ್ಟು ಪ್ರಮಾಣವನ್ನು ಕಡಿಮೆ ಇರಬೇಕು",
+    "received_lesser" : "Amount Received should be Lesser than or Equal to Total Amount",
     "subscription_expired": "ನಿಮ್ಮ ಚಂದಾ ಮುಗಿದಿದೆ. ಮುಂದುವರಿಸಲು ರೀಚಾರ್ಜ್ ಪ್ಲೀಸ್!",
     "please_wait": "ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ ... ನಿಮ್ಮ ಸಂಗ್ರಹಣೆಗಳು ಅಪ್ಡೇಟ್ ..!",
     "payment_disabled": "ಪಾವತಿ ಕೆಲವು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ ಸೇರಿಸಿ! ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗಾಗಿ ಸಂಪರ್ಕ ಬೆಂಬಲ ದಯವಿಟ್ಟು. ನಿಮ್ಮ ಬೆಂಬಲಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು!",
@@ -509,5 +508,7 @@
     "profit": "Profit",
     "paid_late_ques": "Paid Late?",
     "no_collection_rec": "No collection received",
+    "update": "Update",
+    "coll_no_caps" : "COLL NO",
     "settled_on": "Settled On"
 }

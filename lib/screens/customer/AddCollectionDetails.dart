@@ -191,7 +191,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                       fontSize: 10,
                                       color: CustomColors.mfinBlue,
                                     ),
-                                    contentPadding: new EdgeInsets.symmetric(
+                                    contentPadding: EdgeInsets.symmetric(
                                         vertical: 3.0, horizontal: 3.0),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -340,7 +340,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -381,7 +381,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                                 ),
                                 fillColor: CustomColors.mfinWhite,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -438,7 +438,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
               ),
               isLatePay
                   ? Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(5.0),
                       child: TextFormField(
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.number,
@@ -454,7 +454,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                           ),
                           fillColor: CustomColors.mfinWhite,
                           filled: true,
-                          contentPadding: new EdgeInsets.symmetric(
+                          contentPadding: EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 3.0),
                           border: OutlineInputBorder(
                               borderSide:
@@ -474,7 +474,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
                       ),
                     )
                   : Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(5.0),
                     ),
             ],
           ),

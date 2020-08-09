@@ -94,8 +94,7 @@ class ViewCustomer extends StatelessWidget {
                       ),
                       ListTile(
                           title: Text(
-                            AppLocalizations.of(context)
-                                .translate('view_payment'),
+                            "View Customer",
                           ),
                           leading: Icon(
                             Icons.remove_red_eye,

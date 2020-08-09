@@ -9,6 +9,7 @@ AccountsData _$AccountsDataFromJson(Map<String, dynamic> json) {
     ..surcharge = json['surcharge'] as int ?? 0
     ..totalPayments = json['total_payments'] as int ?? 0
     ..paymentsAmount = json['payments_amount'] as int ?? 0
+    ..interestAmount = json['interest_amount'] as int ?? 0
     ..collectionsAmount = json['collections_amount'] as int ?? 0;
 }
 
@@ -21,5 +22,6 @@ Map<String, dynamic> _$AccountsDataToJson(AccountsData instance) =>
       'surcharge': instance.surcharge ?? 0,
       'total_payments': instance.totalPayments ?? 0,
       'payments_amount': instance.paymentsAmount ?? 0,
+      'interest_amount': instance.interestAmount ?? 0,
       'collections_amount': instance.collectionsAmount ?? 0
     };

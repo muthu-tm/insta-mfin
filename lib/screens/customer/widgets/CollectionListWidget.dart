@@ -34,6 +34,7 @@ class CollectionListWidget extends StatelessWidget {
 
         if (snapshot.hasData) {
           if (snapshot.data.documents.length > 0) {
+            collList.clear();
             snapshot.data.documents.forEach((doc) {
               Collection _c = Collection.fromJson(doc.data);
               collList.add(_c);

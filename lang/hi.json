@@ -351,8 +351,7 @@
     "valid_collection": "आप भुगतान संपादित नहीं जो वैध संग्रह है कर सकते हैं!",
     "same_collection": "एक ही संग्रह संख्या के साथ एक संग्रह मिला। अद्वितीय संग्रह संख्या दर्ज करें!",
     "collection_start_date": "संग्रह प्रारंभ दिनांक संग्रह दिनों में होना चाहिए",
-    "collection_amount_equal": "कुल राशि संग्रह राशि संग्रह में से * सं बराबर होना चाहिए",
-    "received_lesser": "प्राप्त राशि कुल राशि की तुलना में कम होना चाहिए",
+    "received_lesser" : "Amount Received should be Lesser than or Equal to Total Amount",
     "subscription_expired": "आपकी सदस्यता समाप्त हो गया है। कृपया रिचार्ज जारी रखने के लिए!",
     "please_wait": "कृपया प्रतीक्षा करें ... हम अपने संग्रह अद्यतन कर रहे हैं ..!",
     "payment_disabled": "भुगतान कुछ समय के लिए अक्षम जोड़ें! अधिक जानकारी के लिए सहायता से संपर्क करें। आपके समर्थन के लिए धन्यवाद!",
@@ -510,5 +509,7 @@
     "profit" : "Profit",
     "paid_late_ques" : "Paid Late?",
     "no_collection_rec" : "No collection received",
+    "update": "Update",
+    "coll_no_caps" : "COLL NO",
     "settled_on" : "Settled On"
 }

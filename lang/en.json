@@ -450,8 +450,7 @@
     "valid_collection" : "You cannot Edit Loans which has valid COLLECTION!",
     "same_collection" : "Found a Collection with the same Collection NUMBER. Please enter unique Collection Number!",
     "collection_start_date" : "Collection Start Date must be in collection days",
-    "collection_amount_equal" : "Total amount should be equal to Collection amount * No. of collections",
-    "received_lesser" : "Amount Received should be lesser than Total Amount",
+    "received_lesser" : "Amount Received should be Lesser than or Equal to Total Amount",
     "please_wait" : "Please wait... We are updating your collections..!",
     "payment_disabled" : "ADD Loan disabled for sometime! Please contact support for more info. Thanks for your support!",
     "sub_expired" : "Your Finance subscription has expired. Please Recharge to continue!",
@@ -472,7 +471,7 @@
     "unable_to_open" : "Unable to open update URL now. Please update manually!",
     "take_picture" : "Take Picture",
     "recharge_to_continue" : "Please Recharge to continue!",
-    "coll_no_caps" : "COLL NO",         
+    "coll_no_caps" : "COLL NO",
     "apply_balance": "Apply Balance",
     "amount_applied": "Amount Applied: ",
     "wallet_amount": "Wallet Amount",
@@ -513,5 +512,6 @@
     "profit" : "Profit",
     "paid_late_ques" : "Paid Late?",
     "no_collection_rec" : "No collection received",
+    "update": "Update",
     "settled_on" : "Settled On"
 }

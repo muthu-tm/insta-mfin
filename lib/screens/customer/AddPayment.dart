@@ -1207,7 +1207,7 @@ class _AddPaymentState extends State<AddPayment> {
     }
 
     if (form.validate()) {
-      if (!(alreadyReceivedAmount < totalAmount)) {
+      if (alreadyReceivedAmount > totalAmount) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
             AppLocalizations.of(context).translate('received_lesser'), 3));
         return;

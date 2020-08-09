@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import '../../app_localizations.dart';
+
 class AddressWidget extends StatefulWidget {
   AddressWidget(this.addreesTitle, this.address, this.updatedAddress);
 
@@ -42,7 +44,7 @@ class _AddressWidgetState extends State<AddressWidget> {
             color: CustomColors.mfinBlue,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(5.0),
             child: Row(
               children: <Widget>[
                 Flexible(
@@ -51,9 +53,11 @@ class _AddressWidgetState extends State<AddressWidget> {
                     textAlign: TextAlign.center,
                     maxLines: 3,
                     decoration: InputDecoration(
-                      labelText: 'Building no. & street',
+                      labelText: AppLocalizations.of(context)
+                                    .translate('building_and_street'),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelStyle: TextStyle(
+                        fontSize: 10.0,
                         color: CustomColors.mfinBlue,
                       ),
                       contentPadding:
@@ -76,7 +80,7 @@ class _AddressWidgetState extends State<AddressWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(5.0),
             child: Row(
               children: <Widget>[
                 Flexible(
@@ -84,9 +88,11 @@ class _AddressWidgetState extends State<AddressWidget> {
                     initialValue: widget.address.city,
                     textAlign: TextAlign.start,
                     decoration: InputDecoration(
-                      labelText: 'City',
+                      labelText: AppLocalizations.of(context)
+                                    .translate('city'),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelStyle: TextStyle(
+                        fontSize: 10.0,
                         color: CustomColors.mfinBlue,
                       ),
                       contentPadding:
@@ -105,15 +111,17 @@ class _AddressWidgetState extends State<AddressWidget> {
                     },
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(left: 10)),
+                Padding(padding: EdgeInsets.only(left: 5)),
                 Flexible(
                   child: TextFormField(
                     initialValue: widget.address.state,
                     textAlign: TextAlign.start,
                     decoration: InputDecoration(
-                      labelText: 'State',
+                      labelText: AppLocalizations.of(context)
+                                    .translate('state'),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelStyle: TextStyle(
+                        fontSize: 10.0,
                         color: CustomColors.mfinBlue,
                       ),
                       contentPadding:
@@ -136,7 +144,7 @@ class _AddressWidgetState extends State<AddressWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(5.0),
             child: Row(
               children: <Widget>[
                 Flexible(
@@ -144,9 +152,11 @@ class _AddressWidgetState extends State<AddressWidget> {
                     initialValue: widget.address.pincode,
                     textAlign: TextAlign.start,
                     decoration: InputDecoration(
-                      labelText: 'Pincode',
+                      labelText: AppLocalizations.of(context)
+                                    .translate('pincode'),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelStyle: TextStyle(
+                        fontSize: 10.0,
                         color: CustomColors.mfinBlue,
                       ),
                       contentPadding:

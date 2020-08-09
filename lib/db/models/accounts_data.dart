@@ -17,6 +17,8 @@ class AccountsData {
   int totalPayments;
   @JsonKey(name: 'payments_amount', defaultValue: 0)
   int paymentsAmount;
+  @JsonKey(name: 'interest_amount', defaultValue: 0)
+  int interestAmount;
   @JsonKey(name: 'collections_amount', defaultValue: 0)
   int collectionsAmount;
 

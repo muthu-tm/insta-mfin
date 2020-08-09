@@ -351,8 +351,7 @@
     "valid_collection": "നിങ്ങൾ സാധുവായ കളക്ഷൻ ഉണ്ട് എഡിറ്റ് പേയ്മെന്റ്സ് കഴിയില്ല!",
     "same_collection": "ഒരേ ശേഖരം നമ്പറും ഒരു ശേഖരം കണ്ടെത്തി. ദയവായി അതുല്യമായ ശേഖരം നമ്പർ നൽകുക!",
     "collection_start_date": "ശേഖരം ആരംഭ തീയതി ശേഖരം ദിവസങ്ങളിൽ ആയിരിക്കണം",
-    "collection_amount_equal": "ആകെ തുക ശേഖരം തുക തുല്യമോ വേണം * ശേഖരങ്ങളിൽ എണ്ണം",
-    "received_lesser": "ലഭിച്ച തുകയുടെ ആകെ തുകയേക്കാൾ കുറവുള്ളതും ആയിരിക്കണം",
+    "received_lesser" : "Amount Received should be Lesser than or Equal to Total Amount",
     "subscription_expired": "നിങ്ങളുടെ സബ്സ്ക്രിപ്ഷൻ കാലഹരണപ്പെട്ടു. തുടരാൻ റീചാർജ് ദയവായി!",
     "please_wait": "ദയവായി കാത്തിരിക്കുക ... നിങ്ങളുടെ ശേഖരങ്ങൾ അപ്ഡേറ്റ് ..!",
     "payment_disabled": "പേയ്മെന്റ് ഐഡിയിൽ പ്രവർത്തനരഹിതമാക്കി ചേർക്കുക! കൂടുതൽ വിവരങ്ങൾക്ക് ദയവായി കോൺടാക്റ്റ് പിന്തുണ. നിങ്ങളുടെ പിന്തുണയ്ക്ക് നന്ദി!",
@@ -511,5 +510,7 @@
     "profit" : "Profit",
     "paid_late_ques" : "Paid Late?",
     "no_collection_rec" : "No collection received",
+    "update": "Update",
+    "coll_no_caps" : "COLL NO",
     "settled_on" : "Settled On"
 }

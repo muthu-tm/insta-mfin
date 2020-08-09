@@ -1209,7 +1209,7 @@ class _EditPaymentState extends State<EditPayment> {
                 ? updatedPayment['already_collected_amount']
                 : widget.payment.alreadyCollectedAmount;
 
-        if (!(alreadyReceivedAmount < totalAmount)) {
+        if (alreadyReceivedAmount > totalAmount) {
           _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
               AppLocalizations.of(context).translate('received_lesser'), 3));
           return;

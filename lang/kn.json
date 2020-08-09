@@ -351,8 +351,7 @@
     "valid_collection": "మీరు చెల్లదు కలెక్షన్ కలిగి మార్చు చెల్లింపులు చేయవచ్చు!",
     "same_collection": "అదే కలెక్షన్ సంఖ్య తో కలెక్షన్తో దొరకలేదు. ఏకైక సేకరణ సంఖ్య నమోదు చేయండి!",
     "collection_start_date": "కలెక్షన్ ప్రారంభ తేదీ సేకరణ రోజుల్లో ఉండాలి",
-    "collection_amount_equal": "మొత్తం సేకరణలు కలెక్షన్ మొత్తం * నం సమానంగా ఉండాలి",
-    "received_lesser": "మొత్తం స్వీకరించిన మొత్తం కన్నా తక్కువగా ఉండాలి",
+    "received_lesser" : "Amount Received should be Lesser than or Equal to Total Amount",
     "subscription_expired": "మీ చందా గడువు ముగిసింది. కొనసాగించడానికి రీఛార్జ్ దయచేసి!",
     "please_wait": "దయచేసి వేచి ఉండండి ... మేము మీ సేకరణలు అప్ డేట్ ..!",
     "payment_disabled": "చెల్లింపు కొంత కోసం డిసేబుల్ జోడించండి! మరింత సమాచారం కోసం మద్దతును సంప్రదించండి దయచేసి. మీ సహకారానికి ధన్యవాదాలు!",
@@ -510,5 +509,7 @@
     "profit" : "Profit",
     "paid_late_ques" : "Paid Late?",
     "no_collection_rec" : "No collection received",
+    "update": "Update",
+    "coll_no_caps" : "COLL NO",
     "settled_on" : "Settled On"
 }

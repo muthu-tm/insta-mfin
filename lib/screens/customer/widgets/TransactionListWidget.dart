@@ -30,6 +30,7 @@ class TransactionListWidget extends StatelessWidget {
 
         if (snapshot.hasData) {
           if (snapshot.data.documents.length > 0) {
+            collList.clear();
             snapshot.data.documents.forEach((doc) {
               Collection _c = Collection.fromJson(doc.data);
               if (_c.type != CollectionType.Commission.name &&

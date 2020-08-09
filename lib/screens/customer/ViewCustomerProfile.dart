@@ -48,7 +48,7 @@ class ViewCustomerProfile extends StatelessWidget {
                       color: CustomColors.mfinBlue,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -64,6 +64,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -78,7 +79,7 @@ class ViewCustomerProfile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.only(left: 5.0),
                           ),
                           Flexible(
                             child: TextFormField(
@@ -91,6 +92,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -108,7 +110,7 @@ class ViewCustomerProfile extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -122,6 +124,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -136,7 +139,7 @@ class ViewCustomerProfile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.only(left: 5.0),
                           ),
                           Flexible(
                             child: TextFormField(
@@ -149,6 +152,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -166,7 +170,7 @@ class ViewCustomerProfile extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Expanded(
@@ -183,7 +187,7 @@ class ViewCustomerProfile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.only(left: 5.0),
                           ),
                           Flexible(
                             child: TextFormField(
@@ -192,7 +196,7 @@ class ViewCustomerProfile extends StatelessWidget {
                               decoration: InputDecoration(
                                 fillColor: CustomColors.mfinLightGrey,
                                 filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
+                                contentPadding: EdgeInsets.symmetric(
                                     vertical: 3.0, horizontal: 3.0),
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -206,7 +210,7 @@ class ViewCustomerProfile extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -223,6 +227,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     labelStyle: TextStyle(
+                                      fontSize: 10.0,
                                       color: CustomColors.mfinBlue,
                                     ),
                                     contentPadding: EdgeInsets.symmetric(
@@ -243,7 +248,7 @@ class ViewCustomerProfile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.only(left: 5.0),
                           ),
                           Flexible(
                             child: TextFormField(
@@ -256,6 +261,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -273,7 +279,7 @@ class ViewCustomerProfile extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -287,6 +293,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -301,7 +308,7 @@ class ViewCustomerProfile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.only(left: 5.0),
                           ),
                           Flexible(
                             child: TextFormField(
@@ -314,6 +321,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -346,8 +354,7 @@ class ViewCustomerProfile extends StatelessWidget {
                       height: 40,
                       alignment: Alignment.center,
                       child: Text(
-                        AppLocalizations.of(context)
-                            .translate('address_details'),
+                        "Customer Address",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -361,7 +368,7 @@ class ViewCustomerProfile extends StatelessWidget {
                       color: CustomColors.mfinBlue,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -376,6 +383,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -393,7 +401,7 @@ class ViewCustomerProfile extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -407,6 +415,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -421,7 +430,7 @@ class ViewCustomerProfile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.only(left: 5.0),
                           ),
                           Flexible(
                             child: TextFormField(
@@ -434,6 +443,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
@@ -451,7 +461,7 @@ class ViewCustomerProfile extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Row(
                         children: <Widget>[
                           Flexible(
@@ -465,6 +475,7 @@ class ViewCustomerProfile extends StatelessWidget {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: TextStyle(
+                                  fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
                                 ),
                                 contentPadding: EdgeInsets.symmetric(

@@ -3,7 +3,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/collection_details.dart';
-import 'package:instamfin/screens/customer/AddCollectionDetails.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
@@ -92,49 +91,49 @@ class CollectionDetailsWidget extends StatelessWidget {
               size: 35.0,
               color: CustomColors.mfinButtonGreen,
             ),
-            title: new Text(
+            title: Text(
               AppLocalizations.of(context).translate('collection_details'),
               style: TextStyle(
                 color: CustomColors.mfinBlue,
                 fontSize: 18.0,
               ),
             ),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.add_box,
-                size: 35.0,
-                color: CustomColors.mfinBlue,
-              ),
-              onPressed: () {
-                if (paySettled) {
-                  _scaffoldKey.currentState.showSnackBar(
-                      CustomSnackBar.errorSnackBar(
-                          AppLocalizations.of(context)
-                              .translate('unable_edit_payment'),
-                          2));
-                } else {
-                  if (_collection.getReceived() <
-                      _collection.collectionAmount) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            AddCollectionDetails(_collection, custName),
-                        settings: RouteSettings(
-                            name:
-                                '/customers/payments/collections/collectiondetails/add'),
-                      ),
-                    );
-                  } else {
-                    _scaffoldKey.currentState.showSnackBar(
-                        CustomSnackBar.errorSnackBar(
-                            AppLocalizations.of(context)
-                                .translate('collection_amount_fully'),
-                            2));
-                  }
-                }
-              },
-            ),
+            // trailing: IconButton(
+            //   icon: Icon(
+            //     Icons.add_box,
+            //     size: 35.0,
+            //     color: CustomColors.mfinBlue,
+            //   ),
+            //   onPressed: () {
+            //     if (paySettled) {
+            //       _scaffoldKey.currentState.showSnackBar(
+            //           CustomSnackBar.errorSnackBar(
+            //               AppLocalizations.of(context)
+            //                   .translate('unable_edit_payment'),
+            //               2));
+            //     } else {
+            //       if (_collection.getReceived() <
+            //           _collection.collectionAmount) {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) =>
+            //                 AddCollectionDetails(_collection, custName),
+            //             settings: RouteSettings(
+            //                 name:
+            //                     '/customers/payments/collections/collectiondetails/add'),
+            //           ),
+            //         );
+            //       } else {
+            //         _scaffoldKey.currentState.showSnackBar(
+            //             CustomSnackBar.errorSnackBar(
+            //                 AppLocalizations.of(context)
+            //                     .translate('collection_amount_fully'),
+            //                 2));
+            //       }
+            //     }
+            //   },
+            // ),
           ),
           Divider(
             color: CustomColors.mfinBlue,
@@ -304,7 +303,7 @@ class CollectionDetailsWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Text(
-                      AppLocalizations.of(context).translate('from'),
+                      "FROM",
                       style: TextStyle(
                           color: textColor,
                           fontFamily: 'Georgia',
@@ -338,7 +337,7 @@ class CollectionDetailsWidget extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Text(
-              AppLocalizations.of(context).translate('by'),
+              "BY",
               style: TextStyle(
                   color: CustomColors.mfinGrey,
                   fontFamily: 'Georgia',
@@ -356,7 +355,7 @@ class CollectionDetailsWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Text(
-              'NOTES',
+              AppLocalizations.of(context).translate('notes'),
               style: TextStyle(
                   color: CustomColors.mfinGrey,
                   fontFamily: 'Georgia',

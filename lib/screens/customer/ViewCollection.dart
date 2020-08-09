@@ -44,6 +44,8 @@ class _ViewCollectionState extends State<ViewCollection> {
     "2": "GPay"
   };
 
+  TextEditingController totalAmountController = TextEditingController();
+
   int totalAmount = 0;
   int status = 0;
   String collectedBy = '';
@@ -61,6 +63,7 @@ class _ViewCollectionState extends State<ViewCollection> {
     this.collectedBy = _user.name;
     this.totalAmount =
         widget._collection.collectionAmount - widget._collection.getReceived();
+    this.totalAmountController.text = this.totalAmount.toString();
 
     if (widget._collection.collectionDate <
         (DateUtils.getCurrentUTCDate().millisecondsSinceEpoch)) {
@@ -92,6 +95,9 @@ class _ViewCollectionState extends State<ViewCollection> {
         if (snapshot.hasData) {
           if (snapshot.data.exists) {
             Collection collection = Collection.fromJson(snapshot.data.data);
+            totalAmountController.text =
+                (collection.collectionAmount - collection.getReceived())
+                    .toString();
 
             (collection.getReceived() >= collection.collectionAmount)
                 ? isReceived = true
@@ -148,9 +154,6 @@ class _ViewCollectionState extends State<ViewCollection> {
                   initialValue: widget.pay.custName,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
-                    labelStyle: TextStyle(
-                      color: CustomColors.mfinBlue,
-                    ),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: CustomColors.mfinGrey,
@@ -250,8 +253,313 @@ class _ViewCollectionState extends State<ViewCollection> {
                   ),
                 ),
               ),
-              isReceived
-                  ? ListTile(
+              !isReceived
+                  ? Card(
+                      elevation: 5.0,
+                      color: CustomColors.mfinLightGrey,
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Divider(
+                              color: CustomColors.mfinButtonGreen,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Flexible(
+                                    child: GestureDetector(
+                                      onTap: () => _selectDate(context),
+                                      child: AbsorbPointer(
+                                        child: TextFormField(
+                                          controller: _date,
+                                          keyboardType: TextInputType.datetime,
+                                          decoration: InputDecoration(
+                                            hintText: 'Date Collected',
+                                            labelText:
+                                                AppLocalizations.of(context)
+                                                    .translate('collected_on'),
+                                            labelStyle: TextStyle(
+                                              fontSize: 10.0,
+                                              color: CustomColors.mfinBlue,
+                                            ),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 3.0,
+                                                    horizontal: 3.0),
+                                            border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: CustomColors
+                                                        .mfinWhite)),
+                                            fillColor: CustomColors.mfinWhite,
+                                            filled: true,
+                                            suffixIcon: Icon(
+                                              Icons.date_range,
+                                              size: 35,
+                                              color: CustomColors.mfinBlue,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Flexible(
+                                    child: TextFormField(
+                                      textAlign: TextAlign.start,
+                                      keyboardType: TextInputType.number,
+                                      controller: totalAmountController,
+                                      decoration: InputDecoration(
+                                        hintText: 'Collected Amount',
+                                        labelText: AppLocalizations.of(context)
+                                            .translate('collected_amount'),
+                                        labelStyle: TextStyle(
+                                          fontSize: 10.0,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 3.0, horizontal: 3.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                      ),
+                                      validator: (amount) {
+                                        if (amount.trim().isEmpty ||
+                                            amount.trim() == "0") {
+                                          return "Collected Amount should not be empty!";
+                                        } else {
+                                          collDetails['amount'] =
+                                              int.parse(amount.trim());
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Flexible(
+                                    child: DropdownButtonFormField(
+                                      decoration: InputDecoration(
+                                        labelText: AppLocalizations.of(context)
+                                            .translate('transferred_mode'),
+                                        labelStyle: TextStyle(
+                                          fontSize: 10.0,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.always,
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 3.0, horizontal: 10.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                      ),
+                                      items: _transferMode.entries.map(
+                                        (f) {
+                                          return DropdownMenuItem<String>(
+                                            value: f.key,
+                                            child: Text(f.value),
+                                          );
+                                        },
+                                      ).toList(),
+                                      onChanged: (newVal) {
+                                        _setTransferredMode(newVal);
+                                      },
+                                      value: transferredMode,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Flexible(
+                                    child: TextFormField(
+                                      textAlign: TextAlign.start,
+                                      keyboardType: TextInputType.text,
+                                      initialValue: receivedFrom,
+                                      decoration: InputDecoration(
+                                        hintText: 'Amount Received From',
+                                        labelText: AppLocalizations.of(context)
+                                            .translate('collected_from'),
+                                        labelStyle: TextStyle(
+                                          fontSize: 10.0,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 3.0, horizontal: 3.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                      ),
+                                      validator: (receivedFrom) {
+                                        if (receivedFrom.trim().isEmpty) {
+                                          return "Fill the person name who Paid the amount";
+                                        }
+
+                                        collDetails['collected_from'] =
+                                            receivedFrom.trim();
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Flexible(
+                                    child: TextFormField(
+                                      textAlign: TextAlign.start,
+                                      keyboardType: TextInputType.text,
+                                      initialValue: collectedBy,
+                                      decoration: InputDecoration(
+                                        hintText: 'Amount Collected by',
+                                        labelText: AppLocalizations.of(context)
+                                            .translate('collected_by'),
+                                        labelStyle: TextStyle(
+                                          fontSize: 10.0,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 3.0, horizontal: 3.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                      ),
+                                      validator: (collectedBy) {
+                                        if (collectedBy.trim().isEmpty) {
+                                          return "Please fill the person name who collected the amount";
+                                        }
+
+                                        collDetails['collected_by'] =
+                                            collectedBy.trim();
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Flexible(
+                                    child: TextFormField(
+                                      textAlign: TextAlign.start,
+                                      keyboardType: TextInputType.text,
+                                      initialValue: notes,
+                                      maxLines: 2,
+                                      decoration: InputDecoration(
+                                        labelText: AppLocalizations.of(context)
+                                            .translate('notes'),
+                                        hintText:
+                                            "Short notes/reference about the Collection",
+                                        labelStyle: TextStyle(
+                                          fontSize: 10.0,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 3.0, horizontal: 3.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                      ),
+                                      validator: (notes) {
+                                        if (notes.trim().isEmpty) {
+                                          collDetails['notes'] = "";
+                                        } else {
+                                          collDetails['notes'] = notes.trim();
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            isLatePay
+                                ? Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: TextFormField(
+                                      textAlign: TextAlign.end,
+                                      keyboardType: TextInputType.number,
+                                      initialValue: '0',
+                                      decoration: InputDecoration(
+                                        hintText: 'Penalty Amount',
+                                        labelText: AppLocalizations.of(context)
+                                            .translate('penalty_amount'),
+                                        labelStyle: TextStyle(
+                                          fontSize: 10.0,
+                                          color: CustomColors.mfinBlue,
+                                        ),
+                                        fillColor: CustomColors.mfinWhite,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 3.0, horizontal: 3.0),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: CustomColors.mfinWhite)),
+                                      ),
+                                      validator: (amount) {
+                                        if (amount.trim().isEmpty ||
+                                            amount.trim() == "0") {
+                                          collDetails['penalty_amount'] = 0;
+                                          hasPenalty = false;
+                                        } else {
+                                          hasPenalty = true;
+                                          collDetails['penalty_amount'] =
+                                              int.parse(amount.trim());
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                  ),
+                            Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: RaisedButton.icon(
+                                color:
+                                    CustomColors.mfinAlertRed.withOpacity(0.7),
+                                onPressed: () async {
+                                  if (isReceived) {
+                                    _scaffoldKey.currentState.showSnackBar(
+                                        CustomSnackBar.errorSnackBar(
+                                            "You have already collected full Amount",
+                                            3));
+                                    return;
+                                  } else {
+                                    await _submit();
+                                  }
+                                },
+                                icon: Icon(Icons.collections_bookmark),
+                                label: Text("Add Collection"),
+                              ),
+                            ),
+                            Divider(
+                              color: CustomColors.mfinButtonGreen,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : ListTile(
                       leading: SizedBox(
                         width: 100,
                         child: Text(
@@ -280,274 +588,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                           ),
                         ),
                       ),
-                    )
-                  : Padding(
-                      padding: EdgeInsets.only(
-                          top: 25.0, right: 8.0, left: 8.0, bottom: 8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: GestureDetector(
-                              onTap: () => _selectDate(context),
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  controller: _date,
-                                  keyboardType: TextInputType.datetime,
-                                  decoration: InputDecoration(
-                                    hintText: 'Date Collected',
-                                    labelText: AppLocalizations.of(context)
-                                        .translate('collected_on'),
-                                    labelStyle: TextStyle(
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 3.0, horizontal: 3.0),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: CustomColors.mfinWhite)),
-                                    fillColor: CustomColors.mfinWhite,
-                                    filled: true,
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      size: 35,
-                                      color: CustomColors.mfinBlue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              initialValue: totalAmount.toString(),
-                              decoration: InputDecoration(
-                                hintText: 'Collected Amount',
-                                labelText: AppLocalizations.of(context)
-                                    .translate('collected_amount'),
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 3.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CustomColors.mfinWhite)),
-                              ),
-                              validator: (amount) {
-                                if (amount.trim().isEmpty ||
-                                    amount.trim() == "0") {
-                                  return "Collected Amount should not be empty!";
-                                } else {
-                                  collDetails['amount'] =
-                                      int.parse(amount.trim());
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
-              isReceived
-                  ? Container()
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context)
-                                    .translate('transferred_mode'),
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 10.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CustomColors.mfinWhite)),
-                              ),
-                              items: _transferMode.entries.map(
-                                (f) {
-                                  return DropdownMenuItem<String>(
-                                    value: f.key,
-                                    child: Text(f.value),
-                                  );
-                                },
-                              ).toList(),
-                              onChanged: (newVal) {
-                                _setTransferredMode(newVal);
-                              },
-                              value: transferredMode,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-              isReceived
-                  ? Container()
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.text,
-                              initialValue: receivedFrom,
-                              decoration: InputDecoration(
-                                hintText: 'Amount Received From',
-                                labelText: AppLocalizations.of(context)
-                                    .translate('collected_from'),
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 3.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CustomColors.mfinWhite)),
-                              ),
-                              validator: (receivedFrom) {
-                                if (receivedFrom.trim().isEmpty) {
-                                  return "Fill the person name who Paid the amount";
-                                }
-
-                                collDetails['collected_from'] =
-                                    receivedFrom.trim();
-                                return null;
-                              },
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 10)),
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.text,
-                              initialValue: collectedBy,
-                              decoration: InputDecoration(
-                                hintText: 'Amount Collected by',
-                                labelText: AppLocalizations.of(context)
-                                    .translate('collected_by'),
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 3.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CustomColors.mfinWhite)),
-                              ),
-                              validator: (collectedBy) {
-                                if (collectedBy.trim().isEmpty) {
-                                  return "Please fill the person name who collected the amount";
-                                }
-
-                                collDetails['collected_by'] =
-                                    collectedBy.trim();
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-              isReceived
-                  ? Container()
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.text,
-                              initialValue: notes,
-                              maxLines: 2,
-                              decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context)
-                                    .translate('notes'),
-                                hintText:
-                                    "Short notes/reference about the Collection",
-                                labelStyle: TextStyle(
-                                  color: CustomColors.mfinBlue,
-                                ),
-                                fillColor: CustomColors.mfinWhite,
-                                filled: true,
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 3.0, horizontal: 3.0),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CustomColors.mfinWhite)),
-                              ),
-                              validator: (notes) {
-                                if (notes.trim().isEmpty) {
-                                  collDetails['notes'] = "";
-                                } else {
-                                  collDetails['notes'] = notes.trim();
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-              isReceived
-                  ? Container()
-                  : isLatePay
-                      ? Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: TextFormField(
-                            textAlign: TextAlign.end,
-                            keyboardType: TextInputType.number,
-                            initialValue: '0',
-                            decoration: InputDecoration(
-                              hintText: 'Penalty Amount',
-                              labelText: AppLocalizations.of(context)
-                                  .translate('penalty_amount'),
-                              labelStyle: TextStyle(
-                                color: CustomColors.mfinBlue,
-                              ),
-                              fillColor: CustomColors.mfinWhite,
-                              filled: true,
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 3.0, horizontal: 3.0),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.mfinWhite)),
-                            ),
-                            validator: (amount) {
-                              if (amount.trim().isEmpty ||
-                                  amount.trim() == "0") {
-                                collDetails['penalty_amount'] = 0;
-                                hasPenalty = false;
-                              } else {
-                                hasPenalty = true;
-                                collDetails['penalty_amount'] =
-                                    int.parse(amount.trim());
-                              }
-                              return null;
-                            },
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(10.0),
-                        ),
               CollectionDetailsWidget(widget.pay.isSettled, _scaffoldKey,
                   collection, widget.pay.custName),
             ];
@@ -587,34 +628,6 @@ class _ViewCollectionState extends State<ViewCollection> {
             backgroundColor: CustomColors.mfinBlue,
           ),
           key: _scaffoldKey,
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: FloatingActionButton.extended(
-            backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
-            tooltip: "Update Collection",
-            onPressed: () async {
-              if (isReceived) {
-                _scaffoldKey.currentState.showSnackBar(
-                    CustomSnackBar.errorSnackBar(
-                        "You have already collected full Amount", 3));
-                return;
-              } else {
-                await _submit();
-              }
-            },
-            elevation: 5.0,
-            icon: Icon(
-              Icons.edit,
-              size: 35,
-              color: CustomColors.mfinWhite,
-            ),
-            label: Text(
-              AppLocalizations.of(context).translate('update'),
-              style: TextStyle(
-                color: CustomColors.mfinWhite,
-              ),
-            ),
-          ),
           body: SingleChildScrollView(
             child: Form(
               key: _formKey,

@@ -27,81 +27,82 @@ Widget customerPaymentWidget(BuildContext context,
           bottom: 5,
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Material(
               color: cColor,
               elevation: 5.0,
               borderRadius: BorderRadius.circular(10.0),
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.35,
+                width: 140,
                 height: 150,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Spacer(),
                     SizedBox(
-                      height: 25,
-                      child: Text(
-                        DateUtils.getFormattedDateFromEpoch(
-                            payment.dateOfPayment),
-                        style: TextStyle(
-                            color: CustomColors.mfinWhite,
-                            fontFamily: 'Georgia',
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Divider(
-                      color: CustomColors.mfinButtonGreen,
-                    ),
-                    SizedBox(
-                      height: 25,
-                      child: Text(
-                        payment.totalAmount.toString(),
-                        style: TextStyle(
-                            color: CustomColors.mfinAlertRed,
-                            fontFamily: 'Georgia',
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 25,
-                      child: RichText(
-                        text: TextSpan(
-                          text: '${payment.tenure}',
-                          style: TextStyle(
-                            color: CustomColors.mfinWhite,
-                            fontFamily: 'Georgia',
-                            fontSize: 18.0,
+                      height: 120,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Spacer(),
+                          Text(
+                            DateUtils.getFormattedDateFromEpoch(
+                                payment.dateOfPayment),
+                            style: TextStyle(
+                                color: CustomColors.mfinWhite,
+                                fontFamily: 'Georgia',
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold),
                           ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: ' x ',
-                              style: TextStyle(
-                                color: CustomColors.mfinBlack,
+                          Divider(
+                            color: CustomColors.mfinButtonGreen,
+                          ),
+                          Spacer(),
+                          Text(
+                            payment.totalAmount.toString(),
+                            style: TextStyle(
+                                color: CustomColors.mfinAlertRed,
+                                fontFamily: 'Georgia',
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '${payment.collectionAmount}',
+                                fontWeight: FontWeight.bold),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: '${payment.tenure}',
                               style: TextStyle(
-                                color: CustomColors.mfinFadedButtonGreen,
+                                color: CustomColors.mfinWhite,
+                                fontFamily: 'Georgia',
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
                               ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: ' x ',
+                                  style: TextStyle(
+                                    color: CustomColors.mfinBlack,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '${payment.collectionAmount}',
+                                  style: TextStyle(
+                                    color: CustomColors.mfinFadedButtonGreen,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          Spacer(),
+                          Divider(
+                            color: CustomColors.mfinWhite,
+                          ),
+                        ],
                       ),
                     ),
-                    Divider(
-                      color: CustomColors.mfinWhite,
-                    ),
                     SizedBox(
-                      height: 25,
+                      height: 30,
                       child: FlatButton.icon(
                         onPressed: () {
                           Navigator.push(
@@ -125,7 +126,6 @@ Widget customerPaymentWidget(BuildContext context,
                         ),
                       ),
                     ),
-                    Spacer(),
                   ],
                 ),
               ),
@@ -172,118 +172,135 @@ Widget getPaymentDetails(
           });
 
           child = Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 2.0, top: 5.0),
-                    child: Text(
-                      AppLocalizations.of(context).translate('received_caps'),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CustomColors.mfinBlue,
-                        fontWeight: FontWeight.bold,
-                      ),
+              SizedBox(
+                height: 120,
+                child: Column(
+                  children: <Widget>[
+                    Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 2.0, top: 5.0),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('received_caps'),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: CustomColors.mfinBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 2.0, top: 5.0),
+                          child: Text(
+                            '$_r',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: CustomColors.mfinPositiveGreen,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 2.0, top: 5.0),
-                    child: Text(
-                      '$_r',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CustomColors.mfinPositiveGreen,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 2.0, top: 2.0),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('pending_caps'),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: CustomColors.mfinBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 2.0, top: 2.0),
+                          child: Text(
+                            '$_p',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: CustomColors.mfinAlertRed,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  )
-                ],
+                    Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 2.0, top: 2.0),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('today_caps'),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: CustomColors.mfinBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 2.0, top: 2.0),
+                          child: Text(
+                            '$_c',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: CustomColors.mfinBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 2.0, top: 2.0),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('upcoming_caps'),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: CustomColors.mfinBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 2.0, top: 2.0),
+                          child: Text(
+                            '$_u',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: CustomColors.mfinGrey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Divider(
+                      color: CustomColors.mfinButtonGreen,
+                    ),
+                    Spacer(),
+                  ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 2.0, top: 2.0),
-                    child: Text(
-                      AppLocalizations.of(context).translate('pending_caps'),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CustomColors.mfinBlue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 2.0, top: 2.0),
-                    child: Text(
-                      '$_p',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CustomColors.mfinAlertRed,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 2.0, top: 2.0),
-                    child: Text(
-                      AppLocalizations.of(context).translate('today_caps'),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CustomColors.mfinBlue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 2.0, top: 2.0),
-                    child: Text(
-                      '$_c',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CustomColors.mfinBlue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 2.0, top: 2.0),
-                    child: Text(
-                      AppLocalizations.of(context).translate('upcoming_caps'),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CustomColors.mfinBlue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 2.0, top: 2.0),
-                    child: Text(
-                      '$_u',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CustomColors.mfinGrey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Divider(),
               SizedBox(
                 height: 30,
                 child: FlatButton.icon(
@@ -312,6 +329,7 @@ Widget getPaymentDetails(
                   ),
                 ),
               ),
+              Spacer(),
             ],
           );
         }
@@ -332,8 +350,8 @@ Widget getPaymentDetails(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(10.0),
         child: Container(
-            width: MediaQuery.of(context).size.width * 0.60,
             height: 150,
+            width: MediaQuery.of(context).size.width - 155,
             child: child),
       );
     },
