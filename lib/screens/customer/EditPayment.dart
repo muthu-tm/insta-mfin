@@ -58,6 +58,7 @@ class _EditPaymentState extends State<EditPayment> {
 
   TextEditingController _date = TextEditingController();
   DateTime _selectedDate = DateTime.now();
+  DateTime _selectedCollDate = DateTime.now();
   TextEditingController _collectionDate = TextEditingController();
   TextEditingController _collectionEndDate = TextEditingController();
 
@@ -81,13 +82,15 @@ class _EditPaymentState extends State<EditPayment> {
 
     _collectionDate.text = DateUtils.getFormattedDateFromEpoch(
         widget.payment.collectionStartsFrom);
+    _selectedCollDate = DateTime.fromMillisecondsSinceEpoch(
+        widget.payment.collectionStartsFrom);
     if (widget.payment.collectionMode == 0) {
       collectionDays.clear();
       collectionDays.addAll(widget.payment.collectionDays);
     }
     _collectionEndDate.text = DateUtils.formatDate(
-      getEndDate(widget.payment.collectionStartsFrom, widget.payment.tenure,
-          widget.payment.collectionMode.toString()),
+      getEndDate(_selectedCollDate.millisecondsSinceEpoch,
+          widget.payment.tenure, widget.payment.collectionMode.toString()),
     );
   }
 
@@ -764,9 +767,15 @@ class _EditPaymentState extends State<EditPayment> {
                                                 totalAmountController.text)) ~/
                                             int.parse(val)
                                         : 0;
+                                DateTime eDate = getEndDate(
+                                    _selectedCollDate.millisecondsSinceEpoch,
+                                    int.parse(val),
+                                    this.selectedCollectionModeID);
                                 setState(() {
                                   collectionAmountController.text =
                                       cAmount.toString();
+                                  _collectionEndDate.text =
+                                      DateUtils.formatDate(eDate);
                                 });
                               },
                               validator: (tenure) {
@@ -1030,26 +1039,25 @@ class _EditPaymentState extends State<EditPayment> {
   }
 
   _setSelectedCollectionMode(String newVal) {
-    DateTime collStartsDate = _selectedDate.add(Duration(days: 1));
     if (newVal == "0") {
-      collStartsDate = _selectedDate.add(Duration(days: 1));
+      _selectedCollDate = _selectedDate.add(Duration(days: 1));
       updatedPayment['collection_starts_from'] =
-          DateUtils.getUTCDateEpoch(collStartsDate);
-      _collectionDate.text = DateUtils.formatDate(collStartsDate);
+          DateUtils.getUTCDateEpoch(_selectedCollDate);
+      _collectionDate.text = DateUtils.formatDate(_selectedCollDate);
     } else if (newVal == "1") {
-      collStartsDate = _selectedDate.add(Duration(days: 7));
+      _selectedCollDate = _selectedDate.add(Duration(days: 7));
       updatedPayment['collection_starts_from'] =
-          DateUtils.getUTCDateEpoch(collStartsDate);
-      _collectionDate.text = DateUtils.formatDate(collStartsDate);
+          DateUtils.getUTCDateEpoch(_selectedCollDate);
+      _collectionDate.text = DateUtils.formatDate(_selectedCollDate);
     } else if (newVal == "2") {
-      collStartsDate = DateTime(
+      _selectedCollDate = DateTime(
           _selectedDate.year, _selectedDate.month + 1, _selectedDate.day);
       updatedPayment['collection_starts_from'] =
-          DateUtils.getUTCDateEpoch(collStartsDate);
-      _collectionDate.text = DateUtils.formatDate(collStartsDate);
+          DateUtils.getUTCDateEpoch(_selectedCollDate);
+      _collectionDate.text = DateUtils.formatDate(_selectedCollDate);
     }
 
-    DateTime eDate = getEndDate(collStartsDate.millisecondsSinceEpoch,
+    DateTime eDate = getEndDate(_selectedCollDate.millisecondsSinceEpoch,
         int.parse(tenureController.text), newVal);
 
     setState(() {
@@ -1073,21 +1081,24 @@ class _EditPaymentState extends State<EditPayment> {
       yield Transform(
         transform: Matrix4.identity()..scale(0.8),
         child: ChoiceChip(
-            label: Text(days.value),
-            selected: collectionDays.contains(int.parse(days.key)),
-            elevation: 5.0,
-            selectedColor: CustomColors.mfinBlue,
-            backgroundColor: CustomColors.mfinWhite,
-            labelStyle: TextStyle(color: CustomColors.mfinButtonGreen),
-            onSelected: (selected) {
-              setState(() {
+          label: Text(days.value),
+          selected: collectionDays.contains(int.parse(days.key)),
+          elevation: 5.0,
+          selectedColor: CustomColors.mfinBlue,
+          backgroundColor: CustomColors.mfinWhite,
+          labelStyle: TextStyle(color: CustomColors.mfinButtonGreen),
+          onSelected: (selected) {
+            setState(
+              () {
                 if (selected) {
                   collectionDays.add(int.parse(days.key));
                 } else {
                   collectionDays.remove(int.parse(days.key));
                 }
-              });
-            }),
+              },
+            );
+          },
+        ),
       );
     }
   }
@@ -1111,6 +1122,7 @@ class _EditPaymentState extends State<EditPayment> {
           updatedPayment['collection_starts_from'] =
               DateUtils.getUTCDateEpoch(picked);
           _collectionDate.text = DateUtils.formatDate(picked);
+          _selectedCollDate = picked;
           _collectionEndDate.text = DateUtils.formatDate(eDate);
         },
       );
@@ -1133,24 +1145,25 @@ class _EditPaymentState extends State<EditPayment> {
           _date.text = DateUtils.formatDate(picked);
 
           if (selectedCollectionModeID == "0") {
+            _selectedCollDate = _selectedDate.add(Duration(days: 1));
             updatedPayment['collection_starts_from'] =
-                DateUtils.getUTCDateEpoch(_selectedDate.add(Duration(days: 1)));
-            _collectionDate.text =
-                DateUtils.formatDate(_selectedDate.add(Duration(days: 1)));
+                DateUtils.getUTCDateEpoch(_selectedCollDate);
+            _collectionDate.text = DateUtils.formatDate(_selectedCollDate);
           } else if (selectedCollectionModeID == "1") {
+            _selectedCollDate = _selectedDate.add(Duration(days: 7));
             updatedPayment['collection_starts_from'] =
-                DateUtils.getUTCDateEpoch(_selectedDate.add(Duration(days: 7)));
-            _collectionDate.text =
-                DateUtils.formatDate(_selectedDate.add(Duration(days: 7)));
+                DateUtils.getUTCDateEpoch(_selectedCollDate);
+            _collectionDate.text = DateUtils.formatDate(_selectedCollDate);
           } else if (selectedCollectionModeID == "2") {
+            _selectedCollDate = DateTime(
+                _selectedDate.year, _selectedDate.month + 1, _selectedDate.day);
             updatedPayment['collection_starts_from'] =
-                DateUtils.getUTCDateEpoch(DateTime(_selectedDate.year,
-                    _selectedDate.month + 1, _selectedDate.day));
-            _collectionDate.text = DateUtils.formatDate(DateTime(
-                _selectedDate.year,
-                _selectedDate.month + 1,
-                _selectedDate.day));
+                DateUtils.getUTCDateEpoch(_selectedCollDate);
+            _collectionDate.text = DateUtils.formatDate(_selectedCollDate);
           }
+          DateTime eDate = getEndDate(_selectedCollDate.millisecondsSinceEpoch,
+              int.parse(tenureController.text), selectedCollectionModeID);
+          _collectionEndDate.text = DateUtils.formatDate(eDate);
         },
       );
   }
