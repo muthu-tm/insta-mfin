@@ -423,6 +423,7 @@ class Payment extends Model {
                 //   return Future.error(
                 //       'Low Cash In Hand to make this Payment! If you have more money, Add using Journal Entry!');
                 accData.paymentsAmount += this.totalAmount;
+                accData.interestAmount += this.interestAmount;
                 accData.totalPayments += 1;
 
                 if (this.docCharge > 0) {
@@ -622,6 +623,7 @@ class Payment extends Model {
 
     int amount = 0;
     int totalAmount = 0;
+    int interestAmount = 0;
     int totalDocCharge = 0;
     int totalSurCharge = 0;
     int totalCommission = 0;
@@ -635,6 +637,10 @@ class Payment extends Model {
 
     if (paymentJSON.containsKey('total_amount')) {
       totalAmount = paymentJSON['total_amount'] - payment.totalAmount;
+    }
+
+    if (paymentJSON.containsKey('interest_amount')) {
+      interestAmount = paymentJSON['interest_amount'] - payment.interestAmount;
     }
 
     if (paymentJSON.containsKey('doc_charge')) {
@@ -677,6 +683,7 @@ class Payment extends Model {
               accData.cashInHand += totalCollectedAmount;
               accData.collectionsAmount += totalCollectedAmount;
               accData.paymentsAmount += totalAmount;
+              accData.interestAmount += interestAmount;
               accData.totalDocCharge += docAdd;
               accData.docCharge += totalDocCharge;
               accData.cashInHand += totalDocCharge;
@@ -835,6 +842,7 @@ class Payment extends Model {
               accData.cashInHand += paymentJSON['settlement_amount'];
               accData.totalPayments -= 1;
               accData.paymentsAmount -= this.totalAmount;
+              accData.interestAmount -= this.interestAmount;
               if (this.docCharge > 0) accData.totalDocCharge -= 1;
               accData.docCharge -= this.docCharge;
               if (this.surcharge > 0) accData.totalSurCharge -= 1;
@@ -889,6 +897,7 @@ class Payment extends Model {
               accData.cashInHand += payment.principalAmount;
               accData.cashInHand += payment.rCommission;
               accData.paymentsAmount -= payment.totalAmount;
+              accData.interestAmount -= payment.interestAmount;
               if (payment.docCharge > 0) accData.totalDocCharge -= 1;
               accData.docCharge -= payment.docCharge;
               accData.cashInHand -= payment.docCharge;
@@ -963,6 +972,7 @@ class Payment extends Model {
               if (!isSettled) {
                 accData.collectionsAmount -= tReceived;
                 accData.paymentsAmount -= payment.totalAmount;
+                accData.interestAmount -= payment.interestAmount;
                 if (payment.docCharge > 0) accData.totalDocCharge -= 1;
                 accData.docCharge -= payment.docCharge;
                 if (payment.surcharge > 0) accData.totalSurCharge -= 1;

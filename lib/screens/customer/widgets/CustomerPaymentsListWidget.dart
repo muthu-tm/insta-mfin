@@ -58,14 +58,14 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                             //   3,
                             // ));
                             await forceRemove(context, payment,
-                                "Enter your Secret KEY to remove SETTLED Payment!");
+                                "Enter your Secret KEY to remove SETTLED Loan!");
                           } else {
                             var state = Slidable.of(context);
                             var dismiss = await showDialog<bool>(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: new Text(
+                                  title: Text(
                                     AppLocalizations.of(context)
                                         .translate('confirm'),
                                     style: TextStyle(
@@ -110,7 +110,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                           Navigator.pop(context);
 
                                           await forceRemove(context, payment,
-                                              "Enter your Secret KEY to remove payment which has received COLLECTION!");
+                                              "Enter your Secret KEY to remove Loan which has received COLLECTION!");
                                         } else if (totalReceived != null) {
                                           PaymentController _pc =
                                               PaymentController();
@@ -124,7 +124,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                             _scaffoldKey.currentState
                                                 .showSnackBar(
                                               CustomSnackBar.errorSnackBar(
-                                                "Unable to remove the Payment! ${result['message']}",
+                                                "Unable to remove the Loan! ${result['message']}",
                                                 3,
                                               ),
                                             );
@@ -132,10 +132,10 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                                             Navigator.pop(context);
                                             _scaffoldKey.currentState
                                                 .showSnackBar(
-                                              CustomSnackBar.errorSnackBar(
+                                              CustomSnackBar.successSnackBar(
                                                   AppLocalizations.of(context)
                                                       .translate(
-                                                          'customer_removed'),
+                                                          'payment_removed'),
                                                   2),
                                             );
                                           }
@@ -379,7 +379,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                     Navigator.pop(context);
                     _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.errorSnackBar(
-                        "Unable to remove the Payment! ${result['message']}",
+                        "Unable to remove the Loan! ${result['message']}",
                         3,
                       ),
                     );
@@ -388,7 +388,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                     Navigator.pop(context);
                     _scaffoldKey.currentState.showSnackBar(
                       CustomSnackBar.successSnackBar(
-                          "Payment removed successfully", 2),
+                          "Loan removed successfully", 2),
                     );
                   }
                 } else {
