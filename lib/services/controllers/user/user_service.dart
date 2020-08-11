@@ -24,7 +24,7 @@ class UserService {
   }
 
   void setCachedUser(User user) {
-    print("USER STATE chage occurred: " + user.toJson().toString());
+    print("USER STATE change occurred: " + user.toJson().toString());
 
     this.cachedUser = user;
   }

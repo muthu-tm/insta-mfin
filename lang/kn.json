@@ -94,7 +94,6 @@
     "secret_key_updated_successfully": "మీ సీక్రెట్ కీ విజయవంతంగా నవీకరించబడింది",
     "edit_branch_profile": "బ్రాంచ్ మార్చు ప్రొఫైల్",
     "enter_email_id": "మీ EMAILID ఎంటర్",
-    "alreay_account": "ఖాతా కలిగి ఉన్నారా?",
     "transactions": "ట్రాన్సాక్షన్స్",
     "chit_fund": "చిట్ ఫండ్",
     "reports": "నివేదికలు",
@@ -468,7 +467,9 @@
     "register_your_finance": "Register Your Finance!",
     "add_payment": "Add Loan",
     "add": "Add",
-
+    "unable_to_open" : "Unable to open update URL now. Please update manually!",
+    "take_picture" : "Take Picture",
+    "recharge_to_continue" : "Please Recharge to continue!",
     "apply_balance": "Apply Balance",
     "amount_applied": "Amount Applied: ",
     "wallet_amount": "Wallet Amount",

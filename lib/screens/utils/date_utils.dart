@@ -4,10 +4,6 @@ class DateUtils {
   static DateFormat dateFormatter = new DateFormat('dd-MMM-yyyy');
   static DateFormat dateTimeFormatter = new DateFormat('dd-MMM-yyyy h:mm a');
 
-  static String getCurrentFormattedDate() {
-    return dateFormatter.format(DateTime.now());
-  }
-
   static String getFormattedDateFromEpoch(int epoch) {
     return dateFormatter.format(DateTime.fromMillisecondsSinceEpoch(epoch));
   }
@@ -46,15 +42,6 @@ class DateUtils {
         thisInstant.year, thisInstant.month, thisInstant.day, 0, 0, 0, 0, 0);
   }
 
-  static DateTime getFormattedISTDate(DateTime dateTime) {
-    return DateTime(
-        dateTime.year, dateTime.month, dateTime.day, 5, 30, 0, 0, 0);
-  }
-
-  static DateTime getFormattedDate(DateTime dateTime) {
-    return DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0, 0, 0);
-  }
-
   static List<int> getDaysInBeteween(
       DateTime startDate, DateTime endDate) {
     List<int> days = [];
@@ -69,12 +56,5 @@ class DateUtils {
               .millisecondsSinceEpoch);
     }
     return days;
-  }
-
-  static DateTime getUtcDate([DateTime dateTime]) {
-    DateTime utc = DateTime.now().toUtc();
-
-    if (dateTime != null) utc = dateTime.toUtc();
-    return DateTime(utc.year, utc.month, utc.day, 0, 0, 0, 0, 0);
   }
 }

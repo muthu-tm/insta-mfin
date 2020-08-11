@@ -3,7 +3,6 @@ import 'package:instamfin/screens/app/NotificationListWidget.dart';
 import 'package:instamfin/screens/app/SearchAppBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/screens/utils/CustomTabBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 
 import '../../app_localizations.dart';

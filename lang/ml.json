@@ -94,7 +94,6 @@
     "secret_key_updated_successfully": "നിങ്ങളുടെ രഹസ്യ വാക്ക് അപ്‌ഡേറ്റുചെയ്‌തു",
     "edit_branch_profile": "ബ്രാഞ്ച് പ്രൊഫൈൽ എഡിറ്റുചെയ്യുക",
     "enter_email_id": "നിങ്ങളുടെ ഇമെയിൽ ഐഡി നൽകുക",
-    "alreay_account": "ഇതിനകം ഒരു അക്കൗണ്ട് ഉണ്ടോ?",
     "transactions": "ഇടപാടുകൾ",
     "chit_fund": "ചിറ്റ് ഫിനാൻസ്",
     "reports": "റിപ്പോർട്ടുകൾ",
@@ -469,7 +468,9 @@
     "register_your_finance": "Register Your Finance!",
     "add_payment": "Add Loan",
     "add": "Add",
-
+    "unable_to_open" : "Unable to open update URL now. Please update manually!",
+    "take_picture" : "Take Picture",
+    "recharge_to_continue" : "Please Recharge to continue!",
     "apply_balance": "Apply Balance",
     "amount_applied": "Amount Applied: ",
     "wallet_amount": "Wallet Amount",

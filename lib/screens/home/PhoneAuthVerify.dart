@@ -231,7 +231,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
 
   _success() async {
     final SharedPreferences prefs = await _prefs;
-    prefs.setString("mobile_number", widget.number.toString());
+    prefs.setString("mobile_number", widget.number);
 
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(

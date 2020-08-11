@@ -217,7 +217,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
             children: <Widget>[
               Container(
                 child: Text(
-                  AppLocalizations.of(context).translate('alreay_account'),
+                  AppLocalizations.of(context).translate('already_account'),
                   style: TextStyle(
                     fontSize: 12,
                     fontFamily: 'Georgia',
@@ -307,11 +307,9 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
         Navigator.pop(context);
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
-        print(AppLocalizations.of(context).translate('unable_to_register') +
-            result['message']);
       } else {
         final SharedPreferences prefs = await _prefs;
-        prefs.setString("mobile_number", number.toString());
+        prefs.setString("mobile_number", number);
 
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(

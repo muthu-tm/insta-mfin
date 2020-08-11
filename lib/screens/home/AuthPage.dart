@@ -50,12 +50,18 @@ class _AuthPageState extends State<AuthPage> {
                         User(int.parse(snapshot.data)).getByID(snapshot.data),
                     builder: (BuildContext context,
                         AsyncSnapshot<Map<String, dynamic>> userSnapshot) {
-                      if (userSnapshot.hasData) {
-                        User _user = User.fromJson(userSnapshot.data);
-                        return SecretKeyAuth(_user, _scaffoldKey);
+                      if (userSnapshot.connectionState ==
+                          ConnectionState.done) {
+                        if (userSnapshot.data == null) {
+                          return LoginPage(false, _scaffoldKey);
+                        } else {
+                          User _user = User.fromJson(userSnapshot.data);
+                          return SecretKeyAuth(_user, _scaffoldKey);
+                        }
                       } else if (userSnapshot.hasError) {
                         return LoginPage(false, _scaffoldKey);
-                      } else {
+                      } else if (userSnapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return Container(
                           height: MediaQuery.of(context).size.height,
                           child: Column(
@@ -93,6 +99,8 @@ class _AuthPageState extends State<AuthPage> {
                             ],
                           ),
                         );
+                      } else {
+                        return LoginPage(false, _scaffoldKey);
                       }
                     },
                   );
@@ -101,7 +109,7 @@ class _AuthPageState extends State<AuthPage> {
                 }
               } else if (snapshot.hasError) {
                 return LoginPage(false, _scaffoldKey);
-              } else {
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -109,6 +117,8 @@ class _AuthPageState extends State<AuthPage> {
                     children: AsyncWidgets.asyncWaiting(),
                   ),
                 );
+              } else {
+                return LoginPage(false, _scaffoldKey);
               }
             },
           ),

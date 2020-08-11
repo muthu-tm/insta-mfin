@@ -47,7 +47,6 @@ class _MyAppState extends State<MyApp> {
         this.locale = locale;
       });
     });
-    // this.locale = locale;
   }
 
   @override
