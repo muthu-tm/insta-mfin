@@ -29,6 +29,7 @@ dependencies:
   firebase_messaging: ^6.0.15
   firebase_analytics: ^5.0.11
   image_picker: ^0.6.4
+  image: ^2.1.14
   camera: ^0.5.8+2
   exif: ^1.0.3
   json_annotation: ^3.0.1
