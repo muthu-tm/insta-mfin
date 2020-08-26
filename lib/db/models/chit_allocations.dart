@@ -3,7 +3,7 @@ import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/chit_allocation_details.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/model.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'chit_allocations.g.dart';
@@ -82,8 +82,8 @@ class ChitAllocations {
       _$ChitAllocationsFromJson(json);
   Map<String, dynamic> toJson() => _$ChitAllocationsToJson(this);
 
-  CollectionReference getCollectionRef(String financeId, String branchName,
-      String subBranchName, int chitID) {
+  CollectionReference getCollectionRef(
+      String financeId, String branchName, String subBranchName, int chitID) {
     return ChitFund()
         .getDocumentReference(financeId, branchName, subBranchName, chitID)
         .collection("chit_allocations");
@@ -118,8 +118,8 @@ class ChitAllocations {
     }
   }
 
-  Stream<QuerySnapshot> streamChitAllocations(String financeID,
-      String branchName, String subBranchName, int chitID) {
+  Stream<QuerySnapshot> streamChitAllocations(
+      String financeID, String branchName, String subBranchName, int chitID) {
     return getCollectionRef(financeID, branchName, subBranchName, chitID)
         .snapshots();
   }
@@ -225,8 +225,7 @@ class ChitAllocations {
     }
 
     try {
-      DocumentReference finDocRef =
-          UserController().getCurrentUser().getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
 
       await Model.db.runTransaction(
         (tx) {

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/expense_category.dart';
 import 'package:instamfin/db/models/expense.dart';
-import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class EditExpense extends StatefulWidget {
   EditExpense(this.expense);
@@ -94,7 +93,8 @@ class _EditExpenseState extends State<EditExpense> {
                   keyboardType: TextInputType.text,
                   initialValue: widget.expense.expenseName,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate("expense_name"),
+                    hintText:
+                        AppLocalizations.of(context).translate("expense_name"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -128,7 +128,8 @@ class _EditExpenseState extends State<EditExpense> {
                   keyboardType: TextInputType.number,
                   initialValue: widget.expense.amount.toString(),
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate("expense_amount"),
+                    hintText: AppLocalizations.of(context)
+                        .translate("expense_amount"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -166,7 +167,8 @@ class _EditExpenseState extends State<EditExpense> {
                       controller: _date,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context).translate("spend_on"),
+                        hintText:
+                            AppLocalizations.of(context).translate("spend_on"),
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -231,7 +233,8 @@ class _EditExpenseState extends State<EditExpense> {
                   initialValue: widget.expense.notes,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).translate("short_notes_about_expense"),
+                    hintText: AppLocalizations.of(context)
+                        .translate("short_notes_about_expense"),
                     labelStyle: TextStyle(
                       color: CustomColors.mfinBlue,
                     ),
@@ -256,10 +259,11 @@ class _EditExpenseState extends State<EditExpense> {
 
   Future getCategoryData() async {
     try {
-      UserPrimary _primary = UserController().getUserPrimary();
       CategoryController _cc = CategoryController();
       List<ExpenseCategory> categories = await _cc.getAllExpenseCategory(
-          _primary.financeID, _primary.branchName, _primary.subBranchName);
+          cachedLocalUser.primary.financeID,
+          cachedLocalUser.primary.branchName,
+          cachedLocalUser.primary.subBranchName);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
         if (widget.expense.category != null &&

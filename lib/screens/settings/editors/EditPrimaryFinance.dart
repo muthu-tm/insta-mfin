@@ -13,12 +13,9 @@ import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class EditPrimaryFinance extends StatefulWidget {
-  EditPrimaryFinance(this.userID);
-
-  final int userID;
-
   @override
   _EditPrimaryFinanceState createState() => _EditPrimaryFinanceState();
 }
@@ -37,7 +34,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Finance>>(
-      future: financeController.getFinanceByUserID(widget.userID),
+      future: financeController.getFinanceByUserID(cachedLocalUser.getIntID()),
       builder: (BuildContext context, AsyncSnapshot<List<Finance>> snapshot) {
         Container container;
         if (snapshot.hasData) {
@@ -218,8 +215,8 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
   onFinanceDropdownItem(String financeID) async {
     BranchController _branchController = BranchController();
 
-    List<Branch> branches =
-        await _branchController.getBranchesForUserID(financeID, widget.userID);
+    List<Branch> branches = await _branchController.getBranchesForUserID(
+        financeID, cachedLocalUser.getIntID());
     Map<String, String> branchList = Map();
     if (branches.length > 0) {
       branches.forEach(
@@ -246,8 +243,9 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
   onBranchDropdownItem(String branchName) async {
     SubBranchController _subBranchController = SubBranchController();
 
-    List<SubBranch> subBranches = await _subBranchController
-        .getSubBranchesForUserID(_selectedFinance, branchName, widget.userID);
+    List<SubBranch> subBranches =
+        await _subBranchController.getSubBranchesForUserID(
+            _selectedFinance, branchName, cachedLocalUser.getIntID());
     Map<String, String> subBranchList = Map();
     if (subBranches.length > 0) {
       subBranches.forEach(
@@ -287,31 +285,32 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
       CustomDialogs.actionWaiting(context, "Validating Details!");
       try {
         if (_selectedSubBranch != "0") {
-          _updatePrimary(widget.userID, _selectedFinance, _selectedBranch,
-              _selectedSubBranch);
+          _updatePrimary(cachedLocalUser.getIntID(), _selectedFinance,
+              _selectedBranch, _selectedSubBranch);
         } else if (_selectedBranch != "0") {
           BranchController _bc = BranchController();
           bool isAdmin = await _bc.isUserAdmin(
-              _selectedFinance, _selectedBranch, widget.userID);
+              _selectedFinance, _selectedBranch, cachedLocalUser.getIntID());
           if (!isAdmin) {
             Navigator.pop(context);
             _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
                 "You cannot set $_selectedBranch as Primary; Because you are not an Admin of $_selectedBranch!",
                 3));
           } else {
-            _updatePrimary(
-                widget.userID, _selectedFinance, _selectedBranch, "");
+            _updatePrimary(cachedLocalUser.getIntID(), _selectedFinance,
+                _selectedBranch, "");
           }
         } else {
           bool isAdmin = await financeController.isUserAdmin(
-              _selectedFinance, widget.userID);
+              _selectedFinance, cachedLocalUser.getIntID());
           if (!isAdmin) {
             Navigator.pop(context);
             _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
                 "You cannot set $_selectedFinance as Primary; Because you are not an Admin of $_selectedFinance!",
                 3));
           } else {
-            _updatePrimary(widget.userID, _selectedFinance, "", "");
+            _updatePrimary(
+                cachedLocalUser.getIntID(), _selectedFinance, "", "");
           }
         }
       } catch (err) {
@@ -326,7 +325,7 @@ class _EditPrimaryFinanceState extends State<EditPrimaryFinance> {
   _updatePrimary(int userID, String financeID, String branchName,
       String subBranchName) async {
     Navigator.pop(context);
-    CustomDialogs.actionWaiting(context, "Updating Primary!");
+    CustomDialogs.actionWaiting(context, "Updating..");
     UserController _uc = UserController();
     await _uc.updatePrimaryFinance(financeID, branchName, subBranchName);
 

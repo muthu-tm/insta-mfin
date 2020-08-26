@@ -28,6 +28,8 @@ class PhoneAuthVerify extends StatefulWidget {
 class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
+  int countryCode = 91;
+
   final AuthController _authController = AuthController();
 
   double _height, _width, _fixedPadding;
@@ -84,10 +86,10 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
           Padding(
             padding: EdgeInsets.all(_fixedPadding),
             child: ClipRRect(
-                child: Image.asset(
-                  "images/icons/logo.png",
-                  height: 80,
-                ),
+              child: Image.asset(
+                "images/icons/logo.png",
+                height: 80,
+              ),
             ),
           ),
           Text('mFIN',
@@ -148,10 +150,10 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
           ),
           SizedBox(height: 32.0),
           RaisedButton(
-            elevation: 16.0,
+            elevation: 10.0,
             onPressed: signIn,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(5.0),
               child: Text(
                 AppLocalizations.of(context).translate('verify'),
                 style: TextStyle(
@@ -169,8 +171,10 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
 
   signIn() {
     if (code.length != 6) {
-      _scaffoldKey.currentState
-          .showSnackBar(CustomSnackBar.errorSnackBar(AppLocalizations.of(context).translate('invalid_otp'), 2));
+      _scaffoldKey.currentState.showSnackBar(
+        CustomSnackBar.errorSnackBar(
+            AppLocalizations.of(context).translate('invalid_otp'), 2),
+      );
     } else {
       CustomDialogs.actionWaiting(context, 'Verifying User');
       verifyOTPAndLogin(code.join());
@@ -187,6 +191,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
       if (widget.isRegister) {
         dynamic result = await _authController.registerWithMobileNumber(
             int.parse(widget.number),
+            countryCode,
             widget.passKey,
             widget.name,
             authResult.user.uid);
@@ -199,7 +204,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
         }
       } else {
         Map<String, dynamic> _uJSON =
-            await User(int.parse(widget.number)).getByID(widget.number);
+            await User().getByID(countryCode.toString() + widget.number);
         dynamic result =
             await _authController.signInWithMobileNumber(User.fromJson(_uJSON));
         if (!result['is_success']) {
@@ -212,8 +217,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
             await UserController().refreshUser(true);
           } catch (err) {
             _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-              AppLocalizations.of(context).translate('unable_to_login'),
-                2));
+                AppLocalizations.of(context).translate('unable_to_login'), 2));
             return;
           }
           await _success();
@@ -222,8 +226,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
     }).catchError((error) {
       Navigator.pop(context);
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-        AppLocalizations.of(context).translate('try_later'),
-          2));
+          AppLocalizations.of(context).translate('try_later'), 2));
       _scaffoldKey.currentState
           .showSnackBar(CustomSnackBar.errorSnackBar("${error.toString()}", 2));
     });
@@ -231,7 +234,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
 
   _success() async {
     final SharedPreferences prefs = await _prefs;
-    prefs.setString("mobile_number", widget.number);
+    prefs.setString("mobile_number", countryCode.toString() + widget.number);
 
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/RechargeAlertScreen.dart';
 import 'package:instamfin/screens/transaction/books/CollectionBookTab.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class CollectionBookHome extends StatefulWidget {
   @override
@@ -13,14 +12,14 @@ class CollectionBookHome extends StatefulWidget {
 
 class _CollectionBookHomeState extends State<CollectionBookHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   bool hasValidSubscription = true;
   @override
   void initState() {
     super.initState();
 
-    if (_user.financeSubscription < DateUtils.getUTCDateEpoch(DateTime.now())) {
+    if (cachedLocalUser.financeSubscription <
+        DateUtils.getUTCDateEpoch(DateTime.now())) {
       hasValidSubscription = false;
     }
   }

@@ -5,6 +5,7 @@ import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/chit_customers.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -50,8 +51,8 @@ class ChitFund extends Model {
   int profitAmount;
   @JsonKey(name: 'notes', defaultValue: '')
   String notes;
-  @JsonKey(name: 'published_by', nullable: true)
-  int publishedBy;
+  @JsonKey(name: 'added_by', nullable: true)
+  int addedBy;
   @JsonKey(name: 'created_at', nullable: true)
   DateTime createdAt;
   @JsonKey(name: 'updated_at', nullable: true)
@@ -99,8 +100,8 @@ class ChitFund extends Model {
     this.interestRate = iRate;
   }
 
-  setPublishedBy(int publishedBy) {
-    this.publishedBy = publishedBy;
+  setAddedBy(int addedBy) {
+    this.addedBy = addedBy;
   }
 
   setDatePublished(int date) {
@@ -160,10 +161,10 @@ class ChitFund extends Model {
   Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = user.primary.financeID;
-    this.branchName = user.primary.branchName;
-    this.subBranchName = user.primary.subBranchName;
-    this.publishedBy = user.mobileNumber;
+    this.financeID = cachedLocalUser.primary.financeID;
+    this.branchName = cachedLocalUser.primary.branchName;
+    this.subBranchName = cachedLocalUser.primary.subBranchName;
+    this.addedBy = cachedLocalUser.getIntID();
     this.id = createdAt.millisecondsSinceEpoch;
 
     try {
@@ -175,8 +176,11 @@ class ChitFund extends Model {
   }
 
   Future<ChitFund> getByChitID(int chitID) async {
-    DocumentSnapshot snap = await getDocumentReference(user.primary.financeID,
-            user.primary.branchName, user.primary.subBranchName, chitID)
+    DocumentSnapshot snap = await getDocumentReference(
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName,
+            chitID)
         .get();
 
     if (snap.exists) return ChitFund.fromJson(snap.data);
@@ -209,9 +213,10 @@ class ChitFund extends Model {
 
   Stream<QuerySnapshot> streamChits() {
     return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .orderBy('date_published', descending: true)
         .snapshots();
   }
@@ -222,9 +227,10 @@ class ChitFund extends Model {
     }
 
     var chitDocs = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('customers', arrayContains: number)
         .getDocuments();
 
@@ -240,9 +246,10 @@ class ChitFund extends Model {
 
   Stream<QuerySnapshot> streamAllByStatus(bool isClosed) {
     return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('is_closed', isEqualTo: isClosed)
         .snapshots();
   }
@@ -331,7 +338,7 @@ class ChitFund extends Model {
     try {
       int received = await getChitReceived();
       int allocated = await getChitAllocations();
-      DocumentReference finDocRef = user.getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
 
       await Model.db.runTransaction(
         (tx) {
@@ -384,8 +391,11 @@ class ChitFund extends Model {
   }
 
   Future removeChit(int id) async {
-    DocumentReference docRef = getDocumentReference(user.primary.financeID,
-        user.primary.branchName, user.primary.subBranchName, id);
+    DocumentReference docRef = getDocumentReference(
+        cachedLocalUser.primary.financeID,
+        cachedLocalUser.primary.branchName,
+        cachedLocalUser.primary.subBranchName,
+        id);
 
     try {
       QuerySnapshot snapshot =

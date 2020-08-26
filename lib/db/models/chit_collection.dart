@@ -3,8 +3,8 @@ import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/db/models/model.dart';
-import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'chit_collection.g.dart';
 
@@ -469,7 +469,7 @@ class ChitCollection {
     }
 
     try {
-      DocumentReference finDocRef = Payment().user.getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
 
       await Model.db.runTransaction(
         (tx) {

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/payment_template.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 import '../../app_localizations.dart';
 
@@ -24,7 +23,6 @@ class AddPayment extends StatefulWidget {
 class _AddPaymentState extends State<AddPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final User _user = UserController().getCurrentUser();
 
   String _selectedTempID = "0";
   String selectedCollectionModeID = "0";
@@ -87,10 +85,10 @@ class _AddPaymentState extends State<AddPayment> {
   void initState() {
     super.initState();
     this.getCollectionTemp();
-    givenBy = _user.name;
+    givenBy = cachedLocalUser.name;
     selectedCollectionModeID =
-        _user.accPreferences.collectionMode.toString() ?? '0';
-    collectionDays = _user.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
+        cachedLocalUser.accPreferences.collectionMode.toString() ?? '0';
+    collectionDays = cachedLocalUser.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
     totalAmountController.text = "0";
     principalAmountController.text = "0";
     docChargeController.text = '0';
@@ -566,18 +564,18 @@ class _AddPaymentState extends State<AddPayment> {
                           Flexible(
                             child: TextFormField(
                               controller:
-                                  _user.accPreferences.interestFromPrincipal
+                                  cachedLocalUser.accPreferences.interestFromPrincipal
                                       ? principalAmountController
                                       : totalAmountController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText:
-                                    _user.accPreferences.interestFromPrincipal
+                                    cachedLocalUser.accPreferences.interestFromPrincipal
                                         ? 'Loan Amount'
                                         : 'Total amount',
                                 labelText:
-                                    _user.accPreferences.interestFromPrincipal
+                                    cachedLocalUser.accPreferences.interestFromPrincipal
                                         ? 'Loan Amount'
                                         : 'Total amount',
                                 floatingLabelBehavior:
@@ -594,16 +592,16 @@ class _AddPaymentState extends State<AddPayment> {
                               ),
                               onChanged: (val) {
                                 double iAmount =
-                                    _user.accPreferences.interestRate > 0
+                                    cachedLocalUser.accPreferences.interestRate > 0
                                         ? (int.parse(val) ~/ 100) *
-                                            _user.accPreferences.interestRate
+                                            cachedLocalUser.accPreferences.interestRate
                                         : 0;
                                 int pAmount = int.parse(val) - iAmount.round();
                                 int tAmount = int.parse(val) + iAmount.round();
                                 setState(() {
                                   interestRateController.text =
                                       iAmount.round().toString();
-                                  _user.accPreferences.interestFromPrincipal
+                                  cachedLocalUser.accPreferences.interestFromPrincipal
                                       ? totalAmountController.text =
                                           tAmount.toString()
                                       : principalAmountController.text =
@@ -615,7 +613,7 @@ class _AddPaymentState extends State<AddPayment> {
                                     amount.trim() == "0") {
                                   return "Cannot be empty!";
                                 } else {
-                                  _user.accPreferences.interestFromPrincipal
+                                  cachedLocalUser.accPreferences.interestFromPrincipal
                                       ? this.principalAmount =
                                           int.parse(amount.trim())
                                       : this.totalAmount =
@@ -649,7 +647,7 @@ class _AddPaymentState extends State<AddPayment> {
                                         color: CustomColors.mfinWhite)),
                               ),
                               onChanged: (val) {
-                                if (_user
+                                if (cachedLocalUser
                                     .accPreferences.interestFromPrincipal) {
                                   int tAmount = int.parse(
                                               principalAmountController.text) >
@@ -695,18 +693,18 @@ class _AddPaymentState extends State<AddPayment> {
                           Flexible(
                             child: TextFormField(
                               controller:
-                                  _user.accPreferences.interestFromPrincipal
+                                  cachedLocalUser.accPreferences.interestFromPrincipal
                                       ? totalAmountController
                                       : principalAmountController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText:
-                                    _user.accPreferences.interestFromPrincipal
+                                    cachedLocalUser.accPreferences.interestFromPrincipal
                                         ? 'Total Amount'
                                         : 'Loan amount',
                                 labelText:
-                                    _user.accPreferences.interestFromPrincipal
+                                    cachedLocalUser.accPreferences.interestFromPrincipal
                                         ? 'Total Amount'
                                         : 'Loan amount',
                                 floatingLabelBehavior:
@@ -726,7 +724,7 @@ class _AddPaymentState extends State<AddPayment> {
                                     amount.trim() == "0") {
                                   return "Cannot be empty!";
                                 } else {
-                                  _user.accPreferences.interestFromPrincipal
+                                  cachedLocalUser.accPreferences.interestFromPrincipal
                                       ? this.totalAmount =
                                           int.parse(amount.trim())
                                       : this.principalAmount =

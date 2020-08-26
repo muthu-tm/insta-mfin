@@ -2,15 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/subscriptions.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class SubscriptionStatusWidget extends StatelessWidget {
-  final User _user = UserController().getCurrentUser();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -23,7 +21,7 @@ class SubscriptionStatusWidget extends StatelessWidget {
           for (int i = 0; i < snapshot.data.documents.length; i++) {
             Subscriptions _sub =
                 Subscriptions.fromJson(snapshot.data.documents[i].data);
-            if (_user.primary.financeID == _sub.financeID) {
+            if (cachedLocalUser.primary.financeID == _sub.financeID) {
               sub = _sub;
               break;
             }

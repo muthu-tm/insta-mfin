@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/AddressWidget.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -263,8 +264,12 @@ class _AddFinancePageState extends State<AddFinancePage> {
         _scaffoldKey.currentState
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
       } else {
-        Navigator.pop(context);
-        Navigator.pop(context);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => UserFinanceSetup(),
+          ),
+          (Route<dynamic> route) => false,
+        );
       }
     } else {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(

@@ -3,7 +3,7 @@ part of 'finance.dart';
 Finance _$FinanceFromJson(Map<String, dynamic> json) {
   return Finance()
     ..registrationID = json['registration_id'] as String
-    ..financeID = json['finance_id'] as int
+    ..financeID = json['finance_id'] as String
     ..financeName = json['finance_name'] as String
     ..contactNumber = json['contact_number'] as String
     ..emailID = json['email'] as String

@@ -5,6 +5,7 @@ import 'package:instamfin/db/models/collection_details.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'collection.g.dart';
 
@@ -279,7 +280,7 @@ class Collection {
           .document(docID);
 
       try {
-        DocumentReference finDocRef = Payment().user.getFinanceDocReference();
+        DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
 
         await Model.db.runTransaction(
           (tx) {
@@ -677,7 +678,7 @@ class Collection {
     }
 
     try {
-      DocumentReference finDocRef = Payment().user.getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
 
       await Model.db.runTransaction(
         (tx) {

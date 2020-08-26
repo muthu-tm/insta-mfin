@@ -2,12 +2,11 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -15,8 +14,6 @@ import '../../app_localizations.dart';
 
 class CollectionStatisticsWidget extends StatelessWidget {
   CollectionStatisticsWidget(this.type, this.mode, [this.fDate, this.tDate]);
-
-  final User user = UserController().getCurrentUser();
 
   final int type;
   final int mode;
@@ -29,9 +26,9 @@ class CollectionStatisticsWidget extends StatelessWidget {
       elevation: 5.0,
       child: FutureBuilder<List<Collection>>(
         future: CollectionController().getAllCollectionByDateRange(
-            user.primary.financeID,
-            user.primary.branchName,
-            user.primary.subBranchName,
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName,
             [0],
             fDate,
             tDate),

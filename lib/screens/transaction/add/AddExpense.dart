@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/expense_category.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class AddExpense extends StatefulWidget {
   @override
@@ -19,7 +18,6 @@ class _AddExpenseState extends State<AddExpense> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final User _user = UserController().getCurrentUser();
 
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {"0": "Choose Category"};
@@ -262,9 +260,9 @@ class _AddExpenseState extends State<AddExpense> {
     try {
       CategoryController _cc = CategoryController();
       List<ExpenseCategory> categories = await _cc.getAllExpenseCategory(
-          _user.primary.financeID,
-          _user.primary.branchName,
-          _user.primary.subBranchName);
+          cachedLocalUser.primary.financeID,
+          cachedLocalUser.primary.branchName,
+          cachedLocalUser.primary.subBranchName);
       for (int index = 0; index < categories.length; index++) {
         _categoriesMap[(index + 1).toString()] = categories[index].categoryName;
       }

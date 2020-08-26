@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 import '../../app_localizations.dart';
 
@@ -23,7 +22,6 @@ class AddCollection extends StatefulWidget {
 class _AddCollectionState extends State<AddCollection> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final User _user = UserController().getCurrentUser();
 
   TextEditingController _cNumberController = new TextEditingController();
   TextEditingController _cAmountController = new TextEditingController();
@@ -726,12 +724,12 @@ class _AddCollectionState extends State<AddCollection> {
         if (cAmount >= collAmount) isPaid = true;
         collDetails['amount'] = cAmount;
         collDetails['collected_from'] = widget.payment.custName;
-        collDetails['collected_by'] = _user.name;
+        collDetails['collected_by'] = cachedLocalUser.name;
         collDetails['notes'] = "";
         collDetails['penalty_amount'] = penaltyAmount;
         collDetails['collected_on'] = collectedDate;
         collDetails['transferred_mode'] = 0;
-        collDetails['added_by'] = _user.mobileNumber;
+        collDetails['added_by'] = cachedLocalUser.getIntID();
         collDetails['is_paid_late'] = isLatePay;
       }
 

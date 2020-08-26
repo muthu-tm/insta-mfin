@@ -20,6 +20,8 @@ class MobileSignInPage extends StatefulWidget {
 
 class _MobileSignInPageState extends State<MobileSignInPage> {
   String number, _smsVerificationCode;
+  int countryCode = 91;
+
   bool _passwordVisible = true;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -219,7 +221,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 child: Text(
                   AppLocalizations.of(context).translate('already_account'),
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontFamily: 'Georgia',
                     color: CustomColors.mfinPositiveGreen,
                   ),
@@ -231,7 +233,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                   AppLocalizations.of(context).translate('login'),
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: CustomColors.mfinBlue,
                   ),
@@ -260,11 +262,11 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
           context, AppLocalizations.of(context).translate('checking_user'));
       this.number = _phoneNumberController.text;
 
-      var data = await User(int.parse(number)).getByID(number);
+      var data = await User().getByID(countryCode.toString() + number);
       if (data != null) {
         Analytics.reportError({
           "type": 'sign_up_error',
-          "user_id": number,
+          "user_id": countryCode.toString() + number,
           'name': _nameController.text,
           'error': "Found an existing user for this mobile number"
         }, 'sign_up');
@@ -300,6 +302,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
         .then((AuthResult authResult) async {
       dynamic result = await _authController.registerWithMobileNumber(
           int.parse(number),
+          countryCode,
           _passKeyController.text,
           _nameController.text,
           authResult.user.uid);

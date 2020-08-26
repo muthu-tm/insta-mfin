@@ -1,3 +1,4 @@
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'address.g.dart';
 

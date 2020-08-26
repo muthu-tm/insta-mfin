@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
 import 'package:instamfin/db/models/model.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'chit_template.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ChitTemplate extends Model {
-  UserController _uc = UserController();
-
   @JsonKey(name: 'template_name', nullable: true)
   String name;
   @JsonKey(name: 'finance_id', nullable: true)
@@ -70,11 +68,11 @@ class ChitTemplate extends Model {
   setCollectionDay(int cDay) {
     this.collectionDay = cDay;
   }
-  
+
   setType(String type) {
     this.type = type;
   }
-  
+
   setFundDetails(List<ChitFundDetails> fundDetails) {
     this.fundDetails = fundDetails;
   }
@@ -106,7 +104,7 @@ class ChitTemplate extends Model {
   Map<String, dynamic> toJson() => _$ChitTemplateToJson(this);
 
   DocumentReference getCurrentFinanceRef() {
-    return _uc.getCurrentUser().getFinanceDocReference();
+    return cachedLocalUser.getFinanceDocReference();
   }
 
   CollectionReference getCollectionRef() {
@@ -128,9 +126,9 @@ class ChitTemplate extends Model {
   Future createTemplate() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = user.primary.financeID;
-    this.branchName = user.primary.branchName;
-    this.subBranchName = user.primary.subBranchName;
+    this.financeID = cachedLocalUser.primary.financeID;
+    this.branchName = cachedLocalUser.primary.branchName;
+    this.subBranchName = cachedLocalUser.primary.subBranchName;
     try {
       await getCollectionRef().document(getDocumentID()).setData(this.toJson());
     } catch (err) {
@@ -141,28 +139,30 @@ class ChitTemplate extends Model {
 
   Stream<QuerySnapshot> streamChitTemplates() {
     return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .snapshots();
   }
-  
+
   Future<List<ChitTemplate>> getAllChitTemplates() async {
     QuerySnapshot snap = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .getDocuments();
-      
-      List<ChitTemplate> temps = [];
 
-      if (snap.documents.isNotEmpty) {
-        snap.documents.forEach((tempData) {
-          temps.add(ChitTemplate.fromJson(tempData.data));
-        });
-      }
+    List<ChitTemplate> temps = [];
 
-      return temps;
+    if (snap.documents.isNotEmpty) {
+      snap.documents.forEach((tempData) {
+        temps.add(ChitTemplate.fromJson(tempData.data));
+      });
+    }
+
+    return temps;
   }
 
   Future<ChitTemplate> getTemplateByID(String tempID) async {

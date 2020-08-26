@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -87,10 +88,10 @@ class JournalCategory extends Model {
   Future<JournalCategory> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = user.primary.financeID;
-    this.branchName = user.primary.branchName;
-    this.subBranchName = user.primary.subBranchName;
-    this.addedBy = user.mobileNumber;
+    this.financeID = cachedLocalUser.primary.financeID;
+    this.branchName = cachedLocalUser.primary.branchName;
+    this.subBranchName = cachedLocalUser.primary.subBranchName;
+    this.addedBy = cachedLocalUser.getIntID();
 
     await super.add(this.toJson());
 

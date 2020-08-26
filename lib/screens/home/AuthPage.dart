@@ -46,8 +46,7 @@ class _AuthPageState extends State<AuthPage> {
               if (snapshot.hasData) {
                 if (snapshot.data != '') {
                   return FutureBuilder<Map<String, dynamic>>(
-                    future:
-                        User(int.parse(snapshot.data)).getByID(snapshot.data),
+                    future: User().getByID(snapshot.data),
                     builder: (BuildContext context,
                         AsyncSnapshot<Map<String, dynamic>> userSnapshot) {
                       if (userSnapshot.connectionState ==
@@ -431,7 +430,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
       return;
     } else {
       String hashKey = HashGenerator.hmacGenerator(
-          _pController.text, _user.mobileNumber.toString());
+          _pController.text, _user.getID());
       if (hashKey != _user.password) {
         widget._scaffoldKey.currentState.showSnackBar(
             CustomSnackBar.errorSnackBar(

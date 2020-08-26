@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/address.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/RowHeaderText.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../main.dart';
 
@@ -18,7 +18,6 @@ class SettingsPreferences extends StatefulWidget {
 
 class _SettingsPreferencesState extends State<SettingsPreferences> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   var transctionGroupValue = 0;
   List<bool> isSelectedAuth = [false, true];
@@ -65,31 +64,31 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   void initState() {
     super.initState();
     this.setAccountDetails();
-    this.transctionGroupValue = _user.preferences.transactionGroupBy;
-    this._selectedLang = _user.preferences.prefLanguage;
-    if (_user.preferences.isfingerAuthEnabled) {
+    this.transctionGroupValue = cachedLocalUser.preferences.transactionGroupBy;
+    this._selectedLang = cachedLocalUser.preferences.prefLanguage;
+    if (cachedLocalUser.preferences.isfingerAuthEnabled) {
       isSelectedAuth = [true, false];
     }
-    this.chitEnabled = _user.accPreferences.chitEnabled;
-    this.isFromPrincipal = _user.accPreferences.interestFromPrincipal;
-    this.userPreferencesJSON = _user.preferences.toJson();
+    this.chitEnabled = cachedLocalUser.accPreferences.chitEnabled;
+    this.isFromPrincipal = cachedLocalUser.accPreferences.interestFromPrincipal;
+    this.userPreferencesJSON = cachedLocalUser.preferences.toJson();
     this.intrestRateController.text =
-        _user.accPreferences.interestRate.toString() ?? '0.00';
+        cachedLocalUser.accPreferences.interestRate.toString() ?? '0.00';
     this.selectedCollectionModeID =
-        _user.accPreferences.collectionMode.toString() ?? '0';
+        cachedLocalUser.accPreferences.collectionMode.toString() ?? '0';
     this.collectionDays =
-        _user.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
+        cachedLocalUser.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
   }
 
   Future setAccountDetails() async {
     try {
       Map<String, dynamic> data =
-          (await _user.getFinanceDocReference().get()).data;
+          (await cachedLocalUser.getFinanceDocReference().get()).data;
 
       this.accountPreferencesJSON = data['preferences'];
-      if (_user.accPreferences.reportSignature != null &&
-          _user.accPreferences.reportSignature != "")
-        _textEditingController.text = _user.accPreferences.reportSignature;
+      if (cachedLocalUser.accPreferences.reportSignature != null &&
+          cachedLocalUser.accPreferences.reportSignature != "")
+        _textEditingController.text = cachedLocalUser.accPreferences.reportSignature;
       else {
         Address add = Address.fromJson(data['address']);
         _textEditingController.text = add.toString();

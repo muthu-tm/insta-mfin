@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/transaction/books/PaymentListWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class PaymentsBook extends StatelessWidget {
-  final int groupPref =
-      UserController().getCurrentUser().preferences.transactionGroupBy;
+  final int groupPref = cachedLocalUser.preferences.transactionGroupBy;
 
   @override
   Widget build(BuildContext context) {

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_allocation_details.dart';
 import 'package:instamfin/db/models/chit_allocations.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/chit/chit_allocation_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 import '../../app_localizations.dart';
 
@@ -25,7 +24,6 @@ class AddChitAllocation extends StatefulWidget {
 class _AddChitAllocationState extends State<AddChitAllocation> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final User _user = UserController().getCurrentUser();
 
   ChitAllocationDetails allocDetails = ChitAllocationDetails();
 
@@ -46,7 +44,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
   void initState() {
     super.initState();
     this._date.text = DateUtils.formatDate(DateTime.now());
-    this.givenBy = _user.name;
+    this.givenBy = cachedLocalUser.name;
     this.amount =
         widget.chitAlloc.allocationAmount - widget.chitAlloc.getTotalPaid();
   }
@@ -85,7 +83,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: new Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -404,7 +402,7 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
         if (amount + widget.chitAlloc.getTotalPaid() >=
             widget.fund.allocationAmount) isPaid = true;
 
-        allocDetails.addedBy = _user.mobileNumber;
+        allocDetails.addedBy = cachedLocalUser.getIntID();
         allocDetails.amount = amount;
         allocDetails.createdAt = DateTime.now();
         allocDetails.givenBy = givenBy;

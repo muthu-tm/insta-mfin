@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/finance.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceBranchWidget.dart';
 import 'package:instamfin/screens/settings/widgets/FinanceProfileWidget.dart';
@@ -12,6 +11,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class FinanceSetting extends StatefulWidget {
   @override
@@ -21,7 +21,6 @@ class FinanceSetting extends StatefulWidget {
 class _FinanceSettingState extends State<FinanceSetting> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TextEditingController _pController = TextEditingController();
-  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +57,9 @@ class _FinanceSettingState extends State<FinanceSetting> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              FinanceProfileWidget(_user.primary.financeID),
-              FinanceBranchWidget(_user.primary.financeID),
-              FinanceUsersWidget(_user.primary.financeID),
+              FinanceProfileWidget(cachedLocalUser.primary.financeID),
+              FinanceBranchWidget(cachedLocalUser.primary.financeID),
+              FinanceUsersWidget(cachedLocalUser.primary.financeID),
               Padding(padding: EdgeInsets.only(top: 35, bottom: 35))
             ],
           ),
@@ -133,11 +132,11 @@ class _FinanceSettingState extends State<FinanceSetting> {
 
                 if (isValid) {
                   try {
-                    Map<String, dynamic> finDoc =
-                        await Finance().getByID(_user.primary.financeID);
+                    Map<String, dynamic> finDoc = await Finance()
+                        .getByID(cachedLocalUser.primary.financeID);
                     if (finDoc != null) {
                       Finance fin = Finance.fromJson(finDoc);
-                      if (!fin.admins.contains(_user.mobileNumber)) {
+                      if (!fin.admins.contains(cachedLocalUser.getIntID())) {
                         Navigator.pop(context);
                         _scaffoldKey.currentState.showSnackBar(
                           CustomSnackBar.errorSnackBar(
@@ -163,7 +162,7 @@ class _FinanceSettingState extends State<FinanceSetting> {
                       'is_active': false,
                       'deactivated_at':
                           DateUtils.getUTCDateEpoch(DateTime.now())
-                    }, _user.primary.financeID);
+                    }, cachedLocalUser.primary.financeID);
                     await UserController().refreshUser(true);
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(

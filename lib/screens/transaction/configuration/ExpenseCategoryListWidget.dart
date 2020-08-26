@@ -2,27 +2,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/expense_category.dart';
-import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/transaction/edit/EditExpenseCategory.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/category_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class ExpenseCategoryListWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   ExpenseCategoryListWidget(this._scaffoldKey);
 
-  final UserPrimary _primary = UserController().getUserPrimary();
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: ExpenseCategory().streamCategories(
-            _primary.financeID, _primary.branchName, _primary.subBranchName),
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           List<Widget> children;
 
@@ -171,7 +170,8 @@ class ExpenseCategoryListWidget extends StatelessWidget {
                       flex: 2,
                     ),
                     Text(
-                      AppLocalizations.of(context).translate("add_your_category"),
+                      AppLocalizations.of(context)
+                          .translate("add_your_category"),
                       style: TextStyle(
                         color: CustomColors.mfinBlue,
                         fontSize: 18.0,

@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'payment_template.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PaymentTemplate {
-  UserController _uc = UserController();
 
   @JsonKey(name: 'template_name', nullable: true)
   String name;
@@ -94,7 +93,7 @@ class PaymentTemplate {
   Map<String, dynamic> toJson() => _$PaymentTemplateToJson(this);
 
   DocumentReference getCurrentFinanceRef() {
-    return _uc.getCurrentUser().getFinanceDocReference();
+    return cachedLocalUser.getFinanceDocReference();
   }
 
   CollectionReference getCollectionRef() {
@@ -110,7 +109,7 @@ class PaymentTemplate {
   }
 
   Future createTemplate() async {
-    this.addedBy = _uc.getCurrentUser().mobileNumber;
+    this.addedBy = cachedLocalUser.getIntID();
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
 

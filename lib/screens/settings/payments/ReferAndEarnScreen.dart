@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:instamfin/app_localizations.dart';
 
@@ -18,7 +17,6 @@ class ReferAndEarnScreen extends StatefulWidget {
 
 class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   TextEditingController _textEditingController = TextEditingController();
   bool isReadOnly = false;
@@ -26,11 +24,13 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
   @override
   void initState() {
     super.initState();
-    int expiredAt = DateUtils.getUTCDateEpoch(_user.createdAt) + (7 * 86400000);
+    int expiredAt =
+        DateUtils.getUTCDateEpoch(cachedLocalUser.createdAt) + (7 * 86400000);
 
-    _textEditingController.text =
-        _user.referrerNumber != null ? _user.referrerNumber.toString() : "";
-    if (_user.referrerNumber != null ||
+    _textEditingController.text = cachedLocalUser.referrerNumber != null
+        ? cachedLocalUser.referrerNumber.toString()
+        : "";
+    if (cachedLocalUser.referrerNumber != null ||
         (DateUtils.getUTCDateEpoch(DateTime.now()) >= expiredAt))
       isReadOnly = true;
   }
@@ -99,7 +99,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
             padding: EdgeInsets.all(10),
             child: TextFormField(
               readOnly: true,
-              initialValue: _user.mobileNumber.toString(),
+              initialValue: cachedLocalUser.mobileNumber.toString(),
               textAlign: TextAlign.start,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -130,7 +130,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
             shaderCallback: (bounds) => LinearGradient(
               colors: [
                 CustomColors.mfinLightGrey,
-                CustomColors.mfinAlertRed,
+                CustomColors.mfinAlertRed.withRed(220),
               ],
             ).createShader(
               Rect.fromLTWH(0, 0, bounds.width, bounds.height),
@@ -139,10 +139,9 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
               "Refer 'mFIN' with your friends and Earn Rs.$amount instantly",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: CustomColors.mfinWhite,
-                fontSize: 18,
-                fontFamily: "Georgia"
-              ),
+                  color: CustomColors.mfinWhite,
+                  fontSize: 18,
+                  fontFamily: "Georgia"),
             ),
           );
         } else if (snapshot.hasError) {
@@ -163,7 +162,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
           child: Container(
               height: 100,
               alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery.of(context).size.width * 0.9,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(10.0),
@@ -226,7 +225,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                           int.tryParse(_textEditingController.text) != null) {
                         try {
                           int number = int.parse(_textEditingController.text);
-                          if (number == _user.mobileNumber) {
+                          if (number == cachedLocalUser.mobileNumber) {
                             _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
                                     "Your own code cannot be applied!", 2));
@@ -239,7 +238,8 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                                 await SharedPreferences.getInstance();
 
                             int rBonus = sPref.getInt('referral_bonus') ?? 25;
-                            await _user.updateReferralCode(number, rBonus);
+                            await cachedLocalUser.updateReferralCode(
+                                number, rBonus);
                             Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.successSnackBar(
@@ -264,7 +264,8 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                                 "Please Enter valid referral code!", 2));
                       }
                     },
-                    label: Text(AppLocalizations.of(context).translate('apply_referal_code')),
+                    label: Text(AppLocalizations.of(context)
+                        .translate('apply_referal_code')),
                     icon: Icon(Icons.card_giftcard),
                   ),
                 )

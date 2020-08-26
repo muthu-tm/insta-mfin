@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/expense.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/transaction/add/AddExpense.dart';
 import 'package:instamfin/screens/transaction/edit/EditExpense.dart';
@@ -13,6 +12,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/app_localizations.dart';
 
@@ -24,8 +24,6 @@ class ExpenseHome extends StatefulWidget {
 class _ExpenseHomeState extends State<ExpenseHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  final User _user = UserController().getCurrentUser();
-
   DateTime _selectedFrom = DateTime.now();
   TextEditingController _fromDate = new TextEditingController();
   DateTime _selectedTo = DateTime.now();
@@ -34,9 +32,9 @@ class _ExpenseHomeState extends State<ExpenseHome> {
   @override
   void initState() {
     super.initState();
-    _user.preferences.transactionGroupBy == 0
+    cachedLocalUser.preferences.transactionGroupBy == 0
         ? _selectedFrom = DateTime.now()
-        : _user.preferences.transactionGroupBy == 1
+        : cachedLocalUser.preferences.transactionGroupBy == 1
             ? _selectedFrom =
                 DateTime.now().subtract(Duration(days: DateTime.now().weekday))
             : _selectedFrom = DateTime(
@@ -76,19 +74,21 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ListTile(
-                          title: Text(AppLocalizations.of(context).translate("add_expense")),
+                          title: Text(AppLocalizations.of(context)
+                              .translate("add_expense")),
                           leading: Icon(
                             Icons.monetization_on,
                             color: CustomColors.mfinBlue,
                           ),
                           onTap: () {
-                            if (_user.financeSubscription <
+                            if (cachedLocalUser.financeSubscription <
                                     DateUtils.getUTCDateEpoch(DateTime.now()) &&
-                                _user.chitSubscription <
+                                cachedLocalUser.chitSubscription <
                                     DateUtils.getUTCDateEpoch(DateTime.now())) {
                               _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
-                                      AppLocalizations.of(context).translate("subscription_expired"),
+                                      AppLocalizations.of(context)
+                                          .translate("subscription_expired"),
                                       3));
                               return;
                             }
@@ -218,119 +218,120 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                 ],
               ),
             ),
-            Card(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: Expense().streamExpensesByDateRange(
-                    DateUtils.getUTCDateEpoch(_selectedFrom),
-                    DateUtils.getUTCDateEpoch(_selectedTo)),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  Widget widget;
+            StreamBuilder<QuerySnapshot>(
+              stream: Expense().streamExpensesByDateRange(
+                  DateUtils.getUTCDateEpoch(_selectedFrom),
+                  DateUtils.getUTCDateEpoch(_selectedTo)),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                Widget widget;
 
-                  if (snapshot.hasData) {
-                    if (snapshot.data.documents.isNotEmpty) {
-                      widget = ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: snapshot.data.documents.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          String categoryName = "";
+                if (snapshot.hasData) {
+                  if (snapshot.data.documents.isNotEmpty) {
+                    widget = ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        String categoryName = "";
 
-                          if (snapshot.data.documents[index].data['category'] !=
-                              null) {
-                            categoryName = snapshot.data.documents[index]
-                                .data['category']['category_name'];
-                          }
+                        if (snapshot.data.documents[index].data['category'] !=
+                            null) {
+                          categoryName = snapshot.data.documents[index]
+                              .data['category']['category_name'];
+                        }
 
-                          Color cardColor = CustomColors.mfinGrey;
-                          Color textColor = CustomColors.mfinBlue;
-                          if (index % 2 == 0) {
-                            cardColor = CustomColors.mfinBlue;
-                            textColor = CustomColors.mfinGrey;
-                          }
-                          return SimpleFoldingCell(
-                            frontWidget: _buildFrontWidget(
-                                context,
-                                snapshot.data.documents[index].data,
-                                cardColor,
-                                textColor),
-                            innerTopWidget: _buildInnerTopWidget(
-                                snapshot
-                                    .data.documents[index].data['expense_name'],
-                                snapshot.data.documents[index].data['amount']),
-                            innerBottomWidget: _buildInnerBottomWidget(
-                                snapshot.data.documents[index].data['notes'],
-                                DateTime.fromMillisecondsSinceEpoch(snapshot
-                                    .data
-                                    .documents[index]
-                                    .data['expense_date']),
-                                categoryName),
-                            cellSize:
-                                Size(MediaQuery.of(context).size.width, 170),
-                            padding: EdgeInsets.only(
-                                left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
-                            animationDuration: Duration(milliseconds: 300),
-                            borderRadius: 10,
-                          );
-                        },
-                      );
-                    } else {
-                      // No Expenses added yet
-                      widget = Container(
-                        alignment: Alignment.center,
-                        height: 90,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            new Spacer(),
-                            Text(
-                              AppLocalizations.of(context).translate("no_expense_so_far"),
-                              style: TextStyle(
-                                color: CustomColors.mfinAlertRed,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            new Spacer(
-                              flex: 2,
-                            ),
-                            Text(
-                              AppLocalizations.of(context).translate("add_manage_expense"),
-                              style: TextStyle(
-                                color: CustomColors.mfinBlue,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            new Spacer(),
-                          ],
-                        ),
-                      );
-                    }
-                  } else if (snapshot.hasError) {
-                    widget = Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: AsyncWidgets.asyncError(),
-                      ),
+                        Color cardColor = CustomColors.mfinGrey;
+                        Color textColor = CustomColors.mfinBlue;
+                        if (index % 2 == 0) {
+                          cardColor = CustomColors.mfinBlue;
+                          textColor = CustomColors.mfinGrey;
+                        }
+                        return SimpleFoldingCell(
+                          frontWidget: _buildFrontWidget(
+                              context,
+                              snapshot.data.documents[index].data,
+                              cardColor,
+                              textColor),
+                          innerTopWidget: _buildInnerTopWidget(
+                              snapshot
+                                  .data.documents[index].data['expense_name'],
+                              snapshot.data.documents[index].data['amount']),
+                          innerBottomWidget: _buildInnerBottomWidget(
+                              snapshot.data.documents[index].data['notes'],
+                              DateTime.fromMillisecondsSinceEpoch(snapshot
+                                  .data.documents[index].data['expense_date']),
+                              categoryName),
+                          cellSize:
+                              Size(MediaQuery.of(context).size.width, 170),
+                          padding: EdgeInsets.only(
+                              left: 15.0, top: 5.0, right: 15.0, bottom: 5.0),
+                          animationDuration: Duration(milliseconds: 300),
+                          borderRadius: 10,
+                        );
+                      },
                     );
                   } else {
-                    widget = Center(
+                    // No Expenses added yet
+                    widget = Container(
+                      alignment: Alignment.center,
+                      height: 90,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: AsyncWidgets.asyncWaiting(),
+                        children: <Widget>[
+                          new Spacer(),
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate("no_expense_so_far"),
+                            style: TextStyle(
+                              color: CustomColors.mfinAlertRed,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          new Spacer(
+                            flex: 2,
+                          ),
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate("add_manage_expense"),
+                            style: TextStyle(
+                              color: CustomColors.mfinBlue,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          new Spacer(),
+                        ],
                       ),
                     );
                   }
+                } else if (snapshot.hasError) {
+                  widget = Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: AsyncWidgets.asyncError(),
+                    ),
+                  );
+                } else {
+                  widget = Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: AsyncWidgets.asyncWaiting(),
+                    ),
+                  );
+                }
 
-                  return widget;
-                },
-              ),
+                return widget;
+              },
+            ),
+            Padding(
+              padding: EdgeInsets.all(40),
             ),
           ],
         ),

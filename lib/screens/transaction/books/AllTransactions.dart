@@ -4,7 +4,6 @@ import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/chit/ViewChitCollectionDetails.dart';
 import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/customer/ViewPayment.dart';
@@ -16,13 +15,11 @@ import 'package:instamfin/services/controllers/transaction/Journal_controller.da
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class AllTransactionsBuilder extends StatelessWidget {
   AllTransactionsBuilder(this.byRange, this.startDate, this.endDate);
-
-  final User _user = UserController().getCurrentUser();
 
   final bool byRange;
   final DateTime startDate;
@@ -85,7 +82,7 @@ class AllTransactionsBuilder extends StatelessWidget {
             ),
           ),
         ),
-        _user.accPreferences.chitEnabled ? getChits() : Container(),
+        cachedLocalUser.accPreferences.chitEnabled ? getChits() : Container(),
         Divider(),
         ListTile(
           leading: Icon(
@@ -171,7 +168,8 @@ class AllTransactionsBuilder extends StatelessWidget {
                             height: 25,
                             child: ListTile(
                               leading: Text(
-                                AppLocalizations.of(context).translate("customer"),
+                                AppLocalizations.of(context)
+                                    .translate("customer"),
                                 style: TextStyle(
                                   fontSize: 17,
                                   color: CustomColors.mfinBlue,
@@ -192,7 +190,8 @@ class AllTransactionsBuilder extends StatelessWidget {
                             height: 25,
                             child: ListTile(
                               leading: Text(
-                                AppLocalizations.of(context).translate("payment_id"),
+                                AppLocalizations.of(context)
+                                    .translate("payment_id"),
                                 style: TextStyle(
                                   fontSize: 17,
                                   color: CustomColors.mfinBlue,
@@ -213,7 +212,8 @@ class AllTransactionsBuilder extends StatelessWidget {
                             height: 25,
                             child: ListTile(
                               leading: Text(
-                                AppLocalizations.of(context).translate("collection"),
+                                AppLocalizations.of(context)
+                                    .translate("collection"),
                                 style: TextStyle(
                                   fontSize: 17,
                                   color: CustomColors.mfinBlue,
@@ -294,16 +294,16 @@ class AllTransactionsBuilder extends StatelessWidget {
     return FutureBuilder<List<Collection>>(
       future: byRange
           ? CollectionController().getAllCollectionByDateRange(
-              _user.primary.financeID,
-              _user.primary.branchName,
-              _user.primary.subBranchName,
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
               [0, 1, 2, 3, 4, 5],
               startDate,
               endDate)
           : Collection().getAllCollectionDetailsByDateRange(
-              _user.primary.financeID,
-              _user.primary.branchName,
-              _user.primary.subBranchName,
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
               [DateUtils.getUTCDateEpoch(startDate)],
               [0, 1, 2, 3, 4, 5]),
       builder:
@@ -489,15 +489,15 @@ class AllTransactionsBuilder extends StatelessWidget {
     return FutureBuilder<List<ChitCollection>>(
       future: byRange
           ? ChitController().getAllChitsByDateRange(
-              _user.primary.financeID,
-              _user.primary.branchName,
-              _user.primary.subBranchName,
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
               startDate,
               endDate)
           : ChitCollection().getAllCollectionDetailsByDateRange(
-              _user.primary.financeID,
-              _user.primary.branchName,
-              _user.primary.subBranchName,
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
               [DateUtils.getUTCDateEpoch(startDate)]),
       builder:
           (BuildContext context, AsyncSnapshot<List<ChitCollection>> snapshot) {
@@ -678,13 +678,16 @@ class AllTransactionsBuilder extends StatelessWidget {
     return FutureBuilder<List<Journal>>(
       future: byRange
           ? _jc.getAllJournalByDateRange(
-              _user.primary.financeID,
-              _user.primary.branchName,
-              _user.primary.subBranchName,
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
               startDate,
               endDate)
-          : _jc.getJournalByDate(_user.primary.financeID,
-              _user.primary.branchName, _user.primary.subBranchName, startDate),
+          : _jc.getJournalByDate(
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
+              startDate),
       builder: (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
         Widget widget;
 
@@ -734,7 +737,11 @@ class AllTransactionsBuilder extends StatelessWidget {
                             height: 20,
                             child: ListTile(
                               leading: Text(
-                                journal.isExpense ? AppLocalizations.of(context).translate("expense") : AppLocalizations.of(context).translate("income"),
+                                journal.isExpense
+                                    ? AppLocalizations.of(context)
+                                        .translate("expense")
+                                    : AppLocalizations.of(context)
+                                        .translate("income"),
                                 style: TextStyle(
                                   fontSize: 17,
                                   color: CustomColors.mfinBlue,
@@ -761,7 +768,8 @@ class AllTransactionsBuilder extends StatelessWidget {
               height: 50,
               alignment: Alignment.center,
               child: Text(
-                AppLocalizations.of(context).translate("no_journal_on_this_date"),
+                AppLocalizations.of(context)
+                    .translate("no_journal_on_this_date"),
                 style: TextStyle(
                   color: CustomColors.mfinAlertRed,
                   fontSize: 18.0,
@@ -795,13 +803,16 @@ class AllTransactionsBuilder extends StatelessWidget {
     return FutureBuilder<List<Expense>>(
       future: byRange
           ? _ec.getAllExpenseByDateRange(
-              _user.primary.financeID,
-              _user.primary.branchName,
-              _user.primary.subBranchName,
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
               startDate,
               endDate)
-          : _ec.getExpenseByDate(_user.primary.financeID,
-              _user.primary.branchName, _user.primary.subBranchName, startDate),
+          : _ec.getExpenseByDate(
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
+              startDate),
       builder: (BuildContext context, AsyncSnapshot<List<Expense>> snapshot) {
         Widget widget;
 
@@ -878,7 +889,8 @@ class AllTransactionsBuilder extends StatelessWidget {
               height: 50,
               alignment: Alignment.center,
               child: Text(
-                AppLocalizations.of(context).translate("no_expense_on_this_date"),
+                AppLocalizations.of(context)
+                    .translate("no_expense_on_this_date"),
                 style: TextStyle(
                   color: CustomColors.mfinAlertRed,
                   fontSize: 18.0,

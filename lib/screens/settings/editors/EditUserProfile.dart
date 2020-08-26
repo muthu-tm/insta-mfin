@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/address.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
@@ -11,6 +10,7 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/screens/utils/field_validator.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class EditUserProfile extends StatefulWidget {
   @override
@@ -18,7 +18,6 @@ class EditUserProfile extends StatefulWidget {
 }
 
 class _EditUserProfileState extends State<EditUserProfile> {
-  final User user = UserController().getCurrentUser();
   final Map<String, dynamic> updatedUser = new Map();
   final Address updatedAddress = new Address();
 
@@ -33,17 +32,18 @@ class _EditUserProfileState extends State<EditUserProfile> {
   @override
   void initState() {
     super.initState();
-    gender = user.gender;
-    if (user.dateOfBirth != null)
+    gender = cachedLocalUser.gender;
+    if (cachedLocalUser.dateOfBirth != null)
       this._date.text = DateUtils.formatDate(
-          DateTime.fromMillisecondsSinceEpoch(user.dateOfBirth));
+          DateTime.fromMillisecondsSinceEpoch(cachedLocalUser.dateOfBirth));
     else
       this._date.text = DateUtils.formatDate(DateTime.now());
   }
 
   @override
   Widget build(BuildContext context) {
-    updatedUser['mobile_number'] = user.mobileNumber;
+    updatedUser['mobile_number'] = cachedLocalUser.mobileNumber;
+    updatedUser['country_code'] = cachedLocalUser.countryCode;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -92,7 +92,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       title: TextFormField(
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.sentences,
-                        initialValue: user.name,
+                        initialValue: cachedLocalUser.name,
                         decoration: InputDecoration(
                           hintText: AppLocalizations.of(context)
                               .translate('user_name'),
@@ -119,7 +119,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                     ListTile(
                       title: TextFormField(
                           keyboardType: TextInputType.text,
-                          initialValue: user.emailID,
+                          initialValue: cachedLocalUser.emailID,
                           decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)
                                 .translate('enter_email_id'),
@@ -219,7 +219,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                   ],
                 ),
               ),
-              AddressWidget("Address", user.address, updatedAddress),
+              AddressWidget("Address", cachedLocalUser.address, updatedAddress),
               Padding(padding: EdgeInsets.only(top: 30, bottom: 30)),
             ],
           ),

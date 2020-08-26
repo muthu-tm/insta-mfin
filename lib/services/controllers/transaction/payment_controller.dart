@@ -2,6 +2,7 @@ import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class PaymentController {
@@ -33,7 +34,7 @@ class PaymentController {
       pay.setPaymentID(paymentID);
       pay.setDOP(dateOfPay);
       pay.setGivenBy(givenBy);
-      pay.setAddedBy(_uc.getCurrentUserID());
+      pay.setAddedBy(cachedLocalUser.getIntID());
       pay.setTotalAmount(tAmount);
       pay.setPrincipalAmount(pAmount);
       pay.setTenure(tenure);

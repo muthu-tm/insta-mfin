@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/expense.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -12,8 +11,6 @@ import '../../app_localizations.dart';
 
 class ExpenseStatisticsWidget extends StatelessWidget {
   ExpenseStatisticsWidget(this.type, this.mode, [this.fDate, this.tDate]);
-
-  final User user = UserController().getCurrentUser();
 
   final int type;
   final int mode;
@@ -26,9 +23,9 @@ class ExpenseStatisticsWidget extends StatelessWidget {
       elevation: 5.0,
       child: FutureBuilder<List<Expense>>(
         future: Expense().getAllExpensesByDateRange(
-            user.primary.financeID,
-            user.primary.branchName,
-            user.primary.subBranchName,
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName,
             DateUtils.getUTCDateEpoch(fDate),
             DateUtils.getUTCDateEpoch(tDate)),
         builder: (context, snapshot) {

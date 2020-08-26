@@ -3,6 +3,7 @@ import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/plans.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'subscriptions.g.dart';
@@ -41,19 +42,19 @@ class Subscriptions extends Model {
   Map<String, dynamic> toJson() => _$SubscriptionsToJson(this);
 
   CollectionReference getCollectionRef() {
-    return user.getDocumentReference().collection('subscriptions');
+    return cachedLocalUser.getDocumentReference().collection('subscriptions');
   }
 
   Map<String, dynamic> getSubscriptionJSON(String pDocID, int tAmount,
       sValidity, sSmsCredit, cValidity, cSmsCredit, String payID) {
     return {
-      "user_number": user.mobileNumber,
-      "guid": user.guid,
+      "user_number": cachedLocalUser.getIntID(),
+      "guid": cachedLocalUser.guid,
       "payment_id": payID,
       "purchase_id": pDocID,
       "recently_paid": tAmount,
       "available_sms_credit": cSmsCredit + sSmsCredit,
-      "finance_id": user.primary.financeID,
+      "finance_id": cachedLocalUser.primary.financeID,
       "chit_valid_till":
           DateUtils.getUTCDateEpoch(DateTime.now()) + (cValidity * 86400000),
       "notes": "",
@@ -67,7 +68,7 @@ class Subscriptions extends Model {
   Stream<QuerySnapshot> streamSubscriptions() {
     try {
       return getCollectionRef()
-          .where('finance_id', isEqualTo: user.primary.financeID)
+          .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
           .snapshots();
     } catch (err) {
       throw err;
@@ -78,7 +79,7 @@ class Subscriptions extends Model {
       int tAmount, String payID, int wAmount) async {
     try {
       QuerySnapshot subSnap = await getCollectionRef()
-          .where('finance_id', isEqualTo: user.primary.financeID)
+          .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
           .getDocuments();
 
       int cVal = 0;
@@ -147,7 +148,8 @@ class Subscriptions extends Model {
       }
 
       if (wAmount > 0) {
-        Map<String, dynamic> uData = await user.getByID(user.getID());
+        Map<String, dynamic> uData =
+            await cachedLocalUser.getByID(cachedLocalUser.getID());
         User _u = User.fromJson(uData);
         int tAmount = 0;
         int aAmount = 0;
@@ -159,7 +161,7 @@ class Subscriptions extends Model {
         var data = {
           'wallet': {'total_amount': tAmount, 'available_balance': aAmount}
         };
-        bWrite.updateData(user.getDocumentReference(), data);
+        bWrite.updateData(cachedLocalUser.getDocumentReference(), data);
       }
 
       await bWrite.commit();

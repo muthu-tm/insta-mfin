@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/pdf/cust_report.dart';
 
 import '../../../app_localizations.dart';
@@ -261,31 +262,31 @@ class CustomerPaymentsListWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ListTile(
-                  leading: Text(
-                    AppLocalizations.of(context).translate('loans'),
-                    style: TextStyle(
-                      fontFamily: "Georgia",
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinPositiveGreen,
-                      fontSize: 17.0,
-                    ),
+                leading: Text(
+                  AppLocalizations.of(context).translate('loans'),
+                  style: TextStyle(
+                    fontFamily: "Georgia",
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinPositiveGreen,
+                    fontSize: 17.0,
                   ),
-                  trailing: IconButton(
-                    tooltip: "Generate Customer Loan Report",
-                    icon: Icon(
-                      Icons.print,
-                      size: 30,
-                      color: CustomColors.mfinBlack,
-                    ),
-                    onPressed: () async {
-                      _scaffoldKey.currentState.showSnackBar(
-                          CustomSnackBar.successSnackBar(
-                              "Generating Customer's Loan Report! Please wait...",
-                              5));
-                      await CustReport().generateReport(
-                          UserController().getCurrentUser(), id);
-                    },
-                  )),
+                ),
+                trailing: IconButton(
+                  tooltip: "Generate Customer Loan Report",
+                  icon: Icon(
+                    Icons.print,
+                    size: 30,
+                    color: CustomColors.mfinBlack,
+                  ),
+                  onPressed: () async {
+                    _scaffoldKey.currentState.showSnackBar(
+                        CustomSnackBar.successSnackBar(
+                            "Generating Customer's Loan Report! Please wait...",
+                            5));
+                    await CustReport().generateReport(cachedLocalUser, id);
+                  },
+                ),
+              ),
               Divider(
                 color: CustomColors.mfinBlue,
               ),

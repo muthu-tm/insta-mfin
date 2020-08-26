@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/home/HomeScreen.dart';
 import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class UserFinanceSetup extends StatelessWidget {
-  final User _user = UserController().getCurrentUser();
-
   @override
   Widget build(BuildContext context) {
-    if (_user.primary.financeID != null && _user.primary.financeID != "") {
+    if (cachedLocalUser.primary.financeID != null &&
+        cachedLocalUser.primary.financeID != "") {
       return WillPopScope(
         onWillPop: () => CustomDialogs.confirm(
             context,

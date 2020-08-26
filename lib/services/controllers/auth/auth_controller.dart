@@ -5,16 +5,14 @@ import 'package:instamfin/services/fcm/user_token.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 import 'package:instamfin/services/authenticate/auth.dart';
 
-UserService _userService = locator<UserService>();
-
 class AuthController {
   AuthService _authService = AuthService();
 
-  dynamic registerWithMobileNumber(
-      int mobileNumber, String passkey, String userName, String uid) async {
+  dynamic registerWithMobileNumber(int mobileNumber, int countryCode,
+      String passkey, String userName, String uid) async {
     try {
       User user = await _authService.registerWithMobileNumber(
-          mobileNumber, passkey, userName, uid);
+          mobileNumber, countryCode, passkey, userName, uid);
 
       var platformData = await UserFCM().getPlatformDetails();
 
@@ -33,7 +31,7 @@ class AuthController {
       user.setLastSignInTime(DateTime.now());
 
       // cache the user data
-      _userService.setCachedUser(user);
+      cachedLocalUser = user;
 
       return CustomResponse.getSuccesReponse(user.toJson());
     } catch (err) {
@@ -61,7 +59,7 @@ class AuthController {
       user.update({'last_signed_in_at': DateTime.now()});
 
       // cache the user data
-      _userService.setCachedUser(user);
+      cachedLocalUser = user;
 
       return CustomResponse.getSuccesReponse(user);
     } catch (err) {

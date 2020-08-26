@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
@@ -10,18 +11,19 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  Future<User> registerWithMobileNumber(
-      int mobileNumber, String password, String name, String uid) async {
+  Future<User> registerWithMobileNumber(int mobileNumber, int countryCode,
+      String password, String name, String uid) async {
     try {
-      User user = User(mobileNumber);
-
-      String hKey =
-          HashGenerator.hmacGenerator(password, user.mobileNumber.toString());
-      user.setPassword(hKey);
+      User user = User();
+      user.mobileNumber = mobileNumber;
+      user.countryCode = countryCode;
       user.setName(name);
       user.setGuid(uid);
+      String hKey = HashGenerator.hmacGenerator(password, user.getID());
+      user.setPassword(hKey);
       user.setPreferences(UserPreferences.fromJson(UserPreferences().toJson()));
       user.setPrimary(UserPrimary.fromJson(UserPrimary().toJson()));
+      user.address = Address.fromJson(Address().toJson());
       user = await user.create();
 
       Analytics.signupEvent(mobileNumber.toString());
@@ -29,7 +31,7 @@ class AuthService {
     } catch (err) {
       Analytics.reportError({
         "type": 'sign_up_error',
-        "user_id": mobileNumber,
+        "user_id": countryCode.toString() + mobileNumber.toString(),
         'name': name,
         'error': err.toString()
       }, 'sign_up');

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/branch.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/settings/widgets/BranchProfileWidget.dart';
 import 'package:instamfin/screens/settings/widgets/BranchUsersWidget.dart';
 import 'package:instamfin/screens/settings/widgets/SubBranchesWidget.dart';
@@ -12,6 +11,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class BranchSetting extends StatefulWidget {
   BranchSetting(this.financeID, this.branchName);
@@ -25,7 +25,6 @@ class BranchSetting extends StatefulWidget {
 class _BranchSettingState extends State<BranchSetting> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TextEditingController _pController = TextEditingController();
-  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
@@ -135,17 +134,17 @@ class _BranchSettingState extends State<BranchSetting> {
                 Text(
                     "Deactivating your Branch will deactivate all your SubBranches too.\nPlease Confirm with your Secret KEY!"),
                 Card(
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      obscureText: true,
-                      autofocus: false,
-                      controller: _pController,
-                      decoration: InputDecoration(
-                        hintText: 'Secret KEY',
-                        fillColor: CustomColors.mfinLightGrey,
-                        filled: true,
-                      ),
+                  child: TextFormField(
+                    textAlign: TextAlign.center,
+                    obscureText: true,
+                    autofocus: false,
+                    controller: _pController,
+                    decoration: InputDecoration(
+                      hintText: 'Secret KEY',
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
                     ),
+                  ),
                 ),
               ],
             ),
@@ -182,7 +181,7 @@ class _BranchSettingState extends State<BranchSetting> {
                     Branch branch = await Branch()
                         .getBranchByName(widget.financeID, widget.branchName);
                     if (branch != null) {
-                      if (!branch.admins.contains(_user.mobileNumber)) {
+                      if (!branch.admins.contains(cachedLocalUser.getIntID())) {
                         Navigator.pop(context);
                         _scaffoldKey.currentState.showSnackBar(
                           CustomSnackBar.errorSnackBar(

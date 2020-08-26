@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 import '../../app_localizations.dart';
 
@@ -23,7 +22,6 @@ class AddCollectionDetails extends StatefulWidget {
 class _AddCollectionDetailsState extends State<AddCollectionDetails> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final User _user = UserController().getCurrentUser();
 
   Map<String, dynamic> collDetails = {
     'collected_on': DateUtils.getUTCDateEpoch(DateTime.now()),
@@ -50,7 +48,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
     super.initState();
     this._date.text = DateUtils.formatDate(DateTime.now());
     this.receivedFrom = widget.custName;
-    this.collectedBy = _user.name;
+    this.collectedBy = cachedLocalUser.name;
     this.totalAmount =
         widget.collection.collectionAmount - widget.collection.getReceived();
 
@@ -535,7 +533,7 @@ class _AddCollectionDetailsState extends State<AddCollectionDetails> {
 
         collDetails['transferred_mode'] = int.parse(transferredMode);
         collDetails['created_at'] = DateTime.now();
-        collDetails['added_by'] = _user.mobileNumber;
+        collDetails['added_by'] = cachedLocalUser.getIntID();
         collDetails['is_paid_late'] = isLatePay;
         int id = widget.collection.collectionDate;
         if (widget.collection.type == 3)

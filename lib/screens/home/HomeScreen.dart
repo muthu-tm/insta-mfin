@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/finance.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
@@ -11,12 +10,11 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:instamfin/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
-  final User _u = UserController().getCurrentUser();
-
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey =
@@ -54,7 +52,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                     RichText(
                       text: TextSpan(
-                        text: AppLocalizations.of(context).translate('welcome_back'),
+                        text: AppLocalizations.of(context)
+                            .translate('welcome_back'),
                         style: TextStyle(
                           fontSize: 16.0,
                           color: CustomColors.mfinLightGrey,
@@ -63,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: '${_u.name}!',
+                            text: '${cachedLocalUser.name}!',
                             style: TextStyle(
                               fontSize: 18.0,
                               color: CustomColors.mfinLightGrey,
@@ -75,7 +74,8 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      tooltip: AppLocalizations.of(context).translate('edit_primary_finance'),
+                      tooltip: AppLocalizations.of(context)
+                          .translate('edit_primary_finance'),
                       alignment: Alignment.centerRight,
                       icon: Icon(
                         Icons.edit,
@@ -86,9 +86,7 @@ class HomeScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EditPrimaryFinance(
-                              _u.mobileNumber,
-                            ),
+                            builder: (context) => EditPrimaryFinance(),
                             settings: RouteSettings(
                                 name: '/settings/user/primary/edit'),
                           ),
@@ -122,7 +120,8 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0),
+                          padding:
+                              EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0),
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.475,
                             decoration: BoxDecoration(
@@ -160,7 +159,8 @@ class HomeScreen extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
-                                        AppLocalizations.of(context).translate('cash_in_hand'),
+                                        AppLocalizations.of(context)
+                                            .translate('cash_in_hand'),
                                         style: TextStyle(
                                           fontSize: 17.0,
                                           fontFamily: "Georgia",
@@ -178,7 +178,8 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 5.0),
+                          padding: EdgeInsets.only(
+                              top: 5.0, bottom: 5.0, right: 5.0),
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.475,
                             decoration: BoxDecoration(
@@ -215,7 +216,8 @@ class HomeScreen extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
-                                        AppLocalizations.of(context).translate('outstanding'),
+                                        AppLocalizations.of(context)
+                                            .translate('outstanding'),
                                         style: TextStyle(
                                           fontSize: 16.0,
                                           fontFamily: "Georgia",
@@ -322,7 +324,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget getCIHAmount(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future: _u.getFinanceDocReference().get(),
+      future: cachedLocalUser.getFinanceDocReference().get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         List<Widget> children;
@@ -358,7 +360,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget getStockAmount(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future: _u.getFinanceDocReference().get(),
+      future: cachedLocalUser.getFinanceDocReference().get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         List<Widget> children;
@@ -414,9 +416,9 @@ class HomeScreen extends StatelessWidget {
   Widget getTodayCollectionData(BuildContext context) {
     return FutureBuilder<List<Collection>>(
       future: Collection().getAllCollectionByDate(
-          _u.primary.financeID,
-          _u.primary.branchName,
-          _u.primary.subBranchName,
+          cachedLocalUser.primary.financeID,
+          cachedLocalUser.primary.branchName,
+          cachedLocalUser.primary.subBranchName,
           [0],
           false,
           DateUtils.getUTCDateEpoch(DateTime.now())),
@@ -444,7 +446,8 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      AppLocalizations.of(context).translate('today_collection'),
+                      AppLocalizations.of(context)
+                          .translate('today_collection'),
                       style: TextStyle(
                         fontSize: 20.0,
                         fontFamily: "Georgia",
@@ -523,9 +526,9 @@ class HomeScreen extends StatelessWidget {
   Widget getPastCollectionData(BuildContext context) {
     return FutureBuilder<List<Collection>>(
       future: Collection().allCollectionByDate(
-          _u.primary.financeID,
-          _u.primary.branchName,
-          _u.primary.subBranchName,
+          cachedLocalUser.primary.financeID,
+          cachedLocalUser.primary.branchName,
+          cachedLocalUser.primary.subBranchName,
           [0],
           DateUtils.getUTCDateEpoch(
               DateTime.now().subtract(Duration(days: 1)))),
@@ -602,9 +605,9 @@ class HomeScreen extends StatelessWidget {
   Widget getUpcomingCollectionData(BuildContext context) {
     return FutureBuilder<List<Collection>>(
       future: Collection().getAllCollectionByDate(
-          _u.primary.financeID,
-          _u.primary.branchName,
-          _u.primary.subBranchName,
+          cachedLocalUser.primary.financeID,
+          cachedLocalUser.primary.branchName,
+          cachedLocalUser.primary.subBranchName,
           [0],
           false,
           DateUtils.getUTCDateEpoch(DateTime.now().add(Duration(days: 1)))),
@@ -715,7 +718,7 @@ class HomeScreen extends StatelessWidget {
                                       2,
                                       fin.getProfilePicPath(),
                                       fin.getID(),
-                                      _u.mobileNumber),
+                                      cachedLocalUser.getIntID()),
                                 );
                               },
                             );
@@ -729,7 +732,8 @@ class HomeScreen extends StatelessWidget {
                                 color: CustomColors.mfinBlue,
                               ),
                               Text(
-                                AppLocalizations.of(context).translate('upload'),
+                                AppLocalizations.of(context)
+                                    .translate('upload'),
                                 style: TextStyle(
                                   fontSize: 10.0,
                                   color: CustomColors.mfinBlue,
@@ -766,7 +770,7 @@ class HomeScreen extends StatelessWidget {
                                           2,
                                           fin.getProfilePicPath(),
                                           fin.getID(),
-                                          _u.mobileNumber),
+                                          cachedLocalUser.getIntID()),
                                     );
                                   },
                                 );
@@ -794,7 +798,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                _u.primary.branchName,
+                cachedLocalUser.primary.branchName,
                 style: TextStyle(
                   fontSize: 17.0,
                   fontFamily: 'Georgia',
@@ -802,7 +806,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                _u.primary.subBranchName,
+                cachedLocalUser.primary.subBranchName,
                 style: TextStyle(
                   fontSize: 14.0,
                   fontFamily: 'Georgia',

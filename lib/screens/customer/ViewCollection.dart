@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/customer/widgets/CollectionDetailsWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -10,7 +9,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/pdf/collection_receipt.dart';
 
 import '../../app_localizations.dart';
@@ -29,8 +28,6 @@ class ViewCollection extends StatefulWidget {
 class _ViewCollectionState extends State<ViewCollection> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  final User _user = UserController().getCurrentUser();
 
   Map<String, dynamic> collDetails = {
     'collected_on': DateUtils.getUTCDateEpoch(DateTime.now()),
@@ -60,7 +57,7 @@ class _ViewCollectionState extends State<ViewCollection> {
     super.initState();
     this._date.text = DateUtils.formatDate(DateTime.now());
     this.receivedFrom = widget.pay.custName;
-    this.collectedBy = _user.name;
+    this.collectedBy = cachedLocalUser.name;
     this.totalAmount =
         widget._collection.collectionAmount - widget._collection.getReceived();
     this.totalAmountController.text = this.totalAmount.toString();
@@ -127,9 +124,7 @@ class _ViewCollectionState extends State<ViewCollection> {
                   ),
                   onPressed: () async {
                     await CollectionReceipt().generateInvoice(
-                        UserController().getCurrentUser(),
-                        widget.pay,
-                        collection);
+                        cachedLocalUser, widget.pay, collection);
                   },
                 ),
               ),
@@ -694,7 +689,7 @@ class _ViewCollectionState extends State<ViewCollection> {
 
         collDetails['transferred_mode'] = int.parse(transferredMode);
         collDetails['created_at'] = DateTime.now();
-        collDetails['added_by'] = _user.mobileNumber;
+        collDetails['added_by'] = cachedLocalUser.getIntID();
         collDetails['is_paid_late'] = isLatePay;
         int id = widget._collection.collectionDate;
         if (widget._collection.type == 3)

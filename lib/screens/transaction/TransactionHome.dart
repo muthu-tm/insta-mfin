@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/transaction/books/BooksHome.dart';
@@ -14,10 +13,9 @@ import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class TransactionScreen extends StatelessWidget {
-  final User _user = UserController().getCurrentUser();
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -38,62 +36,63 @@ class TransactionScreen extends StatelessWidget {
           child: Column(
             children: <Widget>[
               InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BooksHome(_user.accPreferences.chitEnabled),
-                        settings: RouteSettings(name: "/transactions/books"),
-                      ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Material(
-                        color: CustomColors.mfinBlue,
-                        elevation: 10.0,
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          height: 110,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Spacer(),
-                              Icon(
-                                Icons.import_contacts,
-                                size: 50.0,
-                                color: CustomColors.mfinButtonGreen,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          BooksHome(cachedLocalUser.accPreferences.chitEnabled),
+                      settings: RouteSettings(name: "/transactions/books"),
+                    ),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Material(
+                      color: CustomColors.mfinBlue,
+                      elevation: 10.0,
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.35,
+                        height: 110,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Spacer(),
+                            Icon(
+                              Icons.import_contacts,
+                              size: 50.0,
+                              color: CustomColors.mfinButtonGreen,
+                            ),
+                            Spacer(),
+                            Text(
+                              "NoteBooks",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: CustomColors.mfinWhite,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Spacer(),
-                              Text(
-                                "NoteBooks",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: CustomColors.mfinWhite,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Spacer(),
-                            ],
-                          ),
+                            ),
+                            Spacer(),
+                          ],
                         ),
                       ),
-                      Material(
-                        color: CustomColors.mfinLightGrey,
-                        elevation: 10.0,
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.60,
-                          height: 110,
-                          child: TransactionCollectionBuilder(),
-                        ),
+                    ),
+                    Material(
+                      color: CustomColors.mfinLightGrey,
+                      elevation: 10.0,
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.60,
+                        height: 110,
+                        child: TransactionCollectionBuilder(),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
                 child: InkWell(
@@ -122,9 +121,13 @@ class TransactionScreen extends StatelessWidget {
                             children: <Widget>[
                               Spacer(),
                               Text(
-                                _user.preferences.transactionGroupBy == 0
+                                cachedLocalUser
+                                            .preferences.transactionGroupBy ==
+                                        0
                                     ? "Today's"
-                                    : _user.preferences.transactionGroupBy == 1
+                                    : cachedLocalUser.preferences
+                                                .transactionGroupBy ==
+                                            1
                                         ? "This Week"
                                         : "This Month",
                                 style: TextStyle(
@@ -141,7 +144,8 @@ class TransactionScreen extends StatelessWidget {
                               ),
                               Spacer(),
                               Text(
-                                AppLocalizations.of(context).translate("expenses"),
+                                AppLocalizations.of(context)
+                                    .translate("expenses"),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16,
@@ -196,9 +200,13 @@ class TransactionScreen extends StatelessWidget {
                             children: <Widget>[
                               Spacer(),
                               Text(
-                                _user.preferences.transactionGroupBy == 0
+                                cachedLocalUser
+                                            .preferences.transactionGroupBy ==
+                                        0
                                     ? "Today's"
-                                    : _user.preferences.transactionGroupBy == 1
+                                    : cachedLocalUser.preferences
+                                                .transactionGroupBy ==
+                                            1
                                         ? "This Week"
                                         : "This Month",
                                 style: TextStyle(
@@ -215,7 +223,8 @@ class TransactionScreen extends StatelessWidget {
                               ),
                               Spacer(),
                               Text(
-                                AppLocalizations.of(context).translate("journals"),
+                                AppLocalizations.of(context)
+                                    .translate("journals"),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16,

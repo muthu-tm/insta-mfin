@@ -10,6 +10,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class SubBranchSetting extends StatefulWidget {
   SubBranchSetting(this.financeID, this.branchName, this.subBranchName);
@@ -182,7 +183,7 @@ class _SubBranchSettingState extends State<SubBranchSetting> {
                         widget.subBranchName);
                     if (subBranch != null) {
                       if (!subBranch.admins
-                          .contains(UserController().getCurrentUserID())) {
+                          .contains(cachedLocalUser.getIntID())) {
                         Navigator.pop(context);
                         _scaffoldKey.currentState.showSnackBar(
                           CustomSnackBar.errorSnackBar(

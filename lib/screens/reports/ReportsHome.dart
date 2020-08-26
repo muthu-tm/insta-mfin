@@ -4,7 +4,6 @@ import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/expense.dart';
 import 'package:instamfin/db/models/journal.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
@@ -16,13 +15,13 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
 import 'package:instamfin/services/controllers/transaction/expense_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/pdf/reports/coll_report.dart';
 import 'package:instamfin/services/pdf/reports/customer_report.dart';
 import 'package:instamfin/services/pdf/reports/expense_report.dart';
 import 'package:instamfin/services/pdf/reports/journal_report.dart';
 import 'package:instamfin/services/pdf/reports/payment_report.dart';
 import 'package:instamfin/app_localizations.dart';
-
 
 class ReportsHome extends StatefulWidget {
   @override
@@ -31,7 +30,6 @@ class ReportsHome extends StatefulWidget {
 
 class _ReportsHomeState extends State<ReportsHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {
@@ -245,7 +243,8 @@ class _ReportsHomeState extends State<ReportsHome> {
                   onTap: () => {
                     _selectedRange == '3'
                         ? _selectFromDate(context)
-                        : print(AppLocalizations.of(context).translate('not_in_range')),
+                        : print(AppLocalizations.of(context)
+                            .translate('not_in_range')),
                   },
                   child: AbsorbPointer(
                     child: TextFormField(
@@ -253,7 +252,8 @@ class _ReportsHomeState extends State<ReportsHome> {
                       controller: _fromDate,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context).translate('report_from'),
+                        hintText: AppLocalizations.of(context)
+                            .translate('report_from'),
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -288,14 +288,16 @@ class _ReportsHomeState extends State<ReportsHome> {
                   onTap: () => {
                     _selectedRange == '3'
                         ? _selectToDate(context)
-                        : print(AppLocalizations.of(context).translate('not_in_range')),
+                        : print(AppLocalizations.of(context)
+                            .translate('not_in_range')),
                   },
                   child: AbsorbPointer(
                     child: TextFormField(
                       controller: _toDate,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context).translate('reports_till'),
+                        hintText: AppLocalizations.of(context)
+                            .translate('reports_till'),
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
                         ),
@@ -437,12 +439,13 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (customers.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Generating your Customers Report! It may take upto 10-30 seconds, Please wait...", 5));
-        await CustomerReport()
-            .generateReport(_user, customers, isRange, fromDate, toDate);
+            "Generating your Customers Report! It may take upto 10-30 seconds, Please wait...",
+            5));
+        await CustomerReport().generateReport(
+            cachedLocalUser, customers, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          AppLocalizations.of(context).translate('generating_report'), 2));
+            AppLocalizations.of(context).translate('generating_report'), 2));
       }
     } else if (_selectedCategory == '1') {
       List<Payment> pays;
@@ -477,12 +480,13 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (pays.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            "Generating your Loan Report! It may take upto 10-30 seconds, Please wait...", 5));
+            "Generating your Loan Report! It may take upto 10-30 seconds, Please wait...",
+            5));
         await PaymentReport()
-            .generateReport(_user, pays, isRange, fromDate, toDate);
+            .generateReport(cachedLocalUser, pays, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          AppLocalizations.of(context).translate('no_payment_report'), 2));
+            AppLocalizations.of(context).translate('no_payment_report'), 2));
       }
     } else if (_selectedCategory == '2') {
       List<Collection> colls;
@@ -491,9 +495,9 @@ class _ReportsHomeState extends State<ReportsHome> {
       if (_selectedRange == '0') {
         // Todays Collection Report
         colls = await Collection().allCollectionByDate(
-            _user.primary.financeID,
-            _user.primary.branchName,
-            _user.primary.subBranchName,
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName,
             _selectedType == '0'
                 ? [0, 1, 2, 3, 4, 5]
                 : [int.parse(_selectedType) - 1],
@@ -502,9 +506,9 @@ class _ReportsHomeState extends State<ReportsHome> {
         isRange = true;
         // Collection Report by Date Range
         colls = await Collection().getAllCollectionsByDateRange(
-            _user.primary.financeID,
-            _user.primary.branchName,
-            _user.primary.subBranchName,
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName,
             _selectedType == '0'
                 ? [0, 1, 2, 3, 4, 5]
                 : [int.parse(_selectedType) - 1],
@@ -514,12 +518,12 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (colls.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-          AppLocalizations.of(context).translate('no_collection_report'), 2));
+            AppLocalizations.of(context).translate('no_collection_report'), 2));
         await CollectionReport()
-            .generateReport(_user, colls, isRange, fromDate, toDate);
+            .generateReport(cachedLocalUser, colls, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          AppLocalizations.of(context).translate('no_collection_data'), 2));
+            AppLocalizations.of(context).translate('no_collection_data'), 2));
       }
     } else if (_selectedCategory == '3') {
       JournalController _jc = JournalController();
@@ -528,27 +532,31 @@ class _ReportsHomeState extends State<ReportsHome> {
 
       if (_selectedRange == '0') {
         // Todays Journal Report
-        journals = await _jc.getJournalByDate(_user.primary.financeID,
-            _user.primary.branchName, _user.primary.subBranchName, fromDate);
+        journals = await _jc.getJournalByDate(
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName,
+            fromDate);
       } else {
         isRange = true;
         // Journal Report by Date Range
         journals = await _jc.getAllJournalByDateRange(
-            _user.primary.financeID,
-            _user.primary.branchName,
-            _user.primary.subBranchName,
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName,
             fromDate,
             toDate);
       }
       Navigator.pop(context);
       if (journals.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-          AppLocalizations.of(context).translate('generating_journal_report'), 2));
-        await JournalReport()
-            .generateReport(_user, journals, isRange, fromDate, toDate);
+            AppLocalizations.of(context).translate('generating_journal_report'),
+            2));
+        await JournalReport().generateReport(
+            cachedLocalUser, journals, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          AppLocalizations.of(context).translate('no_journal_data'), 2));
+            AppLocalizations.of(context).translate('no_journal_data'), 2));
       }
     } else if (_selectedCategory == '4') {
       ExpenseController _ec = ExpenseController();
@@ -557,15 +565,18 @@ class _ReportsHomeState extends State<ReportsHome> {
 
       if (_selectedRange == '0') {
         // Todays Expense Report
-        expenses = await _ec.getExpenseByDate(_user.primary.financeID,
-            _user.primary.branchName, _user.primary.subBranchName, fromDate);
+        expenses = await _ec.getExpenseByDate(
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName,
+            fromDate);
       } else {
         isRange = true;
         // Expense Report by Date Range
         expenses = await _ec.getAllExpenseByDateRange(
-            _user.primary.financeID,
-            _user.primary.branchName,
-            _user.primary.subBranchName,
+            cachedLocalUser.primary.financeID,
+            cachedLocalUser.primary.branchName,
+            cachedLocalUser.primary.subBranchName,
             fromDate,
             toDate);
       }
@@ -573,12 +584,13 @@ class _ReportsHomeState extends State<ReportsHome> {
       Navigator.pop(context);
       if (expenses.length > 0) {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-          AppLocalizations.of(context).translate('generating_expense_report'), 2));
-        await ExpenseReport()
-            .generateReport(_user, expenses, isRange, fromDate, toDate);
+            AppLocalizations.of(context).translate('generating_expense_report'),
+            2));
+        await ExpenseReport().generateReport(
+            cachedLocalUser, expenses, isRange, fromDate, toDate);
       } else {
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
-          AppLocalizations.of(context).translate('no_expense_data'), 2));
+            AppLocalizations.of(context).translate('no_expense_data'), 2));
       }
     }
   }

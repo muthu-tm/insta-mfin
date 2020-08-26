@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:instamfin/db/models/journal.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/transaction/add/AddJournal.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
@@ -12,6 +11,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/app_localizations.dart';
 
@@ -23,8 +23,6 @@ class JournalEntryHome extends StatefulWidget {
 class _JournalEntryHomeState extends State<JournalEntryHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  final User _user = UserController().getCurrentUser();
-
   DateTime _selectedFrom = DateTime.now();
   TextEditingController _fromDate = new TextEditingController();
   DateTime _selectedTo = DateTime.now();
@@ -33,9 +31,9 @@ class _JournalEntryHomeState extends State<JournalEntryHome> {
   @override
   void initState() {
     super.initState();
-    _user.preferences.transactionGroupBy == 0
+    cachedLocalUser.preferences.transactionGroupBy == 0
         ? _selectedFrom = DateTime.now()
-        : _user.preferences.transactionGroupBy == 1
+        : cachedLocalUser.preferences.transactionGroupBy == 1
             ? _selectedFrom =
                 DateTime.now().subtract(Duration(days: DateTime.now().weekday))
             : _selectedFrom = DateTime(
@@ -81,9 +79,9 @@ class _JournalEntryHomeState extends State<JournalEntryHome> {
                             color: CustomColors.mfinBlue,
                           ),
                           onTap: () {
-                            if (_user.financeSubscription <
+                            if (cachedLocalUser.financeSubscription <
                                     DateUtils.getUTCDateEpoch(DateTime.now()) &&
-                                _user.chitSubscription <
+                                cachedLocalUser.chitSubscription <
                                     DateUtils.getUTCDateEpoch(DateTime.now())) {
                               _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
@@ -217,8 +215,7 @@ class _JournalEntryHomeState extends State<JournalEntryHome> {
                 ],
               ),
             ),
-            Card(
-              child: StreamBuilder<QuerySnapshot>(
+            StreamBuilder<QuerySnapshot>(
                 stream: Journal().streamJournalsByDateRange(
                     DateUtils.getUTCDateEpoch(_selectedFrom),
                     DateUtils.getUTCDateEpoch(_selectedTo)),
@@ -342,6 +339,8 @@ class _JournalEntryHomeState extends State<JournalEntryHome> {
                   return widget;
                 },
               ),
+            Padding(
+              padding: EdgeInsets.all(40),
             ),
           ],
         ),

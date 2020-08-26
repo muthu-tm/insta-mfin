@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/plans.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'purchases.g.dart';
@@ -52,9 +53,9 @@ class Purchases extends Model {
   Future<String> create(List<Plans> plans, int tAmount) async {
     try {
       this.plans = plans;
-      this.financeID = user.primary.financeID;
-      this.userID = user.mobileNumber;
-      this.guid = user.guid;
+      this.financeID = cachedLocalUser.primary.financeID;
+      this.userID = cachedLocalUser.getIntID();
+      this.guid = cachedLocalUser.guid;
       this.isSuccess = false;
       this.paymentID = "";
       this.status = 0;

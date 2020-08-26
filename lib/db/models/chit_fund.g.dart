@@ -28,7 +28,7 @@ ChitFund _$ChitFundFromJson(Map<String, dynamic> json) {
     ..isClosed = json['is_closed'] as bool ?? false
     ..profitAmount = json['profit_amount'] as int ?? 0
     ..notes = json['notes'] as String ?? ''
-    ..publishedBy = json['published_by'] as int
+    ..addedBy = json['added_by'] as int
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
@@ -63,7 +63,7 @@ Map<String, dynamic> _$ChitFundToJson(ChitFund instance) => <String, dynamic>{
       'is_closed': instance.isClosed,
       'profit_amount': instance.profitAmount,
       'notes': instance.notes,
-      'published_by': instance.publishedBy,
+      'added_by': instance.addedBy,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

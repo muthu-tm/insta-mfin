@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_template.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/RechargeAlertScreen.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
@@ -14,6 +13,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class ChitHome extends StatefulWidget {
   @override
@@ -22,15 +22,14 @@ class ChitHome extends StatefulWidget {
 
 class _ChitHomeState extends State<ChitHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   bool hasValidSubscription = true;
   @override
   void initState() {
     super.initState();
 
-    if (_user.financeSubscription < DateUtils.getUTCDateEpoch(DateTime.now()) &&
-        _user.chitSubscription < DateUtils.getUTCDateEpoch(DateTime.now())) {
+    if (cachedLocalUser.financeSubscription < DateUtils.getUTCDateEpoch(DateTime.now()) &&
+        cachedLocalUser.chitSubscription < DateUtils.getUTCDateEpoch(DateTime.now())) {
       hasValidSubscription = false;
     }
   }
@@ -56,7 +55,7 @@ class _ChitHomeState extends State<ChitHome> {
                   FloatingActionButtonLocation.centerFloat,
               floatingActionButton: FloatingActionButton(
                 onPressed: () async {
-                  if (_user.accPreferences.chitEnabled) {
+                  if (cachedLocalUser.accPreferences.chitEnabled) {
                     CustomDialogs.actionWaiting(context, "Loading...");
                     List<ChitTemplate> temps =
                         await ChitTemplate().getAllChitTemplates();

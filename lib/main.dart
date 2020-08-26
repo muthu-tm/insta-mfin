@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
-import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:syncfusion_flutter_core/core.dart';
 import 'package:instamfin/app_localizations.dart';
@@ -14,7 +13,6 @@ void main() {
   SyncfusionLicense.registerLicense(
       "NT8mJyc2IWhia31hfWN9Z2doYmF8YGJ8ampqanNiYmlmamlmanMDHmg+Jic7JmBgMCA2EzQ+Mjo/fTA8Pg==");
   runApp(MyApp());
-  setupLocator();
 }
 
 class MyApp extends StatefulWidget {

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 import '../../app_localizations.dart';
 
@@ -25,7 +24,6 @@ class AddCustomCollection extends StatefulWidget {
 class _AddCustomCollectionState extends State<AddCustomCollection> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final User _user = UserController().getCurrentUser();
 
   Map<String, dynamic> collDetails = {
     'collected_on': DateUtils.getUTCDateEpoch(DateTime.now()),
@@ -52,7 +50,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
     super.initState();
     this._date.text = DateUtils.formatDate(DateTime.now());
     this.receivedFrom = widget.payment.custName;
-    this.collectedBy = _user.name;
+    this.collectedBy = cachedLocalUser.name;
   }
 
   @override
@@ -449,7 +447,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
             collDetails['collected_on'] = collectedOn;
             collDetails['transferred_mode'] = int.parse(transferredMode);
             collDetails['created_at'] = DateTime.now();
-            collDetails['added_by'] = _user.mobileNumber;
+            collDetails['added_by'] = cachedLocalUser.getIntID();
             int id = coll.collectionDate;
             if (coll.type == 3) id = coll.collectionDate + 3;
 
@@ -490,7 +488,7 @@ class _AddCustomCollectionState extends State<AddCustomCollection> {
         collDetails['penalty_amount'] = 0;
         collDetails['collected_on'] = collectedOn;
         collDetails['transferred_mode'] = transferredMode;
-        collDetails['added_by'] = _user.mobileNumber;
+        collDetails['added_by'] = cachedLocalUser.getIntID();
         collDetails['is_paid_late'] = false;
         var result = await _cc.createCollection(
             widget.payment.financeID,

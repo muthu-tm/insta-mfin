@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/SearchAppBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/notification_icon.dart';
@@ -13,12 +12,12 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 import '../../app_localizations.dart';
 
 class CustomersHome extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
@@ -134,9 +133,9 @@ class CustomersHome extends StatelessWidget {
             backgroundColor: CustomColors.mfinAlertRed.withOpacity(0.7),
             tooltip: "Add Customer",
             onPressed: () {
-              if (_user.financeSubscription <
+              if (cachedLocalUser.financeSubscription <
                       DateUtils.getUTCDateEpoch(DateTime.now()) &&
-                  _user.chitSubscription <
+                  cachedLocalUser.chitSubscription <
                       DateUtils.getUTCDateEpoch(DateTime.now())) {
                 _scaffoldKey.currentState.showSnackBar(
                     CustomSnackBar.errorSnackBar(

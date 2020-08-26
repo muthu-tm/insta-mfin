@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -12,8 +10,8 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class CollectionBookTab extends StatelessWidget {
   CollectionBookTab(this._scaffoldKey, this.isPending, this.epoch,
@@ -26,14 +24,20 @@ class CollectionBookTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserPrimary _primary = UserController().getUserPrimary();
-
     return StreamBuilder(
       stream: isPending
-          ? Collection().streamAllPendingCollectionByDate(_primary.financeID,
-              _primary.branchName, _primary.subBranchName, epoch)
-          : Collection().streamAllCollectionByDate(_primary.financeID,
-              _primary.branchName, _primary.subBranchName, [0], false, epoch),
+          ? Collection().streamAllPendingCollectionByDate(
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
+              epoch)
+          : Collection().streamAllCollectionByDate(
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
+              [0],
+              false,
+              epoch),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> collSnap) {
         Widget child;
 
@@ -54,7 +58,8 @@ class CollectionBookTab extends StatelessWidget {
                   direction: Axis.horizontal,
                   actions: <Widget>[
                     IconSlideAction(
-                      caption: AppLocalizations.of(context).translate("mark_resolved"),
+                      caption: AppLocalizations.of(context)
+                          .translate("mark_resolved"),
                       color: CustomColors.mfinPositiveGreen,
                       icon: Icons.check_box,
                       onTap: () {
@@ -262,7 +267,6 @@ class CollectionBookTab extends StatelessWidget {
     } else {
       CustomDialogs.actionWaiting(context, "Updating Collection");
       CollectionController _cc = CollectionController();
-      User _user = UserController().getCurrentUser();
       Map<String, dynamic> collDetails = {
         'collected_on': DateUtils.getUTCDateEpoch(DateTime.now())
       };
@@ -270,11 +274,11 @@ class CollectionBookTab extends StatelessWidget {
           collection.collectionAmount - collection.getReceived();
       collDetails['transferred_mode'] = 0;
       collDetails['notes'] = "";
-      collDetails['collected_by'] = _user.name;
+      collDetails['collected_by'] = cachedLocalUser.name;
       collDetails['collected_from'] = "";
       collDetails['penalty_amount'] = 0;
       collDetails['created_at'] = DateTime.now();
-      collDetails['added_by'] = _user.mobileNumber;
+      collDetails['added_by'] = cachedLocalUser.getIntID();
       if (collection.collectionDate <
           (DateUtils.getCurrentUTCDate().millisecondsSinceEpoch))
         collDetails['is_paid_late'] = true;

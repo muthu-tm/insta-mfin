@@ -184,7 +184,7 @@ class CustomerListWidget extends StatelessWidget {
                 height: 90,
                 child: Column(
                   children: <Widget>[
-                    new Spacer(),
+                    Spacer(),
                     Text(
                       AppLocalizations.of(context).translate('no_customers'),
                       style: TextStyle(
@@ -193,7 +193,7 @@ class CustomerListWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    new Spacer(
+                    Spacer(
                       flex: 2,
                     ),
                     Text(
@@ -205,7 +205,7 @@ class CustomerListWidget extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    new Spacer(),
+                    Spacer(),
                   ],
                 ),
               ),

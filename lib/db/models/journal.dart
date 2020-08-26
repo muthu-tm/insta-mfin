@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/journal_category.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -113,13 +114,13 @@ class Journal extends Model {
   Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = user.primary.financeID;
-    this.branchName = user.primary.branchName;
-    this.subBranchName = user.primary.subBranchName;
-    this.addedBy = user.mobileNumber;
+    this.financeID = cachedLocalUser.primary.financeID;
+    this.branchName = cachedLocalUser.primary.branchName;
+    this.subBranchName = cachedLocalUser.primary.subBranchName;
+    this.addedBy = cachedLocalUser.getIntID();
 
     try {
-      DocumentReference finDocRef = user.getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
 
       await Model.db.runTransaction(
         (tx) async {
@@ -175,18 +176,20 @@ class Journal extends Model {
 
   Stream<QuerySnapshot> streamJournalsByDate(int epoch) {
     return getGroupQuery()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('journal_date', isEqualTo: epoch)
         .snapshots();
   }
 
   Stream<QuerySnapshot> streamJournalsByDateRange(int start, int end) {
     return getGroupQuery()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('journal_date', isGreaterThanOrEqualTo: start)
         .where('journal_date', isLessThanOrEqualTo: end)
         .orderBy('journal_date', descending: true)
@@ -239,7 +242,7 @@ class Journal extends Model {
         .getDocumentReference(financeID, branchName, subBranchName, createdAt);
 
     try {
-      DocumentReference finDocRef = user.getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
       await Model.db.runTransaction(
         (tx) {
           return tx.get(finDocRef).then(

@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/journal.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/transaction/Journal_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class TransactionJournalBuilder extends StatelessWidget {
   final JournalController _jc = JournalController();
-  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Journal>>(
-      future: _user.preferences.transactionGroupBy == 0
+      future: cachedLocalUser.preferences.transactionGroupBy == 0
           ? _jc.getJournalByDate(
-              _user.primary.financeID,
-              _user.primary.branchName,
-              _user.primary.subBranchName,
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
               DateTime.now())
-          : _user.preferences.transactionGroupBy == 1
-              ? _jc.getThisWeekExpenses(_user.primary.financeID,
-                  _user.primary.branchName, _user.primary.subBranchName)
-              : _jc.getThisMonthExpenses(_user.primary.financeID,
-                  _user.primary.branchName, _user.primary.subBranchName),
+          : cachedLocalUser.preferences.transactionGroupBy == 1
+              ? _jc.getThisWeekExpenses(cachedLocalUser.primary.financeID,
+                  cachedLocalUser.primary.branchName, cachedLocalUser.primary.subBranchName)
+              : _jc.getThisMonthExpenses(cachedLocalUser.primary.financeID,
+                  cachedLocalUser.primary.branchName, cachedLocalUser.primary.subBranchName),
       builder: (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
         Widget widget;
 

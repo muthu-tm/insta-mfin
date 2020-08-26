@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class AddPaymentTemplate extends StatefulWidget {
   @override
@@ -14,7 +13,6 @@ class AddPaymentTemplate extends StatefulWidget {
 
 class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -57,8 +55,9 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
     super.initState();
 
     selectedCollectionModeID =
-        _user.accPreferences.collectionMode.toString() ?? '0';
-    collectionDays = _user.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
+        cachedLocalUser.accPreferences.collectionMode.toString() ?? '0';
+    collectionDays =
+        cachedLocalUser.accPreferences.collectionDays ?? [1, 2, 3, 4, 5];
     interestAmount = 0;
 
     totalAmountController.text = "0";
@@ -197,11 +196,13 @@ class _AddPaymentTemplateState extends State<AddPaymentTemplate> {
                                 filled: true,
                               ),
                               onChanged: (val) {
-                                double iAmount =
-                                    _user.accPreferences.interestRate > 0
-                                        ? (int.parse(val) ~/ 100) *
-                                            _user.accPreferences.interestRate
-                                        : 0;
+                                double iAmount = cachedLocalUser
+                                            .accPreferences.interestRate >
+                                        0
+                                    ? (int.parse(val) ~/ 100) *
+                                        cachedLocalUser
+                                            .accPreferences.interestRate
+                                    : 0;
                                 int pAmount = int.parse(val) - iAmount.round();
                                 setState(() {
                                   interestAmountController.text =

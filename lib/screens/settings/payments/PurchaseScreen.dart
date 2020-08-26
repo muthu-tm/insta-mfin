@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/plans.dart';
 import 'package:instamfin/db/models/purchases.dart';
 import 'package:instamfin/db/models/subscriptions.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_referees.dart';
 import 'package:instamfin/screens/settings/payments/ResponseDialog.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
@@ -12,6 +11,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:instamfin/app_localizations.dart';
@@ -29,7 +29,6 @@ class PuchasePlan extends StatefulWidget {
 }
 
 class _PuchasePlanState extends State<PuchasePlan> {
-  final User _user = UserController().getCurrentUser();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Razorpay _razorpay;
@@ -274,7 +273,7 @@ class _PuchasePlanState extends State<PuchasePlan> {
 
   Widget getWalletWidget() {
     return StreamBuilder(
-      stream: UserReferees().streamReferees(_user.mobileNumber.toString()),
+      stream: UserReferees().streamReferees(cachedLocalUser.getID()),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         Widget child;
 
@@ -524,9 +523,9 @@ class _PuchasePlanState extends State<PuchasePlan> {
       "currency": "INR",
       "payment_capture": 1,
       "prefill": {
-        "name": _user.name,
-        "contact": _user.mobileNumber.toString(),
-        "email": _user.emailID ?? ""
+        "name": cachedLocalUser.name,
+        "contact": cachedLocalUser.mobileNumber.toString(),
+        "email": cachedLocalUser.emailID ?? ""
       },
       "external": {
         "wallets": ["paytm"]

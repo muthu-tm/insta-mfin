@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/db/models/user_referees.dart';
-import 'package:instamfin/db/models/user_wallet.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:instamfin/app_localizations.dart';
 
@@ -25,7 +24,6 @@ class WalletHome extends StatefulWidget {
 
 class _WalletHomeState extends State<WalletHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   bool isClaimed = false;
 
@@ -71,7 +69,7 @@ class _WalletHomeState extends State<WalletHome> {
 
   Widget getWalletWidget() {
     return StreamBuilder(
-      stream: _user.streamUserData(),
+      stream: cachedLocalUser.streamUserData(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         Widget widget;
@@ -209,7 +207,7 @@ class _WalletHomeState extends State<WalletHome> {
                         try {
                           CustomDialogs.actionWaiting(
                               context, "Applying Coupon!");
-                          await _user.claimRegistrationBonus(amount);
+                          await cachedLocalUser.claimRegistrationBonus(amount);
                           Navigator.pop(context);
                           _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.successSnackBar(
@@ -278,7 +276,7 @@ class _WalletHomeState extends State<WalletHome> {
 
   Widget getReferralsWidget() {
     return StreamBuilder(
-      stream: UserReferees().streamReferees(_user.mobileNumber.toString()),
+      stream: UserReferees().streamReferees(cachedLocalUser.getID()),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         Widget widget;
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/payment_template.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class EditPaymentTemplate extends StatefulWidget {
   EditPaymentTemplate(this.template);
@@ -19,8 +18,6 @@ class EditPaymentTemplate extends StatefulWidget {
 class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AccountPreferences accPref =
-      UserController().getCurrentUser().accPreferences;
 
   final Map<String, dynamic> updatedTemplate = new Map();
 
@@ -197,9 +194,12 @@ class _EditPaymentTemplateState extends State<EditPaymentTemplate> {
                                 filled: true,
                               ),
                               onChanged: (val) {
-                                double iAmount = accPref.interestRate > 0
+                                double iAmount = cachedLocalUser
+                                            .accPreferences.interestRate >
+                                        0
                                     ? (int.parse(val) ~/ 100) *
-                                        accPref.interestRate
+                                        cachedLocalUser
+                                            .accPreferences.interestRate
                                     : 0;
                                 int pAmount = int.parse(val) - iAmount.round();
                                 setState(() {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/finance.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/settings/editors/EditPrimaryFinance.dart';
 import 'package:instamfin/screens/utils/AddFinanceWidget.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class PrimaryFinanceWidget extends StatelessWidget {
   PrimaryFinanceWidget(this.title, this.editEnabled);
@@ -19,13 +19,10 @@ class PrimaryFinanceWidget extends StatelessWidget {
     return FutureBuilder<Finance>(
       future: UserController().getPrimaryFinance(),
       builder: (BuildContext context, AsyncSnapshot<Finance> snapshot) {
-        User _user = UserController().getCurrentUser();
         List<Widget> children;
 
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data != null) {
-            _user = UserController().getCurrentUser();
-
             children = <Widget>[
               ListTile(
                 leading: Icon(Icons.account_balance,
@@ -52,7 +49,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                     color: CustomColors.mfinBlue, size: 30.0),
                 title: TextFormField(
                   keyboardType: TextInputType.text,
-                  initialValue: _user.primary.branchName ?? "",
+                  initialValue: cachedLocalUser.primary.branchName ?? "",
                   decoration: InputDecoration(
                     hintText:
                         AppLocalizations.of(context).translate('branch_name'),
@@ -72,7 +69,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                     color: CustomColors.mfinBlue, size: 30.0),
                 title: TextFormField(
                   keyboardType: TextInputType.text,
-                  initialValue: _user.primary.subBranchName ?? "",
+                  initialValue: cachedLocalUser.primary.subBranchName ?? "",
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context)
                         .translate('sub_branch_name'),
@@ -131,9 +128,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EditPrimaryFinance(
-                              _user.mobileNumber,
-                            ),
+                            builder: (context) => EditPrimaryFinance(),
                             settings: RouteSettings(
                                 name: '/settings/user/primary/edit'),
                           ),
@@ -196,9 +191,7 @@ class PrimaryFinanceWidget extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditPrimaryFinance(
-                                  _user.mobileNumber,
-                                ),
+                                builder: (context) => EditPrimaryFinance(),
                                 settings: RouteSettings(
                                     name: '/settings/user/primary/edit'),
                               ),

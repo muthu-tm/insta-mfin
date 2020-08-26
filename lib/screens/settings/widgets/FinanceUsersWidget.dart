@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class FinanceUsersWidget extends StatelessWidget {
   FinanceUsersWidget(this.financeID);
@@ -71,8 +72,7 @@ class FinanceUsersWidget extends StatelessWidget {
                       ),
                       onPressed: () {
                         int userID = snapshot.data.data['admins'][index];
-                        UserController _uc = UserController();
-                        if (userID == _uc.getCurrentUserID()) {
+                        if (userID == cachedLocalUser.getIntID()) {
                           CustomDialogs.information(
                               context,
                               "Warning",

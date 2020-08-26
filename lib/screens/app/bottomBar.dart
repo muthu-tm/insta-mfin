@@ -6,14 +6,14 @@ import 'package:instamfin/screens/statistics/StatisticsHome.dart';
 import 'package:instamfin/screens/transaction/TransactionHome.dart';
 import 'package:instamfin/screens/settings/SettingsScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 import '../../app_localizations.dart';
 
 Widget bottomBar(BuildContext context) {
   Size size = Size(screenWidth(context, dividedBy: 5), 100);
   bool chitEnabled = false;
-  if (UserController().getCurrentUser().accPreferences.chitEnabled) {
+  if (cachedLocalUser.accPreferences.chitEnabled) {
     size = Size(screenWidth(context, dividedBy: 6), 100);
     chitEnabled = true;
   }

@@ -12,6 +12,7 @@ import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class ChitBookTab extends StatelessWidget {
   ChitBookTab(this._scaffoldKey, this.isPending, this.epoch, this.cardColor,
@@ -24,14 +25,19 @@ class ChitBookTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserPrimary _primary = UserController().getUserPrimary();
-
     return StreamBuilder(
       stream: isPending
-          ? ChitCollection().streamAllPendingChitByDate(_primary.financeID,
-              _primary.branchName, _primary.subBranchName, epoch)
-          : ChitCollection().streamAllChitByDate(_primary.financeID,
-              _primary.branchName, _primary.subBranchName, false, epoch),
+          ? ChitCollection().streamAllPendingChitByDate(
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
+              epoch)
+          : ChitCollection().streamAllChitByDate(
+              cachedLocalUser.primary.financeID,
+              cachedLocalUser.primary.branchName,
+              cachedLocalUser.primary.subBranchName,
+              false,
+              epoch),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> collSnap) {
         Widget child;
 
@@ -258,7 +264,6 @@ class ChitBookTab extends StatelessWidget {
     } else {
       CustomDialogs.actionWaiting(context, "Updating Collection");
       CollectionController _cc = CollectionController();
-      User _user = UserController().getCurrentUser();
       Map<String, dynamic> collDetails = {
         'collected_on': DateUtils.getUTCDateEpoch(DateTime.now())
       };
@@ -266,11 +271,11 @@ class ChitBookTab extends StatelessWidget {
           collection.collectionAmount - collection.getReceived();
       collDetails['transferred_mode'] = 0;
       collDetails['notes'] = "";
-      collDetails['collected_by'] = _user.name;
+      collDetails['collected_by'] = cachedLocalUser.name;
       collDetails['collected_from'] = "";
       collDetails['penalty_amount'] = 0;
       collDetails['created_at'] = DateTime.now();
-      collDetails['added_by'] = _user.mobileNumber;
+      collDetails['added_by'] = cachedLocalUser.getIntID();
       if (collection.collectionDate <
           (DateUtils.getCurrentUTCDate().millisecondsSinceEpoch))
         collDetails['is_paid_late'] = true;

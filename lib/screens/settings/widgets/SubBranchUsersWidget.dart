@@ -7,8 +7,8 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class SubBranchUsersWidget extends StatelessWidget {
   SubBranchUsersWidget(
@@ -114,8 +114,7 @@ class SubBranchUsersWidget extends StatelessWidget {
                         ),
                         onPressed: () {
                           int userID = subBranch.admins[index];
-                          UserController _uc = UserController();
-                          if (userID == _uc.getCurrentUserID()) {
+                          if (userID == cachedLocalUser.getIntID()) {
                             CustomDialogs.information(
                                 context,
                                 "Warning",

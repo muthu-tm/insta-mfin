@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/customer/ViewCollection.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
@@ -11,7 +10,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/collection_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/pdf/payment_receipt.dart';
 
 import '../../../app_localizations.dart';
@@ -297,8 +296,8 @@ class CollectionListWidget extends StatelessWidget {
                           "Generating Payment's Collection Report! Please wait...",
                           5),
                     );
-                    await PayReceipt().generateInvoice(
-                        UserController().getCurrentUser(), _payment, collList);
+                    await PayReceipt()
+                        .generateInvoice(cachedLocalUser, _payment, collList);
                   },
                 ),
               ),
@@ -382,7 +381,6 @@ class CollectionListWidget extends StatelessWidget {
     } else {
       CustomDialogs.actionWaiting(context, "Updating Collection");
       CollectionController _cc = CollectionController();
-      User _user = UserController().getCurrentUser();
       Map<String, dynamic> collDetails = {
         'collected_on': DateUtils.getUTCDateEpoch(DateTime.now())
       };
@@ -390,11 +388,11 @@ class CollectionListWidget extends StatelessWidget {
           collection.collectionAmount - collection.getReceived();
       collDetails['transferred_mode'] = 0;
       collDetails['notes'] = "";
-      collDetails['collected_by'] = _user.name;
+      collDetails['collected_by'] = cachedLocalUser.name;
       collDetails['collected_from'] = _payment.custName;
       collDetails['penalty_amount'] = 0;
       collDetails['created_at'] = DateTime.now();
-      collDetails['added_by'] = _user.mobileNumber;
+      collDetails['added_by'] = cachedLocalUser.getIntID();
       if (collection.collectionDate <
           (DateUtils.getCurrentUTCDate().millisecondsSinceEpoch))
         collDetails['is_paid_late'] = true;

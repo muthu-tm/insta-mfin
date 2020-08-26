@@ -2,14 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_collection.dart';
 import 'package:instamfin/db/models/chit_fund_details.dart';
-import 'package:instamfin/db/models/user_primary.dart';
 import 'package:instamfin/screens/chit/AddChitCollectionDetails.dart';
 import 'package:instamfin/screens/chit/ViewChitCollectionDetails.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 import '../../app_localizations.dart';
 
@@ -28,7 +27,6 @@ class ViewChitCollections extends StatefulWidget {
 
 class _ViewChitCollectionsState extends State<ViewChitCollections> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final UserPrimary _primary = UserController().getUserPrimary();
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +43,9 @@ class _ViewChitCollectionsState extends State<ViewChitCollections> {
   Widget _getBody() {
     return StreamBuilder(
       stream: ChitCollection().streamCollectionsForChit(
-          _primary.financeID,
-          _primary.branchName,
-          _primary.subBranchName,
+          cachedLocalUser.primary.financeID,
+          cachedLocalUser.primary.branchName,
+          cachedLocalUser.primary.subBranchName,
           widget.chitID,
           widget.fundDetails.chitNumber),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

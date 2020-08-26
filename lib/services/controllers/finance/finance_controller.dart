@@ -5,6 +5,7 @@ import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/branch_controller.dart';
 import 'package:instamfin/services/controllers/notification/n_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class FinanceController {
@@ -12,7 +13,7 @@ class FinanceController {
       String email, Address address, int dateOfRegistration) async {
     try {
       UserController _userController = UserController();
-      int addedBy = _userController.getCurrentUserID();
+      int addedBy = cachedLocalUser.getIntID();
 
       Finance financeCompany = Finance();
       financeCompany.setFianceName(name);

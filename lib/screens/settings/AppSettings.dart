@@ -9,8 +9,8 @@ import 'package:instamfin/screens/settings/payments/PaymentsHome.dart';
 import 'package:instamfin/screens/settings/payments/ReferAndEarnScreen.dart';
 import 'package:instamfin/screens/settings/payments/WalletHome.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class AppSettings extends StatelessWidget {
   @override
@@ -57,7 +57,8 @@ class AppSettings extends StatelessWidget {
                   size: 40.0,
                   color: CustomColors.mfinBlue,
                 ),
-                title: Text(AppLocalizations.of(context).translate('refer_and_earn')),
+                title: Text(
+                    AppLocalizations.of(context).translate('refer_and_earn')),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -80,8 +81,8 @@ class AppSettings extends StatelessWidget {
                 ),
                 title: Text('mFIN Wallet'),
                 onTap: () async {
-                  UserReferees ref = await UserReferees().getRegistrationBonus(
-                      UserController().getCurrentUserID().toString());
+                  UserReferees ref = await UserReferees()
+                      .getRegistrationBonus(cachedLocalUser.getID());
 
                   Navigator.push(
                     context,

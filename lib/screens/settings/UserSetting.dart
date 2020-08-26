@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
 import 'package:instamfin/screens/settings/widgets/UserProfileWidget.dart';
@@ -10,6 +9,7 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class UserSetting extends StatefulWidget {
   @override
@@ -19,7 +19,6 @@ class UserSetting extends StatefulWidget {
 class _UserSettingState extends State<UserSetting> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TextEditingController _pController = TextEditingController();
-  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,7 @@ class _UserSettingState extends State<UserSetting> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               PrimaryFinanceWidget("Finance Details", true),
-              UserProfileWidget(_user),
+              UserProfileWidget(cachedLocalUser),
               Padding(padding: EdgeInsets.only(top: 35, bottom: 35))
             ],
           ),
@@ -86,18 +85,18 @@ class _UserSettingState extends State<UserSetting> {
                 Text(
                     "Deactivating account won't remove your Finance Data.\n\nIf you wish to clean all, Deactivate your finance first, please!"),
                 Card(
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      obscureText: true,
-                      autofocus: false,
-                      controller: _pController,
-                      decoration: InputDecoration(
-                        hintText: 'Secret KEY',
-                        fillColor: CustomColors.mfinLightGrey,
-                        filled: true,
-                      ),
+                  child: TextFormField(
+                    textAlign: TextAlign.center,
+                    obscureText: true,
+                    autofocus: false,
+                    controller: _pController,
+                    decoration: InputDecoration(
+                      hintText: 'Secret KEY',
+                      fillColor: CustomColors.mfinLightGrey,
+                      filled: true,
                     ),
                   ),
+                ),
               ],
             ),
           ),
@@ -129,11 +128,11 @@ class _UserSettingState extends State<UserSetting> {
 
                 if (isValid) {
                   try {
-                    await _user.updateByID({
+                    await cachedLocalUser.updateByID({
                       'is_active': false,
                       'deactivated_at':
                           DateUtils.getUTCDateEpoch(DateTime.now())
-                    }, _user.mobileNumber.toString());
+                    }, cachedLocalUser.getID());
                     await AuthController().signOut();
                     Navigator.pushAndRemoveUntil(
                       context,

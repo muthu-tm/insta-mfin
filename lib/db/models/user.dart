@@ -9,7 +9,7 @@ import 'package:instamfin/db/models/sub_branch.dart';
 import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/db/models/user_referees.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/account_preferences.dart';
@@ -25,6 +25,8 @@ class User extends Model {
   String name;
   @JsonKey(name: 'mobile_number', nullable: false)
   int mobileNumber;
+  @JsonKey(name: 'country_code', defaultValue: 91)
+  int countryCode;
   @JsonKey(name: 'referrer_number', nullable: false)
   int referrerNumber;
   @JsonKey(name: 'emailID', defaultValue: "")
@@ -62,10 +64,7 @@ class User extends Model {
   int financeSubscription;
   int chitSubscription;
 
-  User(int mobileNumber) {
-    this.mobileNumber = mobileNumber;
-    this.address = new Address();
-  }
+  User();
 
   setGuid(String uid) {
     this.guid = uid;
@@ -128,11 +127,16 @@ class User extends Model {
   }
 
   DocumentReference getDocumentReference() {
-    return _userCollRef.document(this.mobileNumber.toString());
+    return _userCollRef.document(getID());
   }
 
   String getID() {
-    return this.mobileNumber.toString();
+    return this.countryCode.toString() + this.mobileNumber.toString();
+  }
+
+  int getIntID() {
+    return int.parse(
+        this.countryCode.toString() + this.mobileNumber.toString());
   }
 
   Stream<DocumentSnapshot> streamUserData() {
@@ -145,14 +149,6 @@ class User extends Model {
     this.isActive = true;
 
     await super.add(this.toJson());
-
-    return this;
-  }
-
-  Future<User> replace() async {
-    var user = await getByID("");
-
-    await super.upsert(this.toJson(), user['created_at']);
 
     return this;
   }
@@ -271,14 +267,14 @@ class User extends Model {
           this.getDocumentReference(), {'referrer_number': referrerNumber});
       await bWrite.commit();
 
-      UserController().getCurrentUser().referrerNumber = referrerNumber;
+      cachedLocalUser.referrerNumber = referrerNumber;
     } catch (err) {
       throw err;
     }
   }
 
-  Future updatePrimaryDetails(int mobileNumber, String guid, String financeID,
-      String branchName, String subBranchName) async {
+  Future updatePrimaryDetails(
+      String financeID, String branchName, String subBranchName) async {
     var data = {
       'primary': {
         'finance_id': financeID,
@@ -297,7 +293,7 @@ class User extends Model {
 
     if (subSnap.documents.isEmpty) {
       validityDays = 28;
-      smsCredits = 100;
+      smsCredits = 0;
     } else {
       for (int i = 0; i < subSnap.documents.length; i++) {
         Subscriptions _sub = Subscriptions.fromJson(subSnap.documents[i].data);
@@ -310,7 +306,7 @@ class User extends Model {
 
     if (!isExist) {
       var subData = {
-        "user_number": mobileNumber,
+        "user_number": cachedLocalUser.getIntID(),
         "guid": guid,
         "payment_id": "",
         "purchase_id": "",
@@ -329,7 +325,7 @@ class User extends Model {
     }
 
     bWrite.updateData(
-        getCollectionRef().document(mobileNumber.toString()), data);
+        getCollectionRef().document(cachedLocalUser.getID()), data);
     await bWrite.commit();
   }
 }

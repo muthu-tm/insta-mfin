@@ -7,6 +7,7 @@ import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class AddAdminPage extends StatefulWidget {
   AddAdminPage(this.title, this.groupName,
@@ -199,7 +200,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
 
   _onSearch() async {
     if (mobileNumber != "" &&
-        int.parse(mobileNumber) == UserController().getCurrentUserID()) {
+        int.parse(mobileNumber) == cachedLocalUser.mobileNumber) {
       _scaffoldKey.currentState.showSnackBar(CustomSnackBar.errorSnackBar(
           AppLocalizations.of(context).translate('type_user_mobile_no'), 3));
       return;
@@ -207,7 +208,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
 
     if (mobileNumber != null && mobileNumber.length == 10) {
       Map<String, dynamic> apiResponse =
-          await _userController.getByMobileNumber(int.parse(mobileNumber));
+          await _userController.getByMobileNumber(int.parse(mobileNumber), 91);
       if (apiResponse['is_success']) {
         Map<String, dynamic> resp = {};
         if (apiResponse['message'] == null) {

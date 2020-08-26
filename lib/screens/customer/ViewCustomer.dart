@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/chit/widgets/CustomerChitWidget.dart';
 import 'package:instamfin/screens/customer/ViewCustomerProfile.dart';
@@ -8,6 +7,7 @@ import 'package:instamfin/screens/customer/widgets/CustomerPaymentsListWidget.da
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/customer/AddPayment.dart';
@@ -22,7 +22,6 @@ import '../../app_localizations.dart';
 
 class ViewCustomer extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   ViewCustomer(this.customer);
 
@@ -72,7 +71,7 @@ class ViewCustomer extends StatelessWidget {
                             return;
                           }
 
-                          if (_user.financeSubscription <
+                          if (cachedLocalUser.financeSubscription <
                               DateUtils.getUTCDateEpoch(DateTime.now())) {
                             Navigator.pop(context);
                             _scaffoldKey.currentState.showSnackBar(
@@ -402,7 +401,7 @@ class ViewCustomer extends StatelessWidget {
                     )
                   : Container(),
               CustomerPaymentsListWidget(customer.id, _scaffoldKey),
-              if (_user.accPreferences.chitEnabled)
+              if (cachedLocalUser.accPreferences.chitEnabled)
                 CustomerChitsWidget(customer.mobileNumber),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 40, 0, 40),

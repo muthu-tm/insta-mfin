@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/model.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'notification.g.dart';
@@ -50,22 +51,22 @@ class Notification extends Model {
 
   create() async {
     this.createdAt = DateTime.now();
-    this.financeID = user.primary.financeID;
-    this.createdBy = user.name;
-    
+    this.financeID = cachedLocalUser.primary.financeID;
+    this.createdBy = cachedLocalUser.name;
+
     await getDocumentReference().setData(this.toJson());
   }
 
   Stream<QuerySnapshot> streamAllByType(List<int> type) {
     return getCollectionRef()
         .where('type', whereIn: type)
-        .where('user_number', isEqualTo: user.mobileNumber)
+        .where('user_number', isEqualTo: cachedLocalUser.getIntID())
         .snapshots();
   }
 
   Stream<QuerySnapshot> streamAll() {
     return getCollectionRef()
-        .where('user_number', isEqualTo: user.mobileNumber)
+        .where('user_number', isEqualTo: cachedLocalUser.getIntID())
         .snapshots();
   }
 }

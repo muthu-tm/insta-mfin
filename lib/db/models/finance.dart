@@ -4,6 +4,7 @@ import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/subscriptions.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,7 +18,7 @@ class Finance extends Model {
   @JsonKey(name: 'registration_id', nullable: true)
   String registrationID;
   @JsonKey(name: 'finance_id', nullable: true)
-  int financeID;
+  String financeID;
   @JsonKey(name: 'finance_name', nullable: true)
   String financeName;
   @JsonKey(name: 'email', nullable: true)
@@ -123,7 +124,7 @@ class Finance extends Model {
   }
 
   String getID() {
-    return this.financeID.toString();
+    return this.financeID;
   }
 
   Future<DocumentSnapshot> getFinance(String financeID) async {
@@ -158,9 +159,12 @@ class Finance extends Model {
   Future<Finance> create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = this.createdAt.microsecondsSinceEpoch;
     this.accountsData = new AccountsData();
     this.isActive = true;
+
+    DocumentReference finDocRef = getCollectionRef().document();
+    // Set finance_id
+    this.financeID = finDocRef.documentID;
 
     Subscriptions sub = Subscriptions();
 
@@ -169,11 +173,10 @@ class Finance extends Model {
     int smsCredits = 0;
     if (subSnap.documents.isEmpty) {
       validityDays = 28;
-      smsCredits = 100;
     }
     var data = {
-      "user_number": user.mobileNumber,
-      "guid": user.guid,
+      "user_number": cachedLocalUser.getIntID(),
+      "guid": cachedLocalUser.guid,
       "payment_id": "",
       "purchase_id": "",
       "recently_paid": 0,
@@ -181,7 +184,7 @@ class Finance extends Model {
       "finance_id": this.getID(),
       "chit_valid_till":
           DateUtils.getUTCDateEpoch(DateTime.now()) + (validityDays * 86400000),
-      "notes": "",
+      "notes": "FREE Subscription",
       "finance_valid_till":
           DateUtils.getUTCDateEpoch(DateTime.now()) + (validityDays * 86400000),
       "created_at": DateTime.now(),
@@ -190,7 +193,7 @@ class Finance extends Model {
 
     WriteBatch bWrite = Model.db.batch();
     bWrite.setData(sub.getCollectionRef().document(), data);
-    bWrite.setData(getCollectionRef().document(this.getID()), this.toJson());
+    bWrite.setData(finDocRef, this.toJson());
     await bWrite.commit();
     return this;
   }

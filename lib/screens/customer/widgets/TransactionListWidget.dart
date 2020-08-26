@@ -8,7 +8,7 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/pdf/pay_transaction_receipt.dart';
 
 import '../../../app_localizations.dart';
@@ -251,8 +251,8 @@ class TransactionListWidget extends StatelessWidget {
                           "Generating Payment's Transaction Report! Please wait...",
                           5),
                     );
-                    await PayTransactionReceipt().generateInvoice(
-                        UserController().getCurrentUser(), _payment, collList);
+                    await PayTransactionReceipt()
+                        .generateInvoice(cachedLocalUser, _payment, collList);
                   },
                 ),
               ),

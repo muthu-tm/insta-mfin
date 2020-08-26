@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/chit_customers.dart';
 import 'package:instamfin/db/models/chit_fund.dart';
 import 'package:instamfin/db/models/customer.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/chit/chit_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 import '../../app_localizations.dart';
 
@@ -22,7 +20,6 @@ class AddChitCustomers extends StatefulWidget {
 
 class _AddChitCustomersState extends State<AddChitCustomers> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final User user = UserController().getCurrentUser();
 
   List<Customer> _custList = [];
   List<ChitCustomers> customers = [];

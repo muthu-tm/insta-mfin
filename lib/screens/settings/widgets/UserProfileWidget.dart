@@ -5,12 +5,10 @@ import 'package:instamfin/screens/settings/editors/EditUSerProfile.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class UserProfileWidget extends StatelessWidget {
-  final UserController _uc = UserController();
-
   UserProfileWidget(this.user, [this.title = "Profile Details"]);
 
   final User user;
@@ -42,7 +40,7 @@ class UserProfileWidget extends StatelessWidget {
                 color: CustomColors.mfinBlue,
               ),
               onPressed: () {
-                if (user.mobileNumber != _uc.getCurrentUser().mobileNumber) {
+                if (user.mobileNumber != cachedLocalUser.mobileNumber) {
                   CustomDialogs.information(
                       context,
                       "Warning",
@@ -116,7 +114,7 @@ class UserProfileWidget extends StatelessWidget {
               autofocus: false,
             ),
           ),
-          (user.mobileNumber == _uc.getCurrentUser().mobileNumber)
+          (user.mobileNumber == cachedLocalUser.mobileNumber)
               ? ListTile(
                   leading: SizedBox(
                     width: 95,
@@ -136,8 +134,8 @@ class UserProfileWidget extends StatelessWidget {
                     decoration: InputDecoration(
                       fillColor: CustomColors.mfinWhite,
                       filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 1.0, horizontal: 5.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: CustomColors.mfinGrey)),
                     ),
@@ -145,15 +143,15 @@ class UserProfileWidget extends StatelessWidget {
                   ),
                   trailing: IconButton(
                     highlightColor: CustomColors.mfinAlertRed.withOpacity(0.5),
-                    tooltip: AppLocalizations.of(context).translate('change_password'),
+                    tooltip: AppLocalizations.of(context)
+                        .translate('change_password'),
                     icon: Icon(
                       Icons.edit,
                       size: 25.0,
                       color: CustomColors.mfinAlertRed.withOpacity(0.7),
                     ),
                     onPressed: () {
-                      if (user.mobileNumber ==
-                          _uc.getCurrentUser().mobileNumber) {
+                      if (user.mobileNumber == cachedLocalUser.mobileNumber) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(

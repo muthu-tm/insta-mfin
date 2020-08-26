@@ -2,9 +2,8 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/db/models/finance.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class Uploader {
   static void uploadImage(int type, String fileDir, File fileToUpload,
@@ -17,8 +16,8 @@ class Uploader {
     storageTaskSnapshot.ref.getDownloadURL().then((profilePathUrl) {
       print("Image uploaded; downloadURL - " + profilePathUrl);
       if (type == 0) {
-        updateUserData('profile_path_org', id, profilePathUrl);
-        UserController().getCurrentUser().profilePathOrg = profilePathUrl;
+        updateUserData('profile_path_org', profilePathUrl);
+        cachedLocalUser.profilePathOrg = profilePathUrl;
       } else if (type == 1)
         updateCustData('profile_path_org', id, profilePathUrl);
       else if (type == 2)
@@ -40,8 +39,8 @@ class Uploader {
     reference.getDownloadURL().then((profilePathUrl) {
       print("Resized image downloadURL - " + profilePathUrl);
       if (type == 0) {
-        updateUserData('profile_path', id, profilePathUrl);
-        UserController().getCurrentUser().profilePath = profilePathUrl;
+        updateUserData('profile_path', profilePathUrl);
+        cachedLocalUser.profilePath = profilePathUrl;
       } else if (type == 1)
         updateCustData('profile_path', id, profilePathUrl);
       else if (type == 2)
@@ -59,14 +58,13 @@ class Uploader {
   }
 
   static void updateUserData(
-      String field, int mobileNumber, String profilePathUrl) {
+      String field, String profilePathUrl) {
     try {
-      User user = User(mobileNumber);
-      user.update({field: profilePathUrl});
+      cachedLocalUser.update({field: profilePathUrl});
     } catch (err) {
       Analytics.reportError({
         "type": 'url_update_error',
-        'user_id': mobileNumber,
+        'user_id': cachedLocalUser.getID(),
         'path': profilePathUrl,
         'error': err.toString()
       }, 'storage');

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/RechargeAlertScreen.dart';
 import 'package:instamfin/screens/transaction/books/ChitBookTab.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class ChitBookHome extends StatefulWidget {
   @override
@@ -13,7 +12,6 @@ class ChitBookHome extends StatefulWidget {
 
 class _ChitBookHomeState extends State<ChitBookHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final User _user = UserController().getCurrentUser();
 
   bool hasValidSubscription = true;
 
@@ -21,7 +19,8 @@ class _ChitBookHomeState extends State<ChitBookHome> {
   void initState() {
     super.initState();
 
-    if (_user.chitSubscription < DateUtils.getUTCDateEpoch(DateTime.now())) {
+    if (cachedLocalUser.chitSubscription <
+        DateUtils.getUTCDateEpoch(DateTime.now())) {
       hasValidSubscription = false;
     }
   }

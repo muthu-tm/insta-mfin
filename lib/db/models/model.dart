@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 
 class Model {
   static final Firestore db = Firestore.instance;
-  final User user = UserController().getCurrentUser();
 
   CollectionReference getCollectionRef() {
     throw new Exception("Should be implemented by subclass");
@@ -77,7 +74,7 @@ class Model {
     String id;
     if (docID != null && docID != "") {
       id = docID;
-    } else if (this.getID() != null && this.getID() != null) {
+    } else if (this.getID() != null && this.getID() != "") {
       id = this.getID();
     } else {
       return null;

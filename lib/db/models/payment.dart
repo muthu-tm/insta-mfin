@@ -4,6 +4,7 @@ import 'package:instamfin/db/models/accounts_data.dart';
 import 'package:instamfin/db/models/collection.dart';
 import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -356,9 +357,10 @@ class Payment extends Model {
 
   Future<List<Payment>> getAllPayments() async {
     var paymentDocs = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .orderBy('payment_id')
         .getDocuments();
 
@@ -375,9 +377,9 @@ class Payment extends Model {
   Future create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
-    this.financeID = user.primary.financeID;
-    this.branchName = user.primary.branchName;
-    this.subBranchName = user.primary.subBranchName;
+    this.financeID = cachedLocalUser.primary.financeID;
+    this.branchName = cachedLocalUser.primary.branchName;
+    this.subBranchName = cachedLocalUser.primary.subBranchName;
     this.id = this.createdAt.microsecondsSinceEpoch;
 
     try {
@@ -390,7 +392,7 @@ class Payment extends Model {
       if (isExist != null) {
         throw 'Already a Loan exist with this LOAN ID - ${this.paymentID}';
       } else {
-        DocumentReference finDocRef = user.getFinanceDocReference();
+        DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
         // DocumentSnapshot doc = await finDocRef.get();
         // if (doc.exists) {
         //   AccountsData accData = AccountsData.fromJson(doc.data['accounts_data']);
@@ -459,9 +461,10 @@ class Payment extends Model {
 
   Future<List<Map<String, dynamic>>> getByPaymentIDRange(String minID) async {
     QuerySnapshot snap = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('payment_id', isGreaterThanOrEqualTo: minID)
         .getDocuments();
 
@@ -496,9 +499,10 @@ class Payment extends Model {
 
   Stream<QuerySnapshot> streamPayments(int customerID) {
     return getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('customer_id', isEqualTo: customerID)
         .orderBy('date_of_payment', descending: true)
         .snapshots();
@@ -506,9 +510,10 @@ class Payment extends Model {
 
   Future<List<Payment>> getAllPaymentsForCustomer(int customerID) async {
     var paymentDocs = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('customer_id', isEqualTo: customerID)
         .getDocuments();
 
@@ -524,9 +529,10 @@ class Payment extends Model {
 
   Future<List<Payment>> getAllByDateStatus(int epoch, bool isSettled) async {
     var paymentDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: user.primary..financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary..financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('date_of_payment', isEqualTo: epoch)
         .where('is_settled', isEqualTo: isSettled)
         .getDocuments();
@@ -544,9 +550,10 @@ class Payment extends Model {
   Future<List<Payment>> getAllByDateRangeStatus(
       int start, int end, bool isSettled) async {
     var paymentDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('date_of_payment', isGreaterThanOrEqualTo: start)
         .where('date_of_payment', isLessThanOrEqualTo: end)
         .where('is_settled', isEqualTo: isSettled)
@@ -564,9 +571,10 @@ class Payment extends Model {
 
   Future<List<Payment>> getAllPaymentsByDate(int epoch) async {
     var paymentDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('date_of_payment', isEqualTo: epoch)
         .getDocuments();
 
@@ -582,9 +590,10 @@ class Payment extends Model {
 
   Future<List<Payment>> getAllPaymentsByDateRange(int start, int end) async {
     var paymentDocs = await getGroupQuery()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name',
+            isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('date_of_payment', isGreaterThanOrEqualTo: start)
         .where('date_of_payment', isLessThanOrEqualTo: end)
         .getDocuments();
@@ -601,9 +610,9 @@ class Payment extends Model {
 
   Future<Payment> getPaymentByID(String paymentID) async {
     QuerySnapshot paymentDocs = await getCollectionRef()
-        .where('finance_id', isEqualTo: user.primary.financeID)
-        .where('branch_name', isEqualTo: user.primary.branchName)
-        .where('sub_branch_name', isEqualTo: user.primary.subBranchName)
+        .where('finance_id', isEqualTo: cachedLocalUser.primary.financeID)
+        .where('branch_name', isEqualTo: cachedLocalUser.primary.branchName)
+        .where('sub_branch_name', isEqualTo: cachedLocalUser.primary.subBranchName)
         .where('payment_id', isEqualTo: paymentID)
         .getDocuments();
 
@@ -670,7 +679,7 @@ class Payment extends Model {
     }
 
     try {
-      DocumentReference finDocRef = user.getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
       await Model.db.runTransaction(
         (tx) {
           return tx.get(finDocRef).then(
@@ -719,7 +728,7 @@ class Payment extends Model {
       throw 'Unable to fetch Total Received Amount! Try again Later.';
 
     try {
-      DocumentReference finDocRef = user.getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
       await Model.db.runTransaction(
         (tx) {
           return tx.get(finDocRef).then(
@@ -754,10 +763,10 @@ class Payment extends Model {
                 };
                 collDetails['collected_on'] = paymentJSON['settled_date'];
                 collDetails['created_at'] = DateTime.now();
-                collDetails['added_by'] = user.mobileNumber;
+                collDetails['added_by'] = cachedLocalUser.getIntID();
                 collDetails['is_paid_late'] = false;
                 collDetails['notes'] = paymentJSON['received_from'];
-                collDetails['collected_by'] = user.name;
+                collDetails['collected_by'] = cachedLocalUser.name;
                 collDetails['collected_from'] = paymentJSON['received_from'];
 
                 if (sSnap.documents.length > 0) {
@@ -878,7 +887,7 @@ class Payment extends Model {
         getDocumentReference(financeId, branchName, subBranchName, paymentID);
 
     try {
-      DocumentReference finDocRef = user.getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
       await Model.db.runTransaction(
         (tx) {
           return tx.get(finDocRef).then(
@@ -933,7 +942,7 @@ class Payment extends Model {
         getDocumentReference(financeId, branchName, subBranchName, paymentID);
 
     try {
-      DocumentReference finDocRef = user.getFinanceDocReference();
+      DocumentReference finDocRef = cachedLocalUser.getFinanceDocReference();
       await Model.db.runTransaction(
         (tx) {
           return tx.get(finDocRef).then(

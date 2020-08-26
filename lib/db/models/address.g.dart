@@ -5,7 +5,7 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
     ..street = json['street'] as String ?? ''
     ..city = json['city'] as String ?? ''
     ..state = json['state'] as String ?? ''
-    ..pincode = json['pincode'] as String ?? 00
+    ..pincode = json['pincode'] as String
     ..country = json['country'] as String ?? 'India';
 }
 

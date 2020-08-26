@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
@@ -20,10 +19,10 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import '../../app_localizations.dart';
 
 Widget openDrawer(BuildContext context) {
-  final User _user = UserController().getCurrentUser();
   final AuthController _authController = AuthController();
 
   return Drawer(
@@ -36,7 +35,7 @@ Widget openDrawer(BuildContext context) {
           child: Column(
             children: <Widget>[
               Container(
-                child: _user.getProfilePicPath() == ""
+                child: cachedLocalUser.getProfilePicPath() == ""
                     ? Container(
                         width: 90,
                         height: 90,
@@ -59,19 +58,34 @@ Widget openDrawer(BuildContext context) {
                                 return Center(
                                   child: ProfilePictureUpload(
                                       0,
-                                      _user.getProfilePicPath(),
-                                      _user.mobileNumber.toString(),
-                                      _user.mobileNumber),
+                                      cachedLocalUser.getProfilePicPath(),
+                                      cachedLocalUser.getID(),
+                                      cachedLocalUser.getIntID()),
                                 );
                               },
                             );
                           },
-                          child: Text(
-                            AppLocalizations.of(context).translate('upload'),
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: CustomColors.mfinLightGrey,
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Icon(
+                                  Icons.person,
+                                  size: 45.0,
+                                  color: CustomColors.mfinLightGrey,
+                                ),
+                              ),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('upload'),
+                                style: TextStyle(
+                                  fontSize: 8.0,
+                                  color: CustomColors.mfinLightGrey,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       )
@@ -80,8 +94,8 @@ Widget openDrawer(BuildContext context) {
                           children: <Widget>[
                             CircleAvatar(
                               radius: 45.0,
-                              backgroundImage:
-                                  NetworkImage(_user.getProfilePicPath()),
+                              backgroundImage: NetworkImage(
+                                  cachedLocalUser.getProfilePicPath()),
                               backgroundColor: Colors.transparent,
                             ),
                             Positioned(
@@ -97,9 +111,9 @@ Widget openDrawer(BuildContext context) {
                                       return Center(
                                         child: ProfilePictureUpload(
                                             0,
-                                            _user.getProfilePicPath(),
-                                            _user.mobileNumber.toString(),
-                                            _user.mobileNumber),
+                                            cachedLocalUser.getProfilePicPath(),
+                                            cachedLocalUser.getID(),
+                                            cachedLocalUser.getIntID()),
                                       );
                                     },
                                   );
@@ -120,7 +134,7 @@ Widget openDrawer(BuildContext context) {
                       ),
               ),
               Text(
-                _user.name,
+                cachedLocalUser.name,
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w500,
@@ -128,7 +142,7 @@ Widget openDrawer(BuildContext context) {
                 ),
               ),
               Text(
-                _user.mobileNumber.toString(),
+                cachedLocalUser.mobileNumber.toString(),
                 style: TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w500,
@@ -171,7 +185,7 @@ Widget openDrawer(BuildContext context) {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      BooksHome(_user.accPreferences.chitEnabled),
+                      BooksHome(cachedLocalUser.accPreferences.chitEnabled),
                   settings: RouteSettings(name: '/transactions/books'),
                 ),
               ),
@@ -251,7 +265,7 @@ Widget openDrawer(BuildContext context) {
             ),
           ],
         ),
-        _user.accPreferences.chitEnabled
+        cachedLocalUser.accPreferences.chitEnabled
             ? ListTile(
                 leading: Icon(Icons.local_florist,
                     color: CustomColors.mfinButtonGreen),

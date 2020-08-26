@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/customer.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class CustController {
@@ -22,7 +22,6 @@ class CustController {
       String guarantiedBy) async {
     try {
       Customer cust = Customer();
-      User user = uc.getCurrentUser();
 
       Customer customer = await cust.getByMobileNumber(mobileNumber);
       if (customer != null) {
@@ -39,17 +38,17 @@ class CustController {
       cust.setAge(age);
       cust.setProfession(profession);
       cust.setGuarantiedBy(guarantiedBy);
-      cust.setFinanceID(user.primary.financeID);
-      cust.setBranchName(user.primary.branchName);
-      cust.setSubBranchName(user.primary.subBranchName);
-      cust.setAddedBy(user.mobileNumber);
+      cust.setFinanceID(cachedLocalUser.primary.financeID);
+      cust.setBranchName(cachedLocalUser.primary.branchName);
+      cust.setSubBranchName(cachedLocalUser.primary.subBranchName);
+      cust.setAddedBy(cachedLocalUser.getIntID());
 
       await cust.create();
 
       Analytics.sendAnalyticsEvent({
         "type": 'customer_create',
         'cust_id': cust.getID(),
-        'finance_id': user.primary.financeID,
+        'finance_id': cachedLocalUser.primary.financeID,
       }, 'customer');
 
       return CustomResponse.getSuccesReponse(cust.toJson());

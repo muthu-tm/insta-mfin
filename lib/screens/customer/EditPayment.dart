@@ -6,7 +6,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 import '../../app_localizations.dart';
 
@@ -22,8 +22,7 @@ class EditPayment extends StatefulWidget {
 class _EditPaymentState extends State<EditPayment> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AccountPreferences accPref =
-      UserController().getCurrentUser().accPreferences;
+  final AccountPreferences accPref = cachedLocalUser.accPreferences;
 
   TextEditingController totalAmountController = TextEditingController();
   TextEditingController principalAmountController = TextEditingController();

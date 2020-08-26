@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/payment.dart';
-import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/transaction/payment_controller.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/app_localizations.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class TransactionCollectionBuilder extends StatelessWidget {
   final PaymentController _pc = PaymentController();
-  final User _user = UserController().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Payment>>(
-      future: _user.preferences.transactionGroupBy == 0
+      future: cachedLocalUser.preferences.transactionGroupBy == 0
           ? _pc.getPaymentsByDate(DateUtils.getUTCDateEpoch(DateTime.now()))
-          : _user.preferences.transactionGroupBy == 1
+          : cachedLocalUser.preferences.transactionGroupBy == 1
               ? _pc.getThisWeekPayments()
               : _pc.getThisMonthPayments(),
       builder: (BuildContext context, AsyncSnapshot<List<Payment>> snapshot) {

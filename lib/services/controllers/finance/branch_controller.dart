@@ -5,7 +5,7 @@ import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/finance/finance_controller.dart';
 import 'package:instamfin/services/controllers/finance/sub_branch_controller.dart';
 import 'package:instamfin/services/controllers/notification/n_utils.dart';
-import 'package:instamfin/services/controllers/user/user_controller.dart';
+import 'package:instamfin/services/controllers/user/user_service.dart';
 import 'package:instamfin/services/utils/response_utils.dart';
 
 class BranchController {
@@ -35,7 +35,7 @@ class BranchController {
       FinanceController _financeController = FinanceController();
       List<int> admins = await _financeController.getAllAdmins(financeID);
       newBranch.addAdmins(admins);
-      newBranch.setAddedBy(UserController().getCurrentUserID());
+      newBranch.setAddedBy(cachedLocalUser.getIntID());
 
       Branch branch = await newBranch.create(financeID);
 
