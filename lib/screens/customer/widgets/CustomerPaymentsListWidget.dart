@@ -55,7 +55,7 @@ class CustomerPaymentsListWidget extends StatelessWidget {
                           if (payment.isSettled) {
                             // _scaffoldKey.currentState
                             //     .showSnackBar(CustomSnackBar.errorSnackBar(
-                            //   "You cannot Edit already 'SETTLED' Payment!}",
+                            //   "You cannot Edit already 'SETTLED' Payment!",
                             //   3,
                             // ));
                             await forceRemove(context, payment,

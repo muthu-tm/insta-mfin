@@ -14,7 +14,6 @@ class Uploader {
     StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
 
     storageTaskSnapshot.ref.getDownloadURL().then((profilePathUrl) {
-      print("Image uploaded; downloadURL - " + profilePathUrl);
       if (type == 0) {
         updateUserData('profile_path', profilePathUrl);
         cachedLocalUser.profilePath = profilePathUrl;

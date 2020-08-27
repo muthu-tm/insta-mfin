@@ -8,6 +8,7 @@ import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
+import 'package:instamfin/screens/utils/url_launcher_utils.dart';
 import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
   int countryCode = 91;
 
   bool _passwordVisible = true;
+  bool termsAgreed = true;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   final TextEditingController _phoneNumberController = TextEditingController();
@@ -60,7 +62,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(5.0),
+            padding: EdgeInsets.all(10.0),
             child: ClipRRect(
               child: Image.asset(
                 "images/icons/logo.png",
@@ -68,6 +70,40 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                 width: 80,
               ),
             ),
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(width: 5),
+              Icon(Icons.info, color: CustomColors.mfinAlertRed, size: 20.0),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                      text: AppLocalizations.of(context)
+                          .translate('we_will_send'),
+                      style: TextStyle(
+                          color: CustomColors.mfinBlue,
+                          fontWeight: FontWeight.w400)),
+                  TextSpan(
+                      text: AppLocalizations.of(context)
+                          .translate('one_time_password'),
+                      style: TextStyle(
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w700)),
+                  TextSpan(
+                      text: AppLocalizations.of(context)
+                          .translate('to_mobile_no'),
+                      style: TextStyle(
+                          color: CustomColors.mfinBlue,
+                          fontWeight: FontWeight.w400)),
+                ])),
+              ),
+              SizedBox(width: 5),
+            ],
           ),
           Padding(
             padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
@@ -164,53 +200,85 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SizedBox(width: 5),
-              Icon(Icons.info, color: CustomColors.mfinAlertRed, size: 20.0),
-              SizedBox(width: 10.0),
+              Checkbox(
+                value: termsAgreed,
+                onChanged: (bool val) {
+                  setState(() {
+                    termsAgreed = val;
+                  });
+                },
+              ),
+              SizedBox(width: 5.0),
               Expanded(
-                child: RichText(
-                    text: TextSpan(children: [
-                  TextSpan(
-                      text: AppLocalizations.of(context)
-                          .translate('we_will_send'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "I agree to the Fourcup Inc",
                       style: TextStyle(
-                          color: CustomColors.mfinBlue,
-                          fontWeight: FontWeight.w400)),
-                  TextSpan(
-                      text: AppLocalizations.of(context)
-                          .translate('one_time_password'),
-                      style: TextStyle(
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w700)),
-                  TextSpan(
-                      text: AppLocalizations.of(context)
-                          .translate('to_mobile_no'),
-                      style: TextStyle(
-                          color: CustomColors.mfinBlue,
-                          fontWeight: FontWeight.w400)),
-                ])),
+                          fontFamily: 'Georgia', color: CustomColors.mfinBlack),
+                    ),
+                    Row(
+                      children: [
+                        FlatButton(
+                          padding: EdgeInsets.all(0),
+                          onPressed: () => UrlLauncherUtils.launchURL(
+                              "https://fourcup.com/terms-of-services/"),
+                          child: Text(
+                            "Terms of Services",
+                            style: TextStyle(
+                                fontFamily: 'Georgia',
+                                color: CustomColors.mfinBlue,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text(
+                          " & ",
+                          style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlack),
+                        ),
+                        FlatButton(
+                          padding: EdgeInsets.all(0),
+                          onPressed: () => UrlLauncherUtils.launchURL(
+                              "https://fourcup.com/privacy-policy/"),
+                          child: Text(
+                            "Privacy Policy",
+                            style: TextStyle(
+                                fontFamily: 'Georgia',
+                                color: CustomColors.mfinBlue,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               SizedBox(width: 5),
             ],
           ),
           SizedBox(height: 10),
           RaisedButton(
-            elevation: 16.0,
-            onPressed: startPhoneAuth,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                AppLocalizations.of(context).translate('get_otp'),
-                style: TextStyle(
-                  color: CustomColors.mfinButtonGreen,
-                  fontSize: 18.0,
-                ),
+            padding: EdgeInsets.only(right: 25, left: 25, top: 5, bottom: 5),
+            elevation: 10.0,
+            disabledElevation: 5.0,
+            textColor: CustomColors.mfinButtonGreen,
+            onPressed: termsAgreed ? startPhoneAuth : null,
+            disabledColor: CustomColors.mfinGrey,
+            disabledTextColor: CustomColors.mfinBlack,
+            child: Text(
+              AppLocalizations.of(context).translate('get_otp'),
+              style: TextStyle(
+                fontFamily: 'Georgia',
+                fontSize: 18.0,
               ),
             ),
             color: CustomColors.mfinBlue,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(5.0),
             ),
           ),
           Padding(padding: EdgeInsets.all(25.0)),

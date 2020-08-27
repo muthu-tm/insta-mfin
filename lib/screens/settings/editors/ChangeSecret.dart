@@ -22,10 +22,11 @@ class _ChangeSecretState extends State<ChangeSecret> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('change_secret_key')),
+        title:
+            Text(AppLocalizations.of(context).translate('change_secret_key')),
         backgroundColor: CustomColors.mfinBlue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -59,12 +60,16 @@ class _ChangeSecretState extends State<ChangeSecret> {
               elevation: 5.0,
               child: Column(
                 children: <Widget>[
-                  RowHeaderText(textName: AppLocalizations.of(context).translate('new_secret_key')),
+                  RowHeaderText(
+                      textName: AppLocalizations.of(context)
+                          .translate('new_secret_key')),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: TextFormField(
                       textAlign: TextAlign.start,
                       keyboardType: TextInputType.number,
+                      maxLength: 4,
+                      maxLengthEnforced: true,
                       decoration: InputDecoration(
                         labelStyle: TextStyle(
                           color: CustomColors.mfinBlue,
@@ -85,7 +90,9 @@ class _ChangeSecretState extends State<ChangeSecret> {
                       },
                     ),
                   ),
-                  RowHeaderText(textName: AppLocalizations.of(context).translate('confirm_secret_key')),
+                  RowHeaderText(
+                      textName: AppLocalizations.of(context)
+                          .translate('confirm_secret_key')),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: TextFormField(
@@ -108,10 +115,12 @@ class _ChangeSecretState extends State<ChangeSecret> {
                       autofocus: false,
                       validator: (value) {
                         if (value.isEmpty) {
-                          return AppLocalizations.of(context).translate('reenter_secret_key');
+                          return AppLocalizations.of(context)
+                              .translate('reenter_secret_key');
                         } else {
                           if (secretKey != value) {
-                            return AppLocalizations.of(context).translate('secret_key_mismatch');
+                            return AppLocalizations.of(context)
+                                .translate('secret_key_mismatch');
                           }
                           confirmKey = value;
                           return null;
@@ -147,7 +156,9 @@ class _ChangeSecretState extends State<ChangeSecret> {
       } else {
         Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(CustomSnackBar.successSnackBar(
-            AppLocalizations.of(context).translate('secret_key_updated_successfully'), 2));
+            AppLocalizations.of(context)
+                .translate('secret_key_updated_successfully'),
+            2));
         await Future.delayed(Duration(seconds: 1));
         Navigator.pop(context);
       }

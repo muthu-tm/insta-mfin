@@ -7,7 +7,6 @@ class UserFCM {
   Future getPlatformDetails() async {
     String fcmToken = await _fcm.getToken();
 
-    // Save it to Firestore
     if (fcmToken != null) {
       var data = {
         'token': fcmToken,
@@ -16,7 +15,6 @@ class UserFCM {
         'version': Platform.operatingSystemVersion,
         'local_name': Platform.localeName
       };
-
       return data;
     }
 
