@@ -5,9 +5,11 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instamfin/screens/app/TakePicturePage.dart';
+import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/storage/image_uploader.dart';
+import 'package:instamfin/services/utils/constants.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../app_localizations.dart';
@@ -52,7 +54,6 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                   : widget.type == 1
                       ? AppLocalizations.of(context).translate('customer_photo')
                       : AppLocalizations.of(context).translate('finance_logo'),
-              
               style: TextStyle(
                   color: CustomColors.mfinBlack,
                   fontSize: 20.0,
@@ -100,7 +101,8 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 padding: EdgeInsets.all(5),
                                 color: CustomColors.mfinBlue,
                                 child: Text(
-                                  AppLocalizations.of(context).translate('select_image'),
+                                  AppLocalizations.of(context)
+                                      .translate('select_image'),
                                   style: TextStyle(
                                       color: CustomColors.mfinButtonGreen,
                                       fontSize: 14.0,
@@ -119,7 +121,8 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 color:
                                     CustomColors.mfinAlertRed.withOpacity(0.5),
                                 child: Text(
-                                  AppLocalizations.of(context).translate('take_picture'),
+                                  AppLocalizations.of(context)
+                                      .translate('take_picture'),
                                   style: TextStyle(
                                       color: CustomColors.mfinBlack,
                                       fontSize: 14.0,
@@ -166,7 +169,8 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 padding: EdgeInsets.all(5),
                                 color: CustomColors.mfinBlue,
                                 child: Text(
-                                  AppLocalizations.of(context).translate('change'),
+                                  AppLocalizations.of(context)
+                                      .translate('change'),
                                   style: TextStyle(
                                       color: CustomColors.mfinButtonGreen,
                                       fontSize: 14.0,
@@ -186,7 +190,8 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                 padding: EdgeInsets.all(5),
                                 color: CustomColors.mfinBlue,
                                 child: Text(
-                                  AppLocalizations.of(context).translate('upload'),
+                                  AppLocalizations.of(context)
+                                      .translate('upload'),
                                   style: TextStyle(
                                       color: CustomColors.mfinButtonGreen,
                                       fontSize: 14.0,
@@ -262,8 +267,8 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
       Uploader.uploadImage(
         widget.type,
         widget.type == 0
-            ? "user_profile_org"
-            : widget.type == 1 ? "cust_profile_org" : "finance_profile_org",
+            ? user_profile_folder
+            : widget.type == 1 ? cust_profile_folder : fin_profile_folder,
         imageFile,
         widget.fileName,
         widget.id,
@@ -272,9 +277,16 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
             Navigator.pop(context);
             Navigator.pop(context);
             Navigator.pop(context);
+          } else if (widget.type == 1) {
+            Navigator.pop(context);
+            Navigator.pop(context);
           } else {
-            Navigator.pop(context);
-            Navigator.pop(context);
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (BuildContext context) => UserFinanceSetup(),
+              ),
+              (Route<dynamic> route) => false,
+            );
           }
         },
       );
@@ -283,34 +295,38 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
 
   Future<File> fixExifRotation(String imagePath) async {
     final originalFile = File(imagePath);
-    List<int> imageBytes = await originalFile.readAsBytes();
+    try {
+      List<int> imageBytes = await originalFile.readAsBytes();
+      final originalImage = img.decodeImage(imageBytes);
 
-    final originalImage = img.decodeImage(imageBytes);
+      final height = originalImage.height;
+      final width = originalImage.width;
 
-    final height = originalImage.height;
-    final width = originalImage.width;
+      if (height >= width) {
+        return originalFile;
+      }
+      final exifData = await readExifFromBytes(imageBytes);
+      img.Image fixedImage;
 
-    if (height >= width) {
+      print(
+          'Rotating image necessary' + exifData['Image Orientation'].printable);
+      if (exifData['Image Orientation'].printable.contains('90 CW') ||
+          exifData['Image Orientation'].printable.contains('Horizontal')) {
+        fixedImage = img.copyRotate(originalImage, 90);
+      } else if (exifData['Image Orientation'].printable.contains('180')) {
+        fixedImage = img.copyRotate(originalImage, -90);
+      } else if (exifData['Image Orientation'].printable.contains('CCW')) {
+        fixedImage = img.copyRotate(originalImage, 180);
+      } else {
+        fixedImage = img.copyRotate(originalImage, 0);
+      }
+
+      final fixedFile =
+          await originalFile.writeAsBytes(img.encodePng(fixedImage));
+
+      return fixedFile;
+    } catch (err) {
       return originalFile;
     }
-    final exifData = await readExifFromBytes(imageBytes);
-    img.Image fixedImage;
-
-    print('Rotating image necessary' + exifData['Image Orientation'].printable);
-    if (exifData['Image Orientation'].printable.contains('90 CW') ||
-        exifData['Image Orientation'].printable.contains('Horizontal')) {
-      fixedImage = img.copyRotate(originalImage, 90);
-    } else if (exifData['Image Orientation'].printable.contains('180')) {
-      fixedImage = img.copyRotate(originalImage, -90);
-    } else if (exifData['Image Orientation'].printable.contains('CCW')) {
-      fixedImage = img.copyRotate(originalImage, 180);
-    } else {
-      fixedImage = img.copyRotate(originalImage, 0);
-    }
-
-    final fixedFile =
-        await originalFile.writeAsBytes(img.encodePng(fixedImage));
-
-    return fixedFile;
   }
 }

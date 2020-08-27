@@ -10,6 +10,7 @@ import 'package:instamfin/db/models/user_preferences.dart';
 import 'package:instamfin/db/models/user_referees.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/utils/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instamfin/db/models/account_preferences.dart';
@@ -35,8 +36,6 @@ class User extends Model {
   String password;
   @JsonKey(name: 'gender', defaultValue: "")
   String gender;
-  @JsonKey(name: 'profile_path_org', defaultValue: "")
-  String profilePathOrg;
   @JsonKey(name: 'profile_path', defaultValue: "")
   String profilePath;
   @JsonKey(name: 'date_of_birth', defaultValue: "")
@@ -94,8 +93,8 @@ class User extends Model {
     this.lastSignInTime = dateTime;
   }
 
-  setProfilePathOrg(String displayPath) {
-    this.profilePathOrg = displayPath;
+  setProfilePath(String displayPath) {
+    this.profilePath = displayPath;
   }
 
   setPrimary(UserPrimary primary) {
@@ -113,8 +112,24 @@ class User extends Model {
   String getProfilePicPath() {
     if (this.profilePath != null && this.profilePath != "")
       return this.profilePath;
-    else if (this.profilePathOrg != null && this.profilePathOrg != "")
-      return this.profilePathOrg;
+    else
+      return "";
+  }
+
+  String getSmallProfilePicPath() {
+    if (this.profilePath != null && this.profilePath != "")
+      return this
+          .profilePath
+          .replaceFirst(firebase_storage_path, image_kit_path + ik_small_size);
+    else
+      return "";
+  }
+
+  String getMediumProfilePicPath() {
+    if (this.profilePath != null && this.profilePath != "")
+      return this
+          .profilePath
+          .replaceFirst(firebase_storage_path, image_kit_path + ik_medium_size);
     else
       return "";
   }

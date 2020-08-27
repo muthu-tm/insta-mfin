@@ -19,7 +19,7 @@ class AuthService {
       user.countryCode = countryCode;
       user.setName(name);
       user.setGuid(uid);
-      String hKey = HashGenerator.hmacGenerator(password, user.getID());
+      String hKey = HashGenerator.hmacForSecretKey(password, user.getID());
       user.setPassword(hKey);
       user.setPreferences(UserPreferences.fromJson(UserPreferences().toJson()));
       user.setPrimary(UserPrimary.fromJson(UserPrimary().toJson()));

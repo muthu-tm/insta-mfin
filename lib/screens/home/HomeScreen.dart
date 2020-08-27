@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/collection.dart';
@@ -716,7 +717,7 @@ class HomeScreen extends StatelessWidget {
                                 return Center(
                                   child: ProfilePictureUpload(
                                       2,
-                                      fin.getProfilePicPath(),
+                                      fin.getMediumProfilePicPath(),
                                       fin.getID(),
                                       cachedLocalUser.getIntID()),
                                 );
@@ -749,14 +750,34 @@ class HomeScreen extends StatelessWidget {
                       height: 100,
                       child: Stack(
                         children: <Widget>[
-                          CircleAvatar(
-                            radius: 50.0,
-                            backgroundImage:
-                                NetworkImage(snapshot.data.getProfilePicPath()),
-                            backgroundColor: Colors.transparent,
+                          SizedBox(
+                            width: 100.0,
+                            height: 100.0,
+                            child: Center(
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    fin.getMediumProfilePicPath(),
+                                imageBuilder: (context, imageProvider) =>
+                                    CircleAvatar(
+                                  radius: 50.0,
+                                  backgroundImage: imageProvider,
+                                  backgroundColor: Colors.transparent,
+                                ),
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                errorWidget: (context, url, error) => Icon(
+                                  Icons.error,
+                                  size: 35,
+                                ),
+                                fadeOutDuration: Duration(seconds: 1),
+                                fadeInDuration: Duration(seconds: 2),
+                              ),
+                            ),
                           ),
                           Positioned(
-                            bottom: -12,
+                            bottom: -8,
                             left: 40,
                             child: FlatButton(
                               onPressed: () {
@@ -768,7 +789,7 @@ class HomeScreen extends StatelessWidget {
                                     return Center(
                                       child: ProfilePictureUpload(
                                           2,
-                                          fin.getProfilePicPath(),
+                                          fin.getMediumProfilePicPath(),
                                           fin.getID(),
                                           cachedLocalUser.getIntID()),
                                     );
@@ -777,11 +798,11 @@ class HomeScreen extends StatelessWidget {
                               },
                               child: CircleAvatar(
                                 backgroundColor: CustomColors.mfinButtonGreen,
-                                radius: 10,
+                                radius: 15,
                                 child: Icon(
                                   Icons.edit,
                                   color: CustomColors.mfinBlue,
-                                  size: 15.0,
+                                  size: 20.0,
                                 ),
                               ),
                             ),

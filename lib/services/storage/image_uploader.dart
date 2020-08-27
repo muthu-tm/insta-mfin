@@ -16,29 +16,6 @@ class Uploader {
     storageTaskSnapshot.ref.getDownloadURL().then((profilePathUrl) {
       print("Image uploaded; downloadURL - " + profilePathUrl);
       if (type == 0) {
-        updateUserData('profile_path_org', profilePathUrl);
-        cachedLocalUser.profilePathOrg = profilePathUrl;
-      } else if (type == 1)
-        updateCustData('profile_path_org', id, profilePathUrl);
-      else if (type == 2)
-        updateFinanceData('profile_path_org', fileName, id, profilePathUrl);
-    }).catchError((err) {
-      Analytics.reportError({
-        "type": 'image_upload_error',
-        'user_id': id,
-        'error': err.toString()
-      }, 'storage');
-    });
-    await Future.delayed(Duration(seconds: 8));
-
-    filePath = '${fileDir.replaceAll('_org', "")}/$fileName.png';
-    reference = FirebaseStorage.instance.ref().child(filePath);
-
-    if (reference == null) await Future.delayed(Duration(seconds: 5));
-
-    reference.getDownloadURL().then((profilePathUrl) {
-      print("Resized image downloadURL - " + profilePathUrl);
-      if (type == 0) {
         updateUserData('profile_path', profilePathUrl);
         cachedLocalUser.profilePath = profilePathUrl;
       } else if (type == 1)
@@ -46,9 +23,8 @@ class Uploader {
       else if (type == 2)
         updateFinanceData('profile_path', fileName, id, profilePathUrl);
     }).catchError((err) {
-      print(err.toString());
       Analytics.reportError({
-        "type": 'image_resize_error',
+        "type": 'image_upload_error',
         'user_id': id,
         'error': err.toString()
       }, 'storage');

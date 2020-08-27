@@ -70,7 +70,7 @@ class UserController {
   bool authCheck(String secretKey) {
     try {
       String hashKey =
-          HashGenerator.hmacGenerator(secretKey, cachedLocalUser.getID());
+          HashGenerator.hmacForSecretKey(secretKey, cachedLocalUser.getID());
       if (hashKey != cachedLocalUser.password) {
         return false;
       }
@@ -215,7 +215,7 @@ class UserController {
   Future updateSecretKey(String key) async {
     try {
       String hashKey =
-          HashGenerator.hmacGenerator(key, cachedLocalUser.getID());
+          HashGenerator.hmacForSecretKey(key, cachedLocalUser.getID());
 
       await cachedLocalUser
           .update({'password': hashKey, 'updated_at': DateTime.now()});

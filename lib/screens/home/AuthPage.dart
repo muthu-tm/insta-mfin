@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/app_localizations.dart';
 import 'package:instamfin/db/models/user.dart';
@@ -205,11 +206,31 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
                               color: CustomColors.mfinLightGrey,
                             ),
                           )
-                        : CircleAvatar(
-                            radius: 45.0,
-                            backgroundImage:
-                                NetworkImage(widget._user.getProfilePicPath()),
-                            backgroundColor: Colors.transparent,
+                        : SizedBox(
+                            width: 100.0,
+                            height: 100.0,
+                            child: Center(
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    widget._user.getMediumProfilePicPath(),
+                                imageBuilder: (context, imageProvider) =>
+                                    CircleAvatar(
+                                  radius: 45.0,
+                                  backgroundImage: imageProvider,
+                                  backgroundColor: Colors.transparent,
+                                ),
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                errorWidget: (context, url, error) => Icon(
+                                  Icons.error,
+                                  size: 35,
+                                ),
+                                fadeOutDuration: Duration(seconds: 1),
+                                fadeInDuration: Duration(seconds: 2),
+                              ),
+                            ),
                           ),
                   ),
                   Text(
@@ -429,8 +450,8 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
               AppLocalizations.of(context).translate('your_secret_key'), 2));
       return;
     } else {
-      String hashKey = HashGenerator.hmacGenerator(
-          _pController.text, _user.getID());
+      String hashKey =
+          HashGenerator.hmacForSecretKey(_pController.text, _user.getID());
       if (hashKey != _user.password) {
         widget._scaffoldKey.currentState.showSnackBar(
             CustomSnackBar.errorSnackBar(

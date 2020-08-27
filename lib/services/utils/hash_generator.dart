@@ -3,12 +3,22 @@ import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
 
 class HashGenerator {
+  static String hmacForSecretKey(String value, String key) {
+    var hmacKey = utf8.encode(key);
+    var bytes = utf8.encode(value);
+
+    var hmacmd5 = new Hmac(md5, hmacKey); // HMAC-MD5
+    var digest = hmacmd5.convert(bytes);
+
+    return digest.toString();
+  }
+
   static String hmacGenerator(String value, String key) {
     var hmacKey = utf8.encode(key);
     var bytes = utf8.encode(value);
 
-    var hmacSha256 = new Hmac(sha256, hmacKey); // HMAC-SHA256
-    var digest = hmacSha256.convert(bytes);
+    var hmacsha256 = new Hmac(sha256, hmacKey); // HMAC-SHA256
+    var digest = hmacsha256.convert(bytes);
 
     return digest.toString();
   }

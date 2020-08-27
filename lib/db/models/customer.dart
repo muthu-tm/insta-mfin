@@ -2,6 +2,7 @@ import 'package:instamfin/db/models/model.dart';
 import 'package:instamfin/db/models/address.dart';
 import 'package:instamfin/db/models/payment.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/utils/constants.dart';
 import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,8 +46,6 @@ class Customer extends Model {
   int addedBy;
   @JsonKey(name: 'status', nullable: true)
   int status;
-  @JsonKey(name: 'profile_path_org', defaultValue: "")
-  String profilePathOrg;
   @JsonKey(name: 'profile_path', defaultValue: "")
   String profilePath;
   @JsonKey(name: 'created_at', nullable: true)
@@ -92,8 +91,8 @@ class Customer extends Model {
     this.guarantiedBy = guarantiedBy;
   }
 
-  setProfilePathOrg(String displayPath) {
-    this.profilePathOrg = displayPath;
+  setProfilePath(String displayPath) {
+    this.profilePath = displayPath;
   }
 
   setFinanceID(String financeID) {
@@ -123,8 +122,33 @@ class Customer extends Model {
   String getProfilePicPath() {
     if (this.profilePath != "")
       return this.profilePath;
-    else if (this.profilePathOrg != "")
-      return this.profilePathOrg;
+    else
+      return "";
+  }
+
+  String getMiniProfilePicPath() {
+    if (this.profilePath != null && this.profilePath != "")
+      return this
+          .profilePath
+          .replaceFirst(firebase_storage_path, image_kit_path + ik_mini_size);
+    else
+      return "";
+  }
+
+  String getSmallProfilePicPath() {
+    if (this.profilePath != null && this.profilePath != "")
+      return this
+          .profilePath
+          .replaceFirst(firebase_storage_path, image_kit_path + ik_small_size);
+    else
+      return "";
+  }
+
+  String getMediumProfilePicPath() {
+    if (this.profilePath != null && this.profilePath != "")
+      return this
+          .profilePath
+          .replaceFirst(firebase_storage_path, image_kit_path + ik_medium_size);
     else
       return "";
   }

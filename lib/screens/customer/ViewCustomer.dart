@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
@@ -8,6 +9,7 @@ import 'package:instamfin/screens/home/UserFinanceSetup.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/screens/customer/EditCustomer.dart';
 import 'package:instamfin/screens/customer/AddPayment.dart';
@@ -278,10 +280,10 @@ class ViewCustomer extends StatelessWidget {
                                 return Center(
                                   child: ProfilePictureUpload(
                                       1,
-                                      customer.getProfilePicPath(),
-                                      customer.financeID +
-                                          '_' +
+                                      customer.getMediumProfilePicPath(),
+                                      HashGenerator.hmacGenerator(
                                           customer.id.toString(),
+                                          customer.financeID),
                                       customer.id),
                                 );
                               },
@@ -314,11 +316,31 @@ class ViewCustomer extends StatelessWidget {
                         margin: EdgeInsets.all(5),
                         child: Stack(
                           children: <Widget>[
-                            CircleAvatar(
-                              radius: 45.0,
-                              backgroundImage:
-                                  NetworkImage(customer.getProfilePicPath()),
-                              backgroundColor: Colors.transparent,
+                            SizedBox(
+                              width: 95.0,
+                              height: 95.0,
+                              child: Center(
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      customer.getMediumProfilePicPath(),
+                                  imageBuilder: (context, imageProvider) =>
+                                      CircleAvatar(
+                                    radius: 45.0,
+                                    backgroundImage: imageProvider,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.error,
+                                    size: 35,
+                                  ),
+                                  fadeOutDuration: Duration(seconds: 1),
+                                  fadeInDuration: Duration(seconds: 2),
+                                ),
+                              ),
                             ),
                             Positioned(
                               bottom: -5,
@@ -333,10 +355,10 @@ class ViewCustomer extends StatelessWidget {
                                       return Center(
                                         child: ProfilePictureUpload(
                                             1,
-                                            customer.getProfilePicPath(),
-                                            customer.financeID +
-                                                '_' +
+                                            customer.getMediumProfilePicPath(),
+                                            HashGenerator.hmacGenerator(
                                                 customer.id.toString(),
+                                                customer.financeID),
                                             customer.id),
                                       );
                                     },

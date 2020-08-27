@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/db/models/customer.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/customer/ViewCustomer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 
 import '../../../app_localizations.dart';
 
@@ -65,10 +67,10 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                                 return Center(
                                   child: ProfilePictureUpload(
                                       1,
-                                      customer.getProfilePicPath(),
-                                      customer.financeID +
-                                          '_' +
+                                      customer.getMediumProfilePicPath(),
+                                      HashGenerator.hmacGenerator(
                                           customer.id.toString(),
+                                          customer.financeID),
                                       customer.id),
                                 );
                               },
@@ -103,11 +105,30 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                         children: <Widget>[
                           Padding(
                             padding: EdgeInsets.all(5),
-                            child: CircleAvatar(
-                              radius: 30.0,
-                              backgroundImage:
-                                  NetworkImage(customer.getProfilePicPath()),
-                              backgroundColor: Colors.transparent,
+                            child: SizedBox(
+                              width: 60.0,
+                              height: 60.0,
+                              child: Center(
+                                child: CachedNetworkImage(
+                                  imageUrl: customer.getMiniProfilePicPath(),
+                                  imageBuilder: (context, imageProvider) =>
+                                      CircleAvatar(
+                                    radius: 30.0,
+                                    backgroundImage: imageProvider,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.error,
+                                    size: 35,
+                                  ),
+                                  fadeOutDuration: Duration(seconds: 1),
+                                  fadeInDuration: Duration(seconds: 2),
+                                ),
+                              ),
                             ),
                           ),
                           Positioned(
@@ -123,10 +144,10 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                                     return Center(
                                       child: ProfilePictureUpload(
                                           1,
-                                          customer.getProfilePicPath(),
-                                          customer.financeID +
-                                              '_' +
+                                          customer.getMediumProfilePicPath(),
+                                          HashGenerator.hmacGenerator(
                                               customer.id.toString(),
+                                              customer.financeID),
                                           customer.id),
                                     );
                                   },

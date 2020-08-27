@@ -10,7 +10,6 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..emailID = json['emailID'] as String ?? ''
     ..password = json['password'] as String
     ..gender = json['gender'] as String ?? ''
-    ..profilePathOrg = json['profile_path_org'] as String ?? ''
     ..profilePath = json['profile_path'] as String ?? ''
     ..dateOfBirth = json['date_of_birth'] as int
     ..address = json['address'] == null
@@ -54,7 +53,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'emailID': instance.emailID ?? '',
       'password': instance.password,
       'gender': instance.gender ?? '',
-      'profile_path_org': instance.profilePathOrg ?? '',
       'profile_path': instance.profilePath ?? '',
       'date_of_birth': instance.dateOfBirth,
       'address': instance.address?.toJson(),

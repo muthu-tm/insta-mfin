@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
@@ -20,6 +21,7 @@ import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/services/controllers/auth/auth_controller.dart';
 import 'package:instamfin/services/controllers/user/user_controller.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/utils/hash_generator.dart';
 import '../../app_localizations.dart';
 
 Widget openDrawer(BuildContext context) {
@@ -58,8 +60,12 @@ Widget openDrawer(BuildContext context) {
                                 return Center(
                                   child: ProfilePictureUpload(
                                       0,
-                                      cachedLocalUser.getProfilePicPath(),
-                                      cachedLocalUser.getID(),
+                                      cachedLocalUser.getMediumProfilePicPath(),
+                                      HashGenerator.hmacGenerator(
+                                          cachedLocalUser.getID(),
+                                          cachedLocalUser
+                                              .createdAt.millisecondsSinceEpoch
+                                              .toString()),
                                       cachedLocalUser.getIntID()),
                                 );
                               },
@@ -92,11 +98,31 @@ Widget openDrawer(BuildContext context) {
                     : Container(
                         child: Stack(
                           children: <Widget>[
-                            CircleAvatar(
-                              radius: 45.0,
-                              backgroundImage: NetworkImage(
-                                  cachedLocalUser.getProfilePicPath()),
-                              backgroundColor: Colors.transparent,
+                            SizedBox(
+                              width: 95.0,
+                              height: 95.0,
+                              child: Center(
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      cachedLocalUser.getMediumProfilePicPath(),
+                                  imageBuilder: (context, imageProvider) =>
+                                      CircleAvatar(
+                                    radius: 45.0,
+                                    backgroundImage: imageProvider,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.error,
+                                    size: 35,
+                                  ),
+                                  fadeOutDuration: Duration(seconds: 1),
+                                  fadeInDuration: Duration(seconds: 2),
+                                ),
+                              ),
                             ),
                             Positioned(
                               bottom: -5,
@@ -111,8 +137,13 @@ Widget openDrawer(BuildContext context) {
                                       return Center(
                                         child: ProfilePictureUpload(
                                             0,
-                                            cachedLocalUser.getProfilePicPath(),
-                                            cachedLocalUser.getID(),
+                                            cachedLocalUser
+                                                .getMediumProfilePicPath(),
+                                            HashGenerator.hmacGenerator(
+                                                cachedLocalUser.getID(),
+                                                cachedLocalUser.createdAt
+                                                    .millisecondsSinceEpoch
+                                                    .toString()),
                                             cachedLocalUser.getIntID()),
                                       );
                                     },

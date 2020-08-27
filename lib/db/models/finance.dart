@@ -5,6 +5,7 @@ import 'package:instamfin/db/models/account_preferences.dart';
 import 'package:instamfin/db/models/subscriptions.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
+import 'package:instamfin/services/utils/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -37,8 +38,6 @@ class Finance extends Model {
   AccountPreferences preferences;
   @JsonKey(name: 'date_of_registration', nullable: true)
   int dateOfRegistration;
-  @JsonKey(name: 'profile_path_org', defaultValue: "")
-  String profilePathOrg;
   @JsonKey(name: 'profile_path', defaultValue: "")
   String profilePath;
   @JsonKey(name: 'added_by', nullable: true)
@@ -98,8 +97,8 @@ class Finance extends Model {
     this.accountsData = accountsData;
   }
 
-  setProfilePathOrg(String displayPath) {
-    this.profilePathOrg = displayPath;
+  setProfilePath(String displayPath) {
+    this.profilePath = displayPath;
   }
 
   setAddedBy(int mobileNumber) {
@@ -109,8 +108,24 @@ class Finance extends Model {
   String getProfilePicPath() {
     if (this.profilePath != "")
       return this.profilePath;
-    else if (this.profilePathOrg != "")
-      return this.profilePathOrg;
+    else
+      return "";
+  }
+
+  String getSmallProfilePicPath() {
+    if (this.profilePath != null && this.profilePath != "")
+      return this
+          .profilePath
+          .replaceFirst(firebase_storage_path, image_kit_path + ik_small_size);
+    else
+      return "";
+  }
+
+  String getMediumProfilePicPath() {
+    if (this.profilePath != null && this.profilePath != "")
+      return this
+          .profilePath
+          .replaceFirst(firebase_storage_path, image_kit_path + ik_medium_size);
     else
       return "";
   }
