@@ -16,31 +16,40 @@ Widget contactAndSupportDialog(context) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          ListTile(
-            leading: Icon(
-              Icons.headset_mic,
-              size: 35.0,
-              color: CustomColors.mfinBlue,
-            ),
-            title: Text(
-              AppLocalizations.of(context).translate('help_and_support'),
-              style: TextStyle(
-                  color: CustomColors.mfinPositiveGreen,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold),
+          Padding(
+            padding: EdgeInsets.only(top: 10, bottom: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.perm_phone_msg,
+                  size: 35.0,
+                  color: CustomColors.mfinBlue,
+                ),
+                Padding(padding: EdgeInsets.all(5)),
+                Text(
+                  // AppLocalizations.of(context).translate('help_and_support'),
+                  "mFIN Help Desk",
+                  style: TextStyle(
+                      color: CustomColors.mfinPositiveGreen,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
           Divider(
             color: CustomColors.mfinButtonGreen,
+            height: 0,
           ),
           SizedBox(height: 5),
           ClipRRect(
-              child: Image.asset(
-                "images/icons/logo.png",
-                height: 60,
-                width: 60,
-              ),
+            child: Image.asset(
+              "images/icons/logo.png",
+              height: 60,
+              width: 60,
             ),
+          ),
           SizedBox(height: 15),
           Text(
             AppLocalizations.of(context).translate('lost_need_help'),
@@ -87,13 +96,13 @@ Widget contactAndSupportDialog(context) {
                       'Please type your query/issue here with your mobile number.. We will get back to you ASAP!');
                 },
                 label: Text(
-                    AppLocalizations.of(context).translate('email'),
-                    style: TextStyle(
-                      color: CustomColors.mfinButtonGreen,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  AppLocalizations.of(context).translate('email'),
+                  style: TextStyle(
+                    color: CustomColors.mfinButtonGreen,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
                 color: CustomColors.mfinBlue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -112,13 +121,13 @@ Widget contactAndSupportDialog(context) {
                   UrlLauncherUtils.makePhoneCall(9361808580);
                 },
                 label: Text(
-                    AppLocalizations.of(context).translate('phone'),
-                    style: TextStyle(
-                      color: CustomColors.mfinButtonGreen,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  AppLocalizations.of(context).translate('phone'),
+                  style: TextStyle(
+                    color: CustomColors.mfinButtonGreen,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
                 color: CustomColors.mfinBlue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),

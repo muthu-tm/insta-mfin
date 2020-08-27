@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/NotificationHome.dart';
 import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/chit/ChitHome.dart';
@@ -12,6 +11,7 @@ import 'package:instamfin/screens/reports/ReportsHome.dart';
 import 'package:instamfin/screens/settings/FinanceSetting.dart';
 import 'package:instamfin/screens/settings/UserSetting.dart';
 import 'package:instamfin/screens/statistics/StatisticsHome.dart';
+import 'package:instamfin/screens/support/SupportScreen.dart';
 import 'package:instamfin/screens/transaction/ExpenseHome.dart';
 import 'package:instamfin/screens/transaction/JournalEntryHome.dart';
 import 'package:instamfin/screens/transaction/books/BooksHome.dart';
@@ -402,14 +402,12 @@ Widget openDrawer(BuildContext context) {
             AppLocalizations.of(context).translate('help_and_support'),
           ),
           onTap: () {
-            showDialog(
-              context: context,
-              routeSettings: RouteSettings(name: "/home/help"),
-              builder: (context) {
-                return Center(
-                  child: contactAndSupportDialog(context),
-                );
-              },
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SupportScreen(),
+                settings: RouteSettings(name: '/settings/app/support'),
+              ),
             );
           },
         ),

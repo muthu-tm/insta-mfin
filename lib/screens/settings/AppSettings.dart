@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instamfin/db/models/user_referees.dart';
-import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/appBar.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/settings/payments/PaymentsHome.dart';
 import 'package:instamfin/screens/settings/payments/ReferAndEarnScreen.dart';
 import 'package:instamfin/screens/settings/payments/WalletHome.dart';
+import 'package:instamfin/screens/support/SupportScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/app_localizations.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
@@ -106,14 +106,12 @@ class AppSettings extends StatelessWidget {
                 ),
                 title: Text('Help & Support'),
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    routeSettings: RouteSettings(name: "/home/help"),
-                    builder: (context) {
-                      return Center(
-                        child: contactAndSupportDialog(context),
-                      );
-                    },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SupportScreen(),
+                      settings: RouteSettings(name: '/settings/app/support'),
+                    ),
                   );
                 },
               ),

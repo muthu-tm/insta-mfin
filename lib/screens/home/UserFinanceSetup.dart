@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/home/AuthPage.dart';
 import 'package:instamfin/screens/home/HomeScreen.dart';
 import 'package:instamfin/screens/settings/widgets/PrimaryFinanceWidget.dart';
+import 'package:instamfin/screens/support/SupportScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/app_localizations.dart';
@@ -76,15 +76,13 @@ class UserFinanceSetup extends StatelessWidget {
             alignment: FractionalOffset.bottomCenter,
             child: FlatButton.icon(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  routeSettings: RouteSettings(name: "/home/help"),
-                  builder: (context) {
-                    return Center(
-                      child: contactAndSupportDialog(context),
-                    );
-                  },
-                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SupportScreen(),
+                      settings: RouteSettings(name: '/settings/app/support'),
+                    ),
+                  );
               },
               icon: Icon(
                 Icons.info,

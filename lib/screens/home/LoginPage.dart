@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instamfin/db/models/user.dart';
-import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/app/update_app.dart';
 import 'package:instamfin/screens/home/MobileSigninPage.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
+import 'package:instamfin/screens/support/SupportScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -235,14 +235,12 @@ class _LoginPageState extends State<LoginPage> {
             alignment: FractionalOffset.bottomCenter,
             child: FlatButton.icon(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  routeSettings: RouteSettings(name: "/home/help"),
-                  builder: (context) {
-                    return Center(
-                      child: contactAndSupportDialog(context),
-                    );
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SupportScreen(),
+                    settings: RouteSettings(name: '/settings/app/support'),
+                  ),
                 );
               },
               icon: Icon(
