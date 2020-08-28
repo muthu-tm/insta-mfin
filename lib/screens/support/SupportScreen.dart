@@ -17,7 +17,7 @@ class SupportScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.verified_user, color: CustomColors.mfinBlue),
               title: Text(
-                "User - Signup, Login & Logout",
+                "User - Signup & Login",
               ),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () async {
