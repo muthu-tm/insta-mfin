@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/NotificationListWidget.dart';
 import 'package:instamfin/screens/app/SearchAppBar.dart';
+import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/IconButton.dart';
@@ -99,6 +100,7 @@ class NotificationHome extends StatelessWidget {
                 CustomColors.mfinBlue, false, [2]),
           ],
         ),
+        bottomNavigationBar: bottomBar(context),
       ),
     );
   }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-class UserActionSupport extends StatelessWidget {
+class BooksSupport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Signup & Login"),
+        title: Text("Transactions - Notebooks"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -28,7 +28,7 @@ class UserActionSupport extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "SIGN UP: ",
+                      "Collections Book: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -56,18 +56,26 @@ class UserActionSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Open mFIN app and Click",
+                            text: "Today",
                             style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.mfinBlue,
+                              fontSize: 15.0,
                             ),
                           ),
                           TextSpan(
-                            text: " 'SIGN UP'",
+                            text: " - ",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: CustomColors.mfinPositiveGreen,
+                              color: CustomColors.mfinButtonGreen,
                               fontSize: 15.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Collections need to be collected today",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
                             ),
                           ),
                         ],
@@ -83,7 +91,24 @@ class UserActionSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Fill valid Mobile Number and details",
+                            text: "Pending",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.mfinBlue,
+                              fontSize: 15.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " - ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.mfinButtonGreen,
+                              fontSize: 15.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                "Collections those are all pending till today",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -102,34 +127,23 @@ class UserActionSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Agree to the policies and click",
+                            text: "Tomorrow",
                             style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " Get OTP",
-                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
                               color: CustomColors.mfinBlue,
                               fontSize: 15.0,
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: "D: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                        ),
-                        children: [
                           TextSpan(
-                            text:
-                                "Wait for 30sec to auto verify OTP or enter OTP manually",
+                            text: " - ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.mfinButtonGreen,
+                              fontSize: 15.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Collections need to be collected Tomorrow",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -154,7 +168,7 @@ class UserActionSupport extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "LOGIN: ",
+                      "Loan Book: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -182,7 +196,8 @@ class UserActionSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Enter your 4-digit Secret KEY to login",
+                            text:
+                                "Loans are grouped based on the User Preference",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -201,7 +216,7 @@ class UserActionSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "To Enable FingerPrint Login, goto ",
+                            text: "To Change the grouping, goto ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -209,68 +224,7 @@ class UserActionSupport extends StatelessWidget {
                           ),
                           TextSpan(
                             text:
-                                "Settings -> Preferences -> FingerPrint Login -> Enable",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlue,
-                              fontSize: 15.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: "C: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                        ),
-                        children: [
-                          TextSpan(
-                            text:
-                                "Login as different user or forgot Secret KEY?",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " click ",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "'Not you! or Forgot KEY?'",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlue,
-                              fontSize: 15.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: "D: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                        ),
-                        children: [
-                          TextSpan(
-                            text:
-                                "Enter user Mobile Number. Login using OTP by clicking ",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "'Get OTP'",
+                                "Settings -> Preferences -> Transactions Group By -> Select Daily/Weekly/Monthly",
                             style: TextStyle(
                               color: CustomColors.mfinBlue,
                               fontSize: 15.0,

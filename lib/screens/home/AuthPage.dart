@@ -280,6 +280,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
                     padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
                     child: Card(
                       child: TextFormField(
+                        keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         obscureText: true,
                         autofocus: false,

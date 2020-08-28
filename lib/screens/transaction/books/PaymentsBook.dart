@@ -11,7 +11,7 @@ class PaymentsBook extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Payments Book"),
+        title: Text("Loan Book"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -112,44 +112,45 @@ class PaymentsBook extends StatelessWidget {
     DateTime eDate = DateTime.now();
 
     return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        primary: false,
-        itemCount: 7,
-        itemBuilder: (BuildContext context, int index) {
-          DateTime endDate = eDate;
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      primary: false,
+      itemCount: 7,
+      itemBuilder: (BuildContext context, int index) {
+        DateTime endDate = eDate;
 
-          String eDateString = DateUtils.formatDate(eDate);
-          sDate = DateTime(eDate.year, eDate.month, 1, 0, 0, 0, 0, 0);
-          eDate = sDate.subtract(Duration(days: 1));
-          String sDateString = DateUtils.formatDate(sDate);
-          String tText = '$sDateString - $eDateString';
+        String eDateString = DateUtils.formatDate(eDate);
+        sDate = DateTime(eDate.year, eDate.month, 1, 0, 0, 0, 0, 0);
+        eDate = sDate.subtract(Duration(days: 1));
+        String sDateString = DateUtils.formatDate(sDate);
+        String tText = '$sDateString - $eDateString';
 
-          return Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Material(
-              elevation: 10.0,
-              borderRadius: BorderRadius.circular(10.0),
-              color: CustomColors.mfinLightGrey,
-              child: ExpansionTile(
-                leading: Icon(
-                  Icons.date_range,
-                  size: 35.0,
-                  color: CustomColors.mfinBlue,
-                ),
-                title: Text(
-                  tText,
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                children: <Widget>[
-                  PaymentListWidget(true, sDate, endDate),
-                ],
+        return Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Material(
+            elevation: 10.0,
+            borderRadius: BorderRadius.circular(10.0),
+            color: CustomColors.mfinLightGrey,
+            child: ExpansionTile(
+              leading: Icon(
+                Icons.date_range,
+                size: 35.0,
+                color: CustomColors.mfinBlue,
               ),
+              title: Text(
+                tText,
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              children: <Widget>[
+                PaymentListWidget(true, sDate, endDate),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

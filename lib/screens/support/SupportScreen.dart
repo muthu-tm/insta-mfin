@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
+import 'package:instamfin/screens/support/BooksSupport.dart';
 import 'package:instamfin/screens/support/UserActionSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
@@ -35,6 +36,47 @@ class SupportScreen extends StatelessWidget {
                 color: CustomColors.mfinGrey,
                 height: 0,
                 thickness: 1.0),
+            ListTile(
+              leading:
+                  Icon(Icons.account_balance, color: CustomColors.mfinBlue),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              title: Text(
+                "Finance",
+              ),
+              // onTap: () =>
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => FinanceSetting(),
+              //       settings: RouteSettings(name: '/settings/finance'),
+              //     ),
+              //   )
+            ),
+            Divider(
+                indent: 75.0,
+                color: CustomColors.mfinGrey,
+                height: 0,
+                thickness: 1.0),
+            ListTile(
+              leading: Icon(Icons.dashboard, color: CustomColors.mfinBlue),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              title: Text(
+                "Dashboard Details",
+              ),
+              // onTap: () =>
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => NotificationHome(),
+              //       settings: RouteSettings(name: '/notifications'),
+              //     ),
+              //   ),
+            ),
+            Divider(
+                indent: 75.0,
+                color: CustomColors.mfinGrey,
+                height: 0,
+                thickness: 1.0),
             ExpansionTile(
               title: Text(
                 "Transactions",
@@ -46,14 +88,14 @@ class SupportScreen extends StatelessWidget {
                     "Notebooks",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) =>
-                  //         BooksHome(cachedLocalUser.accPreferences.chitEnabled),
-                  //     settings: RouteSettings(name: '/transactions/books'),
-                  //   ),
-                  // ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BooksSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/books'),
+                    ),
+                  ),
                 ),
                 ListTile(
                   title: Text(
@@ -103,7 +145,7 @@ class SupportScreen extends StatelessWidget {
               leading:
                   Icon(Icons.supervisor_account, color: CustomColors.mfinBlue),
               title: Text(
-                "Customers",
+                "Loan & Collections",
               ),
               children: <Widget>[
                 ListTile(
@@ -210,47 +252,6 @@ class SupportScreen extends StatelessWidget {
               //     settings: RouteSettings(name: '/statistics'),
               //   ),
               // ),
-            ),
-            Divider(
-                indent: 75.0,
-                color: CustomColors.mfinGrey,
-                height: 0,
-                thickness: 1.0),
-            ListTile(
-              leading: Icon(Icons.dashboard, color: CustomColors.mfinBlue),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              title: Text(
-                "Dashboard Details",
-              ),
-              // onTap: () =>
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => NotificationHome(),
-              //       settings: RouteSettings(name: '/notifications'),
-              //     ),
-              //   ),
-            ),
-            Divider(
-                indent: 75.0,
-                color: CustomColors.mfinGrey,
-                height: 0,
-                thickness: 1.0),
-            ListTile(
-              leading:
-                  Icon(Icons.account_balance, color: CustomColors.mfinBlue),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              title: Text(
-                "Finance",
-              ),
-              // onTap: () =>
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => FinanceSetting(),
-              //       settings: RouteSettings(name: '/settings/finance'),
-              //     ),
-              //   )
             ),
             Divider(
                 indent: 75.0,
