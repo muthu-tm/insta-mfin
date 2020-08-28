@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
+import 'package:instamfin/screens/support/UserActionSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 class SupportScreen extends StatelessWidget {
@@ -20,13 +21,13 @@ class SupportScreen extends StatelessWidget {
               ),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () async {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => UserFinanceSetup(),
-                //     settings: RouteSettings(name: '/home'),
-                //   )
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserActionSupport(),
+                    settings: RouteSettings(name: '/settings/app/support/user'),
+                  ),
+                );
               },
             ),
             Divider(
@@ -319,8 +320,7 @@ class SupportScreen extends StatelessWidget {
               thickness: 1.0,
             ),
             ListTile(
-              leading:
-                  Icon(Icons.headset_mic, color: CustomColors.mfinBlue),
+              leading: Icon(Icons.headset_mic, color: CustomColors.mfinBlue),
               trailing: Icon(Icons.keyboard_arrow_right),
               title: Text(
                 "Contact Us",

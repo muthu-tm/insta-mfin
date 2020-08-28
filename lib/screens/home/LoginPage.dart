@@ -60,6 +60,32 @@ class _LoginPageState extends State<LoginPage> {
                 child: _getBody(),
               ),
             ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.miniCenterDocked,
+            floatingActionButton: FlatButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SupportScreen(),
+                    settings: RouteSettings(name: '/settings/app/support'),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.info,
+                color: CustomColors.mfinBlue,
+              ),
+              label: Text(
+                AppLocalizations.of(context).translate('help_support'),
+                style: TextStyle(
+                  fontFamily: 'Georgia',
+                  fontWeight: FontWeight.bold,
+                  color: CustomColors.mfinBlue,
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
           )
         : Center(
             child: SingleChildScrollView(
@@ -202,8 +228,8 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                     fontSize: 13.0,
                     fontFamily: 'Georgia',
-                    color: CustomColors.mfinAlertRed,
                     fontWeight: FontWeight.bold,
+                    color: CustomColors.mfinAlertRed.withOpacity(0.7),
                   ),
                 ),
                 FlatButton(
@@ -219,8 +245,8 @@ class _LoginPageState extends State<LoginPage> {
                     AppLocalizations.of(context).translate('sign_up'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: CustomColors.mfinBlue,
-                      fontSize: 18.0,
+                      color: CustomColors.mfinPositiveGreen,
+                      fontSize: 16.0,
                     ),
                   ),
                 ),
@@ -230,33 +256,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SizedBox(
             height: 30.0,
-          ),
-          Align(
-            alignment: FractionalOffset.bottomCenter,
-            child: FlatButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SupportScreen(),
-                    settings: RouteSettings(name: '/settings/app/support'),
-                  ),
-                );
-              },
-              icon: Icon(
-                Icons.info,
-                color: CustomColors.mfinBlue,
-              ),
-              label: Text(
-                AppLocalizations.of(context).translate('help_support'),
-                style: TextStyle(
-                  fontFamily: 'Georgia',
-                  fontWeight: FontWeight.bold,
-                  color: CustomColors.mfinBlue,
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
           ),
         ],
       ),

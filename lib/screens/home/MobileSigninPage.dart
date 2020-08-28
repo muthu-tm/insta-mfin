@@ -5,6 +5,7 @@ import 'package:instamfin/db/models/user.dart';
 import 'package:instamfin/screens/app/update_app.dart';
 import 'package:instamfin/screens/home/PhoneAuthVerify.dart';
 import 'package:instamfin/screens/home/UserFinanceSetup.dart';
+import 'package:instamfin/screens/support/SupportScreen.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomDialogs.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
@@ -46,6 +47,32 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
       backgroundColor: CustomColors.mfinLightGrey,
       body: SingleChildScrollView(
         child: _getBody(),
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButton: FlatButton.icon(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SupportScreen(),
+              settings: RouteSettings(name: '/settings/app/support'),
+            ),
+          );
+        },
+        icon: Icon(
+          Icons.info,
+          color: CustomColors.mfinBlue,
+        ),
+        label: Text(
+          AppLocalizations.of(context).translate('help_support'),
+          style: TextStyle(
+            fontFamily: 'Georgia',
+            fontWeight: FontWeight.bold,
+            color: CustomColors.mfinBlue,
+            fontSize: 16.0,
+          ),
+        ),
       ),
     );
   }
