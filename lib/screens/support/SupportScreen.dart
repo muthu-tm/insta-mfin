@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/support/BooksSupport.dart';
+import 'package:instamfin/screens/support/DeactivateSupport.dart';
+import 'package:instamfin/screens/support/ProfileSupport.dart';
 import 'package:instamfin/screens/support/UserActionSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
+
+import 'PrimaryFinanceSupport.dart';
 
 class SupportScreen extends StatelessWidget {
   @override
@@ -258,21 +262,67 @@ class SupportScreen extends StatelessWidget {
                 color: CustomColors.mfinGrey,
                 height: 0,
                 thickness: 1.0),
-            ListTile(
+            ExpansionTile(
+              title: Text("User Settings"),
               leading: Icon(Icons.settings, color: CustomColors.mfinBlue),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              title: Text(
-                "User Settings",
-              ),
-              // onTap: () =>
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => UserSetting(),
-              //       settings: RouteSettings(name: '/settings/user'),
-              //     ),
-              //   )
+              children: [
+                ListTile(
+                  title: Text(
+                    "Edit Primary Finance",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                   onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrimaryFinanceSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/finance'),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "Edit Profile",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                   onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/profile'),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "Deactivate Account",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                   onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DeactivateSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/deactivate'),
+                    ),
+                  ),
+                ),
+              ],
             ),
+            // ListTile(
+            //   leading: Icon(Icons.settings, color: CustomColors.mfinBlue),
+            //   trailing: Icon(Icons.keyboard_arrow_right),
+            //   title:
+            //   onTap: () =>
+            //      Navigator.push(
+            //        context,
+            //        MaterialPageRoute(
+            //          builder: (context) => UserSetting(),
+            //          settings: RouteSettings(name: '/settings/user'),
+            //       ),
+            //      )
+            // ),
             Divider(
                 indent: 75.0,
                 color: CustomColors.mfinGrey,
