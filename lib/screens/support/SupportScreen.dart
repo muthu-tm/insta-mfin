@@ -271,12 +271,12 @@ class SupportScreen extends StatelessWidget {
                     "Edit Primary Finance",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                   onTap: () => Navigator.push(
+                  onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => PrimaryFinanceSupport(),
                       settings:
-                          RouteSettings(name: '/settings/app/support/finance'),
+                          RouteSettings(name: '/settings/app/support/profile'),
                     ),
                   ),
                 ),
@@ -285,7 +285,7 @@ class SupportScreen extends StatelessWidget {
                     "Edit Profile",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                   onTap: () => Navigator.push(
+                  onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProfileSupport(),
@@ -299,49 +299,55 @@ class SupportScreen extends StatelessWidget {
                     "Deactivate Account",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                   onTap: () => Navigator.push(
+                  onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => DeactivateSupport(),
                       settings:
-                          RouteSettings(name: '/settings/app/support/deactivate'),
+                          RouteSettings(name: '/settings/app/support/profile'),
                     ),
                   ),
                 ),
               ],
             ),
-            // ListTile(
-            //   leading: Icon(Icons.settings, color: CustomColors.mfinBlue),
-            //   trailing: Icon(Icons.keyboard_arrow_right),
-            //   title:
-            //   onTap: () =>
-            //      Navigator.push(
-            //        context,
-            //        MaterialPageRoute(
-            //          builder: (context) => UserSetting(),
-            //          settings: RouteSettings(name: '/settings/user'),
-            //       ),
-            //      )
-            // ),
             Divider(
                 indent: 75.0,
                 color: CustomColors.mfinGrey,
                 height: 0,
                 thickness: 1.0),
-            ListTile(
+            ExpansionTile(
+              title: Text("Preferences"),
               leading: Icon(Icons.palette, color: CustomColors.mfinBlue),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              title: Text(
-                "Preferences",
-              ),
-              // onTap: () =>
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => UserSetting(),
-              //       settings: RouteSettings(name: '/settings/user'),
-              //     ),
-              //   )
+              children: [
+                ListTile(
+                  title: Text(
+                    "Finance Preferences",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrimaryFinanceSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/finance'),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "User Preferences",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/profile'),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Divider(
                 indent: 75.0,
