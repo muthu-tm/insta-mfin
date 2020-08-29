@@ -9,6 +9,7 @@ import 'package:instamfin/screens/utils/CustomColors.dart';
 
 import 'FinancePrefSupport.dart';
 import 'PrimaryFinanceSupport.dart';
+import 'StatisticsSupport.dart';
 import 'UserPerfsSupport.dart';
 
 class SupportScreen extends StatelessWidget {
@@ -252,13 +253,13 @@ class SupportScreen extends StatelessWidget {
               title: Text(
                 "Statistics",
               ),
-              // onTap: () => Navigator.pushAndRemoveUntil(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => StatisticsHome(),
-              //     settings: RouteSettings(name: '/statistics'),
-              //   ),
-              // ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StatisticsSupport(),
+                  settings: RouteSettings(name: '/settings/app/support/statistics'),
+                ),
+              ),
             ),
             Divider(
                 indent: 75.0,

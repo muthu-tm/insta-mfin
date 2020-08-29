@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-class ReportsSupport extends StatelessWidget {
+class StatisticsSupport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Reports"),
+        title: Text("Statistics"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -28,7 +28,7 @@ class ReportsSupport extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Category Wise Report:",
+                      "View Statistics based on Collection Mode:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -57,7 +57,7 @@ class ReportsSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To download report category wise (Customer, Payment, Collection, Journal, Expense), go to Reports",
+                                "To view graphical representation of statistics based on collection mode (Daily, Weekly, and Monthly) go to Statistics",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -76,26 +76,8 @@ class ReportsSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Select the category from the dropdown",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: "C: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Click on Get Report button",
+                            text:
+                                "Select the collection mode in the tabs to view the charts",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -120,7 +102,7 @@ class ReportsSupport extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Download Reports with Custom Date Range:",
+                      "Choose Different Charts and Graphs:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -149,7 +131,7 @@ class ReportsSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To download a report with custom date (today, this week/month, custom range) range, go to Reports",
+                                "To view statistics in different graphical representation (line graph or Bar chart), go to Statistics",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -169,26 +151,7 @@ class ReportsSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "Select the date range option from the dropdown",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: "C: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Click on Get Report button",
+                                "Select the chart/graph option from the dropdown",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -213,7 +176,7 @@ class ReportsSupport extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Download Reports in Different format:",
+                      "View Statistics for Multiple Categories:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -242,46 +205,7 @@ class ReportsSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To download a report with different (pdf and xls) format, go to Reports",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: "B: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                        ),
-                        children: [
-                          TextSpan(
-                            text:
-                                "Select the format option from the dropdown",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: "C: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Click on Get Report button",
+                                "To view statistics for multiple categories (Payments, Collections, Expenses, and Journals), go to Statistics",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
