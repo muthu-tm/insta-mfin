@@ -6,7 +6,9 @@ import 'package:instamfin/screens/support/ProfileSupport.dart';
 import 'package:instamfin/screens/support/UserActionSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import 'FinancePrefSupport.dart';
 import 'PrimaryFinanceSupport.dart';
+import 'UserPerfsSupport.dart';
 
 class SupportScreen extends StatelessWidget {
   @override
@@ -327,9 +329,9 @@ class SupportScreen extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PrimaryFinanceSupport(),
+                      builder: (context) => FinancePrefSupport(),
                       settings:
-                          RouteSettings(name: '/settings/app/support/finance'),
+                          RouteSettings(name: '/settings/app/support/preferences'),
                     ),
                   ),
                 ),
@@ -341,9 +343,9 @@ class SupportScreen extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProfileSupport(),
+                      builder: (context) => UserPrefSupport(),
                       settings:
-                          RouteSettings(name: '/settings/app/support/profile'),
+                          RouteSettings(name: '/settings/app/support/preferences'),
                     ),
                   ),
                 ),
