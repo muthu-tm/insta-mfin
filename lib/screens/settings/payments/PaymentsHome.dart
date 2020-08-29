@@ -149,7 +149,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                       _buildFrontWidget(context, plan, tileColor, textColor),
                   innerTopWidget: _buildInnerTopWidget(context, plan),
                   innerBottomWidget: _buildInnerBottomWidget(context, plan),
-                  cellSize: Size(MediaQuery.of(context).size.width, 120),
+                  cellSize: Size(MediaQuery.of(context).size.width, 131),
                   padding: EdgeInsets.all(5.0),
                   animationDuration: Duration(milliseconds: 300),
                   borderRadius: 10,
