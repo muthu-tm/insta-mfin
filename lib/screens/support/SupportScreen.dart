@@ -3,6 +3,7 @@ import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/support/BooksSupport.dart';
 import 'package:instamfin/screens/support/DeactivateSupport.dart';
 import 'package:instamfin/screens/support/ProfileSupport.dart';
+import 'package:instamfin/screens/support/ReportsSupport.dart';
 import 'package:instamfin/screens/support/UserActionSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
@@ -232,13 +233,13 @@ class SupportScreen extends StatelessWidget {
               title: Text(
                 "Reports",
               ),
-              // onTap: () => Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => ReportsHome(),
-              //     settings: RouteSettings(name: '/reports'),
-              //   ),
-              // ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReportsSupport(),
+                  settings: RouteSettings(name: '/settings/app/support/reports'),
+                ),
+              ),
             ),
             Divider(
                 indent: 75.0,
