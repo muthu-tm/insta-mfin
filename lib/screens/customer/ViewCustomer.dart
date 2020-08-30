@@ -144,7 +144,7 @@ class ViewCustomer extends StatelessWidget {
                               onTap: () {
                                 if (customer.mobileNumber != null) {
                                   UrlLauncherUtils.makePhoneCall(
-                                      customer.mobileNumber);
+                                      customer.getContactNumber());
                                 } else {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(
@@ -166,7 +166,7 @@ class ViewCustomer extends StatelessWidget {
                               onTap: () {
                                 if (customer.mobileNumber != null) {
                                   UrlLauncherUtils.makeSMS(
-                                      customer.mobileNumber);
+                                      customer.getContactNumber());
                                 } else {
                                   Navigator.pop(context);
                                   _scaffoldKey.currentState.showSnackBar(

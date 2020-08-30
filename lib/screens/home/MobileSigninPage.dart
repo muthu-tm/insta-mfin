@@ -44,7 +44,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinLightGrey,
+      backgroundColor: CustomColors.mfinGrey,
       body: SingleChildScrollView(
         child: _getBody(),
       ),
@@ -103,8 +103,8 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               SizedBox(width: 5),
-              Icon(Icons.info, color: CustomColors.mfinAlertRed, size: 20.0),
-              SizedBox(width: 10.0),
+              Icon(Icons.error_outline, color: CustomColors.mfinWhite, size: 20.0),
+              SizedBox(width: 5.0),
               Expanded(
                 child: RichText(
                     text: TextSpan(children: [
@@ -156,8 +156,8 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                         filled: true,
                         suffixIcon: Icon(
                           Icons.phone_android,
-                          color: CustomColors.mfinFadedButtonGreen,
-                          size: 35.0,
+                          color: CustomColors.mfinButtonGreen,
+                          size: 30.0,
                         ),
                         hintText: AppLocalizations.of(context)
                             .translate('enter_phone_number'),
@@ -184,8 +184,8 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                   filled: true,
                   suffixIcon: Icon(
                     Icons.sentiment_satisfied,
-                    color: CustomColors.mfinFadedButtonGreen,
-                    size: 35.0,
+                    color: CustomColors.mfinButtonGreen,
+                    size: 30.0,
                   ),
                 ),
               ),
@@ -210,8 +210,8 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
                       _passwordVisible
                           ? Icons.visibility_off
                           : Icons.visibility,
-                      color: CustomColors.mfinFadedButtonGreen,
-                      size: 35.0,
+                      color: CustomColors.mfinButtonGreen,
+                      size: 30.0,
                     ),
                     onPressed: () {
                       setState(() {

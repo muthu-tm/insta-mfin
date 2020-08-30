@@ -48,7 +48,7 @@ class CustomerListWidget extends StatelessWidget {
                         icon: Icons.call,
                         onTap: () {
                           if (_cust.mobileNumber != null) {
-                            UrlLauncherUtils.makePhoneCall(_cust.mobileNumber);
+                            UrlLauncherUtils.makePhoneCall(_cust.getContactNumber());
                           } else {
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
@@ -65,7 +65,7 @@ class CustomerListWidget extends StatelessWidget {
                         icon: Icons.message,
                         onTap: () {
                           if (_cust.mobileNumber != null) {
-                            UrlLauncherUtils.makeSMS(_cust.mobileNumber);
+                            UrlLauncherUtils.makeSMS(_cust.getContactNumber());
                           } else {
                             _scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(

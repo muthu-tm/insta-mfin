@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/url_launcher_utils.dart';
+import 'package:instamfin/services/utils/constants.dart';
 
 import '../../app_localizations.dart';
 
@@ -22,15 +23,16 @@ Widget contactAndSupportDialog(context) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.perm_phone_msg,
+                  Icons.live_help,
                   size: 35.0,
                   color: CustomColors.mfinBlue,
                 ),
                 Padding(padding: EdgeInsets.all(5)),
                 Text(
                   // AppLocalizations.of(context).translate('help_and_support'),
-                  "mFIN Help Desk",
+                  "mFIN - Help Desk",
                   style: TextStyle(
+                      fontFamily: 'Georgia',
                       color: CustomColors.mfinPositiveGreen,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold),
@@ -72,6 +74,7 @@ Widget contactAndSupportDialog(context) {
             AppLocalizations.of(context).translate('contact_us'),
             textAlign: TextAlign.center,
             style: TextStyle(
+                fontFamily: 'Georgia',
                 color: CustomColors.mfinBlue,
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold),
@@ -85,7 +88,7 @@ Widget contactAndSupportDialog(context) {
               ),
               RaisedButton.icon(
                 icon: Icon(
-                  Icons.email,
+                  Icons.contact_mail,
                   color: CustomColors.mfinLightGrey,
                 ),
                 elevation: 15.0,
@@ -105,7 +108,7 @@ Widget contactAndSupportDialog(context) {
                 ),
                 color: CustomColors.mfinBlue,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
               ),
               Spacer(
@@ -113,12 +116,12 @@ Widget contactAndSupportDialog(context) {
               ),
               RaisedButton.icon(
                 icon: Icon(
-                  Icons.phone,
+                  Icons.contact_phone,
                   color: CustomColors.mfinLightGrey,
                 ),
                 elevation: 15.0,
                 onPressed: () {
-                  UrlLauncherUtils.makePhoneCall(9361808580);
+                  UrlLauncherUtils.makePhoneCall(support_number);
                 },
                 label: Text(
                   AppLocalizations.of(context).translate('phone'),
@@ -130,7 +133,7 @@ Widget contactAndSupportDialog(context) {
                 ),
                 color: CustomColors.mfinBlue,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
               ),
               Spacer(

@@ -125,8 +125,8 @@ Widget openDrawer(BuildContext context) {
                               ),
                             ),
                             Positioned(
-                              bottom: -5,
-                              left: 30,
+                              bottom: -8,
+                              left: 35,
                               child: FlatButton(
                                 onPressed: () {
                                   showDialog(
@@ -154,8 +154,8 @@ Widget openDrawer(BuildContext context) {
                                   radius: 15,
                                   child: Icon(
                                     Icons.edit,
-                                    color: CustomColors.mfinWhite,
-                                    size: 25.0,
+                                    color: CustomColors.mfinBlue,
+                                    size: 20.0,
                                   ),
                                 ),
                               ),

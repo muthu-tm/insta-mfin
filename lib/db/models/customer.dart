@@ -20,6 +20,8 @@ class Customer extends Model {
   int id;
   @JsonKey(name: 'mobile_number', nullable: true)
   int mobileNumber;
+  @JsonKey(name: 'country_code', defaultValue: 91)
+  int countryCode;
   @JsonKey(name: 'first_name', nullable: true)
   String firstName;
   @JsonKey(name: 'last_name', nullable: true)
@@ -117,6 +119,14 @@ class Customer extends Model {
 
   setStatus(int status) {
     this.status = status;
+  }
+
+  int getContactNumber() {
+    if (mobileNumber != null)
+      return int.parse(
+          this.countryCode.toString() + this.mobileNumber.toString());
+    else
+      return null;
   }
 
   String getProfilePicPath() {
@@ -431,6 +441,7 @@ class Customer extends Model {
   create() async {
     this.createdAt = DateTime.now();
     this.updatedAt = DateTime.now();
+    this.countryCode = 91;
     this.id = this.createdAt.microsecondsSinceEpoch;
 
     await super.add(this.toJson());

@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     return widget.isNewScaffold
         ? Scaffold(
             key: _scaffoldKey,
-            backgroundColor: CustomColors.mfinLightGrey,
+            backgroundColor: CustomColors.mfinGrey,
             body: Center(
               child: SingleChildScrollView(
                 child: _getBody(),
@@ -102,7 +102,8 @@ class _LoginPageState extends State<LoginPage> {
             color: CustomColors.mfinBlue,
             elevation: 2.0,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0)),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
             child: SizedBox(
               height: 350,
               width: MediaQuery.of(context).size.width * 0.85,
@@ -127,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                         textAlign: TextAlign.center,
                         controller: _nController,
                         autofocus: false,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           prefixText: " +91 ",
                           prefixStyle: TextStyle(
@@ -140,8 +141,8 @@ class _LoginPageState extends State<LoginPage> {
                           filled: true,
                           suffixIcon: Icon(
                             Icons.phone_android,
-                            color: CustomColors.mfinFadedButtonGreen,
-                            size: 35.0,
+                            color: CustomColors.mfinButtonGreen,
+                            size: 30.0,
                           ),
                         ),
                       ),
@@ -150,8 +151,9 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      SizedBox(width: 5.0),
                       Icon(
-                        Icons.info,
+                        Icons.error_outline,
                         color: CustomColors.mfinWhite,
                         size: 20.0,
                       ),
@@ -198,13 +200,14 @@ class _LoginPageState extends State<LoginPage> {
                       height: 50.0,
                       decoration: BoxDecoration(
                         color: CustomColors.mfinFadedButtonGreen,
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: Center(
                         child: Text(
                           AppLocalizations.of(context).translate('get_otp'),
                           style: TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 18.0,
+                            fontFamily: 'Georgia',
                             color: CustomColors.mfinBlue,
                             fontWeight: FontWeight.bold,
                           ),

@@ -12,9 +12,10 @@ import 'package:instamfin/services/controllers/customer/cust_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CustomerTab extends StatefulWidget {
-  CustomerTab(this.title, this.status);
+  CustomerTab(this._scaffoldKey, this.title, this.status);
 
   final String title;
+  final GlobalKey<ScaffoldState> _scaffoldKey;
   final int status;
 
   @override
@@ -22,8 +23,6 @@ class CustomerTab extends StatefulWidget {
 }
 
 class _CustomerTabState extends State<CustomerTab> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   String orderBy = "0";
   Map<String, String> _selectedOrderBy = {
     "0": "Default",
@@ -105,9 +104,10 @@ class _CustomerTabState extends State<CustomerTab> {
                         icon: Icons.call,
                         onTap: () {
                           if (cust.mobileNumber != null) {
-                            UrlLauncherUtils.makePhoneCall(cust.mobileNumber);
+                            UrlLauncherUtils.makePhoneCall(
+                                cust.getContactNumber());
                           } else {
-                            _scaffoldKey.currentState.showSnackBar(
+                            widget._scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
                                   AppLocalizations.of(context)
                                       .translate('customer_invalid_number'),
@@ -122,9 +122,9 @@ class _CustomerTabState extends State<CustomerTab> {
                         icon: Icons.message,
                         onTap: () {
                           if (cust.mobileNumber != null) {
-                            UrlLauncherUtils.makeSMS(cust.mobileNumber);
+                            UrlLauncherUtils.makeSMS(cust.getContactNumber());
                           } else {
-                            _scaffoldKey.currentState.showSnackBar(
+                            widget._scaffoldKey.currentState.showSnackBar(
                               CustomSnackBar.errorSnackBar(
                                   AppLocalizations.of(context)
                                       .translate('customer_invalid_number'),
@@ -200,7 +200,8 @@ class _CustomerTabState extends State<CustomerTab> {
                                           await _cc.removeCustomer(cust.id);
                                       if (result == null) {
                                         Navigator.pop(context);
-                                        _scaffoldKey.currentState.showSnackBar(
+                                        widget._scaffoldKey.currentState
+                                            .showSnackBar(
                                           CustomSnackBar.errorSnackBar(
                                             AppLocalizations.of(context)
                                                 .translate('remove_payment'),
@@ -209,7 +210,8 @@ class _CustomerTabState extends State<CustomerTab> {
                                         );
                                       } else {
                                         Navigator.pop(context);
-                                        _scaffoldKey.currentState.showSnackBar(
+                                        widget._scaffoldKey.currentState
+                                            .showSnackBar(
                                           CustomSnackBar.successSnackBar(
                                               AppLocalizations.of(context)
                                                   .translate(

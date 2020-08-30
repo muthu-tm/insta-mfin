@@ -35,7 +35,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: CustomColors.mfinLightGrey,
+      backgroundColor: CustomColors.mfinGrey,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: FlatButton.icon(
@@ -117,7 +117,7 @@ class _AuthPageState extends State<AuthPage> {
                                 "Serving From",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
-                                  color: CustomColors.mfinGrey,
+                                  color: CustomColors.mfinWhite,
                                   fontSize: 12,
                                   fontFamily: "Georgia",
                                 ),
@@ -207,7 +207,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
             color: CustomColors.mfinBlue,
             elevation: 2.0,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0)),
+                borderRadius: BorderRadius.circular(5.0)),
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.5,
               width: MediaQuery.of(context).size.width * 0.85,
@@ -342,7 +342,7 @@ class _SecretKeyAuthState extends State<SecretKeyAuth> {
                       height: 50.0,
                       decoration: BoxDecoration(
                         color: CustomColors.mfinFadedButtonGreen,
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: Center(
                         child: Text(

@@ -9,3 +9,6 @@ const firebase_storage_path = "https://firebasestorage.googleapis.com";
 const user_profile_folder = "user_profile";
 const cust_profile_folder = "cust_profile";
 const fin_profile_folder = "finance_profile";
+
+// Support
+const support_number = 919361808580;

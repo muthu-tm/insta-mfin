@@ -57,7 +57,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white.withOpacity(0.95),
+      backgroundColor: CustomColors.mfinGrey,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -72,11 +72,11 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
         color: CustomColors.mfinLightBlue,
         elevation: 2.0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(5.0),
         ),
         child: SizedBox(
-          height: _height * 0.6,
-          width: _width * 0.8,
+          height: 400,
+          width: _width * 0.85,
           child: _getColumnBody(),
         ),
       );
@@ -101,7 +101,13 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
           SizedBox(height: 20.0),
           Row(
             children: <Widget>[
-              SizedBox(width: 16.0),
+              SizedBox(width: 5.0),
+              Icon(
+                Icons.error_outline,
+                color: CustomColors.mfinWhite,
+                size: 20.0,
+              ),
+              SizedBox(width: 5.0),
               Expanded(
                 child: RichText(
                   text: TextSpan(
@@ -114,7 +120,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
                       TextSpan(
                           text: 'One Time Password',
                           style: TextStyle(
-                              color: CustomColors.mfinButtonGreen,
+                              color: CustomColors.mfinAlertRed.withOpacity(0.6),
                               fontSize: 16.0,
                               fontWeight: FontWeight.w700)),
                       TextSpan(
@@ -148,7 +154,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
               SizedBox(width: 5.0),
             ],
           ),
-          SizedBox(height: 32.0),
+          SizedBox(height: 30.0),
           RaisedButton(
             elevation: 10.0,
             onPressed: signIn,
@@ -164,7 +170,7 @@ class _PhoneAuthVerifyState extends State<PhoneAuthVerify> {
             ),
             color: CustomColors.mfinBlue,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+                borderRadius: BorderRadius.circular(5.0)),
           )
         ],
       );
