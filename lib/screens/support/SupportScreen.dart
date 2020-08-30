@@ -119,7 +119,7 @@ class SupportScreen extends StatelessWidget {
                 thickness: 1.0),
             ExpansionTile(
               title: Text("User Management"),
-              leading: Icon(Icons.person, color: CustomColors.mfinBlue),
+              leading: Icon(Icons.group, color: CustomColors.mfinBlue),
               children: [
                 ListTile(
                   title: Text(

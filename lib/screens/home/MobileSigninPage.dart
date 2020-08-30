@@ -103,7 +103,8 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               SizedBox(width: 5),
-              Icon(Icons.error_outline, color: CustomColors.mfinWhite, size: 20.0),
+              Icon(Icons.error_outline,
+                  color: CustomColors.mfinWhite, size: 20.0),
               SizedBox(width: 5.0),
               Expanded(
                 child: RichText(
@@ -375,7 +376,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
   }
 
   _verifyPhoneNumber() async {
-    String phoneNumber = "+91" + number;
+    String phoneNumber = "+" + countryCode.toString() + number;
     final FirebaseAuth _auth = FirebaseAuth.instance;
     await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
@@ -407,7 +408,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
             .showSnackBar(CustomSnackBar.errorSnackBar(result['message'], 5));
       } else {
         final SharedPreferences prefs = await _prefs;
-        prefs.setString("mobile_number", number);
+        prefs.setString("mobile_number", countryCode.toString() + number);
 
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
@@ -433,8 +434,7 @@ class _MobileSignInPageState extends State<MobileSignInPage> {
 
     _smsVerificationCode = verificationId;
     Navigator.pop(context);
-    CustomDialogs.actionWaiting(
-        context, AppLocalizations.of(context).translate('verify_user'));
+    CustomDialogs.actionWaiting(context, 'Verifying User');
   }
 
   _verificationFailed(AuthException authException, BuildContext context) {
