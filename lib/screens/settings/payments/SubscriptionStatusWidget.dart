@@ -73,7 +73,7 @@ class SubscriptionStatusWidget extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     child: Container(
                       padding: EdgeInsets.all(10),
-                      height: MediaQuery.of(context).size.height * 0.22,
+                      height: 125,
                       color: CustomColors.mfinLightGrey,
                       child: Column(
                         children: <Widget>[

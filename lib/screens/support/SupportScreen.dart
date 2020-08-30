@@ -7,7 +7,10 @@ import 'package:instamfin/screens/support/ReportsSupport.dart';
 import 'package:instamfin/screens/support/UserActionSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import 'DeactivateFinanceSupport.dart';
 import 'FinancePrefSupport.dart';
+import 'FinanceSupport.dart';
+import 'ManageBranchSupport.dart';
 import 'PrimaryFinanceSupport.dart';
 import 'StatisticsSupport.dart';
 import 'UserPerfsSupport.dart';
@@ -44,21 +47,94 @@ class SupportScreen extends StatelessWidget {
                 color: CustomColors.mfinGrey,
                 height: 0,
                 thickness: 1.0),
-            ListTile(
-              leading:
-                  Icon(Icons.account_balance, color: CustomColors.mfinBlue),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              title: Text(
-                "Finance",
-              ),
-              // onTap: () =>
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => FinanceSetting(),
-              //       settings: RouteSettings(name: '/settings/finance'),
-              //     ),
-              //   )
+            // ListTile(
+            //   leading:
+            //       Icon(Icons.account_balance, color: CustomColors.mfinBlue),
+            //   trailing: Icon(Icons.keyboard_arrow_right),
+            //   title: Text(
+            //     "Finance",
+            //   ),
+            //    onTap: () =>
+            //     Navigator.push(
+            //        context,
+            //       MaterialPageRoute(
+            //          builder: (context) => FinanceSetting(),
+            //          settings: RouteSettings(name: '/settings/finance'),
+            //        ),
+            //      )
+            // ),
+            ExpansionTile(
+              title: Text("Finance"),
+              leading: Icon(Icons.settings, color: CustomColors.mfinBlue),
+              children: [
+                ListTile(
+                  title: Text(
+                    "Edit Finance Details",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FinanceSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/finance'),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "Manage Branch/Sub-Branch",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ManageBranchSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/finance'),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "Deactivate Finance",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DeactivateFinanceSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/finance'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Divider(
+                indent: 75.0,
+                color: CustomColors.mfinGrey,
+                height: 0,
+                thickness: 1.0),
+            ExpansionTile(
+              title: Text("User Management"),
+              leading: Icon(Icons.person, color: CustomColors.mfinBlue),
+              children: [
+                ListTile(
+                  title: Text(
+                    "Add User",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrimaryFinanceSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/branch'),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Divider(
                 indent: 75.0,
@@ -238,7 +314,8 @@ class SupportScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ReportsSupport(),
-                  settings: RouteSettings(name: '/settings/app/support/reports'),
+                  settings:
+                      RouteSettings(name: '/settings/app/support/reports'),
                 ),
               ),
             ),
@@ -257,7 +334,8 @@ class SupportScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => StatisticsSupport(),
-                  settings: RouteSettings(name: '/settings/app/support/statistics'),
+                  settings:
+                      RouteSettings(name: '/settings/app/support/statistics'),
                 ),
               ),
             ),
@@ -332,8 +410,8 @@ class SupportScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => FinancePrefSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/preferences'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/preferences'),
                     ),
                   ),
                 ),
@@ -346,8 +424,8 @@ class SupportScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => UserPrefSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/preferences'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/preferences'),
                     ),
                   ),
                 ),
