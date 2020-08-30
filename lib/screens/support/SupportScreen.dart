@@ -7,6 +7,7 @@ import 'package:instamfin/screens/support/ReportsSupport.dart';
 import 'package:instamfin/screens/support/UserActionSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import 'AddUserSupport.dart';
 import 'DeactivateFinanceSupport.dart';
 import 'FinancePrefSupport.dart';
 import 'FinanceSupport.dart';
@@ -128,9 +129,9 @@ class SupportScreen extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PrimaryFinanceSupport(),
+                      builder: (context) => AddUserSupport(),
                       settings:
-                          RouteSettings(name: '/settings/app/support/branch'),
+                          RouteSettings(name: '/settings/app/support/user'),
                     ),
                   ),
                 ),
