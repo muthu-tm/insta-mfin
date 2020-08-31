@@ -233,7 +233,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                               ),
                               validator: (name) {
                                 if (name.trim().isEmpty) {
-                                  return 'Enter the Template Name';
+                                  return 'Enter the Chit Name';
                                 }
                                 this.name = name.trim();
                                 return null;

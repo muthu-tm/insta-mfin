@@ -34,10 +34,10 @@ class _EditUserProfileState extends State<EditUserProfile> {
     super.initState();
     gender = cachedLocalUser.gender;
     if (cachedLocalUser.dateOfBirth != null)
-      this._date.text = DateUtils.formatDate(
-          DateTime.fromMillisecondsSinceEpoch(cachedLocalUser.dateOfBirth));
-    else
-      this._date.text = DateUtils.formatDate(DateTime.now());
+      selectedDate =
+          DateTime.fromMillisecondsSinceEpoch(cachedLocalUser.dateOfBirth);
+
+    this._date.text = DateUtils.formatDate(selectedDate);
   }
 
   @override
@@ -245,6 +245,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
       setState(() {
         selectedDate = picked;
         updatedUser['date_of_birth'] = DateUtils.getUTCDateEpoch(picked);
+        _date.text = DateUtils.formatDate(selectedDate);
       });
   }
 

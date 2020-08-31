@@ -101,70 +101,33 @@ Widget customerListTile(BuildContext context, int index, Customer customer) {
                       ),
                     )
                   : Container(
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: SizedBox(
-                              width: 60.0,
-                              height: 60.0,
-                              child: Center(
-                                child: CachedNetworkImage(
-                                  imageUrl: customer.getMiniProfilePicPath(),
-                                  imageBuilder: (context, imageProvider) =>
-                                      CircleAvatar(
-                                    radius: 30.0,
-                                    backgroundImage: imageProvider,
-                                    backgroundColor: Colors.transparent,
-                                  ),
-                                  progressIndicatorBuilder:
-                                      (context, url, downloadProgress) =>
-                                          CircularProgressIndicator(
-                                              value: downloadProgress.progress),
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.error,
-                                    size: 35,
-                                  ),
-                                  fadeOutDuration: Duration(seconds: 1),
-                                  fadeInDuration: Duration(seconds: 2),
-                                ),
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: SizedBox(
+                          width: 60.0,
+                          height: 60.0,
+                          child: Center(
+                            child: CachedNetworkImage(
+                              imageUrl: customer.getMiniProfilePicPath(),
+                              imageBuilder: (context, imageProvider) =>
+                                  CircleAvatar(
+                                radius: 30.0,
+                                backgroundImage: imageProvider,
+                                backgroundColor: Colors.transparent,
                               ),
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.error,
+                                size: 35,
+                              ),
+                              fadeOutDuration: Duration(seconds: 1),
+                              fadeInDuration: Duration(seconds: 2),
                             ),
                           ),
-                          Positioned(
-                            bottom: -10,
-                            left: 10,
-                            child: FlatButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  routeSettings:
-                                      RouteSettings(name: "/profile/upload"),
-                                  builder: (context) {
-                                    return Center(
-                                      child: ProfilePictureUpload(
-                                          1,
-                                          customer.getMediumProfilePicPath(),
-                                          HashGenerator.hmacGenerator(
-                                              customer.id.toString(),
-                                              customer.financeID),
-                                          customer.id),
-                                    );
-                                  },
-                                );
-                              },
-                              child: CircleAvatar(
-                                backgroundColor: CustomColors.mfinButtonGreen,
-                                radius: 10,
-                                child: Icon(
-                                  Icons.edit,
-                                  color: CustomColors.mfinBlue,
-                                  size: 15.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
               Container(

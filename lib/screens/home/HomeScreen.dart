@@ -7,6 +7,7 @@ import 'package:instamfin/screens/app/ProfilePictureUpload.dart';
 import 'package:instamfin/screens/app/bottomBar.dart';
 import 'package:instamfin/screens/app/sideDrawer.dart';
 import 'package:instamfin/screens/settings/editors/EditPrimaryFinance.dart';
+import 'package:instamfin/screens/transaction/books/CollectionBookHome.dart';
 import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/date_utils.dart';
@@ -513,11 +514,23 @@ class HomeScreen extends StatelessWidget {
           children = AsyncWidgets.asyncWaiting();
         }
 
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: children,
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CollectionBookHome(1),
+                settings:
+                    RouteSettings(name: "/transactions/books/collections"),
+              ),
+            );
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: children,
+            ),
           ),
         );
       },
@@ -592,11 +605,23 @@ class HomeScreen extends StatelessWidget {
           children = AsyncWidgets.asyncWaiting();
         }
 
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CollectionBookHome(0),
+                settings:
+                    RouteSettings(name: "/transactions/books/collections"),
+              ),
+            );
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
           ),
         );
       },
@@ -671,11 +696,23 @@ class HomeScreen extends StatelessWidget {
           children = AsyncWidgets.asyncWaiting();
         }
 
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CollectionBookHome(2),
+                settings:
+                    RouteSettings(name: "/transactions/books/collections"),
+              ),
+            );
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
           ),
         );
       },
@@ -755,8 +792,7 @@ class HomeScreen extends StatelessWidget {
                             height: 100.0,
                             child: Center(
                               child: CachedNetworkImage(
-                                imageUrl:
-                                    fin.getMediumProfilePicPath(),
+                                imageUrl: fin.getMediumProfilePicPath(),
                                 imageBuilder: (context, imageProvider) =>
                                     CircleAvatar(
                                   radius: 50.0,

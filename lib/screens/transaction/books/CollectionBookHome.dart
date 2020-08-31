@@ -6,6 +6,10 @@ import 'package:instamfin/screens/utils/date_utils.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class CollectionBookHome extends StatefulWidget {
+  CollectionBookHome(this._initialIndex);
+
+  final int _initialIndex;
+
   @override
   _CollectionBookHomeState createState() => _CollectionBookHomeState();
 }
@@ -29,7 +33,7 @@ class _CollectionBookHomeState extends State<CollectionBookHome> {
     return hasValidSubscription
         ? DefaultTabController(
             length: 3,
-            initialIndex: 1,
+            initialIndex: widget._initialIndex,
             child: Scaffold(
               key: _scaffoldKey,
               appBar: AppBar(

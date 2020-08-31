@@ -29,7 +29,7 @@ class BooksHome extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CollectionBookHome(),
+                    builder: (context) => CollectionBookHome(1),
                     settings:
                         RouteSettings(name: "/transactions/books/collections"),
                   ),
