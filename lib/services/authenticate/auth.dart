@@ -26,7 +26,7 @@ class AuthService {
       user.address = Address.fromJson(Address().toJson());
       user = await user.create();
 
-      Analytics.signupEvent(mobileNumber.toString());
+      Analytics.signupEvent(user.getID());
       return user;
     } catch (err) {
       Analytics.reportError({

@@ -21,7 +21,7 @@ class AuthController {
       } else {
         Analytics.reportError({
           "type": 'platform_update_error',
-          "user_id": mobileNumber,
+          "user_id": user.getID(),
           'name': userName,
           'error': "Unable to update User's platform details"
         }, 'platform_update');
@@ -48,12 +48,12 @@ class AuthController {
       } else {
         Analytics.reportError({
           "type": 'platform_update_error',
-          "user_id": user.mobileNumber,
+          "user_id": user.getID(),
           'error': "Unable to update User's platform details"
         }, 'platform_update');
       }
 
-      Analytics.loginEvent(user.mobileNumber.toString());
+      Analytics.loginEvent(user.getID());
 
       // update cloud firestore "users" collection
       user.update({'last_signed_in_at': DateTime.now()});
@@ -65,7 +65,7 @@ class AuthController {
     } catch (err) {
       Analytics.reportError({
         "type": 'log_in_error',
-        "user_id": user.mobileNumber,
+        "user_id": user.getID(),
         'name': user.name,
         'error': err.toString()
       }, 'log_in');
