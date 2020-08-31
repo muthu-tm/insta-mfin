@@ -6,36 +6,37 @@ import 'package:instamfin/services/analytics/analytics.dart';
 import 'package:instamfin/services/controllers/user/user_service.dart';
 
 class Uploader {
-  static void uploadImage(int type, String fileDir, File fileToUpload,
+  Future<void> uploadImage(int type, String fileDir, File fileToUpload,
       String fileName, int id, Function onUploaded) async {
     String filePath = '$fileDir/$fileName.png';
     StorageReference reference = FirebaseStorage.instance.ref().child(filePath);
     StorageUploadTask uploadTask = reference.putFile(fileToUpload);
     StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
 
-    storageTaskSnapshot.ref.getDownloadURL().then((profilePathUrl) {
+    try {
+      var profilePathUrl = await storageTaskSnapshot.ref.getDownloadURL();
       if (type == 0) {
-        updateUserData('profile_path', profilePathUrl);
+        await updateUserData('profile_path', profilePathUrl);
         cachedLocalUser.profilePath = profilePathUrl;
       } else if (type == 1)
-        updateCustData('profile_path', id, profilePathUrl);
+        await updateCustData('profile_path', id, profilePathUrl);
       else if (type == 2)
-        updateFinanceData('profile_path', fileName, id, profilePathUrl);
-    }).catchError((err) {
+        await updateFinanceData('profile_path', fileName, id, profilePathUrl);
+    } catch (err) {
       Analytics.reportError({
         "type": 'image_upload_error',
         'user_id': id,
         'error': err.toString()
       }, 'storage');
-    });
+    }
 
     onUploaded();
   }
 
-  static void updateUserData(
-      String field, String profilePathUrl) {
+  Future<void> updateUserData(
+      String field, String profilePathUrl) async {
     try {
-      cachedLocalUser.update({field: profilePathUrl});
+      await cachedLocalUser.update({field: profilePathUrl});
     } catch (err) {
       Analytics.reportError({
         "type": 'url_update_error',
@@ -46,11 +47,12 @@ class Uploader {
     }
   }
 
-  static void updateCustData(String field, int id, String profilePathUrl) {
+  Future<void> updateCustData(
+      String field, int id, String profilePathUrl) async {
     try {
       Customer cust = Customer();
       cust.id = id;
-      cust.update({field: profilePathUrl});
+      await cust.update({field: profilePathUrl});
     } catch (err) {
       Analytics.reportError({
         "type": 'url_update_error',
@@ -61,10 +63,10 @@ class Uploader {
     }
   }
 
-  static void updateFinanceData(
-      String field, String id, int mobileNumber, String profilePathUrl) {
+  Future<void> updateFinanceData(
+      String field, String id, int mobileNumber, String profilePathUrl) async {
     try {
-      Finance().updateByID({field: profilePathUrl}, id);
+      await Finance().updateByID({field: profilePathUrl}, id);
     } catch (err) {
       Analytics.reportError({
         "type": 'url_update_error',
