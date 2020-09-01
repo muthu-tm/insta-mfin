@@ -73,7 +73,7 @@ class SubscriptionStatusWidget extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     child: Container(
                       padding: EdgeInsets.all(10),
-                      height: 125,
+                      height: 130,
                       color: CustomColors.mfinLightGrey,
                       child: Column(
                         children: <Widget>[
@@ -97,7 +97,7 @@ class SubscriptionStatusWidget extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     child: Container(
                       padding: EdgeInsets.all(10),
-                      height: 125,
+                      height: 130,
                       color: CustomColors.mfinLightGrey,
                       child: Column(
                         children: <Widget>[
