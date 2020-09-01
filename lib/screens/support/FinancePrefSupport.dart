@@ -28,7 +28,7 @@ class FinancePrefSupport extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Add Report's Signature:",
+                      "Customize Report's Signature:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -48,6 +48,17 @@ class FinancePrefSupport extends StatelessWidget {
                   children: [
                     RichText(
                       text: TextSpan(
+                        text:
+                            "You could change your Report/Recipt PDF's finance signature anytime!",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlack,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
                         text: "A: ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -57,10 +68,18 @@ class FinancePrefSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To add signature to your reports, go to Preferences",
+                                "To customize signature of your reports, go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Preferences",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -76,8 +95,7 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text:
-                                "Add signature in the Report's signature field",
+                            text: "Add signature in the Report's Signature Box",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -96,7 +114,22 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -115,13 +148,14 @@ class FinancePrefSupport extends StatelessWidget {
                     Text(
                       "2. ",
                       style: TextStyle(
+                        fontFamily: 'Georgia',
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlack,
                         fontSize: 18.0,
                       ),
                     ),
                     Text(
-                      "Enable/disable Chit Fund:",
+                      "Enable/Disable Chit Fund:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -141,6 +175,16 @@ class FinancePrefSupport extends StatelessWidget {
                   children: [
                     RichText(
                       text: TextSpan(
+                        text: "Are you doing Chit Fund? Great!",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinBlack,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
                         text: "A: ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -149,11 +193,18 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text:
-                                "To enable/disable chit fund, go to Preferences",
+                            text: "To Enable/Disable Chit Fund, go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Preferences",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -169,7 +220,22 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Select yes/no from the chit fund dropdown",
+                            text: "Select ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Yes/No",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " from the chit fund dropdown",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -188,7 +254,22 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -207,13 +288,14 @@ class FinancePrefSupport extends StatelessWidget {
                     Text(
                       "3. ",
                       style: TextStyle(
+                        fontFamily: 'Georgia',
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlack,
                         fontSize: 18.0,
                       ),
                     ),
                     Text(
-                      "Default Interest Rate:",
+                      "Finance Interest Rate:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -241,11 +323,18 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text:
-                                "To set default interest rate, go to Preferences",
+                            text: "To set Finance's interest rate, go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Preferences",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -261,7 +350,22 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Add interest in the Interest Rate field",
+                            text: "Update interest in the ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Interest Rate",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " field",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -280,7 +384,22 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -299,6 +418,7 @@ class FinancePrefSupport extends StatelessWidget {
                     Text(
                       "4. ",
                       style: TextStyle(
+                        fontFamily: 'Georgia',
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlack,
                         fontSize: 18.0,
@@ -334,10 +454,18 @@ class FinancePrefSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To set default interest deduction component (from loan or total amount), go to Preferences",
+                                "To set default interest deduction component (from loan or total amount), go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Preferences",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -373,7 +501,22 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -427,10 +570,18 @@ class FinancePrefSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To set default collection mode (daily/weekly/monthly), go to Preferences",
+                                "To set default Collection Mode (Daily/Weekly/Monthly), go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Preferences",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -447,7 +598,7 @@ class FinancePrefSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "Select Collection Mode dropdown, choose the mode",
+                                "Click Collection Mode dropdown, choose the mode",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -466,7 +617,22 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -520,10 +686,18 @@ class FinancePrefSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To set default collection days (Sunday to Saturday), go to Preferences",
+                                "To set default collection days (Sunday to Saturday), go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Preferences",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -558,7 +732,22 @@ class FinancePrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,

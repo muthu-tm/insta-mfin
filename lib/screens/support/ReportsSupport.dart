@@ -57,10 +57,18 @@ class ReportsSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To download report category wise (Customer, Payment, Collection, Journal, Expense), go to Reports",
+                                "To download report category wise (Customer, Loan, Collection, Journal, Expense), go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Reports",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -95,7 +103,22 @@ class ReportsSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Click on Get Report button",
+                            text: "Click on ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Get Report",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -149,10 +172,18 @@ class ReportsSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To download a report with custom date (today, this week/month, custom range) range, go to Reports",
+                                "To download a report with custom date range, go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Reports",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -188,7 +219,22 @@ class ReportsSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Click on Get Report button",
+                            text: "Click on ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Get Report",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -242,10 +288,18 @@ class ReportsSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To download a report with different (pdf and xls) format, go to Reports",
+                                "To download a report with different (pdf and xlsx) format, go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Reports",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -261,8 +315,7 @@ class ReportsSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text:
-                                "Select the format option from the dropdown",
+                            text: "Select the format option from the dropdown",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -281,7 +334,22 @@ class ReportsSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Click on Get Report button",
+                            text: "Click on ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Get Report",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,

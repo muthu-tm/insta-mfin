@@ -56,11 +56,18 @@ class UserPrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text:
-                                "To set the language preference (Eng,Tam,Hin,Kan and so on), go to Preferences",
+                            text: "To view app in your native language, go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Preferences",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -76,8 +83,22 @@ class UserPrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text:
-                                "Select the language from the App Language dropdown",
+                            text: "Select the language from the ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "App Language",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " dropdown",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -96,7 +117,22 @@ class UserPrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -150,10 +186,18 @@ class UserPrefSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To group the transaction data by (daily/weekly/monthly), go to Preferences",
+                                "To customize the Transaction module data by (Daily/Weekly/Monthly), go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Preferences",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -170,10 +214,48 @@ class UserPrefSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "Select the option Daily or Weekly or Monthly",
+                                "Select the option ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Daily",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " or ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Weekly",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " or ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Monthly",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -189,7 +271,22 @@ class UserPrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -242,11 +339,18 @@ class UserPrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text:
-                                "To enable/disable fingerprint authentication, go to Preferences",
+                            text: "To Enable/Disable Fingerprint Login, go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Preferences",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -262,7 +366,7 @@ class UserPrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Select the enable/disable option",
+                            text: "Select the Enable/Disable option",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -281,7 +385,22 @@ class UserPrefSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,

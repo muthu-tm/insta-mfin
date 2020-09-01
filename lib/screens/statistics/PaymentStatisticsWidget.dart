@@ -65,7 +65,7 @@ class PaymentStatisticsWidget extends StatelessWidget {
                     child: SfCartesianChart(
                       title: ChartTitle(
                         text:
-                            AppLocalizations.of(context).translate('payments'),
+                            AppLocalizations.of(context).translate('loans'),
                         textStyle: TextStyle(
                           color: CustomColors.mfinAlertRed,
                           fontSize: 14.0,
