@@ -145,11 +145,10 @@ class TransactionConfigHome extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Card(
-              color: CustomColors.mfinLightGrey,
               elevation: 5.0,
               margin: EdgeInsets.all(5.0),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
               child: Column(
                 children: <Widget>[
@@ -167,18 +166,18 @@ class TransactionConfigHome extends StatelessWidget {
                     ),
                   ),
                   Divider(
-                    color: CustomColors.mfinBlue,
+                    color: CustomColors.mfinButtonGreen,
+                    height: 0,
                   ),
                   PaymentTemplateListWidget(_scaffoldKey)
                 ],
               ),
             ),
             Card(
-              color: CustomColors.mfinLightGrey,
               elevation: 5.0,
               margin: EdgeInsets.all(5.0),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
               child: Column(
                 children: <Widget>[
@@ -196,18 +195,18 @@ class TransactionConfigHome extends StatelessWidget {
                     ),
                   ),
                   Divider(
-                    color: CustomColors.mfinBlue,
+                    color: CustomColors.mfinButtonGreen,
+                    height: 0,
                   ),
                   ChitTemplateListWidget(_scaffoldKey)
                 ],
               ),
             ),
             Card(
-              color: CustomColors.mfinLightGrey,
               elevation: 5.0,
               margin: EdgeInsets.all(5.0),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
               child: Column(
                 children: <Widget>[
@@ -225,7 +224,8 @@ class TransactionConfigHome extends StatelessWidget {
                     ),
                   ),
                   Divider(
-                    color: CustomColors.mfinBlue,
+                    color: CustomColors.mfinButtonGreen,
+                    height: 0,
                   ),
                   ExpenseCategoryListWidget(_scaffoldKey),
                 ],
@@ -236,7 +236,7 @@ class TransactionConfigHome extends StatelessWidget {
               elevation: 5.0,
               margin: EdgeInsets.all(5.0),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
               child: Column(
                 children: <Widget>[

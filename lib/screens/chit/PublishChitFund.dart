@@ -83,7 +83,10 @@ class _PublishChitFundState extends State<PublishChitFund> {
     chitAmountController.text = '0';
 
     if (widget.temp != null) {
+      name = widget.temp.name;
+      commission = widget.temp.interestRate;
       amount = widget.temp.chitAmount;
+      commController.text = commission.toString();
       chitAmountController.text = widget.temp.chitAmount.toString();
       tenure = widget.temp.tenure;
       chitType = widget.temp.type;
@@ -210,6 +213,7 @@ class _PublishChitFundState extends State<PublishChitFund> {
                         children: <Widget>[
                           Flexible(
                             child: TextFormField(
+                              initialValue: name,
                               keyboardType: TextInputType.text,
                               textCapitalization: TextCapitalization.sentences,
                               textAlign: TextAlign.start,

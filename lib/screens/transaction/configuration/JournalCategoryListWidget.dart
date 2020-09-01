@@ -128,7 +128,7 @@ class JournalCategoryListWidget extends StatelessWidget {
                         secondaryActions: <Widget>[
                           IconSlideAction(
                             caption: 'Edit',
-                            color: CustomColors.mfinBlue,
+                            color: CustomColors.mfinGrey,
                             icon: Icons.edit,
                             onTap: () {
                               Navigator.push(
@@ -157,7 +157,7 @@ class JournalCategoryListWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    new Spacer(),
+                    Spacer(),
                     Text(
                       AppLocalizations.of(context)
                           .translate("no_journal_category"),
@@ -167,7 +167,7 @@ class JournalCategoryListWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    new Spacer(
+                    Spacer(
                       flex: 2,
                     ),
                     Text(
@@ -180,7 +180,7 @@ class JournalCategoryListWidget extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    new Spacer(),
+                    Spacer(),
                   ],
                 ),
               );
@@ -215,14 +215,14 @@ class JournalCategoryListWidget extends StatelessWidget {
 
   _journalList(BuildContext context, int index, JournalCategory data) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(5.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Material(
             color: CustomColors.mfinBlue,
-            elevation: 10.0,
-            borderRadius: BorderRadius.circular(10.0),
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(5.0),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.90,
               height: 80,

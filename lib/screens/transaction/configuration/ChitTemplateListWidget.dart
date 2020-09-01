@@ -8,7 +8,6 @@ import 'package:instamfin/screens/utils/AsyncWidgets.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 import 'package:instamfin/screens/utils/CustomSnackBar.dart';
 import 'package:instamfin/services/controllers/chit/chit_template_controller.dart';
-import 'package:instamfin/services/controllers/transaction/paymentTemp_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:instamfin/app_localizations.dart';
 
@@ -147,7 +146,7 @@ class ChitTemplateListWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Spacer(),
+                  Spacer(),
                   Text(
                     AppLocalizations.of(context).translate("no_chit_templates"),
                     style: TextStyle(
@@ -156,7 +155,7 @@ class ChitTemplateListWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  new Spacer(
+                  Spacer(
                     flex: 2,
                   ),
                   Text(
@@ -168,7 +167,7 @@ class ChitTemplateListWidget extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  new Spacer(),
+                  Spacer(),
                 ],
               ),
             );
@@ -204,7 +203,7 @@ class ChitTemplateListWidget extends StatelessWidget {
 
   _chitTempList(BuildContext context, int index, ChitTemplate template) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(5.0),
       child: InkWell(
         onTap: () {
           showMaterialModalBottomSheet(
@@ -223,8 +222,8 @@ class ChitTemplateListWidget extends StatelessWidget {
           children: <Widget>[
             Material(
               color: CustomColors.mfinBlue,
-              elevation: 10.0,
-              borderRadius: BorderRadius.circular(10.0),
+              elevation: 5.0,
+              borderRadius: BorderRadius.circular(5.0),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.35,
                 height: 90,
@@ -263,8 +262,8 @@ class ChitTemplateListWidget extends StatelessWidget {
             ),
             Material(
               color: CustomColors.mfinWhite,
-              elevation: 10.0,
-              borderRadius: BorderRadius.circular(10.0),
+              elevation: 5.0,
+              borderRadius: BorderRadius.circular(5.0),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.55,
                 height: 90,

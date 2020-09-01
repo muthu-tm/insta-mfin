@@ -127,8 +127,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => EditPaymentTemplate(temp),
                               settings: RouteSettings(
-                                  name:
-                                      '/transactions/payment/template/edit'),
+                                  name: '/transactions/payment/template/edit'),
                             ),
                           ),
                         ),
@@ -146,7 +145,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Spacer(),
+                  Spacer(),
                   Text(
                     "No Loan Templates!",
                     style: TextStyle(
@@ -155,7 +154,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  new Spacer(
+                  Spacer(
                     flex: 2,
                   ),
                   Text(
@@ -167,7 +166,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  new Spacer(),
+                  Spacer(),
                 ],
               ),
             );
@@ -203,7 +202,7 @@ class PaymentTemplateListWidget extends StatelessWidget {
 
   _paymentList(BuildContext context, int index, PaymentTemplate template) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(5.0),
       child: InkWell(
         onTap: () {
           showMaterialModalBottomSheet(
@@ -222,8 +221,8 @@ class PaymentTemplateListWidget extends StatelessWidget {
           children: <Widget>[
             Material(
               color: CustomColors.mfinBlue,
-              elevation: 10.0,
-              borderRadius: BorderRadius.circular(10.0),
+              elevation: 5.0,
+              borderRadius: BorderRadius.circular(5.0),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.36,
                 height: 90,
@@ -282,8 +281,8 @@ class PaymentTemplateListWidget extends StatelessWidget {
             ),
             Material(
               color: CustomColors.mfinWhite,
-              elevation: 10.0,
-              borderRadius: BorderRadius.circular(10.0),
+              elevation: 5.0,
+              borderRadius: BorderRadius.circular(5.0),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.56,
                 height: 90,

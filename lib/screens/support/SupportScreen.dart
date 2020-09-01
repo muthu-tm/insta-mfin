@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
-import 'package:instamfin/screens/support/BooksSupport.dart';
-import 'package:instamfin/screens/support/DeactivateSupport.dart';
-import 'package:instamfin/screens/support/ProfileSupport.dart';
-import 'package:instamfin/screens/support/ReportsSupport.dart';
-import 'package:instamfin/screens/support/UserActionSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-import 'AddUserSupport.dart';
+import 'BooksSupport.dart';
+import 'DeactivateSupport.dart';
+import 'ProfileSupport.dart';
+import 'ReportsSupport.dart';
+import 'UserActionSupport.dart';
+import 'AddFinanceUserSupport.dart';
 import 'DeactivateFinanceSupport.dart';
 import 'FinancePrefSupport.dart';
 import 'FinanceSupport.dart';
@@ -48,22 +48,6 @@ class SupportScreen extends StatelessWidget {
                 color: CustomColors.mfinGrey,
                 height: 0,
                 thickness: 1.0),
-            // ListTile(
-            //   leading:
-            //       Icon(Icons.account_balance, color: CustomColors.mfinBlue),
-            //   trailing: Icon(Icons.keyboard_arrow_right),
-            //   title: Text(
-            //     "Finance",
-            //   ),
-            //    onTap: () =>
-            //     Navigator.push(
-            //        context,
-            //       MaterialPageRoute(
-            //          builder: (context) => FinanceSetting(),
-            //          settings: RouteSettings(name: '/settings/finance'),
-            //        ),
-            //      )
-            // ),
             ExpansionTile(
               title: Text("Finance"),
               leading: Icon(Icons.settings, color: CustomColors.mfinBlue),
@@ -118,7 +102,7 @@ class SupportScreen extends StatelessWidget {
                 height: 0,
                 thickness: 1.0),
             ExpansionTile(
-              title: Text("User Management"),
+              title: Text("Finance User/Agent"),
               leading: Icon(Icons.group, color: CustomColors.mfinBlue),
               children: [
                 ListTile(
@@ -129,9 +113,23 @@ class SupportScreen extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddUserSupport(),
+                      builder: (context) => AddFinanceUserSupport(),
                       settings:
-                          RouteSettings(name: '/settings/app/support/user'),
+                          RouteSettings(name: '/settings/app/support/finance/user'),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "Remove User",
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddFinanceUserSupport(),
+                      settings:
+                          RouteSettings(name: '/settings/app/support/finance/user'),
                     ),
                   ),
                 ),

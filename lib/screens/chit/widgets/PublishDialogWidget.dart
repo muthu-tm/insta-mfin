@@ -12,7 +12,7 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
       child: Card(
         elevation: 5.0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(5.0),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -58,7 +58,7 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
                             subtitle: Text(
                                 'Amount: ${temps[index].chitAmount}, Profit: ${temps[index].getProfitAmount()}'),
                             onTap: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
@@ -86,15 +86,14 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
             Divider(
               color: CustomColors.mfinButtonGreen,
             ),
-            SizedBox(height: 15),
             RaisedButton.icon(
               icon: Icon(
                 Icons.fiber_new,
                 color: CustomColors.mfinLightGrey,
               ),
-              elevation: 15.0,
+              elevation: 5.0,
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => PublishChitFund(null),
@@ -103,7 +102,7 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
                 );
               },
               label: Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(5.0),
                 child: Text(
                   AppLocalizations.of(context).translate('custom'),
                   style: TextStyle(
@@ -115,7 +114,7 @@ Widget chitPublishDialog(BuildContext context, List<ChitTemplate> temps) {
               ),
               color: CustomColors.mfinBlue,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
             ),
           ],

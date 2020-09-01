@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-class AddUserSupport extends StatelessWidget {
+class AddFinanceUserSupport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
