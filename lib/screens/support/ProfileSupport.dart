@@ -57,7 +57,39 @@ class ProfileSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To update your Profile Details, such as Name, Contact number, Address and so on",
+                                "To update your ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Profile Details",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                ", such as ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Name, Contact number, Address",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                " and so on",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -76,10 +108,18 @@ class ProfileSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Go to Settings, select Profile menu",
+                            text: "Go to ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Profile",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -96,10 +136,34 @@ class ProfileSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "Click on the edit icon, next to the Profile Details",
+                                "Click on the ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Edit Icon",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                ", next to the ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Profile Details",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -116,7 +180,7 @@ class ProfileSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "Update the Name or Email or Address details",
+                                "Update the details",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -135,7 +199,22 @@ class ProfileSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -160,7 +239,7 @@ class ProfileSupport extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Change Password (secret key):",
+                      "Change Secret KEY:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -189,10 +268,34 @@ class ProfileSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To change your Password (secret key), go to Profile Settings",
+                                "To change your ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Secret KEY",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                " , go to ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Profile",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -209,7 +312,39 @@ class ProfileSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "Click on the edit icon, next to the Password field",
+                                "Click ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Edit Icon",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                ", next to the ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Password",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                " field",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -229,10 +364,18 @@ class ProfileSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "Enter new Password (secret key)",
+                                "Enter new 4-digit ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Secret KEY",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -248,7 +391,22 @@ class ProfileSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press save button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,

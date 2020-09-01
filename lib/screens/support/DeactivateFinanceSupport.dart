@@ -6,7 +6,7 @@ class DeactivateFinanceSupport extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Finance Details"),
+        title: Text("Deactivate Finance"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -57,9 +57,51 @@ class DeactivateFinanceSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To deactivate finance details, go to Finance settings",
+                                "To ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Deactivate",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                " your ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                "Finance/Branch/SubBranch",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                ", go to ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                "Settings -> Finance -> Branch/SubBranch",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
                               fontSize: 13.0,
                             ),
                           ),
@@ -77,7 +119,24 @@ class DeactivateFinanceSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "Click on the deactivate finance button",
+                                "Click ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                "Deactivate Finance",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                " button",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -96,9 +155,18 @@ class DeactivateFinanceSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Enter the secret key in the popup",
+                            text: "Enter your 4-digit ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                "Secret KEY",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
                               fontSize: 13.0,
                             ),
                           ),
@@ -115,7 +183,23 @@ class DeactivateFinanceSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press yes button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                "YES",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
