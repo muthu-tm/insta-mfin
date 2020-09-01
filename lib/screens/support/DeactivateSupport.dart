@@ -57,10 +57,34 @@ class DeactivateSupport extends StatelessWidget {
                         children: [
                           TextSpan(
                             text:
-                                "To deactivate your account, go to Profile Settings",
+                                "To ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Deactivate",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                " your account, go to ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Settings -> Profile",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -76,7 +100,22 @@ class DeactivateSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Click on the Deactivate account button",
+                            text: "Click ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Deactivate Account",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -95,10 +134,18 @@ class DeactivateSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Enter your password (secret key)",
+                            text: "Enter your 4-digit ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Secret KEY",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
                             ),
                           ),
                         ],
@@ -114,7 +161,22 @@ class DeactivateSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Press yes button to apply the changes",
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "YES",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,

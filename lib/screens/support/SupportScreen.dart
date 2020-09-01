@@ -14,7 +14,7 @@ import 'FinanceSupport.dart';
 import 'ManageBranchSupport.dart';
 import 'PrimaryFinanceSupport.dart';
 import 'StatisticsSupport.dart';
-import 'UserPerfsSupport.dart';
+import 'UserPrefSupport.dart';
 
 class SupportScreen extends StatelessWidget {
   @override
