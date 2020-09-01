@@ -61,8 +61,8 @@ class SupportScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => FinanceSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/finance'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/finance/edit'),
                     ),
                   ),
                 ),
@@ -75,22 +75,22 @@ class SupportScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ManageBranchSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/finance'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/finance/manage'),
                     ),
                   ),
                 ),
                 ListTile(
                   title: Text(
-                    "Deactivate Finance",
+                    "Deactivate Finance/Branch/Sub-Branch",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => DeactivateFinanceSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/finance'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/finance/deactivate'),
                     ),
                   ),
                 ),
@@ -114,8 +114,8 @@ class SupportScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => AddFinanceUserSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/finance/user'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/finance/user/add'),
                     ),
                   ),
                 ),
@@ -128,8 +128,8 @@ class SupportScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => AddFinanceUserSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/finance/user'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/finance/user/remove'),
                     ),
                   ),
                 ),
@@ -356,8 +356,8 @@ class SupportScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => PrimaryFinanceSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/profile'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/primary/edit'),
                     ),
                   ),
                 ),
@@ -370,8 +370,8 @@ class SupportScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProfileSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/profile'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/profile/edit'),
                     ),
                   ),
                 ),
@@ -384,8 +384,8 @@ class SupportScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DeactivateSupport(),
-                      settings:
-                          RouteSettings(name: '/settings/app/support/profile'),
+                      settings: RouteSettings(
+                          name: '/settings/app/support/profile/deactivate'),
                     ),
                   ),
                 ),
@@ -410,7 +410,7 @@ class SupportScreen extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => FinancePrefSupport(),
                       settings: RouteSettings(
-                          name: '/settings/app/support/preferences'),
+                          name: '/settings/app/support/finance/preferences'),
                     ),
                   ),
                 ),
@@ -424,7 +424,7 @@ class SupportScreen extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => UserPrefSupport(),
                       settings: RouteSettings(
-                          name: '/settings/app/support/preferences'),
+                          name: '/settings/app/support/user/preferences'),
                     ),
                   ),
                 ),
