@@ -3,7 +3,6 @@ import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 import 'BooksSupport.dart';
-import 'DashboardSupport.dart';
 import 'DeactivateSupport.dart';
 import 'ProfileSupport.dart';
 import 'RemoveFinanceUserSupport.dart';
@@ -136,26 +135,6 @@ class SupportScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-            Divider(
-                indent: 75.0,
-                color: CustomColors.mfinGrey,
-                height: 0,
-                thickness: 1.0),
-            ListTile(
-              leading: Icon(Icons.dashboard, color: CustomColors.mfinBlue),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              title: Text(
-                "Dashboard Details",
-              ),
-              onTap: () =>
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DashboardSupport(),
-                    settings: RouteSettings(name: '/dashboard'),
-                  ),
-                ),
             ),
             Divider(
                 indent: 75.0,
