@@ -270,9 +270,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                         color: CustomColors.mfinLightBlue.withOpacity(0.6),
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.only(left: 5, top: 5.0),
-                      width: MediaQuery.of(context).size.width / 1.5,
+                    Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -379,9 +377,7 @@ class _PaymentsHomeState extends State<PaymentsHome> {
                           color: CustomColors.mfinLightBlue.withOpacity(0.6),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.only(left: 5, top: 5.0),
-                        width: MediaQuery.of(context).size.width / 1.5,
+                      Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
