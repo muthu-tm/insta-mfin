@@ -85,6 +85,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                                     DateUtils.getUTCDateEpoch(DateTime.now()) &&
                                 cachedLocalUser.chitSubscription <
                                     DateUtils.getUTCDateEpoch(DateTime.now())) {
+                              Navigator.pop(context);
                               _scaffoldKey.currentState.showSnackBar(
                                   CustomSnackBar.errorSnackBar(
                                       AppLocalizations.of(context)
@@ -157,7 +158,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                           controller: _fromDate,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 3.0),
                             border: OutlineInputBorder(
                                 borderSide:
@@ -198,7 +199,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                           controller: _toDate,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 3.0),
                             border: OutlineInputBorder(
                                 borderSide:
@@ -281,7 +282,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          new Spacer(),
+                          Spacer(),
                           Text(
                             AppLocalizations.of(context)
                                 .translate("no_expense_so_far"),
@@ -291,7 +292,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          new Spacer(
+                          Spacer(
                             flex: 2,
                           ),
                           Text(
@@ -304,7 +305,7 @@ class _ExpenseHomeState extends State<ExpenseHome> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          new Spacer(),
+                          Spacer(),
                         ],
                       ),
                     );
