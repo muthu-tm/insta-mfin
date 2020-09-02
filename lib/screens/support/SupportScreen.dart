@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import 'ExpenseSupport.dart';
+import 'JournalSupport.dart';
 import 'BooksSupport.dart';
 import 'DeactivateSupport.dart';
 import 'ProfileSupport.dart';
@@ -166,26 +168,26 @@ class SupportScreen extends StatelessWidget {
                     "Expenses",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => ExpenseHome(),
-                  //     settings: RouteSettings(name: '/transactions/expenses'),
-                  //   ),
-                  // ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExpenseSupport(),
+                      settings: RouteSettings(name: '/settings/app/support/expense'),
+                    ),
+                  ),
                 ),
                 ListTile(
                   title: Text(
-                    "Journals",
+                    "Journals/Adjustment Entries",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => JournalEntryHome(),
-                  //     settings: RouteSettings(name: '/transactions/journals'),
-                  //   ),
-                  // ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => JournalSupport(),
+                      settings: RouteSettings(name: '/settings/app/support/journals'),
+                    ),
+                  ),
                 ),
                 ListTile(
                   title: Text('Configurations'),
