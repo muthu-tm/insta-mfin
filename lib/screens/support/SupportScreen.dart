@@ -209,7 +209,7 @@ class SupportScreen extends StatelessWidget {
                 thickness: 1.0),
             ExpansionTile(
               leading:
-                  Icon(Icons.supervisor_account, color: CustomColors.mfinBlue),
+                  Icon(Icons.collections_bookmark, color: CustomColors.mfinBlue),
               title: Text(
                 "Loan & Collections",
               ),
