@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import 'SubscriptionSupport.dart';
 import 'ExpenseSupport.dart';
 import 'JournalSupport.dart';
 import 'BooksSupport.dart';
@@ -423,16 +424,16 @@ class SupportScreen extends StatelessWidget {
                   Icon(Icons.monetization_on, color: CustomColors.mfinBlue),
               trailing: Icon(Icons.keyboard_arrow_right),
               title: Text(
-                "Subscription",
+                "mFIN Subscription",
               ),
-              // onTap: () =>
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => UserSetting(),
-              //       settings: RouteSettings(name: '/settings/user'),
-              //     ),
-              //   )
+              onTap: () =>
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SubscriptionSupport(),
+                    settings: RouteSettings(name: '/settings/app/support/subscription'),
+                  ),
+                )
             ),
             Divider(
               indent: 75.0,
