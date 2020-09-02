@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
+import 'package:instamfin/screens/support/CollectionSupport.dart';
+import 'package:instamfin/screens/support/LoanSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
 import 'SubscriptionSupport.dart';
@@ -217,29 +219,29 @@ class SupportScreen extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   title: Text(
-                    "Add Loan",
+                    "Add/Edit/Remove Loans",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => AddCustomer(),
-                  //     settings: RouteSettings(name: '/customers/add'),
-                  //   ),
-                  // ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoanSupport(),
+                      settings: RouteSettings(name: '/settings/app/support/loan'),
+                    ),
+                  ),
                 ),
                 ListTile(
                   title: Text(
-                    "Add Collection",
+                    "Add/Edit/Remove Collections",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CustomersHome(),
-                  //     settings: RouteSettings(name: '/customers'),
-                  //   ),
-                  // ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CollectionSupport(),
+                      settings: RouteSettings(name: '/settings/app/support/collection'),
+                    ),
+                  ),
                 ),
               ],
             ),
