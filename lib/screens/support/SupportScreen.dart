@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/app/ContactAndSupportWidget.dart';
-import 'package:instamfin/screens/support/CollectionSupport.dart';
-import 'package:instamfin/screens/support/LoanSupport.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
+import 'ChitAllocationSupport.dart';
+import 'ChitPublishSupport.dart';
+import 'CollectionSupport.dart';
+import 'LoanSupport.dart';
 import 'SubscriptionSupport.dart';
 import 'ExpenseSupport.dart';
 import 'JournalSupport.dart';
@@ -261,26 +263,26 @@ class SupportScreen extends StatelessWidget {
                     "Add Chit",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => AddCustomer(),
-                  //     settings: RouteSettings(name: '/customers/add'),
-                  //   ),
-                  // ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChitPublishSupport(),
+                      settings: RouteSettings(name: '/settings/app/support/chit'),
+                    ),
+                  ),
                 ),
                 ListTile(
                   title: Text(
                     "Allocate Chit",
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CustomersHome(),
-                  //     settings: RouteSettings(name: '/customers'),
-                  //   ),
-                  // ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChitAllocationSupport(),
+                      settings: RouteSettings(name: '/customers'),
+                    ),
+                  ),
                 ),
               ],
             ),

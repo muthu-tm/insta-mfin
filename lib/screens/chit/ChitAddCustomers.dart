@@ -325,7 +325,6 @@ class _AddChitCustomersState extends State<AddChitCustomers> {
         Navigator.pop(context);
         Navigator.pop(context);
         Navigator.pop(context);
-        Navigator.pop(context);
       }
     }
   }
