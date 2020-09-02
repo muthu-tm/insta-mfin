@@ -317,7 +317,7 @@ class ExpenseSupport extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: "Expense title",
+                            text: "Expense details",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,
@@ -529,7 +529,7 @@ class ExpenseSupport extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: "Expense title",
+                            text: "Expense details",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,

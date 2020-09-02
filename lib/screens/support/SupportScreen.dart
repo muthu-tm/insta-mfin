@@ -14,6 +14,7 @@ import 'DeactivateSupport.dart';
 import 'ProfileSupport.dart';
 import 'RemoveFinanceUserSupport.dart';
 import 'ReportsSupport.dart';
+import 'TransactionConfigSupport.dart';
 import 'UserActionSupport.dart';
 import 'AddFinanceUserSupport.dart';
 import 'DeactivateFinanceSupport.dart';
@@ -197,13 +198,13 @@ class SupportScreen extends StatelessWidget {
                 ListTile(
                   title: Text('Configurations'),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => TransactionConfigHome(),
-                  //     settings: RouteSettings(name: '/transactions/config'),
-                  //   ),
-                  // ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TransactionConfigSupport(),
+                      settings: RouteSettings(name: '/settings/app/support/configuration'),
+                    ),
+                  ),
                 ),
               ],
             ),

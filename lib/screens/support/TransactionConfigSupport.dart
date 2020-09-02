@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:instamfin/screens/utils/CustomColors.dart';
 
-class JournalSupport extends StatelessWidget {
+class TransactionConfigSupport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Journal Management"),
+        title: Text("Transaction Configuration"),
         backgroundColor: CustomColors.mfinBlue,
       ),
       body: SingleChildScrollView(
@@ -28,7 +28,7 @@ class JournalSupport extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Adjust Cash In Hand:",
+                      "Add/Edit/Remove Loan Templates:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -56,14 +56,14 @@ class JournalSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "To adujst ",
+                            text: "To add ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
                             ),
                           ),
                           TextSpan(
-                            text: "Cash-In-Hand",
+                            text: "Loan Template",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,
@@ -78,7 +78,7 @@ class JournalSupport extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: "Transactions -> Journals",
+                            text: "Transactions -> Transactions Configuration",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,
@@ -139,41 +139,7 @@ class JournalSupport extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: "Add Journals",
-                            style: TextStyle(
-                              fontFamily: 'Georgia',
-                              color: CustomColors.mfinBlue,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " button",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: "C: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Click ",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "Income",
+                            text: "Add Loan template",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,
@@ -200,22 +166,7 @@ class JournalSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Enter the ",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "Journal",
-                            style: TextStyle(
-                              fontFamily: 'Georgia',
-                              color: CustomColors.mfinBlue,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " details",
+                            text: "Fill out the details",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -258,40 +209,6 @@ class JournalSupport extends StatelessWidget {
                         ],
                       ),
                     ),
-                    RichText(
-                      text: TextSpan(
-                        text: "F: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CustomColors.mfinAlertRed,
-                          fontSize: 18.0,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Navigate to ",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "Home",
-                            style: TextStyle(
-                              fontFamily: 'Georgia',
-                              color: CustomColors.mfinBlue,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " to check the changes",
-                            style: TextStyle(
-                              color: CustomColors.mfinBlack,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -308,7 +225,7 @@ class JournalSupport extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Remove Journal Entry:",
+                      "Add/Edit/Remove Chit Fund Templates:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: CustomColors.mfinBlue,
@@ -336,14 +253,14 @@ class JournalSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "To remove ",
+                            text: "To add ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
                             ),
                           ),
                           TextSpan(
-                            text: "Journal Entry",
+                            text: "Chit Templates",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,
@@ -358,7 +275,7 @@ class JournalSupport extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: "Transactions -> Journals",
+                            text: "Transactions -> Transactions Configuration",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,
@@ -378,14 +295,14 @@ class JournalSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Slide the ",
+                            text: "Click ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
                             ),
                           ),
                           TextSpan(
-                            text: "Expense details",
+                            text: "Round Icon",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,
@@ -393,7 +310,7 @@ class JournalSupport extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: " from left to right",
+                            text: " in the bottom ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
@@ -412,14 +329,14 @@ class JournalSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "Click on ",
+                            text: "Click ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
                             ),
                           ),
                           TextSpan(
-                            text: "Remove",
+                            text: "Add Chit Fund Templates",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,
@@ -446,6 +363,25 @@ class JournalSupport extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
+                            text: "Fill out the details",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "E: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
                             text: "Press ",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
@@ -453,7 +389,7 @@ class JournalSupport extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: "Yes",
+                            text: "Save",
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               color: CustomColors.mfinBlue,
@@ -461,7 +397,401 @@ class JournalSupport extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: " button in the popup to remove the journal",
+                            text: " button to apply the changes",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+                            Padding(
+                padding: EdgeInsets.all(5),
+                child: Row(
+                  children: [
+                    Text(
+                      "3. ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlack,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    Text(
+                      "Add/Edit/Remove Expense Categories:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 25, top: 10, right: 15, bottom: 10),
+                color: CustomColors.mfinLightGrey,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: "A: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "To add ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Expense Categories",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ", go to ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Transactions -> Transactions Configuration",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "B: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Click ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Round Icon",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " in the bottom ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "C: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Click ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Add Expense Categories",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "D: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Fill out the details",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "E: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+                            Padding(
+                padding: EdgeInsets.all(5),
+                child: Row(
+                  children: [
+                    Text(
+                      "4. ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlack,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    Text(
+                      "Add/Edit/Remove Journal Categories:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.mfinBlue,
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 25, top: 10, right: 15, bottom: 10),
+                color: CustomColors.mfinLightGrey,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: "A: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "To add ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Journal Categories",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ", go to ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Transactions -> Transactions Configuration",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "B: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Click ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Round Icon",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " in the bottom ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "C: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Click ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Add Journal Categories",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "D: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Fill out the details",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "E: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.mfinAlertRed,
+                          fontSize: 18.0,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Press ",
+                            style: TextStyle(
+                              color: CustomColors.mfinBlack,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Save",
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              color: CustomColors.mfinBlue,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " button to apply the changes",
                             style: TextStyle(
                               color: CustomColors.mfinBlack,
                               fontSize: 13.0,
