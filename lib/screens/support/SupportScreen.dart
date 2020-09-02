@@ -129,7 +129,7 @@ class SupportScreen extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddFinanceUserSupport(),
+                      builder: (context) => RemoveFinanceUserSupport(),
                       settings: RouteSettings(
                           name: '/settings/app/support/finance/user/remove'),
                     ),
