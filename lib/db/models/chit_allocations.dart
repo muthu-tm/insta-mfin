@@ -242,7 +242,8 @@ class ChitAllocations {
 
               Map<String, dynamic> aData = {'accounts_data': accData.toJson()};
               Model().txUpdate(tx, finDocRef, aData);
-              Model().txUpdate(tx, docRef, fields);
+              Model().txUpdate(tx, getDocumentReference(
+        financeId, branchName, subBranchName, chitID, chitNumer), fields);
             },
           );
         },

@@ -250,9 +250,9 @@ class _AddChitAllocationState extends State<AddChitAllocation> {
                               initialValue: "",
                               decoration: InputDecoration(
                                 hintText: AppLocalizations.of(context)
-                                    .translate('amount_given'),
+                                    .translate('given_to'),
                                 labelText: AppLocalizations.of(context)
-                                    .translate('amount_given'),
+                                    .translate('given_to'),
                                 labelStyle: TextStyle(
                                   fontSize: 10,
                                   color: CustomColors.mfinBlue,
