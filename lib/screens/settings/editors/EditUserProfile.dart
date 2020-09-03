@@ -32,7 +32,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
   @override
   void initState() {
     super.initState();
-    if (cachedLocalUser.gender == null) {
+    if (cachedLocalUser.gender == null || cachedLocalUser.gender == "") {
       gender = "Male";
       updatedUser['gender'] = "Male";
     } else
