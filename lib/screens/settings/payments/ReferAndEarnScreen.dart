@@ -99,7 +99,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
             padding: EdgeInsets.all(10),
             child: TextFormField(
               readOnly: true,
-              initialValue: cachedLocalUser.mobileNumber.toString(),
+              initialValue: cachedLocalUser.getID(),
               textAlign: TextAlign.start,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -225,7 +225,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                           int.tryParse(_textEditingController.text) != null) {
                         try {
                           int number = int.parse(_textEditingController.text);
-                          if (number == cachedLocalUser.mobileNumber) {
+                          if (number == cachedLocalUser.getIntID()) {
                             _scaffoldKey.currentState.showSnackBar(
                                 CustomSnackBar.errorSnackBar(
                                     "Your own code cannot be applied!", 2));
