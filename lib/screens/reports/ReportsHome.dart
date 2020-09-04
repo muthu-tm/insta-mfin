@@ -94,16 +94,16 @@ class _ReportsHomeState extends State<ReportsHome> {
           label: Text(
             AppLocalizations.of(context).translate('get_report'),
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 15,
               fontFamily: "Georgia",
               fontWeight: FontWeight.bold,
             ),
           ),
           splashColor: CustomColors.mfinWhite,
           icon: Icon(
-            Icons.file_download,
+            Icons.cloud_download,
             size: 35,
-            color: CustomColors.mfinFadedButtonGreen,
+            color: CustomColors.mfinButtonGreen,
           ),
         ),
         body: Container(
