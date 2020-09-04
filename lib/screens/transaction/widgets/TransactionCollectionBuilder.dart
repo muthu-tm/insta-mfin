@@ -35,7 +35,7 @@ class TransactionCollectionBuilder extends StatelessWidget {
                 height: 30,
                 child: ListTile(
                   leading: Text(
-                    "Payments:",
+                    "Loans:",
                     style: TextStyle(
                       fontSize: 17,
                       color: CustomColors.mfinBlue,

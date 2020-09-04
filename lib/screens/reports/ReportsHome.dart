@@ -34,7 +34,7 @@ class _ReportsHomeState extends State<ReportsHome> {
   String _selectedCategory = "0";
   Map<String, String> _categoriesMap = {
     "0": "Customer",
-    "1": "Payment",
+    "1": "Loan",
     "2": "Collection",
     "3": "Journal",
     "4": "Expense"
@@ -94,7 +94,7 @@ class _ReportsHomeState extends State<ReportsHome> {
           label: Text(
             AppLocalizations.of(context).translate('get_report'),
             style: TextStyle(
-              fontSize: 17,
+              fontSize: 16,
               fontFamily: "Georgia",
               fontWeight: FontWeight.bold,
             ),
@@ -106,8 +106,8 @@ class _ReportsHomeState extends State<ReportsHome> {
             color: CustomColors.mfinFadedButtonGreen,
           ),
         ),
-        body: new Container(
-          child: new Column(
+        body: Container(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[

@@ -138,7 +138,7 @@ class _WeeklyStatisticsState extends State<WeeklyStatistics> {
                           controller: _fDate,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 3.0),
                             border: OutlineInputBorder(
                                 borderSide:
